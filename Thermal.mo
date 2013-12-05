@@ -1,11 +1,9 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Thermal "Temperature Physical Domain"
 
   connector HeatFlowConnector "Heat flow connector"
-    Physiolibrary2013.Types.Temperature
-                     T "Temperature";
-    flow Physiolibrary2013.Types.HeatFlowRate
-                           q "Heat flow";
+    Physiolibrary.Types.Temperature T "Temperature";
+    flow Physiolibrary.Types.HeatFlowRate q "Heat flow";
     annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -13,7 +11,7 @@ package Thermal "Temperature Physical Domain"
   end HeatFlowConnector;
 
   connector PositiveHeatFlow "Heat inflow"
-    extends Thermal.HeatFlowConnector;
+    extends HeatFlowConnector;
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Rectangle(
@@ -30,7 +28,7 @@ package Thermal "Temperature Physical Domain"
   end PositiveHeatFlow;
 
   connector NegativeHeatFlow "Heat outflow"
-    extends Thermal.HeatFlowConnector;
+    extends HeatFlowConnector;
 
   annotation (
       defaultComponentName="q_out",
@@ -89,9 +87,8 @@ Connector with one flow signal of type Real.
 
   model Conductor "Heat resistor"
    extends Icons.Resistor;
-   extends Thermal.OnePort;
-   parameter Physiolibrary2013.Types.ThermalConductance
-                                     conductance;
+   extends OnePort;
+   parameter Physiolibrary.Types.ThermalConductance conductance;
   equation
     q_in.q = conductance * (q_in.T - q_out.T);
     annotation (Icon(graphics={Text(
@@ -108,11 +105,11 @@ Connector with one flow signal of type Real.
   end Conductor;
 
   model Conductor2 "Heat resistor with input heat conductance"
-   extends Thermal.OnePort;
+   extends OnePort;
    extends Icons.Resistor;
 
-    Physiolibrary2013.Types.RealIO.ThermalConductanceInput
-                                              conductance annotation (Placement(
+    Physiolibrary.Types.RealIO.ThermalConductanceInput conductance
+                                                          annotation (Placement(
           transformation(extent={{-40,20},{0,60}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -133,9 +130,8 @@ Connector with one flow signal of type Real.
     NegativeHeatFlow q_out annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
               {50,-10},{70,10}})));
-    Physiolibrary2013.Types.RealIO.HeatFlowRateInput
-                                        desiredFlow_ "Heat inflow rate"
-                                                                annotation ( extent = [-10,30;10,50], rotation = -90);
+    Physiolibrary.Types.RealIO.HeatFlowRateInput desiredFlow_
+      "Heat inflow rate"                                        annotation ( extent = [-10,30;10,50], rotation = -90);
 
   equation
     q_out.q = - desiredFlow_;
@@ -168,11 +164,10 @@ Connector with one flow signal of type Real.
   model HeatStream "Mass flow circuit with different temperatures"
     extends OnePort;
 
-    parameter Physiolibrary2013.Types.SpecificHeatCapacity
-                                        specificHeat_ "Of flow circuit medium";
+    parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_
+      "Of flow circuit medium";
 
-    Physiolibrary2013.Types.RealIO.MassFlowRateInput
-                                        substanceFlow
+    Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
       "Flowing speed in circuit. Can not be negative!"
       annotation (Placement(transformation(extent={{-50,42},{-10,82}}),
           iconTransformation(
@@ -213,15 +208,12 @@ Connector with one flow signal of type Real.
     PositiveHeatFlow q_in "flow circuit"     annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
              {{-110,-10},{-90,10}})));
-    parameter Physiolibrary2013.Types.SpecificEnergy
-                                  VaporizationHeat = 0
+    parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
       "Used for whole outflow stream";                                            // or 2428344 for water vaporization
-    parameter Physiolibrary2013.Types.SpecificHeatCapacity
-                                         specificHeat_ = 4186.8
+    parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=4186.8
       "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
-    Physiolibrary2013.Types.RealIO.MassFlowRateInput
-                                        liquidOutflow_
+    Physiolibrary.Types.RealIO.MassFlowRateInput liquidOutflow_
       "Mass outflow. Can not be negative!"
       annotation (Placement(transformation(extent={{-42,38},{-2,78}}),
           iconTransformation(
@@ -261,12 +253,10 @@ Connector with one flow signal of type Real.
     "Mass flow radiator, which outflowed temperature is the same as the ambient temperature"
     extends OnePort;
 
-    parameter Physiolibrary2013.Types.SpecificHeatCapacity
-                                        specificHeat_ = 3851.856
+    parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=3851.856
       "Of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
 
-    Physiolibrary2013.Types.RealIO.MassFlowRateInput
-                                        substanceFlow
+    Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
       "Flowing speed in circuit. Can not be negative!"
       annotation (Placement(transformation(extent={{-50,42},{-10,82}}),
           iconTransformation(
@@ -330,28 +320,24 @@ Connector with one flow signal of type Real.
 
   model HeatAccumulation
     "Accumulating of heat to substance mass with specific heat constant"
-    extends Physiolibrary2013.States.State(
-                            state_start=heat_start,storeUnit="kcal");
-    Thermal.PositiveHeatFlow q_in "Heat inflow/outflow connector"
+    extends Physiolibrary.States.State(state_start=heat_start, storeUnit=
+        "kcal");
+    PositiveHeatFlow q_in "Heat inflow/outflow connector"
       annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
 
-    parameter Physiolibrary2013.Types.Heat
-                        heat_start
+    parameter Physiolibrary.Types.Heat heat_start
       "Heat start value can be solved as weight*initialTemperature*specificHeat"
        annotation (Dialog(group="Initialization"));
 
-    parameter Physiolibrary2013.Types.SpecificHeatCapacity
-                                        specificHeat_=4186.8
+    parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=4186.8
       "Of the mass, where the heat are accumulated";
-    Physiolibrary2013.Types.Heat
-              heatMass "Accumulated heat";
+    Physiolibrary.Types.Heat heatMass "Accumulated heat";
 
-    Physiolibrary2013.Types.RealIO.MassInput
-                                weight
+    Physiolibrary.Types.RealIO.MassInput weight
       "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-122,60},
               {-82,100}}), iconTransformation(extent={{-120,60},{-80,100}})));
-    Physiolibrary2013.Types.RealIO.TemperatureOutput
-                                        T_ "Actual temperature" annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.TemperatureOutput T_ "Actual temperature"
+                                                                annotation (Placement(transformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
           origin={0,-100})));
@@ -379,8 +365,7 @@ Connector with one flow signal of type Real.
     PositiveHeatFlow q_in "Heat inflow/outflow connector"
       annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
 
-    parameter Physiolibrary2013.Types.Temperature
-                               Temperature=295.37
+    parameter Physiolibrary.Types.Temperature Temperature=295.37
       "Default ambient temperature is 22 degC";
 
   equation
@@ -398,6 +383,6 @@ Connector with one flow signal of type Real.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Thermal;

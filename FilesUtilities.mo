@@ -1,6 +1,7 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package FilesUtilities
-  extends Types.Utilities;
+  import Physiolibrary;
+  extends Physiolibrary.Types.Utilities;
   redeclare function extends readInputReal
     import Modelica.Utilities.*;
 
@@ -59,24 +60,28 @@ package FilesUtilities
              (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
              nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
              if nextIndex>lineLen then
-               if Strings.length(Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-                typeDef].DisplayUnit)                                                            >0 then
-                  Streams.error("No units detected for variable '" + name + "' in file '"+fn+"'. Expected unis are '" +
-                Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-                typeDef].DisplayUnit                                                             + "'!\n");
+          if Strings.length(Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+                typeDef].DisplayUnit)
+                                    > 0 then
+            Streams.error("No units detected for variable '" + name +
+              "' in file '" + fn + "'. Expected unis are '" +Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+                typeDef].DisplayUnit
+                                   + "'!\n");
                end if;
              else
                str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-               if str<>Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
+          if str <>Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
                 typeDef].DisplayUnit then
-                  Streams.error("Units '" +str + "' not expected for variable '" + name + "' in file '"+fn+"'. Expected unis are '" +
-                Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-                typeDef].DisplayUnit                                                                             + "'!\n");
+            Streams.error("Units '" + str + "' not expected for variable '"
+               + name + "' in file '" + fn + "'. Expected unis are '" +
+                Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+                typeDef].DisplayUnit
+                                   + "'!\n");
                end if;
              end if;
-             value := inputValue*Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-            typeDef].Scale                                                                 +
-            Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
+        value := inputValue*Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+            typeDef].Scale
+                         +Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
             typeDef].Offset;
              found := true;
           // end if;  //Format "<variableName>=<value><unit>"
@@ -122,11 +127,13 @@ package FilesUtilities
 
     typeDef:=UnitDerivations.findUnit(storeUnit);
 
-    Streams.print( name + "\n" + String( ((value-Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-      typeDef].Offset)                                                                                      /
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].Scale))                                                                                       + " " +
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit,
-                                                                        fn);
+  Streams.print(name + "\n" + String(((value -Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Offset)
+                    /Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Scale))
+                     + " " +Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].DisplayUnit,
+                          fn);
 
   end writeReal;
 
@@ -170,20 +177,29 @@ package FilesUtilities
 
     typeDef:=UnitDerivations.findUnit(storeUnit);
 
-    outputDefaultValue :=((defaultValue -Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-      typeDef].Offset)                                                                               /
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].Scale);
-    outputInitialValue :=((initialValue -Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-      typeDef].Offset)                                                                               /
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].Scale);
-    outputFinalValue :=((finalValue -Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[
-      typeDef].Offset)                                                                            /
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].Scale);
+  outputDefaultValue := ((defaultValue -Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Offset)
+                    /Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Scale);
+  outputInitialValue := ((initialValue -Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Offset)
+                    /Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Scale);
+  outputFinalValue := ((finalValue -Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Offset)
+                    /Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].Scale);
 
-    Streams.print( ( if (abs(outputDefaultValue)>Modelica.Constants.eps) then String( abs((outputFinalValue-outputDefaultValue)/outputDefaultValue)) else  "Zero vs. " + String( outputFinalValue))  + " ; " + name + " : default="  + String(outputDefaultValue) + " " +
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit                                                                                 +", initial=" + String(outputInitialValue) +" " +
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit                                                                                 + ", final=" + String(outputFinalValue) +" " +
-      Physiolibrary2013.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit,                                                                                 fn);
+  Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
+    String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
+     else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
+    " : default=" + String(outputDefaultValue) + " " +Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].DisplayUnit
+                         + ", initial=" + String(outputInitialValue) + " " +
+      Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit
+     + ", final=" + String(outputFinalValue) + " " +Physiolibrary.FilesUtilities.UnitDerivations.RealTypeDef[
+      typeDef].DisplayUnit,
+                          fn);
 
   end writeComparation;
 
@@ -381,6 +397,6 @@ package FilesUtilities
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end FilesUtilities;

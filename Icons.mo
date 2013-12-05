@@ -1,4 +1,4 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Icons
 
   package Library
@@ -91,7 +91,7 @@ package Icons
   model Nerves
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,102},{100,-98}},
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="icons/nervyNeuron.png")}));
   end Nerves;
 
@@ -1137,9 +1137,10 @@ from this block.
   annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
               fileName="icons/elastickyKompartment - Kopie.png")}));
   end ElasticBalloon;
-  annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
-</html>"));
+  annotation (Documentation(revisions=""));
+  model Membrane
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/icons/membrane.png")}));
+  end Membrane;
 end Icons;

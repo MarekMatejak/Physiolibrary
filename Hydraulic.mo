@@ -1,11 +1,9 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Hydraulic "Hydraulic Physical Domain"
 
   connector PressureFlow "Hydraulical Pressure-VolumeFlow connector"
-    Physiolibrary2013.Types.Pressure
-                  pressure "Pressure";
-    flow Physiolibrary2013.Types.VolumeFlowRate
-                             q "Volume flow";
+    Physiolibrary.Types.Pressure pressure "Pressure";
+    flow Physiolibrary.Types.VolumeFlowRate q "Volume flow";
     annotation (Documentation(revisions="<html>
 <table>
 <tr>
@@ -98,8 +96,8 @@ package Hydraulic "Hydraulic Physical Domain"
   model FlowMeasure "Convert connector volume flow value to signal flow value"
     extends OnePort;
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateOutput
-                                           actualFlow "Actual volume flow rate"
+    Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
+      "Actual volume flow rate"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=90,
@@ -124,12 +122,10 @@ package Hydraulic "Hydraulic Physical Domain"
   model PressureMeasure
     "Convert connector hydraulic pressure value to signal flow value"
 
-    Hydraulic.PositivePressureFlow q_in
-                              annotation (Placement(
+    PositivePressureFlow q_in annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-30,-50},
               {-10,-30}})));
-    Physiolibrary2013.Types.RealIO.PressureOutput
-                                     actualPressure "Actual pressure"
+    Physiolibrary.Types.RealIO.PressureOutput actualPressure "Actual pressure"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=0,
@@ -154,8 +150,7 @@ package Hydraulic "Hydraulic Physical Domain"
    extends OnePort;
    extends Icons.Resistor;
 
-   parameter Physiolibrary2013.Types.HydraulicConductance
-                                             cond;
+   parameter Physiolibrary.Types.HydraulicConductance cond;
   equation
     q_in.q = cond * (q_in.pressure - q_out.pressure);
 
@@ -182,8 +177,8 @@ package Hydraulic "Hydraulic Physical Domain"
   model Resistor2
    extends OnePort;
    extends Icons.Resistor;
-    Physiolibrary2013.Types.RealIO.HydraulicConductanceInput
-                                                cond annotation (Placement(
+    Physiolibrary.Types.RealIO.HydraulicConductanceInput cond
+                                                     annotation (Placement(
           transformation(extent={{-58,26},{-18,66}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -202,8 +197,8 @@ package Hydraulic "Hydraulic Physical Domain"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{90,0},{110,20}}),   iconTransformation(
             extent={{90,0},{110,20}})));
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                          desiredFlow "Desired volume flow value"                                    annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
+      "Desired volume flow value"                                                                    annotation (Placement(transformation(
             extent={{-66,50},{-26,90}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -260,8 +255,8 @@ package Hydraulic "Hydraulic Physical Domain"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent=
               {{-110,-10},{-90,10}})));
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                          desiredFlow "Desired volume flow value"                                    annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
+      "Desired volume flow value"                                                                    annotation (Placement(transformation(
             extent={{-66,50},{-26,90}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -312,8 +307,8 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Pump
     extends OnePort;
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                          desiredFlow "Desired volume flow value"                                    annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
+      "Desired volume flow value"                                                                    annotation (Placement(transformation(
             extent={{-66,50},{-26,90}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -364,6 +359,7 @@ package Hydraulic "Hydraulic Physical Domain"
   end Pump;
 
   model Reabsorbtion "Divide inflow to outflow and reabsorbtion"
+    import Physiolibrary;
 
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-106,-18},{-66,22}}), iconTransformation(
@@ -382,7 +378,8 @@ package Hydraulic "Hydraulic Physical Domain"
           origin={104,-46})));
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-48,12},{-28,-8}})));
-    Blocks.Factors.Effect  simpleMultiply annotation (Placement(transformation(
+    Physiolibrary.Blocks.Factors.Effect
+                           simpleMultiply annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=0,
           origin={-38,-30})));
@@ -439,6 +436,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Reabsorbtion2
     "Divide inflow to outflow and reabsorbtion if it is under defined treshold"
+    import Physiolibrary;
 
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-100,40},{-60,80}}),  iconTransformation(
@@ -449,22 +447,22 @@ package Hydraulic "Hydraulic Physical Domain"
     NegativePressureFlow Reabsorbtion                annotation (Placement(
           transformation(extent={{-12,-98},{28,-58}}), iconTransformation(
             extent={{-10,-110},{10,-90}})));
-    Physiolibrary2013.Types.RealIO.FractionInput
-                                    FractReab
+    Physiolibrary.Types.RealIO.FractionInput FractReab
                                  annotation (Placement(transformation(extent={{-60,-26},
               {-48,-14}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=180,
           origin={94,-56})));
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                          OutflowMin     annotation (Placement(transformation(extent={{-44,84},
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput OutflowMin
+                                                         annotation (Placement(transformation(extent={{-44,84},
               {-32,96}}),  iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=180,
           origin={34,50})));
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-38,22},{-18,2}})));
-    Blocks.Factors.Effect  simpleMultiply annotation (Placement(transformation(
+    Physiolibrary.Blocks.Factors.Effect
+                           simpleMultiply annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=0,
           origin={-28,-20})));
@@ -566,8 +564,7 @@ package Hydraulic "Hydraulic Physical Domain"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{60,-66},
               {80,-46}})));
-    Physiolibrary2013.Types.RealIO.HeightInput
-                                  height
+    Physiolibrary.Types.RealIO.HeightInput height
       "Vertical distance between top and bottom connector"
                                                  annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
@@ -578,8 +575,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
      //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
 
-    parameter Physiolibrary2013.Types.Acceleration
-                                G=9.81 "Gravity acceleration"                      annotation (Placement(transformation(extent={{22,
+    parameter Physiolibrary.Types.Acceleration G=9.81 "Gravity acceleration"       annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
           rotation=270,
           origin={15,-85})));
@@ -624,8 +620,7 @@ package Hydraulic "Hydraulic Physical Domain"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{60,-66},
               {80,-46}})));
-    Physiolibrary2013.Types.RealIO.HeightInput
-                                  height
+    Physiolibrary.Types.RealIO.HeightInput height
       "Vertical distance between top and bottom connector"
                                                  annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
@@ -636,8 +631,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
      //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
 
-    Physiolibrary2013.Types.RealIO.AccelerationInput
-                                        G "Gravity acceleration"                      annotation (Placement(transformation(extent={{22,
+    Physiolibrary.Types.RealIO.AccelerationInput G "Gravity acceleration"             annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
           rotation=90,
           origin={1,85})));
@@ -682,8 +676,7 @@ package Hydraulic "Hydraulic Physical Domain"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{60,-66},
               {80,-46}})));
-    Physiolibrary2013.Types.RealIO.HeightInput
-                                  height
+    Physiolibrary.Types.RealIO.HeightInput height
       "Vertical distance between top and bottom connector"
                                                  annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
@@ -694,8 +687,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
      //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
 
-    Physiolibrary2013.Types.RealIO.AccelerationInput
-                                        G "Gravity acceleration"                      annotation (Placement(transformation(extent={{22,
+    Physiolibrary.Types.RealIO.AccelerationInput G "Gravity acceleration"             annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
           rotation=90,
           origin={1,85})));
@@ -743,32 +735,28 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model ElacticBalloon "Elastic balloon"
    extends Icons.ElasticBalloon;
-   extends Physiolibrary2013.States.State(
-                           state_start=volume_start,storeUnit="ml");
+   extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+        "ml");
 
-    Hydraulic.PositivePressureFlow q_in
+    PositivePressureFlow q_in
                           annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-12,-8},{8,12}}), iconTransformation(extent={{-10,
               -10},{10,10}})));
-    parameter Physiolibrary2013.Types.Volume
-                          volume_start "Volume start value"
+    parameter Physiolibrary.Types.Volume volume_start "Volume start value"
        annotation (Dialog(group="Initialization"));
-    parameter Physiolibrary2013.Types.Volume
-                          zeroPressureVolume
+    parameter Physiolibrary.Types.Volume zeroPressureVolume
       "Maximal volume, that does not generate pressure";
 
-    parameter Physiolibrary2013.Types.HydraulicCompliance
-                                       compliance "Compliance";
+    parameter Physiolibrary.Types.HydraulicCompliance compliance "Compliance";
 
-    parameter Physiolibrary2013.Types.Pressure
-                            externalPressure=0
+    parameter Physiolibrary.Types.Pressure externalPressure=0
       "External pressure. Set zero if internal pressure is relative to external.";
 
-    Physiolibrary2013.Types.Volume
-                excessVolume "Additional volume, that generate pressure";
+    Physiolibrary.Types.Volume excessVolume
+      "Additional volume, that generate pressure";
 
-    Physiolibrary2013.Types.RealIO.VolumeOutput
-                                   volume annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.VolumeOutput volume
+                                          annotation (Placement(transformation(
             extent={{-12,-100},{8,-80}}), iconTransformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
@@ -793,34 +781,33 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model ElacticBalloon2 "Elastic balloon"
    extends Icons.ElasticBalloon;
-   extends Physiolibrary2013.States.State(
-                           state_start=volume_start,storeUnit="ml");
+   extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+        "ml");
 
-    Hydraulic.PositivePressureFlow q_in
+    PositivePressureFlow q_in
                           annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-12,-8},{8,12}}), iconTransformation(extent={{-10,
               -10},{10,10}})));
-    parameter Physiolibrary2013.Types.Volume
-                          volume_start "Volume start value"
+    parameter Physiolibrary.Types.Volume volume_start "Volume start value"
        annotation (Dialog(group="Initialization"));
 
-    Physiolibrary2013.Types.Volume
-                excessVolume "Additional volume, that generate pressure";
+    Physiolibrary.Types.Volume excessVolume
+      "Additional volume, that generate pressure";
 
-     Physiolibrary2013.Types.RealIO.VolumeInput
-                                   zeroPressureVolume annotation (Placement(transformation(
+     Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume
+                                                      annotation (Placement(transformation(
             extent={{-120,60},{-80,100}}), iconTransformation(extent={{-120,60},{-80,
               100}})));
-    Physiolibrary2013.Types.RealIO.HydraulicComplianceInput
-                                               compliance annotation (Placement(
+    Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance
+                                                          annotation (Placement(
           transformation(extent={{-120,0},{-80,40}}), iconTransformation(extent={{
               -120,0},{-80,40}})));
-    Physiolibrary2013.Types.RealIO.PressureInput
-                                    externalPressure annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.PressureInput externalPressure
+                                                     annotation (Placement(transformation(
             extent={{-120,-60},{-80,-20}}), iconTransformation(extent={{-120,-60},
               {-80,-20}})));
-    Physiolibrary2013.Types.RealIO.VolumeOutput
-                                   volume annotation (Placement(transformation(
+    Physiolibrary.Types.RealIO.VolumeOutput volume
+                                          annotation (Placement(transformation(
             extent={{-12,-100},{8,-80}}), iconTransformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
@@ -843,9 +830,12 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics));
   end ElacticBalloon2;
 
+
+
+
   model InternalElasticBalloon "Elastic balloon in closed space"
-   extends Physiolibrary2013.States.State(
-                           state_start=volume_start,storeUnit="ml");
+   extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+        "ml");
 
     PositivePressureFlow q_int "Internal space"
       annotation (Placement(transformation(extent={{-86,-10},{-66,10}}),
@@ -853,21 +843,15 @@ package Hydraulic "Hydraulic Physical Domain"
     NegativePressureFlow q_ext "External space" annotation (Placement(transformation(extent={{64,-10},
               {84,10}}),  iconTransformation(extent={{64,-10},{84,10}})));
 
-   parameter Physiolibrary2013.Types.HydraulicCompliance
-                                            Compliance "Compliance";
-   parameter Physiolibrary2013.Types.Volume
-                         zeroPressureVolume=0
+   parameter Physiolibrary.Types.HydraulicCompliance Compliance "Compliance";
+   parameter Physiolibrary.Types.Volume zeroPressureVolume=0
       "Maximal volume, that does not generate pressure";
-   parameter Physiolibrary2013.Types.Volume
-                         volume_start "Volume start value"
+   parameter Physiolibrary.Types.Volume volume_start "Volume start value"
        annotation (Dialog(group="Initialization"));
-   Physiolibrary2013.Types.Volume
-               volume;
-   Physiolibrary2013.Types.Volume
-               stressedVolume;
+   Physiolibrary.Types.Volume volume;
+   Physiolibrary.Types.Volume stressedVolume;
 
-   parameter Physiolibrary2013.Types.Volume
-                         NominalVolume=1e-6
+   parameter Physiolibrary.Types.Volume NominalVolume=1e-6
       "Scale numerical calculation from quadratic meter to miniliters.";
 
   equation
@@ -884,17 +868,15 @@ package Hydraulic "Hydraulic Physical Domain"
   end InternalElasticBalloon;
 
   model Inertance "Inertance of the flow"
-    extends Physiolibrary2013.States.State(
-                            state_start=volumeFlow_start,storeUnit="ml/min");
+    extends Physiolibrary.States.State(state_start=volumeFlow_start,
+      storeUnit="ml/min");
     extends OnePort;
 
-    parameter Physiolibrary2013.Types.VolumeFlowRate
-                                  volumeFlow_start=5*(1e-3)*60
+    parameter Physiolibrary.Types.VolumeFlowRate volumeFlow_start=5*(1e-3)*60
       "Volumetric flow start value"
        annotation (Dialog(group="Initialization"));                                                          //5 l/min is normal volumetric flow in aorta
 
-    parameter Physiolibrary2013.Types.HydraulicInertance
-                                   I "Inertance";
+    parameter Physiolibrary.Types.HydraulicInertance I "Inertance";
 
   equation
     state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
@@ -905,17 +887,20 @@ package Hydraulic "Hydraulic Physical Domain"
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
 </html>"));
   end Inertance;
-
+  annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>"));
     model UnlimitedVolume
     "Boundary compartment with defined pressure and any volume in/outflow"
 
-      Physiolibrary2013.Types.RealIO.PressureInput
-                                       pressure "Pressure"
+      Physiolibrary.Types.RealIO.PressureInput pressure "Pressure"
         annotation (Placement(transformation(extent={{-140,-20},{-100,20}},
             rotation=0), iconTransformation(extent={{-20,-20},{20,20}},
           rotation=270,
           origin={0,100})));
-      Hydraulic.PositivePressureFlow y "PressureFlow output connectors"
+      PositivePressureFlow y "PressureFlow output connectors"
         annotation (Placement(transformation(extent={{100,-20},{140,20}},
             rotation=0), iconTransformation(extent={{-20,-20},{20,20}})));
 
@@ -939,10 +924,4 @@ package Hydraulic "Hydraulic Physical Domain"
             fillColor={170,255,255},
             fillPattern=FillPattern.Solid)}));
     end UnlimitedVolume;
-
-  annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
-</html>"));
 end Hydraulic;

@@ -1,13 +1,11 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Osmotic "Osmotic Physical Domain"
 
    connector OsmoticFlowConnector
     "Flux throught semipermeable membrane by osmotic pressure gradient"
-    Physiolibrary2013.Types.Concentration
-                       o
+    Physiolibrary.Types.Concentration o
       "Osmolarity is the molar concentration of the impermeable solutes";
-    flow Physiolibrary2013.Types.VolumeFlowRate
-                             q
+    flow Physiolibrary.Types.VolumeFlowRate q
       "The flux of the permeable solvent (!not the impermeable solutes!)";
     annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -16,7 +14,7 @@ package Osmotic "Osmotic Physical Domain"
    end OsmoticFlowConnector;
 
   connector PositiveOsmoticFlow "Influx"
-    extends Osmotic.OsmoticFlowConnector;
+    extends OsmoticFlowConnector;
 
   annotation (
       defaultComponentName="q_in",
@@ -51,7 +49,7 @@ Connector with one flow signal of type Real.
   end PositiveOsmoticFlow;
 
   connector NegativeOsmoticFlow "Outflux"
-    extends Osmotic.OsmoticFlowConnector;
+    extends OsmoticFlowConnector;
 
   annotation (
       defaultComponentName="q_out",
@@ -105,11 +103,11 @@ Connector with one flow signal of type Real.
   end OnePort;
 
   model FlowMeasure "Measurement of flux through semipermeable membrane"
-    extends Osmotic.OnePort;
+    extends OnePort;
     extends Icons.FlowMeasure;
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateOutput
-                                           actualFlow "Flux through membrane"
+    Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
+      "Flux through membrane"
       annotation (Placement(transformation(extent={{-54,60},{-34,80}}),
           iconTransformation(
           extent={{-10,-10},{10,10}},
@@ -130,14 +128,16 @@ Connector with one flow signal of type Real.
 </html>"));
   end FlowMeasure;
 
-  model Membrane "Semipermeable membrane diffusion"
-   extends Osmotic.OnePort;
+  model Membrane
+    "Semipermeable membrane diffusion at the same hydraulic pressure on both sides"
+   extends OnePort;
    extends Icons.Resistor;
-   parameter Physiolibrary2013.Types.OsmoticMembranePermeability
-                                                    cond
+   parameter Types.Temperature temperature = 310.15
+      "temperature on both membrane sides";
+   parameter Physiolibrary.Types.OsmoticMembranePermeability cond
       "Membrane permeability for solvent";
   equation
-    q_in.q = cond * (q_out.o - q_in.o);
+    q_in.q = cond * (q_out.o*(Modelica.Constants.R*temperature) - q_in.o*(Modelica.Constants.R*temperature));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),
                         graphics), Icon(graphics={Text(
@@ -153,6 +153,93 @@ Connector with one flow signal of type Real.
 </html>"));
   end Membrane;
 
+  model Membrane2
+    "Semipermeable membrane diffusion at different hydraulic pressures on each side"
+   extends OnePort;
+   extends Icons.Resistor;
+   parameter Types.Temperature temperature = 310.15
+      "temperature on both membrane sides";
+   parameter Physiolibrary.Types.OsmoticMembranePermeability cond
+      "Membrane permeability for solvent";
+    Types.RealIO.PressureInput hydraulicPressureIn annotation (Placement(
+          transformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={-78,90}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={-60,40})));
+    Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
+          transformation(extent={{28,56},{68,96}}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={60,40})));
+  equation
+     q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperature)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperature)));
+
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}),
+                        graphics), Icon(coordinateSystem(preserveAspectRatio=false,
+            extent={{-100,-100},{100,100}}),
+                                        graphics={Text(
+            extent={{-70,-30},{70,30}},
+            lineColor={0,0,0},
+            textString="%cond"), Text(
+            extent={{-134,-90},{154,-30}},
+            textString="%name",
+            lineColor={0,0,255})}),
+      Documentation(revisions="<html>
+<p><i>2009-2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+  end Membrane2;
+
+  model Membrane3
+    "Semipermeable membrane diffusion at different hydraulic pressures and temperatures on each side"
+   extends OnePort;
+   extends Icons.Resistor;
+
+   parameter Physiolibrary.Types.OsmoticMembranePermeability cond
+      "Membrane permeability for solvent";
+    Types.RealIO.PressureInput hydraulicPressureIn annotation (Placement(
+          transformation(
+          extent={{-20,-20},{20,20}},
+          rotation=0,
+          origin={-80,78}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={-60,40})));
+    Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
+          transformation(extent={{28,56},{68,96}}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={60,40})));
+    Types.RealIO.TemperatureInput temperatureIn annotation (Placement(
+          transformation(extent={{-100,-80},{-60,-40}}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=90,
+          origin={-60,-40})));
+    Types.RealIO.TemperatureInput temperatureOut annotation (Placement(
+          transformation(extent={{32,-80},{72,-40}}),    iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=90,
+          origin={60,-40})));
+  equation
+    q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperatureOut)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperatureIn)));
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}),
+                        graphics), Icon(coordinateSystem(preserveAspectRatio=false,
+            extent={{-100,-100},{100,100}}),
+                                        graphics={Text(
+            extent={{-70,-30},{70,30}},
+            lineColor={0,0,0},
+            textString="%cond")}),
+      Documentation(revisions="<html>
+<p><i>2009-2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+  end Membrane3;
+
   model SolventInflux "Permeable solution inflow to the system"
 
     NegativeOsmoticFlow q_out
@@ -160,8 +247,7 @@ Connector with one flow signal of type Real.
           transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
               {50,-10},{70,10}})));
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                          desiredFlow
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
       "Permeable solution inflow"
       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
@@ -202,8 +288,7 @@ Connector with one flow signal of type Real.
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{-70,-10},
               {-50,10}})));
-     Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                           desiredFlow
+     Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
       "Permeable solution outflow"
       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
@@ -241,8 +326,7 @@ Connector with one flow signal of type Real.
   model SolventFlux
     extends OnePort;
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                          desiredFlow
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
       "Permeable solution flow through membrane"
                                    annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
@@ -280,23 +364,22 @@ Connector with one flow signal of type Real.
   end SolventFlux;
 
   model OsmoticCell
-    extends Physiolibrary2013.States.State(
-                            state_start=volume_start,storeUnit="mOsm/l");
+    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+        "mOsm/l");
 
     PositiveOsmoticFlow q_in "Flux to/from osmotic compartment" annotation (Placement(
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
               {10,10}})));
-    parameter Physiolibrary2013.Types.Volume
-                          volume_start "Initial volume of compartment"
+    parameter Physiolibrary.Types.Volume volume_start
+      "Initial volume of compartment"
        annotation (Dialog(group="Initialization"));
 
-    Physiolibrary2013.Types.RealIO.AmountOfSubstanceInput
-                                             impermeableSolutes
+    Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes
       "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-120,60},
               {-80,100}}),
           iconTransformation(extent={{-120,60},{-80,100}})));
-    Physiolibrary2013.Types.RealIO.VolumeOutput
-                                   volume "Actual volume of compartment"
+    Physiolibrary.Types.RealIO.VolumeOutput volume
+      "Actual volume of compartment"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
              -90)));
 
@@ -323,6 +406,6 @@ Connector with one flow signal of type Real.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Osmotic;

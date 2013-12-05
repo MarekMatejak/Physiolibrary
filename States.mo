@@ -1,4 +1,4 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package States
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
@@ -6,7 +6,7 @@ package States
     model SimpleAdaptation_NoInit
     extends Modelica.Icons.Example;
 
-    extends States.State(state_start=internalValue_start);
+    extends State(state_start=internalValue_start);
 
      parameter Real internalValue_start=0;
      parameter Real externalValue = 10;
@@ -24,7 +24,7 @@ package States
     model SimpleAddaptation_InitialInput
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.InitialInput, redeclare
           package Utilities =
-            Physiolibrary2013.FilesUtilities);
+            Physiolibrary.FilesUtilities);
     end SimpleAddaptation_InitialInput;
 
     model SimpleAddaptation_Equilibrated
@@ -32,18 +32,24 @@ package States
     end SimpleAddaptation_Equilibrated;
 
     model SimpleReaction_NoInit
+      import Physiolibrary;
     extends Modelica.Icons.Example;
-    extends States.StateSystem;
-      parameter Types.AmountOfSubstance total = 1
+    extends StateSystem;
+      parameter Physiolibrary.Types.AmountOfSubstance
+                                        total = 1
         "total substances amount to conserve during during equilibrated simulation";
 
-      Chemical.NormalizedSolution A(soluteMass_start=0.9, Simulation=Simulation)
+      Physiolibrary.Chemical.NormalizedSubstance A(soluteMass_start=0.9,
+          Simulation=Simulation)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      Chemical.ChemicalReaction reaction(K=1, Simulation=Simulation,
+      Physiolibrary.Chemical.ChemicalReaction reaction(
+        K=1,
+        Simulation=Simulation,
         isSubstrateFlowIncludedInEquilibrium={false},
         isProductFlowIncludedInEquilibrium={true})
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Chemical.NormalizedSolution B(soluteMass_start=total-0.9, Simulation=Simulation)
+      Physiolibrary.Chemical.NormalizedSubstance B(soluteMass_start=total - 0.9,
+          Simulation=Simulation)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
       total*normalizedState[1]=A.soluteMass+B.soluteMass;  //the mass conservation law
@@ -91,11 +97,10 @@ package States
 
   partial model State
     "Differentiation by this blocks instead of operator 'der' allows you to switch between dynamic mode der(y)=x and steady-state mode x=0"
-    import Physiolibrary2013;
+    import Physiolibrary;
 
-    replaceable package Utilities = Physiolibrary2013.FilesUtilities
-                                                                    constrainedby
-      Types.Utilities
+    replaceable package Utilities = Physiolibrary.FilesUtilities    constrainedby
+      Physiolibrary.Types.Utilities
                    annotation (Dialog(group="Functions to read or store",tab="Types"));
 
     Real state(start=state_start)
@@ -105,7 +110,7 @@ package States
     parameter Real state_start "State start or init value"
      annotation (Dialog(enable=false,group="Initialization"));
 
-    parameter Physiolibrary2013.States.SimulationType
+    parameter Physiolibrary.States.SimulationType
                               Simulation(start=SimulationType.NoInit)
       "Type of simulation. Normal dynamic with some initialization or equilibrated during all time during simulation."
       annotation (Dialog(group="Simulation"));
@@ -216,6 +221,6 @@ package States
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end States;

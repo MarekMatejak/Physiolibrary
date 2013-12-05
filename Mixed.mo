@@ -1,22 +1,22 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Mixed
   model IdealGas
     "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
+    import Physiolibrary;
 
-    Hydraulic.PositivePressureFlow v
+    Physiolibrary.Hydraulic.PositivePressureFlow
+                                    v
       "Hydraulic pressure connector with volumetric flow"
                                            annotation (Placement(transformation(
             extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,
               10}})));
-    Physiolibrary2013.Chemical.NegativeConcentrationFlow
-                                    n
+    Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio connector with substance amount flow"
                                                annotation (Placement(
           transformation(extent={{90,-10},{110,10}}),  iconTransformation(extent={
               {90,-10},{110,10}})));
 
-    parameter Physiolibrary2013.Types.Temperature
-                                T "Temperature";
+    parameter Physiolibrary.Types.Temperature T "Temperature";
 
   equation
     v.pressure = n.conc * Modelica.Constants.R * T;  // P*V = n*R*T
@@ -36,21 +36,22 @@ package Mixed
 
   model IdealGas2
     "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
+    import Physiolibrary;
 
-    Hydraulic.PositivePressureFlow v
+    Physiolibrary.Hydraulic.PositivePressureFlow
+                                    v
       "Hydraulic pressure connector with volumetric flow"
                                            annotation (Placement(transformation(
             extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,
               10}})));
-    Physiolibrary2013.Chemical.NegativeConcentrationFlow
-                                    n
+    Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio connector with substance amount flow"
                                                annotation (Placement(
           transformation(extent={{90,-10},{110,10}}),  iconTransformation(extent={
               {90,-10},{110,10}})));
 
-    Physiolibrary2013.Types.RealIO.TemperatureInput
-                                        T "Temperature" annotation (Placement(transformation(extent={{22,
+    Physiolibrary.Types.RealIO.TemperatureInput T "Temperature"
+                                                        annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{20,-20},{-20,20}},
           rotation=90,
           origin={0,80})));
@@ -73,26 +74,25 @@ package Mixed
 
   model PartialPressure
     "Conversion between partial pressure and concentration of the gas in liquid"
+    import Physiolibrary;
 
-    Hydraulic.PositivePressureFlow v
+    Physiolibrary.Hydraulic.PositivePressureFlow
+                                    v
       "Partial pressure and volumetric flow of pure substance"
                                            annotation (Placement(transformation(
             extent={{-10,90},{10,110}}),  iconTransformation(extent={{-110,-10},{-90,
               10}})));
-    Physiolibrary2013.Chemical.NegativeConcentrationFlow
-                                    n
+    Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio and substance amount flow"
                                                annotation (Placement(
           transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={
               {90,-10},{110,10}})));
-    parameter Physiolibrary2013.Types.GasSolubility
-                                 alpha
+    parameter Physiolibrary.Types.GasSolubility alpha
       "Gas solubility in solvent in temperature T";
-    parameter Physiolibrary2013.Types.Temperature
-                               T "Temperature";
+    parameter Physiolibrary.Types.Temperature T "Temperature";
 
-    Physiolibrary2013.Chemical.GasSolubility
-                        gasSolubility(kH = alpha * Modelica.Constants.R * T)
+    Physiolibrary.Chemical.GasSolubility  gasSolubility(kH=alpha*Modelica.Constants.R
+        *T)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas idealGas(T=T)
                       annotation (Placement(transformation(
@@ -130,32 +130,32 @@ package Mixed
 
   model PartialPressure2
     "Conversion between partial pressure and concentration of the gas in liquid"
+    import Physiolibrary;
 
-    Hydraulic.PositivePressureFlow v
+    Physiolibrary.Hydraulic.PositivePressureFlow
+                                    v
       "Partial pressure and volumetric flow of pure substance"
                                            annotation (Placement(transformation(
             extent={{-10,90},{10,110}}),  iconTransformation(extent={{-110,-10},{-90,
               10}})));
-    Physiolibrary2013.Chemical.NegativeConcentrationFlow
-                                    n
+    Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio and substance amount flow"
                                                annotation (Placement(
           transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={
               {90,-10},{110,10}})));
     parameter Real alpha_T0 "Gas solubility in solvent in temperature T0";
-    parameter Physiolibrary2013.Types.Temperature
-                               T0=298.15 "Base temperature of alpha";
+    parameter Physiolibrary.Types.Temperature T0=298.15
+      "Base temperature of alpha";
 
-    Physiolibrary2013.Chemical.GasSolubility2
-                         gasSolubility(
-                                      kH_T0 = alpha_T0 * Modelica.Constants.R * T0, T0=T0)
+    Physiolibrary.Chemical.GasSolubility2  gasSolubility(kH_T0=alpha_T0*
+        Modelica.Constants.R*T0, T0=T0)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas2 idealGas annotation (Placement(transformation(
           extent={{-10,10},{10,-10}},
           rotation=-90,
           origin={0,26})));
-    Physiolibrary2013.Types.RealIO.TemperatureInput
-                                       T "temperature" annotation (Placement(
+    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
+                                                       annotation (Placement(
           transformation(extent={{10,-10},{-10,10}},
           rotation=180,
           origin={-50,26}),                           iconTransformation(
@@ -201,6 +201,6 @@ package Mixed
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Mixed;

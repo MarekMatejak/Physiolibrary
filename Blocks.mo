@@ -1,4 +1,4 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Blocks "Base Signal Blocks Library"
 
   package Math
@@ -339,8 +339,7 @@ Example:
         end HomotopyStrongComponentBreaker;
 
     model Integrator "Integrator with support of equilibrium calculation."
-      extends Physiolibrary2013.States.State(
-                                           state_start=y_start);
+      extends Physiolibrary.States.State(state_start=y_start);
 
       parameter Real k=1 "Integrator gain";
 
@@ -573,7 +572,7 @@ This is discussed in the description of package
             parameter Real a[:,:] = SplineCoeficients(x,y,slope);
 
         equation
-      val = Blocks.Curves.Spline(
+      val = Spline(
                 x,
                 a,
                 u);
@@ -689,10 +688,10 @@ This is discussed in the description of package
             iconTransformation(extent={{-108,-10},{-88,10}})));
 
      parameter Real[:,3] data;
-      Blocks.Curves.Curve curve(
-        x=data[:, 1],
-        y=data[:, 2],
-        slope=data[:, 3])
+      Curves.Curve curve(
+      x=data[:, 1],
+      y=data[:, 2],
+      slope=data[:, 3])
         annotation (Placement(transformation(extent={{-46,-10},{-26,10}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -732,22 +731,20 @@ This is discussed in the description of package
                   annotation (Placement(transformation(extent={{-118,44},{-78,
                 84}}),
             iconTransformation(extent={{-108,-10},{-88,10}})));
-     parameter Physiolibrary2013.Types.Time
-                         HalfTime(displayUnit="d"); //Tau(unit="day");
+     parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
+                                                    //Tau(unit="day");
      parameter Real[:,3] data;
-      Blocks.Curves.Curve curve(
-        x=data[:, 1],
-        y=data[:, 2],
-        slope=data[:, 3])
+      Curves.Curve curve(
+      x=data[:, 1],
+      y=data[:, 2],
+      slope=data[:, 3])
         annotation (Placement(transformation(extent={{-68,58},{-48,78}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-32})));
-      Physiolibrary2013.Blocks.Math.Integrator
-                             integrator(
-        y_start=1,
-        k=(Modelica.Math.log(2)/HalfTime))
+      Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
+            Modelica.Math.log(2)/HalfTime))
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -802,23 +799,21 @@ This is discussed in the description of package
                   annotation (Placement(transformation(extent={{-118,44},{-78,
                 84}}),
             iconTransformation(extent={{-108,-10},{-88,10}})));
-     parameter Physiolibrary2013.Types.Time
-                         HalfTime(displayUnit="min") = 3462.468; //40*60/Modelica.Math.log(2);
+     parameter Physiolibrary.Types.Time HalfTime(displayUnit="min")=3462.468;
+                                                                 //40*60/Modelica.Math.log(2);
      parameter Real initialValue = 1; //40;
      parameter Real[:,3] data;
-      Blocks.Curves.Curve curve(
-        x=data[:, 1],
-        y=data[:, 2],
-        slope=data[:, 3])
+      Curves.Curve curve(
+      x=data[:, 1],
+      y=data[:, 2],
+      slope=data[:, 3])
         annotation (Placement(transformation(extent={{-38,-16},{-18,4}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-32})));
-      Physiolibrary2013.Blocks.Math.Integrator
-                             integrator(
-        k=(Modelica.Math.log(2)/HalfTime),
-        y_start=initialValue)
+      Physiolibrary.Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
+            HalfTime), y_start=initialValue)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -876,22 +871,19 @@ This is discussed in the description of package
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-118,6},{-78,46}}),
             iconTransformation(extent={{-108,-30},{-88,-10}})));
-     parameter Physiolibrary2013.Types.Time
-                          HalfTime(displayUnit="d");
+     parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
-      Blocks.Curves.Curve curve(
-        x=data[:, 1],
-        y=data[:, 2],
-        slope=data[:, 3])
+      Curves.Curve curve(
+      x=data[:, 1],
+      y=data[:, 2],
+      slope=data[:, 3])
         annotation (Placement(transformation(extent={{-76,20},{-56,40}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-50})));
-      Physiolibrary2013.Blocks.Math.Integrator
-                             integrator(
-        y_start=1,
-        k=(Modelica.Math.log(2)/HalfTime))
+      Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
+            Modelica.Math.log(2)/HalfTime))
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -964,6 +956,6 @@ This is discussed in the description of package
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Blocks;

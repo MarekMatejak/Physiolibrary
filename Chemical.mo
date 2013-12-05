@@ -1,11 +1,9 @@
-within Physiolibrary2013;
+within Physiolibrary;
 package Chemical "Molar Concentration Physiological Domain"
 
   connector ConcentrationFlow "Concentration and Solute flow"
-    Physiolibrary2013.Types.Concentration
-                       conc "Solute concentration";
-    flow Physiolibrary2013.Types.MolarFlowRate
-                            q "Solute flow";
+    Physiolibrary.Types.Concentration conc "Solute concentration";
+    flow Physiolibrary.Types.MolarFlowRate q "Solute flow";
     annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -108,8 +106,7 @@ Connector with one flow signal of type Real.
     extends OnePort;
     extends Icons.FlowMeasure;
 
-   Physiolibrary2013.Types.RealIO.MolarFlowRateOutput
-                                          actualFlow
+   Physiolibrary.Types.RealIO.MolarFlowRateOutput actualFlow
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=90,
@@ -135,8 +132,8 @@ Connector with one flow signal of type Real.
                               annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,-10},
               {10,10}})));
-    Physiolibrary2013.Types.RealIO.ConcentrationOutput
-                                          actualConc "Actual concentration"
+    Physiolibrary.Types.RealIO.ConcentrationOutput actualConc
+      "Actual concentration"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=90,
@@ -168,18 +165,17 @@ Connector with one flow signal of type Real.
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent=
               {{-110,-10},{-90,10}})));
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                          SolventFlow
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput SolventFlow
       "Solvent flow through absorbtion source"                                                      annotation ( extent = [-10,50;10,70], rotation = -90);
 
-    Physiolibrary2013.Types.RealIO.MolarFlowRateInput
-                          AdditionalSoluteFlow "Absorbed molar flow rate" annotation (Placement(
+    Physiolibrary.Types.RealIO.MolarFlowRateInput AdditionalSoluteFlow
+      "Absorbed molar flow rate"                                          annotation (Placement(
           transformation(extent={{-60,60},{-20,100}}), iconTransformation(
           extent={{-10,-10},{10,10}},
           rotation=90,
           origin={0,-60})));
-    Physiolibrary2013.Types.RealIO.ConcentrationOutput
-                           Conc "Concentration after absorbtion source" annotation (Placement(transformation(extent=
+    Physiolibrary.Types.RealIO.ConcentrationOutput Conc
+      "Concentration after absorbtion source"                           annotation (Placement(transformation(extent=
              {{82,-20},{122,20}}), iconTransformation(extent={{82,-20},{122,
               20}})));
   equation
@@ -207,8 +203,7 @@ Connector with one flow signal of type Real.
     extends Icons.Diffusion;
     extends OnePort;
 
-    parameter Physiolibrary2013.Types.DiffusionMembranePermeability
-                                                       cond
+    parameter Physiolibrary.Types.DiffusionMembranePermeability cond
       "Diffusion conductance";
 
   equation
@@ -235,8 +230,8 @@ Connector with one flow signal of type Real.
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
               {50,-10},{70,10}})));
-    Physiolibrary2013.Types.RealIO.MolarFlowRateInput
-                                         desiredFlow "Solute flow rate"
+    Physiolibrary.Types.RealIO.MolarFlowRateInput desiredFlow
+      "Solute flow rate"
         annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
@@ -274,8 +269,7 @@ Connector with one flow signal of type Real.
   model MolarStream "Molar flow of solute in stream"
     extends OnePort;
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                          solventFlow
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
       "Solvent flow (solution volume flow = solventFlow + solute volume flow)!"
       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
@@ -359,8 +353,8 @@ Connector with one flow signal of type Real.
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
              {{-110,-10},{-90,10}})));
 
-    parameter Physiolibrary2013.Types.VolumeFlowRate
-                                  Clearance "Clearance of solute";
+    parameter Physiolibrary.Types.VolumeFlowRate Clearance
+      "Clearance of solute";
   equation
     q_in.q = Clearance*q_in.conc;
 
@@ -413,8 +407,8 @@ Connector with one flow signal of type Real.
 
   model Clearance2 "Clearance with solvent outflow"
 
-    Physiolibrary2013.Types.RealIO.VolumeFlowRateInput
-                                       solventFlow "solvent outflow"
+    Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
+      "solvent outflow"
      annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
@@ -429,8 +423,7 @@ Connector with one flow signal of type Real.
     parameter Real K(unit="1")=1
       "Coeficient such that Clearance = K*solventFlow";
 
-    Physiolibrary2013.Types.VolumeFlowRate
-                        Clearance;
+    Physiolibrary.Types.VolumeFlowRate Clearance;
   equation
     Clearance=K*solventFlow;
     q_in.q = Clearance*q_in.conc;
@@ -484,8 +477,7 @@ Connector with one flow signal of type Real.
 
   model Degradation "Degradation of solvent in defined volume"
 
-    Physiolibrary2013.Types.RealIO.VolumeInput
-                                  volume
+    Physiolibrary.Types.RealIO.VolumeInput volume
       "Degradation volume, where degradation takes place."
        annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
@@ -498,12 +490,10 @@ Connector with one flow signal of type Real.
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
              {{-110,-10},{-90,10}})));
 
-    parameter Physiolibrary2013.Types.Time
-                        HalfTime
+    parameter Physiolibrary.Types.Time HalfTime
       "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
 
-    Physiolibrary2013.Types.VolumeFlowRate
-                        Clearance;
+    Physiolibrary.Types.VolumeFlowRate Clearance;
   equation
     Clearance = volume*Modelica.Math.log(2)/HalfTime;
     q_in.q = Clearance*q_in.conc;
@@ -593,8 +583,7 @@ Connector with one flow signal of type Real.
   model SoluteFlowPump "Active pumping of solute"
     extends OnePort;
 
-    Physiolibrary2013.Types.RealIO.MolarFlowRateInput
-                                       soluteFlow "Solute flow rate"
+    Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow "Solute flow rate"
       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
@@ -637,8 +626,7 @@ Connector with one flow signal of type Real.
                                annotation (Placement(
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-8,-10},
               {12,10}})));
-    parameter Physiolibrary2013.Types.Concentration
-                                 concentration;
+    parameter Physiolibrary.Types.Concentration concentration;
 
   equation
     q_out.conc = concentration;
@@ -657,25 +645,29 @@ Connector with one flow signal of type Real.
 </html>"));
   end UnlimitedStorage;
 
-  model Solution "Concentration accumulation in one liter of solvent volume"
-    extends Icons.ConcentrationCompartment;
-    extends Physiolibrary2013.States.State(
-                        state(nominal=NominalSolute),change(nominal=NominalSolute/60),state_start=soluteMass_start, storeUnit="mmol");
+  model Substance "Concentration accumulation in solvent "
+    import Physiolibrary;
+    extends Physiolibrary.Icons.ConcentrationCompartment;
+    extends Physiolibrary.States.State(
+    state(nominal=NominalSolute),
+    change(nominal=NominalSolute/60),
+    state_start=soluteMass_start,
+    storeUnit="mmol");
 
-   // replaceable package Types = Physiolibrary2013.Types;
+   // replaceable package Types = Physiolibrary.Types;
 
     NegativeConcentrationFlow q_out(conc(nominal=NominalSolute/0.001), q(
           nominal=NominalSolute/60)) "Flux from/to compartment"
                                annotation (Placement(
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
               {10,10}})));
-    parameter Types.AmountOfSubstance soluteMass_start(nominal=NominalSolute)
+    parameter Physiolibrary.Types.AmountOfSubstance
+                                      soluteMass_start(nominal=NominalSolute)
       "Initial solute amount in compartment"
        annotation (Dialog(group="Initialization"));
 
-    Physiolibrary2013.Types.RealIO.AmountOfSubstanceOutput
-                                              soluteMass(nominal=NominalSolute)
-      "Actual solute amount"
+    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput soluteMass(nominal=
+        NominalSolute) "Actual solute amount"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
              -90,
           origin={102,-102}), iconTransformation(
@@ -683,11 +675,12 @@ Connector with one flow signal of type Real.
           rotation=270,
           origin={0,-78})));
 
-    Physiolibrary2013.Types.RealIO.VolumeInput
-                                  solventVolume "Volume of solvent"    annotation (Placement(transformation(extent={{-120,68},{-80,108}}),
+    Physiolibrary.Types.RealIO.VolumeInput solventVolume "Volume of solvent"
+                                                                       annotation (Placement(transformation(extent={{-120,68},{-80,108}}),
           iconTransformation(extent={{-100,40},{-60,80}})));
 
-    parameter Types.AmountOfSubstance NominalSolute = 0.001
+    parameter Physiolibrary.Types.AmountOfSubstance
+                                      NominalSolute = 0.001
       "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxyde ions can be much smaller."
         annotation (Dialog(group="Numerical support of very small concentrations"));
 
@@ -697,7 +690,7 @@ Connector with one flow signal of type Real.
     state = soluteMass; // der(soluteMass)=q_out.q
     change = q_out.q;
 
-                                                                                                       annotation (choicesAllMatching=true,
+                                                                                                      annotation (choicesAllMatching=true,
                 Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -709,38 +702,37 @@ Connector with one flow signal of type Real.
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Solution;
+  end Substance;
 
-  model NormalizedSolution
-    "Concentration accumulation in one liter of solvent volume"
+  model NormalizedSubstance
+    "Concentration accumulation in one liter of solvent"
     extends Icons.ConcentrationCompartment;
-    extends Physiolibrary2013.States.State(
-                            state(nominal=NominalSolute),change(nominal=NominalSolute/60),state_start=soluteMass_start,storeUnit="mmol");
+    extends Physiolibrary.States.State(
+    state(nominal=NominalSolute),
+    change(nominal=NominalSolute/60),
+    state_start=soluteMass_start,
+    storeUnit="mmol");
 
     NegativeConcentrationFlow q_out(conc(nominal=NominalSolute/0.001), q(
           nominal=NominalSolute/60)) "Flux from/to compartment"
                                annotation (Placement(
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
               {10,10}})));
-    parameter Physiolibrary2013.Types.AmountOfSubstance
-                                     soluteMass_start(nominal=NominalSolute)
-      "Initial solute amount in compartment"
+    parameter Physiolibrary.Types.AmountOfSubstance soluteMass_start(nominal=
+        NominalSolute) "Initial solute amount in compartment"
       annotation (Dialog(group="Initialization"));
 
-    Physiolibrary2013.Types.RealIO.AmountOfSubstanceOutput
-                                              soluteMass(nominal=NominalSolute,start=soluteMass_start)
-      "Actual solute amount"
+    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput soluteMass(nominal=
+        NominalSolute, start=soluteMass_start) "Actual solute amount"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
              -90,
           origin={102,-102}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
           origin={0,-78})));                                                 //, min=0)
-    constant Physiolibrary2013.Types.Volume
-                         NormalSolventVolume=0.001 "1 liter";
+    constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
 
-    parameter Physiolibrary2013.Types.AmountOfSubstance
-                                     NominalSolute = 0.001
+    parameter Physiolibrary.Types.AmountOfSubstance NominalSolute=0.001
       "Numerical scale. Default is from mmol to mol."
        annotation (Dialog(group="Numerical support of very small concentrations", tab="Solver"));
 
@@ -760,9 +752,10 @@ Connector with one flow signal of type Real.
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end NormalizedSolution;
+  end NormalizedSubstance;
 
   partial model ChemicalReactionBase "Chemical Reaction"
+    import Physiolibrary;
 
     parameter Integer nS=1 "Number of substrates types";
     parameter Integer nP=1 "Number of products types";
@@ -776,7 +769,8 @@ Connector with one flow signal of type Real.
     parameter Real rateLevel = 8
       "backward reaction rate is 10^rateLevel; forward K*(10^rateLevel) at temperature TK";
 
-    parameter States.SimulationType Simulation=States.SimulationType.NoInit
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
       "False, instead of one reaction in equilibrated (with zero reaction rates) system.";
     parameter Boolean isSubstrateFlowIncludedInEquilibrium[nS](each start=true)
       "Is substrate flow equation included in equilibrium calculation?";
@@ -792,13 +786,12 @@ Connector with one flow signal of type Real.
                               annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
              {{-110,-10},{-90,10}})));  /*s[nS]*/
-    Physiolibrary2013.Types.MolarFlowRate
-                       rr "reaction rate";
+    Physiolibrary.Types.MolarFlowRate rr "reaction rate";
 
     Real KaT "dissociation constant in actual temperature";
 
-    parameter Physiolibrary2013.Types.Temperature
-                               TK=298.15 "temperature of disociation constant";
+    parameter Physiolibrary.Types.Temperature TK=298.15
+      "temperature of disociation constant";
 
     parameter Modelica.SIunits.MolarInternalEnergy dH=0
       "enthalpy change for Hoff's equation to correct disociation constant to actual temperature";
@@ -806,7 +799,9 @@ Connector with one flow signal of type Real.
   equation
     rr = (10^rateLevel)*(KaT* product(substrate.conc.^s) - product(products.conc.^p));
 
-    if Simulation==States.SimulationType.Equilibrated or (initial() and Simulation==States.SimulationType.InitSteadyState) then
+    if Simulation==Physiolibrary.States.SimulationType.Equilibrated
+                                                      or (initial() and Simulation==
+        Physiolibrary.States.SimulationType.InitSteadyState) then
        for i in 1:nS loop
          if isSubstrateFlowIncludedInEquilibrium[i] then
            rr*s[i] = substrate[i].q;
@@ -887,8 +882,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     extends ChemicalReactionBase;
 
     parameter Real K "disociation constant";
-    parameter Physiolibrary2013.Types.Temperature
-                               T=310.15 "temperature";                                  //body temperature
+    parameter Physiolibrary.Types.Temperature T=310.15 "temperature";                   //body temperature
 
   equation
     KaT = K * 10^((1/Modelica.Math.log(10))*((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
@@ -899,8 +893,8 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     extends ChemicalReactionBase;
 
     parameter Real K "disociation constant";
-    Physiolibrary2013.Types.RealIO.TemperatureInput
-                                       T "temperature" annotation (Placement(
+    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
+                                                       annotation (Placement(
           transformation(extent={{10,30},{50,70}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -919,8 +913,8 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           extent={{-20,-20},{20,20}},
           rotation=270,
           origin={-20,40})));
-    Physiolibrary2013.Types.RealIO.TemperatureInput
-                                       T "temperature" annotation (Placement(
+    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
+                                                       annotation (Placement(
           transformation(extent={{10,30},{50,70}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -934,8 +928,8 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model Dilution "Adding the solvent to solution"
     extends OnePort;
 
-    Physiolibrary2013.Types.RealIO.FractionInput
-                          dilution "Fraction of final undilutes solution"
+    Physiolibrary.Types.RealIO.FractionInput dilution
+      "Fraction of final undilutes solution"
       annotation (Placement(transformation(extent={{-16,8},{24,48}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
@@ -970,8 +964,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     NegativeConcentrationFlow Reabsorbtion "Reabsorbtion from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-50},{10,-30}})));
-    Physiolibrary2013.Types.RealIO.FractionInput
-                                        ReabsorbedFract
+    Physiolibrary.Types.RealIO.FractionInput ReabsorbedFract
       "Fraction of molar inflow, that is reabsorbed"
                                  annotation (Placement(transformation(extent={{-90,-66},
               {-70,-46}}),
@@ -1046,6 +1039,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end Reabsorbtion;
 
   model Reabsorbtion2 "Reabsorbrion of input fraction"
+    import Physiolibrary;
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-18},{-80,22}}), iconTransformation(
@@ -1056,8 +1050,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     NegativeConcentrationFlow Reabsorbtion "Reabsorbtion from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-50},{10,-30}})));
-    Physiolibrary2013.Types.RealIO.FractionInput
-                                        Normal
+    Physiolibrary.Types.RealIO.FractionInput Normal
       "Reabsorbtion fraction if Effects=1"
                                  annotation (Placement(transformation(extent={{-100,76},
               {-80,96}}),
@@ -1073,16 +1066,14 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
                                                                   rotation=-90,
           origin={80,40})));
 
-    Physiolibrary2013.Types.RealIO.MolarFlowRateInput
-                                         MaxReab
+    Physiolibrary.Types.RealIO.MolarFlowRateInput MaxReab
       "Maximal allowed reabsorbtion molar flow rate"
                                  annotation (Placement(transformation(extent={{-24,38},
               {-4,58}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
                                                                   rotation=90,
           origin={-60,-42})));
-    Physiolibrary2013.Types.RealIO.FractionOutput
-                           ReabFract
+    Physiolibrary.Types.RealIO.FractionOutput ReabFract
       "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{72,60},
               {88,76}}),   iconTransformation(extent={{80,-60},{120,-20}})));
     FlowMeasure flowMeasure
@@ -1093,10 +1084,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           origin={0,-40})));
     Modelica.Blocks.Math.Product product1
       annotation (Placement(transformation(extent={{-44,-50},{-24,-30}})));
-    Blocks.Math.Reciprocal
+    Physiolibrary.Blocks.Math.Reciprocal
                       reciprocal
       annotation (Placement(transformation(extent={{-62,58},{-42,78}})));
-    Blocks.Math.Pow2
+    Physiolibrary.Blocks.Math.Pow2
                 avg1
       annotation (Placement(transformation(extent={{-10,80},{-2,88}})));
     Modelica.Blocks.Math.Min min1
@@ -1185,8 +1176,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 
   model FullReabsorbtion "Full reabsorbtion with limit (i.e. renal glucose)"
 
-    parameter Physiolibrary2013.Types.MolarFlowRate
-                                 MaxReab
+    parameter Physiolibrary.Types.MolarFlowRate MaxReab
       "Maximal reabsorbtion solute flow rate";
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
@@ -1280,8 +1270,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
                                                annotation (Placement(
           transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,
               -110},{10,-90}})));
-    parameter Physiolibrary2013.Types.Fraction
-                            kH
+    parameter Physiolibrary.Types.Fraction kH
       "Henry's law constant such as liquid-gas concentration ratio";
   equation
     gas.conc = kH * liquid.conc;
@@ -1311,19 +1300,17 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
                                                annotation (Placement(
           transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,
               -110},{10,-90}})));
-    Physiolibrary2013.Types.Fraction
-                  kH
+    Physiolibrary.Types.Fraction kH
       "Henry's law coefficient such as liquid-gas concentration ratio";
 
-    parameter Physiolibrary2013.Types.Fraction
-                            kH_T0 "Henry's law coefficient at temperature T0";
-    parameter Physiolibrary2013.Types.Temperature
-                               T0=298.15 "Base temperature for kH_T0";
-    parameter Physiolibrary2013.Types.Temperature
-                               C(displayUnit="K")
+    parameter Physiolibrary.Types.Fraction kH_T0
+      "Henry's law coefficient at temperature T0";
+    parameter Physiolibrary.Types.Temperature T0=298.15
+      "Base temperature for kH_T0";
+    parameter Physiolibrary.Types.Temperature C(displayUnit="K")
       "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)";
-    Physiolibrary2013.Types.RealIO.TemperatureInput
-                                       T "temperature" annotation (Placement(
+    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
+                                                       annotation (Placement(
           transformation(extent={{-100,-20},{-60,20}}), iconTransformation(extent=
              {{-100,-20},{-60,20}})));
   equation
@@ -1345,6 +1332,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary2013.UsersGuide.ModelicaLicense2\">Physiolibrary2013.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Chemical;
