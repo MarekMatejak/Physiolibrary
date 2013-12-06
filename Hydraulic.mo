@@ -1,6 +1,114 @@
 within Physiolibrary;
 package Hydraulic "Hydraulic Physical Domain"
 
+  package Examples
+    "Examples that demonstrate usage of the Pressure flow components"
+  extends Modelica.Icons.ExamplesPackage;
+
+
+
+    model CardiovascularSystem
+    extends Modelica.Icons.Example;
+    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+
+      ElacticBalloon arteries
+        annotation (Placement(transformation(extent={{64,-74},{84,-54}})));
+      ElacticBalloon veins
+        annotation (Placement(transformation(extent={{-80,-74},{-60,-54}})));
+      Resistor peripheral
+        annotation (Placement(transformation(extent={{-6,-74},{14,-54}})));
+      Pump rightHeart
+        annotation (Placement(transformation(extent={{-58,-8},{-38,12}})));
+      Pump leftHeart
+        annotation (Placement(transformation(extent={{50,-6},{70,14}})));
+      ElacticBalloon pulmonaryVeins
+        annotation (Placement(transformation(extent={{30,50},{50,70}})));
+      ElacticBalloon pulmonaryArteries
+        annotation (Placement(transformation(extent={{-46,50},{-26,70}})));
+      Resistor pulmonary
+        annotation (Placement(transformation(extent={{-14,50},{6,70}})));
+      PressureMeasure pressureMeasure
+        annotation (Placement(transformation(extent={{-78,10},{-58,30}})));
+      PressureMeasure pressureMeasure1
+        annotation (Placement(transformation(extent={{24,16},{44,36}})));
+      Modelica.Blocks.Math.Gain rightStarlingSlope
+        annotation (Placement(transformation(extent={{-58,14},{-50,22}})));
+      Modelica.Blocks.Math.Gain leftStarlingSlope
+        annotation (Placement(transformation(extent={{48,20},{56,28}})));
+    equation
+      connect(veins.q_in, rightHeart.q_in) annotation (Line(
+          points={{-70,-64},{-70,2},{-58,2}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(veins.q_in, peripheral.q_in) annotation (Line(
+          points={{-70,-64},{-6,-64}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(peripheral.q_out, arteries.q_in) annotation (Line(
+          points={{14,-64},{74,-64}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(rightHeart.q_out, pulmonaryArteries.q_in) annotation (Line(
+          points={{-38,2},{-28,2},{-28,40},{-56,40},{-56,60},{-36,60}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulmonaryArteries.q_in, pulmonary.q_in) annotation (Line(
+          points={{-36,60},{-14,60}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulmonary.q_out, pulmonaryVeins.q_in) annotation (Line(
+          points={{6,60},{40,60}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulmonaryVeins.q_in, leftHeart.q_in) annotation (Line(
+          points={{40,60},{54,60},{54,42},{28,42},{28,4},{50,4}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(leftHeart.q_out, arteries.q_in) annotation (Line(
+          points={{70,4},{74,4},{74,-64}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulmonaryVeins.q_in, pressureMeasure1.q_in) annotation (Line(
+          points={{40,60},{54,60},{54,42},{28,42},{28,22},{32,22}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure.q_in, veins.q_in) annotation (Line(
+          points={{-70,16},{-70,-64}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure.actualPressure, rightStarlingSlope.u) annotation
+        (Line(
+          points={{-62.8,18},{-58.8,18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(rightHeart.desiredFlow, rightStarlingSlope.y) annotation (Line(
+          points={{-48,8},{-48,18},{-49.6,18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure1.actualPressure, leftStarlingSlope.u) annotation
+        (Line(
+          points={{39.2,24},{47.2,24}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(leftStarlingSlope.y, leftHeart.desiredFlow) annotation (Line(
+          points={{56.4,24},{56.4,23.5},{60,23.5},{60,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics));
+    end CardiovascularSystem;
+  end Examples;
+
   connector PressureFlow "Hydraulical Pressure-VolumeFlow connector"
     Physiolibrary.Types.Pressure pressure "Pressure";
     flow Physiolibrary.Types.VolumeFlowRate q "Volume flow";
@@ -82,36 +190,48 @@ package Hydraulic "Hydraulic Physical Domain"
   partial model OnePort "Hydraulical OnePort"
 
     PositivePressureFlow q_in "Volume inflow" annotation (Placement(
-          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-70,-10},
-              {-50,10}})));
+          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-110,
+              -10},{-90,10}})));
     NegativePressureFlow q_out "Volume outflow"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{18,-10},{38,10}}), iconTransformation(
-            extent={{50,-10},{70,10}})));
+            extent={{90,-10},{110,10}})));
+
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+    parameter Boolean isFlowIncludedInEquilibrium=true
+      "Is substrate flow equation included in equilibrium calculation?"
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
 
   equation
-    q_in.q + q_out.q = 0;
+    /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
+     if Simulation<>States.SimulationType.Equilibrated or isFlowIncludedInEquilibrium then
+        q_in.q + q_out.q = 0;
+     end if;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics));
   end OnePort;
 
   model FlowMeasure "Convert connector volume flow value to signal flow value"
     extends OnePort;
+    extends Icons.FlowMeasure;
 
     Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
       "Actual volume flow rate"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=90,
-          origin={0,54})));
+          origin={0,80})));
   equation
     q_out.pressure = q_in.pressure;
 
     actualFlow = q_in.q;
 
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={Bitmap(extent={{-60,60},{60,-60}},
-              fileName="icons/flowMeassure.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -148,7 +268,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Resistor "Simple hydraulic resistance with constant conductance."
    extends OnePort;
-   extends Icons.Resistor;
+   extends Icons.HydraulicResistor;
 
    parameter Physiolibrary.Types.HydraulicConductance cond;
   equation
@@ -158,17 +278,9 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}),
                         graphics), Icon(graphics={
           Text(
-            extent={{-70,0},{70,30}},
-            lineColor={0,0,0},
-            textString="%cond"),
-          Text(
-            extent={{-134,-90},{154,-30}},
+            extent={{-140,-100},{148,-40}},
             textString="%name",
-            lineColor={0,0,255}),
-          Text(
-            extent={{-70,-20},{70,0}},
-            lineColor={0,0,0},
-            textString="ml/min/mmHg")}),
+            lineColor={0,0,255})}),
       Documentation(info="<html>
 <p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
 </html>"));
@@ -830,9 +942,6 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics));
   end ElacticBalloon2;
 
-
-
-
   model InternalElasticBalloon "Elastic balloon in closed space"
    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
         "ml");
@@ -887,11 +996,7 @@ package Hydraulic "Hydraulic Physical Domain"
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
 </html>"));
   end Inertance;
-  annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
-</html>"));
+
     model UnlimitedVolume
     "Boundary compartment with defined pressure and any volume in/outflow"
 
@@ -904,8 +1009,17 @@ package Hydraulic "Hydraulic Physical Domain"
         annotation (Placement(transformation(extent={{100,-20},{140,20}},
             rotation=0), iconTransformation(extent={{-20,-20},{20,20}})));
 
+      parameter Physiolibrary.States.SimulationType
+                                      Simulation=Physiolibrary.States.SimulationType.NoInit
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+        annotation (Dialog(group="Simulation type", tab="Simulation"));
+
     equation
       y.pressure = pressure;
+
+      if Simulation==States.SimulationType.Equilibrated then
+        y.q=0;
+      end if;
 
       annotation (Documentation(info="<html>
 <p>Model has a vector of continuous Real input signals as pressures for vector of pressure-flow connectors. </p>
@@ -924,4 +1038,9 @@ package Hydraulic "Hydraulic Physical Domain"
             fillColor={170,255,255},
             fillPattern=FillPattern.Solid)}));
     end UnlimitedVolume;
+  annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>"));
 end Hydraulic;

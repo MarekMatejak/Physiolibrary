@@ -119,8 +119,8 @@ package Types "Physiological units with nominals"
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-  type OsmoticMembranePermeability = Real(final quantity="OsmoticMembramePermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((101325/760)*60));
-  type DiffusionMembranePermeability = Real(final quantity="DiffusionMembranePermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)*60);
+  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((101325/760)*60));
+  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)*60);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((101325/760)*60));
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(101325/760));
@@ -820,9 +820,8 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector DiffusionMembranePermeabilityInput = input
-        DiffusionMembranePermeability
-      "input DiffusionMembranePermeability as connector"
+    connector DiffusionPermeabilityInput = input DiffusionPermeability
+      "input DiffusionPermeability as connector"
       annotation (defaultComponentName="diffusionmembranepermeability",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -847,9 +846,8 @@ package Types "Physiological units with nominals"
     </p> 
     </html>"));
 
-    connector DiffusionMembranePermeabilityOutput = output
-        DiffusionMembranePermeability
-      "output DiffusionMembranePermeability as connector"
+    connector DiffusionPermeabilityOutput = output DiffusionPermeability
+      "output DiffusionPermeability as connector"
       annotation (defaultComponentName="diffusionmembranepermeability",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -1304,9 +1302,8 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector OsmoticMembranePermeabilityInput = input
-        OsmoticMembranePermeability
-      "input OsmoticMembranePermeability as connector"
+    connector OsmoticPermeabilityInput = input OsmoticPermeability
+      "input OsmoticPermeability as connector"
       annotation (defaultComponentName="osmoticmembranepermeability",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -1331,9 +1328,8 @@ package Types "Physiological units with nominals"
     </p> 
     </html>"));
 
-    connector OsmoticMembranePermeabilityOutput = output
-        OsmoticMembranePermeability
-      "output OsmoticMembranePermeability as connector"
+    connector OsmoticPermeabilityOutput = output OsmoticPermeability
+      "output OsmoticPermeability as connector"
       annotation (defaultComponentName="osmoticmembranepermeability",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -2179,10 +2175,10 @@ The Real output y is a constant signal:
 
       block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction);
 
-      block OsmoticMembranePermeability = Variable(redeclare type T =
-            Physiolibrary.Types.OsmoticMembranePermeability);
-      block DiffusionMembranePermeability = Variable(redeclare type T =
-            Physiolibrary.Types.DiffusionMembranePermeability);
+      block OsmoticPermeability = Variable(redeclare type T =
+            Physiolibrary.Types.OsmoticPermeability);
+      block DiffusionPermeability =         Variable(redeclare type T =
+            Physiolibrary.Types.DiffusionPermeability);
 
       block HydraulicConductance = Variable(redeclare type T =
             Physiolibrary.Types.HydraulicConductance);

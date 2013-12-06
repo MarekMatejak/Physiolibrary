@@ -36,10 +36,10 @@ package States
     extends Modelica.Icons.Example;
     extends StateSystem;
       parameter Physiolibrary.Types.AmountOfSubstance
-                                        total = 1
+                                        totalSubstancesAmount = 1
         "total substances amount to conserve during during equilibrated simulation";
 
-      Physiolibrary.Chemical.NormalizedSubstance A(soluteMass_start=0.9,
+      Physiolibrary.Chemical.NormalizedSubstance A(solute_start=0.9,
           Simulation=Simulation)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Physiolibrary.Chemical.ChemicalReaction reaction(
@@ -48,13 +48,13 @@ package States
         isSubstrateFlowIncludedInEquilibrium={false},
         isProductFlowIncludedInEquilibrium={true})
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Physiolibrary.Chemical.NormalizedSubstance B(soluteMass_start=total - 0.9,
+      Physiolibrary.Chemical.NormalizedSubstance B(solute_start= totalSubstancesAmount - 0.9,
           Simulation=Simulation)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
-      total*normalizedState[1]=A.soluteMass+B.soluteMass;  //the mass conservation law
+      totalSubstancesAmount*normalizedState[1]=A.solute+B.solute;  //the mass conservation law
 
-      connect(A.q_out, reaction.substrate[1]) annotation (Line(
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
           points={{-46,2},{-10,2}},
           color={200,0,0},
           thickness=1,

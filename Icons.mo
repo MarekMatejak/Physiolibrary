@@ -1104,8 +1104,8 @@ from this block.
   end FractionalConcentration;
 
   partial model Diffusion
-    annotation (Icon(graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/diffusion.png")}));
+    annotation (Icon(graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
+                "modelica://Physiolibrary/icons/diffusion.png")}));
 
   end Diffusion;
 
@@ -1137,10 +1137,24 @@ from this block.
   annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
               fileName="icons/elastickyKompartment - Kopie.png")}));
   end ElasticBalloon;
-  annotation (Documentation(revisions=""));
+
   model Membrane
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/icons/membrane.png")}));
   end Membrane;
+  annotation (Documentation(revisions=""));
+  model MolarFlowMeasure
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/icons/molarFlowMeassure.png")}));
+  end MolarFlowMeasure;
+
+  model Dilution
+    annotation (Icon(graphics={     Bitmap(extent={{-140,100},{60,-100}},
+              fileName="icons/dilution.png")}));
+  end Dilution;
+
+  model GasSolubility
+  end GasSolubility;
 end Icons;

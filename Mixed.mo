@@ -20,6 +20,7 @@ package Mixed
 
   equation
     v.pressure = n.conc * Modelica.Constants.R * T;  // P*V = n*R*T
+    //assert(abs(v.pressures)>Modelica.Constants.eps, "Zero or negative partial pressure or concentrations are not supported!")
     n.q + n.conc * v.q=0;
 
      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
@@ -101,19 +102,19 @@ package Mixed
           origin={0,26})));
   equation
 
-    connect(gasSolubility.liquid, n) annotation (Line(
-        points={{0,-68},{0,-100}},
-        color={200,0,0},
-        thickness=1,
-        smooth=Smooth.None));
-    connect(idealGas.n, gasSolubility.gas) annotation (Line(
-        points={{-1.83697e-015,16},{0,16},{0,-48}},
-        color={200,0,0},
-        thickness=1,
-        smooth=Smooth.None));
     connect(idealGas.v, v) annotation (Line(
         points={{1.83697e-015,36},{0,36},{0,100}},
         color={0,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(idealGas.n, gasSolubility.q_out) annotation (Line(
+        points={{0,16},{0,-48}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(gasSolubility.q_in, n) annotation (Line(
+        points={{0,-68},{0,-100}},
+        color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
@@ -125,7 +126,9 @@ package Mixed
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-      Diagram(graphics));
+      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+              100,100}}),
+              graphics));
   end PartialPressure;
 
   model PartialPressure2
@@ -164,16 +167,6 @@ package Mixed
           origin={0,80})));
   equation
 
-    connect(gasSolubility.liquid, n) annotation (Line(
-        points={{0,-68},{0,-100}},
-        color={200,0,0},
-        thickness=1,
-        smooth=Smooth.None));
-    connect(idealGas.n, gasSolubility.gas) annotation (Line(
-        points={{-1.83697e-015,16},{0,16},{0,-48}},
-        color={200,0,0},
-        thickness=1,
-        smooth=Smooth.None));
     connect(idealGas.v, v) annotation (Line(
         points={{1.83697e-015,36},{0,36},{0,100}},
         color={0,0,0},
@@ -184,8 +177,18 @@ package Mixed
         color={0,0,127},
         smooth=Smooth.None));
     connect(T, gasSolubility.T) annotation (Line(
-        points={{-50,26},{-30,26},{-30,-58},{-8,-58}},
+        points={{-50,26},{-30,26},{-30,-58},{-6,-58}},
         color={0,0,127},
+        smooth=Smooth.None));
+    connect(gasSolubility.q_in, n) annotation (Line(
+        points={{0,-68},{0,-100}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(idealGas.n, gasSolubility.q_out) annotation (Line(
+        points={{0,16},{0,-48}},
+        color={200,0,0},
+        thickness=1,
         smooth=Smooth.None));
      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
               {100,100}}),       graphics={
@@ -196,7 +199,9 @@ package Mixed
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-      Diagram(graphics));
+      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+              100,100}}),
+              graphics));
   end PartialPressure2;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

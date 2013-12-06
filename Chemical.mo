@@ -1,6 +1,370 @@
 within Physiolibrary;
 package Chemical "Molar Concentration Physiological Domain"
 
+  package Examples
+    "Examples that demonstrate usage of the Pressure flow components"
+  extends Modelica.Icons.ExamplesPackage;
+
+
+
+    model MWC_Allosteric_Hemoglobin
+    extends Modelica.Icons.Example;
+    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //=States.SimulationType.NoInit); for dynamic simulation
+
+      parameter Types.Fraction L = 7.0529*10^6
+        "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
+      parameter Types.Fraction c = 0.00431555
+        "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
+      parameter Types.Concentration KR = 0.480001*7.875647668393782383419689119171e-5
+        "oxygen dissociation on relaxed(R) hemoglobin subunit";
+
+      parameter Types.Concentration KT=KR/c
+        "oxygen dissociation on tensed(T) hemoglobin subunit";
+
+      Types.Fraction sO2 "hemoglobin oxygen saturation";
+
+      parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
+      Types.AmountOfSubstance totalAmountOfRforms,totalAmountOfTforms;
+
+      NormalizedSubstance                        T0(stateName="T0",Simulation=Simulation,
+        solute_start=1)
+        annotation (Placement(transformation(extent={{52,78},{72,98}})));
+
+      NormalizedSubstance                        T1(stateName="T1",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{54,36},{74,56}})));
+
+      NormalizedSubstance                        R1(stateName="R1",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{0,36},{20,56}})));
+
+      NormalizedSubstance                        T2(stateName="T2",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{54,-10},{74,10}})));
+
+      NormalizedSubstance                        R2(stateName="R2",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{0,-10},{20,10}})));
+
+      NormalizedSubstance                        T3(stateName="T3",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{54,-54},{74,-34}})));
+
+      NormalizedSubstance                        R3(stateName="R3",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{0,-54},{20,-34}})));
+
+      NormalizedSubstance                        T4(stateName="T4",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{54,-92},{74,-72}})));
+
+      NormalizedSubstance                        R4(stateName="R4",Simulation=Simulation,
+        solute_start=0)
+        annotation (Placement(transformation(extent={{0,-92},{20,-72}})));
+
+      NormalizedSubstance                        R0(stateName="R0",
+        solute_start=0,
+        Simulation=Simulation)
+        annotation (Placement(transformation(extent={{0,78},{20,98}})));
+
+      ChemicalReaction                          quaternaryForm(K=L)
+        annotation (Placement(transformation(extent={{24,78},{44,98}})));
+      ChemicalReaction                           oxyR1(nP=2, K=KR/4)
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=90,
+            origin={10,64})));
+      ChemicalReaction                           oxyT1(nP=2, K=KT/4)
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={64,64})));
+      ChemicalReaction                           oxyR2(nP=2, K=KR/(3/2))
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=90,
+            origin={10,22})));
+      ChemicalReaction                           oxyR3(nP=2, K=KR/(2/3))
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=90,
+            origin={10,-24})));
+      ChemicalReaction                           oxyR4(nP=2, K=KR*4)
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=90,
+            origin={10,-66})));
+      ChemicalReaction                           oxyT2(nP=2, K=KT/(3/2))
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={64,22})));
+      ChemicalReaction                           oxyT3(nP=2, K=KT/(2/3))
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={64,-24})));
+      ChemicalReaction                           oxyT4(nP=2, K=KT*4)
+                                                                annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={64,-66})));
+      ChemicalReaction                          quaternaryForm1(K=c*L)
+        annotation (Placement(transformation(extent={{28,36},{48,56}})));
+      ChemicalReaction                          quaternaryForm2(K=(c^2)*L)
+        annotation (Placement(transformation(extent={{28,-10},{48,10}})));
+      ChemicalReaction                          quaternaryForm3(K=(c^3)*L)
+        annotation (Placement(transformation(extent={{28,-54},{48,-34}})));
+      ChemicalReaction                          quaternaryForm4(K=(c^4)*L,
+        Simulation=Simulation,
+        isSubstrateFlowIncludedInEquilibrium={false})
+        annotation (Placement(transformation(extent={{30,-92},{50,-72}})));
+
+    public
+      NormalizedSubstance oxygen_unbound(Simulation=Simulation, solute_start=0.000001
+            *7.875647668393782383419689119171e-5)
+        annotation (Placement(transformation(extent={{-36,-36},{-16,-16}})));
+      Mixed.PartialPressure partialPressure(alpha=7.875647668393782383419689119171e-5,
+        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
+        T=310.15)                                     annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-50,-8})));
+      Hydraulic.UnlimitedVolume unlimitedVolume(Simulation=Simulation)
+        annotation (Placement(transformation(extent={{-82,16},{-62,36}})));
+      Modelica.Blocks.Sources.Clock clock(offset=0.000001)
+        annotation (Placement(transformation(extent={{-100,60},{-80,80}})));
+    equation
+
+      sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*totalAmountOfHemoglobin);
+      totalAmountOfRforms = R0.solute + R1.solute + R2.solute + R3.solute + R4.solute;
+      totalAmountOfTforms = T0.solute + T1.solute + T2.solute + T3.solute + T4.solute;
+
+      totalAmountOfHemoglobin*normalizedState[1] = totalAmountOfRforms + totalAmountOfTforms;
+
+      connect(quaternaryForm.products[1],T0. q_out) annotation (Line(
+          points={{44,88},{62,88}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR1.products[2], oxygen_unbound.q_out)
+                                          annotation (Line(
+          points={{10.5,74},{-26,74},{-26,-26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR2.products[2], oxygen_unbound.q_out)
+                                          annotation (Line(
+          points={{10.5,32},{-26,32},{-26,-26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR3.products[2], oxygen_unbound.q_out)
+                                          annotation (Line(
+          points={{10.5,-14},{-26,-14},{-26,-26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR4.products[2], oxygen_unbound.q_out)
+                                          annotation (Line(
+          points={{10.5,-56},{-26,-56},{-26,-26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR1.substrates[1],R1. q_out) annotation (Line(
+          points={{10,54},{10,46}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R1.q_out,oxyR2. products[1]) annotation (Line(
+          points={{10,46},{10,32},{9.5,32}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR2.substrates[1],R2. q_out) annotation (Line(
+          points={{10,12},{10,0}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR3.substrates[1],R3. q_out) annotation (Line(
+          points={{10,-34},{10,-44}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR3.products[1],R2. q_out) annotation (Line(
+          points={{9.5,-14},{9.5,-7},{10,-7},{10,0}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R3.q_out,oxyR4. products[1]) annotation (Line(
+          points={{10,-44},{10,-56},{9.5,-56}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyR4.substrates[1],R4. q_out) annotation (Line(
+          points={{10,-76},{10,-82}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyT1.products[1],T0. q_out) annotation (Line(
+          points={{64.5,74},{64.5,88},{62,88}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyT1.substrates[1],T1. q_out) annotation (Line(
+          points={{64,54},{64,46}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxygen_unbound.q_out, oxyT1.products[2])
+                                          annotation (Line(
+          points={{-26,-26},{-26,74},{63.5,74}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxygen_unbound.q_out, oxyT2.products[2])
+                                          annotation (Line(
+          points={{-26,-26},{-26,32},{63.5,32}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxygen_unbound.q_out, oxyT3.products[2])
+                                          annotation (Line(
+          points={{-26,-26},{-26,-14},{63.5,-14}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxygen_unbound.q_out, oxyT4.products[2])
+                                          annotation (Line(
+          points={{-26,-26},{-26,-56},{63.5,-56}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(T1.q_out,oxyT2. products[1]) annotation (Line(
+          points={{64,46},{64,32},{64.5,32}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyT2.substrates[1],T2. q_out) annotation (Line(
+          points={{64,12},{64,0}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(T2.q_out,oxyT3. products[1]) annotation (Line(
+          points={{64,0},{64,-14},{64.5,-14}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyT3.substrates[1],T3. q_out) annotation (Line(
+          points={{64,-34},{64,-44}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(T3.q_out,oxyT4. products[1]) annotation (Line(
+          points={{64,-44},{64,-56},{64.5,-56}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(oxyT4.substrates[1],T4. q_out) annotation (Line(
+          points={{64,-76},{64,-82}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R0.q_out,quaternaryForm. substrates[1]) annotation (Line(
+          points={{10,88},{24,88}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R0.q_out,oxyR1. products[1]) annotation (Line(
+          points={{10,88},{10,74},{9.5,74}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R1.q_out,quaternaryForm1. substrates[1]) annotation (Line(
+          points={{10,46},{28,46}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(quaternaryForm1.products[1],T1. q_out) annotation (Line(
+          points={{48,46},{64,46}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R2.q_out,quaternaryForm2. substrates[1]) annotation (Line(
+          points={{10,0},{28,0}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(quaternaryForm2.products[1],T2. q_out) annotation (Line(
+          points={{48,0},{64,0}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R3.q_out,quaternaryForm3. substrates[1]) annotation (Line(
+          points={{10,-44},{28,-44}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(quaternaryForm3.products[1],T3. q_out) annotation (Line(
+          points={{48,-44},{64,-44}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(R4.q_out,quaternaryForm4. substrates[1]) annotation (Line(
+          points={{10,-82},{30,-82}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(quaternaryForm4.products[1],T4. q_out) annotation (Line(
+          points={{50,-82},{64,-82}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure.n, oxygen_unbound.q_out)      annotation (Line(
+          points={{-50,-18},{-50,-26},{-26,-26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(unlimitedVolume.y, partialPressure.v) annotation (Line(
+          points={{-72,26},{-50,26},{-50,2}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(clock.y, unlimitedVolume.pressure) annotation (Line(
+          points={{-79,70},{-72,70},{-72,36}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics),
+        experiment(StopTime=10),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
+<p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
+<p><br/>In short it is about binding oxygen to hemoglobin.</p>
+<p>Oxgen are driven by its partial pressure using clock source - from very little pressure to pressure of 10kPa.</p>
+<p>(Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air.)</p>
+<p>Hemoglobin was observed (by Perutz) in two structuraly different forms R and T.</p>
+<p>These forms are represented by blocks T0..T4 and R0..R4, where the suffexed index means the number of oxygen bounded to the form.</p>
+<p><br/>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
+<p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
+</html>", revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end MWC_Allosteric_Hemoglobin;
+  end Examples;
+
   connector ConcentrationFlow "Concentration and Solute flow"
     Physiolibrary.Types.Concentration conc "Solute concentration";
     flow Physiolibrary.Types.MolarFlowRate q "Solute flow";
@@ -86,39 +450,47 @@ Connector with one flow signal of type Real.
     NegativeConcentrationFlow q_out "Solute outflow"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{18,-10},{38,10}}), iconTransformation(
-            extent={{90,-10},{110,10}})));
+            extent={{-10,90},{10,110}})));
 
     PositiveConcentrationFlow q_in "Solute inflow"
                               annotation (Placement(
-          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-110,
-              -10},{-90,10}})));
-    parameter Boolean Equilibrated(start=false)
-      "False, instead of one reaction in equilibrated (with zero reaction rates) system.";
+          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,
+              -110},{10,-90}})));
+
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
     parameter Boolean isFlowIncludedInEquilibrium=true
-      "Is substrate flow equation included in equilibrium calculation?";
+      "Is substrate flow equation included in equilibrium calculation?"
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+
   equation
-     if not Equilibrated or isFlowIncludedInEquilibrium then
+     /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
+     if Simulation<>States.SimulationType.Equilibrated or isFlowIncludedInEquilibrium then
         q_in.q + q_out.q = 0;
      end if;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics));
   end OnePort;
 
   model FlowMeasure "Measure of molar flow"
     extends OnePort;
-    extends Icons.FlowMeasure;
+    extends Icons.MolarFlowMeasure;
 
    Physiolibrary.Types.RealIO.MolarFlowRateOutput actualFlow
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
-                                                       rotation=90,
-          origin={0,80})));
+                                                       rotation=0,
+          origin={80,0})));
   equation
     q_in.conc = q_out.conc;
 
     actualFlow = q_in.q;
 
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                          graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -203,7 +575,7 @@ Connector with one flow signal of type Real.
     extends Icons.Diffusion;
     extends OnePort;
 
-    parameter Physiolibrary.Types.DiffusionMembranePermeability cond
+    parameter Physiolibrary.Types.DiffusionPermeability cond
       "Diffusion conductance";
 
   equation
@@ -271,11 +643,11 @@ Connector with one flow signal of type Real.
 
     Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
       "Solvent flow (solution volume flow = solventFlow + solute volume flow)!"
-      annotation (Placement(transformation(extent={{-20,20},{20,60}}),
+      annotation (Placement(transformation(extent={{-80,-20},{-40,20}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
-          rotation=270,
-          origin={0,40})));
+          rotation=0,
+          origin={-60,0})));
 
   equation
    // assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow direction! Not 'solventFlow<0'!");
@@ -287,16 +659,22 @@ Connector with one flow signal of type Real.
             extent={{-100,-50},{100,50}},
             lineColor={0,0,127},
             fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
+            fillPattern=FillPattern.Solid,
+            origin={0,0},
+            rotation=90),
           Polygon(
             points={{-80,25},{80,0},{-80,-25},{-80,25}},
             lineColor={0,0,127},
             fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
+            fillPattern=FillPattern.Solid,
+            origin={0,0},
+            rotation=90),
           Text(
-            extent={{-150,-100},{150,-60}},
+            extent={{-150,-20},{150,20}},
             textString="%name",
-            lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+            lineColor={0,0,255},
+            origin={80,-2},
+            rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <table>
@@ -344,6 +722,8 @@ Connector with one flow signal of type Real.
 </html>"),      Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics));
 
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics));
   end MolarStream;
 
   model Clearance "Clearance"
@@ -584,32 +964,38 @@ Connector with one flow signal of type Real.
     extends OnePort;
 
     Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow "Solute flow rate"
-      annotation (Placement(transformation(extent={{-20,20},{20,60}}),
+      annotation (Placement(transformation(extent={{-80,-20},{-40,20}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
-          rotation=270,
-          origin={0,40})));
+          rotation=0,
+          origin={-60,0})));
 
   equation
      q_in.q = soluteFlow;
 
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics={
           Rectangle(
             extent={{-100,-50},{100,50}},
             lineColor={0,0,127},
             fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
+            fillPattern=FillPattern.Solid,
+            origin={0,0},
+            rotation=90),
           Polygon(
             points={{-80,25},{80,0},{-80,-25},{-80,25}},
             lineColor={0,0,127},
             fillColor={0,0,127},
-            fillPattern=FillPattern.Solid),
+            fillPattern=FillPattern.Solid,
+            origin={0,0},
+            rotation=90),
           Text(
-            extent={{-150,-100},{150,-60}},
+            extent={{-150,-20},{150,20}},
             textString="%name",
-            lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+            lineColor={0,0,255},
+            origin={86,4},
+            rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -651,7 +1037,7 @@ Connector with one flow signal of type Real.
     extends Physiolibrary.States.State(
     state(nominal=NominalSolute),
     change(nominal=NominalSolute/60),
-    state_start=soluteMass_start,
+    state_start=solute_start,
     storeUnit="mmol");
 
    // replaceable package Types = Physiolibrary.Types;
@@ -662,12 +1048,12 @@ Connector with one flow signal of type Real.
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
               {10,10}})));
     parameter Physiolibrary.Types.AmountOfSubstance
-                                      soluteMass_start(nominal=NominalSolute)
+                                      solute_start(nominal=NominalSolute)
       "Initial solute amount in compartment"
        annotation (Dialog(group="Initialization"));
 
-    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput soluteMass(nominal=
-        NominalSolute) "Actual solute amount"
+    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
+        NominalSolute) "Current amount of solute"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
              -90,
           origin={102,-102}), iconTransformation(
@@ -685,9 +1071,9 @@ Connector with one flow signal of type Real.
         annotation (Dialog(group="Numerical support of very small concentrations"));
 
   equation
-    q_out.conc = soluteMass/solventVolume;
+    q_out.conc = solute/solventVolume;
 
-    state = soluteMass; // der(soluteMass)=q_out.q
+    state = solute; // der(solute)=q_out.q
     change = q_out.q;
 
                                                                                                       annotation (choicesAllMatching=true,
@@ -710,7 +1096,7 @@ Connector with one flow signal of type Real.
     extends Physiolibrary.States.State(
     state(nominal=NominalSolute),
     change(nominal=NominalSolute/60),
-    state_start=soluteMass_start,
+    state_start=solute_start,
     storeUnit="mmol");
 
     NegativeConcentrationFlow q_out(conc(nominal=NominalSolute/0.001), q(
@@ -718,12 +1104,12 @@ Connector with one flow signal of type Real.
                                annotation (Placement(
           transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
               {10,10}})));
-    parameter Physiolibrary.Types.AmountOfSubstance soluteMass_start(nominal=
+    parameter Physiolibrary.Types.AmountOfSubstance solute_start(nominal=
         NominalSolute) "Initial solute amount in compartment"
       annotation (Dialog(group="Initialization"));
 
-    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput soluteMass(nominal=
-        NominalSolute, start=soluteMass_start) "Actual solute amount"
+    Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
+        NominalSolute, start=solute_start) "Current amount of solute"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
              -90,
           origin={102,-102}), iconTransformation(
@@ -737,9 +1123,9 @@ Connector with one flow signal of type Real.
        annotation (Dialog(group="Numerical support of very small concentrations", tab="Solver"));
 
   equation
-    q_out.conc = soluteMass/NormalSolventVolume;
+    q_out.conc = solute/NormalSolventVolume;
 
-    state = soluteMass; // der(soluteMass)=q_out.q
+    state = solute; // der(solute)=q_out.q
     change = q_out.q;
     annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
@@ -757,54 +1143,62 @@ Connector with one flow signal of type Real.
   partial model ChemicalReactionBase "Chemical Reaction"
     import Physiolibrary;
 
-    parameter Integer nS=1 "Number of substrates types";
-    parameter Integer nP=1 "Number of products types";
+    parameter Integer nS=1 "Number of substrates types"
+      annotation (Dialog(group="Reaction type"));
+    parameter Integer nP=1 "Number of products types"
+      annotation (Dialog(group="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
-      "stoichiometric reaction coeficient for substrate";
+      "stoichiometric reaction coeficient for substrate"
+      annotation (Dialog(group="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
-      "stoichiometric reaction coeficients for substrate";
+      "stoichiometric reaction coeficients for substrate"
+      annotation (Dialog(group="Reaction type"));
 
-    parameter Real rateLevel = 8
-      "backward reaction rate is 10^rateLevel; forward K*(10^rateLevel) at temperature TK";
+    parameter Real forwardRate = 10^8 "forward reaction rate"
+      annotation (Dialog(group="Reaction rate")); //forward K*(10^rateLevel) at temperature TK
 
     parameter Physiolibrary.States.SimulationType
                                     Simulation=Physiolibrary.States.SimulationType.NoInit
-      "False, instead of one reaction in equilibrated (with zero reaction rates) system.";
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
     parameter Boolean isSubstrateFlowIncludedInEquilibrium[nS](each start=true)
-      "Is substrate flow equation included in equilibrium calculation?";
-    parameter Boolean isProductFlowIncludedInEquilibrium[nS](each start=true)
-      "Is product flow equation included in equilibrium calculation?";
+      "Is substrate flow equation included in equilibrium calculation?"
+       annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
+    parameter Boolean isProductFlowIncludedInEquilibrium[nP](each start=true)
+      "Is product flow equation included in equilibrium calculation?"
+       annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
 
     NegativeConcentrationFlow products[nP] "products"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{90,-10},{110,10}}),iconTransformation(extent={{90,-10},
               {110,10}})));
 
-    PositiveConcentrationFlow substrate[nS] "substrate"
+    PositiveConcentrationFlow substrates[nS] "substrates"
                               annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
              {{-110,-10},{-90,10}})));  /*s[nS]*/
     Physiolibrary.Types.MolarFlowRate rr "reaction rate";
 
-    Real KaT "dissociation constant in actual temperature";
+    Real KaT "dissociation constant in current temperature";
 
-    parameter Physiolibrary.Types.Temperature TK=298.15
-      "temperature of disociation constant";
+    parameter Physiolibrary.Types.Temperature TK=298.15 "base temperature"
+      annotation (Dialog(group="Temperature dependence"));
 
-    parameter Modelica.SIunits.MolarInternalEnergy dH=0
-      "enthalpy change for Hoff's equation to correct disociation constant to actual temperature";
+    parameter Modelica.SIunits.MolarInternalEnergy dH=0 "enthalpy change"
+      annotation (Dialog(group="Temperature dependence"));
 
   equation
-    rr = (10^rateLevel)*(KaT* product(substrate.conc.^s) - product(products.conc.^p));
+    rr = forwardRate*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
 
-    if Simulation==Physiolibrary.States.SimulationType.Equilibrated
+     /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+     if Simulation==Physiolibrary.States.SimulationType.Equilibrated
                                                       or (initial() and Simulation==
         Physiolibrary.States.SimulationType.InitSteadyState) then
        for i in 1:nS loop
          if isSubstrateFlowIncludedInEquilibrium[i] then
-           rr*s[i] = substrate[i].q;
+           rr*s[i] = substrates[i].q;
          end if;
        end for;
        for j in 1:nP loop
@@ -813,7 +1207,7 @@ Connector with one flow signal of type Real.
          end if;
        end for;
     else //Simulation<>States.SimulationType.Equilibrated and ((not initial()) or Simulation<>States.SimulationType.InitSteadyState) then
-        rr*s = substrate.q;
+        rr*s = substrates.q;
         rr*p = -products.q;
     end if;
 
@@ -882,7 +1276,9 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     extends ChemicalReactionBase;
 
     parameter Real K "disociation constant";
-    parameter Physiolibrary.Types.Temperature T=310.15 "temperature";                   //body temperature
+    parameter Physiolibrary.Types.Temperature T=310.15 "current temperature"
+       annotation (Dialog(group="Temperature dependence"));
+                     //body temperature
 
   equation
     KaT = K * 10^((1/Modelica.Math.log(10))*((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
@@ -934,16 +1330,14 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=0,
-          origin={-100,60})));
+          origin={-100,-80})));
   equation
 
     q_out.conc = dilution * q_in.conc;
 
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                          graphics={Bitmap(extent={{-100,100},{100,-102}},
-              fileName="icons/dilution.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1260,21 +1654,18 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 
   model GasSolubility "Henry's law about the solubility of a gas in a liquid"
 
-    PositiveConcentrationFlow gas
-      "Partial pressure and volumetric flow of pure substance"
-                                           annotation (Placement(transformation(
-            extent={{-10,90},{10,110}}),  iconTransformation(extent={{-10,90},{10,
-              110}})));
-    NegativeConcentrationFlow liquid
-      "Molar concentratio and substance amount flow"
-                                               annotation (Placement(
-          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,
-              -110},{10,-90}})));
+    extends OnePort;  //q_in is dissolved in liquid and q_out is in gaseous solution
+    extends Physiolibrary.Icons.GasSolubility;
+
     parameter Physiolibrary.Types.Fraction kH
       "Henry's law constant such as liquid-gas concentration ratio";
+
+    parameter Types.DiffusionPermeability solubilityRate=10^3
+      "The rate of incoming gas to solution";
+
   equation
-    gas.conc = kH * liquid.conc;
-    gas.q + liquid.q = 0;
+    // equilibrium:  gas.conc = kH * liquid.conc;
+    q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
 
      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics={
@@ -1289,36 +1680,37 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end GasSolubility;
 
   model GasSolubility2 "Henry's law about the solubility of a gas in a liquid"
+   extends OnePort;  //q_in is dissolved in liquid and q_out is in gaseous solution
+   extends Physiolibrary.Icons.GasSolubility;
 
-    PositiveConcentrationFlow gas
-      "Partial pressure and volumetric flow of pure substance"
-                                           annotation (Placement(transformation(
-            extent={{-10,90},{10,110}}),  iconTransformation(extent={{-10,90},{10,
-              110}})));
-    NegativeConcentrationFlow liquid
-      "Molar concentratio and substance amount flow"
-                                               annotation (Placement(
-          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,
-              -110},{10,-90}})));
     Physiolibrary.Types.Fraction kH
       "Henry's law coefficient such as liquid-gas concentration ratio";
+
+    parameter Types.DiffusionPermeability solubilityRate=10^3
+      "The rate of incoming gas to solution";
 
     parameter Physiolibrary.Types.Fraction kH_T0
       "Henry's law coefficient at temperature T0";
     parameter Physiolibrary.Types.Temperature T0=298.15
-      "Base temperature for kH_T0";
+      "Base temperature for kH_T0"
+       annotation (Dialog(group="Temperature dependence"));
     parameter Physiolibrary.Types.Temperature C(displayUnit="K")
-      "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)";
+      "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
+      annotation (Dialog(group="Temperature dependence"));
     Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
                                                        annotation (Placement(
-          transformation(extent={{-100,-20},{-60,20}}), iconTransformation(extent=
-             {{-100,-20},{-60,20}})));
+          transformation(extent={{-8,-88},{32,-48}}),   iconTransformation(extent={{-20,-20},
+              {20,20}},
+          rotation=0,
+          origin={-60,0})));
+
   equation
     kH = kH_T0 * Modelica.Math.exp(C* (1/T - 1/T0)); // Van't Hoff equation
-    gas.conc = kH * liquid.conc;
-    gas.q + liquid.q = 0;
+    //gas.conc = kH * liquid.conc;
+    // equilibrium:  gas.conc = kH * liquid.conc;
+    q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
               {100,100}}),       graphics={
           Text(
             extent={{-120,80},{120,40}},
