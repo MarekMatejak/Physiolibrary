@@ -1,6 +1,84 @@
 within Physiolibrary;
 package Thermal "Temperature Physical Domain"
 
+  package Examples
+    "Examples that demonstrate usage of the Pressure flow components"
+  extends Modelica.Icons.ExamplesPackage;
+
+    model MuscleHeating
+    extends Modelica.Icons.Example;
+    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+
+      HeatAccumulation muscle(heat_start=19478040)
+        annotation (Placement(transformation(extent={{46,-40},{66,-20}})));
+      IdealRadiator muscleBloodFlow
+        annotation (Placement(transformation(extent={{16,-2},{36,18}})));
+      HeatInflux heatInflux
+        annotation (Placement(transformation(extent={{-6,-52},{14,-32}})));
+      HeatAccumulation body(heat_start=4186.8*60*310.15)
+        annotation (Placement(transformation(extent={{-24,-2},{-4,18}})));
+      Types.RealTypes.Mass height(varName="Muscle-weight", k=15)
+        annotation (Placement(transformation(extent={{14,-26},{34,-6}})));
+      Types.RealTypes.MassFlowRate volumeFlowRate(varName="Muscle-BloodFlow", k=
+           120) annotation (Placement(transformation(extent={{-16,26},{4,46}})));
+      Modelica.Blocks.Sources.Sine sine(
+        freqHz=0.01,
+        offset=15,
+        amplitude=15)
+        annotation (Placement(transformation(extent={{-32,-40},{-12,-20}})));
+      UnlimitedHeat environment(Temperature=295.15)
+        annotation (Placement(transformation(extent={{-72,44},{-52,64}})));
+      Conductor conductor(conductance=1)
+        annotation (Placement(transformation(extent={{-58,-2},{-38,18}})));
+      Types.RealTypes.Mass height1(varName="NonMuscle-weight", k=60)
+        annotation (Placement(transformation(extent={{-52,16},{-32,36}})));
+    equation
+      connect(heatInflux.q_out, muscle.q_in) annotation (Line(
+          points={{10,-42},{36,-42},{36,-30},{56,-30}},
+          color={255,128,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(muscleBloodFlow.q_out, muscle.q_in) annotation (Line(
+          points={{36,8},{56,8},{56,-30}},
+          color={255,128,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(muscleBloodFlow.q_in, body.q_in) annotation (Line(
+          points={{16,8},{-14,8}},
+          color={255,128,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(height.y, muscle.weight) annotation (Line(
+          points={{35,-16},{38,-16},{38,-22},{46,-22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(volumeFlowRate.y, muscleBloodFlow.substanceFlow) annotation (Line(
+          points={{5,36},{8,36},{8,12},{16,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(sine.y, heatInflux.desiredFlow_) annotation (Line(
+          points={{-11,-30},{4,-30},{4,-38}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(conductor.q_out, body.q_in) annotation (Line(
+          points={{-38,8},{-14,8}},
+          color={255,128,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(conductor.q_in, environment.q_in) annotation (Line(
+          points={{-58,8},{-62,8},{-62,54}},
+          color={255,128,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(height1.y, body.weight) annotation (Line(
+          points={{-31,26},{-28,26},{-28,16},{-24,16}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),      graphics));
+    end MuscleHeating;
+  end Examples;
+
   connector HeatFlowConnector "Heat flow connector"
     Physiolibrary.Types.Temperature T "Temperature";
     flow Physiolibrary.Types.HeatFlowRate q "Heat flow";
@@ -382,7 +460,9 @@ Connector with one flow signal of type Real.
   end UnlimitedHeat;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>", info="<html>
+<p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;&nbsp;C. A fever of 41&deg;&nbsp;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg; C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. In the Physiolibrary.Thermal package, the connector HeatConnector is composed of temperature and thermal flow. The main blocks are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity.</p>
 </html>"));
 end Thermal;

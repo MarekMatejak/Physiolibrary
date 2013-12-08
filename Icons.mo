@@ -1143,7 +1143,7 @@ from this block.
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/icons/membrane.png")}));
   end Membrane;
-  annotation (Documentation(revisions=""));
+
   model MolarFlowMeasure
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
@@ -1157,4 +1157,5 @@ from this block.
 
   model GasSolubility
   end GasSolubility;
+  annotation (Documentation(revisions=""));
 end Icons;

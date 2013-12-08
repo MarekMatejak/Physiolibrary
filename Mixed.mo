@@ -205,7 +205,9 @@ package Mixed
   end PartialPressure2;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>", info="<html>
+<p>Some physical events take place between these domains. For these events, Physiolibrary includes an additional package called Mixed. For example, the Mixed package contains the block for the ideal gas equation, which connects the molar and pressure connector. Another example is the block PartialPressure, which combines the ideal gas equation with Henry&apos;s law of gas solubility already implemented in the Chemical.GasSolubility block.</p>
 </html>"));
 end Mixed;

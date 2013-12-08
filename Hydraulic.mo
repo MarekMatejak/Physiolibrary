@@ -5,13 +5,10 @@ package Hydraulic "Hydraulic Physical Domain"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
-
-
     model CardiovascularSystem
     extends Modelica.Icons.Example;
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
-      ElacticBalloon arteries
+      ElacticBalloon arteries(volume_start=0.001)
         annotation (Placement(transformation(extent={{64,-74},{84,-54}})));
       ElacticBalloon veins
         annotation (Placement(transformation(extent={{-80,-74},{-60,-54}})));
@@ -86,8 +83,8 @@ package Hydraulic "Hydraulic Physical Domain"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pressureMeasure.actualPressure, rightStarlingSlope.u) annotation
-        (Line(
+      connect(pressureMeasure.actualPressure, rightStarlingSlope.u) annotation (
+         Line(
           points={{-62.8,18},{-58.8,18}},
           color={0,0,127},
           smooth=Smooth.None));
@@ -95,8 +92,8 @@ package Hydraulic "Hydraulic Physical Domain"
           points={{-48,8},{-48,18},{-49.6,18}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(pressureMeasure1.actualPressure, leftStarlingSlope.u) annotation
-        (Line(
+      connect(pressureMeasure1.actualPressure, leftStarlingSlope.u) annotation (
+         Line(
           points={{39.2,24},{47.2,24}},
           color={0,0,127},
           smooth=Smooth.None));
@@ -1040,7 +1037,9 @@ package Hydraulic "Hydraulic Physical Domain"
     end UnlimitedVolume;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak.</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>", info="<html>
+<p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the ideal block of blood accumulation called ElasticBalloon.</p>
 </html>"));
 end Hydraulic;
