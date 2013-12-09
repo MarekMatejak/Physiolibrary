@@ -18,6 +18,8 @@ The library contains only carefully-chosen elementary physiological laws, which 
 processes. For example from only two type of blocks (Chemical.ChemicalReaction and Chemical.Substance) it is 
 possible to compose the allosteric transitions or the Michaelis-Menten equation.
 
+Library contains also the icons for higher level (HumMod) subsystem implementations:
+
 ![screenshot](screenshot.png)
 
 ## Current release
