@@ -238,24 +238,23 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model PressureMeasure
     "Convert connector hydraulic pressure value to signal flow value"
+    extends Icons.PressureMeasure;
 
     PositivePressureFlow q_in annotation (Placement(
-          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-30,-50},
-              {-10,-30}})));
+          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-48,-80},
+              {-28,-60}})));
     Physiolibrary.Types.RealIO.PressureOutput actualPressure "Actual pressure"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=0,
-          origin={52,-20})));
+          origin={58,-32})));
   equation
 
     actualPressure = q_in.pressure;
     q_in.q = 0;
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={Bitmap(extent={{-56,60},{64,-60}},
-              fileName="icons/pressureMeassure.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -469,7 +468,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Reabsorbtion "Divide inflow to outflow and reabsorbtion"
     import Physiolibrary;
-
+    extends Icons.Reabsorbtion;
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-106,-18},{-66,22}}), iconTransformation(
             extent={{-110,-10},{-90,10}})));
@@ -498,12 +497,12 @@ package Hydraulic "Hydraulic Physical Domain"
           origin={0,-44})));
   equation
     connect(Inflow, flowMeasure.q_in) annotation (Line(
-        points={{-86,2},{-44,2}},
+        points={{-86,2},{-48,2}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.actualFlow, simpleMultiply.yBase) annotation (Line(
-        points={{-38,-3.4},{-38,-28}},
+        points={{-38,-6},{-38,-28}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(simpleMultiply.u, FractReab) annotation (Line(
@@ -511,7 +510,7 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,127},
         smooth=Smooth.None));
     connect(pump.q_out, Reabsorbtion) annotation (Line(
-        points={{-1.10218e-015,-50},{0,-50},{0,-80},{0,-80}},
+        points={{-1.10218e-015,-54},{0,-54},{0,-80},{0,-80}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -520,12 +519,12 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.q_out, Outflow) annotation (Line(
-        points={{-32,2},{70,2}},
+        points={{-28,2},{70,2}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.q_out, pump.q_in) annotation (Line(
-        points={{-32,2},{1.10218e-015,2},{1.10218e-015,-38}},
+        points={{-28,2},{1.10218e-015,2},{1.10218e-015,-34}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -533,9 +532,7 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics={Text(
             extent={{-100,130},{100,108}},
             lineColor={0,0,255},
-            textString="%name"), Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/reabsorbtion.png")}),
-                                   Diagram(coordinateSystem(preserveAspectRatio=true,
+            textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
                     extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -546,6 +543,7 @@ package Hydraulic "Hydraulic Physical Domain"
   model Reabsorbtion2
     "Divide inflow to outflow and reabsorbtion if it is under defined treshold"
     import Physiolibrary;
+    extends Icons.Reabsorbtion2;
 
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-100,40},{-60,80}}),  iconTransformation(
@@ -589,7 +587,7 @@ package Hydraulic "Hydraulic Physical Domain"
       annotation (Placement(transformation(extent={{-24,82},{-14,92}})));
   equation
     connect(flowMeasure.actualFlow, simpleMultiply.yBase) annotation (Line(
-        points={{-28,6.6},{-28,-18}},
+        points={{-28,4},{-28,-18}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(simpleMultiply.u, FractReab) annotation (Line(
@@ -597,7 +595,7 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,127},
         smooth=Smooth.None));
     connect(reabsorbtion.q_out, Reabsorbtion) annotation (Line(
-        points={{10,-40},{10,-78},{8,-78}},
+        points={{10,-44},{10,-78},{8,-78}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -606,32 +604,32 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.q_out, Outflow) annotation (Line(
-        points={{-22,12},{43,12},{43,60},{78,60}},
+        points={{-18,12},{43,12},{43,60},{78,60}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.q_out, reabsorbtion.q_in) annotation (Line(
-        points={{-22,12},{10,12},{10,-28}},
+        points={{-18,12},{10,12},{10,-24}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(Inflow, flowMeasure1.q_in) annotation (Line(
-        points={{-80,60},{-62,60}},
+        points={{-80,60},{-66,60}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure1.q_out, flowMeasure.q_in) annotation (Line(
-        points={{-50,60},{-42,60},{-42,12},{-34,12}},
+        points={{-46,60},{-42,60},{-42,12},{-38,12}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure1.q_out, MinimalFlow.q_in) annotation (Line(
-        points={{-50,60},{-8,60}},
+        points={{-46,60},{-12,60}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(MinimalFlow.q_out, Outflow) annotation (Line(
-        points={{4,60},{78,60}},
+        points={{8,60},{78,60}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -640,20 +638,18 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure1.actualFlow, min.u2) annotation (Line(
-        points={{-56,65.4},{-56,84},{-25,84}},
+        points={{-56,68},{-56,84},{-25,84}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(min.y, MinimalFlow.desiredFlow) annotation (Line(
         points={{-13.5,87},{-2,87},{-2,66}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics={Text(
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+              {100,100}}),       graphics={Text(
             extent={{-100,134},{100,106}},
             lineColor={0,0,255},
-            textString="%name"), Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/reabsorbtion2.jpg")}),
-                                   Diagram(coordinateSystem(preserveAspectRatio=true,
+            textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
                     extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -663,6 +659,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Hydrostatic
     "Create hydrostatic pressure between connectors in different altitude"
+    extends Icons.HydrostaticGradient;
 
     PositivePressureFlow q_up "Top site"
                            annotation (extent=[-10, -110; 10, -90], Placement(
@@ -694,21 +691,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={
-          Rectangle(
-            extent={{-30,-58},{30,72}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Text(
-            extent={{-62,-21},{62,21}},
-            textString="%name",
-            lineColor={0,0,255},
-            origin={0,5},
-            rotation=90),
-          Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/hydrostaticGradient.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+              100,100}}), graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -719,7 +702,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Hydrostatic2
     "Create hydrostatic pressure between connectors in different altitude"
-
+    extends Icons.HydrostaticGradient;
     PositivePressureFlow q_up "Top site"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{62,38},
@@ -750,21 +733,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
-              100}}),     graphics={
-          Rectangle(
-            extent={{-30,-58},{30,72}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Text(
-            extent={{-62,-21},{62,21}},
-            textString="%name",
-            lineColor={0,0,255},
-            origin={0,5},
-            rotation=90),
-          Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/hydrostaticGradient.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -775,7 +744,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model HydrostaticWithPumpEffect
     "Create hydrostatic pressure between connectors in different altitude with specific pressure pump effect"
-
+    extends Icons.HydrostaticGradient;
     PositivePressureFlow q_up "Top site"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{62,38},
@@ -814,26 +783,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                          graphics={
-          Rectangle(
-            extent={{-30,-58},{30,72}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Text(
-            extent={{-62,-21},{62,21}},
-            textString="%name",
-            lineColor={0,0,255},
-            origin={0,5},
-            rotation=90),
-          Line(
-            points={{-28,44},{0,72},{28,44}},
-            color={0,0,255},
-            smooth=Smooth.None,
-            thickness=0.5),
-          Bitmap(extent={{-100,100},{100,-100}},fileName=
-                "icons/hydrostaticGradient.png")}),
-                                    Diagram(coordinateSystem(preserveAspectRatio=true,
+                          graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -942,12 +892,12 @@ package Hydraulic "Hydraulic Physical Domain"
   model InternalElasticBalloon "Elastic balloon in closed space"
    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
         "ml");
-
+   extends Icons.InternalElasticBalloon;
     PositivePressureFlow q_int "Internal space"
-      annotation (Placement(transformation(extent={{-86,-10},{-66,10}}),
-          iconTransformation(extent={{-86,-10},{-66,10}})));
-    NegativePressureFlow q_ext "External space" annotation (Placement(transformation(extent={{64,-10},
-              {84,10}}),  iconTransformation(extent={{64,-10},{84,10}})));
+      annotation (Placement(transformation(extent={{-82,2},{-62,22}}),
+          iconTransformation(extent={{-82,2},{-62,22}})));
+    NegativePressureFlow q_ext "External space" annotation (Placement(transformation(extent={{26,2},{
+              46,22}}),   iconTransformation(extent={{26,2},{46,22}})));
 
    parameter Physiolibrary.Types.HydraulicCompliance Compliance "Compliance";
    parameter Physiolibrary.Types.Volume zeroPressureVolume=0
@@ -968,15 +918,15 @@ package Hydraulic "Hydraulic Physical Domain"
     state = volume; // der(volume) =  q_int.q;
     change = q_int.q;
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true,  extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-80,84},{120,-116}},
-              fileName="icons/ventilatorCapacitance.png")}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics));
   end InternalElasticBalloon;
 
   model Inertance "Inertance of the flow"
     extends Physiolibrary.States.State(state_start=volumeFlow_start,
-      storeUnit="ml/min");
-    extends OnePort;
+      storeUnit="ml/min",Simulation=Physiolibrary.States.SimulationType.NoInit);
+    extends OnePort(Simulation=Physiolibrary.States.SimulationType.NoInit);
+    extends Icons.Inertance;
 
     parameter Physiolibrary.Types.VolumeFlowRate volumeFlow_start=5*(1e-3)*60
       "Volumetric flow start value"
@@ -988,8 +938,7 @@ package Hydraulic "Hydraulic Physical Domain"
     state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
     change = (q_in.pressure - q_out.pressure)/I;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/ventilatorInertance.png")}), Documentation(info="<html>
+              -100},{100,100}}), graphics),                Documentation(info="<html>
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
 </html>"));
   end Inertance;

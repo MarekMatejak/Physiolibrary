@@ -29,91 +29,91 @@ package Icons
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,98},{100,-100}},
-              fileName="icons/golem.png")}));
+              fileName="Resources/Icons/golem.png")}));
   end Golem;
 
   model CardioVascular
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/csv.png")}));
+              fileName="Resources/Icons/csv.png")}));
   end CardioVascular;
 
   model Water
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/indexVoda.png")}));
+              fileName="Resources/Icons/indexVoda.png")}));
   end Water;
 
   model Electrolytes
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/electrolytes.png")}));
+              fileName="Resources/Icons/electrolytes.png")}));
   end Electrolytes;
 
   model Proteins
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,100},{100,-100}},
-              fileName="icons/protein.png")}));
+              fileName="Resources/Icons/protein.png")}));
   end Proteins;
 
   model Gases
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/gases.png")}));
+              fileName="Resources/Icons/gases.png")}));
   end Gases;
 
   model NutrientsMetabolism
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/vyziva.png")}));
+              fileName="Resources/Icons/vyziva.png")}));
   end NutrientsMetabolism;
 
   model Heat
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/ohen.png")}));
+              fileName="Resources/Icons/ohen.png")}));
   end Heat;
 
   model Hormones
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/hormony.png")}));
+              fileName="Resources/Icons/hormony.png")}));
   end Hormones;
 
   model Nerves
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/nervyNeuron.png")}));
+              fileName="Resources/Icons/nervyNeuron.png")}));
   end Nerves;
 
   model Setup
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/setup.png")}));
+              fileName="Resources/Icons/setup.png")}));
   end Setup;
 
   model Status
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,-100},{100,
-                100}}, fileName="icons/tissueFitness.png")}));
+                100}}, fileName="Resources/Icons/tissueFitness.png")}));
   end Status;
 
   model SkeletalMuscle
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-70,92},{40,-80}},
-              fileName="icons/sval.png")}));
+              fileName="Resources/Icons/sval.png")}));
   end SkeletalMuscle;
 
   model Bone
@@ -124,77 +124,77 @@ package Icons
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid,
             pattern=LinePattern.None), Bitmap(extent={{-88,96},{52,-84}},
-              fileName="icons/bone.jpg")}));
+              fileName="Resources/Icons/bone.jpg")}));
   end Bone;
 
   model OtherTissue
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-74,60},{48,-94}},
-              fileName="icons/pojivovaTkan.png")}));
+              fileName="Resources/Icons/pojivovaTkan.png")}));
   end OtherTissue;
 
   model RespiratoryMuscle
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-66,86},{44,-86}},
-              fileName="icons/respiracniSvaly.png")}));
+              fileName="Resources/Icons/respiracniSvaly.png")}));
   end RespiratoryMuscle;
 
   model Fat
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-84,86},{38,-68}},
-              fileName="icons/tukovaBunka.png")}));
+              fileName="Resources/Icons/tukovaBunka.png")}));
   end Fat;
 
   model Skin
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-74,56},{48,-84}},
-              fileName="icons/skin.jpg")}));
+              fileName="Resources/Icons/skin.jpg")}));
   end Skin;
 
   model Brain
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-78,62},{44,-92}},
-              fileName="icons/brain.jpg")}));
+              fileName="Resources/Icons/brain.jpg")}));
   end Brain;
 
   model GITract
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-80,74},{42,-80}},
-              fileName="icons/traviciTrakt.png")}));
+              fileName="Resources/Icons/traviciTrakt.png")}));
   end GITract;
 
   model LeftHeart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-80,100},{44,-84}},
-              fileName="icons/srdceLeva.png")}));
+              fileName="Resources/Icons/srdceLeva.png")}));
   end LeftHeart;
 
   model RightHeart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-78,70},{44,-84}},
-              fileName="icons/srdceprava.png")}));
+              fileName="Resources/Icons/srdceprava.png")}));
   end RightHeart;
 
   model Liver
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-84,34},{86,-100}},
-              fileName="icons/jatra.png")}));
+              fileName="Resources/Icons/jatra.png")}));
   end Liver;
 
   model Kidney
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-92,86},{40,-88}},
-              fileName="icons/kidney.jpg")}));
+              fileName="Resources/Icons/kidney.jpg")}));
   end Kidney;
 
   model Bladder
@@ -205,58 +205,58 @@ package Icons
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid,
             pattern=LinePattern.None), Bitmap(extent={{-92,86},{40,-88}},
-              fileName="icons/mocovyMechyr.png")}));
+              fileName="Resources/Icons/mocovyMechyr.png")}));
   end Bladder;
 
   model GILumen
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/traviciTrakt2.png")}));
+              fileName="Resources/Icons/traviciTrakt2.png")}));
   end GILumen;
 
   model ThyroidGland
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-92,86},{40,-88}},
-              fileName="icons/stitnaZlaza.png")}));
+              fileName="Resources/Icons/stitnaZlaza.png")}));
   end ThyroidGland;
 
   model Pancreas
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/pankreas.png")}));
+              fileName="Resources/Icons/pankreas.png")}));
   end Pancreas;
 
   model AdrenalGland
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/nadledviny.png")}));
+              fileName="Resources/Icons/nadledviny.png")}));
   end AdrenalGland;
 
   model Lungs
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-70,92},{40,-80}},
-              fileName="icons/plice.png")}));
+              fileName="Resources/Icons/plice.png")}));
   end Lungs;
 
   model Tissues
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=true,  extent={{-100,
               -100},{100,100}}), graphics={
-          Bitmap(extent={{-46,98},{32,26}}, fileName="icons/bone.jpg"),
-          Bitmap(extent={{-62,-10},{50,-92}}, fileName="icons/skin.jpg"),
-          Bitmap(extent={{-38,90},{64,-20}}, fileName="icons/sval.png"),
+          Bitmap(extent={{-46,98},{32,26}}, fileName="Resources/Icons/bone.jpg"),
+          Bitmap(extent={{-62,-10},{50,-92}}, fileName="Resources/Icons/skin.jpg"),
+          Bitmap(extent={{-38,90},{64,-20}}, fileName="Resources/Icons/sval.png"),
           Bitmap(extent={{-10,36},{102,-56}}, fileName=
-                "icons/traviciTrakt.png"),
+                "Resources/Icons/traviciTrakt.png"),
           Text(
             extent={{64,-66},{94,-96}},
             lineColor={0,0,0},
             textString="..."),
-          Bitmap(extent={{-98,36},{-24,-30}}, fileName="icons/brain.jpg")}));
+          Bitmap(extent={{-98,36},{-24,-30}}, fileName="Resources/Icons/brain.jpg")}));
 
   end Tissues;
 
@@ -264,35 +264,35 @@ package Icons
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-70,92},{40,-80}},
-              fileName="icons/peritoneum.png")}));
+              fileName="Resources/Icons/peritoneum.png")}));
   end Peritoneum;
 
   model Plasma
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-70,92},{40,-80}},
-              fileName="icons/plazma.png")}));
+              fileName="Resources/Icons/plazma.png")}));
   end Plasma;
 
   model Hypophysis
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/hypofyza.png")}));
+              fileName="Resources/Icons/hypofyza.png")}));
   end Hypophysis;
 
   model Heart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/heart.png")}));
+              fileName="Resources/Icons/heart.png")}));
   end Heart;
 
   model SweatGland
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/potniZlaza.png")}));
+              fileName="Resources/Icons/potniZlaza.png")}));
   end SweatGland;
 
   model Cell
@@ -327,7 +327,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="icons/sympatetickeNervy.png")}));
+              fileName="Resources/Icons/sympatetickeNervy.png")}));
 
    end AutonomicControlLib;
 
@@ -335,7 +335,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
-              fileName="icons/csv.png")}));
+              fileName="Resources/Icons/csv.png")}));
 
   end CardioVascularLib;
 
@@ -343,7 +343,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-78,38},{64,-94}},
-              fileName="icons/electrolytes.png")}));
+              fileName="Resources/Icons/electrolytes.png")}));
 
   end ElectrolytesLib;
 
@@ -351,7 +351,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-88,34},{66,-82}},
-              fileName="icons/gases.png")}));
+              fileName="Resources/Icons/gases.png")}));
 
   end GasesLib;
 
@@ -359,14 +359,14 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
-              fileName="icons/golem.png")}));
+              fileName="Resources/Icons/golem.png")}));
   end GolemLib;
 
   package HeatLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
-              fileName="icons/ohen.png")}));
+              fileName="Resources/Icons/ohen.png")}));
 
   end HeatLib;
 
@@ -374,7 +374,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-88,30},{74,-88}},
-              fileName="icons/hormony.png")}));
+              fileName="Resources/Icons/hormony.png")}));
 
   end HormonesLib;
 
@@ -382,7 +382,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="icons/Kidney.jpg")}));
+              fileName="Resources/Icons/Kidney.jpg")}));
 
    end KidneyLib;
 
@@ -390,7 +390,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="icons/nervyNeuron.png")}));
+              fileName="Resources/Icons/nervyNeuron.png")}));
 
    end NervesLib;
 
@@ -398,7 +398,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,40},{80,-100}},
-              fileName="icons/vyziva.png")}));
+              fileName="Resources/Icons/vyziva.png")}));
 
   end NutrientsMetabolismLib;
 
@@ -406,14 +406,14 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
-              fileName="icons/O2.jpg")}));
+              fileName="Resources/Icons/O2.jpg")}));
   end OxygenLib;
 
   package ProteinsLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,42},{76,-98}},
-              fileName="icons/protein.png")}));
+              fileName="Resources/Icons/protein.png")}));
 
   end ProteinsLib;
 
@@ -421,7 +421,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-94,44},{72,-98}},
-              fileName="icons/setup.png")}));
+              fileName="Resources/Icons/setup.png")}));
 
   end SetupLib;
 
@@ -429,7 +429,7 @@ package Icons
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
-              fileName="icons/tissueFitness.png")}));
+              fileName="Resources/Icons/tissueFitness.png")}));
 
   end StatusLib;
 
@@ -437,7 +437,7 @@ package Icons
    extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-90,42},{72,-84}},
-              fileName="icons/indexVoda.png")}));
+              fileName="Resources/Icons/indexVoda.png")}));
 
   end WaterLib;
 
@@ -461,14 +461,14 @@ package Icons
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/Lymph.png")}));
+              fileName="Resources/Icons/Lymph.png")}));
   end Lymph;
 
   model RespiratoryCenter
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/respiracniCentrum.png")}));
+              fileName="Resources/Icons/respiracniCentrum.png")}));
   end RespiratoryCenter;
 
   model Oxygen
@@ -476,7 +476,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/O2.jpg")}));
+                "Resources/Icons/O2.jpg")}));
   end Oxygen;
 
   model Carbondioxyd
@@ -484,7 +484,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/prvkyCO2.png")}));
+                "Resources/Icons/prvkyCO2.png")}));
   end Carbondioxyd;
 
   model AcidBase
@@ -492,21 +492,21 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/acidobaze.png")}));
+                "Resources/Icons/acidobaze.png")}));
   end AcidBase;
 
   model Ventilation
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/dychani.png")}));
+              fileName="Resources/Icons/dychani.png")}));
   end Ventilation;
 
   model PeripheralChemoreceptors
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/baroreflex.png")}));
+              fileName="Resources/Icons/baroreflex.png")}));
   end PeripheralChemoreceptors;
 
   model HeatCore
@@ -514,7 +514,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
               -100,-100},{100,100}}), graphics={Bitmap(extent={{-100,100},{
                 100,-100}}, fileName=
-                "icons/torzo2.png")}));
+                "Resources/Icons/torzo2.png")}));
   end HeatCore;
 
   model Glycogen
@@ -527,7 +527,7 @@ package Icons
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid),Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/glykogen.png")}));
+                "Resources/Icons/glykogen.png")}));
   end Glycogen;
 
   model Lipids
@@ -535,7 +535,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/FattyAcid.jpg")}));
+                "Resources/Icons/FattyAcid.jpg")}));
   end Lipids;
 
   model KetoAcids
@@ -543,21 +543,21 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/KetoAcid.jpg")}));
+                "Resources/Icons/KetoAcid.jpg")}));
   end KetoAcids;
 
   model Glucose
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/glucose.jpg")}));
+                -100}}, fileName="Resources/Icons/glucose.jpg")}));
   end Glucose;
 
   model Lactate
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/Lactate.jpg")}));
+                -100}}, fileName="Resources/Icons/Lactate.jpg")}));
   end Lactate;
 
   model AminoAcids
@@ -565,14 +565,14 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/AminoAcid.jpg")}));
+                "Resources/Icons/AminoAcid.jpg")}));
   end AminoAcids;
 
   model Urea
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/Urea.jpg")}));
+                -100}}, fileName="Resources/Icons/Urea.jpg")}));
   end Urea;
 
   model MetabolismPart
@@ -586,7 +586,7 @@ package Icons
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid),
                                  Bitmap(extent={{28,120},{98,44}}, fileName=
-               "icons/ohen.png")}));
+               "Resources/Icons/ohen.png")}));
   end MetabolismPart;
 
   model CellularMetabolism
@@ -594,7 +594,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/cellularMetabolism.png")}));
+                "Resources/Icons/cellularMetabolism.png")}));
   end CellularMetabolism;
 
   model FemaleSex
@@ -602,7 +602,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/hormonesFemaleSex.png")}));
+                "Resources/Icons/hormonesFemaleSex.png")}));
   end FemaleSex;
 
   model Barroreceptor
@@ -610,14 +610,14 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/baroreflex.png")}));
+                "Resources/Icons/baroreflex.png")}));
   end Barroreceptor;
 
   model NervusVagus
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/vagus.png")}));
+                -100}}, fileName="Resources/Icons/vagus.png")}));
   end NervusVagus;
 
   model SympatheticNerves
@@ -625,21 +625,21 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/sympatetickeNervy.png")}));
+                "Resources/Icons/sympatetickeNervy.png")}));
   end SympatheticNerves;
 
   model PhysicalExercise
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/cviceni.png")}));
+                -100}}, fileName="Resources/Icons/cviceni.png")}));
   end PhysicalExercise;
 
   model SinoatrialNode
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/SANode.png")}));
+                -100}}, fileName="Resources/Icons/SANode.png")}));
   end SinoatrialNode;
 
   block StatusNormal
@@ -647,7 +647,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaNormal.png")}));
+                "Resources/Icons/siluetaNormal.png")}));
   end StatusNormal;
 
   block StatusConfused
@@ -655,7 +655,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaZmateni.png")}));
+                "Resources/Icons/siluetaZmateni.png")}));
   end StatusConfused;
 
   block StatusImpaired
@@ -663,7 +663,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaVaznejsiStav.png")}));
+                "Resources/Icons/siluetaVaznejsiStav.png")}));
   end StatusImpaired;
 
   block StatusNotBreathing
@@ -671,7 +671,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaNedychaSam.png")}));
+                "Resources/Icons/siluetaNedychaSam.png")}));
   end StatusNotBreathing;
 
   block StatusComatose
@@ -679,7 +679,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaKoma.png")}));
+                "Resources/Icons/siluetaKoma.png")}));
   end StatusComatose;
 
   block StatusMayBeDead
@@ -687,7 +687,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaSkoroMrtvy.png")}));
+                "Resources/Icons/siluetaSkoroMrtvy.png")}));
   end StatusMayBeDead;
 
   block StatusIsReallyDead
@@ -695,7 +695,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/siluetaMrtvy.png")}));
+                "Resources/Icons/siluetaMrtvy.png")}));
   end StatusIsReallyDead;
 
   model SkeletalMuscleAcidity
@@ -703,28 +703,28 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/kyselostVeSvalech.png")}));
+                "Resources/Icons/kyselostVeSvalech.png")}));
   end SkeletalMuscleAcidity;
 
   model Sodium
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/Na.jpg")}));
+                -100}}, fileName="Resources/Icons/Na.jpg")}));
   end Sodium;
 
   model Potassium
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/K.jpg")}));
+                -100}}, fileName="Resources/Icons/K.jpg")}));
   end Potassium;
 
   model Phosphate
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/fosfat.png")}));
+                -100}}, fileName="Resources/Icons/fosfat.png")}));
   end Phosphate;
 
   model Sulphate
@@ -732,21 +732,21 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/sulfat02.png")}));
+                "Resources/Icons/sulfat02.png")}));
   end Sulphate;
 
   model Amonium
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/NH4.jpg")}));
+                -100}}, fileName="Resources/Icons/NH4.jpg")}));
   end Amonium;
 
   model Chloride
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/Cl.jpg")}));
+                -100}}, fileName="Resources/Icons/Cl.jpg")}));
   end Chloride;
 
   model LungShunt
@@ -754,7 +754,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/lungBloodFlow.jpg")}));
+                "Resources/Icons/lungBloodFlow.jpg")}));
   end LungShunt;
 
   model Hydrostatics
@@ -762,28 +762,28 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/pressureMeassure.png")}));
+                "Resources/Icons/pressureMeassure.png")}));
   end Hydrostatics;
 
   model UpperTorso
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/torzo1.png")}));
+                -100}}, fileName="Resources/Icons/torzo1.png")}));
   end UpperTorso;
 
   model MidleTorso
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/torzo2.png")}));
+                -100}}, fileName="Resources/Icons/torzo2.png")}));
   end MidleTorso;
 
   model LowerTorso
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="icons/torzo3.png")}));
+                -100}}, fileName="Resources/Icons/torzo3.png")}));
   end LowerTorso;
 
   model RedCells
@@ -791,7 +791,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/cervenaKrvinka.png")}));
+                "Resources/Icons/cervenaKrvinka.png")}));
   end RedCells;
 
   model SystemicCirculation
@@ -799,7 +799,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/krevniRecisteSiluetacloveka.png")}));
+                "Resources/Icons/krevniRecisteSiluetacloveka.png")}));
   end SystemicCirculation;
 
   model PulmonaryCirculation
@@ -807,7 +807,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/circulationLungs.png")}));
+                "Resources/Icons/circulationLungs.png")}));
   end PulmonaryCirculation;
 
   model Blood
@@ -815,7 +815,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/bloodProperties.jpg")}));
+                "Resources/Icons/bloodProperties.jpg")}));
   end Blood;
 
   model BloodElasticCompartment
@@ -823,7 +823,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/elastickyKompartment.png")}));
+                "Resources/Icons/elastickyKompartment.png")}));
   end BloodElasticCompartment;
 
   model BloodSequesteredCompartment
@@ -831,7 +831,7 @@ package Icons
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "icons/sequerestedVolume.png")}));
+                "Resources/Icons/sequerestedVolume.png")}));
   end BloodSequesteredCompartment;
 
   partial model BaseFactorIcon
@@ -1095,9 +1095,9 @@ from this block.
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/concentrationCompartement.png"),
+                "Resources/Icons/concentrationCompartement.png"),
                     Bitmap(extent={{-100,100},{-20,20}},   fileName=
-                "icons/concentrationCompartement.png"), Text(
+                "Resources/Icons/concentrationCompartement.png"), Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
@@ -1105,7 +1105,7 @@ from this block.
 
   partial model Diffusion
     annotation (Icon(graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "modelica://Physiolibrary/icons/diffusion.png")}));
+                "Resources/Icons/diffusion.png")}));
 
   end Diffusion;
 
@@ -1114,7 +1114,7 @@ from this block.
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "icons/concentrationCompartement.png"), Text(
+                "Resources/Icons/concentrationCompartement.png"), Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
@@ -1125,37 +1125,79 @@ from this block.
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                                     Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/flowMeassure.png")}));
+              fileName="Resources/Icons/flowMeassure.png")}));
   end FlowMeasure;
 
   partial model HydraulicResistor
   annotation (Icon(graphics={    Bitmap(extent={{-120,44},{120,-42}},
-              fileName="icons/resistance.jpg")}));
+              fileName="Resources/Icons/resistance.jpg")}));
   end HydraulicResistor;
 
   model ElasticBalloon
   annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
-              fileName="icons/elastickyKompartment - Kopie.png")}));
+              fileName="Resources/Icons/elastickyKompartment - Kopie.png")}));
   end ElasticBalloon;
 
   model Membrane
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="modelica://Physiolibrary/icons/membrane.png")}));
+              fileName="Resources/Icons/membrane.png")}));
   end Membrane;
 
   model MolarFlowMeasure
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="modelica://Physiolibrary/icons/molarFlowMeassure.png")}));
+              fileName="Resources/Icons/molarFlowMeassure.png")}));
   end MolarFlowMeasure;
 
   model Dilution
     annotation (Icon(graphics={     Bitmap(extent={{-140,100},{60,-100}},
-              fileName="icons/dilution.png")}));
+              fileName="Resources/Icons/dilution.png")}));
   end Dilution;
 
   model GasSolubility
   end GasSolubility;
+
+  model PressureMeasure
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+              -100,-100},{100,100}}), graphics), Icon(graphics={Bitmap(extent={
+                {-100,100},{100,-100}}, fileName=
+                "Resources/Icons/pressureMeassure.png")}));
+  end PressureMeasure;
+
+  model Reabsorbtion
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "Resources/Icons/reabsorbtion.png")}));
+  end Reabsorbtion;
+
+  model Reabsorbtion2
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "Resources/Icons/reabsorbtion2.jpg")}));
+  end Reabsorbtion2;
+
+  model InternalElasticBalloon
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "Resources/Icons/ventilatorCapacitance.png")}));
+  end InternalElasticBalloon;
+
+  model Inertance
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "Resources/Icons/ventilatorInertance.png")}));
+  end Inertance;
   annotation (Documentation(revisions=""));
+  model HydrostaticGradient
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics={Bitmap(extent={{-100,100},{102,-100}},
+              fileName="Resources/Icons/hydrostaticGradient.png")}));
+
+  end HydrostaticGradient;
 end Icons;
