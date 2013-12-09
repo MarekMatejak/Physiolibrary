@@ -5,17 +5,127 @@ package Chemical "Molar Concentration Physiological Domain"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
+    model SimpleReaction
+
+       extends Modelica.Icons.Example;
+
+      Chemical.NormalizedSubstance A(solute_start=0.9)
+        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
+      Chemical.ChemicalReaction reaction(K=1)
+        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+      Chemical.NormalizedSubstance B(solute_start=0.1)
+        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+    equation
+
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
+          points={{-46,2},{-10,2}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(reaction.products[1], B.q_out) annotation (Line(
+          points={{10,2},{54,2}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end SimpleReaction;
+
+    model SimpleReaction_Equilibrated
+      extends SimpleReaction(
+        A(Simulation=Simulation),
+        B(Simulation=Simulation),
+        reaction(Simulation=Simulation, isSubstrateFlowIncludedInEquilibrium={false}));
+      extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+
+      parameter Types.AmountOfSubstance totalSystemSubstance=0.01;
+    equation
+      normalizedState[1]*totalSystemSubstance = A.solute + B.solute;
+    end SimpleReaction_Equilibrated;
+
+    model MichaelisMenten "Basic enzyme kinetics"
+    extends Modelica.Icons.Example;
+    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //=States.SimulationType.NoInit); for dynamic simulation
+
+     parameter Types.AmountOfSubstance tE=0.001 "total enzyme concentration";
+     parameter Real k_cat(unit="m3/s", displayUnit="l/min")=60e-3
+        "forward rate of second reaction";
+     parameter Types.Concentration Km=1.5
+        "Michaelis constant = substrate concentration at rate of half Vmax";
+
+      NormalizedSubstance ES(Simulation=Simulation, solute_start=0)
+        annotation (Placement(transformation(extent={{-10,14},{10,34}})));
+      NormalizedSubstance E(Simulation=Simulation, solute_start=tE)
+        annotation (Placement(transformation(extent={{-12,56},{8,76}})));
+      ChemicalReaction chemicalReaction(nS=2,
+        K=2/Km,
+        forwardRate=2*k_cat/Km)
+        annotation (Placement(transformation(extent={{-42,14},{-22,34}})));
+      ChemicalReaction chemicalReaction1(nP=2,
+        Simulation=Simulation,
+        isSubstrateFlowIncludedInEquilibrium={false},
+        K=Modelica.Constants.inf,
+        forwardRate=k_cat)
+        annotation (Placement(transformation(extent={{22,14},{42,34}})));
+      UnlimitedStorage P(concentration=0)
+        annotation (Placement(transformation(extent={{74,14},{94,34}})));
+      UnlimitedStorage S(concentration=10)
+        annotation (Placement(transformation(extent={{-84,14},{-64,34}})));
+
+     // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
+    equation
+      normalizedState[1]*tE = E.solute + ES.solute;
+
+     //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
+      connect(S.q_out, chemicalReaction.substrates[1])           annotation (Line(
+          points={{-73.8,24},{-74,24},{-74,23.5},{-42,23.5}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
+          points={{-2,66},{-52,66},{-52,24.5},{-42,24.5}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
+          points={{-22,24},{0,24}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+          points={{0,24},{22,24}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(chemicalReaction1.products[1], P.q_out) annotation (Line(
+          points={{42,23.5},{84.2,23.5},{84.2,24}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(chemicalReaction1.products[2], E.q_out) annotation (Line(
+          points={{42,24.5},{50,24.5},{50,66},{-2,66}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end MichaelisMenten;
+
     model MWC_Allosteric_Hemoglobin
     extends Modelica.Icons.Example;
     extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
     //=States.SimulationType.NoInit); for dynamic simulation
 
+      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
       parameter Types.Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
       parameter Types.Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Types.Concentration KR = 0.480001*7.875647668393782383419689119171e-5
-        "oxygen dissociation on relaxed(R) hemoglobin subunit";
+      parameter Types.Concentration KR = 0.000671946
+        "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
+                                                                //10.500001495896 7.8756465463794e-05
 
       parameter Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
@@ -131,8 +241,9 @@ package Chemical "Molar Concentration Physiological Domain"
       NormalizedSubstance oxygen_unbound(Simulation=Simulation, solute_start=0.000001
             *7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{-36,-36},{-16,-16}})));
-      Mixed.PartialPressure partialPressure(alpha=7.875647668393782383419689119171e-5,
+      Mixed.PartialPressure partialPressure(
         gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
+        alpha=alpha,
         T=310.15)                                     annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -344,7 +455,7 @@ package Chemical "Molar Concentration Physiological Domain"
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
-        experiment(StopTime=10),
+        experiment(StopTime=10000),
         __Dymola_experimentSetupOutput,
         Documentation(info="<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
@@ -356,6 +467,7 @@ package Chemical "Molar Concentration Physiological Domain"
 <p>These forms are represented by blocks T0..T4 and R0..R4, where the suffexed index means the number of oxygen bounded to the form.</p>
 <p><br/>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
 <p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
+<p><br/>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
 </html>", revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1142,20 +1254,20 @@ Connector with one flow signal of type Real.
     import Physiolibrary;
 
     parameter Integer nS=1 "Number of substrates types"
-      annotation (Dialog(group="Reaction type"));
+      annotation (Dialog(group="Substrates", tab="Reaction type"));
     parameter Integer nP=1 "Number of products types"
-      annotation (Dialog(group="Reaction type"));
+      annotation (Dialog(group="Products", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
       "stoichiometric reaction coeficient for substrate"
-      annotation (Dialog(group="Reaction type"));
+      annotation (Dialog(group="Substrates", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
       "stoichiometric reaction coeficients for substrate"
-      annotation (Dialog(group="Reaction type"));
+      annotation (Dialog(group="Products", tab="Reaction type"));
 
     parameter Real forwardRate = 10^8 "forward reaction rate"
-      annotation (Dialog(group="Reaction rate")); //forward K*(10^rateLevel) at temperature TK
+      annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
     parameter Physiolibrary.States.SimulationType
                                     Simulation=Physiolibrary.States.SimulationType.NoInit
@@ -1182,10 +1294,10 @@ Connector with one flow signal of type Real.
     Real KaT "dissociation constant in current temperature";
 
     parameter Physiolibrary.Types.Temperature TK=298.15 "base temperature"
-      annotation (Dialog(group="Temperature dependence"));
+      annotation (Dialog(tab="Temperature dependence"));
 
     parameter Modelica.SIunits.MolarInternalEnergy dH=0 "enthalpy change"
-      annotation (Dialog(group="Temperature dependence"));
+      annotation (Dialog(tab="Temperature dependence"));
 
   equation
     rr = forwardRate*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
@@ -1275,7 +1387,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 
     parameter Real K "disociation constant";
     parameter Physiolibrary.Types.Temperature T=310.15 "current temperature"
-       annotation (Dialog(group="Temperature dependence"));
+       annotation (Dialog(tab="Temperature dependence"));
                      //body temperature
 
   equation

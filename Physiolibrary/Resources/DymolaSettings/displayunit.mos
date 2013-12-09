@@ -28,16 +28,18 @@ defineUnitConversion("W", "kcal/min", 60/4186.8 );               //flow
 //defineUnitConversion("mg", "U_ADH", 600 );
 
 //Number of molecules
+defineUnitConversion("mol", "mmol", 10^3 );
 defineUnitConversion("mol", "umol", 10^6 );
 defineUnitConversion("mol", "nmol", 10^9 );
 defineUnitConversion("mol", "pmol", 10^12 );
 defineUnitConversion("mol/m3", "mol/l", 10^(-3) );
 defineUnitConversion("mol/m3", "mmol/l", 1 );
 defineUnitConversion("mol/m3", "mmol/ml", 10^3 );
-defineUnitConversion("mol/s", "mol/mim", 60 );
-defineUnitConversion("mol/s", "mmol/mim", 60*10^3 );
+defineUnitConversion("mol/s", "mol/min", 60 );
+defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
+defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
 defineUnitConversion("m3/s", "(mmol/min)/(mmol/l)", (10^3)*60 ); //diffusion permeability
-
+defineUnitConversion("mol/(m3.Pa)", "mmol/(l.mmHg)", 133.322387415 ); //gas solubility
 
 //Osmolarity
 defineUnitConversion("mol", "Osm", 1 );
@@ -91,6 +93,13 @@ defineUnitConversion("m3", "dl", 1e4);
 defineUnitConversion("m3", "cl", 1e5);
 defineUnitConversion("m3", "ml", 1e6);
 
+// Mass
+defineUnitConversion("kg", "g", 1e3);
+defineUnitConversion("kg", "mg", 1e6);
+defineUnitConversion("kg", "ug", 1e9);
+defineUnitConversion("kg", "ng", 1e12);
+defineUnitConversion("kg", "pg", 1e15);
+
 // Pressure
 defineUnitConversion("Pa", "kPa", 1e-3);
 defineUnitConversion("Pa", "MPa", 1e-6);
@@ -98,9 +107,11 @@ defineUnitConversion("Pa", "bar", 1e-5);
 defineUnitConversion("Pa", "mmHg", 1/133.322387415);
 defineUnitConversion("Pa", "cmH2O", 1/98.0665);
 defineUnitConversion("Pa", "torr", 760/101325);
-defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e-6)*(133.322387415)*60);
+defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60);
 defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));
 defineUnitConversion("Pa.s2/m3", "mmHg.min2/ml", (1/133.322387415)*(1/(60^2))/(1e+6));
+
+
 
 // Bulk Modulus
 defineUnitConversion("N/m2","bar",1/1e5);
@@ -147,6 +158,7 @@ defineUnitConversion("V", "kV", 0.001);
 // Currrent
 defineUnitConversion("A", "mA", 1000);
 defineUnitConversion("A", "kA", 0.001);
+defineUnitConversion("A", "mEq/min", (1000/(9.64853399*10^4))*60 );
 
 // Capacitance
 defineUnitConversion("F", "uF", 1e6);
@@ -163,6 +175,7 @@ defineUnitConversion("m2/s", "mm2/s",1e6);
 // Temperature coefficient (e.g. of resistance)
 defineUnitConversion("1/K", "ppm/K",1e6);
 
+defineUnitConversion("1", "%",100);
 
 // -------------------------------------------------------------------
 // The default display unit used by Dymola (until another display unit
@@ -185,4 +198,5 @@ defineUnitConversion("1/K", "ppm/K",1e6);
  defineDefaultDisplayUnit("mol/s", "mol/min");
  defineDefaultDisplayUnit("s", "min");
  defineDefaultDisplayUnit("C", "mEq");
+ defineDefaultDisplayUnit("V", "mV");
 

@@ -5,6 +5,73 @@ package Types "Physiological units with nominals"
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
+    model Units
+    extends Modelica.Icons.Example;
+     model ParametricClass
+      parameter Energy energy;
+      parameter Time t;
+      parameter Mass mass;
+      parameter MassFlowRate massFlowRate;
+      parameter Density density;
+      parameter Height height;
+      parameter Acceleration acceleration;
+      parameter Pressure pressure;
+      parameter Volume volume;
+      parameter VolumeFlowRate volumeFlowRate;
+      parameter Concentration concentration;
+      parameter Osmolarity osmolarity;
+      parameter AmountOfSubstance amountOfSubstance;
+      parameter MolarFlowRate molarFlowRate;
+      parameter Heat heat;
+      parameter Temperature temperature;
+      parameter HeatFlowRate heatFlowRate;
+      parameter ThermalConductance thermalConductance;
+      parameter SpecificHeatCapacity specificHeatCapacity;
+      parameter SpecificEnergy specificEnergy;
+      parameter ElectricPotential electricalPotential;
+      parameter ElectricCharge electricCharge;
+      parameter ElectricCurrent electricCurrent;
+      parameter Fraction fraction;
+      parameter OsmoticPermeability osmoticPermeability;
+      parameter DiffusionPermeability diffusionPermeability;
+      parameter HydraulicConductance hydraulicConductance;
+      parameter HydraulicInertance hydraulicInertance;
+      parameter GasSolubility gasSolubility;
+     end ParametricClass;
+
+      ParametricClass parametricClass(
+        acceleration=1,
+        concentration=1,
+        osmolarity=1,
+        energy=4186.8,
+        t=60,
+        mass=0.001,
+        massFlowRate=1.6666666666667e-08,
+        density=1000,
+        height=0.01,
+        pressure=133.322387415,
+        volume=1e-06,
+        volumeFlowRate=1.6666666666667e-08,
+        amountOfSubstance=0.001,
+        molarFlowRate=1.6666666666667e-05,
+        heat=4186.8,
+        temperature=274.15,
+        heatFlowRate=69.78,
+        thermalConductance=69.78,
+        specificHeatCapacity=4186.8,
+        specificEnergy=4186.8,
+        electricalPotential=0.001,
+        electricCharge=96.4853399,
+        electricCurrent=1.6080889983333,
+        fraction=0.01,
+        osmoticPermeability=1.2501026264094e-10,
+        diffusionPermeability=1.6666666666667e-08,
+        hydraulicConductance=1.2501026264094e-10,
+        hydraulicInertance=479960594694,
+        gasSolubility=0.0075006157584566)
+        annotation (Placement(transformation(extent={{-52,50},{-32,70}})));
+    end Units;
+
     model ParameterSet
     extends Modelica.Icons.Example;
 
@@ -119,8 +186,8 @@ package Types "Physiological units with nominals"
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((133.322387415)*60));
-  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)/60);
+  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
+  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
@@ -1678,6 +1745,9 @@ constructed by the signals connected to this bus.
     ));
 */
     end BusConnector;
+
+  package Constants
+  end Constants;
 
   partial block AbstractBoolean
     "Abstract parameter or the value at defined time of the model - can be input or output parameter"

@@ -8,33 +8,47 @@ package Hydraulic "Hydraulic Physical Domain"
     model CardiovascularSystem
     extends Modelica.Icons.Example;
 
-      ElacticBalloon arteries(volume_start=0.001)
+      ElacticBalloon arteries(
+        zeroPressureVolume=0,
+        volume_start=0.001,
+        compliance=7.5006157584566e-08)
         annotation (Placement(transformation(extent={{64,-74},{84,-54}})));
-      ElacticBalloon veins
+      ElacticBalloon veins(
+        zeroPressureVolume=0,
+        volume_start=0.0035,
+        compliance=1.3126077577299e-05)
         annotation (Placement(transformation(extent={{-80,-74},{-60,-54}})));
-      Resistor peripheral
+      Resistor peripheral(cond=7.1430864073035e-09)
         annotation (Placement(transformation(extent={{-6,-74},{14,-54}})));
       Pump rightHeart
-        annotation (Placement(transformation(extent={{-58,-8},{-38,12}})));
+        annotation (Placement(transformation(extent={{-52,-8},{-32,12}})));
       Pump leftHeart
         annotation (Placement(transformation(extent={{50,-6},{70,14}})));
-      ElacticBalloon pulmonaryVeins
+      ElacticBalloon pulmonaryVeins(
+        zeroPressureVolume=0,
+        volume_start=0.0004,
+        compliance=6.0004926067653e-07)
         annotation (Placement(transformation(extent={{30,50},{50,70}})));
-      ElacticBalloon pulmonaryArteries
+      ElacticBalloon pulmonaryArteries(
+        zeroPressureVolume=0,
+        volume_start=0.0001,
+        compliance=5.0029107108905e-08)
         annotation (Placement(transformation(extent={{-46,50},{-26,70}})));
-      Resistor pulmonary
+      Resistor pulmonary(cond=6.9838233326989e-08)
         annotation (Placement(transformation(extent={{-14,50},{6,70}})));
       PressureMeasure pressureMeasure
-        annotation (Placement(transformation(extent={{-78,10},{-58,30}})));
+        annotation (Placement(transformation(extent={{-76,10},{-56,30}})));
       PressureMeasure pressureMeasure1
         annotation (Placement(transformation(extent={{24,16},{44,36}})));
-      Modelica.Blocks.Math.Gain rightStarlingSlope
-        annotation (Placement(transformation(extent={{-58,14},{-50,22}})));
-      Modelica.Blocks.Math.Gain leftStarlingSlope
+      Modelica.Blocks.Math.Gain rightStarlingSlope(k=3.5e-7)
+        "2800 l/min/mmHg = 3.5e-7 m3/s/Pa"
+        annotation (Placement(transformation(extent={{-52,14},{-44,22}})));
+      Modelica.Blocks.Math.Gain leftStarlingSlope(k=1.4e-7)
+        "1120 ml/min/mmHg = 0.00112 m3/min/mmHg = 1.867e-5 m3/s/mmHg = 1.4e-7 m3/s/Pa"
         annotation (Placement(transformation(extent={{48,20},{56,28}})));
     equation
       connect(veins.q_in, rightHeart.q_in) annotation (Line(
-          points={{-70,-64},{-70,2},{-58,2}},
+          points={{-70,-64},{-70,2},{-52,2}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -49,7 +63,7 @@ package Hydraulic "Hydraulic Physical Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(rightHeart.q_out, pulmonaryArteries.q_in) annotation (Line(
-          points={{-38,2},{-28,2},{-28,40},{-56,40},{-56,60},{-36,60}},
+          points={{-32,2},{-28,2},{-28,40},{-56,40},{-56,60},{-36,60}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -74,36 +88,51 @@ package Hydraulic "Hydraulic Physical Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(pulmonaryVeins.q_in, pressureMeasure1.q_in) annotation (Line(
-          points={{40,60},{54,60},{54,42},{28,42},{28,22},{32,22}},
+          points={{40,60},{54,60},{54,42},{28,42},{28,19},{30.2,19}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure.q_in, veins.q_in) annotation (Line(
-          points={{-70,16},{-70,-64}},
+          points={{-69.8,13},{-69.8,2},{-70,2},{-70,-64}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure.actualPressure, rightStarlingSlope.u) annotation (
          Line(
-          points={{-62.8,18},{-58.8,18}},
+          points={{-60.2,16.8},{-60,16.8},{-60,18},{-52.8,18}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(rightHeart.desiredFlow, rightStarlingSlope.y) annotation (Line(
-          points={{-48,8},{-48,18},{-49.6,18}},
+          points={{-42,8},{-42,18},{-43.6,18}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure1.actualPressure, leftStarlingSlope.u) annotation (
          Line(
-          points={{39.2,24},{47.2,24}},
+          points={{39.8,22.8},{44,22.8},{44,24},{47.2,24}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(leftStarlingSlope.y, leftHeart.desiredFlow) annotation (Line(
           points={{56.4,24},{56.4,23.5},{60,23.5},{60,10}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),      graphics));
     end CardiovascularSystem;
+
+    model CardiovascularSystem_Equilibrated
+      extends CardiovascularSystem(
+        peripheral(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
+        pulmonaryArteries(Simulation=Simulation),
+        pulmonaryVeins(Simulation=Simulation),
+        arteries(Simulation=Simulation),
+        veins(Simulation=Simulation));
+      extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+
+      parameter Types.Volume BloodVolume = 0.0056 "total blood volume";
+
+    equation
+      normalizedState[1]*BloodVolume = arteries.volume + veins.volume + pulmonaryArteries.volume + pulmonaryVeins.volume;
+    end CardiovascularSystem_Equilibrated;
   end Examples;
 
   connector PressureFlow "Hydraulical Pressure-VolumeFlow connector"

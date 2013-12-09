@@ -1,5 +1,72 @@
 within Physiolibrary;
 package Mixed
+  package Examples
+    "Examples that demonstrate usage of the Pressure flow components"
+  extends Modelica.Icons.ExamplesPackage;
+
+    model O2_in_water
+    extends Modelica.Icons.Example;
+    //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //=States.SimulationType.NoInit); for dynamic simulation
+
+      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.Equilibrated;
+
+      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
+    public
+      Chemical.NormalizedSubstance oxygen_unbound(Simulation=Simulation,
+          solute_start=0.000001*7.875647668393782383419689119171e-5)
+        annotation (Placement(transformation(extent={{12,-46},{32,-26}})));
+      Mixed.PartialPressure partialPressure(
+        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
+        alpha=alpha,
+        T=310.15)                                     annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-2,-18})));
+      Hydraulic.UnlimitedVolume unlimitedVolume(Simulation=Simulation)
+        annotation (Placement(transformation(extent={{-34,6},{-14,26}})));
+      Modelica.Blocks.Sources.Clock clock(offset=0.000001)
+        annotation (Placement(transformation(extent={{-52,50},{-32,70}})));
+    equation
+
+      connect(partialPressure.n, oxygen_unbound.q_out)      annotation (Line(
+          points={{-2,-28},{-2,-36},{22,-36}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(unlimitedVolume.y, partialPressure.v) annotation (Line(
+          points={{-24,16},{-2,16},{-2,-8}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(clock.y, unlimitedVolume.pressure) annotation (Line(
+          points={{-31,60},{-24,60},{-24,26}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics),
+        experiment(StopTime=10000),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
+<p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
+<p><br/>In short it is about binding oxygen to hemoglobin.</p>
+<p>Oxgen are driven by its partial pressure using clock source - from very little pressure to pressure of 10kPa.</p>
+<p>(Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air.)</p>
+<p>Hemoglobin was observed (by Perutz) in two structuraly different forms R and T.</p>
+<p>These forms are represented by blocks T0..T4 and R0..R4, where the suffexed index means the number of oxygen bounded to the form.</p>
+<p><br/>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
+<p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
+</html>", revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end O2_in_water;
+  end Examples;
+
   model IdealGas
     "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
     import Physiolibrary;
@@ -92,8 +159,8 @@ package Mixed
       "Gas solubility in solvent in temperature T";
     parameter Physiolibrary.Types.Temperature T "Temperature";
 
-    Physiolibrary.Chemical.GasSolubility  gasSolubility(kH=alpha*Modelica.Constants.R
-        *T)
+    Physiolibrary.Chemical.GasSolubility  gasSolubility(kH=1/(alpha*Modelica.Constants.R
+        *T))
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas idealGas(T=T)
                       annotation (Placement(transformation(
@@ -150,8 +217,8 @@ package Mixed
     parameter Physiolibrary.Types.Temperature T0=298.15
       "Base temperature of alpha";
 
-    Physiolibrary.Chemical.GasSolubility2  gasSolubility(kH_T0=alpha_T0*
-        Modelica.Constants.R*T0, T0=T0)
+    Physiolibrary.Chemical.GasSolubility2  gasSolubility(kH_T0=1/(alpha_T0*
+        Modelica.Constants.R*T0), T0=T0)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas2 idealGas annotation (Placement(transformation(
           extent={{-10,10},{10,-10}},

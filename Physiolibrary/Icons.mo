@@ -1192,7 +1192,7 @@ from this block.
               fileName=
                 "Resources/Icons/ventilatorInertance.png")}));
   end Inertance;
-  annotation (Documentation(revisions=""));
+
   model HydrostaticGradient
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
@@ -1200,4 +1200,5 @@ from this block.
               fileName="Resources/Icons/hydrostaticGradient.png")}));
 
   end HydrostaticGradient;
+  annotation (Documentation(revisions=""));
 end Icons;

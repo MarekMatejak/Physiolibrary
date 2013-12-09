@@ -191,15 +191,6 @@ package Physiolibrary "Physiological domains library (version v1.0)"
   end UsersGuide;
 
 
-
-
-
-
-
-
-
-
-
   annotation (preferredView="info",
 version="1.0",
 versionBuild=1,
