@@ -89,15 +89,15 @@ package Types "Physiological units with nominals"
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
 
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
-  type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)*60);
+  type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
   type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
 
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
-  type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=101325/760);
+  type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
-  type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)*60);
+  type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
   type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", nominal=1);
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
@@ -106,27 +106,27 @@ package Types "Physiological units with nominals"
 
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
-  type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8*60);
-  type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.degC)", nominal=4186.8*60);
-  type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(degC.kg)", nominal=4186.8);
+  type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
+  type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
+  type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
   type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
     "vaporization, ..";
 
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
-  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="mEq", nominal=(1e-3)*(9.64853399*10^4));
-  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="mEq/min", nominal=(1e-3)*(9.64853399*10^4)*60);
+  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="mEq", nominal=96.4853365);
+  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="mEq/min", nominal=1.60808894);
 
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((101325/760)*60));
-  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)*60);
+  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((133.322387415)*60));
+  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)/60);
 
-  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((101325/760)*60));
-  type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(101325/760));
-  type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((101325/760)*(60^2)/(1e-6)));
+  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
+  type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
+  type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
-  type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(101325/760)))
+  type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(133.322387415)))
     "Gas solubility in liquid";
 
   package RealIO
