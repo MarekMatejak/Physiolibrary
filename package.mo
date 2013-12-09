@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version 2013)"
+package Physiolibrary "Physiological domains library (version v1.0)"
 
 
   package UsersGuide "User's Guide"
@@ -189,6 +189,15 @@ package Physiolibrary "Physiological domains library (version 2013)"
 </table>
 </html>"));
   end UsersGuide;
+
+
+
+
+
+
+
+
+
 
 
   annotation (Documentation(revisions="<html>
