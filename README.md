@@ -44,7 +44,7 @@ it can be redistributed and/or modified under the terms of the [Modelica License
 ## Development and contribution
 Release manager: [Marek Matejak](http://www.physiome.cz)
 
-You may report bugs or issues to e-mail: marek<at>matfyz<dot>cz
+You may report bugs or issues to e-mail: marek\<at\>matfyz\<dot\>cz
 
 
 
