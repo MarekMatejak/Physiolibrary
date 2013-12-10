@@ -7,31 +7,31 @@ package Osmotic "Osmotic Physical Domain"
 
     model Cell
     extends Modelica.Icons.Example;
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //extends States.StateSystem; //(Simulation=States.SimulationType.Equilibrated);
 
       OsmoticCell cells(volume_start(displayUnit="l") = 0.01)
         annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
       OsmoticCell interstitium(volume_start(displayUnit="l") = 0.005)
         annotation (Placement(transformation(extent={{50,36},{70,56}})));
-      Membrane membrane(cond=1)
+      Membrane membrane(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,36},{16,56}})));
       Types.RealTypes.AmountOfSubstance amountOfSubstance(varName=
-            "CellularProteins", k=3420)
+            "CellularProteins", k=2.85)
         annotation (Placement(transformation(extent={{-92,70},{-72,90}})));
       Types.RealTypes.AmountOfSubstance amountOfSubstance1(varName=
-            "InterstitialProteins", k=1425)
+            "InterstitialProteins", k=1.6)
         annotation (Placement(transformation(extent={{16,70},{36,90}})));
       OsmoticCell cells1(volume_start(displayUnit="l") = 0.01)
         annotation (Placement(transformation(extent={{-54,-76},{-34,-56}})));
       OsmoticCell interstitium1(volume_start(displayUnit="l") = 0.005)
         annotation (Placement(transformation(extent={{52,-76},{72,-56}})));
-      Membrane membrane1(cond=1)
+      Membrane membrane1(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
       Types.RealTypes.AmountOfSubstance amountOfSubstance2(varName=
-            "CellularProteins", k=3420)
+            "CellularProteins", k=2.85)
         annotation (Placement(transformation(extent={{-90,-42},{-70,-22}})));
       Types.RealTypes.AmountOfSubstance amountOfSubstance3(varName=
-            "InterstitialProteins", k=1425)
+            "InterstitialProteins", k=1.2)
         annotation (Placement(transformation(extent={{18,-42},{38,-22}})));
     equation
       connect(cells.q_in, membrane.q_in) annotation (Line(
@@ -73,7 +73,9 @@ package Osmotic "Osmotic Physical Domain"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics));
+                -100},{100,100}}),      graphics),
+        experiment(StopTime=900),
+        __Dymola_experimentSetupOutput);
     end Cell;
   end Examples;
 

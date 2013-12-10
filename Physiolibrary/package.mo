@@ -155,27 +155,27 @@ package Physiolibrary "Physiological domains library (version v1.0)"
 <td valign=\"top\"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Blocks.UsersGuide\">Blocks</a> </p></td>
+<td valign=\"top\"><p>Blocks</p></td>
 <td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Chemical.UsersGuide\">Chemical</a> </p></td>
+<td valign=\"top\"><p>Chemical</p></td>
 <td valign=\"top\"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Hydraulic.UsersGuide\">Hydraulic</a> </p></td>
+<td valign=\"top\"><p>Hydraulic</p></td>
 <td valign=\"top\"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Thermal.UsersGuide\">Thermal</a></p></td>
+<td valign=\"top\"><p>Thermal</p></td>
 <td valign=\"top\"><p>Library of termoregulation support.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica:/Physiolibrary.Osmotic.UsersGuide\">Osmotic</a></p></td>
+<td valign=\"top\"><p>Osmotic</p></td>
 <td valign=\"top\"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Mixed.UsersGuide\">Mixed</a></p></td>
+<td valign=\"top\"><p>Mixed</p></td>
 <td valign=\"top\"><p>Library to join domains above together.</p></td>
 </tr>
 <tr>
@@ -183,7 +183,7 @@ package Physiolibrary "Physiological domains library (version v1.0)"
 <td valign=\"top\"><p>Icons</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.ExtendedTypes.UsersGuide\">F</a>ileUtilities</p></td>
+<td valign=\"top\"><p>FileUtilities</p></td>
 <td valign=\"top\"><p>Read/write values from/to file. </p></td>
 </tr>
 </table>
@@ -202,5 +202,10 @@ uses(Modelica(version="3.2")),
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>", info="<html>
+<p>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation, where it was called HumMod.Library. As the successors of Guyton&apos;s Medical Physiology School write, the original HumMod model is &ldquo;The best, most complete, mathematical model of human physiology ever created&rdquo;.</p>
+<p>We are also developing many types of smaller physiological models for use in medical education, so it was essential to separate this library from our HumMod Modelica implementation. This separation improves the quality of the next HumMod release and provides a useful Modelica library to modelers in this bioscience.</p>
+<p>The library contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological processes. For example from only two type of blocks (Chemical.ChemicalReaction and Chemical.Substance) it is possible to compose the allosteric transitions or the Michaelis-Menten equation.</p>
+<p><br/>Physiology is a very progressive discipline, that examines how the living body works. And it is no surprise that all processes in the human body are driven by physical laws of nature. The great challenge is to marry old empirical experiments with the &ldquo;new&rdquo; physical principles. Many teams and projects in the word deal with this formalization of physiology, for example: Physiome, SBML, EuroPhysiome, VPH, CellML etc. It is our hope that this library helps this unflagging effort of physiologists to exactly describe the processes.</p>
 </html>"), uses(Modelica(version="3.2")));
 end Physiolibrary;

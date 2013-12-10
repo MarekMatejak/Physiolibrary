@@ -1,5 +1,5 @@
 within Physiolibrary;
-package FilesUtilities
+package FilesUtilities "Value input/output/test support"
   import Physiolibrary;
   extends Physiolibrary.Types.Utilities;
   redeclare function extends readInputReal

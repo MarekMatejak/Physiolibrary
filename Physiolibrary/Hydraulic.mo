@@ -46,6 +46,10 @@ package Hydraulic "Hydraulic Physical Domain"
       Modelica.Blocks.Math.Gain leftStarlingSlope(k=1.4e-7)
         "1120 ml/min/mmHg = 0.00112 m3/min/mmHg = 1.867e-5 m3/s/mmHg = 1.4e-7 m3/s/Pa"
         annotation (Placement(transformation(extent={{48,20},{56,28}})));
+      Blocks.Factors.Effect effect
+        annotation (Placement(transformation(extent={{70,12},{90,32}})));
+      Blocks.Factors.Effect effect1
+        annotation (Placement(transformation(extent={{70,24},{90,44}})));
     equation
       connect(veins.q_in, rightHeart.q_in) annotation (Line(
           points={{-70,-64},{-70,2},{-52,2}},
@@ -113,6 +117,18 @@ package Hydraulic "Hydraulic Physical Domain"
           smooth=Smooth.None));
       connect(leftStarlingSlope.y, leftHeart.desiredFlow) annotation (Line(
           points={{56.4,24},{56.4,23.5},{60,23.5},{60,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(effect.y, leftHeart.desiredFlow) annotation (Line(
+          points={{80,20},{70,20},{70,10},{60,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure1.actualPressure, effect.u) annotation (Line(
+          points={{39.8,22.8},{54.9,22.8},{54.9,22},{70.2,22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(effect1.y, effect.yBase) annotation (Line(
+          points={{80,32},{80,24}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

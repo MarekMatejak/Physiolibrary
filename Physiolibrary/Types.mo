@@ -69,7 +69,10 @@ package Types "Physiological units with nominals"
         hydraulicConductance=1.2501026264094e-10,
         hydraulicInertance=479960594694,
         gasSolubility=0.0075006157584566)
-        annotation (Placement(transformation(extent={{-52,50},{-32,70}})));
+        annotation (Placement(transformation(extent={{-14,8},{6,28}})));
+      annotation (Documentation(info="<html>
+<p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
+</html>"));
     end Units;
 
     model ParameterSet
@@ -1747,6 +1750,53 @@ constructed by the signals connected to this bus.
     end BusConnector;
 
   package Constants
+    model PressureConst
+     parameter Types.Pressure k;
+      RealIO.PressureOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      y=k;
+    end PressureConst;
+
+    model VolumeFlowRateConst
+     parameter Types.VolumeFlowRate k;
+     RealIO.VolumeFlowRateOutput y
+        annotation (Placement(transformation(extent={{82,-10},{102,10}})));
+    equation
+      y=k;
+    end VolumeFlowRateConst;
+
+    model VolumeConst
+     parameter Types.Volume k;
+      RealIO.VolumeOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      y=k;
+    end VolumeConst;
+
+    model MolarFlowRateConst
+     parameter Types.MolarFlowRate k;
+      RealIO.MolarFlowRateOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      y=k;
+    end MolarFlowRateConst;
+
+    model AmountOfSubstanceConst
+     parameter Types.AmountOfSubstance k;
+      RealIO.AmountOfSubstanceOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      y=k;
+    end AmountOfSubstanceConst;
+
+    model ConcentrationConst
+     parameter Types.Concentration k;
+      RealIO.ConcentrationOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      y=k;
+    end ConcentrationConst;
   end Constants;
 
   partial block AbstractBoolean
