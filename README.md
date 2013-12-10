@@ -9,7 +9,7 @@ water distribution, hormonal regulation and pharmacological regulation.
 
 The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation,
 where it was called HumMod.Library. As the successors of Guyton's Medical Physiology School write, 
-the original HumMod model is “The best, most complete, mathematical model of human phys-iology ever created” ( http:\\\\hummod.org ).
+the original HumMod model is “The best, most complete, mathematical model of human phys-iology ever created” ( http://hummod.org ).
 
 We are also developing many types of smaller physiological models for use in medical education, 
 so it was essential to separate this library from our HumMod Modelica implementation. This separation improves 
@@ -41,7 +41,7 @@ This Modelica package is free software and the use is completely at your own ris
 it can be redistributed and/or modified under the terms of the [Modelica License 2](https://modelica.org/licenses/ModelicaLicense2).
 
 ## Development and contribution
-Release manager: [Marek Matejak](www.physiome.cz)
+Release manager: [Marek Matejak](http://www.physiome.cz)
 
 You may report any issues by using the [Redmine Issue Tracker](http://physiome.lf1.cuni.cz:8080/redmine/projects/physiolibrary).
 
