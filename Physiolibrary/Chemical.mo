@@ -760,7 +760,7 @@ Connector with one flow signal of type Real.
           origin={-60,0})));
 
   equation
-   // assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow direction! Not 'solventFlow<0'!");
+    assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow direction! Not 'solventFlow<0'!");
     q_in.q = solventFlow*q_in.conc
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -1762,9 +1762,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 </html>"));
   end FullReabsorbtion;
 
-  model GasSolubility "Henry's law about the solubility of a gas in a liquid"
+  model GasSolubility
+    "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
 
-    extends OnePort;  //q_in is dissolved in liquid and q_out is in gaseous solution
+    extends OnePort; //q_in is dissolved in liquid and q_out is in gaseous solution"
     extends Physiolibrary.Icons.GasSolubility;
 
     parameter Physiolibrary.Types.Fraction kH

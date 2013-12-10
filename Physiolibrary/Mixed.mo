@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Mixed
+package Mixed "Blocks between domains"
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
