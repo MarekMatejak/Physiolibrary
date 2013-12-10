@@ -44,7 +44,7 @@ it can be redistributed and/or modified under the terms of the [Modelica License
 ## Development and contribution
 Release manager: [Marek Matejak](http://www.physiome.cz)
 
-You may report any issues by using the [Redmine Issue Tracker](http://physiome.lf1.cuni.cz:8080/redmine/projects/physiolibrary).
+You may report bugs or issues to e-mail: marek<at>matfyz<dot>cz
 
 
 
