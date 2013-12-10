@@ -15,24 +15,30 @@ package Mixed
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
     public
-      Chemical.NormalizedSubstance oxygen_unbound(Simulation=Simulation,
+      Chemical.NormalizedSubstance oxygen_dissolved(Simulation=Simulation,
           solute_start=0.000001*7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{12,-46},{32,-26}})));
-      Mixed.PartialPressure partialPressure(
-        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
-        alpha=alpha,
-        T=310.15)                                     annotation (Placement(
+      PartialPressure2      partialPressure(
+        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false,
+          C=1700),
+        alpha_T0=alpha,
+        T0=310.15)                                    annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-2,-18})));
       Hydraulic.UnlimitedVolume unlimitedVolume(Simulation=Simulation)
         annotation (Placement(transformation(extent={{-34,6},{-14,26}})));
-      Modelica.Blocks.Sources.Clock clock(offset=0.000001)
+      Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
         annotation (Placement(transformation(extent={{-52,50},{-32,70}})));
+      Modelica.Blocks.Sources.Sine temperature(
+        amplitude=10,
+        freqHz=1/60,
+        offset=310.15)
+        annotation (Placement(transformation(extent={{32,-2},{52,18}})));
     equation
 
-      connect(partialPressure.n, oxygen_unbound.q_out)      annotation (Line(
+      connect(partialPressure.n, oxygen_dissolved.q_out)    annotation (Line(
           points={{-2,-28},{-2,-36},{22,-36}},
           color={200,0,0},
           thickness=1,
@@ -42,8 +48,13 @@ package Mixed
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(clock.y, unlimitedVolume.pressure) annotation (Line(
+      connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
+                                                 annotation (Line(
           points={{-31,60},{-24,60},{-24,26}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(temperature.y, partialPressure.T) annotation (Line(
+          points={{53,8},{56,8},{56,-18},{6,-18}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -51,15 +62,7 @@ package Mixed
         experiment(StopTime=10000),
         __Dymola_experimentSetupOutput,
         Documentation(info="<html>
-<p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
-<p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
-<p><br/>In short it is about binding oxygen to hemoglobin.</p>
-<p>Oxgen are driven by its partial pressure using clock source - from very little pressure to pressure of 10kPa.</p>
-<p>(Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air.)</p>
-<p>Hemoglobin was observed (by Perutz) in two structuraly different forms R and T.</p>
-<p>These forms are represented by blocks T0..T4 and R0..R4, where the suffexed index means the number of oxygen bounded to the form.</p>
-<p><br/>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
-<p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
+<p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
 </html>", revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -213,7 +216,8 @@ package Mixed
                                                annotation (Placement(
           transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={
               {90,-10},{110,10}})));
-    parameter Real alpha_T0 "Gas solubility in solvent in temperature T0";
+    parameter Physiolibrary.Types.GasSolubility alpha_T0
+      "Gas solubility in solvent in temperature T0";
     parameter Physiolibrary.Types.Temperature T0=298.15
       "Base temperature of alpha";
 
