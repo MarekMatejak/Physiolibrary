@@ -29,11 +29,12 @@ Download [Physiolibrary v1.0.0 (2013-12-09)](../../archive/v1.0.0.zip)
 #### Release notes
 
 *  [Version v1.0.0 (2013-12-09)](../../archive/v1.0.0.zip)
- * The library uses the latest Modelica Standard Libary (MSL) version 3.2.1 (but still works with version 3.2).
- * Added a couple of convenience source blocks for Real, Integer, and Boolean signals that are similar to the blocks
-   found in the MSL, but have as output a clocked signal.
- * Added a couple of source blocks that are parametrized in terms of clock ticks rather than simulation time.
- * All new blocks are utilized in at least one test.
+ * The library uses the Modelica Standard Libary (MSL) version 3.2.
+ * Contains nice physiological icons.
+ * Support for physiological units: min,kcal,mmHg,ml,mEq,.. 
+ * Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains
+ * Support of euilibrated systems
+ * Support for expandable inputs/outputs/tests lists 
 
 ## License
 
