@@ -171,16 +171,18 @@ package Icons "Icons for physiological models"
 
   model LeftHeart
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-80,100},{44,-84}},
-              fileName="Resources/Icons/srdceLeva.png")}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}),        graphics={Bitmap(extent={{-110,100},{10,-100}},
+              fileName="Resources/Icons/srdceLeva.png")}), Diagram(
+          coordinateSystem(extent={{-100,-100},{100,100}})));
   end LeftHeart;
 
   model RightHeart
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-78,70},{44,-84}},
-              fileName="Resources/Icons/srdceprava.png")}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}),       graphics={Bitmap(extent={{-18,66},{100,-100}},
+              fileName="Resources/Icons/srdceprava.png")}), Diagram(
+          coordinateSystem(extent={{-100,-100},{100,100}})));
   end RightHeart;
 
   model Liver
