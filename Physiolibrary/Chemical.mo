@@ -133,7 +133,8 @@ package Chemical "Molar Concentration Physiological Domain"
       Types.Fraction sO2 "hemoglobin oxygen saturation";
 
       parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
-      Types.AmountOfSubstance totalAmountOfRforms,totalAmountOfTforms;
+      Types.AmountOfSubstance totalAmountOfRforms;
+      Types.AmountOfSubstance totalAmountOfTforms;
 
       NormalizedSubstance                        T0(stateName="T0",Simulation=Simulation,
         solute_start=1)
@@ -1266,7 +1267,7 @@ Connector with one flow signal of type Real.
       "stoichiometric reaction coeficients for substrate"
       annotation (Dialog(group="Products", tab="Reaction type"));
 
-    parameter Real kf = 10^8 "forward reaction rate coeficient"
+    parameter Real kf = 10^8 "forward reaction rate coeficient [SI unit]"
       annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
     parameter Physiolibrary.States.SimulationType
@@ -1386,7 +1387,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model ChemicalReaction "Chemical Reaction"
     extends ChemicalReactionBase;
 
-    parameter Real K "disociation constant";
+    parameter Real K "disociation constant [SI-unit]";
     parameter Physiolibrary.Types.Temperature T=310.15 "current temperature"
        annotation (Dialog(tab="Temperature dependence"));
                      //body temperature
@@ -1399,7 +1400,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model ChemicalReaction2 "Chemical Reaction"
     extends ChemicalReactionBase;
 
-    parameter Real K "disociation constant";
+    parameter Real K "disociation constant [SI-unit]";
     Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
                                                        annotation (Placement(
           transformation(extent={{10,30},{50,70}}), iconTransformation(
@@ -1414,7 +1415,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model ChemicalReaction3 "Chemical Reaction"
     extends ChemicalReactionBase;
 
-    Modelica.Blocks.Interfaces.RealInput K "dissociation constant"
+    Modelica.Blocks.Interfaces.RealInput K "dissociation constant [SI-unit]"
                                            annotation (Placement(transformation(
             extent={{-12,28},{28,68}}), iconTransformation(
           extent={{-20,-20},{20,20}},
