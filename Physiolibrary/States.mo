@@ -101,26 +101,26 @@ package States "Dynamic simulation / Equilibrium"
 
     replaceable package Utilities = Physiolibrary.FilesUtilities    constrainedby
       Physiolibrary.Types.Utilities
-                   annotation (Dialog(group="Functions to read or store",tab="Types"));
+                   annotation (Dialog(group="Functions to read or store",tab="IO"));
 
     Real state(start=state_start)
       "This state must be connected in inherited class definition";
     Real change "Dynamic change of state value per minute";
 
     parameter Real state_start "State start or init value"
-     annotation (Dialog(enable=false,group="Initialization"));
+     annotation (Dialog(enable=false,group="Initialization", tab="IO"));
 
     parameter Physiolibrary.States.SimulationType
                               Simulation(start=SimulationType.NoInit)
-      "Type of simulation. Normal dynamic with some initialization or equilibrated during all time during simulation."
-      annotation (Dialog(group="Simulation"));
+      "Type of simulation."
+      annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
    /* parameter Boolean EQUILIBRIUM(start=false) 
     "Is the state changing during simulation?"
      annotation (Dialog(group="Equilibrium"));
 */
     parameter Boolean SAVE_RESULTS(start=false)
-      "Do you want to save the comparation of original state values with simulation final state values?"
+      "save and test final state values with original values"
        annotation (Dialog(group="Value I/O",tab="IO"));
 
     parameter String storeUnit="" "Unit in Utilities input/output function"

@@ -60,13 +60,13 @@ package Chemical "Molar Concentration Physiological Domain"
         annotation (Placement(transformation(extent={{-12,56},{8,76}})));
       ChemicalReaction chemicalReaction(nS=2,
         K=2/Km,
-        forwardRate=2*k_cat/Km)
+        kf=2*k_cat/Km)
         annotation (Placement(transformation(extent={{-42,14},{-22,34}})));
       ChemicalReaction chemicalReaction1(nP=2,
         Simulation=Simulation,
         isSubstrateFlowIncludedInEquilibrium={false},
         K=Modelica.Constants.inf,
-        forwardRate=k_cat)
+        kf=k_cat)
         annotation (Placement(transformation(extent={{22,14},{42,34}})));
       UnlimitedStorage P(concentration=0)
         annotation (Placement(transformation(extent={{74,14},{94,34}})));
@@ -1178,7 +1178,7 @@ Connector with one flow signal of type Real.
     parameter Physiolibrary.Types.AmountOfSubstance
                                       NominalSolute = 0.001
       "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxyde ions can be much smaller."
-        annotation (Dialog(group="Numerical support of very small concentrations"));
+        annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
   equation
     q_out.conc = solute/solventVolume;
@@ -1266,18 +1266,19 @@ Connector with one flow signal of type Real.
       "stoichiometric reaction coeficients for substrate"
       annotation (Dialog(group="Products", tab="Reaction type"));
 
-    parameter Real forwardRate = 10^8 "forward reaction rate"
+    parameter Real kf = 10^8 "forward reaction rate coeficient"
       annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
     parameter Physiolibrary.States.SimulationType
                                     Simulation=Physiolibrary.States.SimulationType.NoInit
-      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      "Equilibrium?"
       annotation (Dialog(group="Simulation type", tab="Simulation"));
+                    // "False, instead of one reaction in equilibrated (with zero reaction rates) system."
     parameter Boolean isSubstrateFlowIncludedInEquilibrium[nS](each start=true)
-      "Is substrate flow equation included in equilibrium calculation?"
+      "Is substrate flow equation independent?"
        annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
     parameter Boolean isProductFlowIncludedInEquilibrium[nP](each start=true)
-      "Is product flow equation included in equilibrium calculation?"
+      "Is product flow equation independent?"
        annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
 
     NegativeConcentrationFlow products[nP] "products"
@@ -1300,7 +1301,7 @@ Connector with one flow signal of type Real.
       annotation (Dialog(tab="Temperature dependence"));
 
   equation
-    rr = forwardRate*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
+    rr = kf*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
 
      /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
      if Simulation==Physiolibrary.States.SimulationType.Equilibrated
@@ -1771,12 +1772,12 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     parameter Physiolibrary.Types.Fraction kH
       "Henry's law constant such as liquid-gas concentration ratio";
 
-    parameter Types.DiffusionPermeability solubilityRate=10^3
-      "The rate of incoming gas to solution";
+    parameter Types.DiffusionPermeability solubilityRateCoef=10^3
+      "The rate constant of incoming gas to solution";
 
   equation
     // equilibrium:  gas.conc = kH * liquid.conc;
-    q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
+    q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc);
 
      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics={

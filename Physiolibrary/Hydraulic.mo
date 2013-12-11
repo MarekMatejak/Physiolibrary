@@ -862,7 +862,7 @@ package Hydraulic "Hydraulic Physical Domain"
           rotation=270,
           origin={15,-85})));
   equation
-    q_down.pressure = q_up.pressure + G*ro*(height/100)*(760/101325);
+    q_down.pressure = q_up.pressure + G*ro*height;
     q_up.q + q_down.q = 0;
 
    annotation (
@@ -904,7 +904,7 @@ package Hydraulic "Hydraulic Physical Domain"
           rotation=90,
           origin={1,85})));
   equation
-    q_down.pressure = q_up.pressure + G*ro*(height/100)*(760/101325);
+    q_down.pressure = q_up.pressure + G*ro*height;
     q_up.q + q_down.q = 0;
 
    annotation (
@@ -953,8 +953,7 @@ package Hydraulic "Hydraulic Physical Domain"
           origin={1,-85})));
 
   equation
-    q_down.pressure = q_up.pressure + G*ro*(height/100)*(760/101325)
-      *pumpEffect;
+    q_down.pressure = q_up.pressure + G*ro*height*pumpEffect;
     q_up.q + q_down.q = 0;
 
    annotation (
@@ -1098,7 +1097,7 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics));
   end InternalElasticBalloon;
 
-  model Inertance "Inertance of the flow"
+  model Inertia "Inertia of the volumetric flow"
     extends Physiolibrary.States.State(state_start=volumeFlow_start,
       storeUnit="ml/min",Simulation=Physiolibrary.States.SimulationType.NoInit);
     extends OnePort(Simulation=Physiolibrary.States.SimulationType.NoInit);
@@ -1117,7 +1116,7 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics),                Documentation(info="<html>
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
 </html>"));
-  end Inertance;
+  end Inertia;
 
     model UnlimitedVolume
     "Boundary compartment with defined pressure and any volume in/outflow"
