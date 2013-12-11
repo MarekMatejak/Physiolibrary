@@ -1,7 +1,7 @@
 within Physiolibrary;
 package Blocks "Base Signal Blocks Library"
 
-  package Math
+  package Math "Modelica.Math extension"
         block Add "Output the addition of a value with the input signal"
 
           parameter Real k(start=1) "value added to input signal";

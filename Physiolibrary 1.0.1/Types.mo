@@ -5,6 +5,81 @@ package Types "Physiological units with nominals"
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
+    model Units
+    extends Modelica.Icons.Example;
+     model ParametricClass
+
+      parameter Temperature temperature;
+      parameter Heat heat;
+      parameter Pressure pressure;
+      parameter Volume volume;
+      parameter AmountOfSubstance amountOfSubstance;
+      parameter ElectricCharge electricCharge;
+      parameter ElectricCurrent electricCurrent;
+
+      parameter Time time_;
+      parameter Energy energy;
+      parameter Mass mass;
+      parameter ElectricPotential electricalPotential;
+      parameter MassFlowRate massFlowRate;
+      parameter Density density;
+      parameter Height height;
+      parameter Acceleration acceleration;
+
+      parameter VolumeFlowRate volumeFlowRate;
+      parameter Concentration concentration;
+      parameter Osmolarity osmolarity;
+
+      parameter MolarFlowRate molarFlowRate;
+       parameter HeatFlowRate heatFlowRate;
+      parameter ThermalConductance thermalConductance;
+      parameter SpecificHeatCapacity specificHeatCapacity;
+      parameter SpecificEnergy specificEnergy;
+
+      parameter Fraction fraction;
+      parameter OsmoticPermeability osmoticPermeability;
+      parameter DiffusionPermeability diffusionPermeability;
+      parameter HydraulicConductance hydraulicConductance;
+      parameter HydraulicInertance hydraulicInertance;
+      parameter GasSolubility gasSolubility;
+     end ParametricClass;
+
+      ParametricClass parametricClass(
+        temperature=274.15,
+        heat=4186.8,
+        pressure=133.322387415,
+        volume=1e-06,
+        amountOfSubstance=0.001,
+        electricCharge=96.4853399,
+        electricCurrent=1.6080889983333,
+        time_=60,
+        energy=4186.8,
+        mass=0.001,
+        electricalPotential=0.001,
+        massFlowRate=1.6666666666667e-08,
+        density=1000,
+        height=0.01,
+        acceleration=1,
+        volumeFlowRate=1.6666666666667e-08,
+        concentration=1,
+        osmolarity=1,
+        molarFlowRate=1.6666666666667e-05,
+        heatFlowRate=69.78,
+        thermalConductance=69.78,
+        specificHeatCapacity=4186.8,
+        specificEnergy=4186.8,
+        fraction=0.01,
+        osmoticPermeability=1.2501026264094e-10,
+        diffusionPermeability=1.6666666666667e-08,
+        hydraulicConductance=1.2501026264094e-10,
+        hydraulicInertance=479960594694,
+        gasSolubility=0.0075006157584566)
+        annotation (Placement(transformation(extent={{-14,8},{6,28}})));
+      annotation (Documentation(info="<html>
+<p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
+</html>"));
+    end Units;
+
     model ParameterSet
     extends Modelica.Icons.Example;
 
@@ -85,49 +160,882 @@ package Types "Physiological units with nominals"
     end OutputComparationSet;
   end Examples;
 
- type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
-  type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
+  package Constants
 
-  type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
-  type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)*60);
-  type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
+  block AccelerationConst "Constant signal of type Acceleration"
+   parameter Types.Acceleration k "Constant Acceleration output value";
+        RealIO.AccelerationOutput y "Acceleration constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="acceleration",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end AccelerationConst;
 
-  type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
-  type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
-  type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=101325/760);
-  type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
-  type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)*60);
 
-  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", nominal=1);
-  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
-  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", nominal=1e-3);
-  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min", nominal=(1e-3)/60);
 
-  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
-  type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
-  type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8*60);
-  type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.degC)", nominal=4186.8*60);
-  type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(degC.kg)", nominal=4186.8);
-  type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
-    "vaporization, ..";
 
-  type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
-  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="mEq", nominal=(1e-3)*(9.64853399*10^4));
-  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="mEq/min", nominal=(1e-3)*(9.64853399*10^4)*60);
 
-//unknown units in Standard Modelica Library 3.2
-  type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-3)/((101325/760)*60));
-  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-3)*60);
 
-  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((101325/760)*60));
-  type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(101325/760));
-  type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((101325/760)*(60^2)/(1e-6)));
 
-  type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(101325/760)))
-    "Gas solubility in liquid";
+
+
+
+  block AmountOfSubstanceConst "Constant signal of type AmountOfSubstance"
+   parameter Types.AmountOfSubstance k
+        "Constant AmountOfSubstance output value";
+        RealIO.AmountOfSubstanceOutput y "AmountOfSubstance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="amountofsubstance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end AmountOfSubstanceConst;
+
+  block ConcentrationConst "Constant signal of type Concentration"
+   parameter Types.Concentration k "Constant Concentration output value";
+        RealIO.ConcentrationOutput y "Concentration constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="concentration",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end ConcentrationConst;
+
+  block DensityConst "Constant signal of type Density"
+   parameter Types.Density k "Constant Density output value";
+        RealIO.DensityOutput y "Density constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="density",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end DensityConst;
+
+
+
+
+
+
+
+  block DiffusionPermeabilityConst
+      "Constant signal of type DiffusionPermeability"
+   parameter Types.DiffusionPermeability k
+        "Constant DiffusionPermeability output value";
+        RealIO.DiffusionPermeabilityOutput y "DiffusionPermeability constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="diffusionpermeability",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end DiffusionPermeabilityConst;
+
+
+
+
+  block ElectricChargeConst "Constant signal of type ElectricCharge"
+   parameter Types.ElectricCharge k "Constant ElectricCharge output value";
+        RealIO.ElectricChargeOutput y "ElectricCharge constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electriccharge",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end ElectricChargeConst;
+
+  block ElectricCurrentConst "Constant signal of type ElectricCurrent"
+   parameter Types.ElectricCurrent k "Constant ElectricCurrent output value";
+        RealIO.ElectricCurrentOutput y "ElectricCurrent constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electriccurrent",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end ElectricCurrentConst;
+
+  block ElectricPotentialConst "Constant signal of type ElectricPotential"
+   parameter Types.ElectricPotential k
+        "Constant ElectricPotential output value";
+        RealIO.ElectricPotentialOutput y "ElectricPotential constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricpotential",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end ElectricPotentialConst;
+
+    block EnergyConst "Constant signal of type Energy"
+      parameter Types.Energy k "Constant Energy output value";
+        RealIO.EnergyOutput y "Energy constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="energy",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+    end EnergyConst;
+
+  block FractionConst "Constant signal of type Fraction"
+   parameter Types.Fraction k "Constant Fraction output value";
+        RealIO.FractionOutput y "Fraction constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="fraction",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end FractionConst;
+
+  block GasSolubilityConst "Constant signal of type GasSolubility"
+   parameter Types.GasSolubility k "Constant GasSolubility output value";
+        RealIO.GasSolubilityOutput y "GasSolubility constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="gassolubility",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end GasSolubilityConst;
+
+  block HeatConst "Constant signal of type Heat"
+   parameter Types.Heat k "Constant Heat output value";
+        RealIO.HeatOutput y "Heat constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heat",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HeatConst;
+
+  block HeightConst "Constant signal of type Height"
+   parameter Types.Height k "Constant Height output value";
+        RealIO.HeightOutput y "Height constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HeightConst;
+
+  block HeatFlowRateConst "Constant signal of type HeatFlowRate"
+   parameter Types.HeatFlowRate k "Constant HeatFlowRate output value";
+        RealIO.HeatFlowRateOutput y "HeatFlowRate constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heatflowrate",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HeatFlowRateConst;
+
+
+
+  block HydraulicConductanceConst
+      "Constant signal of type HydraulicConductance"
+   parameter Types.HydraulicConductance k
+        "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicconductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicConductanceConst;
+
+  block HydraulicComplianceConst "Constant signal of type HydraulicCompliance"
+   parameter Types.HydraulicCompliance k
+        "Constant HydraulicCompliance output value";
+        RealIO.HydraulicComplianceOutput y "HydraulicCompliance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydrauliccompliance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicComplianceConst;
+
+  block HydraulicInertanceConst "Constant signal of type HydraulicInertance"
+   parameter Types.HydraulicInertance k
+        "Constant HydraulicInertance output value";
+        RealIO.HydraulicInertanceOutput y "HydraulicInertance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicinertance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicInertanceConst;
+
+  block MassConst "Constant signal of type Mass"
+   parameter Types.Mass k "Constant Mass output value";
+        RealIO.MassOutput y "Mass constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="mass",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end MassConst;
+
+  block MassFlowRateConst "Constant signal of type MassFlowRate"
+   parameter Types.MassFlowRate k "Constant MassFlowRate output value";
+        RealIO.MassFlowRateOutput y "MassFlowRate constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="massflowrate",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end MassFlowRateConst;
+
+  block MolarFlowRateConst "Constant signal of type MolarFlowRate"
+   parameter Types.MolarFlowRate k "Constant MolarFlowRate output value";
+        RealIO.MolarFlowRateOutput y "MolarFlowRate constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="molarflowrate",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end MolarFlowRateConst;
+
+  block OsmolarityConst "Constant signal of type Osmolarity"
+   parameter Types.Osmolarity k "Constant Osmolarity output value";
+        RealIO.OsmolarityOutput y "Osmolarity constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmolarity",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end OsmolarityConst;
+
+  block OsmoticPermeabilityConst "Constant signal of type OsmoticPermeability"
+   parameter Types.OsmoticPermeability k
+        "Constant OsmoticPermeability output value";
+        RealIO.OsmoticPermeabilityOutput y "OsmoticPermeability constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmoticpermeability",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end OsmoticPermeabilityConst;
+
+  block PressureConst "Constant signal of type Pressure"
+   parameter Types.Pressure k "Constant Pressure output value";
+        RealIO.PressureOutput y "Pressure constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pressure",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end PressureConst;
+
+  block SpecificEnergyConst "Constant signal of type SpecificEnergy"
+   parameter Types.SpecificEnergy k "Constant SpecificEnergy output value";
+        RealIO.SpecificEnergyOutput y "SpecificEnergy constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificenergy",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end SpecificEnergyConst;
+
+  block SpecificHeatCapacityConst
+      "Constant signal of type SpecificHeatCapacity"
+   parameter Types.SpecificHeatCapacity k
+        "Constant SpecificHeatCapacity output value";
+        RealIO.SpecificHeatCapacityOutput y "SpecificHeatCapacity constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificheatcapacity",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end SpecificHeatCapacityConst;
+
+  block TemperatureConst "Constant signal of type Temperature"
+   parameter Types.Temperature k "Constant Temperature output value";
+        RealIO.TemperatureOutput y "Temperature constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="temperature",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end TemperatureConst;
+
+  block ThermalConductanceConst "Constant signal of type ThermalConductance"
+   parameter Types.ThermalConductance k
+        "Constant ThermalConductance output value";
+        RealIO.ThermalConductanceOutput y "ThermalConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="thermalconductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end ThermalConductanceConst;
+
+  block TimeConst "Constant signal of type Time"
+   parameter Types.Time k "Constant Time output value";
+        RealIO.TimeOutput y "Time constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="time",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end TimeConst;
+
+  block VolumeFlowRateConst "Constant signal of type VolumeFlowRate"
+   parameter Types.VolumeFlowRate k "Constant VolumeFlowRate output value";
+        RealIO.VolumeFlowRateOutput y "VolumeFlowRate constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeflowrate",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end VolumeFlowRateConst;
+
+  block VolumeConst "Constant signal of type Volume"
+   parameter Types.Volume k "Constant Volume output value";
+        RealIO.VolumeOutput y "Volume constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volume",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end VolumeConst;
+  end Constants;
 
   package RealIO
     connector EnergyInput = input Energy "input Energy as connector"
@@ -1679,189 +2587,54 @@ constructed by the signals connected to this bus.
 */
     end BusConnector;
 
-  partial block AbstractBoolean
-    "Abstract parameter or the value at defined time of the model - can be input or output parameter"
+ type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
+  type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
 
-    parameter String varName="" "Name of stored variable"
-    annotation (Dialog(group="Value I/O",tab="IO"));
-                                //getInstanceName()
-     parameter Boolean k(fixed=true)=false "Value"
-      annotation (Dialog(group="Parameters"));
+  type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
+  type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
+  type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
 
-  end AbstractBoolean;
+  type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
+  type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
-  package BooleanExtension
-        block Parameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean;
+  type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
+  type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
+  type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-          Modelica.Blocks.Interfaces.BooleanOutput y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
+  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", nominal=1);
+  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
+  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", nominal=1e-3);
+  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min", nominal=(1e-3)/60);
 
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end Parameter;
+  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
+  type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
+  type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
+  type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
+  type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
+  type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
+    "vaporization, ..";
 
-        block InputParameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean(k=
-            Utilities.readInputBoolean(varName));
+  type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
+  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="mEq", nominal=96.4853365);
+  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="mEq/min", nominal=1.60808894);
 
-          Modelica.Blocks.Interfaces.BooleanOutput y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
+//unknown units in Standard Modelica Library 3.2
+  type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end InputParameter;
+  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
+  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
 
-        block OutputFinal "Save boolean value to file"
-         extends Physiolibrary.Types.AbstractBoolean;
+  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
+  type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
+  type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
+  type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(133.322387415)))
+    "Gas solubility in liquid";
 
-          Modelica.Blocks.Interfaces.BooleanInput
-                                                y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-100,-10},{-80,10}})));
 
-        equation
-          when terminal() then
-             Utilities.writeBoolean(varName,y);
-          end when;
 
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputFinal;
 
-        block OutputComparation "Save variable comparation to file"
-          import Physiolibrary;
-          extends Physiolibrary.Types.AbstractBoolean(
-                                                  k=Utilities.readInputBoolean(varName));
-          replaceable package Utilities = Physiolibrary.Types.Utilities
-           annotation (Dialog(group="Functions to read or store",tab="Types"));
 
-          Modelica.Blocks.Interfaces.BooleanInput
-                                y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-120,-10},{-100,10}})));
-
-    protected
-          parameter Boolean initialValue(fixed=false);
-        initial equation
-          initialValue = y;
-        equation
-          when terminal() then
-           Utilities.writeBooleanComparation(
-            varName,
-            k,
-            initialValue,
-            y);
-          end when;
-
-            annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputComparation;
-  end BooleanExtension;
 
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
@@ -2191,6 +2964,190 @@ The Real output y is a constant signal:
             Physiolibrary.Types.GasSolubility);
 
   end RealTypes;
+
+  partial block AbstractBoolean
+    "Abstract parameter or the value at defined time of the model - can be input or output parameter"
+
+    parameter String varName="" "Name of stored variable"
+    annotation (Dialog(group="Value I/O",tab="IO"));
+                                //getInstanceName()
+     parameter Boolean k(fixed=true)=false "Value"
+      annotation (Dialog(group="Parameters"));
+
+  end AbstractBoolean;
+
+  package BooleanExtension
+        block Parameter "Read constant boolean signal"
+          extends Physiolibrary.Types.AbstractBoolean;
+
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}},
+                rotation=0)));
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end Parameter;
+
+        block InputParameter "Read constant boolean signal"
+          extends Physiolibrary.Types.AbstractBoolean(k=
+            Utilities.readInputBoolean(varName));
+
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}},
+                rotation=0)));
+          replaceable package Utilities = Physiolibrary.Types.Utilities;
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end InputParameter;
+
+        block OutputFinal "Save boolean value to file"
+         extends Physiolibrary.Types.AbstractBoolean;
+
+          replaceable package Utilities = Physiolibrary.Types.Utilities;
+
+          Modelica.Blocks.Interfaces.BooleanInput
+                                                y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
+                rotation=0), iconTransformation(extent={{-100,-10},{-80,10}})));
+
+        equation
+          when terminal() then
+             Utilities.writeBoolean(varName,y);
+          end when;
+
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.1), graphics),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputFinal;
+
+        block OutputComparation "Save variable comparation to file"
+          import Physiolibrary;
+          extends Physiolibrary.Types.AbstractBoolean(
+                                                  k=Utilities.readInputBoolean(varName));
+          replaceable package Utilities = Physiolibrary.Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.BooleanInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
+                rotation=0), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter Boolean initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when terminal() then
+           Utilities.writeBooleanComparation(
+            varName,
+            k,
+            initialValue,
+            y);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputComparation;
+  end BooleanExtension;
 
   package Utilities
 

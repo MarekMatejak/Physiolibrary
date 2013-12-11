@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Icons
+package Icons "Icons for physiological models"
 
   package Library
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -171,16 +171,18 @@ package Icons
 
   model LeftHeart
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-80,100},{44,-84}},
-              fileName="Resources/Icons/srdceLeva.png")}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}),        graphics={Bitmap(extent={{-110,100},{10,-100}},
+              fileName="Resources/Icons/srdceLeva.png")}), Diagram(
+          coordinateSystem(extent={{-100,-100},{100,100}})));
   end LeftHeart;
 
   model RightHeart
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-78,70},{44,-84}},
-              fileName="Resources/Icons/srdceprava.png")}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}),       graphics={Bitmap(extent={{-18,66},{100,-100}},
+              fileName="Resources/Icons/srdceprava.png")}), Diagram(
+          coordinateSystem(extent={{-100,-100},{100,100}})));
   end RightHeart;
 
   model Liver
@@ -1104,12 +1106,14 @@ from this block.
   end FractionalConcentration;
 
   partial model Diffusion
+
     annotation (Icon(graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "Resources/Icons/diffusion.png")}));
 
   end Diffusion;
 
   model ConcentrationCompartment
+
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -1129,28 +1133,33 @@ from this block.
   end FlowMeasure;
 
   partial model HydraulicResistor
+
   annotation (Icon(graphics={    Bitmap(extent={{-120,44},{120,-42}},
               fileName="Resources/Icons/resistance.jpg")}));
   end HydraulicResistor;
 
   model ElasticBalloon
+
   annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
               fileName="Resources/Icons/elastickyKompartment - Kopie.png")}));
   end ElasticBalloon;
 
   model Membrane
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="Resources/Icons/membrane.png")}));
   end Membrane;
 
   model MolarFlowMeasure
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="Resources/Icons/molarFlowMeassure.png")}));
   end MolarFlowMeasure;
 
   model Dilution
+
     annotation (Icon(graphics={     Bitmap(extent={{-140,100},{60,-100}},
               fileName="Resources/Icons/dilution.png")}));
   end Dilution;
@@ -1159,6 +1168,7 @@ from this block.
   end GasSolubility;
 
   model PressureMeasure
+
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
               -100,-100},{100,100}}), graphics), Icon(graphics={Bitmap(extent={
                 {-100,100},{100,-100}}, fileName=
@@ -1166,6 +1176,7 @@ from this block.
   end PressureMeasure;
 
   model Reabsorbtion
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1173,6 +1184,7 @@ from this block.
   end Reabsorbtion;
 
   model Reabsorbtion2
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1180,6 +1192,7 @@ from this block.
   end Reabsorbtion2;
 
   model InternalElasticBalloon
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1187,12 +1200,13 @@ from this block.
   end InternalElasticBalloon;
 
   model Inertance
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
                 "Resources/Icons/ventilatorInertance.png")}));
   end Inertance;
-  annotation (Documentation(revisions=""));
+
   model HydrostaticGradient
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
@@ -1200,4 +1214,5 @@ from this block.
               fileName="Resources/Icons/hydrostaticGradient.png")}));
 
   end HydrostaticGradient;
+  annotation (Documentation(revisions=""));
 end Icons;

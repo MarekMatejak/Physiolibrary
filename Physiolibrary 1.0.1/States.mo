@@ -1,5 +1,5 @@
 within Physiolibrary;
-package States
+package States "Dynamic simulation / Equilibrium"
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
@@ -101,26 +101,26 @@ package States
 
     replaceable package Utilities = Physiolibrary.FilesUtilities    constrainedby
       Physiolibrary.Types.Utilities
-                   annotation (Dialog(group="Functions to read or store",tab="Types"));
+                   annotation (Dialog(group="Functions to read or store",tab="IO"));
 
     Real state(start=state_start)
       "This state must be connected in inherited class definition";
     Real change "Dynamic change of state value per minute";
 
     parameter Real state_start "State start or init value"
-     annotation (Dialog(enable=false,group="Initialization"));
+     annotation (Dialog(enable=false,group="Initialization", tab="IO"));
 
     parameter Physiolibrary.States.SimulationType
                               Simulation(start=SimulationType.NoInit)
-      "Type of simulation. Normal dynamic with some initialization or equilibrated during all time during simulation."
-      annotation (Dialog(group="Simulation"));
+      "Type of simulation."
+      annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
    /* parameter Boolean EQUILIBRIUM(start=false) 
     "Is the state changing during simulation?"
      annotation (Dialog(group="Equilibrium"));
 */
     parameter Boolean SAVE_RESULTS(start=false)
-      "Do you want to save the comparation of original state values with simulation final state values?"
+      "save and test final state values with original values"
        annotation (Dialog(group="Value I/O",tab="IO"));
 
     parameter String storeUnit="" "Unit in Utilities input/output function"
@@ -222,5 +222,12 @@ package States
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>", info="<html>
+<p>We define an <i><b>equilibrated system</b></i> (ES) as a non-differential system derived from a differential system (DS) by using zero derivations and by adding additional system equations (ASE). The number of the ASE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASE describes the system from the top view mostly such as the equations of mass conservation laws.</p>
+<p>Using Physiolibrary an ES can be represented by simple modification of each model, using all the parts with the &ldquo;der&rdquo; operators from the States.State class. The purpose of this is to enable the user to easily switch from the original differential system to an ES. Do not worry, each differentiable class in Physiolibrary is defined with the States.State extension.</p>
+<p>To define a model as an ES the user should extend it with partial model States.StateSystem and then define the ASE as the normalizedState vector. The model works still as before, until the Simulation parameter is switched to State.SimulationType.Equilibrated. After that it often changes to one big nonlinear strong component, but without solver stiff or convergence problems.</p>
+<p>This style of system implementation also brings other benefits. To see these possibilities, you have to realize that ASE must be invariances in a dynamical simulation. This is really useful for debugging.</p>
+<p>For example see the model States.Examples.SimpleReaction_Equilibrated, which implements the equilibrium of the closed system as a solution of two chemical substances with a simple reversible reaction between them.</p>
+<p>It is always a big challenge to nicely solve initial values of differential system. However, it should be possible to solve the ES in initial phase. And this is the idea behind the States.SimulationTypes.InitSteadyState option.</p>
 </html>"));
 end States;
