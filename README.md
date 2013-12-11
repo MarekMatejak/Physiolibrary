@@ -24,11 +24,11 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Current release
 
-Download [Physiolibrary v1.0.0 (2013-12-09)](../../archive/v1.0.0.zip)
+Download [Physiolibrary v1.0.1 (2013-12-09)](../../archive/v1.0.1.zip)
 
 #### Release notes
 
-*  [Version v1.0.0 (2013-12-09)](../../archive/v1.0.0.zip)
+*  [Version v1.0.1 (2013-12-09)](../../archive/v1.0.1.zip)
  * The library uses the Modelica Standard Libary (MSL) version 3.2.
  * Contains nice physiological icons.
  * Support for physiological units: min,kcal,mmHg,ml,mEq,.. 
