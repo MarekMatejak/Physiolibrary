@@ -194,8 +194,8 @@ package Physiolibrary "Physiological domains library (version v1.0)"
   annotation (preferredView="info",
 version="1.0",
 versionBuild=1,
-versionDate="2013-12-09",
-dateModified = "2013-12-09 13:46:00Z",
+versionDate="2013-12-11",
+dateModified = "2013-12-11 13:46:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
   Documentation(revisions="<html>
