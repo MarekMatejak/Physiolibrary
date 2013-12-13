@@ -1125,8 +1125,18 @@ Connector with one flow signal of type Real.
               {12,10}})));
     parameter Physiolibrary.Types.Concentration concentration;
 
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "If Equilibrated, then zero flow rate is added."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+
   equation
     q_out.conc = concentration;
+
+    if Simulation==States.SimulationType.Equilibrated then
+      q_out.q=0;
+    end if;
+
     annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),

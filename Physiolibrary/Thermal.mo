@@ -446,8 +446,18 @@ Connector with one flow signal of type Real.
     parameter Physiolibrary.Types.Temperature Temperature=295.37
       "Default ambient temperature is 22 degC";
 
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "If Equilibrated, then zero flow rate is added."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+
   equation
     q_in.T=Temperature;
+
+    if Simulation==States.SimulationType.Equilibrated then
+      q_in.q=0;
+    end if;
+
     annotation (Icon(graphics={Rectangle(
             extent={{-100,100},{100,-100}},
             lineColor={0,0,255},
