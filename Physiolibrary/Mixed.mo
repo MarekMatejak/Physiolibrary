@@ -19,9 +19,9 @@ package Mixed "Blocks between domains"
           solute_start=0.000001*7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{12,-46},{32,-26}})));
       PartialPressure2      partialPressure(
-        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false,
-          C=1700),
         alpha_T0=alpha,
+        gasSolubility(C=1700),
+        Simulation=Simulation,
         T0=310.15)                                    annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -59,7 +59,7 @@ package Mixed "Blocks between domains"
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
-        experiment(StopTime=10000),
+        experiment(StopTime=100),
         __Dymola_experimentSetupOutput,
         Documentation(info="<html>
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
@@ -163,15 +163,25 @@ package Mixed "Blocks between domains"
     parameter Physiolibrary.Types.Temperature T "Temperature";
 
     Physiolibrary.Chemical.GasSolubility  gasSolubility(kH=1/(alpha*Modelica.Constants.R
-        *T))
+        *T),
+      Simulation=Simulation,
+      isFlowIncludedInEquilibrium=isFlowIncludedInEquilibrium)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas idealGas(T=T)
                       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
           origin={0,26})));
-  equation
 
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+    parameter Boolean isFlowIncludedInEquilibrium=false
+      "Is substrate flow equation included in equilibrium calculation?"
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+
+  equation
     connect(idealGas.v, v) annotation (Line(
         points={{1.83697e-015,36},{0,36},{0,100}},
         color={0,0,0},
@@ -222,7 +232,9 @@ package Mixed "Blocks between domains"
       "Base temperature of alpha";
 
     Physiolibrary.Chemical.GasSolubility2  gasSolubility(kH_T0=1/(alpha_T0*
-        Modelica.Constants.R*T0), T0=T0)
+        Modelica.Constants.R*T0), T0=T0,
+      Simulation=Simulation,
+      isFlowIncludedInEquilibrium=isFlowIncludedInEquilibrium)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas2 idealGas annotation (Placement(transformation(
           extent={{-10,10},{10,-10}},
@@ -236,8 +248,16 @@ package Mixed "Blocks between domains"
           extent={{-20,-20},{20,20}},
           rotation=270,
           origin={0,80})));
-  equation
 
+    parameter Physiolibrary.States.SimulationType
+                                    Simulation=Physiolibrary.States.SimulationType.NoInit
+      "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+    parameter Boolean isFlowIncludedInEquilibrium=false
+      "Is substrate flow equation included in equilibrium calculation?"
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
+
+  equation
     connect(idealGas.v, v) annotation (Line(
         points={{1.83697e-015,36},{0,36},{0,100}},
         color={0,0,0},

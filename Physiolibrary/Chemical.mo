@@ -243,9 +243,9 @@ package Chemical "Molar Concentration Physiological Domain"
             *7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{-36,-36},{-16,-16}})));
       Mixed.PartialPressure partialPressure(
-        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
         alpha=alpha,
-        T=310.15)                                     annotation (Placement(
+        T=310.15,
+        Simulation=Simulation)                        annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -474,6 +474,291 @@ package Chemical "Molar Concentration Physiological Domain"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end MWC_Allosteric_Hemoglobin;
+
+    package Speciation
+      extends Modelica.Icons.ExamplesPackage;
+
+
+      model SubunitSpeciation "Speciation by subunit species"
+        extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated,NumberOfNormalizedStates=NumberOfSubunitTypes-1);
+
+        parameter Integer NumberOfSubunitTypes=1
+          "Number of subunit types occuring in macromolecule";
+        Physiolibrary.Chemical.PositiveConcentrationFlow species
+          "Defined macromolecule form"                                                        annotation (Placement(
+              transformation(extent={{-10,-10},{10,10}}), iconTransformation(extent={{-10,-10},
+                  {10,10}})));
+        Physiolibrary.Chemical.PositiveConcentrationFlow subunitSpecies[NumberOfSubunitTypes]
+          "Definid species of macromolecule subunit types (in NormalSolventVolume)"
+                                                                                                              annotation (Placement(
+              transformation(extent={{-10,90},{10,110}}),   iconTransformation(extent={{-10,-10},
+                  {10,10}},
+              rotation=270,
+              origin={0,100})));
+
+        parameter Real numberOfSubunit[NumberOfSubunitTypes]
+          "Number of identical subunits instances in macromolecule. First should be non-zero.";
+
+        constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
+
+       /* parameter Physiolibrary.States.SimulationType Simulation=Physiolibrary.States.SimulationType.NoInit 
+    "False, instead of one reaction in equilibrated (with zero reaction rates) system."
+    annotation (Dialog(group="Simulation type", tab="Simulation"));
+  */
+        parameter Boolean isSubunitFlowIncludedInEquilibrium(start=true)
+          "Is subunit flow equation included in equilibrium calculation?"
+          annotation (Dialog(group="Simulation type", tab="Simulation"));
+
+      protected
+        Real totalSubsystemAmount,fractions[NumberOfSubunitTypes];
+      public
+        Types.RealIO.AmountOfSubstanceInput totalSubunitAmount[NumberOfSubunitTypes]
+          annotation (Placement(transformation(extent={{-120,60},{-80,100}}),
+              iconTransformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={-60,100})));
+      equation
+        totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
+
+        fractions = if
+                      (totalSubsystemAmount < Modelica.Constants.eps) then zeros(NumberOfSubunitTypes) else subunitSpecies.conc ./ (totalSubunitAmount/NormalSolventVolume);
+
+       // assert(subunitSpecies.conc * ones(NumberOfSubunitTypes) <= totalSubsystemConcentration+NumberOfSubunitTypes*2*Modelica.Constants.eps, "SubunitSpecies: totalSubunitConcentration must be greater than species concentration! ("+String(subunitSpecies.conc*ones(NumberOfSubunitTypes))+"<"+String(totalSubsystemConcentration)+")");
+
+        species.conc = (totalSubsystemAmount/NormalSolventVolume)*product(fractions.^numberOfSubunit);
+
+        /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+        if Simulation==Physiolibrary.States.SimulationType.Equilibrated
+                                                          or (initial() and Simulation==
+            Physiolibrary.States.SimulationType.InitSteadyState) then
+
+           if isSubunitFlowIncludedInEquilibrium then
+             subunitSpecies[1].q = -species.q * numberOfSubunit[1];
+           end if;
+
+           for i in 2:NumberOfSubunitTypes loop
+               normalizedState[i-1]*totalSubsystemAmount = totalSubunitAmount[i]/numberOfSubunit[i];
+           end for;
+        else  //Simulation<>States.SimulationType.Equilibrated and ((not initial()) or Simulation<>States.SimulationType.InitSteadyState) then
+           subunitSpecies.q = -species.q * numberOfSubunit;
+        end if;
+
+        annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics), Icon(coordinateSystem(
+                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={Text(
+                extent={{-98,62},{100,34}},
+                lineColor={0,0,255},
+                textString="%name"), Rectangle(extent={{-100,100},{100,-100}},
+                  lineColor={0,0,255})}),
+                    Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                  -100},{100,100}}), graphics), Icon(coordinateSystem(
+                preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+              graphics={                                    Text(
+                extent={{-22,-102},{220,-136}},
+                lineColor={0,0,255},
+                textString="%name")}),
+          Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",       info="<html>
+<p>This block identify one specific chemical form (one chosen chemical species - called <i>specie</i>) of one macromolecule defined by forms of its subunits.</p>
+<p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
+<p>Connectors <b> subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the sununit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
+<p><br/>Initial total concentrations of subunits must must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p>    </p>
+<p><br/>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
+<p>Where:</p>
+<p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
+<p>fF1 = F1/(F1+F2) is fraction of form F1 in subsystem of subunit,</p>
+<p>4 is number of subunits (<b>numberOfSubunit</b>).</p>
+<p><br/>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
+</html>"));
+      end SubunitSpeciation;
+
+      model MWC
+       extends Modelica.Icons.Example;
+       extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+
+        parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+          "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+        parameter Types.Fraction L = 7.0529*10^6
+          "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
+        parameter Types.Fraction c = 0.00431555
+          "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
+        parameter Types.Concentration KR = 0.000671946
+          "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
+                                                                  //10.500001495896 7.8756465463794e-05
+
+        parameter Types.Concentration KT=KR/c
+          "oxygen dissociation on tensed(T) hemoglobin subunit";
+
+        Types.Fraction sO2 "hemoglobin oxygen saturation";
+
+        parameter Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
+
+        ChemicalReaction                          quaternaryForm(K=L,
+          Simulation=Simulation,
+          isSubstrateFlowIncludedInEquilibrium={false})
+          annotation (Placement(transformation(extent={{-6,-88},{14,-68}})));
+        SubunitSpeciation  R0_in_R(numberOfSubunit={4})
+          annotation (Placement(transformation(extent={{-66,-88},{-46,-68}})));
+        SubunitSpeciation  T0_in_T(numberOfSubunit={4})
+          annotation (Placement(transformation(extent={{58,-88},{78,-68}})));
+        NormalizedSubstance OxyRHm(solute_start=0, Simulation=Simulation)
+          "Oxygenated subunit in R structure of hemoglobin tetramer"
+          annotation (Placement(transformation(extent={{-98,-36},{-78,-16}})));
+        ChemicalReaction oxygenation_R(K=KR, nP=2,
+          Simulation=Simulation)
+          annotation (Placement(transformation(extent={{-70,-36},{-50,-16}})));
+        NormalizedSubstance DeoxyRHm(Simulation=Simulation, solute_start=1e-08)
+          "Deoxygenated subunit in R structure of hemoglobin tetramer"
+          annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
+        NormalizedSubstance OxyTHm(solute_start=0, Simulation=Simulation)
+          "Oxygenated subunit in T structure of hemoglobin tetramer"
+          annotation (Placement(transformation(extent={{22,-36},{42,-16}})));
+        ChemicalReaction oxygenation_T(K=KT, nP=2,
+          Simulation=Simulation)
+          annotation (Placement(transformation(extent={{50,-36},{70,-16}})));
+        NormalizedSubstance DeoxyTHm(solute_start=totalAmountOfHemoglobin - 0.00001,
+            Simulation=Simulation)
+          "Deoxygenated subunit in T structure of hemoglobin tetramer"
+          annotation (Placement(transformation(extent={{78,-36},{98,-16}})));
+      public
+        NormalizedSubstance oxygen_unbound(Simulation=Simulation, solute_start=0.000001
+              *7.875647668393782383419689119171e-5)
+          annotation (Placement(transformation(extent={{-4,6},{16,26}})));
+        Mixed.PartialPressure partialPressure(
+          alpha=alpha,
+          T=310.15,
+          gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false))
+                                                        annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={6,34})));
+        Hydraulic.UnlimitedVolume unlimitedVolume(Simulation=Simulation)
+          annotation (Placement(transformation(extent={{-4,50},{16,70}})));
+        Modelica.Blocks.Sources.Clock clock(offset=1e-06)
+          annotation (Placement(transformation(extent={{-44,70},{-24,90}})));
+        Modelica.Blocks.Math.Add add annotation (Placement(transformation(
+              extent={{-4,-4},{4,4}},
+              rotation=270,
+              origin={-62,-54})));
+        Modelica.Blocks.Math.Add add1 annotation (Placement(transformation(
+              extent={{-4,-4},{4,4}},
+              rotation=270,
+              origin={62,-54})));
+      equation
+        totalAmountOfHemoglobin*normalizedState[1] = OxyRHm.solute + DeoxyRHm.solute + OxyTHm.solute + DeoxyTHm.solute;
+
+        sO2 = (OxyRHm.solute + OxyTHm.solute)/totalAmountOfHemoglobin;
+
+        connect(R0_in_R.species, quaternaryForm.substrates[1])
+                                                         annotation (Line(
+            points={{-56,-78},{-6,-78}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(quaternaryForm.products[1], T0_in_T.species)
+                                                       annotation (Line(
+            points={{14,-78},{68,-78}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(OxyRHm.q_out, oxygenation_R.substrates[1])
+                                                 annotation (Line(
+            points={{-88,-26},{-70,-26}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(oxygenation_R.products[1], DeoxyRHm.q_out)
+                                               annotation (Line(
+            points={{-50,-26.5},{-42,-26.5},{-42,-26},{-32,-26}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(OxyTHm.q_out, oxygenation_T.substrates[1])
+                                                 annotation (Line(
+            points={{32,-26},{50,-26}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(oxygenation_T.products[1], DeoxyTHm.q_out)
+                                               annotation (Line(
+            points={{70,-26.5},{80,-26.5},{80,-26},{88,-26}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(DeoxyRHm.q_out, R0_in_R.subunitSpecies[1])
+                                                     annotation (Line(
+            points={{-32,-26},{-42,-26},{-42,-62},{-56,-62},{-56,-68}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(T0_in_T.subunitSpecies[1], DeoxyTHm.q_out)
+                                                     annotation (Line(
+            points={{68,-68},{68,-62},{82,-62},{82,-26},{88,-26}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(partialPressure.n,oxygen_unbound. q_out)      annotation (Line(
+            points={{6,24},{6,16}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(unlimitedVolume.y,partialPressure. v) annotation (Line(
+            points={{6,60},{6,44}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(clock.y,unlimitedVolume. pressure) annotation (Line(
+            points={{-23,80},{6,80},{6,70}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(oxygenation_R.products[2], oxygen_unbound.q_out) annotation (Line(
+            points={{-50,-25.5},{-44,-25.5},{-44,16},{6,16}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(oxygenation_T.products[2], oxygen_unbound.q_out) annotation (Line(
+            points={{70,-25.5},{76,-25.5},{76,16},{6,16}},
+            color={200,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(add.y, R0_in_R.totalSubunitAmount[1])
+                                                annotation (Line(
+            points={{-62,-58.4},{-62,-68}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(DeoxyRHm.solute, add.u1) annotation (Line(
+            points={{-32,-33.8},{-32,-42},{-60,-42},{-60,-49.2},{-59.6,-49.2}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OxyRHm.solute, add.u2) annotation (Line(
+            points={{-88,-33.8},{-88,-42},{-64,-42},{-64,-50},{-64.4,-50},{-64.4,-49.2}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        connect(add1.y, T0_in_T.totalSubunitAmount[1])
+                                                 annotation (Line(
+            points={{62,-58.4},{62,-68}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OxyTHm.solute, add1.u2) annotation (Line(
+            points={{32,-33.8},{32,-42},{59.6,-42},{59.6,-49.2}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add1.u1, DeoxyTHm.solute) annotation (Line(
+            points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-33.8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics),
+          experiment(StopTime=10000),
+          __Dymola_experimentSetupOutput);
+      end MWC;
+    end Speciation;
   end Examples;
 
   connector ConcentrationFlow "Concentration and Solute flow"
@@ -849,7 +1134,7 @@ Connector with one flow signal of type Real.
   equation
     q_in.q = Clearance*q_in.conc;
 
-    assert(Clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
+   // assert(Clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
