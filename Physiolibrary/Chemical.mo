@@ -478,12 +478,12 @@ package Chemical "Molar Concentration Physiological Domain"
     package Speciation
       extends Modelica.Icons.ExamplesPackage;
 
-
       model SubunitSpeciation "Speciation by subunit species"
         extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated,NumberOfNormalizedStates=NumberOfSubunitTypes-1);
 
         parameter Integer NumberOfSubunitTypes=1
           "Number of subunit types occuring in macromolecule";
+
         Physiolibrary.Chemical.PositiveConcentrationFlow species
           "Defined macromolecule form"                                                        annotation (Placement(
               transformation(extent={{-10,-10},{10,10}}), iconTransformation(extent={{-10,-10},
@@ -501,16 +501,12 @@ package Chemical "Molar Concentration Physiological Domain"
 
         constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
 
-       /* parameter Physiolibrary.States.SimulationType Simulation=Physiolibrary.States.SimulationType.NoInit 
-    "False, instead of one reaction in equilibrated (with zero reaction rates) system."
-    annotation (Dialog(group="Simulation type", tab="Simulation"));
-  */
         parameter Boolean isSubunitFlowIncludedInEquilibrium(start=true)
           "Is subunit flow equation included in equilibrium calculation?"
           annotation (Dialog(group="Simulation type", tab="Simulation"));
 
       protected
-        Real totalSubsystemAmount,fractions[NumberOfSubunitTypes];
+        Real fractions[NumberOfSubunitTypes];
       public
         Types.RealIO.AmountOfSubstanceInput totalSubunitAmount[NumberOfSubunitTypes]
           annotation (Placement(transformation(extent={{-120,60},{-80,100}}),
@@ -518,29 +514,33 @@ package Chemical "Molar Concentration Physiological Domain"
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={-60,100})));
+        Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount(start=1e-8) annotation (Placement(
+              transformation(extent={{-10,-90},{10,-70}}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={0,-100})));
       equation
         totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
 
         fractions = if
                       (totalSubsystemAmount < Modelica.Constants.eps) then zeros(NumberOfSubunitTypes) else subunitSpecies.conc ./ (totalSubunitAmount/NormalSolventVolume);
 
-       // assert(subunitSpecies.conc * ones(NumberOfSubunitTypes) <= totalSubsystemConcentration+NumberOfSubunitTypes*2*Modelica.Constants.eps, "SubunitSpecies: totalSubunitConcentration must be greater than species concentration! ("+String(subunitSpecies.conc*ones(NumberOfSubunitTypes))+"<"+String(totalSubsystemConcentration)+")");
-
         species.conc = (totalSubsystemAmount/NormalSolventVolume)*product(fractions.^numberOfSubunit);
 
-        /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+        for i in 2:NumberOfSubunitTypes loop
+               normalizedState[i-1]*totalSubsystemAmount*numberOfSubunit[i] = totalSubunitAmount[i];
+        end for;
+
+        /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0), where both zeros are values from parameters. ***/
         if Simulation==Physiolibrary.States.SimulationType.Equilibrated
                                                           or (initial() and Simulation==
             Physiolibrary.States.SimulationType.InitSteadyState) then
 
            if isSubunitFlowIncludedInEquilibrium then
-             subunitSpecies[1].q = -species.q * numberOfSubunit[1];
+              subunitSpecies[1].q = -species.q * numberOfSubunit[1];
            end if;
-
-           for i in 2:NumberOfSubunitTypes loop
-               normalizedState[i-1]*totalSubsystemAmount = totalSubunitAmount[i]/numberOfSubunit[i];
-           end for;
         else  //Simulation<>States.SimulationType.Equilibrated and ((not initial()) or Simulation<>States.SimulationType.InitSteadyState) then
+        /*** ***/
            subunitSpecies.q = -species.q * numberOfSubunit;
         end if;
 
@@ -1688,7 +1688,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
                      //body temperature
 
   equation
-    KaT = K * 10^((1/Modelica.Math.log(10))*((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
+    KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
 
   end ChemicalReaction;
 
@@ -1703,7 +1703,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           rotation=270,
           origin={40,40})));
   equation
-    KaT = K * 10^((1/Modelica.Math.log(10))*((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
+    KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
 
   end ChemicalReaction2;
 
@@ -1724,7 +1724,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           origin={40,40})));
 
   equation
-    KaT = K * 10^((1/Modelica.Math.log(10))*((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
+    KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
 
   end ChemicalReaction3;
 

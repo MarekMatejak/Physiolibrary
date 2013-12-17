@@ -177,13 +177,7 @@ package States "Dynamic simulation / Equilibrium"
 
     parameter SimulationType  Simulation(start=SimulationType.NoInit)
       "Type of simulation. Normal dynamic with some initialization or equilibrated during all time during simulation."
-      annotation (Dialog(group="Simulation"));
-
-    /*  
-  parameter Boolean EQUILIBRIUM = false 
-    "Is the state changing during simulation?"
-    annotation (Dialog(group="Equilibrium"));
-*/
+      annotation (Dialog(group="Simulation type", tab="Simulation"));
 
     parameter Integer NumberOfNormalizedStates=1
       "Number of additional steady state equation of whole system"
@@ -192,21 +186,14 @@ package States "Dynamic simulation / Equilibrium"
     Real normalizedState[NumberOfNormalizedStates]
       "Each state must be connected to the normalized sum of partial states in inherited class definition. This variable must have always the vectors of 1.";
 
-  /*
-  parameter Modelica.Blocks.Types.Init INIT_TYPE(start=Modelica.Blocks.Types.Init.NoInit) 
-    "Type of state initialization."
-    annotation (Dialog(enable=false,group="Initialization"));
-*/
   protected
     Real state[NumberOfNormalizedStates](each start=1)
       "In differential systems has the same meaning as the normalizedState. In steady state just stay constant.";
 
   initial equation
-   // if (Simulation==SimulationType.InitSteadyState) then
-   //    normalizedState = ones(NumberOfNormalizedStates);
-   // else
-       state=ones(NumberOfNormalizedStates);
-   // end if;
+
+    state=ones(NumberOfNormalizedStates);
+
   equation
 
     if Simulation == SimulationType.Equilibrated then
