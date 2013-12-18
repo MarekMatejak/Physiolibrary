@@ -927,14 +927,14 @@ Connector with one flow signal of type Real.
   end ConcentrationMeasure;
 
   model FlowConcentrationMeasure
-    "The outflow concentration from absorbtion (i.e. portal vein concentration)"
+    "The outflow concentration from absorption (i.e. portal vein concentration)"
 
-    PositiveConcentrationFlow q_in "Concentration before absorbtion source"
+    PositiveConcentrationFlow q_in "Concentration before absorption source"
                            annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent=
               {{-110,-10},{-90,10}})));
     Physiolibrary.Types.RealIO.VolumeFlowRateInput SolventFlow
-      "Solvent flow through absorbtion source"                                                      annotation ( extent = [-10,50;10,70], rotation = -90);
+      "Solvent flow through absorption source"                                                      annotation ( extent = [-10,50;10,70], rotation = -90);
 
     Physiolibrary.Types.RealIO.MolarFlowRateInput AdditionalSoluteFlow
       "Absorbed molar flow rate"                                          annotation (Placement(
@@ -943,7 +943,7 @@ Connector with one flow signal of type Real.
           rotation=90,
           origin={0,-60})));
     Physiolibrary.Types.RealIO.ConcentrationOutput Conc
-      "Concentration after absorbtion source"                           annotation (Placement(transformation(extent=
+      "Concentration after absorption source"                           annotation (Placement(transformation(extent=
              {{82,-20},{122,20}}), iconTransformation(extent={{82,-20},{122,
               20}})));
   equation
@@ -1753,7 +1753,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
               -100},{100,100}}), graphics));
   end Dilution;
 
-  model Reabsorbtion "Reabsorbrion of input fraction"
+  model Reabsoption "Reabsorption of input fraction"
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
@@ -1762,7 +1762,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       annotation (Placement(transformation(extent={{80,-20},{120,20}}),
           iconTransformation(extent={{90,-10},{110,10}})));
 
-    NegativeConcentrationFlow Reabsorbtion "Reabsorbtion from tubules"          annotation (Placement(
+    NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-50},{10,-30}})));
     Physiolibrary.Types.RealIO.FractionInput ReabsorbedFract
@@ -1796,7 +1796,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         points={{-70,8},{-46,8},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(soluteFlowPump.q_out, Reabsorbtion) annotation (Line(
+    connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
         points={{-1.83697e-015,-50},{0,-50},{0,-80}},
         color={200,0,0},
         thickness=1,
@@ -1837,9 +1837,9 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Reabsorbtion;
+  end Reabsoption;
 
-  model Reabsorbtion2 "Reabsorbrion of input fraction"
+  model Reabsorption2 "Reabsorption of input fraction"
     import Physiolibrary;
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
@@ -1848,11 +1848,11 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     NegativeConcentrationFlow Outflow "Tubular outflow"
       annotation (Placement(transformation(extent={{80,-18},{120,22}}),
           iconTransformation(extent={{90,-10},{110,10}})));
-    NegativeConcentrationFlow Reabsorbtion "Reabsorbtion from tubules"          annotation (Placement(
+    NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-50},{10,-30}})));
     Physiolibrary.Types.RealIO.FractionInput Normal
-      "Reabsorbtion fraction if Effects=1"
+      "Reabsorption fraction if Effects=1"
                                  annotation (Placement(transformation(extent={{-100,76},
               {-80,96}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
@@ -1860,7 +1860,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           origin={-60,40})));
     Modelica.Blocks.Interfaces.RealInput Effects(
                                                 final unit="1")
-      "Effects<1 decrease reabsorbtion, effects>1 increase reabsorbtio fraction by equation ReabFract=Normal^(1/Effects)"
+      "Effects<1 decrease reabsorption, effects>1 increase reabsorbtio fraction by equation ReabFract=Normal^(1/Effects)"
                                  annotation (Placement(transformation(extent={{-100,58},
               {-80,78}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
@@ -1868,7 +1868,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           origin={80,40})));
 
     Physiolibrary.Types.RealIO.MolarFlowRateInput MaxReab
-      "Maximal allowed reabsorbtion molar flow rate"
+      "Maximal allowed reabsorption molar flow rate"
                                  annotation (Placement(transformation(extent={{-24,38},
               {-4,58}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
@@ -1904,7 +1904,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         points={{-68,10},{-46,10},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(soluteFlowPump.q_out, Reabsorbtion) annotation (Line(
+    connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
         points={{-1.83697e-015,-50},{0,-50},{0,-80}},
         color={200,0,0},
         thickness=1,
@@ -1973,12 +1973,12 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Reabsorbtion2;
+  end Reabsorption2;
 
-  model FullReabsorbtion "Full reabsorbtion with limit (i.e. renal glucose)"
+  model FullReabsorption "Full reabsorption with limit (i.e. renal glucose)"
 
     parameter Physiolibrary.Types.MolarFlowRate MaxReab
-      "Maximal reabsorbtion solute flow rate";
+      "Maximal reabsorption solute flow rate";
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
@@ -1987,7 +1987,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       annotation (Placement(transformation(extent={{80,-20},{120,20}}),
           iconTransformation(extent={{90,-10},{110,10}})));
 
-    NegativeConcentrationFlow Reabsorbtion "Reabsorbtion from tubules"          annotation (Placement(
+    NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-50},{10,-30}})));
 
@@ -2012,7 +2012,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         points={{-70,8},{-46,8},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(soluteFlowPump.q_out, Reabsorbtion) annotation (Line(
+    connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
         points={{-1.83697e-015,-50},{0,-50},{0,-80}},
         color={200,0,0},
         thickness=1,
@@ -2057,7 +2057,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end FullReabsorbtion;
+  end FullReabsorption;
 
   model GasSolubility
     "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
@@ -2135,6 +2135,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p>
-<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ConcentrationFlow, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorbtion, chemical degradation and physiological clearance. For usage examples, please open the Chemical.Examples package.</p>
+<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ConcentrationFlow, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. For usage examples, please open the Chemical.Examples package.</p>
 </html>"));
 end Chemical;
