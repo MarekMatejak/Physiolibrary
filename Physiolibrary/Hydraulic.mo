@@ -268,18 +268,18 @@ package Hydraulic "Hydraulic Physical Domain"
     end CardiovascularSystem;
 
     model CardiovascularSystem_Equilibrated
-      extends CardiovascularSystem(
-        peripheral(Simulation=Simulation, isFlowIncludedInEquilibrium=false),
-        pulmonaryArteries(Simulation=Simulation),
-        pulmonaryVeins(Simulation=Simulation),
-        arteries(Simulation=Simulation),
-        veins(Simulation=Simulation));
+      extends CardiovascularSystem(pulmonaryCirculation(pulmonaryArteries(
+              Simulation=Simulation), pulmonaryVeins(Simulation=Simulation)),
+          systemicCirculation(
+          veins(Simulation=Simulation),
+          arteries(Simulation=Simulation),
+          peripheral(Simulation=Simulation, isFlowIncludedInEquilibrium=false)));
       extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
       parameter Types.Volume BloodVolume = 0.0056 "total blood volume";
 
     equation
-      normalizedState[1]*BloodVolume = arteries.volume + veins.volume + pulmonaryArteries.volume + pulmonaryVeins.volume;
+      normalizedState[1]*BloodVolume = systemicCirculation.arteries.volume + systemicCirculation.veins.volume + pulmonaryCirculation.pulmonaryArteries.volume + pulmonaryCirculation.pulmonaryVeins.volume;
     end CardiovascularSystem_Equilibrated;
 
     package CardiovascularSystem2

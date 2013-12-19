@@ -190,17 +190,6 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end AccelerationConst;
 
-
-
-
-
-
-
-
-
-
-
-
   block AmountOfSubstanceConst "Constant signal of type AmountOfSubstance"
    parameter Types.AmountOfSubstance k
         "Constant AmountOfSubstance output value";
@@ -286,12 +275,6 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end DensityConst;
 
-
-
-
-
-
-
   block DiffusionPermeabilityConst
       "Constant signal of type DiffusionPermeability"
    parameter Types.DiffusionPermeability k
@@ -321,9 +304,6 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end DiffusionPermeabilityConst;
-
-
-
 
   block ElectricChargeConst "Constant signal of type ElectricCharge"
    parameter Types.ElectricCharge k "Constant ElectricCharge output value";
@@ -577,8 +557,6 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end HeatFlowRateConst;
-
-
 
   block HydraulicConductanceConst
       "Constant signal of type HydraulicConductance"
@@ -2479,6 +2457,164 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
+    connector DensityInput =input Density "input Density as connector"
+      annotation (defaultComponentName="density",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Volume. 
+    </p> 
+    </html>"));
+    connector DensityOutput =output Density "output Density as connector"
+      annotation (defaultComponentName="density",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector SpecificEnergyInput =
+                            input SpecificEnergy
+      "input SpecificEnergy as connector"
+      annotation (defaultComponentName="specificEnergy",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Volume. 
+    </p> 
+    </html>"));
+    connector SpecificEnergyOutput =
+                             output SpecificEnergy
+      "output SpecificEnergy as connector"
+      annotation (defaultComponentName="specificEnergy",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector SpecificHeatCapacityInput =
+                            input SpecificHeatCapacity
+      "input SpecificHeatCapacity as connector"
+      annotation (defaultComponentName="specificHeatCapacity",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Volume. 
+    </p> 
+    </html>"));
+    connector SpecificHeatCapacityOutput =
+                             output SpecificHeatCapacity
+      "output SpecificHeatCapacity as connector"
+      annotation (defaultComponentName="specificHeatCapacity",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -2630,11 +2766,6 @@ constructed by the signals connected to this bus.
 
   type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(133.322387415)))
     "Gas solubility in liquid";
-
-
-
-
-
 
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
