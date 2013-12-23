@@ -2,7 +2,7 @@ within Physiolibrary;
 package FilesUtilities "Value input/output/test support"
   import Physiolibrary;
   extends Physiolibrary.Types.Utilities;
-  redeclare function extends readInputReal
+  redeclare function extends readReal
     import Modelica.Utilities.*;
 
   protected
@@ -101,13 +101,13 @@ package FilesUtilities "Value input/output/test support"
        end if;
      end if;
 
-  end readInputReal;
+  end readReal;
 
-  redeclare function extends readInputBoolean
+  redeclare function extends readBoolean
 
   algorithm
-    value:=(readInputReal(name,"")>0.005);
-  end readInputBoolean;
+    value:=(readReal(name,"")>0.005);
+  end readBoolean;
 
   redeclare function extends writeReal "Write the value to file"
     import Modelica.Utilities.*;
@@ -138,7 +138,7 @@ package FilesUtilities "Value input/output/test support"
   end writeReal;
 
   redeclare function extends writeBoolean
-   import Modelica.Utilities.*;
+    import Modelica.Utilities.*;
   protected
     String fn;
 
@@ -155,7 +155,7 @@ package FilesUtilities "Value input/output/test support"
 
   end writeBoolean;
 
-  redeclare function extends writeComparation
+  redeclare function extends writeComparison
     "Compare and write the result and the value to file"
     import Modelica.Utilities.*;
 
@@ -167,7 +167,7 @@ package FilesUtilities "Value input/output/test support"
     Integer typeDef "Variable output units";
 
   algorithm
-    fn:="io/comparation.txt";
+    fn:="io/comparison.txt";
 
     if not Files.exist(fn) then
        if not Files.exist("output") then
@@ -201,9 +201,9 @@ package FilesUtilities "Value input/output/test support"
       typeDef].DisplayUnit,
                           fn);
 
-  end writeComparation;
+  end writeComparison;
 
-  redeclare function extends writeBooleanComparation
+  redeclare function extends writeBooleanComparison
     "Compare and write the result and the value to file"
     import Modelica.Utilities.*;
 
@@ -213,7 +213,7 @@ package FilesUtilities "Value input/output/test support"
     Real outputFinalValue;
     Real outputDefaultValue;
   algorithm
-    fn:="io/comparation.txt";
+    fn:="io/comparison.txt";
 
     if not Files.exist(fn) then
        if not Files.exist("output") then
@@ -227,7 +227,7 @@ package FilesUtilities "Value input/output/test support"
          Streams.print("! ; " + name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0)+ ", final=" + String(if finalValue then 1 else 0), "differences.txt");
      end if;
 
-  end writeBooleanComparation;
+  end writeBooleanComparison;
 
   package UnitDerivations
 

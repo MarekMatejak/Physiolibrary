@@ -152,12 +152,12 @@ package Types "Physiological units with nominals"
               redeclare package Utilities = Physiolibrary.Types.Utilities)));
     end OutputFinalSet;
 
-    model OutputComparationSet
+    model OutputComparisonSet
     extends Modelica.Icons.Example;
     extends ParameterSet( T(redeclare block Variable =
-              RealExtension.OutputComparation (
+              RealExtension.OutputComparison (
               redeclare package Utilities = Physiolibrary.Types.Utilities)));
-    end OutputComparationSet;
+    end OutputComparisonSet;
   end Examples;
 
   package Constants
@@ -2827,7 +2827,7 @@ The Real output y is a constant signal:
         end Parameter;
 
         block InputParameter "Generate constant signal in SI units from file"
-          extends AbstractReal(                   k = Utilities.readInputReal( varName, storeUnit));
+          extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit));
 
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
             redeclare type Type = T)
@@ -2870,7 +2870,7 @@ The Real output y is a constant signal:
         end InputParameter;
 
         block OutputFinal "Save variable to Output"
-          import Physiolibrary;
+      import Physiolibrary;
           extends Physiolibrary.Types.AbstractReal;
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
                                             redeclare type Type=T);
@@ -2915,10 +2915,10 @@ The Real output y is a constant signal:
 </html>"));
         end OutputFinal;
 
-        block OutputComparation "Save variable comparation to file"
-          import Physiolibrary;
+        block OutputComparison "Save variable comparison to file"
+      import Physiolibrary;
           extends Physiolibrary.Types.AbstractReal(
-                                                  k=Utilities.readInputReal(varName,storeUnit));
+                                                  k=Utilities.readReal(varName,storeUnit));
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Physiolibrary.FilesUtilities
@@ -2937,7 +2937,7 @@ The Real output y is a constant signal:
           initialValue = y;
         equation
           when terminal() then
-           Utilities.writeComparation(
+           Utilities.writeComparison(
             varName,
             k,
             initialValue,
@@ -2970,7 +2970,7 @@ The Real output y is a constant signal:
 The Real output y is a constant signal:
 </p>
 </html>"));
-        end OutputComparation;
+        end OutputComparison;
 
     package IO
       replaceable type Type=Real;
@@ -3029,7 +3029,7 @@ The Real output y is a constant signal:
   end RealExtension;
 
   package RealTypes
-  import Physiolibrary;
+    import Physiolibrary;
 
       replaceable block Variable = RealExtension.Parameter constrainedby
       AbstractReal;
@@ -3147,7 +3147,7 @@ The Real output y is a constant signal:
 
         block InputParameter "Read constant boolean signal"
           extends Physiolibrary.Types.AbstractBoolean(k=
-            Utilities.readInputBoolean(varName));
+            Utilities.readBoolean(varName));
 
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
@@ -3227,10 +3227,10 @@ The Real output y is a constant signal:
 </html>"));
         end OutputFinal;
 
-        block OutputComparation "Save variable comparation to file"
-          import Physiolibrary;
+        block OutputComparison "Save variable comparison to file"
+      import Physiolibrary;
           extends Physiolibrary.Types.AbstractBoolean(
-                                                  k=Utilities.readInputBoolean(varName));
+                                                  k=Utilities.readBoolean(varName));
           replaceable package Utilities = Physiolibrary.Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
@@ -3245,7 +3245,7 @@ The Real output y is a constant signal:
           initialValue = y;
         equation
           when terminal() then
-           Utilities.writeBooleanComparation(
+           Utilities.writeBooleanComparison(
             varName,
             k,
             initialValue,
@@ -3277,12 +3277,12 @@ The Real output y is a constant signal:
 The Real output y is a constant signal:
 </p>
 </html>"));
-        end OutputComparation;
+        end OutputComparison;
   end BooleanExtension;
 
   package Utilities
 
-    replaceable function readInputReal "Read the real value of parameter from file with lines in format: 
+    replaceable function readReal "Read the real value of parameter from file with lines in format: 
   <parameterName>
   <value> <unit>"
       extends Modelica.Icons.Function;
@@ -3292,15 +3292,15 @@ The Real output y is a constant signal:
 
       output Real value=0 "Actual value of parameter in SI units";
     //algorithm
-    end readInputReal;
+    end readReal;
 
-    replaceable function readInputBoolean "Read the boolean value of parameter from file with lines in format: 
+    replaceable function readBoolean "Read the boolean value of parameter from file with lines in format: 
   <parameterName>
   <value> <unit>"
       input String name "Variable name";
       output Boolean value "Variable value";
     //algorithm
-    end readInputBoolean;
+    end readBoolean;
 
     replaceable function writeReal "Write the real value to file"
       extends Modelica.Icons.Function;
@@ -3317,7 +3317,7 @@ The Real output y is a constant signal:
     //algorithm
     end writeBoolean;
 
-    replaceable function writeComparation
+    replaceable function writeComparison
       "Compare and write the result and the value to file"
 
       extends Modelica.Icons.Function;
@@ -3330,9 +3330,9 @@ The Real output y is a constant signal:
 
       input String storeUnit "Prefered units to store variable value";
     //algorithm
-    end writeComparation;
+    end writeComparison;
 
-    replaceable function writeBooleanComparation
+    replaceable function writeBooleanComparison
       "Compare and write the result and the value to file"
       extends Modelica.Icons.Function;
 
@@ -3342,7 +3342,7 @@ The Real output y is a constant signal:
       input Boolean initialValue "Initial variable value[in SI units]";
       input Boolean finalValue "Final variable value[in SI units]";
     //algorithm
-    end writeBooleanComparation;
+    end writeBooleanComparison;
   end Utilities;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

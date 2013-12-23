@@ -420,7 +420,7 @@ This is discussed in the description of package
 
         block Parts "Divide the input value by weights"
           extends Modelica.Blocks.Interfaces.SIMO;
-          parameter Real w[nout]=ones(nout) "Optional: weight coeficients";
+          parameter Real w[nout]=ones(nout) "Optional: weight coefficients";
     protected
          Real coef;
          Real weight[nout];
@@ -511,13 +511,13 @@ This is discussed in the description of package
 </html>"));
    end Spline;
 
-   function SplineCoeficients
+   function SplineCoefficients
 
         input Real[:] x;
         input Real[:] y;
         input Real[:] slope;
 
-        output Real[size(x,1)+1,4] a;//poset hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu
+        output Real[size(x,1)+1,4] a;//pocet hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu
 
     protected
       Integer n;
@@ -552,7 +552,7 @@ This is discussed in the description of package
           annotation (Documentation(revisions="<html>
 <p>author: Ondrej Vacek</p>
 </html>"));
-   end SplineCoeficients;
+   end SplineCoefficients;
 
         model Curve
       "2D natural cubic interpolation spline defined with (x,y,slope) points"
@@ -569,7 +569,7 @@ This is discussed in the description of package
                     iconTransformation(extent={{82,-20},{122,20}})));
 
     protected
-            parameter Real a[:,:] = SplineCoeficients(x,y,slope);
+            parameter Real a[:,:] = SplineCoefficients(x,y,slope);
 
         equation
       val = Spline(
@@ -725,7 +725,7 @@ This is discussed in the description of package
     end Input2Effect;
 
     model Input2EffectDelayed
-      "adapt the value of multiplication coeficient calculated from curve"
+      "adapt the value of multiplication coefficient calculated from curve"
      extends Icons.BaseFactorIcon3;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-118,44},{-78,
@@ -793,7 +793,7 @@ This is discussed in the description of package
     end Input2EffectDelayed;
 
     model DelayedInput2Effect
-      "adapt the signal, from which is by curve multiplication coeficient calculated"
+      "adapt the signal, from which is by curve multiplication coefficient calculated"
      extends Icons.BaseFactorIcon5;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-118,44},{-78,
@@ -859,7 +859,7 @@ This is discussed in the description of package
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>If the input signal u is constant and it is different from starting delayed input d, the midle value between u and d will be reached after HalfTime.</p>
+<p>If the input signal u is constant and it is different from starting delayed input d, the middle value between u and d will be reached after HalfTime.</p>
 <p>The mathematical background:</p>
 <p>d&apos;(t) = k*(u(t) - d(t))       =&GT;       The solution of d(t) in special case, if u(t) is constant at each time t:  d(t)=u+(d(0)-u)*e^(-k*t),  where the definition of HalfTime is  d(HalfTime) = d(0) + (d(0)-u)/2.</p>
 </html>"));

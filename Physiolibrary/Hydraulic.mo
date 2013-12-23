@@ -140,12 +140,12 @@ package Hydraulic "Hydraulic Physical Domain"
 
         parameter Types.HydraulicConductance PulmonaryConductance=6.9838233326989e-08;
 
-        ElacticBalloon pulmonaryVeins(
+        ElasticBalloon pulmonaryVeins(
           zeroPressureVolume=0,
           volume_start=0.0004,
           compliance=6.0004926067653e-07)
           annotation (Placement(transformation(extent={{20,-8},{40,12}})));
-        ElacticBalloon pulmonaryArteries(
+        ElasticBalloon pulmonaryArteries(
           zeroPressureVolume=0,
           volume_start=0.0001,
           compliance=5.0029107108905e-08)
@@ -187,12 +187,12 @@ package Hydraulic "Hydraulic Physical Domain"
         extends Icons.SystemicCirculation;
 
         parameter Types.HydraulicConductance SystemicConductance=7.1430864073035e-09;
-        ElacticBalloon arteries(
+        ElasticBalloon arteries(
           zeroPressureVolume=0,
           volume_start=0.001,
           compliance=7.5006157584566e-08)
           annotation (Placement(transformation(extent={{50,-64},{70,-44}})));
-        ElacticBalloon veins(
+        ElasticBalloon veins(
           zeroPressureVolume=0,
           volume_start=0.0035,
           compliance=1.3126077577299e-05)
@@ -365,12 +365,12 @@ package Hydraulic "Hydraulic Physical Domain"
 
         parameter Types.HydraulicConductance Conductance=6.9838233326989e-08;
 
-        ElacticBalloon veins(
+        ElasticBalloon veins(
           zeroPressureVolume=VeinsV0,
           volume_start=VeinsVolume_start,
           compliance=VeinsCompliance)
           annotation (Placement(transformation(extent={{20,-8},{40,12}})));
-        ElacticBalloon arteries(
+        ElasticBalloon arteries(
           zeroPressureVolume=ArteriesV0,
           volume_start=ArteriesVolume_start,
           compliance=ArteriesCompliance)
@@ -644,7 +644,7 @@ package Hydraulic "Hydraulic Physical Domain"
       annotation (Dialog(group="Simulation type", tab="Simulation"));
 
   equation
-    /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
+    /*** this could be done automatically, if the solver will be so smart that it remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
      if Simulation<>States.SimulationType.Equilibrated or isFlowIncludedInEquilibrium then
         q_in.q + q_out.q = 0;
      end if;
@@ -907,16 +907,16 @@ package Hydraulic "Hydraulic Physical Domain"
 </html>"));
   end Pump;
 
-  model Reabsorbtion "Divide inflow to outflow and reabsorbtion"
+  model Reabsorption "Divide inflow to outflow and reabsorption"
     import Physiolibrary;
-    extends Icons.Reabsorbtion;
+    extends Icons.Reabsorption;
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-106,-18},{-66,22}}), iconTransformation(
             extent={{-110,-10},{-90,10}})));
     NegativePressureFlow Outflow
       annotation (Placement(transformation(extent={{50,-18},{90,22}}),
           iconTransformation(extent={{90,-10},{110,10}})));
-    NegativePressureFlow Reabsorbtion                annotation (Placement(
+    NegativePressureFlow Reabsorption                annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
             extent={{-10,-110},{10,-90}})));
     Modelica.Blocks.Interfaces.RealInput FractReab
@@ -950,7 +950,7 @@ package Hydraulic "Hydraulic Physical Domain"
         points={{-47.8,-30},{-66,-30}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(pump.q_out, Reabsorbtion) annotation (Line(
+    connect(pump.q_out, Reabsorption) annotation (Line(
         points={{-1.10218e-015,-54},{0,-54},{0,-80},{0,-80}},
         color={0,0,0},
         thickness=1,
@@ -979,12 +979,12 @@ package Hydraulic "Hydraulic Physical Domain"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Reabsorbtion;
+  end Reabsorption;
 
-  model Reabsorbtion2
-    "Divide inflow to outflow and reabsorbtion if it is under defined treshold"
+  model Reabsorption2
+    "Divide inflow to outflow and reabsorption if it is under defined treshold"
     import Physiolibrary;
-    extends Icons.Reabsorbtion2;
+    extends Icons.Reabsorption2;
 
     PositivePressureFlow Inflow                    annotation (Placement(
           transformation(extent={{-100,40},{-60,80}}),  iconTransformation(
@@ -992,7 +992,7 @@ package Hydraulic "Hydraulic Physical Domain"
     NegativePressureFlow Outflow
       annotation (Placement(transformation(extent={{58,40},{98,80}}),
           iconTransformation(extent={{90,-10},{110,10}})));
-    NegativePressureFlow Reabsorbtion                annotation (Placement(
+    NegativePressureFlow Reabsorption                annotation (Placement(
           transformation(extent={{-12,-98},{28,-58}}), iconTransformation(
             extent={{-10,-110},{10,-90}})));
     Physiolibrary.Types.RealIO.FractionInput FractReab
@@ -1014,7 +1014,7 @@ package Hydraulic "Hydraulic Physical Domain"
           extent={{-10,-10},{10,10}},
           rotation=0,
           origin={-28,-20})));
-    Pump reabsorbtion annotation (Placement(transformation(
+    Pump reabsorption annotation (Placement(transformation(
           extent={{-10,10},{10,-10}},
           rotation=270,
           origin={10,-34})));
@@ -1035,12 +1035,12 @@ package Hydraulic "Hydraulic Physical Domain"
         points={{-37.8,-20},{-54,-20}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(reabsorbtion.q_out, Reabsorbtion) annotation (Line(
+    connect(reabsorption.q_out, Reabsorption) annotation (Line(
         points={{10,-44},{10,-78},{8,-78}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
-    connect(simpleMultiply.y, reabsorbtion.desiredFlow) annotation (Line(
+    connect(simpleMultiply.y, reabsorption.desiredFlow) annotation (Line(
         points={{-28,-22},{-28,-34},{4,-34}},
         color={0,0,127},
         smooth=Smooth.None));
@@ -1049,7 +1049,7 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
-    connect(flowMeasure.q_out, reabsorbtion.q_in) annotation (Line(
+    connect(flowMeasure.q_out, reabsorption.q_in) annotation (Line(
         points={{-18,12},{10,12},{10,-24}},
         color={0,0,0},
         thickness=1,
@@ -1096,7 +1096,7 @@ package Hydraulic "Hydraulic Physical Domain"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Reabsorbtion2;
+  end Reabsorption2;
 
   model Hydrostatic
     "Create hydrostatic pressure between connectors in different altitude"
@@ -1232,7 +1232,7 @@ package Hydraulic "Hydraulic Physical Domain"
               -100},{100,100}}), graphics));
   end HydrostaticWithPumpEffect;
 
-  model ElacticBalloon "Elastic balloon"
+  model ElasticBalloon "Elastic balloon"
    extends Icons.ElasticBalloon;
    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
         "ml");
@@ -1276,9 +1276,9 @@ package Hydraulic "Hydraulic Physical Domain"
                      extent={{-100,-100},{100,100}}), graphics),
                 Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics));
-  end ElacticBalloon;
+  end ElasticBalloon;
 
-  model ElacticBalloon2 "Elastic balloon"
+  model ElasticBalloon2 "Elastic balloon"
    extends Icons.ElasticBalloon;
    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
         "ml");
@@ -1327,7 +1327,7 @@ package Hydraulic "Hydraulic Physical Domain"
                      extent={{-100,-100},{100,100}}), graphics),
                 Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics));
-  end ElacticBalloon2;
+  end ElasticBalloon2;
 
   model InternalElasticBalloon "Elastic balloon in closed space"
    extends Physiolibrary.States.State(state_start=volume_start, storeUnit=

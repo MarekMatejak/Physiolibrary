@@ -17,19 +17,19 @@ package States "Dynamic simulation / Equilibrium"
       state=internalValue;
     end SimpleAdaptation_NoInit;
 
-    model SimpleAddaptation_InitSteadyState
+    model SimpleAdaptation_InitSteadyState
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.InitSteadyState);
-    end SimpleAddaptation_InitSteadyState;
+    end SimpleAdaptation_InitSteadyState;
 
-    model SimpleAddaptation_InitialInput
+    model SimpleAdaptation_InitialInput
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.InitialInput, redeclare
           package Utilities =
             Physiolibrary.FilesUtilities);
-    end SimpleAddaptation_InitialInput;
+    end SimpleAdaptation_InitialInput;
 
-    model SimpleAddaptation_Equilibrated
+    model SimpleAdaptation_Equilibrated
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.Equilibrated);
-    end SimpleAddaptation_Equilibrated;
+    end SimpleAdaptation_Equilibrated;
 
     model SimpleReaction_NoInit
       import Physiolibrary;
@@ -139,12 +139,12 @@ package States "Dynamic simulation / Equilibrium"
       der(state)=0;
    //   change = 0;
     elseif Simulation == SimulationType.InitialInput then
-      state = Utilities.readInputReal(stateName, storeUnit);
+      state = Utilities.readReal(stateName, storeUnit);
     end if;
 
     initialValue = state; //in causality such as initialValue:=state
     if SAVE_RESULTS then
-      defaultValue = Utilities.readInputReal(stateName, storeUnit);
+      defaultValue = Utilities.readReal(stateName, storeUnit);
     else
        defaultValue = Modelica.Constants.N_A;
     end if;
@@ -155,7 +155,7 @@ package States "Dynamic simulation / Equilibrium"
           stateName,
           state,
           storeUnit);
-      Utilities.writeComparation(
+      Utilities.writeComparison(
           stateName,
           defaultValue,
           initialValue,

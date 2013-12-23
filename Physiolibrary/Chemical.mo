@@ -531,7 +531,7 @@ package Chemical "Molar Concentration Physiological Domain"
                normalizedState[i-1]*totalSubsystemAmount*numberOfSubunit[i] = totalSubunitAmount[i];
         end for;
 
-        /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0), where both zeros are values from parameters. ***/
+        /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0), where both zeros are values from parameters. ***/
         if Simulation==Physiolibrary.States.SimulationType.Equilibrated
                                                           or (initial() and Simulation==
             Physiolibrary.States.SimulationType.InitSteadyState) then
@@ -862,7 +862,7 @@ Connector with one flow signal of type Real.
       annotation (Dialog(group="Simulation type", tab="Simulation"));
 
   equation
-     /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
+     /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
      if Simulation<>States.SimulationType.Equilibrated or isFlowIncludedInEquilibrium then
         q_in.q + q_out.q = 0;
      end if;
@@ -1197,7 +1197,7 @@ Connector with one flow signal of type Real.
              {{-110,-10},{-90,10}})));
 
     parameter Real K(unit="1")=1
-      "Coeficient such that Clearance = K*solventFlow";
+      "Coefficient such that Clearance = K*solventFlow";
 
     Physiolibrary.Types.VolumeFlowRate Clearance;
   equation
@@ -1473,7 +1473,7 @@ Connector with one flow signal of type Real.
 
     parameter Physiolibrary.Types.AmountOfSubstance
                                       NominalSolute = 0.001
-      "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxyde ions can be much smaller."
+      "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
         annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
   equation
@@ -1555,14 +1555,14 @@ Connector with one flow signal of type Real.
       annotation (Dialog(group="Products", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
-      "stoichiometric reaction coeficient for substrate"
+      "stoichiometric reaction coefficient for substrate"
       annotation (Dialog(group="Substrates", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
-      "stoichiometric reaction coeficients for substrate"
+      "stoichiometric reaction coefficients for substrate"
       annotation (Dialog(group="Products", tab="Reaction type"));
 
-    parameter Real kf = 10^8 "forward reaction rate coeficient [SI unit]"
+    parameter Real kf = 10^8 "forward reaction rate coefficient [SI unit]"
       annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
     parameter Physiolibrary.States.SimulationType
@@ -1599,7 +1599,7 @@ Connector with one flow signal of type Real.
   equation
     rr = kf*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
 
-     /*** this could be done automatically, if the solver will be so smart that he remove all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+     /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
      if Simulation==Physiolibrary.States.SimulationType.Equilibrated
                                                       or (initial() and Simulation==
         Physiolibrary.States.SimulationType.InitSteadyState) then
@@ -1655,9 +1655,9 @@ s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP]
 
 where
 S are substrates, 
-s are stochiometric coeficients of substrates,  
+s are stochiometric coefficients of substrates,  
 P are products, 
-p are stochiometric coeficients of products.  
+p are stochiometric coefficients of products.  
 
 In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
 <p><br/><code></p><p><br/>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
@@ -1682,7 +1682,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model ChemicalReaction "Chemical Reaction"
     extends ChemicalReactionBase;
 
-    parameter Real K "disociation constant [SI-unit]";
+    parameter Real K "dissociation constant [SI-unit]";
     parameter Physiolibrary.Types.Temperature T=310.15 "current temperature"
        annotation (Dialog(tab="Temperature dependence"));
                      //body temperature
@@ -1695,7 +1695,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   model ChemicalReaction2 "Chemical Reaction"
     extends ChemicalReactionBase;
 
-    parameter Real K "disociation constant [SI-unit]";
+    parameter Real K "dissociation constant [SI-unit]";
     Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
                                                        annotation (Placement(
           transformation(extent={{10,30},{50,70}}), iconTransformation(
@@ -1753,7 +1753,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
               -100},{100,100}}), graphics));
   end Dilution;
 
-  model Reabsoption "Reabsorption of input fraction"
+  model Reabsorption "Reabsorption of input fraction"
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
@@ -1784,7 +1784,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   equation
 
     connect(Inflow, flowMeasure.q_in) annotation (Line(
-        points={{-100,0},{-80,0}},
+        points={{-100,0},{-85,0},{-85,-10},{-70,-10}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -1793,25 +1793,25 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-        points={{-70,8},{-46,8},{-46,-34}},
+        points={{-62,0},{-46,0},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-        points={{-1.83697e-015,-50},{0,-50},{0,-80}},
+        points={{-10,-40},{0,-40},{0,-80}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-        points={{-23,-40},{-4,-40}},
+        points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.q_out, Outflow) annotation (Line(
-        points={{-60,0},{100,0}},
+        points={{-70,10},{15,10},{15,0},{100,0}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-        points={{-60,0},{1.83697e-015,0},{1.83697e-015,-30}},
+        points={{-70,10},{10,10},{10,-40}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -1837,7 +1837,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-  end Reabsoption;
+  end Reabsorption;
 
   model Reabsorption2 "Reabsorption of input fraction"
     import Physiolibrary;
@@ -1860,7 +1860,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
           origin={-60,40})));
     Modelica.Blocks.Interfaces.RealInput Effects(
                                                 final unit="1")
-      "Effects<1 decrease reabsorption, effects>1 increase reabsorbtio fraction by equation ReabFract=Normal^(1/Effects)"
+      "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=Normal^(1/Effects)"
                                  annotation (Placement(transformation(extent={{-100,58},
               {-80,78}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
@@ -1896,30 +1896,30 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   equation
 
     connect(Inflow, flowMeasure.q_in) annotation (Line(
-        points={{-100,2},{-78,2}},
+        points={{-100,2},{-84,2},{-84,-8},{-68,-8}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-        points={{-68,10},{-46,10},{-46,-34}},
+        points={{-60,2},{-46,2},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-        points={{-1.83697e-015,-50},{0,-50},{0,-80}},
+        points={{-10,-40},{0,-40},{0,-80}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-        points={{-23,-40},{-4,-40}},
+        points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.q_out, Outflow) annotation (Line(
-        points={{-58,2},{100,2}},
+        points={{-68,12},{16,12},{16,2},{100,2}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-        points={{-58,2},{1.83697e-015,2},{1.83697e-015,-30}},
+        points={{-68,12},{10,12},{10,-40}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -2004,30 +2004,30 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   equation
 
     connect(Inflow, flowMeasure.q_in) annotation (Line(
-        points={{-100,0},{-80,0}},
+        points={{-100,0},{-85,0},{-85,-10},{-70,-10}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-        points={{-70,8},{-46,8},{-46,-34}},
+        points={{-62,0},{-46,0},{-46,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-        points={{-1.83697e-015,-50},{0,-50},{0,-80}},
+        points={{-10,-40},{0,-40},{0,-80}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-        points={{-23,-40},{-4,-40}},
+        points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(flowMeasure.q_out, Outflow) annotation (Line(
-        points={{-60,0},{0,0},{0,-30},{100,-30},{100,0}},
+        points={{-70,10},{0,10},{0,-30},{100,-30},{100,0}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-        points={{-60,0},{1.83697e-015,0},{1.83697e-015,-30}},
+        points={{-70,10},{10,10},{10,-40}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));

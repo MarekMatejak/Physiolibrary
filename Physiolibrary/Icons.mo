@@ -481,13 +481,13 @@ package Icons "Icons for physiological models"
                 "Resources/Icons/O2.jpg")}));
   end Oxygen;
 
-  model Carbondioxyd
+  model CarbonDioxide
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "Resources/Icons/prvkyCO2.png")}));
-  end Carbondioxyd;
+  end CarbonDioxide;
 
   model AcidBase
 
@@ -774,12 +774,12 @@ package Icons "Icons for physiological models"
                 -100}}, fileName="Resources/Icons/torzo1.png")}));
   end UpperTorso;
 
-  model MidleTorso
+  model MiddleTorso
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName="Resources/Icons/torzo2.png")}));
-  end MidleTorso;
+  end MiddleTorso;
 
   model LowerTorso
 
@@ -1175,21 +1175,21 @@ from this block.
                 "Resources/Icons/pressureMeassure.png")}));
   end PressureMeasure;
 
-  model Reabsorbtion
+  model Reabsorption
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
-                "Resources/Icons/reabsorbtion.png")}));
-  end Reabsorbtion;
+                "Resources/Icons/reabsorption.png")}));
+  end Reabsorption;
 
-  model Reabsorbtion2
+  model Reabsorption2
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
-                "Resources/Icons/reabsorbtion2.jpg")}));
-  end Reabsorbtion2;
+                "Resources/Icons/reabsorption2.jpg")}));
+  end Reabsorption2;
 
   model InternalElasticBalloon
 

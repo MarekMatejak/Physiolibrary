@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version v1.0)"
+package Physiolibrary "Physiological domains library (version v1.1)"
 
 
   package UsersGuide "User's Guide"
@@ -22,7 +22,7 @@ package Physiolibrary "Physiological domains library (version v1.0)"
 <p><br/><a href=\"#The_Modelica_License_2-outline\">The Modelica License 2</a></p>
 <p><br/><a href=\"#How_to_Apply_the_Modelica_License_2-outline\">How to Apply the Modelica License 2</a></p>
 <p><br/><a href=\"#Frequently_Asked_Questions-outline\">Frequently Asked Questions</a></p>
-<p><br/><b><a name=\"The_Modelica_License_2-outline\">T</a></font><font style=\"color: #008000; \">he Modelica License 2</font></b> </p>
+<p><br/><b><a name=\"The_Modelica_License_2-outline\"></a></font><font style=\"color: #008000; \">The Modelica License 2</font></b> </p>
 <p><b><font style=\"font-size: 10pt; \">Preamble.</b> The goal of this license is that Modelica related model libraries, software, images, documents, data files etc. can be used freely in the original or a modified form, in open source and in commercial environments (as long as the license conditions below are fulfilled, in particular sections 2c) and 2d). The Original Work is provided free of charge and the use is completely at your own risk. Developers of free Modelica packages are encouraged to utilize this license for their work. </p>
 <p>The Modelica License applies to any Original Work that contains the following licensing notice adjacent to the copyright notice(s) for this Original Work: </p>
 <p><b>Licensed by Marek Matejak under the Modelica License 2</b> </p>
@@ -191,13 +191,24 @@ package Physiolibrary "Physiological domains library (version v1.0)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
+
+
   annotation (preferredView="info",
-version="1.0",
+version="1.1",
 versionBuild=1,
-versionDate="2013-12-11",
-dateModified = "2013-12-11 13:46:00Z",
+versionDate="2013-12-23",
+dateModified = "2013-12-23 16:26:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
+conversion(
+ from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.1.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>

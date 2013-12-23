@@ -80,7 +80,7 @@ package Osmotic "Osmotic Physical Domain"
   end Examples;
 
    connector OsmoticFlowConnector
-    "Flux throught semipermeable membrane by osmotic pressure gradient"
+    "Flux through semipermeable membrane by osmotic pressure gradient"
     Physiolibrary.Types.Concentration o
       "Osmolarity is the molar concentration of the impermeable solutes";
     flow Physiolibrary.Types.VolumeFlowRate q
