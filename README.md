@@ -24,10 +24,15 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Current release
 
-Download [Physiolibrary v1.0.1 (2013-12-11)](../../archive/v1.0.1.zip)
+Download [Physiolibrary v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
 
 #### Release notes
 
+*  [Version v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
+ * Quick English corrections
+ * Hydrostatic pressure patch
+ * New examles 
+ 
 *  [Version v1.0.1 (2013-12-11)](../../archive/v1.0.1.zip)
  * The library uses the Modelica Standard Libary (MSL) version 3.2.
  * Contains nice physiological icons.
