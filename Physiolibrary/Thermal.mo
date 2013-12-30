@@ -79,14 +79,8 @@ package Thermal "Temperature Physical Domain"
     end MuscleHeating;
   end Examples;
 
-  connector HeatFlowConnector "Heat flow connector"
-    Physiolibrary.Types.Temperature T "Temperature";
-    flow Physiolibrary.Types.HeatFlowRate q "Heat flow";
-    annotation (Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-  end HeatFlowConnector;
+  connector HeatFlowConnector =
+                       Modelica.Thermal.HeatTransfer.Interfaces.HeatPort(T(displayUnit="degC"),Q_flow(displayUnit="kcal/min", nominal=4186.8/60));
 
   connector PositiveHeatFlow "Heat inflow"
     extends HeatFlowConnector;
@@ -94,11 +88,11 @@ package Thermal "Temperature Physical Domain"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Rectangle(
             extent={{-18,10},{22,-10}},
-            lineColor={255,128,0},
-            lineThickness=1), Ellipse(
+            lineColor={191,0,0},
+            lineThickness=1),       Rectangle(
             extent={{-100,100},{100,-100}},
-            lineColor={176,88,0},
-            fillColor={255,128,0},
+            lineColor={191,0,0},
+            fillColor={191,0,0},
             fillPattern=FillPattern.Solid)}), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -124,11 +118,11 @@ package Thermal "Temperature Physical Domain"
             rgbfillColor={255,240,240})),
         graphics={Rectangle(
             extent={{-20,10},{20,-10}},
-            lineColor={255,128,0},
-            lineThickness=1), Ellipse(
+            lineColor={191,0,0},
+            lineThickness=1),       Rectangle(
             extent={{-100,100},{100,-100}},
-            lineColor={176,88,0},
-            fillColor={255,170,85},
+            lineColor={191,0,0},
+            fillColor={255,255,255},
             fillPattern=FillPattern.Solid)}),
       Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
             color=74,
@@ -156,7 +150,7 @@ Connector with one flow signal of type Real.
     NegativeHeatFlow q_out annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{90,-10},{110,10}})));
   equation
-    q_in.q + q_out.q = 0;
+    q_in.Q_flow + q_out.Q_flow = 0;
     annotation (Icon(graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -168,7 +162,7 @@ Connector with one flow signal of type Real.
    extends OnePort;
    parameter Physiolibrary.Types.ThermalConductance conductance;
   equation
-    q_in.q = conductance * (q_in.T - q_out.T);
+    q_in.Q_flow = conductance * (q_in.T - q_out.T);
     annotation (Icon(graphics={Text(
             extent={{-70,-8},{70,10}},
             lineColor={0,0,0},
@@ -193,7 +187,7 @@ Connector with one flow signal of type Real.
           rotation=270,
           origin={0,40})));
   equation
-    q_in.q = conductance * (q_in.T - q_out.T);
+    q_in.Q_flow = conductance * (q_in.T - q_out.T);
     annotation (Icon(graphics={Text(
             extent={{-70,-30},{70,30}},
             textString="%name",
@@ -212,7 +206,7 @@ Connector with one flow signal of type Real.
       "Heat inflow rate"                                        annotation ( extent = [-10,30;10,50], rotation = -90);
 
   equation
-    q_out.q = - desiredFlow_;
+    q_out.Q_flow = - desiredFlow_;
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -254,7 +248,7 @@ Connector with one flow signal of type Real.
           origin={0,60})));
   equation
     assert(substanceFlow>=-Modelica.Constants.eps,"In HeatStream must be always the forward flow direction! Not 'substanceFlow<0'!");
-    q_in.q = substanceFlow*q_in.T*specificHeat_;
+    q_in.Q_flow = substanceFlow*q_in.T*specificHeat_;
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -300,7 +294,7 @@ Connector with one flow signal of type Real.
           origin={0,60})));
   equation
     assert(liquidOutflow_>=-Modelica.Constants.eps,"HeatOutstream must have always one forward flow direction! Not 'liquidOutflow_<0'!");
-    q_in.q = liquidOutflow_*(q_in.T*specificHeat_ + VaporizationHeat);
+    q_in.Q_flow = liquidOutflow_*(q_in.T*specificHeat_ + VaporizationHeat);
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -343,7 +337,7 @@ Connector with one flow signal of type Real.
           origin={-100,40})));
   equation
     assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
-    q_in.q = substanceFlow*(q_in.T-q_out.T)*specificHeat_;
+    q_in.Q_flow = substanceFlow*(q_in.T-q_out.T)*specificHeat_;
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -424,7 +418,7 @@ Connector with one flow signal of type Real.
     T_ = q_in.T;
 
     state = heatMass;  // der(heatMass)=q_in.q
-    change = q_in.q;
+    change = q_in.Q_flow;
     annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -455,7 +449,7 @@ Connector with one flow signal of type Real.
     q_in.T=Temperature;
 
     if Simulation==States.SimulationType.Equilibrated then
-      q_in.q=0;
+      q_in.Q_flow=0;
     end if;
 
     annotation (Icon(graphics={Rectangle(

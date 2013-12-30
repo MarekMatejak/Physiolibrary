@@ -29,9 +29,10 @@ Download [Physiolibrary v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
 #### Release notes
 
 *  [Version v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
- * Quick English corrections
+ * Heat connector compatibility between Physiolibrary.Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)
+ * Some English language corrections
  * Hydrostatic pressure patch
- * New examles 
+ * New examples 
  
 *  [Version v1.0.1 (2013-12-11)](../../archive/v1.0.1.zip)
  * The library uses the Modelica Standard Libary (MSL) version 3.2.

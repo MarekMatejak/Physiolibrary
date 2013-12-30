@@ -39,3 +39,5 @@ convertClass("Physiolibrary.Hydraulic.ElacticBalloon2","Physiolibrary.Hydraulic.
 convertClass("Physiolibrary.Icons.MidleTorso","Physiolibrary.Icons.MiddleTorso")
 convertClass("Physiolibrary.Icons.Carbondioxyd","Physiolibrary.Icons.CarbonDioxide")
 
+convertElement("Physiolibrary.Thermal.HeatFlowConnector","q","Q_flow")
+
