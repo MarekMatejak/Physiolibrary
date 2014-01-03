@@ -181,7 +181,7 @@ package States "Dynamic simulation / Equilibrium"
 
     parameter Integer NumberOfNormalizedStates=1
       "Number of additional steady state equation of whole system"
-    annotation (Dialog(enable=false,group="Equilibrium"));
+    annotation (Dialog(enable=false,group="Equilibrium", tab="Simulation"));
 
     Real normalizedState[NumberOfNormalizedStates]
       "Each state must be connected to the normalized sum of partial states in inherited class definition. This variable must have always the vectors of 1.";

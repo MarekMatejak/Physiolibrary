@@ -43,74 +43,6 @@ package Chemical "Molar Concentration Physiological Domain"
       normalizedState[1]*totalSystemSubstance = A.solute + B.solute;
     end SimpleReaction_Equilibrated;
 
-    model MichaelisMenten "Basic enzyme kinetics"
-    extends Modelica.Icons.Example;
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
-    //=States.SimulationType.NoInit); for dynamic simulation
-
-     parameter Types.AmountOfSubstance tE=0.001 "total enzyme concentration";
-     parameter Real k_cat(unit="m3/s", displayUnit="l/min")=60e-3
-        "forward rate of second reaction";
-     parameter Types.Concentration Km=1.5
-        "Michaelis constant = substrate concentration at rate of half Vmax";
-
-      NormalizedSubstance ES(Simulation=Simulation, solute_start=0)
-        annotation (Placement(transformation(extent={{-10,14},{10,34}})));
-      NormalizedSubstance E(Simulation=Simulation, solute_start=tE)
-        annotation (Placement(transformation(extent={{-12,56},{8,76}})));
-      ChemicalReaction chemicalReaction(nS=2,
-        K=2/Km,
-        kf=2*k_cat/Km)
-        annotation (Placement(transformation(extent={{-42,14},{-22,34}})));
-      ChemicalReaction chemicalReaction1(nP=2,
-        Simulation=Simulation,
-        isSubstrateFlowIncludedInEquilibrium={false},
-        K=Modelica.Constants.inf,
-        kf=k_cat)
-        annotation (Placement(transformation(extent={{22,14},{42,34}})));
-      UnlimitedStorage P(concentration=0)
-        annotation (Placement(transformation(extent={{74,14},{94,34}})));
-      UnlimitedStorage S(concentration=10)
-        annotation (Placement(transformation(extent={{-84,14},{-64,34}})));
-
-     // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
-    equation
-      normalizedState[1]*tE = E.solute + ES.solute;
-
-     //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
-      connect(S.q_out, chemicalReaction.substrates[1])           annotation (Line(
-          points={{-73.8,24},{-74,24},{-74,23.5},{-42,23.5}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
-          points={{-2,66},{-52,66},{-52,24.5},{-42,24.5}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
-          points={{-22,24},{0,24}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
-          points={{0,24},{22,24}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(chemicalReaction1.products[1], P.q_out) annotation (Line(
-          points={{42,23.5},{84.2,23.5},{84.2,24}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(chemicalReaction1.products[2], E.q_out) annotation (Line(
-          points={{42,24.5},{50,24.5},{50,66},{-2,66}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
-    end MichaelisMenten;
 
     model MWC_Allosteric_Hemoglobin
     extends Modelica.Icons.Example;
@@ -514,11 +446,12 @@ package Chemical "Molar Concentration Physiological Domain"
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={-60,100})));
-        Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount(start=1e-8) annotation (Placement(
+        Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount
+         annotation (Placement(
               transformation(extent={{-10,-90},{10,-70}}), iconTransformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
-              origin={0,-100})));
+              origin={0,-100})));                                 //(start=1e-8)
       equation
         totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
 
@@ -759,6 +692,37 @@ package Chemical "Molar Concentration Physiological Domain"
           __Dymola_experimentSetupOutput);
       end MWC;
     end Speciation;
+
+    model MichaelisMentenExample "Basic enzyme kinetics"
+      import Physiolibrary;
+    extends Modelica.Icons.Example;
+
+      UnlimitedStorage P(concentration=0)
+        annotation (Placement(transformation(extent={{74,14},{94,34}})));
+      UnlimitedStorage S(concentration=10)
+        annotation (Placement(transformation(extent={{-84,14},{-64,34}})));
+
+      Physiolibrary.Chemical.MichaelisMenten
+                      michaelisMenten(
+        Km=1.5,
+        tE=0.001,
+        k_cat=0.06)
+        annotation (Placement(transformation(extent={{-8,14},{12,34}})));
+    equation
+
+      connect(S.q_out, michaelisMenten.p) annotation (Line(
+          points={{-73.8,24},{-8,24}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(michaelisMenten.n, P.q_out) annotation (Line(
+          points={{12,24},{84.2,24}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end MichaelisMentenExample;
   end Examples;
 
   connector ConcentrationFlow "Concentration and Solute flow"
@@ -1753,6 +1717,80 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
               -100},{100,100}}), graphics));
   end Dilution;
 
+
+
+
+  model GasSolubility
+    "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
+
+    extends OnePort; //q_in is dissolved in liquid and q_out is in gaseous solution"
+    extends Physiolibrary.Icons.GasSolubility;
+
+    parameter Physiolibrary.Types.Fraction kH
+      "Henry's law constant such as liquid-gas concentration ratio";
+
+    parameter Types.DiffusionPermeability solubilityRateCoef=10^3
+      "The rate constant of incoming gas to solution";
+
+  equation
+    // equilibrium:  gas.conc = kH * liquid.conc;
+    q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc);
+
+     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+              -100},{100,100}}), graphics={
+          Text(
+            extent={{-120,80},{120,40}},
+            textString="%name",
+            lineColor={0,0,255})}),             Documentation(revisions="<html>
+<p><i>2009-2012</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+      Diagram(graphics));
+  end GasSolubility;
+
+  model GasSolubility2 "Henry's law about the solubility of a gas in a liquid"
+   extends OnePort;  //q_in is dissolved in liquid and q_out is in gaseous solution
+   extends Physiolibrary.Icons.GasSolubility;
+
+    Physiolibrary.Types.Fraction kH
+      "Henry's law coefficient such as liquid-gas concentration ratio";
+
+    parameter Types.DiffusionPermeability solubilityRate=10^3
+      "The rate of incoming gas to solution";
+
+    parameter Physiolibrary.Types.Fraction kH_T0
+      "Henry's law coefficient at temperature T0";
+    parameter Physiolibrary.Types.Temperature T0=298.15
+      "Base temperature for kH_T0"
+       annotation (Dialog(group="Temperature dependence"));
+    parameter Physiolibrary.Types.Temperature C(displayUnit="K")
+      "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
+      annotation (Dialog(group="Temperature dependence"));
+    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
+                                                       annotation (Placement(
+          transformation(extent={{-8,-88},{32,-48}}),   iconTransformation(extent={{-20,-20},
+              {20,20}},
+          rotation=0,
+          origin={-60,0})));
+
+  equation
+    kH = kH_T0 * Modelica.Math.exp(C* (1/T - 1/T0)); // Van't Hoff equation
+    //gas.conc = kH * liquid.conc;
+    // equilibrium:  gas.conc = kH * liquid.conc;
+    q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
+
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+              {100,100}}),       graphics={
+          Text(
+            extent={{-120,80},{120,40}},
+            textString="%name",
+            lineColor={0,0,255})}),             Documentation(revisions="<html>
+<p><i>2009-2012</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+      Diagram(graphics));
+  end GasSolubility2;
+
   model Reabsorption "Reabsorption of input fraction"
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
@@ -2059,76 +2097,83 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 </html>"));
   end FullReabsorption;
 
-  model GasSolubility
-    "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
+  model MichaelisMenten "Basic enzyme kinetics"
+  protected
+  extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
-    extends OnePort; //q_in is dissolved in liquid and q_out is in gaseous solution"
-    extends Physiolibrary.Icons.GasSolubility;
+  public
+   parameter Types.AmountOfSubstance tE "total enzyme concentration";
+   parameter Real k_cat(unit="m3/s", displayUnit="l/min")
+      "forward rate of second reaction";
+   parameter Types.Concentration Km
+      "Michaelis constant = substrate concentration at rate of half Vmax";
 
-    parameter Physiolibrary.Types.Fraction kH
-      "Henry's law constant such as liquid-gas concentration ratio";
+    NormalizedSubstance ES(Simulation=Simulation, solute_start=0)
+      annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+    NormalizedSubstance E(Simulation=Simulation, solute_start=tE)
+      annotation (Placement(transformation(extent={{-10,32},{10,52}})));
+    ChemicalReaction chemicalReaction(nS=2,
+      K=2/Km,
+      kf=2*k_cat/Km)
+      annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+    ChemicalReaction chemicalReaction1(nP=2,
+      Simulation=Simulation,
+      K=Modelica.Constants.inf,
+      kf=k_cat,
+      isSubstrateFlowIncludedInEquilibrium={false})
+      annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
-    parameter Types.DiffusionPermeability solubilityRateCoef=10^3
-      "The rate constant of incoming gas to solution";
-
+   // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
+    PositiveConcentrationFlow p
+      annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+    NegativeConcentrationFlow n
+      annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   equation
-    // equilibrium:  gas.conc = kH * liquid.conc;
-    q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc);
+    normalizedState[1]*tE = E.solute + ES.solute;
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics={
-          Text(
-            extent={{-120,80},{120,40}},
-            textString="%name",
-            lineColor={0,0,255})}),             Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-      Diagram(graphics));
-  end GasSolubility;
-
-  model GasSolubility2 "Henry's law about the solubility of a gas in a liquid"
-   extends OnePort;  //q_in is dissolved in liquid and q_out is in gaseous solution
-   extends Physiolibrary.Icons.GasSolubility;
-
-    Physiolibrary.Types.Fraction kH
-      "Henry's law coefficient such as liquid-gas concentration ratio";
-
-    parameter Types.DiffusionPermeability solubilityRate=10^3
-      "The rate of incoming gas to solution";
-
-    parameter Physiolibrary.Types.Fraction kH_T0
-      "Henry's law coefficient at temperature T0";
-    parameter Physiolibrary.Types.Temperature T0=298.15
-      "Base temperature for kH_T0"
-       annotation (Dialog(group="Temperature dependence"));
-    parameter Physiolibrary.Types.Temperature C(displayUnit="K")
-      "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
-      annotation (Dialog(group="Temperature dependence"));
-    Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
-                                                       annotation (Placement(
-          transformation(extent={{-8,-88},{32,-48}}),   iconTransformation(extent={{-20,-20},
-              {20,20}},
-          rotation=0,
-          origin={-60,0})));
-
-  equation
-    kH = kH_T0 * Modelica.Math.exp(C* (1/T - 1/T0)); // Van't Hoff equation
-    //gas.conc = kH * liquid.conc;
-    // equilibrium:  gas.conc = kH * liquid.conc;
-    q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
-
-     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-              {100,100}}),       graphics={
-          Text(
-            extent={{-120,80},{120,40}},
-            textString="%name",
-            lineColor={0,0,255})}),             Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-      Diagram(graphics));
-  end GasSolubility2;
+   //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
+    connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
+        points={{0,42},{-50,42},{-50,0.5},{-40,0.5}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
+        points={{-20,0},{2,0}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+        points={{2,0},{24,0}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(chemicalReaction1.products[2], E.q_out) annotation (Line(
+        points={{44,0.5},{52,0.5},{52,42},{0,42}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(p, chemicalReaction.substrates[1]) annotation (Line(
+        points={{-100,0},{-70,0},{-70,-0.5},{-40,-0.5}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    connect(chemicalReaction1.products[1], n) annotation (Line(
+        points={{44,-0.5},{74,-0.5},{74,0},{100,0}},
+        color={200,0,0},
+        thickness=1,
+        smooth=Smooth.None));
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics), Icon(coordinateSystem(
+            preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={
+            Rectangle(
+            extent={{-100,100},{100,-100}},
+            lineColor={0,0,255},
+            fillColor={255,255,0},
+            fillPattern=FillPattern.Solid), Text(
+            extent={{-78,82},{78,22}},
+            lineColor={0,0,255},
+            textString="Enzyme")}));
+  end MichaelisMenten;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
