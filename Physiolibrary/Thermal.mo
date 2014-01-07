@@ -39,12 +39,12 @@ package Thermal "Temperature Physical Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(muscleBloodFlow.q_out, muscle.q_in) annotation (Line(
-          points={{36,8},{56,8},{56,-30}},
+          points={{25.8,18.2},{56,18.2},{56,-30}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscleBloodFlow.q_in, body.q_in) annotation (Line(
-          points={{16,8},{-14,8}},
+          points={{15.2,11},{0,11},{0,8},{-14,8}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
@@ -53,7 +53,7 @@ package Thermal "Temperature Physical Domain"
           color={0,0,127},
           smooth=Smooth.None));
       connect(volumeFlowRate.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{5,36},{8,36},{8,12},{16,12}},
+          points={{5,36},{8,36},{8,14},{18,14}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(sine.y, heatInflux.desiredFlow_) annotation (Line(
@@ -323,7 +323,8 @@ Connector with one flow signal of type Real.
 
   model IdealRadiator
     "Mass flow radiator, which outflowed temperature is the same as the ambient temperature"
-    extends OnePort;
+
+    extends Icons.Radiator;
 
     parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=3851.856
       "Of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
@@ -333,50 +334,27 @@ Connector with one flow signal of type Real.
       annotation (Placement(transformation(extent={{-50,42},{-10,82}}),
           iconTransformation(
           extent={{-20,-20},{20,20}},
-          rotation=0,
-          origin={-100,40})));
+          rotation=270,
+          origin={-80,60})));
+
+    PositiveHeatFlow q_in annotation (extent=[-10, -110; 10, -90], Placement(
+          transformation(extent={{-118,20},{-98,40}}), iconTransformation(extent={{-118,20},
+              {-98,40}})));
+    NegativeHeatFlow q_out annotation (extent=[-10, -110; 10, -90], Placement(
+          transformation(extent={{-12,92},{8,112}}), iconTransformation(extent=
+              {{-12,92},{8,112}})));
   equation
+    q_in.Q_flow + q_out.Q_flow = 0;
     assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
     q_in.Q_flow = substanceFlow*(q_in.T-q_out.T)*specificHeat_;
 
    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                          graphics={
-          Rectangle(
-            extent={{-100,-50},{100,50}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Polygon(
-            points={{-18,40},{18,40},{2,-40},{-18,40}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            origin={-50,-4},
-            rotation=360),
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics={
           Text(
             extent={{20,-84},{320,-44}},
             textString="%name",
-            lineColor={0,0,255}),
-          Line(
-            points={{0,-4},{10,10},{18,-12},{18,-10},{26,10},{38,-10},{46,12},{54,
-                2},{54,22},{76,0},{54,-22},{54,2}},
-            color={255,128,0},
-            smooth=Smooth.None),
-          Polygon(
-            points={{54,22},{54,-22},{76,0},{54,22}},
-            lineColor={255,128,0},
-            smooth=Smooth.None,
-            fillColor={255,255,170},
-            fillPattern=FillPattern.Solid),
-          Polygon(
-            points={{-11,22},{-11,-22},{11,0},{-11,22}},
-            lineColor={255,128,0},
-            smooth=Smooth.None,
-            fillColor={255,255,170},
-            fillPattern=FillPattern.Solid,
-            origin={-11,0},
-            rotation=180)}),        Diagram(coordinateSystem(preserveAspectRatio=true,
+            lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>

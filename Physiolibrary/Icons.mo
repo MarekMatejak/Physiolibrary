@@ -1165,6 +1165,10 @@ from this block.
   end Dilution;
 
   model GasSolubility
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/GasSolubility.png")}));
   end GasSolubility;
 
   model PressureMeasure
@@ -1188,7 +1192,7 @@ from this block.
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
-                "Resources/Icons/reabsorption2.jpg")}));
+                "Resources/Icons/reabsorption.png")}));
   end Reabsorption2;
 
   model InternalElasticBalloon
@@ -1215,4 +1219,16 @@ from this block.
 
   end HydrostaticGradient;
   annotation (Documentation(revisions=""));
+  model Radiator
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/Radiator.png")}));
+  end Radiator;
+
+  model MichaelisMenten
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-82,78},{90,-94}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/MichaelisMenten.png")}));
+  end MichaelisMenten;
 end Icons;

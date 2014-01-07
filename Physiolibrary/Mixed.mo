@@ -93,8 +93,8 @@ package Mixed "Blocks between domains"
     //assert(abs(v.pressures)>Modelica.Constants.eps, "Zero or negative partial pressure or concentrations are not supported!")
     n.q + n.conc * v.q=0;
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-              {100,100}}),       graphics={
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={
           Text(
             extent={{-120,-100},{120,-140}},
             textString="%name",
@@ -156,8 +156,8 @@ package Mixed "Blocks between domains"
     Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio and substance amount flow"
                                                annotation (Placement(
-          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={
-              {90,-10},{110,10}})));
+          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{90,-10},
+              {110,10}})));
     parameter Physiolibrary.Types.GasSolubility alpha
       "Gas solubility in solvent in temperature T";
     parameter Physiolibrary.Types.Temperature T "Temperature";
@@ -197,8 +197,8 @@ package Mixed "Blocks between domains"
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-              {100,100}}),       graphics={
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={
           Text(
             extent={{-120,-100},{120,-140}},
             textString="%name",

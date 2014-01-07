@@ -43,7 +43,6 @@ package Chemical "Molar Concentration Physiological Domain"
       normalizedState[1]*totalSystemSubstance = A.solute + B.solute;
     end SimpleReaction_Equilibrated;
 
-
     model MWC_Allosteric_Hemoglobin
     extends Modelica.Icons.Example;
     extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
@@ -698,9 +697,9 @@ package Chemical "Molar Concentration Physiological Domain"
     extends Modelica.Icons.Example;
 
       UnlimitedStorage P(concentration=0)
-        annotation (Placement(transformation(extent={{74,14},{94,34}})));
+        annotation (Placement(transformation(extent={{74,8},{94,28}})));
       UnlimitedStorage S(concentration=10)
-        annotation (Placement(transformation(extent={{-84,14},{-64,34}})));
+        annotation (Placement(transformation(extent={{-84,8},{-64,28}})));
 
       Physiolibrary.Chemical.MichaelisMenten
                       michaelisMenten(
@@ -711,12 +710,12 @@ package Chemical "Molar Concentration Physiological Domain"
     equation
 
       connect(S.q_out, michaelisMenten.p) annotation (Line(
-          points={{-73.8,24},{-8,24}},
+          points={{-73.8,18},{-8,18}},
           color={200,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(michaelisMenten.n, P.q_out) annotation (Line(
-          points={{12,24},{84.2,24}},
+          points={{12,18},{84.2,18}},
           color={200,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -1595,13 +1594,13 @@ Connector with one flow signal of type Real.
             textString="%name",
             lineColor={0,0,255}),
           Polygon(
-            points={{-60,4},{-60,2},{54,2},{54,2},{18,12},{18,4},{-60,4}},
+            points={{-60,6},{-60,4},{54,4},{54,4},{18,14},{18,6},{-60,6}},
             lineColor={0,0,0},
             smooth=Smooth.None,
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Polygon(
-            points={{54,-2},{54,0},{-60,0},{-60,0},{-24,-10},{-24,-2},{54,-2}},
+            points={{54,-8},{54,-6},{-60,-6},{-60,-6},{-24,-16},{-24,-8},{54,-8}},
             lineColor={0,0,0},
             smooth=Smooth.None,
             fillColor={0,0,0},
@@ -1708,7 +1707,14 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 
    annotation (
       Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-              100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+              100}}),     graphics={Bitmap(extent={{-134,102},{66,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/dilution.png"),
+          Text(
+            extent={{-120,20},{120,-20}},
+            textString="%name",
+            lineColor={0,0,255},
+            origin={70,-2},
+            rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1716,9 +1722,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 </html>"),      Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics));
   end Dilution;
-
-
-
 
   model GasSolubility
     "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
@@ -1736,10 +1739,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     // equilibrium:  gas.conc = kH * liquid.conc;
     q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc);
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
           Text(
-            extent={{-120,80},{120,40}},
+            extent={{0,-100},{240,-140}},
             textString="%name",
             lineColor={0,0,255})}),             Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
@@ -1782,7 +1785,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
               {100,100}}),       graphics={
           Text(
-            extent={{-120,80},{120,40}},
+            extent={{0,-98},{240,-138}},
             textString="%name",
             lineColor={0,0,255})}),             Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
@@ -1792,24 +1795,24 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end GasSolubility2;
 
   model Reabsorption "Reabsorption of input fraction"
-
+     extends Icons.Reabsorption;
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
-            extent={{-110,-10},{-90,10}})));
+            extent={{-108,30},{-88,50}})));
     NegativeConcentrationFlow Outflow "Tubular outflow"
       annotation (Placement(transformation(extent={{80,-20},{120,20}}),
-          iconTransformation(extent={{90,-10},{110,10}})));
+          iconTransformation(extent={{88,30},{108,50}})));
 
     NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-            extent={{-10,-50},{10,-30}})));
+            extent={{-10,-110},{10,-90}})));
     Physiolibrary.Types.RealIO.FractionInput ReabsorbedFract
       "Fraction of molar inflow, that is reabsorbed"
                                  annotation (Placement(transformation(extent={{-90,-66},
               {-70,-46}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
                                                                   rotation=-90,
-          origin={0,40})));
+          origin={32,80})));
 
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
@@ -1853,21 +1856,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,40},{100,-40}},
-            lineColor={0,0,255},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Line(
-            points={{-70,14},{-70,-18},{-52,-12},{-36,-14},{-18,-20},{-2,-28},
-                {6,-36},{8,-40},{6,-22},{0,-12},{-8,-6},{-22,2},{-40,8},{-58,
-                12},{-70,14}},
-            color={0,0,255},
-            smooth=Smooth.None),
           Text(
-            extent={{12,-54},{166,-84}},
+            extent={{0,-102},{154,-132}},
             lineColor={0,0,255},
             textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
                     extent={{-100,-100},{100,100}}), graphics),
@@ -1878,24 +1870,25 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end Reabsorption;
 
   model Reabsorption2 "Reabsorption of input fraction"
+    extends Icons.Reabsorption2;
     import Physiolibrary;
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-18},{-80,22}}), iconTransformation(
-            extent={{-110,-10},{-90,10}})));
+            extent={{-110,30},{-90,50}})));
     NegativeConcentrationFlow Outflow "Tubular outflow"
       annotation (Placement(transformation(extent={{80,-18},{120,22}}),
-          iconTransformation(extent={{90,-10},{110,10}})));
+          iconTransformation(extent={{90,30},{110,50}})));
     NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-            extent={{-10,-50},{10,-30}})));
+            extent={{-10,-110},{10,-90}})));
     Physiolibrary.Types.RealIO.FractionInput Normal
       "Reabsorption fraction if Effects=1"
                                  annotation (Placement(transformation(extent={{-100,76},
               {-80,96}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
-                                                                  rotation=-90,
-          origin={-60,40})));
+                                                                  rotation=0,
+          origin={-80,-20})));
     Modelica.Blocks.Interfaces.RealInput Effects(
                                                 final unit="1")
       "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=Normal^(1/Effects)"
@@ -1903,18 +1896,18 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
               {-80,78}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
                                                                   rotation=-90,
-          origin={80,40})));
+          origin={0,80})));
 
     Physiolibrary.Types.RealIO.MolarFlowRateInput MaxReab
       "Maximal allowed reabsorption molar flow rate"
                                  annotation (Placement(transformation(extent={{-24,38},
               {-4,58}}),
                      iconTransformation(extent={{-20,-20},{20,20}},
-                                                                  rotation=90,
-          origin={-60,-42})));
+                                                                  rotation=0,
+          origin={-80,-60})));
     Physiolibrary.Types.RealIO.FractionOutput ReabFract
       "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{72,60},
-              {88,76}}),   iconTransformation(extent={{80,-60},{120,-20}})));
+              {88,76}}),   iconTransformation(extent={{80,-100},{120,-60}})));
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-78,-8},{-58,12}})));
     SoluteFlowPump soluteFlowPump annotation (Placement(transformation(
@@ -1989,21 +1982,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         points={{37,68},{80,68}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,40},{100,-40}},
-            lineColor={0,0,255},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Line(
-            points={{-70,14},{-70,-18},{-52,-12},{-36,-14},{-18,-20},{-2,-28},
-                {6,-36},{8,-40},{6,-22},{0,-12},{-8,-6},{-22,2},{-40,8},{-58,
-                12},{-70,14}},
-            color={0,0,255},
-            smooth=Smooth.None),
           Text(
-            extent={{12,-54},{166,-84}},
+            extent={{2,-100},{196,-134}},
             lineColor={0,0,255},
             textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
                     extent={{-100,-100},{100,100}}), graphics),
@@ -2014,20 +1996,20 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end Reabsorption2;
 
   model FullReabsorption "Full reabsorption with limit (i.e. renal glucose)"
-
+    extends Icons.Reabsorption;
     parameter Physiolibrary.Types.MolarFlowRate MaxReab
       "Maximal reabsorption solute flow rate";
 
     PositiveConcentrationFlow Inflow "Tubular inflow"              annotation (Placement(
           transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
-            extent={{-110,-10},{-90,10}})));
+            extent={{-108,30},{-88,50}})));
     NegativeConcentrationFlow Outflow "Tubular outflow"
       annotation (Placement(transformation(extent={{80,-20},{120,20}}),
-          iconTransformation(extent={{90,-10},{110,10}})));
+          iconTransformation(extent={{88,30},{108,50}})));
 
     NegativeConcentrationFlow Reabsorption "Reabsorption from tubules"          annotation (Placement(
           transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-            extent={{-10,-50},{10,-30}})));
+            extent={{-8,-110},{12,-90}})));
 
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
@@ -2073,21 +2055,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         points={{-69,-52},{-58,-52},{-58,-46},{-46,-46}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,40},{100,-40}},
-            lineColor={0,0,255},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Line(
-            points={{-70,14},{-70,-18},{-52,-12},{-36,-14},{-18,-20},{-2,-28},
-                {6,-36},{8,-40},{6,-22},{0,-12},{-8,-6},{-22,2},{-40,8},{-58,
-                12},{-70,14}},
-            color={0,0,255},
-            smooth=Smooth.None),
           Text(
-            extent={{12,-54},{166,-84}},
+            extent={{0,-102},{180,-130}},
             lineColor={0,0,255},
             textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
                     extent={{-100,-100},{100,100}}), graphics),
@@ -2098,6 +2069,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
   end FullReabsorption;
 
   model MichaelisMenten "Basic enzyme kinetics"
+    extends Icons.MichaelisMenten;
   protected
   extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
@@ -2109,13 +2081,13 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       "Michaelis constant = substrate concentration at rate of half Vmax";
 
     NormalizedSubstance ES(Simulation=Simulation, solute_start=0)
-      annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+      annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
     NormalizedSubstance E(Simulation=Simulation, solute_start=tE)
-      annotation (Placement(transformation(extent={{-10,32},{10,52}})));
+      annotation (Placement(transformation(extent={{-10,38},{10,58}})));
     ChemicalReaction chemicalReaction(nS=2,
       K=2/Km,
       kf=2*k_cat/Km)
-      annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+      annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
     ChemicalReaction chemicalReaction1(nP=2,
       Simulation=Simulation,
       K=Modelica.Constants.inf,
@@ -2125,54 +2097,52 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 
    // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
     PositiveConcentrationFlow p
-      annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}),
+          iconTransformation(extent={{-110,-70},{-90,-50}})));
     NegativeConcentrationFlow n
-      annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
+          iconTransformation(extent={{90,-70},{110,-50}})));
   equation
     normalizedState[1]*tE = E.solute + ES.solute;
 
    //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
     connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
-        points={{0,42},{-50,42},{-50,0.5},{-40,0.5}},
+        points={{0,48},{-58,48},{-58,0.5},{-42,0.5}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
-        points={{-20,0},{2,0}},
+        points={{-22,0},{0,0}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
-        points={{2,0},{24,0}},
+        points={{0,0},{24,0}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(chemicalReaction1.products[2], E.q_out) annotation (Line(
-        points={{44,0.5},{52,0.5},{52,42},{0,42}},
+        points={{44,0.5},{52,0.5},{52,48},{0,48}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(p, chemicalReaction.substrates[1]) annotation (Line(
-        points={{-100,0},{-70,0},{-70,-0.5},{-40,-0.5}},
+        points={{-100,-60},{-72,-60},{-72,-0.5},{-42,-0.5}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(chemicalReaction1.products[1], n) annotation (Line(
-        points={{44,-0.5},{74,-0.5},{74,0},{100,0}},
+        points={{44,-0.5},{74,-0.5},{74,-60},{100,-60}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={
-            Rectangle(
-            extent={{-100,100},{100,-100}},
+          Text(
+            extent={{-100,-100},{100,-126}},
             lineColor={0,0,255},
-            fillColor={255,255,0},
-            fillPattern=FillPattern.Solid), Text(
-            extent={{-78,82},{78,22}},
-            lineColor={0,0,255},
-            textString="Enzyme")}));
+            textString="%name")}));
   end MichaelisMenten;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
