@@ -2723,7 +2723,7 @@ constructed by the signals connected to this bus.
 */
     end BusConnector;
 
- type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
+  type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
 
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
@@ -2737,10 +2737,11 @@ constructed by the signals connected to this bus.
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", nominal=1);
+  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l");
+  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol");
+  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
+
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
-  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", nominal=1e-3);
-  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min", nominal=(1e-3)/60);
 
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);

@@ -198,9 +198,9 @@ package States "Dynamic simulation / Equilibrium"
 
     if Simulation == SimulationType.Equilibrated then
       normalizedState = ones(NumberOfNormalizedStates); //in steady state must be the normalized sum of internal states of the system always equal to one
-      der(state)=zeros(NumberOfNormalizedStates); //this additional equation must be instead redundant equation removed by steadyMain flag of some "resistance-type" block
+      der(state)=zeros(NumberOfNormalizedStates); //this additional equation must be instead redundant equation
     else
-      normalizedState = state; // ={1,1,1,..,1}. The difference from vector ones(numberOfStates) could be used as the control of solver calculation error.
+      normalizedState = state; // ={1,1,1,..,1}. The difference from vector ones(numberOfStates) could be used as the solver calculation error vector.
     end if;
 
   end StateSystem;

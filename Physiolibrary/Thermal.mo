@@ -352,7 +352,7 @@ Connector with one flow signal of type Real.
       Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
               100}}),     graphics={
           Text(
-            extent={{20,-84},{320,-44}},
+            extent={{-144,-140},{156,-100}},
             textString="%name",
             lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),

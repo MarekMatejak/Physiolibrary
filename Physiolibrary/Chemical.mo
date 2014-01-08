@@ -43,6 +43,51 @@ package Chemical "Molar Concentration Physiological Domain"
       normalizedState[1]*totalSystemSubstance = A.solute + B.solute;
     end SimpleReaction_Equilibrated;
 
+    model SimpleReaction2
+
+       extends Modelica.Icons.Example;
+
+      Chemical.NormalizedSubstance A(solute_start=0.9)
+        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
+      Chemical.ChemicalReaction reaction(K=1, nP=2)
+        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+      Chemical.NormalizedSubstance B(solute_start=0.1)
+        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+      Chemical.NormalizedSubstance C(solute_start=0.1)
+        annotation (Placement(transformation(extent={{44,16},{64,36}})));
+    equation
+
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
+          points={{-46,2},{-10,2}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(reaction.products[1], B.q_out) annotation (Line(
+          points={{10,1.5},{32,1.5},{32,2},{54,2}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(reaction.products[2], C.q_out) annotation (Line(
+          points={{10,2.5},{32,2.5},{32,26},{54,26}},
+          color={200,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end SimpleReaction2;
+
+    model SimpleReaction2_Equilibrated
+      extends SimpleReaction2(
+        A(Simulation=Simulation),
+        B(Simulation=Simulation),
+        reaction(Simulation=Simulation, isProductFlowIncludedInEquilibrium={false,false}));
+      extends States.StateSystem(NumberOfNormalizedStates=2, Simulation=States.SimulationType.Equilibrated);
+
+      parameter Types.AmountOfSubstance totalBSubstance=0.01,totalCSubstance=0.01;
+    equation
+      normalizedState[1]*totalBSubstance = A.solute + B.solute;
+      normalizedState[1]*totalCSubstance = A.solute + C.solute;
+    end SimpleReaction2_Equilibrated;
     model MWC_Allosteric_Hemoglobin
     extends Modelica.Icons.Example;
     extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
@@ -722,6 +767,46 @@ package Chemical "Molar Concentration Physiological Domain"
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
     end MichaelisMentenExample;
+
+    model AcidBaseReactions
+      "Test of nominal values, because different order of substrates concentrations (1 vs. 10^(-7.4))"
+     model Buffer
+      parameter Real Nominal = 0.0000001;
+
+      parameter Real cHo = (0.0000001 * At) / (Ka1 + 0.0000001)
+          "Acid form of buffer at pH=7";
+      parameter Real cHnAdded = 0.0001 "added hydrogen ions at the beggining";
+      parameter Real cHn = cHo + cHnAdded "Total acid conncetration";
+      parameter Real Ka1 = 0.000001;
+      parameter Real At = 0.001;
+      parameter Real Kw(unit = "Mol2") = 0.00000000000001
+          "water disociation constant = H*OH in equilibrium";
+      parameter Real k(unit = "1/(s.Mol)") = 1000000.0
+          "rate constant of water formation from H and OH";
+      parameter Real r(unit = "1/(s.Mol)") = k / Kw
+          "rate of water disociation to H and OH";
+      parameter Real Hn(start = 10 ^ (-12), fixed = false, nominal = Nominal);
+      //pri inicializaci teprve pocita hodnotu
+      parameter Real pHn(fixed = false);
+      Real HnFree(nominal = Nominal);
+      Real pHnFree(start = -Modelica.Math.log10(cHnAdded), fixed = true);
+      Real HnBound(nominal = Nominal);
+      Real pHnBound;
+     initial equation
+      cHn = Hn - Kw / Hn + (Hn * At) / (Ka1 + Hn);
+      Hn = 10 ^ (-pHn);
+      //HnFree = 0.5e-4;
+     equation
+      //cHn = Hn - Kw/Hn + Hn*At/(Ka1 + Hn);
+      der(pHnFree) = pHn - pHnFree;
+      //only dynamic parameter is pHnFree
+      cHn = HnFree - Kw / HnFree + (HnBound * At) / (Ka1 + HnBound);
+      //logs
+      pHnFree = -Modelica.Math.log10(HnFree);
+      pHnBound = -Modelica.Math.log10(HnBound);
+     end Buffer;
+
+    end AcidBaseReactions;
   end Examples;
 
   connector ConcentrationFlow "Concentration and Solute flow"
@@ -1381,6 +1466,7 @@ Connector with one flow signal of type Real.
   equation
     q_out.conc = concentration;
 
+/*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
     if Simulation==States.SimulationType.Equilibrated then
       q_out.q=0;
     end if;
@@ -1518,11 +1604,11 @@ Connector with one flow signal of type Real.
       annotation (Dialog(group="Products", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
-      "stoichiometric reaction coefficient for substrate"
+      "stoichiometric reaction coefficient for substrates"
       annotation (Dialog(group="Substrates", tab="Reaction type"));
 
     parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
-      "stoichiometric reaction coefficients for substrate"
+      "stoichiometric reaction coefficients for products"
       annotation (Dialog(group="Products", tab="Reaction type"));
 
     parameter Real kf = 10^8 "forward reaction rate coefficient [SI unit]"
@@ -1782,8 +1868,8 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     // equilibrium:  gas.conc = kH * liquid.conc;
     q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-              {100,100}}),       graphics={
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={
           Text(
             extent={{0,-98},{240,-138}},
             textString="%name",
