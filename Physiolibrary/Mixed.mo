@@ -17,15 +17,15 @@ package Mixed "Blocks between domains"
     public
       Chemical.NormalizedSubstance oxygen_dissolved(Simulation=Simulation,
           solute_start=0.000001*7.875647668393782383419689119171e-5)
-        annotation (Placement(transformation(extent={{12,-46},{32,-26}})));
+        annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
       PartialPressure2      partialPressure(
         alpha_T0=alpha,
         gasSolubility(C=1700),
         Simulation=Simulation,
         T0=310.15)                                    annotation (Placement(
             transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
+            extent={{10,-10},{-10,10}},
+            rotation=0,
             origin={-2,-18})));
       Hydraulic.UnlimitedVolume unlimitedVolume(Simulation=Simulation)
         annotation (Placement(transformation(extent={{-34,6},{-14,26}})));
@@ -39,7 +39,7 @@ package Mixed "Blocks between domains"
     equation
 
       connect(partialPressure.n, oxygen_dissolved.q_out)    annotation (Line(
-          points={{-2,-28},{-2,-36},{22,-36}},
+          points={{-2,-24},{-2,-46}},
           color={200,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -72,19 +72,20 @@ package Mixed "Blocks between domains"
 
   model IdealGas
     "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
+    extends Icons.IdealGas;
     import Physiolibrary;
 
     Physiolibrary.Hydraulic.PositivePressureFlow
                                     v
       "Hydraulic pressure connector with volumetric flow"
                                            annotation (Placement(transformation(
-            extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,
-              10}})));
+            extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,30},
+              {-90,50}})));
     Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio connector with substance amount flow"
                                                annotation (Placement(
-          transformation(extent={{90,-10},{110,10}}),  iconTransformation(extent={
-              {90,-10},{110,10}})));
+          transformation(extent={{90,30},{110,50}}),   iconTransformation(extent={{90,30},
+              {110,50}})));
 
     parameter Physiolibrary.Types.Temperature T "Temperature";
 
@@ -96,7 +97,7 @@ package Mixed "Blocks between domains"
      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
           Text(
-            extent={{-120,-100},{120,-140}},
+            extent={{-120,142},{120,102}},
             textString="%name",
             lineColor={0,0,255})}),             Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
@@ -107,36 +108,37 @@ package Mixed "Blocks between domains"
 
   model IdealGas2
     "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
+    extends Icons.IdealGas;
     import Physiolibrary;
 
     Physiolibrary.Hydraulic.PositivePressureFlow
                                     v
       "Hydraulic pressure connector with volumetric flow"
                                            annotation (Placement(transformation(
-            extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,
-              10}})));
+            extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,30},
+              {-90,50}})));
     Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio connector with substance amount flow"
                                                annotation (Placement(
-          transformation(extent={{90,-10},{110,10}}),  iconTransformation(extent={
-              {90,-10},{110,10}})));
+          transformation(extent={{90,30},{110,50}}),   iconTransformation(extent={{90,30},
+              {110,50}})));
 
     Physiolibrary.Types.RealIO.TemperatureInput T "Temperature"
                                                         annotation (Placement(transformation(extent={{22,
               -18},{62,22}}), iconTransformation(extent={{20,-20},{-20,20}},
-          rotation=90,
-          origin={0,80})));
+          rotation=270,
+          origin={0,-110})));
 
   equation
     v.pressure = n.conc * Modelica.Constants.R * T;  // P*V = n*R*T
     n.q + n.conc * v.q = 0;
 
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-              {100,100}}),       graphics={
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={
           Text(
-            extent={{-120,-100},{120,-140}},
-            textString="%name",
-            lineColor={0,0,255})}),             Documentation(revisions="<html>
+            extent={{-120,140},{120,100}},
+            lineColor={0,0,255},
+            textString="%name")}),              Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
@@ -145,19 +147,20 @@ package Mixed "Blocks between domains"
 
   model PartialPressure
     "Conversion between partial pressure and concentration of the gas in liquid"
+    extends Icons.PartialPressure;
     import Physiolibrary;
 
     Physiolibrary.Hydraulic.PositivePressureFlow
                                     v
       "Partial pressure and volumetric flow of pure substance"
                                            annotation (Placement(transformation(
-            extent={{-10,90},{10,110}}),  iconTransformation(extent={{-110,-10},{-90,
-              10}})));
+            extent={{-84,-8},{-64,12}}),  iconTransformation(extent={{-10,90},{
+              10,110}})));
     Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio and substance amount flow"
                                                annotation (Placement(
-          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{90,-10},
-              {110,10}})));
+          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,-70},
+              {10,-50}})));
     parameter Physiolibrary.Types.GasSolubility alpha
       "Gas solubility in solvent in temperature T";
     parameter Physiolibrary.Types.Temperature T "Temperature";
@@ -170,8 +173,8 @@ package Mixed "Blocks between domains"
     IdealGas idealGas(T=T)
                       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
-          rotation=-90,
-          origin={0,26})));
+          rotation=0,
+          origin={-34,-2})));
 
     parameter Physiolibrary.States.SimulationType
                                     Simulation=Physiolibrary.States.SimulationType.NoInit
@@ -183,12 +186,12 @@ package Mixed "Blocks between domains"
 
   equation
     connect(idealGas.v, v) annotation (Line(
-        points={{1.83697e-015,36},{0,36},{0,100}},
+        points={{-44,2},{-74,2}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(idealGas.n, gasSolubility.q_out) annotation (Line(
-        points={{0,16},{0,-48}},
+        points={{-24,2},{0,2},{0,-48}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
@@ -200,9 +203,11 @@ package Mixed "Blocks between domains"
      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={
           Text(
-            extent={{-120,-100},{120,-140}},
+            extent={{-120,20},{120,-20}},
             textString="%name",
-            lineColor={0,0,255})}),             Documentation(revisions="<html>
+            lineColor={0,0,255},
+            origin={100,0},
+            rotation=90)}),                     Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
@@ -213,19 +218,21 @@ package Mixed "Blocks between domains"
 
   model PartialPressure2
     "Conversion between partial pressure and concentration of the gas in liquid"
+    extends Icons.PartialPressure;
+
     import Physiolibrary;
 
     Physiolibrary.Hydraulic.PositivePressureFlow
                                     v
       "Partial pressure and volumetric flow of pure substance"
                                            annotation (Placement(transformation(
-            extent={{-10,90},{10,110}}),  iconTransformation(extent={{-110,-10},{-90,
-              10}})));
+            extent={{-80,-26},{-60,-6}}), iconTransformation(extent={{-10,90},{
+              10,110}})));
     Physiolibrary.Chemical.NegativeConcentrationFlow  n
       "Molar concentratio and substance amount flow"
                                                annotation (Placement(
-          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={
-              {90,-10},{110,10}})));
+          transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,-70},
+              {10,-50}})));
     parameter Physiolibrary.Types.GasSolubility alpha_T0
       "Gas solubility in solvent in temperature T0";
     parameter Physiolibrary.Types.Temperature T0=298.15
@@ -237,17 +244,17 @@ package Mixed "Blocks between domains"
       isFlowIncludedInEquilibrium=isFlowIncludedInEquilibrium)
       annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
     IdealGas2 idealGas annotation (Placement(transformation(
-          extent={{-10,10},{10,-10}},
-          rotation=-90,
-          origin={0,26})));
+          extent={{10,10},{-10,-10}},
+          rotation=180,
+          origin={-30,-20})));
     Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
                                                        annotation (Placement(
           transformation(extent={{10,-10},{-10,10}},
           rotation=180,
-          origin={-50,26}),                           iconTransformation(
+          origin={-60,-58}),                          iconTransformation(
           extent={{-20,-20},{20,20}},
-          rotation=270,
-          origin={0,80})));
+          rotation=0,
+          origin={-80,0})));
 
     parameter Physiolibrary.States.SimulationType
                                     Simulation=Physiolibrary.States.SimulationType.NoInit
@@ -259,16 +266,16 @@ package Mixed "Blocks between domains"
 
   equation
     connect(idealGas.v, v) annotation (Line(
-        points={{1.83697e-015,36},{0,36},{0,100}},
+        points={{-40,-16},{-70,-16}},
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
     connect(T, idealGas.T) annotation (Line(
-        points={{-50,26},{-8,26}},
+        points={{-60,-58},{-30,-58},{-30,-31}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(T, gasSolubility.T) annotation (Line(
-        points={{-50,26},{-30,26},{-30,-58},{-6,-58}},
+        points={{-60,-58},{-6,-58}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(gasSolubility.q_in, n) annotation (Line(
@@ -277,16 +284,18 @@ package Mixed "Blocks between domains"
         thickness=1,
         smooth=Smooth.None));
     connect(idealGas.n, gasSolubility.q_out) annotation (Line(
-        points={{0,16},{0,-48}},
+        points={{-20,-16},{0,-16},{0,-48}},
         color={200,0,0},
         thickness=1,
         smooth=Smooth.None));
-     annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-              {100,100}}),       graphics={
+     annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={
           Text(
-            extent={{-120,-100},{120,-140}},
+            extent={{-120,20},{120,-20}},
             textString="%name",
-            lineColor={0,0,255})}),             Documentation(revisions="<html>
+            lineColor={0,0,255},
+            origin={100,0},
+            rotation=90)}),                     Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),

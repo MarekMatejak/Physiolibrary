@@ -10,63 +10,63 @@ package Thermal "Temperature Physical Domain"
     extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
       HeatAccumulation muscle(heat_start=19478040)
-        annotation (Placement(transformation(extent={{46,-40},{66,-20}})));
+        annotation (Placement(transformation(extent={{50,-68},{70,-48}})));
       IdealRadiator muscleBloodFlow
-        annotation (Placement(transformation(extent={{16,-2},{36,18}})));
+        annotation (Placement(transformation(extent={{20,-6},{40,14}})));
       HeatInflux heatInflux
-        annotation (Placement(transformation(extent={{-6,-52},{14,-32}})));
+        annotation (Placement(transformation(extent={{2,-70},{22,-50}})));
       HeatAccumulation body(heat_start=4186.8*60*310.15)
         annotation (Placement(transformation(extent={{-24,-2},{-4,18}})));
       Types.RealTypes.Mass height(varName="Muscle-weight", k=15)
-        annotation (Placement(transformation(extent={{14,-26},{34,-6}})));
+        annotation (Placement(transformation(extent={{14,-50},{34,-30}})));
       Types.RealTypes.MassFlowRate volumeFlowRate(varName="Muscle-BloodFlow", k=
            120) annotation (Placement(transformation(extent={{-16,26},{4,46}})));
       Modelica.Blocks.Sources.Sine sine(
         freqHz=0.01,
         offset=15,
         amplitude=15)
-        annotation (Placement(transformation(extent={{-32,-40},{-12,-20}})));
+        annotation (Placement(transformation(extent={{-26,-62},{-6,-42}})));
       UnlimitedHeat environment(Temperature=295.15)
         annotation (Placement(transformation(extent={{-72,44},{-52,64}})));
       Conductor conductor(conductance=1)
-        annotation (Placement(transformation(extent={{-58,-2},{-38,18}})));
+        annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
       Types.RealTypes.Mass height1(varName="NonMuscle-weight", k=60)
         annotation (Placement(transformation(extent={{-52,16},{-32,36}})));
     equation
       connect(heatInflux.q_out, muscle.q_in) annotation (Line(
-          points={{10,-42},{36,-42},{36,-30},{56,-30}},
+          points={{18,-60},{60,-60}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscleBloodFlow.q_out, muscle.q_in) annotation (Line(
-          points={{25.8,18.2},{56,18.2},{56,-30}},
+          points={{29.8,14.2},{60,14.2},{60,-60}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscleBloodFlow.q_in, body.q_in) annotation (Line(
-          points={{15.2,11},{0,11},{0,8},{-14,8}},
+          points={{20,6},{0,6},{0,6},{-14,6}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
       connect(height.y, muscle.weight) annotation (Line(
-          points={{35,-16},{38,-16},{38,-22},{46,-22}},
+          points={{35,-40},{42,-40},{42,-50},{50,-50}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(volumeFlowRate.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{5,36},{8,36},{8,14},{18,14}},
+          points={{5,36},{8,36},{8,10},{22,10}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(sine.y, heatInflux.desiredFlow_) annotation (Line(
-          points={{-11,-30},{4,-30},{4,-38}},
+          points={{-5,-52},{12,-52},{12,-56}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(conductor.q_out, body.q_in) annotation (Line(
-          points={{-38,8},{-14,8}},
+          points={{-36,6},{-14,6}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
       connect(conductor.q_in, environment.q_in) annotation (Line(
-          points={{-58,8},{-62,8},{-62,54}},
+          points={{-56,6},{-62,6},{-62,54}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
@@ -338,8 +338,8 @@ Connector with one flow signal of type Real.
           origin={-80,60})));
 
     PositiveHeatFlow q_in annotation (extent=[-10, -110; 10, -90], Placement(
-          transformation(extent={{-118,20},{-98,40}}), iconTransformation(extent={{-118,20},
-              {-98,40}})));
+          transformation(extent={{-110,10},{-90,30}}), iconTransformation(extent={{-110,10},
+              {-90,30}})));
     NegativeHeatFlow q_out annotation (extent=[-10, -110; 10, -90], Placement(
           transformation(extent={{-12,92},{8,112}}), iconTransformation(extent=
               {{-12,92},{8,112}})));
@@ -370,10 +370,12 @@ Connector with one flow signal of type Real.
 
   model HeatAccumulation
     "Accumulating of heat to substance mass with specific heat constant"
+    extends Icons.HeatAccumulation;
     extends Physiolibrary.States.State(state_start=heat_start, storeUnit=
         "kcal");
     PositiveHeatFlow q_in "Heat inflow/outflow connector"
-      annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
+      annotation (Placement(transformation(extent={{-20,-40},{20,0}}),
+          iconTransformation(extent={{-20,-40},{20,0}})));
 
     parameter Physiolibrary.Types.Heat heat_start
       "Heat start value can be solved as weight*initialTemperature*specificHeat"
@@ -403,11 +405,9 @@ Connector with one flow signal of type Real.
 </html>"),
        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics),
-      Icon(graphics={Rectangle(
-            extent={{-100,100},{100,-100}},
-            lineColor={0,0,255},
-            fillColor={255,255,170},
-            fillPattern=FillPattern.Solid)}));
+      Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+              100}}),
+           graphics));
   end HeatAccumulation;
 
   model UnlimitedHeat "Constant temperature, undefinned heat flow"

@@ -1097,9 +1097,8 @@ from this block.
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/concentrationCompartement.png"),
-                    Bitmap(extent={{-100,100},{-20,20}},   fileName=
-                "Resources/Icons/concentrationCompartement.png"), Text(
+                "modelica://Physiolibrary/Resources/Icons/Speciation.png"),
+                                                   Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
@@ -1118,7 +1117,7 @@ from this block.
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/concentrationCompartement.png"), Text(
+                "Resources/Icons/Concentration.png"), Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
@@ -1218,7 +1217,7 @@ from this block.
               fileName="Resources/Icons/hydrostaticGradient.png")}));
 
   end HydrostaticGradient;
-  annotation (Documentation(revisions=""));
+
   model Radiator
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
@@ -1231,4 +1230,31 @@ from this block.
               fileName=
                 "modelica://Physiolibrary/Resources/Icons/MichaelisMenten.png")}));
   end MichaelisMenten;
+  annotation (Documentation(revisions=""));
+  model HeatAccumulation
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/HeatAccumulation.png")}));
+  end HeatAccumulation;
+
+  model OsmoticCell
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
+  end OsmoticCell;
+
+  model IdealGas
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/IdealGas.png")}));
+  end IdealGas;
+
+  model PartialPressure
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/PartialPressure.png")}));
+  end PartialPressure;
 end Icons;

@@ -45,12 +45,12 @@ package Osmotic "Osmotic Physical Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(amountOfSubstance.y, cells.impermeableSolutes) annotation (Line(
-          points={{-71,80},{-64,80},{-64,54},{-56,54}},
+          points={{-71,80},{-64,80},{-64,52},{-54,52}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(amountOfSubstance1.y, interstitium.impermeableSolutes)
         annotation (Line(
-          points={{37,80},{44,80},{44,54},{50,54}},
+          points={{37,80},{44,80},{44,52},{52,52}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(cells1.q_in, membrane1.q_in) annotation (Line(
@@ -64,12 +64,12 @@ package Osmotic "Osmotic Physical Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(amountOfSubstance2.y, cells1.impermeableSolutes) annotation (Line(
-          points={{-69,-32},{-62,-32},{-62,-58},{-54,-58}},
+          points={{-69,-32},{-62,-32},{-62,-60},{-52,-60}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(amountOfSubstance3.y, interstitium1.impermeableSolutes)
         annotation (Line(
-          points={{39,-32},{46,-32},{46,-58},{52,-58}},
+          points={{39,-32},{46,-32},{46,-60},{54,-60}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -442,6 +442,7 @@ Connector with one flow signal of type Real.
   end SolventFlux;
 
   model OsmoticCell
+    extends Icons.OsmoticCell;
     extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
         "mOsm/l");
 
@@ -453,9 +454,9 @@ Connector with one flow signal of type Real.
        annotation (Dialog(group="Initialization"));
 
     Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes
-      "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-120,60},
-              {-80,100}}),
-          iconTransformation(extent={{-120,60},{-80,100}})));
+      "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
+              {-60,80}}),
+          iconTransformation(extent={{-100,40},{-60,80}})));
     Physiolibrary.Types.RealIO.VolumeOutput volume
       "Actual volume of compartment"
       annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
@@ -468,13 +469,8 @@ Connector with one flow signal of type Real.
     state = volume;
     annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                                                 graphics={
-                     Rectangle(
-            extent={{-100,100},{100,-100}},
-            lineColor={0,0,255},
-            fillColor={71,127,8},
-            fillPattern=FillPattern.Solid)}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                                                 graphics),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
