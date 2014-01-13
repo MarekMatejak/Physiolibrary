@@ -5,546 +5,183 @@ package Hydraulic "Hydraulic Physical Domain"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
-    model CardiovascularSystem
-    extends Modelica.Icons.Example;
+    model Guyton1972_CardiovascularSystem
+      "Cardiovascular part of Guyton's model from 1972"
+       extends Modelica.Icons.Example;
 
-      model RightHeart
-        extends Icons.RightHeart;
-
-        parameter Types.VolumeFlowRate NormalCardiacOutput;
-        parameter Types.Pressure NormalFillingPressure;
-
-        PressureMeasure pressureMeasure
-          annotation (Placement(transformation(extent={{-84,-50},{-64,-30}})));
-        Modelica.Blocks.Math.Division division
-          annotation (Placement(transformation(extent={{-8,-30},{12,-10}})));
-        Types.Constants.PressureConst normalFP(k=NormalFillingPressure)
-          annotation (Placement(transformation(extent={{-40,-30},{-32,-22}})));
-        Pump rightHeart
-          annotation (Placement(transformation(extent={{34,-60},{54,-40}})));
-        Blocks.Factors.Effect effect
-          annotation (Placement(transformation(extent={{34,-30},{54,-10}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-86,-66},
-                  {-68,-50}}), iconTransformation(extent={{-16,-10},{4,10}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{82,-58},
-                  {98,-42}}), iconTransformation(extent={{34,54},{54,74}})));
-        Types.Constants.VolumeFlowRateConst normalCO(k=NormalCardiacOutput)
-          annotation (Placement(transformation(extent={{26,8},{34,16}})));
-      equation
-        connect(pressureMeasure.actualPressure,division. u1) annotation (Line(
-            points={{-68.2,-43.2},{-62,-43.2},{-62,-14},{-10,-14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.desiredFlow,effect. y) annotation (Line(
-            points={{44,-44},{44,-22}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(division.y, effect.u) annotation (Line(
-            points={{13,-20},{34.2,-20}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(normalFP.y, division.u2)      annotation (Line(
-            points={{-31,-26},{-10,-26}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.q_out, q_out) annotation (Line(
-            points={{54,-50},{90,-50}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, pressureMeasure.q_in) annotation (Line(
-            points={{-77,-58},{-77,-47},{-77.8,-47}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, rightHeart.q_in) annotation (Line(
-            points={{-77,-58},{-14,-58},{-14,-50},{34,-50}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(normalCO.y, effect.yBase) annotation (Line(
-            points={{35,12},{44,12},{44,-18}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end RightHeart;
-
-      model LeftHeart
-        extends Icons.LeftHeart;
-
-        parameter Types.VolumeFlowRate NormalCardiacOutput;
-        parameter Types.Pressure NormalFillingPressure;
-
-        PressureMeasure pressureMeasure
-          annotation (Placement(transformation(extent={{-90,-44},{-70,-24}})));
-        Modelica.Blocks.Math.Division division
-          annotation (Placement(transformation(extent={{-14,-24},{6,-4}})));
-        Pump rightHeart
-          annotation (Placement(transformation(extent={{32,-54},{52,-34}})));
-        Blocks.Factors.Effect effect
-          annotation (Placement(transformation(extent={{32,-24},{52,-4}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-92,-60},
-                  {-74,-44}}), iconTransformation(extent={{-26,14},{-6,34}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{76,-52},
-                  {92,-36}}), iconTransformation(extent={{-58,88},{-38,108}})));
-        Types.Constants.PressureConst normalFP(k=NormalFillingPressure)
-          annotation (Placement(transformation(extent={{-36,-24},{-28,-16}})));
-        Types.Constants.VolumeFlowRateConst normalCO(k=NormalCardiacOutput)
-          annotation (Placement(transformation(extent={{30,14},{38,22}})));
-      equation
-        connect(pressureMeasure.actualPressure,division. u1) annotation (Line(
-            points={{-74.2,-37.2},{-68,-37.2},{-68,-8},{-16,-8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.desiredFlow,effect. y) annotation (Line(
-            points={{42,-38},{42,-16}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(division.y, effect.u) annotation (Line(
-            points={{7,-14},{32.2,-14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.q_out, q_out) annotation (Line(
-            points={{52,-44},{84,-44}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, pressureMeasure.q_in) annotation (Line(
-            points={{-83,-52},{-83,-41},{-83.8,-41}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, rightHeart.q_in) annotation (Line(
-            points={{-83,-52},{-20,-52},{-20,-44},{32,-44}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(normalFP.y, division.u2) annotation (Line(
-            points={{-27,-20},{-16,-20}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(normalCO.y, effect.yBase) annotation (Line(
-            points={{39,18},{42,18},{42,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),
-                               graphics), Diagram(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end LeftHeart;
-
-      model PulmonaryCirculation
-        extends Icons.PulmonaryCirculation;
-
-        parameter Types.HydraulicConductance PulmonaryConductance=6.9838233326989e-08;
-
-        ElasticBalloon pulmonaryVeins(
-          zeroPressureVolume=0,
-          volume_start=0.0004,
-          compliance=6.0004926067653e-07)
-          annotation (Placement(transformation(extent={{20,-8},{40,12}})));
-        ElasticBalloon pulmonaryArteries(
-          zeroPressureVolume=0,
-          volume_start=0.0001,
-          compliance=5.0029107108905e-08)
-          annotation (Placement(transformation(extent={{-46,-8},{-26,12}})));
-        Resistor pulmonary(cond=PulmonaryConductance)
-          annotation (Placement(transformation(extent={{-14,-8},{6,12}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{86,-6},
-                  {102,10}}), iconTransformation(extent={{88,-10},{108,10}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-88,-6},
-                  {-70,10}}),  iconTransformation(extent={{-110,-10},{-90,10}})));
-      equation
-
-        connect(pulmonaryArteries.q_in,pulmonary. q_in) annotation (Line(
-            points={{-36,2},{-14,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(pulmonary.q_out,pulmonaryVeins. q_in) annotation (Line(
-            points={{6,2},{30,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, pulmonary.q_in) annotation (Line(
-            points={{-79,2},{-14,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_out, pulmonaryVeins.q_in) annotation (Line(
-            points={{94,2},{30,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end PulmonaryCirculation;
-
-      model SystemicCirculation
-        extends Icons.SystemicCirculation;
-
-        parameter Types.HydraulicConductance SystemicConductance=7.1430864073035e-09;
-        ElasticBalloon arteries(
-          zeroPressureVolume=0,
-          volume_start=0.001,
-          compliance=7.5006157584566e-08)
-          annotation (Placement(transformation(extent={{50,-64},{70,-44}})));
-        ElasticBalloon veins(
-          zeroPressureVolume=0,
-          volume_start=0.0035,
-          compliance=1.3126077577299e-05)
-          annotation (Placement(transformation(extent={{-52,-64},{-32,-44}})));
-        Resistor peripheral(cond=SystemicConductance)
-          annotation (Placement(transformation(extent={{4,-64},{24,-44}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{82,-62},
-                  {100,-46}}), iconTransformation(extent={{90,-10},{110,10}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{-100,
-                  -62},{-84,-46}}),
-                              iconTransformation(extent={{-110,-8},{-90,12}})));
-      equation
-
-        connect(veins.q_in,peripheral. q_in) annotation (Line(
-            points={{-42,-54},{4,-54}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(peripheral.q_out,arteries. q_in) annotation (Line(
-            points={{24,-54},{60,-54}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_out, veins.q_in) annotation (Line(
-            points={{-92,-54},{-42,-54}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(arteries.q_in, q_in) annotation (Line(
-            points={{60,-54},{91,-54}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end SystemicCirculation;
-
-      RightHeart rightHeart1(NormalCardiacOutput=9.3333333333333e-05,
-          NormalFillingPressure=266.64477483)
-        annotation (Placement(transformation(extent={{-18,-6},{2,14}})));
-      LeftHeart leftHeart1(NormalCardiacOutput=9.3333333333333e-05,
-          NormalFillingPressure=933.256711905)
-        annotation (Placement(transformation(extent={{-2,-6},{18,14}})));
-      PulmonaryCirculation pulmonaryCirculation
-        annotation (Placement(transformation(extent={{-10,32},{10,52}})));
-      SystemicCirculation systemicCirculation
-        annotation (Placement(transformation(extent={{-8,-38},{12,-18}})));
-    equation
-      connect(systemicCirculation.q_out, rightHeart1.q_in) annotation (Line(
-          points={{-8,-27.8},{-22,-27.8},{-22,4},{-8.6,4}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(rightHeart1.q_out, pulmonaryCirculation.q_in) annotation (Line(
-          points={{-3.6,10.4},{-3.6,12},{-22,12},{-22,42},{-10,42}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(leftHeart1.q_out, systemicCirculation.q_in) annotation (Line(
-          points={{3.2,13.8},{28,13.8},{28,-28},{12,-28}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(leftHeart1.q_in, pulmonaryCirculation.q_out) annotation (Line(
-          points={{6.4,6.4},{20,6.4},{20,42},{9.8,42}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-40,-40},
-                {40,60}}),              graphics), Icon(coordinateSystem(extent={{-100,
-                -100},{100,100}})));
-    end CardiovascularSystem;
-
-    model CardiovascularSystem_Equilibrated
-      extends CardiovascularSystem(pulmonaryCirculation(pulmonaryArteries(
-              Simulation=Simulation), pulmonaryVeins(Simulation=Simulation)),
-          systemicCirculation(
-          veins(Simulation=Simulation),
-          arteries(Simulation=Simulation),
-          peripheral(Simulation=Simulation, isFlowIncludedInEquilibrium=false)));
-      extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
-
-      parameter Types.Volume BloodVolume = 0.0056 "total blood volume";
-
-    equation
-      normalizedState[1]*BloodVolume = systemicCirculation.arteries.volume + systemicCirculation.veins.volume + pulmonaryCirculation.pulmonaryArteries.volume + pulmonaryCirculation.pulmonaryVeins.volume;
-    end CardiovascularSystem_Equilibrated;
-
-    package CardiovascularSystem2
-     extends Modelica.Icons.ExamplesPackage;
-
-      model HalfOfHeart
-        /*parameter Integer[2,2] q_in_transf = {{-86,-66},{-68,-50}};
-  parameter Integer[2,2] q_in_pos(fixed=true) = {{-16,-10},{4,10}};
-  parameter Integer[2,2] q_out_transf = {{82,-58},{98,-42}};
-  parameter Integer[2,2] q_out_pos(fixed=true) = {{34,54},{54,74}};
-*/
-        parameter Types.VolumeFlowRate NormalCardiacOutput;
-        parameter Types.Pressure NormalFillingPressure;
-
-        PressureMeasure pressureMeasure
-          annotation (Placement(transformation(extent={{-84,-50},{-64,-30}})));
-        Modelica.Blocks.Math.Division division
-          annotation (Placement(transformation(extent={{-8,-30},{12,-10}})));
-        Types.Constants.PressureConst normalFP(k=NormalFillingPressure)
-          annotation (Placement(transformation(extent={{-40,-30},{-32,-22}})));
-        Pump rightHeart
-          annotation (Placement(transformation(extent={{34,-60},{54,-40}})));
-        Blocks.Factors.Effect effect
-          annotation (Placement(transformation(extent={{34,-30},{54,-10}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-100,
-                  -60},{-80,-40}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{80,-60},
-                  {100,-40}})));
-
-        Types.Constants.VolumeFlowRateConst normalCO(k=NormalCardiacOutput)
-          annotation (Placement(transformation(extent={{26,8},{34,16}})));
-      equation
-        connect(pressureMeasure.actualPressure,division. u1) annotation (Line(
-            points={{-68.2,-43.2},{-62,-43.2},{-62,-14},{-10,-14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.desiredFlow,effect. y) annotation (Line(
-            points={{44,-44},{44,-22}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(division.y, effect.u) annotation (Line(
-            points={{13,-20},{34.2,-20}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(normalFP.y, division.u2)      annotation (Line(
-            points={{-31,-26},{-10,-26}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(rightHeart.q_out, q_out) annotation (Line(
-            points={{54,-50},{90,-50}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, pressureMeasure.q_in) annotation (Line(
-            points={{-90,-50},{-90,-50},{-78,-50},{-78,-50},{-78,-48},{-77.8,-48},{-77.8,
-                -47}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, rightHeart.q_in) annotation (Line(
-            points={{-90,-50},{34,-50}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(normalCO.y, effect.yBase) annotation (Line(
-            points={{35,12},{44,12},{44,-18}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end HalfOfHeart;
-
-      model VascularSystem
-
-        parameter Types.Volume ArteriesVolume_start=0.0001;
-        parameter Types.HydraulicCompliance ArteriesCompliance=5.0029107108905e-08;
-        parameter Types.Volume ArteriesV0=0;
-
-        parameter Types.Volume VeinsVolume_start=0.0004;
-        parameter Types.HydraulicCompliance VeinsCompliance=6.0004926067653e-07;
-        parameter Types.Volume VeinsV0=0;
-
-        parameter Types.HydraulicConductance Conductance=6.9838233326989e-08;
-
-        ElasticBalloon veins(
-          zeroPressureVolume=VeinsV0,
-          volume_start=VeinsVolume_start,
-          compliance=VeinsCompliance)
-          annotation (Placement(transformation(extent={{20,-8},{40,12}})));
-        ElasticBalloon arteries(
-          zeroPressureVolume=ArteriesV0,
-          volume_start=ArteriesVolume_start,
-          compliance=ArteriesCompliance)
-          annotation (Placement(transformation(extent={{-46,-8},{-26,12}})));
-        Resistor resistor(cond=Conductance)
-          annotation (Placement(transformation(extent={{-14,-8},{6,12}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{86,-6},
-                  {102,10}}), iconTransformation(extent={{88,-10},{108,10}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-88,-6},
-                  {-70,10}}),  iconTransformation(extent={{-110,-10},{-90,10}})));
-      equation
-
-        connect(arteries.q_in,resistor.q_in) annotation (Line(
-            points={{-36,2},{-14,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(resistor.q_out,veins.q_in) annotation (Line(
-            points={{6,2},{30,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_in, resistor.q_in) annotation (Line(
-            points={{-79,2},{-14,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_out, veins.q_in) annotation (Line(
-            points={{94,2},{30,2}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end VascularSystem;
-
-      model RightHeart
-        extends Icons.RightHeart;
-
-        parameter Types.VolumeFlowRate NormalCardiacOutput;
-        parameter Types.Pressure NormalFillingPressure;
-
-        HalfOfHeart halfOfHeart(NormalCardiacOutput=NormalCardiacOutput,NormalFillingPressure=NormalFillingPressure)
-          annotation (Placement(transformation(extent={{-12,-10},{8,10}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{40,-14},
-                  {56,2}}),   iconTransformation(extent={{32,56},{52,76}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-60,-16},
-                  {-40,4}}),   iconTransformation(extent={{-18,-8},{2,12}})));
-
-      equation
-        connect(q_in, halfOfHeart.q_in) annotation (Line(
-            points={{-50,-6},{-30,-6},{-30,-5},{-11,-5}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_out, halfOfHeart.q_out) annotation (Line(
-            points={{48,-6},{30,-6},{30,-5},{7,-5}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
-      end RightHeart;
-
-      model LeftHeart
-        extends Icons.LeftHeart;
-
-        parameter Types.VolumeFlowRate NormalCardiacOutput;
-        parameter Types.Pressure NormalFillingPressure;
-
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{76,-52},
-                  {92,-36}}), iconTransformation(extent={{-58,86},{-38,106}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-92,-60},
-                  {-74,-44}}), iconTransformation(extent={{-26,12},{-6,32}})));
-        HalfOfHeart halfOfHeart(NormalCardiacOutput=NormalCardiacOutput,NormalFillingPressure=NormalFillingPressure)
-          annotation (Placement(transformation(extent={{-4,-56},{16,-36}})));
-      equation
-        connect(q_in, halfOfHeart.q_in) annotation (Line(
-            points={{-83,-52},{-44,-52},{-44,-51},{-3,-51}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(halfOfHeart.q_out, q_out) annotation (Line(
-            points={{15,-51},{49.5,-51},{49.5,-44},{84,-44}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
-      end LeftHeart;
-
-      model PulmonaryCirculation
-        extends Icons.PulmonaryCirculation;
-        extends VascularSystem(ArteriesVolume_start=0.0001,ArteriesCompliance=5.0029107108905e-08,VeinsVolume_start=0.0004,VeinsCompliance=6.0004926067653e-07,Conductance=6.9838233326989e-08);
-
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end PulmonaryCirculation;
-
-      model SystemicCirculation
-        extends Icons.SystemicCirculation;
-
-        parameter Types.HydraulicConductance SystemicConductance=7.1430864073035e-09;
-
-        VascularSystem vascularSystem(
-          ArteriesVolume_start=0.001,
-          ArteriesCompliance=7.5006157584566e-08,
-          VeinsVolume_start=0.0035,
-          VeinsCompliance=1.3126077577299e-05,
-          Conductance=SystemicConductance)
-          annotation (Placement(transformation(extent={{-8,-22},{12,-2}})));
-        NegativePressureFlow q_out annotation (Placement(transformation(extent={{26,-20},
-                  {42,-4}}),  iconTransformation(extent={{-110,-10},{-90,10}})));
-        PositivePressureFlow q_in annotation (Placement(transformation(extent={{-46,-18},
-                  {-28,-2}}),  iconTransformation(extent={{90,-10},{110,10}})));
-      equation
-        connect(vascularSystem.q_in, q_in) annotation (Line(
-            points={{-8,-12},{-22,-12},{-22,-10},{-37,-10}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(q_out, vascularSystem.q_out) annotation (Line(
-            points={{34,-12},{11.8,-12}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                  {100,100}}), graphics), Diagram(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-      end SystemicCirculation;
-
-    model CVS
-      extends Modelica.Icons.Example;
-      RightHeart rightHeart1(NormalCardiacOutput=9.3333333333333e-05,
-            NormalFillingPressure=266.64477483)
-        annotation (Placement(transformation(extent={{-18,-6},{2,14}})));
-      LeftHeart leftHeart1(NormalCardiacOutput=9.3333333333333e-05,
-            NormalFillingPressure=933.256711905)
-        annotation (Placement(transformation(extent={{-2,-6},{18,14}})));
-      PulmonaryCirculation pulmonaryCirculation
-        annotation (Placement(transformation(extent={{-10,28},{10,48}})));
-      SystemicCirculation systemicCirculation
+      ElasticBalloon pulmonaryVeins(
+        volume_start(displayUnit="l") = 0.0004,
+        zeroPressureVolume(displayUnit="l") = 0.0004,
+        compliance(displayUnit="l/mmHg") = 7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{34,64},{54,84}})));
+      ElasticBalloon pulmonaryArteries(
+        zeroPressureVolume(displayUnit="l") = 0.00030625,
+        compliance(displayUnit="l/mmHg") = 3.6002955640592e-08,
+        volume_start(displayUnit="l") = 0.00038)
+        annotation (Placement(transformation(extent={{-32,64},{-12,84}})));
+      Resistor pulmonary(cond(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)
+        annotation (Placement(transformation(extent={{0,64},{20,84}})));
+      ElasticBalloon arteries(
+        volume_start(displayUnit="l") = 0.00085,
+        zeroPressureVolume(displayUnit="l") = 0.000495,
+        compliance(displayUnit="l/mmHg") = 2.6627185942521e-08)
+        annotation (Placement(transformation(extent={{44,-56},{64,-36}})));
+      ElasticBalloon veins(
+        compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
+        volume_start(displayUnit="l") = 0.00325,
+        zeroPressureVolume(displayUnit="l") = 0.00295)
+        annotation (Placement(transformation(extent={{-34,-56},{-14,-36}})));
+      Resistor nonMuscle(cond(displayUnit="l/(mmHg.min)") = 3.5627924852669e-09)
+        annotation (Placement(transformation(extent={{6,-56},{26,-36}})));
+      PressureMeasure pressureMeasure
+        annotation (Placement(transformation(extent={{-48,16},{-28,36}})));
+      Pump rightHeart
+        annotation (Placement(transformation(extent={{-26,-2},{-6,18}})));
+      Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+        annotation (Placement(transformation(extent={{-30,30},{-22,38}})));
+      PressureMeasure pressureMeasure1
+        annotation (Placement(transformation(extent={{22,16},{42,36}})));
+      Pump leftHeart
+        annotation (Placement(transformation(extent={{46,-2},{66,18}})));
+      Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+        annotation (Placement(transformation(extent={{42,32},{50,40}})));
+      Resistor kidney(cond(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
+        annotation (Placement(transformation(extent={{6,-74},{26,-54}})));
+      Resistor muscle(cond(displayUnit="l/(mmHg.min)") = 1.3001067314658e-09)
+        annotation (Placement(transformation(extent={{6,-38},{26,-18}})));
+      Resistor largeVeins(cond(displayUnit="l/(mmHg.min)") = 1.6888886482791e-07)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-              rotation=0,
-              origin={2,-28})));
+            rotation=270,
+            origin={-54,-18})));
+      ElasticBalloon rightAtrium(
+        volume_start(displayUnit="l") = 0.0001,
+        zeroPressureVolume(displayUnit="l") = 0.0001,
+        compliance(displayUnit="l/mmHg") = 3.7503078792283e-08)
+        annotation (Placement(transformation(extent={{-52,-2},{-32,18}})));
+      Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
+            0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
+        annotation (Placement(transformation(extent={{-26,12},{-6,32}})));
+      Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,0.72,0.29},{0,1.01,
+            0.29},{3,1.88,0.218333},{10,2.7,0}})
+        annotation (Placement(transformation(extent={{46,12},{66,32}})));
     equation
-      connect(systemicCirculation.q_out, rightHeart1.q_in) annotation (Line(
-          points={{-8,-28},{-22,-28},{-22,4.2},{-8.8,4.2}},
+      connect(pulmonaryArteries.q_in,pulmonary. q_in) annotation (Line(
+          points={{-22,74},{0,74}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(rightHeart1.q_out, pulmonaryCirculation.q_in) annotation (Line(
-          points={{-3.8,10.6},{-3.8,12},{-26,12},{-26,38},{-10,38}},
+      connect(pulmonary.q_out,pulmonaryVeins. q_in) annotation (Line(
+          points={{20,74},{44,74}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(leftHeart1.q_out, systemicCirculation.q_in) annotation (Line(
-          points={{3.2,13.6},{28,13.6},{28,-28},{12,-28}},
+      connect(veins.q_in, nonMuscle.q_in)  annotation (Line(
+          points={{-24,-46},{6,-46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(leftHeart1.q_in, pulmonaryCirculation.q_out) annotation (Line(
-          points={{6.4,6.2},{20,6.2},{20,38},{9.8,38}},
+      connect(nonMuscle.q_out, arteries.q_in)  annotation (Line(
+          points={{26,-46},{54,-46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-40,-40},
-                  {40,60}}),            graphics), Icon(coordinateSystem(extent={{-100,
-                -100},{100,100}})));
-    end CVS;
+      connect(rightHeart.q_out,pulmonaryArteries. q_in) annotation (Line(
+          points={{-6,8},{2,8},{2,50},{-40,50},{-40,74},{-22,74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(leftHeart.q_in,pulmonaryVeins. q_in) annotation (Line(
+          points={{46,8},{26,8},{26,50},{62,50},{62,74},{44,74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(leftHeart.q_out,arteries. q_in) annotation (Line(
+          points={{66,8},{66,8},{68,8},{68,-46},{54,-46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
+          points={{-41.6,20},{-42,20},{-42,8},{-26,8}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure1.q_in,pulmonaryVeins. q_in) annotation (Line(
+          points={{28.4,20},{26,20},{26,50},{62,50},{62,74},{44,74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(muscle.q_out, arteries.q_in) annotation (Line(
+          points={{26,-28},{40,-28},{40,-46},{54,-46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(kidney.q_out, arteries.q_in) annotation (Line(
+          points={{26,-64},{40,-64},{40,-46},{54,-46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(kidney.q_in, nonMuscle.q_in) annotation (Line(
+          points={{6,-64},{-4,-64},{-4,-46},{6,-46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(muscle.q_in, nonMuscle.q_in) annotation (Line(
+          points={{6,-28},{-4,-28},{-4,-46},{6,-46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(veins.q_in, largeVeins.q_out) annotation (Line(
+          points={{-24,-46},{-54,-46},{-54,-28}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(largeVeins.q_in, rightAtrium.q_in) annotation (Line(
+          points={{-54,-8},{-54,8},{-42,8}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(rightAtrium.q_in, rightHeart.q_in) annotation (Line(
+          points={{-42,8},{-26,8}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(rightHeart.desiredFlow, rightStarling.y) annotation (Line(
+          points={{-16,14},{-16,20}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
+          points={{-21,34},{-16,34},{-16,24}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure.actualPressure, rightStarling.u) annotation (Line(
+          points={{-32,22},{-25.8,22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
+          points={{51,36},{56,36},{56,24}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(leftHeart.desiredFlow, leftStarling.y) annotation (Line(
+          points={{56,14},{56,20}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
+          points={{38,22},{46.2,22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
+          points={{-41.6,20},{-42,20},{-42,8}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(info="<html>
+<p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
+<p><br/>Model, all parameters and all initial values are from article: </p>
+<p>A.C. Guyton, T.G. Coleman, H.J. Granger (1972). &QUOT;Circulation: overall regulation.&QUOT; Annual review of physiology 34(1): 13-44.</p>
+</html>"));
+    end Guyton1972_CardiovascularSystem;
 
-    end CardiovascularSystem2;
   end Examples;
 
   connector PressureFlow "Hydraulical Pressure-VolumeFlow connector"
@@ -682,13 +319,13 @@ package Hydraulic "Hydraulic Physical Domain"
     extends Icons.PressureMeasure;
 
     PositivePressureFlow q_in annotation (Placement(
-          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-48,-80},
-              {-28,-60}})));
+          transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-46,-70},
+              {-26,-50}})));
     Physiolibrary.Types.RealIO.PressureOutput actualPressure "Actual pressure"
                            annotation (Placement(transformation(extent={{-20,30},{20,70}}),
           iconTransformation(extent={{-20,-20},{20,20}},
                                                        rotation=0,
-          origin={58,-32})));
+          origin={60,-40})));
   equation
 
     actualPressure = q_in.pressure;
@@ -725,7 +362,7 @@ package Hydraulic "Hydraulic Physical Domain"
 
   model Resistor2
    extends OnePort;
-   extends Icons.Resistor;
+   extends Icons.HydraulicResistor;
     Physiolibrary.Types.RealIO.HydraulicConductanceInput cond
                                                      annotation (Placement(
           transformation(extent={{-58,26},{-18,66}}), iconTransformation(
@@ -734,10 +371,7 @@ package Hydraulic "Hydraulic Physical Domain"
           origin={0,40})));
   equation
     q_in.q = cond * (q_in.pressure - q_out.pressure);
-    annotation (Icon(graphics={Text(
-            extent={{-70,-30},{70,30}},
-            textString="%name",
-            lineColor={0,0,255})}));
+    annotation (Icon(graphics));
   end Resistor2;
 
   model InputPump
@@ -969,7 +603,7 @@ package Hydraulic "Hydraulic Physical Domain"
         color={0,0,0},
         thickness=1,
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}), graphics={Text(
             extent={{-100,130},{100,108}},
             lineColor={0,0,255},
@@ -1005,8 +639,8 @@ package Hydraulic "Hydraulic Physical Domain"
                                                          annotation (Placement(transformation(extent={{-44,84},
               {-32,96}}),  iconTransformation(
           extent={{-20,-20},{20,20}},
-          rotation=180,
-          origin={34,50})));
+          rotation=270,
+          origin={38,80})));
     FlowMeasure flowMeasure
       annotation (Placement(transformation(extent={{-38,22},{-18,2}})));
     Physiolibrary.Blocks.Factors.Effect
@@ -1086,8 +720,8 @@ package Hydraulic "Hydraulic Physical Domain"
         points={{-13.5,87},{-2,87},{-2,66}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-              {100,100}}),       graphics={Text(
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}), graphics={Text(
             extent={{-100,134},{100,106}},
             lineColor={0,0,255},
             textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,

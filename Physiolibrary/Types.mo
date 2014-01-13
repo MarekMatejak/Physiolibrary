@@ -446,6 +446,34 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end FractionConst;
 
+  block FrequencyConst "Constant signal of type Frequency"
+   parameter Types.Frequency k "Constant Frequency output value";
+        RealIO.FrequencyOutput y "Frequency constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="frequency",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end FrequencyConst;
+
   block GasSolubilityConst "Constant signal of type GasSolubility"
    parameter Types.GasSolubility k "Constant GasSolubility output value";
         RealIO.GasSolubilityOutput y "GasSolubility constant"
@@ -2188,6 +2216,59 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
+    connector FrequencyInput = input Frequency "input Frequency as connector"
+      annotation (defaultComponentName="frequency",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Frequency. 
+    </p> 
+    </html>"));
+
+    connector FrequencyOutput = output Frequency
+      "output Frequency as connector"
+      annotation (defaultComponentName="frequency",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Frequency.
+  </p>
+  </html>"));
+
     connector OsmoticPermeabilityInput = input OsmoticPermeability
       "input OsmoticPermeability as connector"
       annotation (defaultComponentName="osmoticmembranepermeability",
@@ -2725,6 +2806,7 @@ constructed by the signals connected to this bus.
 
   type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
+  type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
 
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
@@ -3037,6 +3119,7 @@ The Real output y is a constant signal:
 
       block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy);
       block Time = Variable(redeclare type T=Physiolibrary.Types.Time);
+      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency);
 
       block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass);
       block MassFlowRate = Variable(redeclare type T =

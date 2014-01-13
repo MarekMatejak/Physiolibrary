@@ -41,3 +41,17 @@ convertClass("Physiolibrary.Icons.Carbondioxyd","Physiolibrary.Icons.CarbonDioxi
 
 convertElement("Physiolibrary.Thermal.HeatFlowConnector","q","Q_flow")
 
+convertClass("Physiolibrary.Icons.ConcentrationCompartment","Physiolibrary.Icons.Substance")
+convertClass("Physiolibrary.Icons.FractionalConcentration","Physiolibrary.Icons.Speciation")
+convertClass("Physiolibrary.Icons.BloodElasticCompartment","Physiolibrary.Icons.ElasticBalloon")
+
+convertElement("Physiolibrary.Thermal.UnlimitedHeat","Temperature","T")
+convertElement("Physiolibrary.Thermal.UnlimitedHeat","Simulation","")
+convertClass("Physiolibrary.Thermal.UnlimitedHeat","Modelica.Thermal.HeatTransfer.Sources.FixedTemperature")
+
+convertElement("Physiolibrary.Thermal.HeatInflux","desiredFlow_","Q_flow")
+convertElement("Physiolibrary.Thermal.HeatInflux","q_out","port")
+convertClass("Physiolibrary.Thermal.HeatInflux","Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow")
+
+convertClass("Physiolibrary.Chemical.Examples.Speciation.SubunitSpeciation","Physiolibrary.Chemical.Speciation")
+

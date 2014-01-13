@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version v1.1)"
+package Physiolibrary "Physiological domains library (version v1.2)"
 
 
   package UsersGuide "User's Guide"
@@ -191,15 +191,25 @@ package Physiolibrary "Physiological domains library (version v1.1)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
+
+
   annotation (preferredView="info",
-version="1.1",
+version="1.2",
 versionBuild=1,
 versionDate="2013-12-23",
 dateModified = "2013-12-23 16:26:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
 conversion(
- from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.1.mos")),
+ from(version="1.1", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_1.2.mos"),
+ from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.2.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>

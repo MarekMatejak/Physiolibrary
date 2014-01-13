@@ -10,48 +10,35 @@ package Osmotic "Osmotic Physical Domain"
     //extends States.StateSystem; //(Simulation=States.SimulationType.Equilibrated);
 
       OsmoticCell cells(volume_start(displayUnit="l") = 0.01)
-        annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
+        annotation (Placement(transformation(extent={{-44,36},{-24,56}})));
       OsmoticCell interstitium(volume_start(displayUnit="l") = 0.005)
-        annotation (Placement(transformation(extent={{50,36},{70,56}})));
+        annotation (Placement(transformation(extent={{34,36},{54,56}})));
       Membrane membrane(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,36},{16,56}})));
-      Types.RealTypes.AmountOfSubstance amountOfSubstance(varName=
-            "CellularProteins", k=2.85)
-        annotation (Placement(transformation(extent={{-92,70},{-72,90}})));
-      Types.RealTypes.AmountOfSubstance amountOfSubstance1(varName=
-            "InterstitialProteins", k=1.6)
-        annotation (Placement(transformation(extent={{16,70},{36,90}})));
       OsmoticCell cells1(volume_start(displayUnit="l") = 0.01)
         annotation (Placement(transformation(extent={{-54,-76},{-34,-56}})));
       OsmoticCell interstitium1(volume_start(displayUnit="l") = 0.005)
         annotation (Placement(transformation(extent={{52,-76},{72,-56}})));
       Membrane membrane1(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
-      Types.RealTypes.AmountOfSubstance amountOfSubstance2(varName=
-            "CellularProteins", k=2.85)
-        annotation (Placement(transformation(extent={{-90,-42},{-70,-22}})));
-      Types.RealTypes.AmountOfSubstance amountOfSubstance3(varName=
-            "InterstitialProteins", k=1.2)
-        annotation (Placement(transformation(extent={{18,-42},{38,-22}})));
+      Types.Constants.AmountOfSubstanceConst cellularProteins(k=0.285)
+        annotation (Placement(transformation(extent={{-62,68},{-54,76}})));
+      Types.Constants.AmountOfSubstanceConst interstitialProteins(k=0.28)
+        annotation (Placement(transformation(extent={{16,68},{24,76}})));
+      Types.Constants.AmountOfSubstanceConst cellularProteins1(k=0.285)
+        annotation (Placement(transformation(extent={{-72,-48},{-64,-40}})));
+      Types.Constants.AmountOfSubstanceConst interstitialProteins1(k=0.29)
+        annotation (Placement(transformation(extent={{30,-50},{38,-42}})));
     equation
       connect(cells.q_in, membrane.q_in) annotation (Line(
-          points={{-46,46},{-4,46}},
+          points={{-34,46},{-4,46}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
       connect(membrane.q_out, interstitium.q_in) annotation (Line(
-          points={{16,46},{60,46}},
+          points={{16,46},{44,46}},
           color={127,127,0},
           thickness=1,
-          smooth=Smooth.None));
-      connect(amountOfSubstance.y, cells.impermeableSolutes) annotation (Line(
-          points={{-71,80},{-64,80},{-64,52},{-54,52}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(amountOfSubstance1.y, interstitium.impermeableSolutes)
-        annotation (Line(
-          points={{37,80},{44,80},{44,52},{52,52}},
-          color={0,0,127},
           smooth=Smooth.None));
       connect(cells1.q_in, membrane1.q_in) annotation (Line(
           points={{-44,-66},{-2,-66}},
@@ -63,13 +50,22 @@ package Osmotic "Osmotic Physical Domain"
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(amountOfSubstance2.y, cells1.impermeableSolutes) annotation (Line(
-          points={{-69,-32},{-62,-32},{-62,-60},{-52,-60}},
+      connect(cellularProteins.y, cells.impermeableSolutes) annotation (Line(
+          points={{-53,72},{-48,72},{-48,52},{-42,52}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(amountOfSubstance3.y, interstitium1.impermeableSolutes)
+      connect(interstitialProteins.y, interstitium.impermeableSolutes)
         annotation (Line(
-          points={{39,-32},{46,-32},{46,-60},{54,-60}},
+          points={{25,72},{30,72},{30,52},{36,52}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(cellularProteins1.y, cells1.impermeableSolutes) annotation (Line(
+          points={{-63,-44},{-58,-44},{-58,-60},{-52,-60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(interstitialProteins1.y, interstitium1.impermeableSolutes)
+        annotation (Line(
+          points={{39,-46},{46,-46},{46,-60},{54,-60}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -209,7 +205,7 @@ Connector with one flow signal of type Real.
   model Membrane
     "Semipermeable membrane diffusion at the same hydraulic pressure on both sides"
    extends OnePort;
-   extends Icons.Resistor;
+   extends Icons.Membrane; //Icons.Resistor;
    parameter Types.Temperature temperature = 310.15
       "temperature on both membrane sides";
    parameter Physiolibrary.Types.OsmoticPermeability cond
@@ -218,11 +214,9 @@ Connector with one flow signal of type Real.
     q_in.q = cond * (q_out.o*(Modelica.Constants.R*temperature) - q_in.o*(Modelica.Constants.R*temperature));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),
-                        graphics), Icon(graphics={Text(
-            extent={{-70,-30},{70,30}},
-            lineColor={0,0,0},
-            textString="%cond"), Text(
-            extent={{-134,-90},{154,-30}},
+                        graphics), Icon(graphics={
+                                 Text(
+            extent={{-160,-154},{160,-102}},
             textString="%name",
             lineColor={0,0,255})}),
       Documentation(revisions="<html>
@@ -234,7 +228,7 @@ Connector with one flow signal of type Real.
   model Membrane2
     "Semipermeable membrane diffusion at different hydraulic pressures on each side"
    extends OnePort;
-   extends Icons.Resistor;
+   extends Icons.Membrane; //Icons.Resistor;
    parameter Types.Temperature temperature = 310.15
       "temperature on both membrane sides";
    parameter Physiolibrary.Types.OsmoticPermeability cond
@@ -246,12 +240,12 @@ Connector with one flow signal of type Real.
           origin={-78,90}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
-          origin={-60,40})));
+          origin={-80,80})));
     Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
           transformation(extent={{28,56},{68,96}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
-          origin={60,40})));
+          origin={80,80})));
   equation
      q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperature)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperature)));
 
@@ -259,11 +253,9 @@ Connector with one flow signal of type Real.
               -100},{100,100}}),
                         graphics), Icon(coordinateSystem(preserveAspectRatio=false,
             extent={{-100,-100},{100,100}}),
-                                        graphics={Text(
-            extent={{-70,-30},{70,30}},
-            lineColor={0,0,0},
-            textString="%cond"), Text(
-            extent={{-134,-90},{154,-30}},
+                                        graphics={
+                                 Text(
+            extent={{-160,-152},{160,-100}},
             textString="%name",
             lineColor={0,0,255})}),
       Documentation(revisions="<html>
@@ -275,7 +267,7 @@ Connector with one flow signal of type Real.
   model Membrane3
     "Semipermeable membrane diffusion at different hydraulic pressures and temperatures on each side"
    extends OnePort;
-   extends Icons.Resistor;
+   extends Icons.Membrane; //Icons.Resistor;
 
    parameter Physiolibrary.Types.OsmoticPermeability cond
       "Membrane permeability for solvent";
@@ -286,32 +278,29 @@ Connector with one flow signal of type Real.
           origin={-80,78}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
-          origin={-60,40})));
+          origin={-80,80})));
     Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
           transformation(extent={{28,56},{68,96}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
-          origin={60,40})));
+          origin={80,80})));
     Types.RealIO.TemperatureInput temperatureIn annotation (Placement(
           transformation(extent={{-100,-80},{-60,-40}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=90,
-          origin={-60,-40})));
+          origin={-80,-80})));
     Types.RealIO.TemperatureInput temperatureOut annotation (Placement(
           transformation(extent={{32,-80},{72,-40}}),    iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=90,
-          origin={60,-40})));
+          origin={80,-80})));
   equation
     q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperatureOut)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperatureIn)));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),
                         graphics), Icon(coordinateSystem(preserveAspectRatio=false,
             extent={{-100,-100},{100,100}}),
-                                        graphics={Text(
-            extent={{-70,-30},{70,30}},
-            lineColor={0,0,0},
-            textString="%cond")}),
+                                        graphics),
       Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -470,7 +459,11 @@ Connector with one flow signal of type Real.
     annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-                                                 graphics),
+                                                 graphics={
+                                 Text(
+            extent={{-40,-138},{280,-100}},
+            textString="%name",
+            lineColor={0,0,255})}),
       Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>

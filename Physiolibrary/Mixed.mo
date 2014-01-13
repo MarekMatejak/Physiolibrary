@@ -35,7 +35,7 @@ package Mixed "Blocks between domains"
         amplitude=10,
         freqHz=1/60,
         offset=310.15)
-        annotation (Placement(transformation(extent={{32,-2},{52,18}})));
+        annotation (Placement(transformation(extent={{20,-2},{40,18}})));
     equation
 
       connect(partialPressure.n, oxygen_dissolved.q_out)    annotation (Line(
@@ -54,7 +54,7 @@ package Mixed "Blocks between domains"
           color={0,0,127},
           smooth=Smooth.None));
       connect(temperature.y, partialPressure.T) annotation (Line(
-          points={{53,8},{56,8},{56,-18},{6,-18}},
+          points={{41,8},{50,8},{50,-18},{6,-18}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

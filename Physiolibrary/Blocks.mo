@@ -583,8 +583,12 @@ This is discussed in the description of package
   end Curves;
 
   package Factors "Multiplication Effect Types"
-    model Effect "multiplication"
+
+    model Effect "normalization and multiplication"
      extends Icons.BaseFactorIcon;
+
+     parameter Real NormalValue=1
+        "Normal value of u, because y=(u/NormalValue)*yBase.";
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-102,-24},{-62,16}}),
             iconTransformation(extent={{-108,-10},{-88,10}})));
@@ -594,6 +598,11 @@ This is discussed in the description of package
             rotation=270,
             origin={0,-32})));
       Real effect;
+      Modelica.Blocks.Math.Division division
+        annotation (Placement(transformation(extent={{-44,-20},{-24,0}})));
+      Modelica.Blocks.Sources.Constant      Constant2(k=NormalValue)
+                                               annotation (Placement(
+            transformation(extent={{-82,-46},{-62,-26}})));
     equation
       effect = u;
       connect(yBase, product.u1) annotation (Line(
@@ -604,27 +613,27 @@ This is discussed in the description of package
           points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(u, product.u2) annotation (Line(
-          points={{-82,-4},{-6,-4},{-6,-20}},
+      connect(Constant2.y, division.u2) annotation (Line(
+          points={{-61,-36},{-56,-36},{-56,-16},{-46,-16}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      connect(u, division.u1) annotation (Line(
+          points={{-82,-4},{-46,-4}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(division.y, product.u2) annotation (Line(
+          points={{-23,-10},{-6,-10},{-6,-20}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",
         info="<html>
 <p><h4>y = yBase * u</h4></p>
 </html>"),
-        Icon(graphics={
-            Ellipse(
-              extent={{-102,28},{-82,8}},
-              lineColor={255,255,170},
-              fillColor={255,255,170},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-114,32},{-70,-14}},
-              lineColor={0,0,0},
-              textString="*")}));
+        Icon(graphics));
     end Effect;
 
     model DamagedFraction

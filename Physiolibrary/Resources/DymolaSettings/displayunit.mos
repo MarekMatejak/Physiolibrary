@@ -13,7 +13,8 @@ defineUnitConversion("J", "cal", 1/4.1868 );
 defineUnitConversion("J", "kcal", 1/4186.8 );
 //defineUnitConversion("J", "Cal", 1/4186.8 );
 //defineUnitConversion("J", "kCal", 1/4186800 );
-defineUnitConversion("J/kg", "kcal/kg", 1/4186.8 );   //vaporization heat,..
+defineUnitConversion("J/kg", "cal/g", 1/4186.8 );   //vaporization heat,..
+defineUnitConversion("J/kg", "kcal/g", 1e-3/4186.8 );   //vaporization heat,..
 defineUnitConversion("J/mol", "kJ/mol", 1e-3 );       //reaction enthalpy change
 
 //Heat
@@ -40,6 +41,7 @@ defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
 defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
 defineUnitConversion("m3/s", "(mmol/min)/(mmol/l)", (10^3)*60 ); //diffusion permeability
 defineUnitConversion("mol/(m3.Pa)", "mmol/(l.mmHg)", 133.322387415 ); //gas solubility
+defineUnitConversion("mol/(m3.Pa)", "mmol/(l.kPa)", 1000 ); //gas solubility
 
 //Osmolarity
 defineUnitConversion("mol", "Osm", 1 );
@@ -69,6 +71,8 @@ defineUnitConversion("s", "ms", 1000);
 defineUnitConversion("s", "min", 1/60);
 defineUnitConversion("s", "h", 1/3600);
 defineUnitConversion("s", "d", 1/86400);
+defineUnitConversion("Hz", "1/s", 1);
+defineUnitConversion("Hz", "1/min", 60);
 
 // Angle
 defineUnitConversion("rad", "deg", 180/3.14159265358979323846);
@@ -108,7 +112,9 @@ defineUnitConversion("Pa", "mmHg", 1/133.322387415);
 defineUnitConversion("Pa", "cmH2O", 1/98.0665);
 defineUnitConversion("Pa", "torr", 760/101325);
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60);
+defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);
 defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));
+defineUnitConversion("m3/Pa", "l/mmHg", (1e+3)*(133.322387415));
 defineUnitConversion("Pa.s2/m3", "mmHg.min2/ml", (1/133.322387415)*(1/(60^2))/(1e+6));
 
 

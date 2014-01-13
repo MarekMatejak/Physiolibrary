@@ -7,76 +7,440 @@ package Thermal "Temperature Physical Domain"
 
     model MuscleHeating
     extends Modelica.Icons.Example;
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //extends States.StateSystem;//(Simulation=States.SimulationType.Equilibrated);
 
       HeatAccumulation muscle(heat_start=19478040)
-        annotation (Placement(transformation(extent={{50,-68},{70,-48}})));
+        annotation (Placement(transformation(extent={{38,12},{58,32}})));
       IdealRadiator muscleBloodFlow
-        annotation (Placement(transformation(extent={{20,-6},{40,14}})));
-      HeatInflux heatInflux
-        annotation (Placement(transformation(extent={{2,-70},{22,-50}})));
-      HeatAccumulation body(heat_start=4186.8*60*310.15)
-        annotation (Placement(transformation(extent={{-24,-2},{-4,18}})));
-      Types.RealTypes.Mass height(varName="Muscle-weight", k=15)
-        annotation (Placement(transformation(extent={{14,-50},{34,-30}})));
-      Types.RealTypes.MassFlowRate volumeFlowRate(varName="Muscle-BloodFlow", k=
-           120) annotation (Placement(transformation(extent={{-16,26},{4,46}})));
+        annotation (Placement(transformation(extent={{38,-42},{58,-22}})));
+      Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow
+                 heatInflux
+        annotation (Placement(transformation(extent={{0,10},{20,30}})));
+      HeatAccumulation nonMuscle(heat_start=77912161.2)
+        annotation (Placement(transformation(extent={{-6,-38},{14,-18}})));
       Modelica.Blocks.Sources.Sine sine(
         freqHz=0.01,
         offset=15,
         amplitude=15)
-        annotation (Placement(transformation(extent={{-26,-62},{-6,-42}})));
-      UnlimitedHeat environment(Temperature=295.15)
-        annotation (Placement(transformation(extent={{-72,44},{-52,64}})));
+        annotation (Placement(transformation(extent={{-36,10},{-16,30}})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature
+                    environment(T(displayUnit="degC") = 295.15)
+        annotation (Placement(transformation(extent={{-72,-40},{-52,-20}})));
       Conductor conductor(conductance=1)
-        annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
-      Types.RealTypes.Mass height1(varName="NonMuscle-weight", k=60)
-        annotation (Placement(transformation(extent={{-52,16},{-32,36}})));
+        annotation (Placement(transformation(extent={{-38,-40},{-18,-20}})));
+      Types.Constants.MassConst muscleWeight(k(displayUnit="kg") = 15)
+        annotation (Placement(transformation(extent={{14,36},{22,44}})));
+      Types.Constants.MassConst nonMuscleWeight(k(displayUnit="kg") = 60)
+        annotation (Placement(transformation(extent={{-28,-10},{-20,-2}})));
+      Types.Constants.MassFlowRateConst massflowrate(k(displayUnit="g/min")=
+          0.002) annotation (Placement(transformation(extent={{24,-12},{32,-4}})));
     equation
-      connect(heatInflux.q_out, muscle.q_in) annotation (Line(
-          points={{18,-60},{60,-60}},
-          color={255,128,0},
-          thickness=1,
-          smooth=Smooth.None));
       connect(muscleBloodFlow.q_out, muscle.q_in) annotation (Line(
-          points={{29.8,14.2},{60,14.2},{60,-60}},
+          points={{47.8,-21.8},{48,-21.8},{48,20}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(muscleBloodFlow.q_in, body.q_in) annotation (Line(
-          points={{20,6},{0,6},{0,6},{-14,6}},
+      connect(muscleBloodFlow.q_in, nonMuscle.q_in)
+                                               annotation (Line(
+          points={{38,-30},{4,-30}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(height.y, muscle.weight) annotation (Line(
-          points={{35,-40},{42,-40},{42,-50},{50,-50}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(volumeFlowRate.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{5,36},{8,36},{8,10},{22,10}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(sine.y, heatInflux.desiredFlow_) annotation (Line(
-          points={{-5,-52},{12,-52},{12,-56}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(conductor.q_out, body.q_in) annotation (Line(
-          points={{-36,6},{-14,6}},
+      connect(conductor.q_out, nonMuscle.q_in)
+                                          annotation (Line(
+          points={{-18,-30},{4,-30}},
           color={255,128,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(conductor.q_in, environment.q_in) annotation (Line(
-          points={{-56,6},{-62,6},{-62,54}},
-          color={255,128,0},
+      connect(massflowrate.y, muscleBloodFlow.substanceFlow) annotation (Line(
+          points={{33,-8},{40,-8},{40,-26}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(muscleWeight.y, muscle.weight) annotation (Line(
+          points={{23,40},{30,40},{30,30},{38,30}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(nonMuscleWeight.y, nonMuscle.weight)
+                                              annotation (Line(
+          points={{-19,-6},{-14,-6},{-14,-20},{-6,-20}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(muscle.q_in, heatInflux.port) annotation (Line(
+          points={{48,20},{20,20}},
+          color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(height1.y, body.weight) annotation (Line(
-          points={{-31,26},{-28,26},{-28,16},{-24,16}},
+      connect(sine.y, heatInflux.Q_flow) annotation (Line(
+          points={{-15,20},{0,20}},
           color={0,0,127},
+          smooth=Smooth.None));
+      connect(conductor.q_in, environment.port) annotation (Line(
+          points={{-38,-30},{-52,-30}},
+          color={191,0,0},
+          thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),      graphics));
     end MuscleHeating;
+
+    model Coleman_Termoregulation
+      import Physiolibrary;
+      extends Modelica.Icons.Example;
+      HeatAccumulation0 core(
+        heat_start=11586131.64,
+        specificHeat_=3475.044,
+        weight=10.75)
+        annotation (Placement(transformation(extent={{-10,-42},{10,-22}})));
+      HeatAccumulation0 GILumen(heat_start=1298536.02, weight=1)
+        annotation (Placement(transformation(extent={{42,-90},{62,-70}})));
+      HeatStream foodAbsorption(specificHeat_=4186.8)
+        annotation (Placement(transformation(extent={{46,-74},{26,-54}})));
+      HeatAccumulation0 skeletalMuscle(
+        heat_start=7599879.36,
+        specificHeat_=3475.044,
+        weight=7.05)
+        annotation (Placement(transformation(extent={{38,4},{58,24}})));
+      IdealRadiator muscleBloodFlow(specificHeat_=3851.856)
+                                    annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={34,-8})));
+      HeatOutstream urination
+        annotation (Placement(transformation(extent={{-26,-98},{-46,-78}})));
+      HeatOutstream lungsVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
+          specificHeat_(displayUnit="kcal/(kg.K)"))
+        annotation (Placement(transformation(extent={{14,28},{34,48}})));
+      HeatAccumulation0 skin(
+        heat_start=587826.72,
+        specificHeat_=3475.044,
+        weight=0.56)
+        annotation (Placement(transformation(extent={{-66,-34},{-46,-14}})));
+      IdealRadiator skinBloodFlow(specificHeat_=3851.856)
+                                  annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=0,
+            origin={-30,-36})));
+      HeatOutstream insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
+          specificHeat_(displayUnit="kcal/(kg.K)"))
+        annotation (Placement(transformation(extent={{-42,-6},{-22,14}})));
+      HeatOutstream sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
+          specificHeat_(displayUnit="kcal/(kg.K)"))
+        annotation (Placement(transformation(extent={{-42,20},{-22,40}})));
+      Modelica.Thermal.HeatTransfer.Components.ThermalConductor lumenVolume(G=1)
+        annotation (Placement(transformation(extent={{34,-98},{14,-78}})));
+      Modelica.Thermal.HeatTransfer.Components.ThermalConductor air(G(displayUnit="kcal/(min.K)")=
+             12.5604)                                               annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-74,12})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature ambient(T=295.15)
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-74,46})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow skinMetabolicHeat(Q_flow=
+            1.95384)
+        annotation (Placement(transformation(extent={{-90,-36},{-70,-16}})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow coreMetabolicHeat(Q_flow=
+            55.824)
+        annotation (Placement(transformation(extent={{88,-44},{68,-24}})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow muscleMetabolicHeat(Q_flow=
+            9.7692)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={76,-8})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow foodHeatIntake(Q_flow=0)
+                                                                     annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={80,-76})));
+      Types.Constants.MassFlowRateConst muscleBF(k(displayUnit="g/min") = 0.0114)
+        "muscle blood flow"
+        annotation (Placement(transformation(extent={{12,2},{20,10}})));
+      Types.Constants.MassFlowRateConst skinBF(k(displayUnit="g/min") = 0.0028333333333333)
+        "skin blood flow"
+        annotation (Placement(transformation(extent={{-34,-20},{-26,-12}})));
+      Types.Constants.MassFlowRateConst voiding(k=0)
+        annotation (Placement(transformation(extent={{-50,-78},{-42,-70}})));
+      Types.Constants.MassFlowRateConst absorption(k=0)
+        annotation (Placement(transformation(extent={{24,-52},{32,-44}})));
+      Types.Constants.MassFlowRateConst lungsVaporization(k=4.6666666666667e-09)
+        annotation (Placement(transformation(extent={{8,48},{16,56}})));
+      Types.Constants.MassFlowRateConst sweatVaporization(k=0)
+        annotation (Placement(transformation(extent={{-48,38},{-40,46}})));
+      Types.Constants.MassFlowRateConst insensibleVaporization(k=6.5e-09)
+        annotation (Placement(transformation(extent={{-48,12},{-40,20}})));
+      Physiolibrary.Thermal.Examples.Hypothalamus hypothalamus
+        annotation (Placement(transformation(extent={{-10,72},{10,92}})));
+    equation
+      connect(GILumen.q_in, foodAbsorption.q_in)
+                                             annotation (Line(
+          points={{52,-82},{52,-64},{46,-64}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(foodAbsorption.q_out, core.q_in)
+                                           annotation (Line(
+          points={{26,-64},{4,-64},{4,-34},{0,-34}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+
+      connect(core.q_in, muscleBloodFlow.q_in) annotation (Line(
+          points={{0,-34},{0,-6},{24,-6}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skeletalMuscle.q_in, muscleBloodFlow.q_out) annotation (Line(
+          points={{48,12},{33.8,12},{33.8,2.2}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(core.q_in, urination.q_in) annotation (Line(
+          points={{0,-34},{-4,-34},{-4,-88},{-26,-88}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(core.q_in, lungsVapor.q_in) annotation (Line(
+          points={{0,-34},{0,38},{14,38}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skinBloodFlow.q_in, lungsVapor.q_in) annotation (Line(
+          points={{-20,-34},{0,-34},{0,38},{14,38}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skin.q_in, skinBloodFlow.q_out) annotation (Line(
+          points={{-56,-26},{-29.8,-26},{-29.8,-25.8}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skin.q_in, insensibleVapor.q_in) annotation (Line(
+          points={{-56,-26},{-56,4},{-42,4}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(sweating.q_in, insensibleVapor.q_in) annotation (Line(
+          points={{-42,30},{-56,30},{-56,4},{-42,4}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(GILumen.q_in, lumenVolume.port_a) annotation (Line(
+          points={{52,-82},{42,-82},{42,-88},{34,-88}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(core.q_in, lumenVolume.port_b) annotation (Line(
+          points={{0,-34},{4,-34},{4,-88},{14,-88}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skin.q_in, air.port_b) annotation (Line(
+          points={{-56,-26},{-56,-8},{-74,-8},{-74,2}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(ambient.port, air.port_a) annotation (Line(
+          points={{-74,36},{-74,22}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(skin.q_in, skinMetabolicHeat.port)
+                                              annotation (Line(
+          points={{-56,-26},{-70,-26}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(GILumen.q_in, foodHeatIntake.port)
+                                             annotation (Line(
+          points={{52,-82},{62,-82},{62,-76},{70,-76}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skeletalMuscle.q_in, muscleMetabolicHeat.port)
+                                                          annotation (Line(
+          points={{48,12},{60,12},{60,-8},{66,-8}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(core.q_in, coreMetabolicHeat.port)
+                                              annotation (Line(
+          points={{0,-34},{68,-34}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(muscleBF.y, muscleBloodFlow.substanceFlow) annotation (Line(
+          points={{21,6},{26,6},{26,-2}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skinBF.y, skinBloodFlow.substanceFlow) annotation (Line(
+          points={{-25,-16},{-22,-16},{-22,-30}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(voiding.y, urination.liquidOutflow_) annotation (Line(
+          points={{-41,-74},{-36,-74},{-36,-82}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(absorption.y, foodAbsorption.substanceFlow) annotation (Line(
+          points={{33,-48},{36,-48},{36,-58}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(lungsVaporization.y, lungsVapor.liquidOutflow_) annotation (Line(
+          points={{17,52},{24,52},{24,44}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(sweatVaporization.y, sweating.liquidOutflow_) annotation (Line(
+          points={{-39,42},{-32,42},{-32,36}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(insensibleVaporization.y, insensibleVapor.liquidOutflow_) annotation (
+         Line(
+          points={{-39,16},{-32,16},{-32,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skin.T_, hypothalamus.skinTemperature) annotation (Line(
+          points={{-56,-34},{-56,-52},{-96,-52},{-96,86},{-10,86}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(core.T_, hypothalamus.coreTemperature) annotation (Line(
+          points={{0,-42},{0,-54},{-98,-54},{-98,76},{-10,76}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
+          points={{-20,-34},{0,-34}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),      graphics));
+    end Coleman_Termoregulation;
+
+    model Hypothalamus
+
+      Types.RealIO.FrequencyOutput shiveringNeuralActivity annotation (
+          Placement(transformation(extent={{92,50},{112,70}}),
+            iconTransformation(extent={{92,50},{112,70}})));
+      Types.RealIO.FrequencyOutput sweatingNeuralActivity annotation (Placement(
+            transformation(extent={{92,-10},{112,10}}), iconTransformation(
+              extent={{92,-10},{112,10}})));
+      Types.RealIO.FrequencyOutput skinBloodFlowNeuralActivity annotation (
+          Placement(transformation(extent={{92,-70},{112,-50}}),
+            iconTransformation(extent={{92,-70},{112,-50}})));
+      Types.RealIO.TemperatureInput skinTemperature annotation (Placement(
+            transformation(extent={{-120,20},{-80,60}}), iconTransformation(
+              extent={{-120,20},{-80,60}})));
+      Types.RealIO.TemperatureInput coreTemperature annotation (Placement(
+            transformation(extent={{-120,-80},{-80,-40}}), iconTransformation(
+              extent={{-120,-80},{-80,-40}})));
+      Blocks.Curves.Curve skinBloodFlowReflex(
+        x={-2.0,0,2.0},
+        y={0,1,4},
+        slope={0,1.8,0})
+        annotation (Placement(transformation(extent={{56,-70},{76,-50}})));
+      Types.Constants.TemperatureConst baseTemperature(k=310.15)
+        annotation (Placement(transformation(extent={{-58,-82},{-50,-74}})));
+      Modelica.Blocks.Math.Feedback dT
+        annotation (Placement(transformation(extent={{-54,-70},{-34,-50}})));
+      Blocks.Curves.Curve shiveringReflex(
+        x={-2,0},
+        y={4,0},
+        slope={0,0})
+        annotation (Placement(transformation(extent={{58,50},{78,70}})));
+      Modelica.Blocks.Math.Feedback TemperatureDifference
+        annotation (Placement(transformation(extent={{4,10},{24,-10}})));
+      Types.Constants.TemperatureConst baseTemperature1(k=310.15)
+        annotation (Placement(transformation(extent={{-48,60},{-40,68}})));
+      Blocks.Factors.Input2EffectDelayed HypothalamusHeatAcclimation(data={{20,
+            0.3,0},{28,0.0,-0.04},{39,-0.3,0}}, HalfTime=432000)
+        annotation (Placement(transformation(extent={{-54,0},{-34,20}})));
+      Blocks.Curves.Curve sweatingReflex(
+        slope={0,0},
+        x={0,2},
+        y={0,4})
+        annotation (Placement(transformation(extent={{56,-10},{76,10}})));
+      Modelica.Blocks.Math.Sum SetPoint(nin=3)
+        annotation (Placement(transformation(extent={{-12,50},{8,30}})));
+      Blocks.Curves.Curve SkinTempOffset1(
+        slope={0,0},
+        x={24,32},
+        y={0,-1})
+        annotation (Placement(transformation(extent={{-54,30},{-34,50}})));
+      Types.Constants.TemperatureConst temperature(k=274.15)
+        annotation (Placement(transformation(extent={{-54,18},{-46,26}})));
+    equation
+      connect(coreTemperature, dT.u1) annotation (Line(
+          points={{-100,-60},{-52,-60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(baseTemperature.y, dT.u2) annotation (Line(
+          points={{-49,-78},{-44,-78},{-44,-68}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(dT.y, skinBloodFlowReflex.u) annotation (Line(
+          points={{-35,-60},{56,-60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skinBloodFlowReflex.val, skinBloodFlowNeuralActivity) annotation
+        (Line(
+          points={{76.2,-60},{102,-60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(shiveringReflex.val, shiveringNeuralActivity) annotation (Line(
+          points={{78.2,60},{102,60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(coreTemperature, TemperatureDifference.u1) annotation (Line(
+          points={{-100,-60},{-60,-60},{-60,0},{6,0}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TemperatureDifference.y, shiveringReflex.u) annotation (Line(
+          points={{23,0},{48,0},{48,60},{58,60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skinTemperature, HypothalamusHeatAcclimation.u) annotation (Line(
+          points={{-100,40},{-70,40},{-70,10},{-53.8,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(sweatingReflex.val, sweatingNeuralActivity) annotation (Line(
+          points={{76.2,0},{102,0}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(baseTemperature1.y, SetPoint.u[1]) annotation (Line(
+          points={{-39,64},{-26,64},{-26,41.3333},{-14,41.3333}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(SkinTempOffset1.val, SetPoint.u[2]) annotation (Line(
+          points={{-33.8,40},{-14,40}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skinTemperature, SkinTempOffset1.u) annotation (Line(
+          points={{-100,40},{-54,40}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(SetPoint.y, TemperatureDifference.u2) annotation (Line(
+          points={{9,40},{14,40},{14,8}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TemperatureDifference.y, sweatingReflex.u) annotation (Line(
+          points={{23,0},{56,0}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HypothalamusHeatAcclimation.y, SetPoint.u[3]) annotation (Line(
+          points={{-44,8},{-44,4},{-26,4},{-26,38.6667},{-14,38.6667}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(temperature.y, HypothalamusHeatAcclimation.yBase) annotation (
+          Line(
+          points={{-45,22},{-44,22},{-44,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics));
+    end Hypothalamus;
   end Examples;
 
   connector HeatFlowConnector =
@@ -163,11 +527,7 @@ Connector with one flow signal of type Real.
    parameter Physiolibrary.Types.ThermalConductance conductance;
   equation
     q_in.Q_flow = conductance * (q_in.T - q_out.T);
-    annotation (Icon(graphics={Text(
-            extent={{-70,-8},{70,10}},
-            lineColor={0,0,0},
-            textString="%cond (kcal/min)/K")}),
-                                    Documentation(revisions="<html>
+    annotation (Icon(graphics),     Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
@@ -196,42 +556,6 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
   end Conductor2;
-
-  model HeatInflux "Heat energy input"
-
-    NegativeHeatFlow q_out annotation (extent=[-10, -110; 10, -90], Placement(
-          transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
-              {50,-10},{70,10}})));
-    Physiolibrary.Types.RealIO.HeatFlowRateInput desiredFlow_
-      "Heat inflow rate"                                        annotation ( extent = [-10,30;10,50], rotation = -90);
-
-  equation
-    q_out.Q_flow = - desiredFlow_;
-
-   annotation (
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={
-          Rectangle(
-            extent={{-60,-30},{60,30}},
-            lineColor={0,0,127},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-          Polygon(
-            points={{-48,20},{50,0},{-48,-21},{-48,20}},
-            lineColor={0,0,127},
-            fillColor={0,0,127},
-            fillPattern=FillPattern.Solid),
-          Text(
-            extent={{-92,-54},{80,-30}},
-            textString="%name",
-            lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
-                     extent={{-100,-100},{100,100}}), graphics),
-      Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),      Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics));
-  end HeatInflux;
 
   model HeatStream "Mass flow circuit with different temperatures"
     extends OnePort;
@@ -352,7 +676,7 @@ Connector with one flow signal of type Real.
       Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
               100}}),     graphics={
           Text(
-            extent={{-144,-140},{156,-100}},
+            extent={{-144,-142},{156,-102}},
             textString="%name",
             lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
                      extent={{-100,-100},{100,100}}), graphics),
@@ -367,6 +691,50 @@ Connector with one flow signal of type Real.
 </html>"),      Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics));
   end IdealRadiator;
+
+  model HeatAccumulation0
+    "Accumulating of heat to substance mass with specific heat constant"
+    extends Icons.HeatAccumulation;
+    extends Physiolibrary.States.State(state_start=heat_start, storeUnit=
+        "kcal");
+    PositiveHeatFlow q_in "Heat inflow/outflow connector"
+      annotation (Placement(transformation(extent={{-20,-40},{20,0}}),
+          iconTransformation(extent={{-20,-40},{20,0}})));
+
+    parameter Physiolibrary.Types.Heat heat_start
+      "Heat start value can be solved as weight*initialTemperature*specificHeat"
+       annotation (Dialog(group="Initialization"));
+
+    parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=4186.8
+      "Of the mass, where the heat are accumulated";
+    Physiolibrary.Types.Heat heatMass "Accumulated heat";
+
+    Physiolibrary.Types.RealIO.TemperatureOutput T_ "Actual temperature"
+                                                                annotation (Placement(transformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={0,-100})));
+    parameter Types.Mass weight "Total mass weight";
+  equation
+    q_in.T=heatMass/(weight*specificHeat_);
+    T_ = q_in.T;
+
+    state = heatMass;  // der(heatMass)=q_in.q
+    change = q_in.Q_flow;
+    annotation (Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+       Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+              100}}),            graphics),
+      Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+              100}}),
+           graphics={
+          Text(
+            extent={{-20,-140},{280,-100}},
+            textString="%name",
+            lineColor={0,0,255})}));
+  end HeatAccumulation0;
 
   model HeatAccumulation
     "Accumulating of heat to substance mass with specific heat constant"
@@ -407,39 +775,13 @@ Connector with one flow signal of type Real.
               -100},{100,100}}), graphics),
       Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
               100}}),
-           graphics));
+           graphics={
+          Text(
+            extent={{-20,-140},{280,-100}},
+            textString="%name",
+            lineColor={0,0,255})}));
   end HeatAccumulation;
 
-  model UnlimitedHeat "Constant temperature, undefinned heat flow"
-
-    PositiveHeatFlow q_in "Heat inflow/outflow connector"
-      annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-
-    parameter Physiolibrary.Types.Temperature Temperature=295.37
-      "Default ambient temperature is 22 degC";
-
-    parameter Physiolibrary.States.SimulationType
-                                    Simulation=Physiolibrary.States.SimulationType.NoInit
-      "If Equilibrated, then zero flow rate is added."
-      annotation (Dialog(group="Simulation type", tab="Simulation"));
-
-  equation
-    q_in.T=Temperature;
-
-    if Simulation==States.SimulationType.Equilibrated then
-      q_in.Q_flow=0;
-    end if;
-
-    annotation (Icon(graphics={Rectangle(
-            extent={{-100,100},{100,-100}},
-            lineColor={0,0,255},
-            fillColor={255,255,170},
-            fillPattern=FillPattern.Solid)}),
-                                Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-  end UnlimitedHeat;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
