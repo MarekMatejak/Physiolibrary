@@ -56,12 +56,12 @@ package States "Dynamic simulation / Equilibrium"
 
       connect(A.q_out, reaction.substrates[1]) annotation (Line(
           points={{-46,2},{-10,2}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[1], B.q_out) annotation (Line(
           points={{10,2},{54,2}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

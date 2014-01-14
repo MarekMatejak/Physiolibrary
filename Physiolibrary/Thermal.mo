@@ -5,83 +5,55 @@ package Thermal "Temperature Physical Domain"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
-    model MuscleHeating
+    model MuscleHeat
     extends Modelica.Icons.Example;
     //extends States.StateSystem;//(Simulation=States.SimulationType.Equilibrated);
 
-      HeatAccumulation muscle(heat_start=19478040)
-        annotation (Placement(transformation(extent={{38,12},{58,32}})));
-      IdealRadiator muscleBloodFlow
-        annotation (Placement(transformation(extent={{38,-42},{58,-22}})));
-      Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow
-                 heatInflux
-        annotation (Placement(transformation(extent={{0,10},{20,30}})));
-      HeatAccumulation nonMuscle(heat_start=77912161.2)
-        annotation (Placement(transformation(extent={{-6,-38},{14,-18}})));
-      Modelica.Blocks.Sources.Sine sine(
-        freqHz=0.01,
-        offset=15,
-        amplitude=15)
-        annotation (Placement(transformation(extent={{-36,10},{-16,30}})));
-      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature
-                    environment(T(displayUnit="degC") = 295.15)
-        annotation (Placement(transformation(extent={{-72,-40},{-52,-20}})));
-      Conductor conductor(conductance=1)
-        annotation (Placement(transformation(extent={{-38,-40},{-18,-20}})));
+      HeatAccumulation muscle(heat_start(displayUnit="kcal") = 19468620)
+        annotation (Placement(transformation(extent={{16,22},{36,42}})));
+      IdealRadiator muscleCirculation "Blood circulation in skeletal muscle"
+        annotation (Placement(transformation(extent={{16,-32},{36,-12}})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow generatedHeat(Q_flow=
+            13.956) "Heat energy created by muscle"
+        annotation (Placement(transformation(extent={{-32,20},{-12,40}})));
+      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature body(T(displayUnit="degC")=
+             310.15)
+        annotation (Placement(transformation(extent={{-32,-30},{-12,-10}})));
       Types.Constants.MassConst muscleWeight(k(displayUnit="kg") = 15)
-        annotation (Placement(transformation(extent={{14,36},{22,44}})));
-      Types.Constants.MassConst nonMuscleWeight(k(displayUnit="kg") = 60)
-        annotation (Placement(transformation(extent={{-28,-10},{-20,-2}})));
-      Types.Constants.MassFlowRateConst massflowrate(k(displayUnit="g/min")=
-          0.002) annotation (Placement(transformation(extent={{24,-12},{32,-4}})));
+        annotation (Placement(transformation(extent={{-8,46},{0,54}})));
+      Types.Constants.MassFlowRateConst massflowrate(k(displayUnit="g/min") = 0.0114)
+                 annotation (Placement(transformation(extent={{2,-2},{10,6}})));
     equation
-      connect(muscleBloodFlow.q_out, muscle.q_in) annotation (Line(
-          points={{47.8,-21.8},{48,-21.8},{48,20}},
-          color={255,128,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(muscleBloodFlow.q_in, nonMuscle.q_in)
-                                               annotation (Line(
-          points={{38,-30},{4,-30}},
-          color={255,128,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(conductor.q_out, nonMuscle.q_in)
-                                          annotation (Line(
-          points={{-18,-30},{4,-30}},
-          color={255,128,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(massflowrate.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{33,-8},{40,-8},{40,-26}},
+      connect(massflowrate.y, muscleCirculation.substanceFlow)
+                                                             annotation (Line(
+          points={{11,2},{18,2},{18,-16}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(muscleWeight.y, muscle.weight) annotation (Line(
-          points={{23,40},{30,40},{30,30},{38,30}},
+          points={{1,50},{8,50},{8,40},{16,40}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(nonMuscleWeight.y, nonMuscle.weight)
-                                              annotation (Line(
-          points={{-19,-6},{-14,-6},{-14,-20},{-6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(muscle.q_in, heatInflux.port) annotation (Line(
-          points={{48,20},{20,20}},
+      connect(muscle.q_in, generatedHeat.port)
+                                            annotation (Line(
+          points={{26,30},{-12,30}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(sine.y, heatInflux.Q_flow) annotation (Line(
-          points={{-15,20},{0,20}},
-          color={0,0,127},
+      connect(muscleCirculation.q_in, body.port) annotation (Line(
+          points={{16,-20},{-12,-20}},
+          color={191,0,0},
+          thickness=1,
           smooth=Smooth.None));
-      connect(conductor.q_in, environment.port) annotation (Line(
-          points={{-38,-30},{-52,-30}},
+      connect(muscle.q_in, muscleCirculation.q_out) annotation (Line(
+          points={{26,30},{26,-11.8},{25.8,-11.8}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics));
-    end MuscleHeating;
+                -100},{100,100}}),      graphics),
+        experiment(StopTime=10000, Tolerance=1e-006),
+        __Dymola_experimentSetupOutput);
+    end MuscleHeat;
 
     model Coleman_Termoregulation
       import Physiolibrary;
@@ -144,8 +116,8 @@ package Thermal "Temperature Physical Domain"
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow coreMetabolicHeat(Q_flow=
             55.824)
         annotation (Placement(transformation(extent={{88,-44},{68,-24}})));
-      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow muscleMetabolicHeat(Q_flow=
-            9.7692)
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow muscleMetabolicHeat(Q_flow(
+            displayUnit="kcal/min") = 9.7692)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
@@ -382,8 +354,8 @@ package Thermal "Temperature Physical Domain"
           points={{-35,-60},{56,-60}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(skinBloodFlowReflex.val, skinBloodFlowNeuralActivity) annotation
-        (Line(
+      connect(skinBloodFlowReflex.val, skinBloodFlowNeuralActivity) annotation (
+         Line(
           points={{76.2,-60},{102,-60}},
           color={0,0,127},
           smooth=Smooth.None));
@@ -696,7 +668,7 @@ Connector with one flow signal of type Real.
     "Accumulating of heat to substance mass with specific heat constant"
     extends Icons.HeatAccumulation;
     extends Physiolibrary.States.State(state_start=heat_start, storeUnit=
-        "kcal");
+        "kcal", state(nominal=heat_start));
     PositiveHeatFlow q_in "Heat inflow/outflow connector"
       annotation (Placement(transformation(extent={{-20,-40},{20,0}}),
           iconTransformation(extent={{-20,-40},{20,0}})));
@@ -707,7 +679,7 @@ Connector with one flow signal of type Real.
 
     parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=4186.8
       "Of the mass, where the heat are accumulated";
-    Physiolibrary.Types.Heat heatMass "Accumulated heat";
+    Physiolibrary.Types.Heat heatMass(nominal=heat_start) "Accumulated heat";
 
     Physiolibrary.Types.RealIO.TemperatureOutput T_ "Actual temperature"
                                                                 annotation (Placement(transformation(
@@ -740,7 +712,7 @@ Connector with one flow signal of type Real.
     "Accumulating of heat to substance mass with specific heat constant"
     extends Icons.HeatAccumulation;
     extends Physiolibrary.States.State(state_start=heat_start, storeUnit=
-        "kcal");
+        "kcal", state(nominal=heat_start));
     PositiveHeatFlow q_in "Heat inflow/outflow connector"
       annotation (Placement(transformation(extent={{-20,-40},{20,0}}),
           iconTransformation(extent={{-20,-40},{20,0}})));
@@ -751,7 +723,7 @@ Connector with one flow signal of type Real.
 
     parameter Physiolibrary.Types.SpecificHeatCapacity specificHeat_=4186.8
       "Of the mass, where the heat are accumulated";
-    Physiolibrary.Types.Heat heatMass "Accumulated heat";
+    Physiolibrary.Types.Heat heatMass(nominal=heat_start) "Accumulated heat";
 
     Physiolibrary.Types.RealIO.MassInput weight
       "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-122,60},

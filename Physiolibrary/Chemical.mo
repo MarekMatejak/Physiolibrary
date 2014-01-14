@@ -17,14 +17,14 @@ package Chemical "Molar Concentration Physiological Domain"
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
 
-      connect(A.q_out, reaction.substrates[1]) annotation (Line(
-          points={{-46,2},{-10,2}},
-          color={200,0,0},
+      connect(B.q_out, reaction.products[1]) annotation (Line(
+          points={{54,2},{10,2}},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(reaction.products[1], B.q_out) annotation (Line(
-          points={{10,2},{54,2}},
-          color={200,0,0},
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
+          points={{-46,2},{-10,2}},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -59,17 +59,17 @@ package Chemical "Molar Concentration Physiological Domain"
 
       connect(A.q_out, reaction.substrates[1]) annotation (Line(
           points={{-46,2},{-10,2}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[1], B.q_out) annotation (Line(
           points={{10,1.5},{32,1.5},{32,2},{54,2}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[2], C.q_out) annotation (Line(
           points={{10,2.5},{32,2.5},{32,26},{54,26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -241,185 +241,180 @@ package Chemical "Molar Concentration Physiological Domain"
 
       connect(quaternaryForm.products[1],T0. q_out) annotation (Line(
           points={{44,88},{62,88}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR1.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{10.5,74},{-26,74},{-26,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR2.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{10.5,32},{-26,32},{-26,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR3.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{10.5,-14},{-26,-14},{-26,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR4.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{10.5,-56},{-26,-56},{-26,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR1.substrates[1],R1. q_out) annotation (Line(
           points={{10,54},{10,46}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R1.q_out,oxyR2. products[1]) annotation (Line(
           points={{10,46},{10,32},{9.5,32}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR2.substrates[1],R2. q_out) annotation (Line(
           points={{10,12},{10,0}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR3.substrates[1],R3. q_out) annotation (Line(
           points={{10,-34},{10,-44}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR3.products[1],R2. q_out) annotation (Line(
           points={{9.5,-14},{9.5,-7},{10,-7},{10,0}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R3.q_out,oxyR4. products[1]) annotation (Line(
           points={{10,-44},{10,-56},{9.5,-56}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyR4.substrates[1],R4. q_out) annotation (Line(
           points={{10,-76},{10,-82}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyT1.products[1],T0. q_out) annotation (Line(
           points={{64.5,74},{64.5,88},{62,88}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyT1.substrates[1],T1. q_out) annotation (Line(
           points={{64,54},{64,46}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out, oxyT1.products[2])
                                           annotation (Line(
           points={{-26,-26},{-26,74},{63.5,74}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out, oxyT2.products[2])
                                           annotation (Line(
           points={{-26,-26},{-26,32},{63.5,32}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out, oxyT3.products[2])
                                           annotation (Line(
           points={{-26,-26},{-26,-14},{63.5,-14}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out, oxyT4.products[2])
                                           annotation (Line(
           points={{-26,-26},{-26,-56},{63.5,-56}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T1.q_out,oxyT2. products[1]) annotation (Line(
           points={{64,46},{64,32},{64.5,32}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyT2.substrates[1],T2. q_out) annotation (Line(
           points={{64,12},{64,0}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T2.q_out,oxyT3. products[1]) annotation (Line(
           points={{64,0},{64,-14},{64.5,-14}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyT3.substrates[1],T3. q_out) annotation (Line(
           points={{64,-34},{64,-44}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T3.q_out,oxyT4. products[1]) annotation (Line(
           points={{64,-44},{64,-56},{64.5,-56}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxyT4.substrates[1],T4. q_out) annotation (Line(
           points={{64,-76},{64,-82}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R0.q_out,quaternaryForm. substrates[1]) annotation (Line(
           points={{10,88},{24,88}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R0.q_out,oxyR1. products[1]) annotation (Line(
           points={{10,88},{10,74},{9.5,74}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R1.q_out,quaternaryForm1. substrates[1]) annotation (Line(
           points={{10,46},{28,46}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm1.products[1],T1. q_out) annotation (Line(
           points={{48,46},{64,46}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R2.q_out,quaternaryForm2. substrates[1]) annotation (Line(
           points={{10,0},{28,0}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm2.products[1],T2. q_out) annotation (Line(
           points={{48,0},{64,0}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R3.q_out,quaternaryForm3. substrates[1]) annotation (Line(
           points={{10,-44},{28,-44}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm3.products[1],T3. q_out) annotation (Line(
           points={{48,-44},{64,-44}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(R4.q_out,quaternaryForm4. substrates[1]) annotation (Line(
           points={{10,-82},{30,-82}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm4.products[1],T4. q_out) annotation (Line(
           points={{50,-82},{64,-82}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(partialPressure.n, oxygen_unbound.q_out)      annotation (Line(
-          points={{-50,-14},{-50,-26},{-26,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(unlimitedVolume.y, partialPressure.v) annotation (Line(
@@ -430,6 +425,11 @@ package Chemical "Molar Concentration Physiological Domain"
       connect(clock.y, unlimitedVolume.pressure) annotation (Line(
           points={{-79,70},{-72,70},{-72,36}},
           color={0,0,127},
+          smooth=Smooth.None));
+      connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
+          points={{-50,-14},{-50,-26},{-26,-26}},
+          color={107,45,134},
+          thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
@@ -537,54 +537,49 @@ package Chemical "Molar Concentration Physiological Domain"
       connect(R0_in_R.species, quaternaryForm.substrates[1])
                                                        annotation (Line(
           points={{-60,-88},{-4,-88}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm.products[1], T0_in_T.species)
                                                      annotation (Line(
           points={{16,-88},{46,-88},{46,-88},{56,-88}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(OxyRHm.q_out, oxygenation_R.substrates[1])
                                                annotation (Line(
           points={{-88,-26},{-70,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_R.products[1], DeoxyRHm.q_out)
                                              annotation (Line(
           points={{-50,-26.5},{-42,-26.5},{-42,-26},{-32,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(OxyTHm.q_out, oxygenation_T.substrates[1])
                                                annotation (Line(
           points={{32,-26},{50,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_T.products[1], DeoxyTHm.q_out)
                                              annotation (Line(
           points={{70,-26.5},{80,-26.5},{80,-26},{88,-26}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(DeoxyRHm.q_out, R0_in_R.subunitSpecies[1])
                                                    annotation (Line(
           points={{-32,-26},{-42,-26},{-42,-80}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T0_in_T.subunitSpecies[1], DeoxyTHm.q_out)
                                                    annotation (Line(
           points={{74,-80},{74,-80},{82,-80},{82,-26},{88,-26}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(partialPressure.n,oxygen_unbound. q_out)      annotation (Line(
-          points={{6,32},{6,24},{6,24},{6,8}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(unlimitedVolume.y,partialPressure. v) annotation (Line(
@@ -598,12 +593,12 @@ package Chemical "Molar Concentration Physiological Domain"
           smooth=Smooth.None));
       connect(oxygenation_R.products[2], oxygen_unbound.q_out) annotation (Line(
           points={{-50,-25.5},{-44,-25.5},{-44,8},{6,8}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_T.products[2], oxygen_unbound.q_out) annotation (Line(
           points={{70,-25.5},{76,-25.5},{76,8},{6,8}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(add.y, R0_in_R.totalSubunitAmount[1])
@@ -634,6 +629,11 @@ package Chemical "Molar Concentration Physiological Domain"
           points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-33.8}},
           color={0,0,127},
           smooth=Smooth.None));
+      connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
+          points={{6,32},{6,8}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
         experiment(StopTime=10000),
@@ -659,12 +659,12 @@ package Chemical "Molar Concentration Physiological Domain"
 
       connect(S.q_out, michaelisMenten.p) annotation (Line(
           points={{-51.8,18},{-8,18}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(michaelisMenten.n, P.q_out) annotation (Line(
           points={{12,18},{48.2,18}},
-          color={200,0,0},
+          color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -687,16 +687,15 @@ package Chemical "Molar Concentration Physiological Domain"
 
   annotation (
       defaultComponentName="p",
-      Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={Rectangle(
+      Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+              100}}),     graphics={Rectangle(
             extent={{-20,10},{20,-10}},
-            lineColor={200,0,0},
-            lineThickness=1), Polygon(
-            points={{0,100},{100,0},{0,-100},{-100,0},{0,100}},
-            lineColor={200,0,0},
-            smooth=Smooth.None,
-            fillPattern=FillPattern.Solid,
-            fillColor={200,0,0})}),
+            lineColor={107,45,134},
+            lineThickness=1),       Rectangle(
+            extent={{-100,100},{100,-100}},
+            lineColor={107,45,134},
+            fillColor={107,45,134},
+            fillPattern=FillPattern.Solid)}),
       Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
             color=74,
             rgbcolor={0,0,0},
@@ -726,13 +725,12 @@ Connector with one flow signal of type Real.
       Icon(coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
           graphics={Rectangle(
             extent={{-20,10},{20,-10}},
-            lineColor={200,0,0},
-            lineThickness=1), Polygon(
-            points={{-100,0},{0,100},{100,0},{0,-100},{-100,0}},
-            lineColor={200,0,0},
-            smooth=Smooth.None,
-            fillPattern=FillPattern.Solid,
-            fillColor={255,240,240})}),
+            lineColor={107,45,134},
+            lineThickness=1),       Rectangle(
+            extent={{-100,100},{100,-100}},
+            lineColor={107,45,134},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid)}),
       Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
             color=74,
             rgbcolor={0,0,0},

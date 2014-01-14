@@ -38,11 +38,6 @@ package Mixed "Blocks between domains"
         annotation (Placement(transformation(extent={{20,-2},{40,18}})));
     equation
 
-      connect(partialPressure.n, oxygen_dissolved.q_out)    annotation (Line(
-          points={{-2,-24},{-2,-46}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
       connect(unlimitedVolume.y, partialPressure.v) annotation (Line(
           points={{-24,16},{-2,16},{-2,-8}},
           color={0,0,0},
@@ -56,6 +51,11 @@ package Mixed "Blocks between domains"
       connect(temperature.y, partialPressure.T) annotation (Line(
           points={{41,8},{50,8},{50,-18},{6,-18}},
           color={0,0,127},
+          smooth=Smooth.None));
+      connect(partialPressure.n, oxygen_dissolved.q_out) annotation (Line(
+          points={{-2,-24},{-2,-46}},
+          color={107,45,134},
+          thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),

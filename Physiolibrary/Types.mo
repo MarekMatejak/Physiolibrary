@@ -2825,7 +2825,7 @@ constructed by the signals connected to this bus.
 
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
 
-  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
+  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800);
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
