@@ -100,8 +100,8 @@ package Thermal "Temperature Physical Domain"
         annotation (Placement(transformation(extent={{-42,20},{-22,40}})));
       Modelica.Thermal.HeatTransfer.Components.ThermalConductor lumenVolume(G=1)
         annotation (Placement(transformation(extent={{34,-98},{14,-78}})));
-      Modelica.Thermal.HeatTransfer.Components.ThermalConductor air(G(displayUnit="kcal/(min.K)")=
-             12.5604)                                               annotation (
+      Modelica.Thermal.HeatTransfer.Components.ThermalConductor air(G(
+            displayUnit="kcal/(min.K)") = 7.6758)                   annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -144,8 +144,6 @@ package Thermal "Temperature Physical Domain"
         annotation (Placement(transformation(extent={{-48,38},{-40,46}})));
       Types.Constants.MassFlowRateConst insensibleVaporization(k=6.5e-09)
         annotation (Placement(transformation(extent={{-48,12},{-40,20}})));
-      Physiolibrary.Thermal.Examples.Hypothalamus hypothalamus
-        annotation (Placement(transformation(extent={{-10,72},{10,92}})));
     equation
       connect(GILumen.q_in, foodAbsorption.q_in)
                                              annotation (Line(
@@ -272,14 +270,6 @@ package Thermal "Temperature Physical Domain"
           points={{-39,16},{-32,16},{-32,10}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(skin.T_, hypothalamus.skinTemperature) annotation (Line(
-          points={{-56,-34},{-56,-52},{-96,-52},{-96,86},{-10,86}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(core.T_, hypothalamus.coreTemperature) annotation (Line(
-          points={{0,-42},{0,-54},{-98,-54},{-98,76},{-10,76}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
           points={{-20,-34},{0,-34}},
           color={191,0,0},
@@ -289,130 +279,6 @@ package Thermal "Temperature Physical Domain"
                 -100},{100,100}}),      graphics));
     end Coleman_Termoregulation;
 
-    model Hypothalamus
-
-      Types.RealIO.FrequencyOutput shiveringNeuralActivity annotation (
-          Placement(transformation(extent={{92,50},{112,70}}),
-            iconTransformation(extent={{92,50},{112,70}})));
-      Types.RealIO.FrequencyOutput sweatingNeuralActivity annotation (Placement(
-            transformation(extent={{92,-10},{112,10}}), iconTransformation(
-              extent={{92,-10},{112,10}})));
-      Types.RealIO.FrequencyOutput skinBloodFlowNeuralActivity annotation (
-          Placement(transformation(extent={{92,-70},{112,-50}}),
-            iconTransformation(extent={{92,-70},{112,-50}})));
-      Types.RealIO.TemperatureInput skinTemperature annotation (Placement(
-            transformation(extent={{-120,20},{-80,60}}), iconTransformation(
-              extent={{-120,20},{-80,60}})));
-      Types.RealIO.TemperatureInput coreTemperature annotation (Placement(
-            transformation(extent={{-120,-80},{-80,-40}}), iconTransformation(
-              extent={{-120,-80},{-80,-40}})));
-      Blocks.Curves.Curve skinBloodFlowReflex(
-        x={-2.0,0,2.0},
-        y={0,1,4},
-        slope={0,1.8,0})
-        annotation (Placement(transformation(extent={{56,-70},{76,-50}})));
-      Types.Constants.TemperatureConst baseTemperature(k=310.15)
-        annotation (Placement(transformation(extent={{-58,-82},{-50,-74}})));
-      Modelica.Blocks.Math.Feedback dT
-        annotation (Placement(transformation(extent={{-54,-70},{-34,-50}})));
-      Blocks.Curves.Curve shiveringReflex(
-        x={-2,0},
-        y={4,0},
-        slope={0,0})
-        annotation (Placement(transformation(extent={{58,50},{78,70}})));
-      Modelica.Blocks.Math.Feedback TemperatureDifference
-        annotation (Placement(transformation(extent={{4,10},{24,-10}})));
-      Types.Constants.TemperatureConst baseTemperature1(k=310.15)
-        annotation (Placement(transformation(extent={{-48,60},{-40,68}})));
-      Blocks.Factors.Input2EffectDelayed HypothalamusHeatAcclimation(data={{20,
-            0.3,0},{28,0.0,-0.04},{39,-0.3,0}}, HalfTime=432000)
-        annotation (Placement(transformation(extent={{-54,0},{-34,20}})));
-      Blocks.Curves.Curve sweatingReflex(
-        slope={0,0},
-        x={0,2},
-        y={0,4})
-        annotation (Placement(transformation(extent={{56,-10},{76,10}})));
-      Modelica.Blocks.Math.Sum SetPoint(nin=3)
-        annotation (Placement(transformation(extent={{-12,50},{8,30}})));
-      Blocks.Curves.Curve SkinTempOffset1(
-        slope={0,0},
-        x={24,32},
-        y={0,-1})
-        annotation (Placement(transformation(extent={{-54,30},{-34,50}})));
-      Types.Constants.TemperatureConst temperature(k=274.15)
-        annotation (Placement(transformation(extent={{-54,18},{-46,26}})));
-    equation
-      connect(coreTemperature, dT.u1) annotation (Line(
-          points={{-100,-60},{-52,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(baseTemperature.y, dT.u2) annotation (Line(
-          points={{-49,-78},{-44,-78},{-44,-68}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(dT.y, skinBloodFlowReflex.u) annotation (Line(
-          points={{-35,-60},{56,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(skinBloodFlowReflex.val, skinBloodFlowNeuralActivity) annotation (
-         Line(
-          points={{76.2,-60},{102,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(shiveringReflex.val, shiveringNeuralActivity) annotation (Line(
-          points={{78.2,60},{102,60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(coreTemperature, TemperatureDifference.u1) annotation (Line(
-          points={{-100,-60},{-60,-60},{-60,0},{6,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TemperatureDifference.y, shiveringReflex.u) annotation (Line(
-          points={{23,0},{48,0},{48,60},{58,60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(skinTemperature, HypothalamusHeatAcclimation.u) annotation (Line(
-          points={{-100,40},{-70,40},{-70,10},{-53.8,10}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(sweatingReflex.val, sweatingNeuralActivity) annotation (Line(
-          points={{76.2,0},{102,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(baseTemperature1.y, SetPoint.u[1]) annotation (Line(
-          points={{-39,64},{-26,64},{-26,41.3333},{-14,41.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(SkinTempOffset1.val, SetPoint.u[2]) annotation (Line(
-          points={{-33.8,40},{-14,40}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(skinTemperature, SkinTempOffset1.u) annotation (Line(
-          points={{-100,40},{-54,40}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(SetPoint.y, TemperatureDifference.u2) annotation (Line(
-          points={{9,40},{14,40},{14,8}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TemperatureDifference.y, sweatingReflex.u) annotation (Line(
-          points={{23,0},{56,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(HypothalamusHeatAcclimation.y, SetPoint.u[3]) annotation (Line(
-          points={{-44,8},{-44,4},{-26,4},{-26,38.6667},{-14,38.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(temperature.y, HypothalamusHeatAcclimation.yBase) annotation (
-          Line(
-          points={{-45,22},{-44,22},{-44,12}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
-    end Hypothalamus;
   end Examples;
 
   connector HeatFlowConnector =
