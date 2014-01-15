@@ -1,5 +1,6 @@
 within Physiolibrary;
 package FilesUtilities "Value input/output/test support"
+  extends Modelica.Icons.VariantsPackage;
   import Physiolibrary;
   extends Physiolibrary.Types.Utilities;
   redeclare function extends readReal

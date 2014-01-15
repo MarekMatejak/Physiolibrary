@@ -1,5 +1,6 @@
 within Physiolibrary;
 package States "Dynamic simulation / Equilibrium"
+  extends Modelica.Icons.BasesPackage;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
@@ -15,20 +16,36 @@ package States "Dynamic simulation / Equilibrium"
     equation
       change=(Modelica.Math.log(2)/HalfTime)*(externalValue-internalValue);
       state=internalValue;
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleAdaptation_NoInit;
 
     model SimpleAdaptation_InitSteadyState
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.InitSteadyState);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleAdaptation_InitSteadyState;
 
     model SimpleAdaptation_InitialInput
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.InitialInput, redeclare
           package Utilities =
             Physiolibrary.FilesUtilities);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleAdaptation_InitialInput;
 
     model SimpleAdaptation_Equilibrated
     extends SimpleAdaptation_NoInit(Simulation=SimulationType.Equilibrated);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleAdaptation_Equilibrated;
 
     model SimpleReaction_NoInit
@@ -39,16 +56,19 @@ package States "Dynamic simulation / Equilibrium"
                                         totalSubstancesAmount = 1
         "total substances amount to conserve during during equilibrated simulation";
 
-      Physiolibrary.Chemical.NormalizedSubstance A(solute_start=0.9,
+      Physiolibrary.Chemical.Components.NormalizedSubstance
+                                                 A(solute_start=0.9,
           Simulation=Simulation)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      Physiolibrary.Chemical.ChemicalReaction reaction(
+      Physiolibrary.Chemical.Components.ChemicalReaction
+                                              reaction(
         K=1,
         Simulation=Simulation,
         isSubstrateFlowIncludedInEquilibrium={false},
         isProductFlowIncludedInEquilibrium={true})
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Physiolibrary.Chemical.NormalizedSubstance B(solute_start= totalSubstancesAmount - 0.9,
+      Physiolibrary.Chemical.Components.NormalizedSubstance
+                                                 B(solute_start= totalSubstancesAmount - 0.9,
           Simulation=Simulation)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
@@ -65,19 +85,34 @@ package States "Dynamic simulation / Equilibrium"
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+                -100},{100,100}}), graphics), Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleReaction_NoInit;
 
     model SimpleReaction_InitSteadyState
       extends SimpleReaction_NoInit(       Simulation=SimulationType.InitSteadyState);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleReaction_InitSteadyState;
 
     model SimpleReaction_InitialInput
      extends SimpleReaction_NoInit(       Simulation=SimulationType.InitialInput);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleReaction_InitialInput;
 
     model SimpleReaction_Equilibrated
      extends SimpleReaction_NoInit(       Simulation=SimulationType.Equilibrated);
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end SimpleReaction_Equilibrated;
   end Examples;
 
@@ -169,6 +204,10 @@ package States "Dynamic simulation / Equilibrium"
       der(state) = change;
     end if;
 
+    annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
   end State;
 
   partial class StateSystem
@@ -203,6 +242,10 @@ package States "Dynamic simulation / Equilibrium"
       normalizedState = state; // ={1,1,1,..,1}. The difference from vector ones(numberOfStates) could be used as the solver calculation error vector.
     end if;
 
+    annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
   end StateSystem;
 
   annotation (Documentation(revisions="<html>

@@ -1,7 +1,8 @@
 within Physiolibrary;
 package Blocks "Base Signal Blocks Library"
-
+  extends Modelica.Icons.Package;
   package Math "Modelica.Math extension"
+    extends Modelica.Icons.Package;
         block Add "Output the addition of a value with the input signal"
 
           parameter Real k(start=1) "value added to input signal";
@@ -20,18 +21,19 @@ package Blocks "Base Signal Blocks Library"
 <p>This block computes output <i>y</i> as <i>sum</i> of offset <i>k</i> with the input <i>u</i>: </p>
 <p><code>    y = k + u;</code> </p>
 </html>"),  Icon(coordinateSystem(
-            preserveAspectRatio=true,
+            preserveAspectRatio=false,
             extent={{-100,-100},{100,100}},
             grid={2,2}), graphics={
             Polygon(
-              points={{-100,-100},{-100,100},{100,0},{-100,-100}},
+              points={{-100,100},{100,40},{100,-40},{-100,-100},{-100,100}},
               lineColor={0,0,127},
+              smooth=Smooth.None,
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-98,-52},{30,34}},
+              extent={{-100,-42},{100,40}},
               lineColor={0,0,0},
-              textString="%k+u"),
+              textString="u+%k"),
             Text(
               extent={{-150,140},{150,100}},
               textString="%name",
@@ -122,7 +124,7 @@ package Blocks "Base Signal Blocks Library"
             grid={2,2},
                 initialScale=0.04), graphics={Rectangle(
               extent={{-100,-100},{100,100}},
-              lineColor={0,0,255},
+              lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid), Text(
               extent={{-100,-40},{100,40}},
@@ -455,7 +457,7 @@ This is discussed in the description of package
   end Math;
 
   package Curves "Empirical Dependence of Two Variables"
-
+    extends Modelica.Icons.Package;
    function Spline
 
         input Real[:] x; //souradnice x souradnice uzlovych bodu
@@ -583,7 +585,7 @@ This is discussed in the description of package
   end Curves;
 
   package Factors "Multiplication Effect Types"
-
+    extends Modelica.Icons.Package;
     model Effect "normalization and multiplication"
      extends Icons.BaseFactorIcon;
 

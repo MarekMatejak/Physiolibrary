@@ -1,6 +1,6 @@
 within ;
 package Physiolibrary "Physiological domains library (version v1.2)"
-
+ extends Modelica.Icons.Package;
 
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
@@ -203,8 +203,8 @@ package Physiolibrary "Physiological domains library (version v1.2)"
   annotation (preferredView="info",
 version="1.2",
 versionBuild=1,
-versionDate="2013-12-23",
-dateModified = "2013-12-23 16:26:00Z",
+versionDate="2014-1-15",
+dateModified = "2014-1-15 13:00:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
 conversion(
@@ -212,7 +212,7 @@ conversion(
  from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.2.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation, where it was called HumMod.Library. As the successors of Guyton&apos;s Medical Physiology School write, the original HumMod model is &ldquo;The best, most complete, mathematical model of human physiology ever created&rdquo;.</p>

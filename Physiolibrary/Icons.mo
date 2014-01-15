@@ -1,6 +1,6 @@
 within Physiolibrary;
 package Icons "Icons for physiological models"
-
+  extends Modelica.Icons.Package;
   package Library
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
@@ -301,29 +301,13 @@ package Icons "Icons for physiological models"
 
   end Cell;
 
-  package BaseLib
+  package HeatLib
+    extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,-100},{80,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{-100,50},{-80,70},{100,70},{80,50},{-100,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{100,70},{100,-80},{80,-100},{80,50},{100,70}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Text(
-            extent={{-120,122},{120,73}},
-            lineColor={255,0,0},
-            textString="%name")}));
-  end BaseLib;
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
+              fileName="Resources/Icons/ohen.png")}));
+
+  end HeatLib;
 
    package AutonomicControlLib
     extends BaseLib;
@@ -333,13 +317,13 @@ package Icons "Icons for physiological models"
 
    end AutonomicControlLib;
 
-  package CardioVascularLib
+   package KidneyLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
-              fileName="Resources/Icons/csv.png")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
+              fileName="Resources/Icons/Kidney.jpg")}));
 
-  end CardioVascularLib;
+   end KidneyLib;
 
   package ElectrolytesLib
     extends BaseLib;
@@ -364,13 +348,29 @@ package Icons "Icons for physiological models"
               fileName="Resources/Icons/golem.png")}));
   end GolemLib;
 
-  package HeatLib
-    extends BaseLib;
+  package BaseLib
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
-              fileName="Resources/Icons/ohen.png")}));
-
-  end HeatLib;
+              -100},{100,100}}), graphics={
+          Rectangle(
+            extent={{-100,-100},{80,50}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Polygon(
+            points={{-100,50},{-80,70},{100,70},{80,50},{-100,50}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Polygon(
+            points={{100,70},{100,-80},{80,-100},{80,50},{100,70}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Text(
+            extent={{-120,122},{120,73}},
+            lineColor={255,0,0},
+            textString="%name")}));
+  end BaseLib;
 
   package HormonesLib
     extends BaseLib;
@@ -380,13 +380,13 @@ package Icons "Icons for physiological models"
 
   end HormonesLib;
 
-   package KidneyLib
+  package StatusLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="Resources/Icons/Kidney.jpg")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
+              fileName="Resources/Icons/tissueFitness.png")}));
 
-   end KidneyLib;
+  end StatusLib;
 
    package NervesLib
     extends BaseLib;
@@ -427,13 +427,13 @@ package Icons "Icons for physiological models"
 
   end SetupLib;
 
-  package StatusLib
+  package CardioVascularLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
-              fileName="Resources/Icons/tissueFitness.png")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
+              fileName="Resources/Icons/csv.png")}));
 
-  end StatusLib;
+  end CardioVascularLib;
 
   package WaterLib
    extends BaseLib;
@@ -1077,6 +1077,7 @@ package Icons "Icons for physiological models"
   end MolarFlowMeasure;
 
   model GasSolubility
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1181,12 +1182,14 @@ package Icons "Icons for physiological models"
   end HydrostaticGradient;
 
   model Radiator
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/Radiator.png")}));
   end Radiator;
 
   model MichaelisMenten
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-82,78},{90,-94}},
               fileName=
@@ -1194,6 +1197,7 @@ package Icons "Icons for physiological models"
   end MichaelisMenten;
 
   model HeatAccumulation
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1201,6 +1205,7 @@ package Icons "Icons for physiological models"
   end HeatAccumulation;
 
   model OsmoticCell
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
@@ -1208,12 +1213,14 @@ package Icons "Icons for physiological models"
   end OsmoticCell;
 
   model IdealGas
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/IdealGas.png")}));
   end IdealGas;
 
   model PartialPressure
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=

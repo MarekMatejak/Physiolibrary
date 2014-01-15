@@ -1,5 +1,6 @@
 within Physiolibrary;
 package Types "Physiological units with nominals"
+  extends Modelica.Icons.Package;
 //If you have an idea to add the next physiological type to the next version, please write me at marek@matfyz.cz. Thank you
 
   package Examples
@@ -161,6 +162,7 @@ package Types "Physiological units with nominals"
   end Examples;
 
   package Constants
+    extends Modelica.Icons.Package;
 
   block AccelerationConst "Constant signal of type Acceleration"
    parameter Types.Acceleration k "Constant Acceleration output value";
@@ -1044,6 +1046,8 @@ package Types "Physiological units with nominals"
   end Constants;
 
   package RealIO
+    extends Modelica.Icons.Package;
+
     connector EnergyInput = input Energy "input Energy as connector"
       annotation (defaultComponentName="energy",
       Icon(graphics={Polygon(
@@ -2825,7 +2829,7 @@ constructed by the signals connected to this bus.
 
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
 
-  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800);
+  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
@@ -2869,6 +2873,7 @@ constructed by the signals connected to this bus.
   end AbstractReal;
 
   package RealExtension
+    extends Modelica.Icons.VariantsPackage;
         block Parameter "Generate constant signal in SI units from file"
           extends AbstractReal;
 
@@ -3112,6 +3117,7 @@ The Real output y is a constant signal:
   end RealExtension;
 
   package RealTypes
+    extends Modelica.Icons.BasesPackage;
     import Physiolibrary;
 
       replaceable block Variable = RealExtension.Parameter constrainedby
@@ -3192,6 +3198,7 @@ The Real output y is a constant signal:
   end AbstractBoolean;
 
   package BooleanExtension
+    extends Modelica.Icons.VariantsPackage;
         block Parameter "Read constant boolean signal"
           extends Physiolibrary.Types.AbstractBoolean;
 
@@ -3365,7 +3372,7 @@ The Real output y is a constant signal:
   end BooleanExtension;
 
   package Utilities
-
+    extends Modelica.Icons.BasesPackage;
     replaceable function readReal "Read the real value of parameter from file with lines in format: 
   <parameterName>
   <value> <unit>"
