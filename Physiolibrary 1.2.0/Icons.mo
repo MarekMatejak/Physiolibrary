@@ -1,6 +1,6 @@
 within Physiolibrary;
 package Icons "Icons for physiological models"
-
+  extends Modelica.Icons.Package;
   package Library
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
@@ -301,29 +301,13 @@ package Icons "Icons for physiological models"
 
   end Cell;
 
-  package BaseLib
+  package HeatLib
+    extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,-100},{80,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{-100,50},{-80,70},{100,70},{80,50},{-100,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{100,70},{100,-80},{80,-100},{80,50},{100,70}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Text(
-            extent={{-120,122},{120,73}},
-            lineColor={255,0,0},
-            textString="%name")}));
-  end BaseLib;
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
+              fileName="Resources/Icons/ohen.png")}));
+
+  end HeatLib;
 
    package AutonomicControlLib
     extends BaseLib;
@@ -333,13 +317,13 @@ package Icons "Icons for physiological models"
 
    end AutonomicControlLib;
 
-  package CardioVascularLib
+   package KidneyLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
-              fileName="Resources/Icons/csv.png")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
+              fileName="Resources/Icons/Kidney.jpg")}));
 
-  end CardioVascularLib;
+   end KidneyLib;
 
   package ElectrolytesLib
     extends BaseLib;
@@ -364,13 +348,29 @@ package Icons "Icons for physiological models"
               fileName="Resources/Icons/golem.png")}));
   end GolemLib;
 
-  package HeatLib
-    extends BaseLib;
+  package BaseLib
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
-              fileName="Resources/Icons/ohen.png")}));
-
-  end HeatLib;
+              -100},{100,100}}), graphics={
+          Rectangle(
+            extent={{-100,-100},{80,50}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Polygon(
+            points={{-100,50},{-80,70},{100,70},{80,50},{-100,50}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Polygon(
+            points={{100,70},{100,-80},{80,-100},{80,50},{100,70}},
+            fillColor={235,235,235},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,255}),
+          Text(
+            extent={{-120,122},{120,73}},
+            lineColor={255,0,0},
+            textString="%name")}));
+  end BaseLib;
 
   package HormonesLib
     extends BaseLib;
@@ -380,13 +380,13 @@ package Icons "Icons for physiological models"
 
   end HormonesLib;
 
-   package KidneyLib
+  package StatusLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="Resources/Icons/Kidney.jpg")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
+              fileName="Resources/Icons/tissueFitness.png")}));
 
-   end KidneyLib;
+  end StatusLib;
 
    package NervesLib
     extends BaseLib;
@@ -427,13 +427,13 @@ package Icons "Icons for physiological models"
 
   end SetupLib;
 
-  package StatusLib
+  package CardioVascularLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
-              fileName="Resources/Icons/tissueFitness.png")}));
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
+              fileName="Resources/Icons/csv.png")}));
 
-  end StatusLib;
+  end CardioVascularLib;
 
   package WaterLib
    extends BaseLib;
@@ -820,21 +820,17 @@ package Icons "Icons for physiological models"
                 "Resources/Icons/bloodProperties.jpg")}));
   end Blood;
 
-  model BloodElasticCompartment
+  model BaseFactorIcon0
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName=
-                "Resources/Icons/elastickyKompartment.png")}));
-  end BloodElasticCompartment;
-
-  model BloodSequesteredCompartment
-
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName=
-                "Resources/Icons/sequerestedVolume.png")}));
-  end BloodSequesteredCompartment;
+    annotation (Icon(graphics={  Rectangle(
+            extent={{-100,60},{100,-40}},
+            lineColor={0,127,0},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Sphere), Text(
+            extent={{-76,44},{64,-22}},
+            lineColor={0,0,0},
+            textString="%name")}));
+  end BaseFactorIcon0;
 
   partial model BaseFactorIcon
 
@@ -1041,70 +1037,6 @@ package Icons "Icons for physiological models"
 
   end ConversionIcon;
 
-  model BaseFactorIcon0
-
-    annotation (Icon(graphics={  Rectangle(
-            extent={{-100,60},{100,-40}},
-            lineColor={0,127,0},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Sphere), Text(
-            extent={{-76,44},{64,-22}},
-            lineColor={0,0,0},
-            textString="%name")}));
-  end BaseFactorIcon0;
-
-  model MultXIcon "y na X"
-
-    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics={Rectangle(extent={{-100,100},{
-                100,-100}}, lineColor={0,0,0}), Text(
-            extent={{-100,40},{100,-20}},
-            lineColor={0,0,0},
-            textString="%u^%x")}), Diagram(coordinateSystem(
-            preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-          graphics={Text(
-            extent={{-100,40},{100,-20}},
-            lineColor={0,0,0},
-            textString="%u^%x")}));
-  end MultXIcon;
-
-    partial block BlockIcon_G "Basic graphical layout of input/output block"
-
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-              100,100}}), graphics={Rectangle(
-            extent={{-100,-100},{100,100}},
-            lineColor={255,255,255},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid), Text(
-            extent={{-150,150},{150,110}},
-            textString="%name",
-            lineColor={0,0,255})}),
-      Documentation(info="<html>
-<p>
-Block that has only the basic icon for an input/output
-block (no declarations, no equations). Most blocks
-of package Modelica.Blocks inherit directly or indirectly
-from this block.
-</p>
-</html>"));
-
-    end BlockIcon_G;
-
-  model FractionalConcentration
-
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics), Icon(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-          graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/concentrationCompartement.png"),
-                    Bitmap(extent={{-100,100},{-20,20}},   fileName=
-                "Resources/Icons/concentrationCompartement.png"), Text(
-            extent={{-22,-102},{220,-136}},
-            lineColor={0,0,255},
-            textString="%name")}));
-  end FractionalConcentration;
-
   partial model Diffusion
 
     annotation (Icon(graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
@@ -1112,44 +1044,30 @@ from this block.
 
   end Diffusion;
 
-  model ConcentrationCompartment
+  model Substance
 
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/concentrationCompartement.png"), Text(
+                "Resources/Icons/Concentration.png"), Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
-  end ConcentrationCompartment;
+  end Substance;
 
-  model FlowMeasure
+  model Speciation
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-                                    Bitmap(extent={{-100,100},{100,-100}},
-              fileName="Resources/Icons/flowMeassure.png")}));
-  end FlowMeasure;
-
-  partial model HydraulicResistor
-
-  annotation (Icon(graphics={    Bitmap(extent={{-120,44},{120,-42}},
-              fileName="Resources/Icons/resistance.jpg")}));
-  end HydraulicResistor;
-
-  model ElasticBalloon
-
-  annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
-              fileName="Resources/Icons/elastickyKompartment - Kopie.png")}));
-  end ElasticBalloon;
-
-  model Membrane
-
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
-              fileName="Resources/Icons/membrane.png")}));
-  end Membrane;
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+              -100},{100,100}}), graphics), Icon(coordinateSystem(
+            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+          graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Speciation.png"),
+                                                   Text(
+            extent={{-22,-102},{220,-136}},
+            lineColor={0,0,255},
+            textString="%name")}));
+  end Speciation;
 
   model MolarFlowMeasure
 
@@ -1158,22 +1076,13 @@ from this block.
               fileName="Resources/Icons/molarFlowMeassure.png")}));
   end MolarFlowMeasure;
 
-  model Dilution
-
-    annotation (Icon(graphics={     Bitmap(extent={{-140,100},{60,-100}},
-              fileName="Resources/Icons/dilution.png")}));
-  end Dilution;
-
   model GasSolubility
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/GasSolubility.png")}));
   end GasSolubility;
-
-  model PressureMeasure
-
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-              -100,-100},{100,100}}), graphics), Icon(graphics={Bitmap(extent={
-                {-100,100},{100,-100}}, fileName=
-                "Resources/Icons/pressureMeassure.png")}));
-  end PressureMeasure;
 
   model Reabsorption
 
@@ -1188,8 +1097,65 @@ from this block.
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName=
-                "Resources/Icons/reabsorption2.jpg")}));
+                "Resources/Icons/reabsorption.png")}));
   end Reabsorption2;
+
+  model Dilution
+
+    annotation (Icon(graphics={     Bitmap(extent={{-140,100},{60,-100}},
+              fileName="Resources/Icons/dilution.png")}));
+  end Dilution;
+
+  model ElasticBalloon
+
+  annotation (Icon(graphics={     Bitmap(extent={{-100,100},{100,-100}},
+              fileName="Resources/Icons/elastickyKompartment - Kopie.png")}));
+  end ElasticBalloon;
+
+  model BloodElasticCompartment
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
+                -100}}, fileName=
+                "Resources/Icons/elastickyKompartment.png")}));
+  end BloodElasticCompartment;
+
+  model BloodSequesteredCompartment
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
+                -100}}, fileName=
+                "Resources/Icons/sequerestedVolume.png")}));
+  end BloodSequesteredCompartment;
+
+  partial model HydraulicResistor
+
+  annotation (Icon(graphics={    Bitmap(extent={{-120,44},{120,-42}},
+              fileName="Resources/Icons/resistance.jpg")}));
+  end HydraulicResistor;
+
+  model FlowMeasure
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                                    Bitmap(extent={{-100,100},{100,-100}},
+              fileName="Resources/Icons/flowMeassure.png")}));
+  end FlowMeasure;
+
+  model Membrane
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="Resources/Icons/membrane.png")}));
+  end Membrane;
+
+  model PressureMeasure
+
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+              -100,-100},{100,100}}), graphics), Icon(graphics={Bitmap(extent={
+                {-100,100},{100,-100}}, fileName=
+                "Resources/Icons/pressureMeassure.png")}));
+  end PressureMeasure;
 
   model InternalElasticBalloon
 
@@ -1214,5 +1180,51 @@ from this block.
               fileName="Resources/Icons/hydrostaticGradient.png")}));
 
   end HydrostaticGradient;
+
+  model Radiator
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/Radiator.png")}));
+  end Radiator;
+
+  model MichaelisMenten
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-82,78},{90,-94}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/MichaelisMenten.png")}));
+  end MichaelisMenten;
+
+  model HeatAccumulation
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/HeatAccumulation.png")}));
+  end HeatAccumulation;
+
+  model OsmoticCell
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
+  end OsmoticCell;
+
+  model IdealGas
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/IdealGas.png")}));
+  end IdealGas;
+
+  model PartialPressure
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName=
+                "modelica://Physiolibrary/Resources/Icons/PartialPressure.png")}));
+  end PartialPressure;
   annotation (Documentation(revisions=""));
 end Icons;

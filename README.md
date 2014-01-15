@@ -28,6 +28,15 @@ Download [Physiolibrary v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
 
 #### Release notes
 
+
+*  [Version v1.2.0 (2014-1-15)](../../archive/v1.2.0.zip)
+ * Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}
+ * New icons
+ * Thermal: Relative heat energy to normal body temperature (37degC) 
+ * New examples: 
+	Guyton-Coleman-Granger cardiovascular model, 
+	Coleman thermal energy transfers
+
 *  [Version v1.1.0 (2013-12-30)](../../archive/v1.1.0.zip)
  * Heat connector compatibility between Physiolibrary.Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)
  * Some English language corrections

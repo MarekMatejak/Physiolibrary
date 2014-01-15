@@ -1,6 +1,6 @@
 within ;
-package Physiolibrary "Physiological domains library (version v1.1)"
-
+package Physiolibrary "Physiological domains library (version v1.2)"
+ extends Modelica.Icons.Package;
 
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
@@ -17,12 +17,12 @@ package Physiolibrary "Physiological domains library (version v1.1)"
 <p>Charles University in Prague</p>
 <p><br/>email: marek@matfyz.cz</p>
 <p><h4>Copyright notices of the files:</h4></p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
 <p><br/><br/>This package with all of its subpackages is released under the &ldquo;Modelica License 2&rdquo; (if not explicitly noted otherwise). </p>
 <p><br/><a href=\"#The_Modelica_License_2-outline\">The Modelica License 2</a></p>
 <p><br/><a href=\"#How_to_Apply_the_Modelica_License_2-outline\">How to Apply the Modelica License 2</a></p>
 <p><br/><a href=\"#Frequently_Asked_Questions-outline\">Frequently Asked Questions</a></p>
-<p><br/><b><a name=\"The_Modelica_License_2-outline\"></a></font><font style=\"color: #008000; \">The Modelica License 2</font></b> </p>
+<p><br/><b><a name=\"The_Modelica_License_2-outline\">T</a><font style=\"color: #008000; \">he Modelica License 2</font></b> </p>
 <p><b><font style=\"font-size: 10pt; \">Preamble.</b> The goal of this license is that Modelica related model libraries, software, images, documents, data files etc. can be used freely in the original or a modified form, in open source and in commercial environments (as long as the license conditions below are fulfilled, in particular sections 2c) and 2d). The Original Work is provided free of charge and the use is completely at your own risk. Developers of free Modelica packages are encouraged to utilize this license for their work. </p>
 <p>The Modelica License applies to any Original Work that contains the following licensing notice adjacent to the copyright notice(s) for this Original Work: </p>
 <p><b>Licensed by Marek Matejak under the Modelica License 2</b> </p>
@@ -201,17 +201,18 @@ package Physiolibrary "Physiological domains library (version v1.1)"
 
 
   annotation (preferredView="info",
-version="1.1",
+version="1.2",
 versionBuild=1,
-versionDate="2013-12-23",
-dateModified = "2013-12-23 16:26:00Z",
+versionDate="2014-1-15",
+dateModified = "2014-1-15 13:00:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
 conversion(
- from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.1.mos")),
+ from(version="1.1", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_1.2.mos"),
+ from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.2.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation, where it was called HumMod.Library. As the successors of Guyton&apos;s Medical Physiology School write, the original HumMod model is &ldquo;The best, most complete, mathematical model of human physiology ever created&rdquo;.</p>

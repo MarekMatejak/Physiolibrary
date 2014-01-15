@@ -1,5 +1,6 @@
 within Physiolibrary;
 package Types "Physiological units with nominals"
+  extends Modelica.Icons.Package;
 //If you have an idea to add the next physiological type to the next version, please write me at marek@matfyz.cz. Thank you
 
   package Examples
@@ -161,6 +162,7 @@ package Types "Physiological units with nominals"
   end Examples;
 
   package Constants
+    extends Modelica.Icons.Package;
 
   block AccelerationConst "Constant signal of type Acceleration"
    parameter Types.Acceleration k "Constant Acceleration output value";
@@ -445,6 +447,34 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end FractionConst;
+
+  block FrequencyConst "Constant signal of type Frequency"
+   parameter Types.Frequency k "Constant Frequency output value";
+        RealIO.FrequencyOutput y "Frequency constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="frequency",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end FrequencyConst;
 
   block GasSolubilityConst "Constant signal of type GasSolubility"
    parameter Types.GasSolubility k "Constant GasSolubility output value";
@@ -1016,6 +1046,8 @@ package Types "Physiological units with nominals"
   end Constants;
 
   package RealIO
+    extends Modelica.Icons.Package;
+
     connector EnergyInput = input Energy "input Energy as connector"
       annotation (defaultComponentName="energy",
       Icon(graphics={Polygon(
@@ -2188,6 +2220,59 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
+    connector FrequencyInput = input Frequency "input Frequency as connector"
+      annotation (defaultComponentName="frequency",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Frequency. 
+    </p> 
+    </html>"));
+
+    connector FrequencyOutput = output Frequency
+      "output Frequency as connector"
+      annotation (defaultComponentName="frequency",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Frequency.
+  </p>
+  </html>"));
+
     connector OsmoticPermeabilityInput = input OsmoticPermeability
       "input OsmoticPermeability as connector"
       annotation (defaultComponentName="osmoticmembranepermeability",
@@ -2723,8 +2808,9 @@ constructed by the signals connected to this bus.
 */
     end BusConnector;
 
- type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
+  type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
+  type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
 
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
@@ -2737,12 +2823,13 @@ constructed by the signals connected to this bus.
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", nominal=1);
-  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
-  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", nominal=1e-3);
-  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min", nominal=(1e-3)/60);
+  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l");
+  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol");
+  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
 
-  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186.8);
+  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
+
+  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
@@ -2786,6 +2873,7 @@ constructed by the signals connected to this bus.
   end AbstractReal;
 
   package RealExtension
+    extends Modelica.Icons.VariantsPackage;
         block Parameter "Generate constant signal in SI units from file"
           extends AbstractReal;
 
@@ -3029,6 +3117,7 @@ The Real output y is a constant signal:
   end RealExtension;
 
   package RealTypes
+    extends Modelica.Icons.BasesPackage;
     import Physiolibrary;
 
       replaceable block Variable = RealExtension.Parameter constrainedby
@@ -3036,6 +3125,7 @@ The Real output y is a constant signal:
 
       block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy);
       block Time = Variable(redeclare type T=Physiolibrary.Types.Time);
+      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency);
 
       block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass);
       block MassFlowRate = Variable(redeclare type T =
@@ -3108,6 +3198,7 @@ The Real output y is a constant signal:
   end AbstractBoolean;
 
   package BooleanExtension
+    extends Modelica.Icons.VariantsPackage;
         block Parameter "Read constant boolean signal"
           extends Physiolibrary.Types.AbstractBoolean;
 
@@ -3281,7 +3372,7 @@ The Real output y is a constant signal:
   end BooleanExtension;
 
   package Utilities
-
+    extends Modelica.Icons.BasesPackage;
     replaceable function readReal "Read the real value of parameter from file with lines in format: 
   <parameterName>
   <value> <unit>"
