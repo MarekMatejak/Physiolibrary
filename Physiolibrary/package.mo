@@ -2,6 +2,7 @@ within ;
 package Physiolibrary "Physiological domains library (version v1.2)"
  extends Modelica.Icons.Package;
 
+
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
 
@@ -209,7 +210,8 @@ revisionId="",
 uses(Modelica(version="3.2")),
 conversion(
  from(version="1.1", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_1.2.mos"),
- from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.2.mos")),
+ from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_1.2.mos"),
+ from(version="0.4934", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4934_to_1.2.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
