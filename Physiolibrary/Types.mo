@@ -46,6 +46,9 @@ package Types "Physiological units with nominals"
      end ParametricClass;
 
       ParametricClass parametricClass(
+        acceleration=1,
+        concentration=1,
+        osmolarity=1,
         temperature=274.15,
         heat=4186.8,
         pressure=133.322387415,
@@ -60,15 +63,12 @@ package Types "Physiological units with nominals"
         massFlowRate=1.6666666666667e-08,
         density=1000,
         height=0.01,
-        acceleration=1,
         volumeFlowRate=1.6666666666667e-08,
-        concentration=1,
-        osmolarity=1,
         molarFlowRate=1.6666666666667e-05,
         heatFlowRate=69.78,
         thermalConductance=69.78,
         specificHeatCapacity=4186.8,
-        specificEnergy=4186.8,
+        specificEnergy(displayUnit="kcal/g") = 4186.8,
         fraction=0.01,
         osmoticPermeability=1.2501026264094e-10,
         diffusionPermeability=1.6666666666667e-08,

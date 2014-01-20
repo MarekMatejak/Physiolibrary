@@ -16,49 +16,69 @@ package Mixed "Blocks between domains"
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
     public
-      Chemical.Components.NormalizedSubstance
-                                   oxygen_dissolved(Simulation=Simulation,
+      Chemical.Components.Substance oxygen_dissolved(
+                                                    Simulation=Simulation,
           solute_start=0.000001*7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
-      Components.PartialPressure2
+      Chemical.Components.GasSolubility
                             partialPressure(
-        alpha_T0=alpha,
-        gasSolubility(C=1700),
-        Simulation=Simulation,
-        T0=310.15)                                    annotation (Placement(
+        useHeatPort=true,
+        kH_T0=1/(alpha*Modelica.Constants.R*310.15),
+        T0=310.15)                                     annotation (Placement(
             transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={-2,-18})));
       Hydraulic.Sources.UnlimitedVolume
-                                unlimitedVolume(Simulation=Simulation)
-        annotation (Placement(transformation(extent={{-34,6},{-14,26}})));
+                                unlimitedVolume
+        annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
       Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
-        annotation (Placement(transformation(extent={{-52,50},{-32,70}})));
+        annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
       Modelica.Blocks.Sources.Sine temperature(
         amplitude=10,
         freqHz=1/60,
         offset=310.15)
-        annotation (Placement(transformation(extent={{20,-2},{40,18}})));
+        annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
+      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
+        prescribedTemperature
+        annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
+      Components.IdealGas idealGas(useHeatPort=true)
+        annotation (Placement(transformation(extent={{-28,32},{-8,52}})));
     equation
 
-      connect(unlimitedVolume.y, partialPressure.v) annotation (Line(
-          points={{-24,16},{-2,16},{-2,-8}},
+      connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
+                                                 annotation (Line(
+          points={{-59,70},{-46,70},{-46,56}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(temperature.y, prescribedTemperature.T) annotation (Line(
+          points={{-73,-18},{-58,-18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(partialPressure.heatPort, prescribedTemperature.port) annotation (
+         Line(
+          points={{-2,-18},{-36,-18}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure.q_in, oxygen_dissolved.q_out) annotation (Line(
+          points={{-2,-26},{-2,-46}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(unlimitedVolume.y, idealGas.v) annotation (Line(
+          points={{-46,46},{-28,46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
-                                                 annotation (Line(
-          points={{-31,60},{-24,60},{-24,26}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(temperature.y, partialPressure.T) annotation (Line(
-          points={{41,8},{50,8},{50,-18},{6,-18}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(partialPressure.n, oxygen_dissolved.q_out) annotation (Line(
-          points={{-2,-24},{-2,-46}},
+      connect(idealGas.n, partialPressure.q_out) annotation (Line(
+          points={{-8,46},{-2,46},{-2,-10}},
           color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(idealGas.heatPort, prescribedTemperature.port) annotation (Line(
+          points={{-18,42},{-18,-18},{-36,-18}},
+          color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -72,6 +92,80 @@ package Mixed "Blocks between domains"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end O2_in_water;
+
+    model O2_in_water2
+    extends Modelica.Icons.Example;
+    //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    //=States.SimulationType.NoInit); for dynamic simulation
+
+      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.Equilibrated;
+
+      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
+    public
+      Chemical.Components.Substance oxygen_dissolved(
+                                                    Simulation=Simulation,
+          solute_start=0.000001*7.875647668393782383419689119171e-5)
+        annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
+      Components.PartialPressure
+                            partialPressure(useHeatPort=true, T0=310.15, alpha_T0=alpha)
+                                                       annotation (Placement(
+            transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=0,
+            origin={-2,-18})));
+      Hydraulic.Sources.UnlimitedVolume
+                                unlimitedVolume
+        annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
+      Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
+        annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
+      Modelica.Blocks.Sources.Sine temperature(
+        amplitude=10,
+        freqHz=1/60,
+        offset=310.15)
+        annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
+      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
+        prescribedTemperature
+        annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
+    equation
+
+      connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
+                                                 annotation (Line(
+          points={{-59,70},{-46,70},{-46,56}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(temperature.y, prescribedTemperature.T) annotation (Line(
+          points={{-73,-18},{-58,-18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(partialPressure.heatPort, prescribedTemperature.port) annotation (
+          Line(
+          points={{-2,-18},{-36,-18}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure.n, oxygen_dissolved.q_out) annotation (Line(
+          points={{-2,-24},{-2,-46}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure.v, unlimitedVolume.y) annotation (Line(
+          points={{-2,-8},{-2,46},{-46,46}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics),
+        experiment(StopTime=100),
+        __Dymola_experimentSetupOutput,
+        Documentation(info="<html>
+<p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
+</html>", revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end O2_in_water2;
   end Examples;
 
   package Components
@@ -80,6 +174,7 @@ package Mixed "Blocks between domains"
       "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
       extends Icons.IdealGas;
       import Physiolibrary;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
       Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
                                       v
@@ -94,12 +189,14 @@ package Mixed "Blocks between domains"
             transformation(extent={{90,30},{110,50}}),   iconTransformation(extent={{90,30},
                 {110,50}})));
 
-      parameter Physiolibrary.Types.Temperature T "Temperature";
+      //parameter Physiolibrary.Types.Temperature T "Temperature";
 
     equation
-      v.pressure = n.conc * Modelica.Constants.R * T;  // P*V = n*R*T
+      v.pressure = n.conc * Modelica.Constants.R * T_heatPort;  // P*V = n*R*T
       //assert(abs(v.pressures)>Modelica.Constants.eps, "Zero or negative partial pressure or concentrations are not supported!")
       n.q + n.conc * v.q=0;
+
+      lossHeat = 0;
 
        annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics={
@@ -113,124 +210,10 @@ package Mixed "Blocks between domains"
         Diagram(graphics));
     end IdealGas;
 
-    model IdealGas2
-      "Ideal gas conversion from partial pressure with volumetric flow to amount of substance with molar flow"
-      extends Icons.IdealGas;
-      import Physiolibrary;
-
-      Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
-                                      v
-        "Hydraulic pressure connector with volumetric flow"
-                                             annotation (Placement(transformation(
-              extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,30},
-                {-90,50}})));
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                                        n
-        "Molar concentratio connector with substance amount flow"
-                                                 annotation (Placement(
-            transformation(extent={{90,30},{110,50}}),   iconTransformation(extent={{90,30},
-                {110,50}})));
-
-      Physiolibrary.Types.RealIO.TemperatureInput T "Temperature"
-                                                          annotation (Placement(transformation(extent={{22,
-                -18},{62,22}}), iconTransformation(extent={{20,-20},{-20,20}},
-            rotation=270,
-            origin={0,-110})));
-
-    equation
-      v.pressure = n.conc * Modelica.Constants.R * T;  // P*V = n*R*T
-      n.q + n.conc * v.q = 0;
-
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{-120,140},{120,100}},
-              lineColor={0,0,255},
-              textString="%name")}),              Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(graphics));
-    end IdealGas2;
-
     model PartialPressure
       "Conversion between partial pressure and concentration of the gas in liquid"
       extends Icons.PartialPressure;
-      import Physiolibrary;
-
-      Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
-                                      v
-        "Partial pressure and volumetric flow of pure substance"
-                                             annotation (Placement(transformation(
-              extent={{-84,-8},{-64,12}}),  iconTransformation(extent={{-10,90},{
-                10,110}})));
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                                        n
-        "Molar concentratio and substance amount flow"
-                                                 annotation (Placement(
-            transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,-70},
-                {10,-50}})));
-      parameter Physiolibrary.Types.GasSolubility alpha
-        "Gas solubility in solvent in temperature T";
-      parameter Physiolibrary.Types.Temperature T "Temperature";
-
-      Physiolibrary.Chemical.Components.GasSolubility
-                                            gasSolubility(kH=1/(alpha*Modelica.Constants.R
-          *T),
-        Simulation=Simulation,
-        isFlowIncludedInEquilibrium=isFlowIncludedInEquilibrium)
-        annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
-      Physiolibrary.Mixed.Components.IdealGas
-               idealGas(T=T)
-                        annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-34,-2})));
-
-      parameter Physiolibrary.States.SimulationType
-                                      Simulation=Physiolibrary.States.SimulationType.NoInit
-        "False, instead of one reaction in equilibrated (with zero reaction rates) system."
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-      parameter Boolean isFlowIncludedInEquilibrium=false
-        "Is substrate flow equation included in equilibrium calculation?"
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-
-    equation
-      connect(idealGas.v, v) annotation (Line(
-          points={{-44,2},{-74,2}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(idealGas.n, gasSolubility.q_out) annotation (Line(
-          points={{-24,2},{0,2},{0,-48}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility.q_in, n) annotation (Line(
-          points={{0,-68},{0,-100}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{-120,20},{120,-20}},
-              textString="%name",
-              lineColor={0,0,255},
-              origin={100,0},
-              rotation=90)}),                     Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}}),
-                graphics));
-    end PartialPressure;
-
-    model PartialPressure2
-      "Conversion between partial pressure and concentration of the gas in liquid"
-      extends Icons.PartialPressure;
-
+      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
       import Physiolibrary;
 
       Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
@@ -243,67 +226,42 @@ package Mixed "Blocks between domains"
                                                         n
         "Molar concentratio and substance amount flow"
                                                  annotation (Placement(
-            transformation(extent={{-10,-110},{10,-90}}),iconTransformation(extent={{-10,-70},
+            transformation(extent={{-10,-96},{10,-76}}), iconTransformation(extent={{-10,-70},
                 {10,-50}})));
       parameter Physiolibrary.Types.GasSolubility alpha_T0
         "Gas solubility in solvent in temperature T0";
+
       parameter Physiolibrary.Types.Temperature T0=298.15
-        "Base temperature of alpha";
+        "Base temperature for alpha_T0"
+         annotation (Dialog(tab="Temperature dependence"));
+      parameter Physiolibrary.Types.Temperature C(displayUnit="K") = 1700
+        "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
+        annotation (Dialog(tab="Temperature dependence"));
 
-      Physiolibrary.Chemical.Components.GasSolubility2
-                                             gasSolubility(kH_T0=1/(alpha_T0*
-          Modelica.Constants.R*T0), T0=T0,
-        Simulation=Simulation,
-        isFlowIncludedInEquilibrium=isFlowIncludedInEquilibrium)
-        annotation (Placement(transformation(extent={{-10,-68},{10,-48}})));
-      Physiolibrary.Mixed.Components.IdealGas2
-                idealGas annotation (Placement(transformation(
-            extent={{10,10},{-10,-10}},
-            rotation=180,
-            origin={-30,-20})));
-      Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
-                                                         annotation (Placement(
-            transformation(extent={{10,-10},{-10,10}},
-            rotation=180,
-            origin={-60,-58}),                          iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-80,0})));
+      parameter Types.DiffusionPermeability solubilityRateCoef=10^3
+        "The rate constant of incoming gas to solution";
 
-      parameter Physiolibrary.States.SimulationType
-                                      Simulation=Physiolibrary.States.SimulationType.NoInit
-        "False, instead of one reaction in equilibrated (with zero reaction rates) system."
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-      parameter Boolean isFlowIncludedInEquilibrium=false
-        "Is substrate flow equation included in equilibrium calculation?"
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-
+    //protected
+      parameter Types.Fraction kH_T0=1/(alpha_T0*Modelica.Constants.R*T0)
+        "Henry's law coefficient at base temperature";
+      Types.Fraction kH
+        "Henry's law coefficient such as liquid-gas concentration ratio";
+      Types.Concentration nc "gas concentration";
     equation
-      connect(idealGas.v, v) annotation (Line(
-          points={{-40,-16},{-70,-16}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(T, idealGas.T) annotation (Line(
-          points={{-60,-58},{-30,-58},{-30,-31}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(T, gasSolubility.T) annotation (Line(
-          points={{-60,-58},{-6,-58}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(gasSolubility.q_in, n) annotation (Line(
-          points={{0,-68},{0,-100}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(idealGas.n, gasSolubility.q_out) annotation (Line(
-          points={{-20,-16},{0,-16},{0,-48}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
+
+      v.pressure = nc * Modelica.Constants.R * T_heatPort;  // P*V = n*R*T
+      //assert(abs(v.pressures)>Modelica.Constants.eps, "Zero or negative partial pressure or concentrations are not supported!")
+      n.q + nc * v.q=0;
+
+      kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
+
+      // equilibrium:  gas.conc = kH * liquid.conc;
+      n.q = solubilityRateCoef*(nc - kH * n.conc); //negative because of outflow
+
+      lossHeat = C*Modelica.Constants.R*n.q; //negative = heat are comsumed when change from liquid to gas
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={
             Text(
               extent={{-120,20},{120,-20}},
               textString="%name",
@@ -312,11 +270,15 @@ package Mixed "Blocks between domains"
               rotation=90)}),                     Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>Schema for partial pressure calculation is </p>
+<p><img src=\"modelica://Physiolibrary/Resources/Documentation/partialPressure.png\"/></p>
+<p>where gas solubility &QUOT;alpha&QUOT; can be recalculated to Henry&apos;s coefficient &QUOT;kH&QUOT; by equation <code>kH=1/(alpha*R*T) using gas constant R and temperature T.&nbsp;</code></p>
 </html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}),
                 graphics));
-    end PartialPressure2;
+    end PartialPressure;
   end Components;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

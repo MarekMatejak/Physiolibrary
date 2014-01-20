@@ -56,20 +56,17 @@ package States "Dynamic simulation / Equilibrium"
                                         totalSubstancesAmount = 1
         "total substances amount to conserve during during equilibrated simulation";
 
-      Physiolibrary.Chemical.Components.NormalizedSubstance
-                                                 A(solute_start=0.9,
+      Physiolibrary.Chemical.Components.Substance A(
+                                                   solute_start=0.9,
           Simulation=Simulation)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
-                                              reaction(
-        K=1,
-        Simulation=Simulation,
-        isSubstrateFlowIncludedInEquilibrium={false},
-        isProductFlowIncludedInEquilibrium={true})
+                                              reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Physiolibrary.Chemical.Components.NormalizedSubstance
-                                                 B(solute_start= totalSubstancesAmount - 0.9,
-          Simulation=Simulation)
+      Physiolibrary.Chemical.Components.Substance B(
+                                                   solute_start= totalSubstancesAmount - 0.9,
+          Simulation=Simulation,
+        isDependent=true)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
       totalSubstancesAmount*normalizedState[1]=A.solute+B.solute;  //the mass conservation law
@@ -150,10 +147,6 @@ package States "Dynamic simulation / Equilibrium"
       "Type of simulation."
       annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-   /* parameter Boolean EQUILIBRIUM(start=false) 
-    "Is the state changing during simulation?"
-     annotation (Dialog(group="Equilibrium"));
-*/
     parameter Boolean SAVE_RESULTS(start=false)
       "save and test final state values with original values"
        annotation (Dialog(group="Value I/O",tab="IO"));
@@ -165,14 +158,17 @@ package States "Dynamic simulation / Equilibrium"
        annotation (Dialog(group="Value I/O",tab="IO"));
                                   //getInstanceName()
 
+    parameter Boolean isDependent = false
+      "=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc."
+      annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
   protected
     parameter Real defaultValue(fixed=false) "Default value of state.";
     parameter Real initialValue(fixed=false) "Initial value of state.";
 
   initial equation
-    if Simulation == SimulationType.InitSteadyState then
-      der(state)=0;
-   //   change = 0;
+    if Simulation == SimulationType.InitSteadyState and not isDependent then
+      der(state)=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
     elseif Simulation == SimulationType.InitialInput then
       state = Utilities.readReal(stateName, storeUnit);
     end if;
@@ -181,7 +177,7 @@ package States "Dynamic simulation / Equilibrium"
     if SAVE_RESULTS then
       defaultValue = Utilities.readReal(stateName, storeUnit);
     else
-       defaultValue = Modelica.Constants.N_A;
+      defaultValue = Modelica.Constants.N_A;
     end if;
   equation
 
@@ -198,10 +194,10 @@ package States "Dynamic simulation / Equilibrium"
           storeUnit);
     end when;
 
-    if Simulation == SimulationType.Equilibrated or (initial() and Simulation == SimulationType.InitSteadyState) then
-        change = 0;
-    else
+    if Simulation <> SimulationType.Equilibrated then
       der(state) = change;
+    elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+       change = 0;
     end if;
 
     annotation (Documentation(revisions="<html>

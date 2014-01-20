@@ -87,7 +87,7 @@ package Osmotic "Osmotic Physical Domain"
 
   package Components
     extends Modelica.Icons.Package;
-    model OsmoticCell
+    model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
       extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
           "mOsm/l");
@@ -128,76 +128,25 @@ package Osmotic "Osmotic Physical Domain"
 </html>"));
     end OsmoticCell;
 
-    model Membrane
-      "Semipermeable membrane diffusion at the same hydraulic pressure on both sides"
-     extends Interfaces.OnePort;
-     extends Icons.Membrane; //Icons.Resistor;
-     parameter Types.Temperature temperature = 310.15
-        "temperature on both membrane sides";
-     parameter Physiolibrary.Types.OsmoticPermeability cond
-        "Membrane permeability for solvent";
-    equation
-      q_in.q = cond * (q_out.o*(Modelica.Constants.R*temperature) - q_in.o*(Modelica.Constants.R*temperature));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),
-                          graphics), Icon(graphics={
-                                   Text(
-              extent={{-160,-154},{160,-102}},
-              textString="%name",
-              lineColor={0,0,255})}),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Membrane;
-
-    model Membrane2
-      "Semipermeable membrane diffusion at different hydraulic pressures on each side"
-     extends Interfaces.OnePort;
-     extends Icons.Membrane; //Icons.Resistor;
-     parameter Types.Temperature temperature = 310.15
-        "temperature on both membrane sides";
-     parameter Physiolibrary.Types.OsmoticPermeability cond
-        "Membrane permeability for solvent";
-      Types.RealIO.PressureInput hydraulicPressureIn annotation (Placement(
-            transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-78,90}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-80,80})));
-      Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
-            transformation(extent={{28,56},{68,96}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={80,80})));
-    equation
-       q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperature)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperature)));
-
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),
-                          graphics), Icon(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}),
-                                          graphics={
-                                   Text(
-              extent={{-160,-152},{160,-100}},
-              textString="%name",
-              lineColor={0,0,255})}),
-        Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Membrane2;
-
-    model Membrane3
-      "Semipermeable membrane diffusion at different hydraulic pressures and temperatures on each side"
+    model Membrane "Solvent diffusion on semipermeable membrane"
      extends Interfaces.OnePort;
      extends Icons.Membrane; //Icons.Resistor;
 
      parameter Physiolibrary.Types.OsmoticPermeability cond
         "Membrane permeability for solvent";
-      Types.RealIO.PressureInput hydraulicPressureIn annotation (Placement(
+
+      parameter Boolean useHydraulicPressureInputs = false
+        "=true, if hydraulic pressure inputs is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Pressure HydraulicPressureIn=0
+        "Hydraulic pressure inside if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+      parameter Types.Pressure HydraulicPressureOut=0
+        "Hydraulic pressure outside if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+
+      Types.RealIO.PressureInput hydraulicPressureIn(start=HydraulicPressureIn)=pi if useHydraulicPressureInputs annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=0,
@@ -205,23 +154,45 @@ package Osmotic "Osmotic Physical Domain"
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-80,80})));
-      Types.RealIO.PressureInput hydraulicPressureOut annotation (Placement(
+      Types.RealIO.PressureInput hydraulicPressureOut(start=HydraulicPressureOut)=po if useHydraulicPressureInputs annotation (Placement(
             transformation(extent={{28,56},{68,96}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={80,80})));
-      Types.RealIO.TemperatureInput temperatureIn annotation (Placement(
+
+      parameter Boolean useTemperatureInputs = false
+        "=true, if temperature on both sides is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Temperature T=310.15
+        "Temperature on both membrane sides if  useTemperatureInputs=false"
+        annotation (Dialog(enable=not  useTemperatureInputs));
+
+      Types.RealIO.TemperatureInput temperatureIn(start=T)=ti if useTemperatureInputs annotation (Placement(
             transformation(extent={{-100,-80},{-60,-40}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=90,
             origin={-80,-80})));
-      Types.RealIO.TemperatureInput temperatureOut annotation (Placement(
+      Types.RealIO.TemperatureInput temperatureOut(start=T)=to if useTemperatureInputs annotation (Placement(
             transformation(extent={{32,-80},{72,-40}}),    iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=90,
             origin={80,-80})));
+
+    protected
+      Types.Pressure pi,po;
+      Types.Temperature ti,to;
     equation
-      q_in.q = cond * ( (hydraulicPressureOut + q_out.o*(Modelica.Constants.R*temperatureOut)) - (hydraulicPressureIn + q_in.o*(Modelica.Constants.R*temperatureIn)));
+      if not useHydraulicPressureInputs then
+        pi=HydraulicPressureIn;
+        po=HydraulicPressureOut;
+      end if;
+      if not useTemperatureInputs then
+        ti=T;
+        to=T;
+      end if;
+
+      q_in.q = cond * ( (po + q_out.o*(Modelica.Constants.R*to)) - (pi + q_in.o*(Modelica.Constants.R*ti)));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
                           graphics), Icon(coordinateSystem(preserveAspectRatio=false,
@@ -231,9 +202,9 @@ package Osmotic "Osmotic Physical Domain"
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end Membrane3;
+    end Membrane;
 
-    model SolventFlux
+    model SolventFlux "Prescripted flow of solvent"
       extends Interfaces.OnePort;
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow

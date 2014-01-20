@@ -9,14 +9,12 @@ package Chemical "Molar Concentration Physiological Domain"
 
        extends Modelica.Icons.Example;
 
-      Components.NormalizedSubstance
-                                   A(solute_start=0.9)
+      Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Components.ChemicalReaction
                                 reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Components.NormalizedSubstance
-                                   B(solute_start=0.1)
+      Components.Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
     equation
 
@@ -40,8 +38,8 @@ package Chemical "Molar Concentration Physiological Domain"
     model SimpleReaction_Equilibrated
       extends SimpleReaction(
         A(Simulation=Simulation),
-        B(Simulation=Simulation),
-        reaction(Simulation=Simulation, isSubstrateFlowIncludedInEquilibrium={false}));
+        B(Simulation=Simulation, isDependent=true),
+        reaction);
       extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
       parameter Types.AmountOfSubstance totalSystemSubstance=0.01;
@@ -57,17 +55,14 @@ package Chemical "Molar Concentration Physiological Domain"
 
        extends Modelica.Icons.Example;
 
-      Components.NormalizedSubstance
-                                   A(solute_start=0.9)
+      Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Components.ChemicalReaction
                                 reaction(K=1, nP=2)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Components.NormalizedSubstance
-                                   B(solute_start=0.1)
+      Components.Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
-      Components.NormalizedSubstance
-                                   C(solute_start=0.1)
+      Components.Substance         C(solute_start=0.1)
         annotation (Placement(transformation(extent={{44,16},{64,36}})));
     equation
 
@@ -96,8 +91,9 @@ package Chemical "Molar Concentration Physiological Domain"
     model SimpleReaction2_Equilibrated
       extends SimpleReaction2(
         A(Simulation=Simulation),
-        B(Simulation=Simulation),
-        reaction(Simulation=Simulation, isProductFlowIncludedInEquilibrium={false,false}));
+        reaction,
+        B(Simulation=Simulation, isDependent=true),
+        C(Simulation=Simulation, isDependent=true));
       extends States.StateSystem(NumberOfNormalizedStates=2, Simulation=States.SimulationType.Equilibrated);
 
       parameter Types.AmountOfSubstance totalBSubstance=0.01,totalCSubstance=0.01;
@@ -134,43 +130,44 @@ package Chemical "Molar Concentration Physiological Domain"
       Types.AmountOfSubstance totalAmountOfRforms;
       Types.AmountOfSubstance totalAmountOfTforms;
 
-      Components.NormalizedSubstance             T0(stateName="T0",Simulation=Simulation,
+      Components.Substance                       T0(stateName="T0",Simulation=Simulation,
         solute_start=1)
         annotation (Placement(transformation(extent={{52,78},{72,98}})));
 
-      Components.NormalizedSubstance             T1(stateName="T1",Simulation=Simulation,
+      Components.Substance                       T1(stateName="T1",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{54,36},{74,56}})));
 
-      Components.NormalizedSubstance             R1(stateName="R1",Simulation=Simulation,
-        solute_start=0)
+      Components.Substance                       R1(stateName="R1",Simulation=Simulation,
+        solute_start=0,
+        isDependent=true)
         annotation (Placement(transformation(extent={{0,36},{20,56}})));
 
-      Components.NormalizedSubstance             T2(stateName="T2",Simulation=Simulation,
+      Components.Substance                       T2(stateName="T2",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{54,-10},{74,10}})));
 
-      Components.NormalizedSubstance             R2(stateName="R2",Simulation=Simulation,
+      Components.Substance                       R2(stateName="R2",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{0,-10},{20,10}})));
 
-      Components.NormalizedSubstance             T3(stateName="T3",Simulation=Simulation,
+      Components.Substance                       T3(stateName="T3",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{54,-54},{74,-34}})));
 
-      Components.NormalizedSubstance             R3(stateName="R3",Simulation=Simulation,
+      Components.Substance                       R3(stateName="R3",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{0,-54},{20,-34}})));
 
-      Components.NormalizedSubstance             T4(stateName="T4",Simulation=Simulation,
+      Components.Substance                       T4(stateName="T4",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{54,-92},{74,-72}})));
 
-      Components.NormalizedSubstance             R4(stateName="R4",Simulation=Simulation,
+      Components.Substance                       R4(stateName="R4",Simulation=Simulation,
         solute_start=0)
         annotation (Placement(transformation(extent={{0,-92},{20,-72}})));
 
-      Components.NormalizedSubstance             R0(stateName="R0",
+      Components.Substance                       R0(stateName="R0",
         solute_start=0,
         Simulation=Simulation)
         annotation (Placement(transformation(extent={{0,78},{20,98}})));
@@ -231,29 +228,28 @@ package Chemical "Molar Concentration Physiological Domain"
         annotation (Placement(transformation(extent={{28,-10},{48,10}})));
       Components.ChemicalReaction               quaternaryForm3(K=(c^3)*L)
         annotation (Placement(transformation(extent={{28,-54},{48,-34}})));
-      Components.ChemicalReaction               quaternaryForm4(K=(c^4)*L,
-        Simulation=Simulation,
-        isSubstrateFlowIncludedInEquilibrium={false})
+      Components.ChemicalReaction               quaternaryForm4(K=(c^4)*L)
         annotation (Placement(transformation(extent={{30,-92},{50,-72}})));
 
     public
-      Components.NormalizedSubstance
-                          oxygen_unbound(Simulation=Simulation, solute_start=0.000001
-            *7.875647668393782383419689119171e-5)
+      Components.Substance oxygen_unbound(
+                                         Simulation=Simulation, solute_start=0.000001
+            *7.875647668393782383419689119171e-5,
+        isDependent=true)
         annotation (Placement(transformation(extent={{-36,-36},{-16,-16}})));
       Mixed.Components.PartialPressure
                             partialPressure(
-        alpha=alpha,
-        T=310.15,
-        Simulation=Simulation)                        annotation (Placement(
+        alpha_T0=alpha, T=310.15)                                     annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-50,-8})));
       Hydraulic.Sources.UnlimitedVolume airOxygen(Simulation=Simulation)
-        annotation (Placement(transformation(extent={{-82,16},{-62,36}})));
-      Modelica.Blocks.Sources.Clock clock(offset=0.000001)
-        annotation (Placement(transformation(extent={{-100,60},{-80,80}})));
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-50,34})));
+      Modelica.Blocks.Sources.Clock clock(offset=1e-06)
+        annotation (Placement(transformation(extent={{-88,54},{-68,74}})));
     equation
 
       sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*totalAmountOfHemoglobin);
@@ -441,12 +437,12 @@ package Chemical "Molar Concentration Physiological Domain"
           thickness=1,
           smooth=Smooth.None));
       connect(airOxygen.y, partialPressure.v)       annotation (Line(
-          points={{-72,26},{-50,26},{-50,2}},
+          points={{-50,24},{-50,2}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(clock.y, airOxygen.pressure)       annotation (Line(
-          points={{-79,70},{-72,70},{-72,36}},
+          points={{-67,64},{-50,64},{-50,44}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
@@ -499,9 +495,7 @@ package Chemical "Molar Concentration Physiological Domain"
       parameter Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
       Physiolibrary.Chemical.Components.ChemicalReaction
-                                                quaternaryForm(K=L,
-        Simulation=Simulation,
-        isSubstrateFlowIncludedInEquilibrium={false})
+                                                quaternaryForm(K=L)
         annotation (Placement(transformation(extent={{-4,-98},{16,-78}})));
       Physiolibrary.Chemical.Components.Speciation
                          R0_in_R(numberOfSubunit={4})
@@ -509,42 +503,41 @@ package Chemical "Molar Concentration Physiological Domain"
       Physiolibrary.Chemical.Components.Speciation
                          T0_in_T(numberOfSubunit={4})
         annotation (Placement(transformation(extent={{76,-90},{56,-70}})));
-      Physiolibrary.Chemical.Components.NormalizedSubstance
+      Physiolibrary.Chemical.Components.Substance
                           OxyRHm(solute_start=0, Simulation=Simulation)
         "Oxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-98,-36},{-78,-16}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
-                       oxygenation_R(K=KR, nP=2,
-        Simulation=Simulation)
+                       oxygenation_R(K=KR, nP=2)
         annotation (Placement(transformation(extent={{-70,-36},{-50,-16}})));
-      Physiolibrary.Chemical.Components.NormalizedSubstance
-                          DeoxyRHm(Simulation=Simulation, solute_start=1e-08)
+      Physiolibrary.Chemical.Components.Substance
+                          DeoxyRHm(Simulation=Simulation,
+        isDependent=true,
+        solute_start=1e-08)
         "Deoxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
-      Physiolibrary.Chemical.Components.NormalizedSubstance
+      Physiolibrary.Chemical.Components.Substance
                           OxyTHm(solute_start=0, Simulation=Simulation)
         "Oxygenated subunit in T structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{22,-36},{42,-16}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
-                       oxygenation_T(K=KT, nP=2,
-        Simulation=Simulation)
+                       oxygenation_T(K=KT, nP=2)
         annotation (Placement(transformation(extent={{50,-36},{70,-16}})));
-      Physiolibrary.Chemical.Components.NormalizedSubstance
+      Physiolibrary.Chemical.Components.Substance
                           DeoxyTHm(solute_start=totalAmountOfHemoglobin - 0.00001,
           Simulation=Simulation)
         "Deoxygenated subunit in T structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{78,-36},{98,-16}})));
     public
-      Physiolibrary.Chemical.Components.NormalizedSubstance
+      Physiolibrary.Chemical.Components.Substance
                           oxygen_unbound(Simulation=Simulation, solute_start=0.000001
-            *7.875647668393782383419689119171e-5)
+            *7.875647668393782383419689119171e-5,
+        isDependent=true)
         annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
       Physiolibrary.Mixed.Components.PartialPressure
                             partialPressure(
-        alpha=alpha,
-        T=310.15,
-        gasSolubility(Simulation=Simulation, isFlowIncludedInEquilibrium=false))
-                                                      annotation (Placement(
+        alpha_T0=alpha,
+        T=310.15)                                     annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -552,10 +545,10 @@ package Chemical "Molar Concentration Physiological Domain"
       Physiolibrary.Hydraulic.Sources.UnlimitedVolume airOxygen(Simulation=
             Simulation)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={6,80})));
+            rotation=270,
+            origin={6,66})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
-        annotation (Placement(transformation(extent={{-44,70},{-24,90}})));
+        annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
@@ -613,17 +606,17 @@ package Chemical "Molar Concentration Physiological Domain"
           smooth=Smooth.None));
       connect(T0_in_T.subunitSpecies[1], DeoxyTHm.q_out)
                                                    annotation (Line(
-          points={{74,-80},{74,-80},{82,-80},{82,-26},{88,-26}},
+          points={{74,-80},{82,-80},{82,-26},{88,-26}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(airOxygen.y, partialPressure.v)       annotation (Line(
-          points={{6,80},{6,48}},
+          points={{6,56},{6,48}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(clock.y, airOxygen.pressure)       annotation (Line(
-          points={{-23,80},{-4,80}},
+          points={{-19,84},{6,84},{6,76}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(oxygenation_R.products[2], oxygen_unbound.q_out) annotation (Line(
@@ -684,10 +677,10 @@ package Chemical "Molar Concentration Physiological Domain"
     extends Modelica.Icons.Example;
 
       Physiolibrary.Chemical.Sources.UnlimitedStorage
-                       P(concentration=0)
-        annotation (Placement(transformation(extent={{38,8},{58,28}})));
+                       P(Concentration=0)
+        annotation (Placement(transformation(extent={{58,8},{38,28}})));
       Physiolibrary.Chemical.Sources.UnlimitedStorage
-                       S(concentration=10)
+                       S(Concentration=10)
         annotation (Placement(transformation(extent={{-62,8},{-42,28}})));
 
       Physiolibrary.Chemical.Components.MichaelisMenten
@@ -699,12 +692,12 @@ package Chemical "Molar Concentration Physiological Domain"
     equation
 
       connect(S.q_out, michaelisMenten.p) annotation (Line(
-          points={{-51.8,18},{-8,18}},
+          points={{-42,18},{-8,18}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(michaelisMenten.n, P.q_out) annotation (Line(
-          points={{12,18},{48.2,18}},
+          points={{12,18},{38,18}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -715,6 +708,52 @@ package Chemical "Molar Concentration Physiological Domain"
 </html>"));
     end MichaelisMentenExample;
 
+    model ExothermicReaction
+
+       extends Modelica.Icons.Example;
+
+      Components.Substance         A(solute_start=0.9)
+        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
+      Components.ChemicalReaction
+                                reaction(K=1,
+        useHeatPort=true,
+        dH=-1000,
+        kf=1)
+        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+      Components.Substance         B(solute_start=0.1)
+        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+      Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
+        annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
+      Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
+        annotation (Placement(transformation(extent={{68,-58},{48,-38}})));
+    equation
+
+      connect(B.q_out, reaction.products[1]) annotation (Line(
+          points={{54,2},{10,2}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
+          points={{-46,2},{-10,2}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(reaction.heatPort, heatFlowSensor.port_a) annotation (Line(
+          points={{0,2},{0,-48},{12,-48}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(unlimitedHeat.port, heatFlowSensor.port_b) annotation (Line(
+          points={{48,-48},{32,-48}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end ExothermicReaction;
   end Examples;
 
   package Components
@@ -749,14 +788,14 @@ package Chemical "Molar Concentration Physiological Domain"
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
         "Solvent flow (solution volume flow = solventFlow + solute volume flow)!"
-        annotation (Placement(transformation(extent={{-80,-20},{-40,20}}),
+        annotation (Placement(transformation(extent={{-20,26},{20,66}}),
             iconTransformation(
             extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-60,0})));
+            rotation=270,
+            origin={0,60})));
 
     equation
-      assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow direction! Not 'solventFlow<0'!");
+    //  assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
       q_in.q = solventFlow*q_in.conc
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -767,20 +806,20 @@ package Chemical "Molar Concentration Physiological Domain"
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               origin={0,0},
-              rotation=90),
+              rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               origin={0,0},
-              rotation=90),
+              rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
               textString="%name",
               lineColor={0,0,255},
-              origin={80,-2},
-              rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
+              origin={2,-74},
+              rotation=180)}),        Diagram(coordinateSystem(preserveAspectRatio=true,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -828,11 +867,11 @@ package Chemical "Molar Concentration Physiological Domain"
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),       graphics));
     end MolarStream;
 
-    model Clearance "Clearance"
+    model Clearance "Clearance with solvent outflow"
 
       Interfaces.PositiveConcentrationFlow
                                 q_in "solute outflow"
@@ -840,12 +879,35 @@ package Chemical "Molar Concentration Physiological Domain"
             transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
                {{-110,-10},{-90,10}})));
 
-      parameter Physiolibrary.Types.VolumeFlowRate Clearance
-        "Clearance of solute";
-    equation
-      q_in.q = Clearance*q_in.conc;
+      parameter Boolean useSolventFlow = false
+        "=true, if clearence is expressed from outflow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-     // assert(Clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
+      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
+        "Clearance of solute if useSolventFlow=false"
+        annotation (Dialog(enable=not useSolventFlow));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
+        "solvent outflow"
+       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
+            iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+
+      parameter Real K(unit="1")=1
+        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
+        annotation (Dialog(enable=useSolventFlow));
+
+      Physiolibrary.Types.VolumeFlowRate clearance;
+    equation
+      if not useSolventFlow then
+         clearance=Clearance;
+      end if;  //otherwise: clearance=K*solventFlow;
+
+      q_in.q = clearance*q_in.conc;
+
+    //  assert(clearance>=-Modelica.Constants.eps, "Clearancecan not be negative!");
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -891,77 +953,6 @@ package Chemical "Molar Concentration Physiological Domain"
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end Clearance;
-
-    model Clearance2 "Clearance with solvent outflow"
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
-        "solvent outflow"
-       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      Interfaces.PositiveConcentrationFlow
-                                q_in "solute outflow"
-                                annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
-               {{-110,-10},{-90,10}})));
-
-      parameter Real K(unit="1")=1
-        "Coefficient such that Clearance = K*solventFlow";
-
-      Physiolibrary.Types.VolumeFlowRate Clearance;
-    equation
-      Clearance=K*solventFlow;
-      q_in.q = Clearance*q_in.conc;
-
-      assert(solventFlow>=-Modelica.Constants.eps, "Solvent flow can not be negative!");
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-100},{150,-60}},
-              textString="%name",
-              lineColor={0,0,255}),
-            Text(
-              extent={{-100,-30},{100,-50}},
-              lineColor={0,0,0},
-              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=true,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>2009</td>
-</tr>
-</table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end Clearance2;
 
     model Degradation "Degradation of solvent in defined volume"
 
@@ -1074,38 +1065,38 @@ package Chemical "Molar Concentration Physiological Domain"
 
       Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow
         "Solute flow rate"
-        annotation (Placement(transformation(extent={{-80,-20},{-40,20}}),
+        annotation (Placement(transformation(extent={{-20,40},{20,80}}),
             iconTransformation(
             extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-60,0})));
+            rotation=270,
+            origin={0,60})));
 
     equation
        q_in.q = soluteFlow;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               origin={0,0},
-              rotation=90),
+              rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               origin={0,0},
-              rotation=90),
+              rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
-              textString="%name",
               lineColor={0,0,255},
-              origin={86,4},
-              rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
+              origin={-10,-76},
+              rotation=360,
+              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=true,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1122,8 +1113,7 @@ package Chemical "Molar Concentration Physiological Domain"
       change(nominal=NominalSolute/60),
       state_start=solute_start,
       storeUnit="mmol");
-
-     // replaceable package Types = Physiolibrary.Types;
+      extends Chemical.Interfaces.ConditionalSolventVolume;
 
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out(conc(nominal=NominalSolute/0.001), q(
@@ -1145,17 +1135,13 @@ package Chemical "Molar Concentration Physiological Domain"
             rotation=270,
             origin={0,-78})));
 
-      Physiolibrary.Types.RealIO.VolumeInput solventVolume "Volume of solvent"
-                                                                         annotation (Placement(transformation(extent={{-120,68},{-80,108}}),
-            iconTransformation(extent={{-100,40},{-60,80}})));
-
       parameter Physiolibrary.Types.AmountOfSubstance
                                         NominalSolute = 0.001
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
           annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
     equation
-      q_out.conc = solute/solventVolume;
+      q_out.conc = solute/volume;
 
       state = solute; // der(solute)=q_out.q
       change = q_out.q;
@@ -1174,59 +1160,15 @@ package Chemical "Molar Concentration Physiological Domain"
 </html>"));
     end Substance;
 
-    model NormalizedSubstance
-      "Concentration accumulation in one liter of solvent"
-      extends Icons.Substance;
-      extends Physiolibrary.States.State(
-      state(nominal=NominalSolute),
-      change(nominal=NominalSolute/60),
-      state_start=solute_start,
-      storeUnit="mmol");
-
-      Interfaces.NegativeConcentrationFlow
-                                q_out(conc(nominal=NominalSolute/0.001), q(
-            nominal=NominalSolute/60)) "Flux from/to compartment"
-                                 annotation (Placement(
-            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
-                {10,10}})));
-      parameter Physiolibrary.Types.AmountOfSubstance solute_start(nominal=
-          NominalSolute) "Initial solute amount in compartment"
-        annotation (Dialog(group="Initialization"));
-
-      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
-          NominalSolute, start=solute_start) "Current amount of solute"
-        annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
-               -90,
-            origin={102,-102}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,-78})));                                                 //, min=0)
-      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
-
-      parameter Physiolibrary.Types.AmountOfSubstance NominalSolute=0.001
-        "Numerical scale. Default is from mmol to mol."
-         annotation (Dialog(group="Numerical support of very small concentrations", tab="Solver"));
-
-    equation
-      q_out.conc = solute/NormalSolventVolume;
-
-      state = solute; // der(solute)=q_out.q
-      change = q_out.q;
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-            graphics={                                    Text(
-              extent={{-22,-102},{220,-136}},
-              lineColor={0,0,255},
-              textString="%name")}),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end NormalizedSubstance;
-
-    partial model ChemicalReactionBase "Chemical Reaction"
+    model ChemicalReaction "Chemical Reaction"
       import Physiolibrary;
+
+      parameter Real K = 1
+        "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
+        annotation (Dialog(enable=not useDissociationConstantInput));
+
+      parameter Real kf = 10^11 "Forward reaction rate coefficient [SI unit]"
+        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
       parameter Integer nS=1 "Number of substrates types"
         annotation (Dialog(group="Substrates", tab="Reaction type"));
@@ -1234,73 +1176,68 @@ package Chemical "Molar Concentration Physiological Domain"
         annotation (Dialog(group="Products", tab="Reaction type"));
 
       parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
-        "stoichiometric reaction coefficient for substrates"
+        "Stoichiometric reaction coefficient for substrates"
         annotation (Dialog(group="Substrates", tab="Reaction type"));
 
       parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
-        "stoichiometric reaction coefficients for products"
+        "Stoichiometric reaction coefficients for products"
         annotation (Dialog(group="Products", tab="Reaction type"));
 
-      parameter Real kf = 10^8 "forward reaction rate coefficient [SI unit]"
-        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
+     extends Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Physiolibrary.States.SimulationType
-                                      Simulation=Physiolibrary.States.SimulationType.NoInit
-        "Equilibrium?"
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-                      // "False, instead of one reaction in equilibrated (with zero reaction rates) system."
-      parameter Boolean isSubstrateFlowIncludedInEquilibrium[nS](each start=true)
-        "Is substrate flow equation independent?"
-         annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
-      parameter Boolean isProductFlowIncludedInEquilibrium[nP](each start=true)
-        "Is product flow equation independent?"
-         annotation (Dialog(group="Dependences in Equilibrium", tab="Simulation"));
+      parameter Physiolibrary.Types.Temperature TK=298.15 "Base temperature"
+        annotation (Dialog(tab="Temperature dependence"));
+
+      parameter Modelica.SIunits.MolarInternalEnergy dH=0
+        "Standard Enthalpy Change (negative=exothermic)"
+        annotation (Dialog(tab="Temperature dependence"));
+
+    extends Chemical.Interfaces.ConditionalSolventVolume;
+
+      parameter Boolean useDissociationConstantInput = false
+        "=true, if external dissociation ratio is used"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
+        "Dissociation constant [SI-unit]"    annotation (Placement(transformation(
+            extent={{-12,28},{28,68}}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
 
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                products[nP] "products"
+                                products[nP] "Products"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{90,-10},{110,10}}),iconTransformation(extent={{90,-10},
                 {110,10}})));
 
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                substrates[nS] "substrates"
+                                substrates[nS] "Substrates"
                                 annotation (Placement(
             transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
                {{-110,-10},{-90,10}})));  /*s[nS]*/
-      Physiolibrary.Types.MolarFlowRate rr "reaction rate";
+    protected
+      Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      Real KaT "dissociation constant in current temperature";
-
-      parameter Physiolibrary.Types.Temperature TK=298.15 "base temperature"
-        annotation (Dialog(tab="Temperature dependence"));
-
-      parameter Modelica.SIunits.MolarInternalEnergy dH=0 "enthalpy change"
-        annotation (Dialog(tab="Temperature dependence"));
+      Real KaT "Dissociation constant in current temperature";
+      Real KBase "dissociation constant at TK";
 
     equation
-      rr = kf*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));
-
-       /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
-       if Simulation==Physiolibrary.States.SimulationType.Equilibrated
-                                                        or (initial() and Simulation==
-          Physiolibrary.States.SimulationType.InitSteadyState) then
-         for i in 1:nS loop
-           if isSubstrateFlowIncludedInEquilibrium[i] then
-             rr*s[i] = substrates[i].q;
-           end if;
-         end for;
-         for j in 1:nP loop
-           if isProductFlowIncludedInEquilibrium[j] then
-             rr*p[j] = -products[j].q;
-           end if;
-         end for;
-      else //Simulation<>States.SimulationType.Equilibrated and ((not initial()) or Simulation<>States.SimulationType.InitSteadyState) then
-          rr*s = substrates.q;
-          rr*p = -products.q;
+      if not useDissociationConstantInput then
+        KBase = K;
       end if;
 
+      KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+
+      rr = kf*volume*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));  //Elementary first-order rate kinetics - the main equation
+
+      lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
+
+      rr*s = substrates.q;
+      rr*p = -products.q;
+
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
                             graphics={
             Rectangle(
               extent={{-100,-30},{100,30}},
@@ -1323,7 +1260,7 @@ package Chemical "Molar Concentration Physiological Domain"
               smooth=Smooth.None,
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=true,
+                                      Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2013</i></p>
@@ -1341,11 +1278,11 @@ P are products,
 p are stochiometric coefficients of products.  
 
 In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
-<p><br/><code></p><p><br/>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
+<p><br/><code>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
 <pre> 
 The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
-<p><br/><code></p><p><br/>The forward rate is (10^rateLevel)*K*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf=(10^rateLevel)*K. </code></p>
-<p><code>The backward rate is (10^rateLevel)*<font style=\"color: #ff0000; \">product</font>(P.^p), where kb=(10^rateLevel).</code></p>
+<p><br/><code>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
+<p><code>The backward rate is (kf/K)*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
 <pre> 
 
 It works in two modes:
@@ -1353,81 +1290,55 @@ It works in two modes:
 
 1. Dynamic mode, if EQUILIBRIUM=false.
 
-2. Equilibrium mode, if EQUILIBRIUM=true and all ConcentrationCompartments are in STEADY mode. But some zero flows must be removed instead of additional steady-state equation. 
-
-For easy switch between dynamic and equilibrium mode is recommmended to use one global boolean parameter, which set all EQUILIBRIUM parameters of the system instances.  </pre>
+2. Equilibrium mode, if EQUILIBRIUM=true and all Substances are in STEADY mode. But some zero flows must be removed instead of additional steady-state equation. </pre>
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
-    end ChemicalReactionBase;
-
-    model ChemicalReaction "Chemical Reaction"
-      extends Components.ChemicalReactionBase;
-
-      parameter Real K "dissociation constant [SI-unit]";
-      parameter Physiolibrary.Types.Temperature T=310.15 "current temperature"
-         annotation (Dialog(tab="Temperature dependence"));
-                       //body temperature
-
-    equation
-      KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
-
     end ChemicalReaction;
-
-    model ChemicalReaction2 "Chemical Reaction"
-      extends Components.ChemicalReactionBase;
-
-      parameter Real K "dissociation constant [SI-unit]";
-      Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
-                                                         annotation (Placement(
-            transformation(extent={{10,30},{50,70}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={40,40})));
-    equation
-      KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
-
-    end ChemicalReaction2;
-
-    model ChemicalReaction3 "Chemical Reaction"
-      extends Components.ChemicalReactionBase;
-
-      Modelica.Blocks.Interfaces.RealInput K "dissociation constant [SI-unit]"
-                                             annotation (Placement(transformation(
-              extent={{-12,28},{28,68}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-20,40})));
-      Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
-                                                         annotation (Placement(
-            transformation(extent={{10,30},{50,70}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={40,40})));
-
-    equation
-      KaT = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T - 1/TK));  //Hoff's equation
-
-    end ChemicalReaction3;
 
     model GasSolubility
       "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
 
-      extends Interfaces.OnePort;
-                       //q_in is dissolved in liquid and q_out is in gaseous solution"
       extends Physiolibrary.Icons.GasSolubility;
-
-      parameter Physiolibrary.Types.Fraction kH
-        "Henry's law constant such as liquid-gas concentration ratio";
+      extends Interfaces.ConditionalHeatPort;
 
       parameter Types.DiffusionPermeability solubilityRateCoef=10^3
         "The rate constant of incoming gas to solution";
 
-    equation
-      // equilibrium:  gas.conc = kH * liquid.conc;
-      q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc);
+      Physiolibrary.Types.Fraction kH
+        "Henry's law coefficient such as liquid-gas concentration ratio";
 
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
+      parameter Physiolibrary.Types.Fraction kH_T0
+        "Henry's law coefficient at base temperature";
+      parameter Physiolibrary.Types.Temperature T0=298.15
+        "Base temperature for kH_T0"
+         annotation (Dialog(tab="Temperature dependence"));
+      parameter Physiolibrary.Types.Temperature C(displayUnit="K") = 1700
+        "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
+        annotation (Dialog(tab="Temperature dependence"));
+
+      Interfaces.NegativeConcentrationFlow
+                                q_out "Gaseous solution"
+                             annotation (extent=[-10, -110; 10, -90], Placement(
+            transformation(extent={{18,-10},{38,10}}), iconTransformation(
+              extent={{-10,70},{10,90}})));
+
+      Interfaces.PositiveConcentrationFlow
+                                q_in "Dissolved in liquid"
+                                annotation (Placement(
+            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,-90},
+                {10,-70}})));
+    equation
+      q_in.q + q_out.q = 0;
+
+      kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
+
+      // equilibrium:  gas.conc = kH * liquid.conc;
+      q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc); //negative because of outflow
+
+      lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={
             Text(
               extent={{0,-100},{240,-140}},
               textString="%name",
@@ -1438,51 +1349,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         Diagram(graphics));
     end GasSolubility;
 
-    model GasSolubility2
-      "Henry's law about the solubility of a gas in a liquid"
-     extends Interfaces.OnePort;
-                       //q_in is dissolved in liquid and q_out is in gaseous solution
-     extends Physiolibrary.Icons.GasSolubility;
-
-      Physiolibrary.Types.Fraction kH
-        "Henry's law coefficient such as liquid-gas concentration ratio";
-
-      parameter Types.DiffusionPermeability solubilityRate=10^3
-        "The rate of incoming gas to solution";
-
-      parameter Physiolibrary.Types.Fraction kH_T0
-        "Henry's law coefficient at temperature T0";
-      parameter Physiolibrary.Types.Temperature T0=298.15
-        "Base temperature for kH_T0"
-         annotation (Dialog(group="Temperature dependence"));
-      parameter Physiolibrary.Types.Temperature C(displayUnit="K")
-        "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
-        annotation (Dialog(group="Temperature dependence"));
-      Physiolibrary.Types.RealIO.TemperatureInput T "temperature"
-                                                         annotation (Placement(
-            transformation(extent={{-8,-88},{32,-48}}),   iconTransformation(extent={{-20,-20},
-                {20,20}},
-            rotation=0,
-            origin={-60,0})));
-
-    equation
-      kH = kH_T0 * Modelica.Math.exp(C* (1/T - 1/T0)); // Van't Hoff equation
-      //gas.conc = kH * liquid.conc;
-      // equilibrium:  gas.conc = kH * liquid.conc;
-      q_out.q = solubilityRate*(q_out.conc - kH * q_in.conc);
-
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{0,-98},{240,-138}},
-              textString="%name",
-              lineColor={0,0,255})}),             Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(graphics));
-    end GasSolubility2;
-
     model Dilution "Adding the solvent to solution"
       extends Interfaces.OnePort;
 
@@ -1492,21 +1358,23 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
             iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=0,
-            origin={-100,-80})));
+            origin={-100,60})));
     equation
 
       q_out.conc = dilution * q_in.conc;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={Bitmap(extent={{-134,102},{66,-100}},
-                fileName="modelica://Physiolibrary/Resources/Icons/dilution.png"),
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={Bitmap(extent={{-100,101},{100,-101}},
+                fileName="modelica://Physiolibrary/Resources/Icons/dilution.png",
+              origin={0,33},
+              rotation=270),
             Text(
               extent={{-120,20},{120,-20}},
               textString="%name",
               lineColor={0,0,255},
-              origin={70,-2},
-              rotation=90)}),         Diagram(coordinateSystem(preserveAspectRatio=true,
+              origin={-2,-60},
+              rotation=180)}),        Diagram(coordinateSystem(preserveAspectRatio=true,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1514,295 +1382,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end Dilution;
-
-    model Reabsorption "Reabsorption of input fraction"
-       extends Icons.Reabsorption;
-      Interfaces.PositiveConcentrationFlow
-                                Inflow "Tubular inflow"              annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
-              extent={{-108,30},{-88,50}})));
-      Interfaces.NegativeConcentrationFlow
-                                Outflow "Tubular outflow"
-        annotation (Placement(transformation(extent={{80,-20},{120,20}}),
-            iconTransformation(extent={{88,30},{108,50}})));
-
-      Interfaces.NegativeConcentrationFlow
-                                Reabsorption "Reabsorption from tubules"          annotation (Placement(
-            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-              extent={{-10,-110},{10,-90}})));
-      Physiolibrary.Types.RealIO.FractionInput ReabsorbedFract
-        "Fraction of molar inflow, that is reabsorbed"
-                                   annotation (Placement(transformation(extent={{-90,-66},
-                {-70,-46}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=-90,
-            origin={32,80})));
-
-      Sensors.FlowMeasure
-                  flowMeasure
-        annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
-      Modelica.Blocks.Math.Product product1
-        annotation (Placement(transformation(extent={{-44,-50},{-24,-30}})));
-      Components.SoluteFlowPump
-                     soluteFlowPump annotation (Placement(transformation(
-            extent={{-10,10},{10,-10}},
-            rotation=270,
-            origin={0,-40})));
-    equation
-
-      connect(Inflow, flowMeasure.q_in) annotation (Line(
-          points={{-100,0},{-85,0},{-85,-10},{-70,-10}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(ReabsorbedFract, product1.u2) annotation (Line(
-          points={{-80,-56},{-56,-56},{-56,-46},{-46,-46}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-          points={{-62,0},{-46,0},{-46,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-          points={{-10,-40},{0,-40},{0,-80}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-          points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, Outflow) annotation (Line(
-          points={{-70,10},{15,10},{15,0},{100,0}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-          points={{-70,10},{10,10},{10,-40}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{0,-102},{154,-132}},
-              lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Reabsorption;
-
-    model Reabsorption2 "Reabsorption of input fraction"
-      extends Icons.Reabsorption2;
-      import Physiolibrary;
-
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                Inflow "Tubular inflow"              annotation (Placement(
-            transformation(extent={{-120,-18},{-80,22}}), iconTransformation(
-              extent={{-110,30},{-90,50}})));
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                Outflow "Tubular outflow"
-        annotation (Placement(transformation(extent={{80,-18},{120,22}}),
-            iconTransformation(extent={{90,30},{110,50}})));
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                Reabsorption "Reabsorption from tubules"          annotation (Placement(
-            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-              extent={{-10,-110},{10,-90}})));
-      Physiolibrary.Types.RealIO.FractionInput Normal
-        "Reabsorption fraction if Effects=1"
-                                   annotation (Placement(transformation(extent={{-100,76},
-                {-80,96}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=0,
-            origin={-80,-20})));
-      Modelica.Blocks.Interfaces.RealInput Effects(
-                                                  final unit="1")
-        "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=Normal^(1/Effects)"
-                                   annotation (Placement(transformation(extent={{-100,58},
-                {-80,78}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=-90,
-            origin={0,80})));
-
-      Physiolibrary.Types.RealIO.MolarFlowRateInput MaxReab
-        "Maximal allowed reabsorption molar flow rate"
-                                   annotation (Placement(transformation(extent={{-24,38},
-                {-4,58}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=0,
-            origin={-80,-60})));
-      Physiolibrary.Types.RealIO.FractionOutput ReabFract
-        "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{72,60},
-                {88,76}}),   iconTransformation(extent={{80,-100},{120,-60}})));
-      Physiolibrary.Chemical.Sensors.FlowMeasure
-                  flowMeasure
-        annotation (Placement(transformation(extent={{-78,-8},{-58,12}})));
-      Physiolibrary.Chemical.Components.SoluteFlowPump
-                     soluteFlowPump annotation (Placement(transformation(
-            extent={{-10,10},{10,-10}},
-            rotation=270,
-            origin={0,-40})));
-      Modelica.Blocks.Math.Product product1
-        annotation (Placement(transformation(extent={{-44,-50},{-24,-30}})));
-      Physiolibrary.Blocks.Math.Reciprocal
-                        reciprocal
-        annotation (Placement(transformation(extent={{-62,58},{-42,78}})));
-      Physiolibrary.Blocks.Math.Pow2
-                  avg1
-        annotation (Placement(transformation(extent={{-10,80},{-2,88}})));
-      Modelica.Blocks.Math.Min min1
-        annotation (Placement(transformation(extent={{16,58},{36,78}})));
-    equation
-
-      connect(Inflow, flowMeasure.q_in) annotation (Line(
-          points={{-100,2},{-84,2},{-84,-8},{-68,-8}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-          points={{-60,2},{-46,2},{-46,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-          points={{-10,-40},{0,-40},{0,-80}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-          points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, Outflow) annotation (Line(
-          points={{-68,12},{16,12},{16,2},{100,2}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-          points={{-68,12},{10,12},{10,-40}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(Effects, reciprocal.u) annotation (Line(
-          points={{-90,68},{-64,68}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Normal, avg1.base) annotation (Line(
-          points={{-90,86},{-78,86},{-82,86.4},{-10,86.4}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(reciprocal.y, avg1.exponent) annotation (Line(
-          points={{-41,68},{-26,68},{-26,81.6},{-10,81.6}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(avg1.y, min1.u1) annotation (Line(
-          points={{-1.6,84},{6,84},{6,74},{14,74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(MaxReab, min1.u2) annotation (Line(
-          points={{-14,48},{0,48},{0,62},{14,62}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(min1.y, product1.u2) annotation (Line(
-          points={{37,68},{46,68},{46,32},{-86,32},{-86,-46},{-46,-46}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(min1.y, ReabFract) annotation (Line(
-          points={{37,68},{80,68}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{2,-100},{196,-134}},
-              lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Reabsorption2;
-
-    model FullReabsorption "Full reabsorption with limit (i.e. renal glucose)"
-      extends Icons.Reabsorption;
-      parameter Physiolibrary.Types.MolarFlowRate MaxReab
-        "Maximal reabsorption solute flow rate";
-
-      Interfaces.PositiveConcentrationFlow
-                                Inflow "Tubular inflow"              annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
-              extent={{-108,30},{-88,50}})));
-      Interfaces.NegativeConcentrationFlow
-                                Outflow "Tubular outflow"
-        annotation (Placement(transformation(extent={{80,-20},{120,20}}),
-            iconTransformation(extent={{88,30},{108,50}})));
-
-      Interfaces.NegativeConcentrationFlow
-                                Reabsorption "Reabsorption from tubules"          annotation (Placement(
-            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-              extent={{-8,-110},{12,-90}})));
-
-      Sensors.FlowMeasure
-                  flowMeasure
-        annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
-      Modelica.Blocks.Math.Min     product1
-        annotation (Placement(transformation(extent={{-44,-50},{-24,-30}})));
-      Components.SoluteFlowPump
-                     soluteFlowPump annotation (Placement(transformation(
-            extent={{-10,10},{10,-10}},
-            rotation=270,
-            origin={0,-40})));
-      Modelica.Blocks.Sources.Constant molarFlowConstant(k=MaxReab)
-        annotation (Placement(transformation(extent={{-90,-62},{-70,-42}})));
-    equation
-
-      connect(Inflow, flowMeasure.q_in) annotation (Line(
-          points={{-100,0},{-85,0},{-85,-10},{-70,-10}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure.actualFlow, product1.u1) annotation (Line(
-          points={{-62,0},{-46,0},{-46,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(soluteFlowPump.q_out, Reabsorption) annotation (Line(
-          points={{-10,-40},{0,-40},{0,-80}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(product1.y, soluteFlowPump.soluteFlow) annotation (Line(
-          points={{-23,-40},{-11.5,-40},{-11.5,-34},{8.88178e-016,-34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, Outflow) annotation (Line(
-          points={{-70,10},{0,10},{0,-30},{100,-30},{100,0}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure.q_out, soluteFlowPump.q_in) annotation (Line(
-          points={{-70,10},{10,10},{10,-40}},
-          color={200,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(molarFlowConstant.y, product1.u2) annotation (Line(
-          points={{-69,-52},{-58,-52},{-58,-46},{-46,-46}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics={
-            Text(
-              extent={{0,-102},{180,-130}},
-              lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end FullReabsorption;
 
     model MichaelisMenten "Basic enzyme kinetics"
       extends Icons.MichaelisMenten;
@@ -1816,11 +1395,10 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
      parameter Types.Concentration Km
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
-      Components.NormalizedSubstance
-                          ES(Simulation=Simulation, solute_start=0)
+      Substance           ES(Simulation=Simulation, solute_start=0)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      Components.NormalizedSubstance
-                          E(Simulation=Simulation, solute_start=tE)
+      Substance           E(Simulation=Simulation, solute_start=tE,
+        isDependent=true)
         annotation (Placement(transformation(extent={{-10,38},{10,58}})));
       Components.ChemicalReaction
                        chemicalReaction(nS=2,
@@ -1829,10 +1407,8 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
         annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
       Components.ChemicalReaction
                        chemicalReaction1(nP=2,
-        Simulation=Simulation,
         K=Modelica.Constants.inf,
-        kf=k_cat,
-        isSubstrateFlowIncludedInEquilibrium={false})
+        kf=k_cat)
         annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
      // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
@@ -1891,6 +1467,7 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       "Chemical species definition by independent binding sides of macromolecule"
       extends Icons.Speciation;
       extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated,NumberOfNormalizedStates=NumberOfSubunitTypes-1);
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
 
       parameter Integer NumberOfSubunitTypes=1
         "Number of subunit types occuring in macromolecule";
@@ -1912,12 +1489,6 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       parameter Real numberOfSubunit[NumberOfSubunitTypes]
         "Number of identical subunits instances in macromolecule. First should be non-zero.";
 
-      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
-
-      parameter Boolean isSubunitFlowIncludedInEquilibrium(start=true)
-        "Is subunit flow equation included in equilibrium calculation?"
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-
     protected
       Real fractions[NumberOfSubunitTypes];
     public
@@ -1937,26 +1508,15 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
       totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
 
       fractions = if
-                    (totalSubsystemAmount < Modelica.Constants.eps) then zeros(NumberOfSubunitTypes) else subunitSpecies.conc ./ (totalSubunitAmount/NormalSolventVolume);
+                    (totalSubsystemAmount < Modelica.Constants.eps) then zeros(NumberOfSubunitTypes) else subunitSpecies.conc ./ (totalSubunitAmount/volume);
 
-      species.conc = (totalSubsystemAmount/NormalSolventVolume)*product(fractions.^numberOfSubunit);
+      species.conc = (totalSubsystemAmount/volume)*product(fractions.^numberOfSubunit);
 
       for i in 2:NumberOfSubunitTypes loop
              normalizedState[i-1]*totalSubsystemAmount*numberOfSubunit[i] = totalSubunitAmount[i];
       end for;
 
-      /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0), where both zeros are values from parameters. ***/
-      if Simulation==Physiolibrary.States.SimulationType.Equilibrated
-                                                        or (initial() and Simulation==
-          Physiolibrary.States.SimulationType.InitSteadyState) then
-
-         if isSubunitFlowIncludedInEquilibrium then
-            subunitSpecies[1].q = -species.q * numberOfSubunit[1];
-         end if;
-      else  //Simulation<>States.SimulationType.Equilibrated and ((not initial()) or Simulation<>States.SimulationType.InitSteadyState) then
-      /*** ***/
-         subunitSpecies.q = -species.q * numberOfSubunit;
-      end if;
+      subunitSpecies.q = -species.q * numberOfSubunit;
 
       annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
@@ -1985,34 +1545,127 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
 <p><br/>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
 </html>"));
     end Speciation;
+
+    model Reabsorption "Reabsorption of input fraction"
+       extends Icons.Reabsorption;
+
+      parameter Boolean useEffect = false
+        "=true, if reabsorption fraction is BaseReabsorption^(1/Effect)"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Boolean useMaxReabInput = false
+        "=true, if external maximum of reabsorption molar flow is used"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Boolean useBaseReabsorption = false
+        "=false, if BaseReabsorption=1"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
+        "Maximal reabsorption molar flow if useMaxReabInput=false"
+        annotation (Dialog(enable=not useMaxReabInput));
+
+      Interfaces.PositiveConcentrationFlow
+                                Inflow "Tubular inflow"              annotation (Placement(
+            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
+              extent={{-108,30},{-88,50}})));
+      Interfaces.NegativeConcentrationFlow
+                                Outflow "Tubular outflow"
+        annotation (Placement(transformation(extent={{80,-20},{120,20}}),
+            iconTransformation(extent={{88,30},{108,50}})));
+
+      Interfaces.NegativeConcentrationFlow
+                                Reabsorption "Reabsorption from tubules"          annotation (Placement(
+            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
+              extent={{-10,-110},{10,-90}})));
+      Physiolibrary.Types.RealIO.FractionInput baseReabsorption=baseReabFract if useBaseReabsorption
+        "Base fraction of molar inflow for reabsorption flow"
+                                   annotation (Placement(transformation(extent={{-90,-66},
+                {-70,-46}}),
+                       iconTransformation(extent={{-20,-20},{20,20}},
+                                                                    rotation=-90,
+            origin={40,80})));
+
+      Types.RealIO.FractionInput Effect(displayUnit="1")=e if useEffect
+        "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect)"
+                                   annotation (Placement(transformation(extent={{-98,58},
+                {-78,78}}),
+                       iconTransformation(extent={{-20,-20},{20,20}},
+                                                                    rotation=-90,
+            origin={0,80})));
+      Types.RealIO.MolarFlowRateInput               MaxReab=mr if useMaxReabInput
+        "Maximal allowed reabsorption molar flow rate"
+                                   annotation (Placement(transformation(extent={{-22,38},
+                {-2,58}}),
+                       iconTransformation(extent={{-20,-20},{20,20}},
+                                                                    rotation=0,
+            origin={-80,-60})));
+      Types.RealIO.FractionOutput               ReabFract=reabFract if useEffect
+        "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{76,50},
+                {92,66}}),   iconTransformation(extent={{80,-100},{120,-60}})));
+
+      Types.Fraction reabFract,baseReabFract,e;
+      Types.MolarFlowRate mr;
+    equation
+      Inflow.conc = Outflow.conc;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+      Reabsorption.q=-min(mr,reabFract*Inflow.q);
+
+      reabFract = baseReabFract^(1/e);
+
+      if not useBaseReabsorption then
+        baseReabFract=1;
+      end if;
+
+      if not useMaxReabInput then
+        mr=MaxReabsorption;
+      end if;
+
+      if not useEffect then
+        e=1;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={
+            Text(
+              extent={{0,-102},{154,-132}},
+              lineColor={0,0,255},
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+                      extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end Reabsorption;
   end Components;
 
   package Sensors
     extends Modelica.Icons.SensorsPackage;
 
-    model FlowMeasure "Measure of molar flow"
+    model MolarFlowMeasure "Measure of molar flow"
       extends Interfaces.OnePort;
       extends Icons.MolarFlowMeasure;
 
      Physiolibrary.Types.RealIO.MolarFlowRateOutput actualFlow
                              annotation (Placement(transformation(extent={{-20,30},{20,70}}),
             iconTransformation(extent={{-20,-20},{20,20}},
-                                                         rotation=0,
-            origin={80,0})));
+                                                         rotation=270,
+            origin={0,-42})));
     equation
       q_in.conc = q_out.conc;
 
       actualFlow = q_in.q;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end FlowMeasure;
+    end MolarFlowMeasure;
 
     model ConcentrationMeasure "Measure of molar concentration"
 
@@ -2137,38 +1790,58 @@ For easy switch between dynamic and equilibrium mode is recommmended to use one 
     end MolarInflux;
 
     model UnlimitedStorage "Constant concentration source"
-     extends Icons.Substance;
+     //extends Icons.Substance;
 
       Interfaces.NegativeConcentrationFlow
                                 q_out
         "constant concentration with any possible flow"
                                  annotation (Placement(
-            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-8,-10},
-                {12,10}})));
-      parameter Physiolibrary.Types.Concentration concentration;
+            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{90,-10},
+                {110,10}})));
+      parameter Physiolibrary.Types.Concentration Concentration;
 
-      parameter Physiolibrary.States.SimulationType
-                                      Simulation=Physiolibrary.States.SimulationType.NoInit
-        "If Equilibrated, then zero flow rate is added."
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
+      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.NoInit
+        "If in equilibrium, then zero-flow equation is added."
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
     equation
-      q_out.conc = concentration;
+      q_out.conc = Concentration;
 
-      /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
       if Simulation==States.SimulationType.Equilibrated then
-        q_out.q=0;
+        q_out.q = 0;
       end if;
 
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-            graphics={Text(
-              extent={{-100,102},{100,124}},
+              preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+            graphics={
+            Rectangle(
+              extent={{-100,100},{100,-100}},
               lineColor={0,0,0},
-              fillPattern=FillPattern.VerticalCylinder,
-              fillColor={215,215,215},
-              textString="(%concentration)")}),
+              pattern=LinePattern.None,
+              fillColor={107,45,134},
+              fillPattern=FillPattern.Backward),
+            Text(
+              extent={{0,0},{-100,-100}},
+              lineColor={0,0,0},
+              textString="conc"),
+            Line(
+              points={{-62,0},{56,0}},
+              color={191,0,0},
+              thickness=0.5),
+            Polygon(
+              points={{38,-20},{38,20},{78,0},{38,-20}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,150},{150,110}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-150,-110},{150,-140}},
+              lineColor={0,0,0},
+              textString="Conc=%Concentration")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -2263,30 +1936,119 @@ Connector with one flow signal of type Real.
                                 q_out "Solute outflow"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{18,-10},{38,10}}), iconTransformation(
-              extent={{-10,90},{10,110}})));
+              extent={{90,-12},{110,8}})));
 
       Interfaces.PositiveConcentrationFlow
                                 q_in "Solute inflow"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,
-                -110},{10,-90}})));
+            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-110,
+                -12},{-90,8}})));
+    equation
+      q_in.q + q_out.q = 0;
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),
+                             graphics));
+    end OnePort;
 
-      parameter Physiolibrary.States.SimulationType
-                                      Simulation=Physiolibrary.States.SimulationType.NoInit
-        "False, instead of one reaction in equilibrated (with zero reaction rates) system."
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
-      parameter Boolean isFlowIncludedInEquilibrium=true
-        "Is substrate flow equation included in equilibrium calculation?"
-        annotation (Dialog(group="Simulation type", tab="Simulation"));
+    partial model ConditionalHeatPort
+      "Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network"
+
+      parameter Boolean useHeatPort = false "=true, if HeatPort is enabled"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="External inputs/outputs"));
+      parameter Physiolibrary.Types.Temperature T=310.15
+        "Fixed device temperature if useHeatPort = false"
+        annotation (Dialog(enable=not useHeatPort,tab="Temperature dependence"));
+
+      Physiolibrary.Thermal.Interfaces.PositiveHeatFlow heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
+            iconTransformation(extent={{-10,-10},{10,10}})));
+      Modelica.SIunits.Power lossHeat
+        "Loss heat leaving component via HeatPort";
+      Modelica.SIunits.Temperature T_heatPort "Temperature of HeatPort";
+    equation
+      if not useHeatPort then
+         T_heatPort = T;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
+        Documentation(revisions="<html>
+<ul>
+<li><i> February 17, 2009   </i>
+       by Christoph Clauss<br> initially implemented<br>
+       </li>
+</ul>
+</html>",     info="<html>
+<p>
+This partial model provides a conditional heating port for the connection to a thermal network.
+</p>
+<ul>
+<li> If <b>useHeatPort</b> is set to <b>false</b> (default), no heat port is available, and the thermal
+     loss power flows internally to the ground. In this case, the parameter <b>T</b> specifies
+     the fixed device temperature (the default for T = 20<sup>o</sup>C).</li>
+<li> If <b>useHeatPort</b> is set to <b>true</b>, a heat port is available.</li>
+</ul>
+
+<p>
+If this model is used, the loss power has to be provided by an equation in the model which inherits from
+ConditionalHeatingPort model (<b>lossPower = ...</b>). As device temperature
+<b>T_heatPort</b> can be used to describe the influence of the device temperature
+on the model behaviour.
+</p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end ConditionalHeatPort;
+
+    partial model ConditionalSolventVolume
+      "Chemical processes can be modeled with or without(normalized to 1 liter) variable solvent volume"
+
+      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
+
+      parameter Boolean isNormalizedVolume = true
+        "=true, if solvent volume is 1 liter"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      Physiolibrary.Types.RealIO.VolumeInput solventVolume=volume if not isNormalizedVolume annotation (Placement(
+            transformation(extent={{-52,28},{-12,68}}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-40,40})));
+
+      Physiolibrary.Types.Volume volume "SolventVolume";
 
     equation
-       /*** this could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0+0 = 0). ***/
-       if Simulation<>States.SimulationType.Equilibrated or isFlowIncludedInEquilibrium then
-          q_in.q + q_out.q = 0;
-       end if;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
-    end OnePort;
+      if isNormalizedVolume then
+        volume = NormalSolventVolume;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}),                                                                 graphics),
+        Documentation(revisions="<html>
+<ul>
+<li><i> February 17, 2009   </i>
+       by Christoph Clauss<br> initially implemented<br>
+       </li>
+</ul>
+</html>",     info="<html>
+<p>
+This partial model provides a conditional heating port for the connection to a thermal network.
+</p>
+<ul>
+<li> If <b>useHeatPort</b> is set to <b>false</b> (default), no heat port is available, and the thermal
+     loss power flows internally to the ground. In this case, the parameter <b>T</b> specifies
+     the fixed device temperature (the default for T = 20<sup>o</sup>C).</li>
+<li> If <b>useHeatPort</b> is set to <b>true</b>, a heat port is available.</li>
+</ul>
+
+<p>
+If this model is used, the loss power has to be provided by an equation in the model which inherits from
+ConditionalHeatingPort model (<b>lossPower = ...</b>). As device temperature
+<b>T_heatPort</b> can be used to describe the influence of the device temperature
+on the model behaviour.
+</p>
+</html>"));
+    end ConditionalSolventVolume;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
