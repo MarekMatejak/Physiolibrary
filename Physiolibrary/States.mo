@@ -147,7 +147,7 @@ package States "Dynamic simulation / Equilibrium"
       "Type of simulation."
       annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-    parameter Boolean SAVE_RESULTS(start=false)
+    parameter Boolean SAVE_RESULTS = false
       "save and test final state values with original values"
        annotation (Dialog(group="Value I/O",tab="IO"));
 

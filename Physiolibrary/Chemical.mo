@@ -599,13 +599,13 @@ package Chemical "Molar Concentration and Molar Flow"
           smooth=Smooth.None));
       connect(DeoxyRHm.q_out, R0_in_R.subunitSpecies[1])
                                                    annotation (Line(
-          points={{-32,-26},{-42,-26},{-42,-80}},
+          points={{-32,-26},{-50,-26},{-50,-70}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T0_in_T.subunitSpecies[1], DeoxyTHm.q_out)
                                                    annotation (Line(
-          points={{74,-80},{82,-80},{82,-26},{88,-26}},
+          points={{66,-70},{82,-70},{82,-26},{88,-26}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -630,36 +630,35 @@ package Chemical "Molar Concentration and Molar Flow"
           smooth=Smooth.None));
       connect(add.y, R0_in_R.totalSubunitAmount[1])
                                               annotation (Line(
-          points={{-54,-58.4},{-54,-72}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(DeoxyRHm.solute, add.u1) annotation (Line(
-          points={{-32,-33.8},{-32,-42},{-52,-42},{-52,-49.2},{-51.6,-49.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(OxyRHm.solute, add.u2) annotation (Line(
-          points={{-88,-33.8},{-88,-42},{-56,-42},{-56,-50},{-56.4,-50},{
-              -56.4,-49.2}},
+          points={{-54,-58.4},{-54,-66},{-54,-80},{-58,-80}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(add1.y, T0_in_T.totalSubunitAmount[1])
                                                annotation (Line(
-          points={{62,-58.4},{62,-72}},
+          points={{62,-58.4},{62,-66},{62,-80},{58,-80}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyTHm.solute, add1.u2) annotation (Line(
-          points={{32,-33.8},{32,-42},{59.6,-42},{59.6,-49.2}},
+          points={{32,-36},{32,-42},{59.6,-42},{59.6,-49.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-          points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-33.8}},
+          points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-36}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
           points={{6,32},{6,8}},
           color={107,45,134},
           thickness=1,
+          smooth=Smooth.None));
+      connect(DeoxyRHm.solute, add.u1) annotation (Line(
+          points={{-32,-36},{-32,-36},{-32,-44},{-51.6,-44},{-51.6,-49.2}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(OxyRHm.solute, add.u2) annotation (Line(
+          points={{-88,-36},{-88,-44},{-56.4,-44},{-56.4,-49.2}},
+          color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
@@ -758,8 +757,8 @@ package Chemical "Molar Concentration and Molar Flow"
   package Components
     extends Modelica.Icons.Package;
     model Diffusion "Solute diffusion"
-      extends Icons.Diffusion;
-      extends Interfaces.OnePort;
+      extends Physiolibrary.Icons.Diffusion;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
       parameter Physiolibrary.Types.DiffusionPermeability cond
         "Diffusion conductance";
@@ -783,19 +782,17 @@ package Chemical "Molar Concentration and Molar Flow"
     end Diffusion;
 
     model MolarStream "Molar flow of solute in stream"
-      extends Interfaces.OnePort;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
         "Solvent flow (solution volume flow = solventFlow + solute volume flow)!"
-        annotation (Placement(transformation(extent={{-20,26},{20,66}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
-
     equation
     //  assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
-      q_in.q = solventFlow*q_in.conc
+      q_in.q = solventFlow*q_in.conc;
+
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
@@ -818,7 +815,8 @@ package Chemical "Molar Concentration and Molar Flow"
               textString="%name",
               lineColor={0,0,255},
               origin={2,-74},
-              rotation=180)}),        Diagram(coordinateSystem(preserveAspectRatio=true,
+              rotation=180)}),
+         Diagram(coordinateSystem(preserveAspectRatio=true,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -863,20 +861,16 @@ package Chemical "Molar Concentration and Molar Flow"
 <td><p align=\"center\">=-q_in.q</p></td>
 </tr>
 </table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),       graphics));
     end MolarStream;
 
     model Clearance "Clearance with solvent outflow"
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "solute outflow"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
-               {{-110,-10},{-90,10}})));
+            transformation(extent={{-110,-10},{-90,10}})));
 
       parameter Boolean useSolventFlow = false
         "=true, if clearence is expressed from outflow"
@@ -888,9 +882,7 @@ package Chemical "Molar Concentration and Molar Flow"
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
         "solvent outflow"
-       annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
@@ -928,7 +920,7 @@ package Chemical "Molar Concentration and Molar Flow"
             Text(
               extent={{-100,-30},{100,-50}},
               lineColor={0,0,0},
-              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=true,
+              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -957,17 +949,14 @@ package Chemical "Molar Concentration and Molar Flow"
 
       Physiolibrary.Types.RealIO.VolumeInput volume
         "Degradation volume, where degradation takes place."
-         annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "Degraded solute outflow"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
-               {{-110,-10},{-90,10}})));
+            transformation(extent={{-110,-10},{-90,10}})));
 
       parameter Physiolibrary.Types.Time HalfTime
         "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
@@ -1034,7 +1023,7 @@ package Chemical "Molar Concentration and Molar Flow"
               smooth=Smooth.None,
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=true,
+                                      Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -1060,13 +1049,11 @@ package Chemical "Molar Concentration and Molar Flow"
     end Degradation;
 
     model SoluteFlowPump "Active pumping of solute"
-      extends Interfaces.OnePort;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
       Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow
         "Solute flow rate"
-        annotation (Placement(transformation(extent={{-20,40},{20,80}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
 
@@ -1095,7 +1082,7 @@ package Chemical "Molar Concentration and Molar Flow"
               lineColor={0,0,255},
               origin={-10,-76},
               rotation=360,
-              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=true,
+              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1114,12 +1101,6 @@ package Chemical "Molar Concentration and Molar Flow"
       storeUnit="mmol");
       extends Chemical.Interfaces.ConditionalSolventVolume;
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
-                                q_out(conc(nominal=NominalSolute/0.001), q(
-            nominal=NominalSolute/60)) "Flux from/to compartment"
-                                 annotation (Placement(
-            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
-                {10,10}})));
       parameter Physiolibrary.Types.AmountOfSubstance
                                         solute_start(nominal=NominalSolute)
         "Initial solute amount in compartment"
@@ -1127,18 +1108,18 @@ package Chemical "Molar Concentration and Molar Flow"
 
       Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
           NominalSolute) "Current amount of solute"
-        annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
-               -90,
-            origin={102,-102}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-78})));
+            origin={0,-100})));
 
       parameter Physiolibrary.Types.AmountOfSubstance
                                         NominalSolute = 0.001
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
           annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow q_out
+        "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
+                -10},{10,10}})));
     equation
       q_out.conc = solute/volume;
 
@@ -1146,9 +1127,9 @@ package Chemical "Molar Concentration and Molar Flow"
       change = q_out.q;
 
                                                                                                         annotation (choicesAllMatching=true,
-                  Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                  Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+              preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={                                    Text(
               extent={{-22,-102},{220,-136}},
               lineColor={0,0,255},
@@ -1198,23 +1179,20 @@ package Chemical "Molar Concentration and Molar Flow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
       Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
-        "Dissociation constant [SI-unit]"    annotation (Placement(transformation(
-            extent={{-12,28},{28,68}}), iconTransformation(
+        "Dissociation constant [SI-unit]" annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 products[nP] "Products"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{90,-10},{110,10}}),iconTransformation(extent={{90,-10},
-                {110,10}})));
+                             annotation (Placement(
+            transformation(extent={{90,-10},{110,10}})));
 
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 substrates[nS] "Substrates"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
-               {{-110,-10},{-90,10}})));  /*s[nS]*/
+            transformation(extent={{-110,-10},{-90,10}})));  /*s[nS]*/
     protected
       Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
 
@@ -1298,9 +1276,9 @@ It works in two modes:
       "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
 
       extends Physiolibrary.Icons.GasSolubility;
-      extends Interfaces.ConditionalHeatPort;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Types.DiffusionPermeability solubilityRateCoef=10^3
+      parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^3
         "The rate constant of incoming gas to solution";
 
       Physiolibrary.Types.Fraction kH
@@ -1315,17 +1293,15 @@ It works in two modes:
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
         annotation (Dialog(tab="Temperature dependence"));
 
-      Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out "Gaseous solution"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{18,-10},{38,10}}), iconTransformation(
-              extent={{-10,70},{10,90}})));
+                             annotation (Placement(
+            transformation(extent={{-10,90},{10,110}})));
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "Dissolved in liquid"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,-90},
-                {10,-70}})));
+            transformation(extent={{-10,-90},{10,-70}})));
     equation
       q_in.q + q_out.q = 0;
 
@@ -1336,28 +1312,18 @@ It works in two modes:
 
       lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
-       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics={
-            Text(
-              extent={{0,-100},{240,-140}},
-              textString="%name",
-              lineColor={0,0,255})}),             Documentation(revisions="<html>
+       annotation (Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(graphics));
+</html>"));
     end GasSolubility;
 
     model Dilution "Adding the solvent to solution"
-      extends Interfaces.OnePort;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
       Physiolibrary.Types.RealIO.FractionInput dilution
         "Fraction of final undilutes solution"
-        annotation (Placement(transformation(extent={{-16,8},{24,48}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-100,60})));
+        annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
     equation
 
       q_out.conc = dilution * q_in.conc;
@@ -1365,7 +1331,7 @@ It works in two modes:
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                 100,100}}), graphics={Bitmap(extent={{-100,101},{100,-101}},
-                fileName="modelica://Physiolibrary/Resources/Icons/dilution.png",
+                fileName="Resources/Icons/dilution.png",
               origin={0,33},
               rotation=270),
             Text(
@@ -1373,25 +1339,26 @@ It works in two modes:
               textString="%name",
               lineColor={0,0,255},
               origin={-2,-60},
-              rotation=180)}),        Diagram(coordinateSystem(preserveAspectRatio=true,
+              rotation=180)}),
+        Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end Dilution;
 
     model MichaelisMenten "Basic enzyme kinetics"
-      extends Icons.MichaelisMenten;
+      extends Physiolibrary.Icons.MichaelisMenten;
     protected
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated);
 
     public
-     parameter Types.AmountOfSubstance tE "total enzyme concentration";
+     parameter Physiolibrary.Types.AmountOfSubstance tE
+        "total enzyme concentration";
      parameter Real k_cat(unit="m3/s", displayUnit="l/min")
         "forward rate of second reaction";
-     parameter Types.Concentration Km
+     parameter Physiolibrary.Types.Concentration Km
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
       Substance           ES(Simulation=Simulation, solute_start=0)
@@ -1411,14 +1378,12 @@ It works in two modes:
         annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
      // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 p
-        annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}),
-            iconTransformation(extent={{-110,-70},{-90,-50}})));
-      Interfaces.NegativeConcentrationFlow
+        annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 n
-        annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
-            iconTransformation(extent={{90,-70},{110,-50}})));
+        annotation (Placement(transformation(extent={{90,-70},{110,-50}})));
     equation
       normalizedState[1]*tE = E.solute + ES.solute;
 
@@ -1453,18 +1418,12 @@ It works in two modes:
           color={200,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={
-            Text(
-              extent={{-100,-100},{100,-126}},
-              lineColor={0,0,255},
-              textString="%name")}));
+
     end MichaelisMenten;
 
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
-      extends Icons.Speciation;
+      extends Physiolibrary.Icons.Speciation;
       extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated,NumberOfNormalizedStates=NumberOfSubunitTypes-1);
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
 
@@ -1474,16 +1433,12 @@ It works in two modes:
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                                        species
         "Defined macromolecule form"                                                        annotation (Placement(
-            transformation(extent={{90,-90},{110,-70}}),iconTransformation(extent={{90,-90},
-                {110,-70}})));
+            transformation(extent={{90,-90},{110,-70}})));
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                                        subunitSpecies[NumberOfSubunitTypes]
         "Definid species of macromolecule subunit types (in NormalSolventVolume)"
                                                                                                             annotation (Placement(
-            transformation(extent={{-10,90},{10,110}}),   iconTransformation(extent={{-10,-10},
-                {10,10}},
-            rotation=270,
-            origin={-80,0})));
+            transformation(extent={{-10,90},{10,110}})));
 
       parameter Real numberOfSubunit[NumberOfSubunitTypes]
         "Number of identical subunits instances in macromolecule. First should be non-zero.";
@@ -1491,18 +1446,15 @@ It works in two modes:
     protected
       Real fractions[NumberOfSubunitTypes];
     public
-      Types.RealIO.AmountOfSubstanceInput totalSubunitAmount[NumberOfSubunitTypes]
-        annotation (Placement(transformation(extent={{-120,60},{-80,100}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={40,80})));
-      Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput totalSubunitAmount[NumberOfSubunitTypes]
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,0})));
+      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount
        annotation (Placement(
-            transformation(extent={{-10,-90},{10,-70}}), iconTransformation(
-            extent={{-10,-10},{10,10}},
+            transformation(extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={0,-100})));                                 //(start=1e-8)
+            origin={0,-80})));                                                             //(start=1e-8)
     equation
       totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
 
@@ -1517,16 +1469,7 @@ It works in two modes:
 
       subunitSpecies.q = -species.q * numberOfSubunit;
 
-      annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics),
-                  Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-            graphics={                                    Text(
-              extent={{-22,-102},{220,-136}},
-              lineColor={0,0,255},
-              textString="%name")}),
+      annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",
         Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1546,7 +1489,7 @@ It works in two modes:
     end Speciation;
 
     model Reabsorption "Reabsorption of input fraction"
-       extends Icons.Reabsorption;
+       extends Physiolibrary.Icons.Reabsorption;
 
       parameter Boolean useEffect = false
         "=true, if reabsorption fraction is BaseReabsorption^(1/Effect)"
@@ -1560,51 +1503,43 @@ It works in two modes:
         "=false, if BaseReabsorption=1"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
+      parameter Physiolibrary.Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
         "Maximal reabsorption molar flow if useMaxReabInput=false"
         annotation (Dialog(enable=not useMaxReabInput));
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 Inflow "Tubular inflow"              annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(
-              extent={{-108,30},{-88,50}})));
-      Interfaces.NegativeConcentrationFlow
+            transformation(extent={{-110,30},{-90,50}})));
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 Outflow "Tubular outflow"
-        annotation (Placement(transformation(extent={{80,-20},{120,20}}),
-            iconTransformation(extent={{88,30},{108,50}})));
+        annotation (Placement(transformation(extent={{90,30},{110,50}})));
 
-      Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 Reabsorption "Reabsorption from tubules"          annotation (Placement(
-            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-              extent={{-10,-110},{10,-90}})));
+            transformation(extent={{-10,-110},{10,-90}})));
       Physiolibrary.Types.RealIO.FractionInput baseReabsorption=baseReabFract if useBaseReabsorption
         "Base fraction of molar inflow for reabsorption flow"
-                                   annotation (Placement(transformation(extent={{-90,-66},
-                {-70,-46}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=-90,
-            origin={40,80})));
+                                   annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,100})));
 
-      Types.RealIO.FractionInput Effect(displayUnit="1")=e if useEffect
+      Physiolibrary.Types.RealIO.FractionInput Effect(displayUnit="1")=e if useEffect
         "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect)"
-                                   annotation (Placement(transformation(extent={{-98,58},
-                {-78,78}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=-90,
-            origin={0,80})));
-      Types.RealIO.MolarFlowRateInput               MaxReab=mr if useMaxReabInput
+                                   annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={0,100})));
+      Physiolibrary.Types.RealIO.MolarFlowRateInput               MaxReab=mr if useMaxReabInput
         "Maximal allowed reabsorption molar flow rate"
-                                   annotation (Placement(transformation(extent={{-22,38},
-                {-2,58}}),
-                       iconTransformation(extent={{-20,-20},{20,20}},
-                                                                    rotation=0,
-            origin={-80,-60})));
-      Types.RealIO.FractionOutput               ReabFract=reabFract if useEffect
-        "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{76,50},
-                {92,66}}),   iconTransformation(extent={{80,-100},{120,-60}})));
+                                   annotation (Placement(transformation(extent={{-100,
+                -80},{-60,-40}})));
+      Physiolibrary.Types.RealIO.FractionOutput               ReabFract=reabFract if useEffect
+        "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{80,-100},
+                {120,-60}})));
 
-      Types.Fraction reabFract,baseReabFract,e;
-      Types.MolarFlowRate mr;
+      Physiolibrary.Types.Fraction reabFract,baseReabFract,e;
+      Physiolibrary.Types.MolarFlowRate mr;
     equation
       Inflow.conc = Outflow.conc;
       0 = Inflow.q + Outflow.q + Reabsorption.q;
@@ -1643,14 +1578,14 @@ It works in two modes:
     extends Modelica.Icons.SensorsPackage;
 
     model MolarFlowMeasure "Measure of molar flow"
-      extends Interfaces.OnePort;
-      extends Icons.MolarFlowMeasure;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Physiolibrary.Icons.MolarFlowMeasure;
 
      Physiolibrary.Types.RealIO.MolarFlowRateOutput actualFlow
-                             annotation (Placement(transformation(extent={{-20,30},{20,70}}),
-            iconTransformation(extent={{-20,-20},{20,20}},
-                                                         rotation=270,
-            origin={0,-42})));
+                             annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={0,-60})));
     equation
       q_in.conc = q_out.conc;
 
@@ -1658,7 +1593,7 @@ It works in two modes:
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+                100,100}}), graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1668,16 +1603,15 @@ It works in two modes:
 
     model ConcentrationMeasure "Measure of molar concentration"
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "For measure only"
                                 annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-10,-10},
-                {10,10}})));
+            transformation(extent={{-10,-30},{10,-10}})));
       Physiolibrary.Types.RealIO.ConcentrationOutput actualConc
         "Actual concentration"
-                             annotation (Placement(transformation(extent={{-20,30},{20,70}}),
-            iconTransformation(extent={{-20,-20},{20,20}},
-                                                         rotation=90,
+                             annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=90,
             origin={0,40})));
     equation
 
@@ -1691,7 +1625,7 @@ It works in two modes:
               lineColor={0,0,255},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=true,
+                                      Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1702,29 +1636,31 @@ It works in two modes:
     model FlowConcentrationMeasure
       "The outflow concentration from absorption (i.e. portal vein concentration)"
 
-      Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "Concentration before absorption source"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent=
-                {{-110,-10},{-90,10}})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput SolventFlow
-        "Solvent flow through absorption source"                                                      annotation ( extent = [-10,50;10,70], rotation = -90);
+                             annotation (Placement(
+            transformation(extent={{-110,-8},{-90,12}})));
 
+      Physiolibrary.Types.RealIO.ConcentrationOutput Conc
+        "Concentration after absorption source"                           annotation (Placement(transformation(extent={{80,-20},
+                {120,20}})));
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput SolventFlow annotation (Placement(
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,60}),                            iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,60})));
       Physiolibrary.Types.RealIO.MolarFlowRateInput AdditionalSoluteFlow
-        "Absorbed molar flow rate"                                          annotation (Placement(
-            transformation(extent={{-60,60},{-20,100}}), iconTransformation(
-            extent={{-10,-10},{10,10}},
+        "Absorbed molar flow rate" annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
             rotation=90,
             origin={0,-60})));
-      Physiolibrary.Types.RealIO.ConcentrationOutput Conc
-        "Concentration after absorption source"                           annotation (Placement(transformation(extent=
-               {{82,-20},{122,20}}), iconTransformation(extent={{82,-20},{122,
-                20}})));
     equation
       Conc = q_in.conc + AdditionalSoluteFlow/SolventFlow;
       q_in.q = 0;
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                 100,100}}), graphics={Rectangle(
               extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
@@ -1732,7 +1668,7 @@ It works in two modes:
               fillPattern=FillPattern.Solid), Text(
               extent={{-88,-50},{80,50}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1747,16 +1683,13 @@ It works in two modes:
 
     model MolarInflux "Molar pump of solute"
 
-      Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out "Outflow"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
-                {50,-10},{70,10}})));
+                             annotation (Placement(
+            transformation(extent={{50,-10},{70,10}})));
       Physiolibrary.Types.RealIO.MolarFlowRateInput desiredFlow
         "Solute flow rate"
-          annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+          annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
@@ -1779,7 +1712,7 @@ It works in two modes:
             Text(
               extent={{-92,-54},{80,-30}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -1791,12 +1724,11 @@ It works in two modes:
     model UnlimitedStorage "Constant concentration source"
      //extends Icons.Substance;
 
-      Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out
         "constant concentration with any possible flow"
                                  annotation (Placement(
-            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{90,-10},
-                {110,10}})));
+            transformation(extent={{90,-10},{110,10}})));
       parameter Physiolibrary.Types.Concentration Concentration;
 
       parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.NoInit
@@ -1810,8 +1742,8 @@ It works in two modes:
         q_out.q = 0;
       end if;
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics), Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={
             Rectangle(
@@ -1861,7 +1793,7 @@ It works in two modes:
     end ConcentrationFlow;
 
     connector PositiveConcentrationFlow "Concentration and Solute inflow"
-      extends Interfaces.ConcentrationFlow;
+      extends ConcentrationFlow;
 
     annotation (
         defaultComponentName="p",
@@ -1874,14 +1806,13 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid)}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={0,0,0})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))),
+        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
+            graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={107,45,134},
+              fillColor={107,45,134},
+              fillPattern=FillPattern.Solid),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1896,7 +1827,7 @@ Connector with one flow signal of type Real.
 
     connector NegativeConcentrationFlow
       "Concentration and negative Solute outflow"
-      extends Interfaces.ConcentrationFlow;
+      extends ConcentrationFlow;
 
     annotation (
         defaultComponentName="n",
@@ -1909,14 +1840,13 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={255,255,255})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))),
+        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
+                {100,100}}), graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={107,45,134},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1930,23 +1860,16 @@ Connector with one flow signal of type Real.
     end NegativeConcentrationFlow;
 
     partial model OnePort
-
-      Interfaces.NegativeConcentrationFlow
-                                q_out "Solute outflow"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{18,-10},{38,10}}), iconTransformation(
-              extent={{90,-12},{110,8}})));
-
-      Interfaces.PositiveConcentrationFlow
-                                q_in "Solute inflow"
-                                annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-110,
-                -12},{-90,8}})));
+      NegativeConcentrationFlow q_out
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      PositiveConcentrationFlow q_in
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
       q_in.q + q_out.q = 0;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
-                             graphics));
+                             graphics), Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end OnePort;
 
     partial model ConditionalHeatPort
@@ -2004,25 +1927,23 @@ on the model behaviour.
 
       constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
 
-      parameter Boolean isNormalizedVolume = true
+      parameter Boolean useNormalizedVolume = true
         "=true, if solvent volume is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Physiolibrary.Types.RealIO.VolumeInput solventVolume=volume if not isNormalizedVolume annotation (Placement(
-            transformation(extent={{-52,28},{-12,68}}), iconTransformation(
+      Physiolibrary.Types.Volume volume "SolventVolume";
+
+      Physiolibrary.Types.RealIO.VolumeInput solventVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-40,40})));
-
-      Physiolibrary.Types.Volume volume "SolventVolume";
-
     equation
-      if isNormalizedVolume then
+      if useNormalizedVolume then
         volume = NormalSolventVolume;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}),                                                                 graphics),
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
         Documentation(revisions="<html>
 <ul>
 <li><i> February 17, 2009   </i>
@@ -2046,7 +1967,9 @@ ConditionalHeatingPort model (<b>lossPower = ...</b>). As device temperature
 <b>T_heatPort</b> can be used to describe the influence of the device temperature
 on the model behaviour.
 </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end ConditionalSolventVolume;
   end Interfaces;
   annotation (Documentation(revisions="<html>
