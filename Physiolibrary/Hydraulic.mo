@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Hydraulic "Hydraulic Physical Domain"
+package Hydraulic "Pressure and Volumetric Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"

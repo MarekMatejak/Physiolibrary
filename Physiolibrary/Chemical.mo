@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Chemical "Molar Concentration Physiological Domain"
+package Chemical "Molar Concentration and Molar Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
@@ -15,11 +15,11 @@ package Chemical "Molar Concentration Physiological Domain"
                                 reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
       Components.Substance         B(solute_start=0.1)
-        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+        annotation (Placement(transformation(extent={{42,-8},{62,12}})));
     equation
 
       connect(B.q_out, reaction.products[1]) annotation (Line(
-          points={{54,2},{10,2}},
+          points={{52,2},{10,2}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -52,32 +52,31 @@ package Chemical "Molar Concentration Physiological Domain"
     end SimpleReaction_Equilibrated;
 
     model SimpleReaction2
-
        extends Modelica.Icons.Example;
 
       Components.Substance         A(solute_start=0.9)
-        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
+        annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
       Components.ChemicalReaction
                                 reaction(K=1, nP=2)
-        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+        annotation (Placement(transformation(extent={{-6,-8},{14,12}})));
       Components.Substance         B(solute_start=0.1)
-        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+        annotation (Placement(transformation(extent={{36,-8},{56,12}})));
       Components.Substance         C(solute_start=0.1)
-        annotation (Placement(transformation(extent={{44,16},{64,36}})));
+        annotation (Placement(transformation(extent={{36,16},{56,36}})));
     equation
 
       connect(A.q_out, reaction.substrates[1]) annotation (Line(
-          points={{-46,2},{-10,2}},
+          points={{-30,2},{-6,2}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[1], B.q_out) annotation (Line(
-          points={{10,1.5},{32,1.5},{32,2},{54,2}},
+          points={{14,1.5},{24,1.5},{24,2},{46,2}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[2], C.q_out) annotation (Line(
-          points={{10,2.5},{32,2.5},{32,26},{54,26}},
+          points={{14,2.5},{24,2.5},{24,26},{46,26}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));

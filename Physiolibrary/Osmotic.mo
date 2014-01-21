@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Osmotic "Osmotic Physical Domain"
+package Osmotic "Osmorarity and Solvent Volumetric Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Osmotic flow components"
