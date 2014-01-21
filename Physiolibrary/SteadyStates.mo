@@ -211,41 +211,44 @@ package SteadyStates "Dynamic Simulation / Steady State"
   end SteadyState;
 
   partial class SteadyStateSystem
-    "Global abstract class, for additional global equations (instead of steady-state-dependent equations)"
+    "Global abstract class, for additional global state equations"
 
     import Modelica.Utilities.*;
 
     parameter SimulationType  Simulation(start=SimulationType.NormalInit)
-      "Type of simulation. Normal dynamic with some initialization or equilibrated during all time during simulation."
+      "Type of simulation. Normal dynamic with some initialization or equilibrated (steady state) during simulation."
       annotation (Dialog(group="Simulation type", tab="Simulation"));
 
-    parameter Integer NumberOfNormalizedStates=1
-      "Number of additional steady state equation of whole system"
+    parameter Integer NumberOfDependentStates=1
+      "Number of additional steady state equation of the system"
     annotation (Dialog(enable=false,group="Equilibrium", tab="Simulation"));
 
-    Real normalizedState[NumberOfNormalizedStates]
-      "Each state must be connected to the normalized sum of partial states in inherited class definition. This variable must have always the vectors of 1.";
+    Real normalizedState[NumberOfDependentStates]
+      "Normalized independent masses of the system/Normalized independent energies of the system/... This variables must always equals to ones.";
 
   protected
-    Real state[NumberOfNormalizedStates](each start=1)
-      "In differential systems has the same meaning as the normalizedState. In steady state just stay constant.";
+    Real state[NumberOfDependentStates](each start=1)
+      "In differential systems has the same meaning as the normalizedState. In steady state has no meaning.";
 
   initial equation
 
-    state=ones(NumberOfNormalizedStates);
+    state=ones(NumberOfDependentStates);
 
   equation
 
     if Simulation == SimulationType.SteadyState then
-      normalizedState = ones(NumberOfNormalizedStates); //in steady state must be the normalized sum of internal states of the system always equal to one
-      der(state)=zeros(NumberOfNormalizedStates); //this additional equations must be instead of redundant dependent equations
+      normalizedState = ones(NumberOfDependentStates); //add additional global steady-state equations
+      der(state)=zeros(NumberOfDependentStates);       //remove 'state' from system calculations
     else
-      normalizedState = state; // ={1,1,1,..,1}. The difference from vector ones(numberOfStates) could be used as the solver calculation error vector.
+      normalizedState = state; //nothing special, just definition of 'state' variable
+
+      //Correct definition of normalizedState should fulfill the equation 'normalizedState=ones(NumberOfDependentStates)' during simulation.
+      //The difference from vector 'ones(NumberOfDependentStates)' could be used as the solver calculation error vector.
     end if;
 
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics), Documentation(revisions="<html>
-<p><i>2013</i></p>
+<p><i>2013-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
   end SteadyStateSystem;
