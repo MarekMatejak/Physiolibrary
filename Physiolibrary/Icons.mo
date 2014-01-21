@@ -124,7 +124,7 @@ package Icons "Icons for physiological models"
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid,
             pattern=LinePattern.None), Bitmap(extent={{-88,96},{52,-84}},
-              fileName="Resources/Icons/bone.jpg")}));
+              fileName="Resources/Icons/bone.png")}));
   end Bone;
 
   model OtherTissue
@@ -152,14 +152,14 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-74,56},{48,-84}},
-              fileName="Resources/Icons/skin.jpg")}));
+              fileName="Resources/Icons/skin.png")}));
   end Skin;
 
   model Brain
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-78,62},{44,-92}},
-              fileName="Resources/Icons/brain.jpg")}));
+              fileName="Resources/Icons/brain.png")}));
   end Brain;
 
   model GITract
@@ -196,7 +196,7 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-92,86},{40,-88}},
-              fileName="Resources/Icons/kidney.jpg")}));
+              fileName="Resources/Icons/kidney.png")}));
   end Kidney;
 
   model Bladder
@@ -249,8 +249,8 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=true,  extent={{-100,
               -100},{100,100}}), graphics={
-          Bitmap(extent={{-46,98},{32,26}}, fileName="Resources/Icons/bone.jpg"),
-          Bitmap(extent={{-62,-10},{50,-92}}, fileName="Resources/Icons/skin.jpg"),
+          Bitmap(extent={{-46,98},{32,26}}, fileName="Resources/Icons/bone.png"),
+          Bitmap(extent={{-62,-10},{50,-92}}, fileName="Resources/Icons/skin.png"),
           Bitmap(extent={{-38,90},{64,-20}}, fileName="Resources/Icons/sval.png"),
           Bitmap(extent={{-10,36},{102,-56}}, fileName=
                 "Resources/Icons/traviciTrakt.png"),
@@ -258,7 +258,7 @@ package Icons "Icons for physiological models"
             extent={{64,-66},{94,-96}},
             lineColor={0,0,0},
             textString="..."),
-          Bitmap(extent={{-98,36},{-24,-30}}, fileName="Resources/Icons/brain.jpg")}));
+          Bitmap(extent={{-98,36},{-24,-30}}, fileName="Resources/Icons/brain.png")}));
 
   end Tissues;
 
@@ -321,7 +321,7 @@ package Icons "Icons for physiological models"
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="Resources/Icons/Kidney.jpg")}));
+              fileName="Resources/Icons/Kidney.png")}));
 
    end KidneyLib;
 
@@ -408,7 +408,7 @@ package Icons "Icons for physiological models"
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
-              fileName="Resources/Icons/O2.jpg")}));
+              fileName="Resources/Icons/O2.png")}));
   end OxygenLib;
 
   package ProteinsLib
@@ -478,7 +478,7 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/O2.jpg")}));
+                "Resources/Icons/O2.png")}));
   end Oxygen;
 
   model CarbonDioxide
@@ -537,7 +537,7 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "Resources/Icons/FattyAcid.jpg")}));
+                "Resources/Icons/FattyAcid.png")}));
   end Lipids;
 
   model KetoAcids
@@ -545,21 +545,21 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "Resources/Icons/KetoAcid.jpg")}));
+                "Resources/Icons/KetoAcid.png")}));
   end KetoAcids;
 
   model Glucose
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/glucose.jpg")}));
+                -100}}, fileName="Resources/Icons/glucose.png")}));
   end Glucose;
 
   model Lactate
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/Lactate.jpg")}));
+                -100}}, fileName="Resources/Icons/Lactate.png")}));
   end Lactate;
 
   model AminoAcids
@@ -567,14 +567,14 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "Resources/Icons/AminoAcid.jpg")}));
+                "Resources/Icons/AminoAcid.png")}));
   end AminoAcids;
 
   model Urea
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/Urea.jpg")}));
+                -100}}, fileName="Resources/Icons/Urea.png")}));
   end Urea;
 
   model MetabolismPart
@@ -712,14 +712,14 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/Na.jpg")}));
+                -100}}, fileName="Resources/Icons/Na.png")}));
   end Sodium;
 
   model Potassium
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/K.jpg")}));
+                -100}}, fileName="Resources/Icons/K.png")}));
   end Potassium;
 
   model Phosphate
@@ -741,14 +741,14 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/NH4.jpg")}));
+                -100}}, fileName="Resources/Icons/NH4.png")}));
   end Amonium;
 
   model Chloride
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
-                -100}}, fileName="Resources/Icons/Cl.jpg")}));
+                -100}}, fileName="Resources/Icons/Cl.png")}));
   end Chloride;
 
   model LungShunt
@@ -756,7 +756,7 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "Resources/Icons/lungBloodFlow.jpg")}));
+                "Resources/Icons/lungBloodFlow.png")}));
   end LungShunt;
 
   model Hydrostatics
@@ -817,7 +817,7 @@ package Icons "Icons for physiological models"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,
                 -100}}, fileName=
-                "Resources/Icons/bloodProperties.jpg")}));
+                "Resources/Icons/bloodProperties.png")}));
   end Blood;
 
   model BaseFactorIcon0
@@ -838,14 +838,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,80}),
-          iconTransformation(extent={{-10,10},{10,30}}, rotation=-90)));
+          origin={0,20})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-60}),
-          iconTransformation(extent={{-10,-30},{10,-10}}, rotation=-90)));
+          origin={0,-40})));
 
    annotation (
       Icon(coordinateSystem(
@@ -859,7 +857,7 @@ package Icons "Icons for physiological models"
             extent={{-90,-10},{92,10}},
             textString="%name",
             lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon;
 
@@ -869,16 +867,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,100}),
-          iconTransformation(extent={{-10,-10},{10,10}},rotation=270,
-          origin={0,50})));
+          origin={0,60})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-80}),
-          iconTransformation(extent={{-10,-10},{10,10}},  rotation=270,
-          origin={0,-52})));
+          origin={0,-60})));
 
    annotation (
       Icon(coordinateSystem(
@@ -893,7 +887,7 @@ package Icons "Icons for physiological models"
             textString="%name",
             lineColor={0,0,0},
             fillPattern=FillPattern.Sphere)}), Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon2;
 
@@ -903,14 +897,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,80}),
-          iconTransformation(extent={{-10,10},{10,30}}, rotation=-90)));
+          origin={0,20})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-60}),
-          iconTransformation(extent={{-10,-30},{10,-10}}, rotation=-90)));
+          origin={0,-40})));
 
    annotation (
       Icon(coordinateSystem(
@@ -924,7 +916,7 @@ package Icons "Icons for physiological models"
             extent={{-90,-10},{92,10}},
             textString="%name",
             lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon3;
 
@@ -934,14 +926,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,80}),
-          iconTransformation(extent={{-10,10},{10,30}}, rotation=-90)));
+          origin={0,20})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-60}),
-          iconTransformation(extent={{-10,-30},{10,-10}}, rotation=-90)));
+          origin={0,-40})));
 
    annotation (
       Icon(coordinateSystem(
@@ -955,7 +945,7 @@ package Icons "Icons for physiological models"
             extent={{-90,-10},{92,10}},
             textString="%name",
             lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon4;
 
@@ -965,14 +955,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,80}),
-          iconTransformation(extent={{-10,10},{10,30}}, rotation=-90)));
+          origin={0,20})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-60}),
-          iconTransformation(extent={{-10,-30},{10,-10}}, rotation=-90)));
+          origin={0,-40})));
 
    annotation (
       Icon(coordinateSystem(
@@ -986,7 +974,7 @@ package Icons "Icons for physiological models"
             extent={{-90,-10},{92,10}},
             textString="%name",
             lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon5;
 
@@ -996,14 +984,12 @@ package Icons "Icons for physiological models"
                      annotation (Placement(transformation(extent={{-20,-20},{
               20,20}},
           rotation=270,
-          origin={6,80}),
-          iconTransformation(extent={{-10,10},{10,30}}, rotation=-90)));
+          origin={0,20})));
     Modelica.Blocks.Interfaces.RealOutput y
                   annotation (Placement(transformation(extent={{-20,-20},{20,
               20}},
           rotation=270,
-          origin={0,-60}),
-          iconTransformation(extent={{-10,-30},{10,-10}}, rotation=-90)));
+          origin={0,-40})));
 
    annotation (
       Icon(coordinateSystem(
@@ -1015,7 +1001,7 @@ package Icons "Icons for physiological models"
           fillColor={255,255,255},
           fillPattern=FillPattern.Sphere)}),
                                   Diagram(coordinateSystem(
-            preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
           graphics));
   end BaseFactorIcon6;
 
@@ -1062,8 +1048,7 @@ package Icons "Icons for physiological models"
               -100},{100,100}}), graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "Resources/Icons/Speciation.png"),
-                                                   Text(
+                "Resources/Icons/Speciation.png"), Text(
             extent={{-22,-102},{220,-136}},
             lineColor={0,0,255},
             textString="%name")}));
@@ -1131,7 +1116,7 @@ package Icons "Icons for physiological models"
   partial model HydraulicResistor
 
   annotation (Icon(graphics={    Bitmap(extent={{-120,44},{120,-42}},
-              fileName="Resources/Icons/resistance.jpg")}));
+              fileName="Resources/Icons/resistance.png")}));
   end HydraulicResistor;
 
   model FlowMeasure

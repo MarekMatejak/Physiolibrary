@@ -35,24 +35,28 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end SimpleReaction;
 
-    model SimpleReaction_Equilibrated
+    model SimpleReaction_in_Equilibrium
       extends SimpleReaction(
         A(Simulation=Simulation),
         B(Simulation=Simulation, isDependent=true),
         reaction);
-      extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    protected
+                extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                               Simulation=SteadyStates.SimulationType.SteadyState);
 
-      parameter Types.AmountOfSubstance totalSystemSubstance=0.01;
+      parameter Physiolibrary.Types.AmountOfSubstance totalSystemSubstance=0.01;
     equation
       normalizedState[1]*totalSystemSubstance = A.solute + B.solute;
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end SimpleReaction_Equilibrated;
+    end SimpleReaction_in_Equilibrium;
 
     model SimpleReaction2
        extends Modelica.Icons.Example;
+
+      import Physiolibrary.Chemical;
 
       Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
@@ -87,15 +91,18 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end SimpleReaction2;
 
-    model SimpleReaction2_Equilibrated
+    model SimpleReaction2_in_Equilibrium
       extends SimpleReaction2(
         A(Simulation=Simulation),
         reaction,
         B(Simulation=Simulation, isDependent=true),
         C(Simulation=Simulation, isDependent=true));
-      extends States.StateSystem(NumberOfNormalizedStates=2, Simulation=States.SimulationType.Equilibrated);
-
-      parameter Types.AmountOfSubstance totalBSubstance=0.01,totalCSubstance=0.01;
+    protected
+      extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                               NumberOfNormalizedStates=2, Simulation=
+            SteadyStates.SimulationType.SteadyState);
+    public
+      parameter Physiolibrary.Types.AmountOfSubstance totalBSubstance=0.01,totalCSubstance=0.01;
     equation
       normalizedState[1]*totalBSubstance = A.solute + B.solute;
       normalizedState[1]*totalCSubstance = A.solute + C.solute;
@@ -103,31 +110,35 @@ package Chemical "Molar Concentration and Molar Flow"
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end SimpleReaction2_Equilibrated;
+    end SimpleReaction2_in_Equilibrium;
 
     model Allosteric_Hemoglobin_MWC
     extends Modelica.Icons.Example;
-    extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+      import Physiolibrary.Chemical;
+    protected
+    extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                             Simulation=SteadyStates.SimulationType.SteadyState);
     //=States.SimulationType.NoInit); for dynamic simulation
 
-      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+    public
+      parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
-      parameter Types.Fraction L = 7.0529*10^6
+      parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-      parameter Types.Fraction c = 0.00431555
+      parameter Physiolibrary.Types.Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Types.Concentration KR = 0.000671946
+      parameter Physiolibrary.Types.Concentration KR = 0.000671946
         "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
                                                                 //10.500001495896 7.8756465463794e-05
 
-      parameter Types.Concentration KT=KR/c
+      parameter Physiolibrary.Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-      Types.Fraction sO2 "hemoglobin oxygen saturation";
+      Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
 
-      parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
-      Types.AmountOfSubstance totalAmountOfRforms;
-      Types.AmountOfSubstance totalAmountOfTforms;
+      parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=1;
+      Physiolibrary.Types.AmountOfSubstance totalAmountOfRforms;
+      Physiolibrary.Types.AmountOfSubstance totalAmountOfTforms;
 
       Components.Substance                       T0(stateName="T0",Simulation=Simulation,
         solute_start=1)
@@ -445,7 +456,7 @@ package Chemical "Molar Concentration and Molar Flow"
           color={0,0,127},
           smooth=Smooth.None));
       connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
-          points={{-50,-14},{-50,-26},{-26,-26}},
+          points={{-50,-16.6},{-50,-26},{-26,-26}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -474,24 +485,26 @@ package Chemical "Molar Concentration and Molar Flow"
       "Allosteric hemoglobin model implemented by Speciation blocks"
       import Physiolibrary;
      extends Modelica.Icons.Example;
-     extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    protected
+     extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                              Simulation=Physiolibrary.SteadyStates.SimulationType.SteadyState);
 
-      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
+      parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
-      parameter Types.Fraction L = 7.0529*10^6
+      parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-      parameter Types.Fraction c = 0.00431555
+      parameter Physiolibrary.Types.Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Types.Concentration KR = 0.000671946
+      parameter Physiolibrary.Types.Concentration KR = 0.000671946
         "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
                                                                 //10.500001495896 7.8756465463794e-05
 
-      parameter Types.Concentration KT=KR/c
+      parameter Physiolibrary.Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-      Types.Fraction sO2 "hemoglobin oxygen saturation";
+      Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
 
-      parameter Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
+      parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
       Physiolibrary.Chemical.Components.ChemicalReaction
                                                 quaternaryForm(K=L)
@@ -648,7 +661,7 @@ package Chemical "Molar Concentration and Molar Flow"
           color={0,0,127},
           smooth=Smooth.None));
       connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
-          points={{6,32},{6,8}},
+          points={{6,29.4},{6,8}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -709,6 +722,7 @@ package Chemical "Molar Concentration and Molar Flow"
     model ExothermicReaction
 
        extends Modelica.Icons.Example;
+      import Physiolibrary.Chemical;
 
       Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
@@ -722,7 +736,7 @@ package Chemical "Molar Concentration and Molar Flow"
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
       Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
         annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
-      Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
+      Physiolibrary.Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
         annotation (Placement(transformation(extent={{68,-58},{48,-38}})));
     equation
 
@@ -862,7 +876,6 @@ package Chemical "Molar Concentration and Molar Flow"
 </tr>
 </table>
 </html>"));
-
     end MolarStream;
 
     model Clearance "Clearance with solvent outflow"
@@ -1094,7 +1107,7 @@ package Chemical "Molar Concentration and Molar Flow"
     model Substance "Concentration accumulation in solvent "
       import Physiolibrary;
       extends Physiolibrary.Icons.Substance;
-      extends Physiolibrary.States.State(
+      extends Physiolibrary.SteadyStates.SteadyState(
       state(nominal=NominalSolute),
       change(nominal=NominalSolute/60),
       state_start=solute_start,
@@ -1351,7 +1364,8 @@ It works in two modes:
     model MichaelisMenten "Basic enzyme kinetics"
       extends Physiolibrary.Icons.MichaelisMenten;
     protected
-    extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated);
+    extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                             Simulation=SteadyStates.SimulationType.SteadyState);
 
     public
      parameter Physiolibrary.Types.AmountOfSubstance tE
@@ -1424,8 +1438,12 @@ It works in two modes:
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
       extends Physiolibrary.Icons.Speciation;
-      extends Physiolibrary.States.StateSystem(Simulation=States.SimulationType.Equilibrated,NumberOfNormalizedStates=NumberOfSubunitTypes-1);
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
+    protected
+      extends Physiolibrary.SteadyStates.SteadyStateSystem(
+                                               Simulation=SteadyStates.SimulationType.SteadyState,
+                                                                                            NumberOfNormalizedStates=NumberOfSubunitTypes-1);
+    public
+             extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
 
       parameter Integer NumberOfSubunitTypes=1
         "Number of subunit types occuring in macromolecule";
@@ -1731,14 +1749,15 @@ It works in two modes:
             transformation(extent={{90,-10},{110,10}})));
       parameter Physiolibrary.Types.Concentration Concentration;
 
-      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.NoInit
+      parameter Physiolibrary.SteadyStates.SimulationType
+                                                    Simulation=SteadyStates.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
     equation
       q_out.conc = Concentration;
 
-      if Simulation==States.SimulationType.Equilibrated then
+      if Simulation==SteadyStates.SimulationType.SteadyState then
         q_out.q = 0;
       end if;
 
@@ -1884,9 +1903,9 @@ Connector with one flow signal of type Real.
       Physiolibrary.Thermal.Interfaces.PositiveHeatFlow heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
         annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
             iconTransformation(extent={{-10,-10},{10,10}})));
-      Modelica.SIunits.Power lossHeat
+      Physiolibrary.Types.HeatFlowRate lossHeat
         "Loss heat leaving component via HeatPort";
-      Modelica.SIunits.Temperature T_heatPort "Temperature of HeatPort";
+      Physiolibrary.Types.Temperature T_heatPort "Temperature of HeatPort";
     equation
       if not useHeatPort then
          T_heatPort = T;
@@ -1894,11 +1913,16 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),                                                                       graphics),
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <ul>
 <li><i> February 17, 2009   </i>
        by Christoph Clauss<br> initially implemented<br>
        </li>
+<li><i> January 21, 2014   </i>
+       by Marek Matejak<br> integrated to Physiolibrary<br>
+       </li>  
 </ul>
 </html>",     info="<html>
 <p>
@@ -1917,9 +1941,7 @@ ConditionalHeatingPort model (<b>lossPower = ...</b>). As device temperature
 <b>T_heatPort</b> can be used to describe the influence of the device temperature
 on the model behaviour.
 </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end ConditionalHeatPort;
 
     partial model ConditionalSolventVolume
@@ -1944,32 +1966,8 @@ on the model behaviour.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),                                                                       graphics),
-        Documentation(revisions="<html>
-<ul>
-<li><i> February 17, 2009   </i>
-       by Christoph Clauss<br> initially implemented<br>
-       </li>
-</ul>
-</html>",     info="<html>
-<p>
-This partial model provides a conditional heating port for the connection to a thermal network.
-</p>
-<ul>
-<li> If <b>useHeatPort</b> is set to <b>false</b> (default), no heat port is available, and the thermal
-     loss power flows internally to the ground. In this case, the parameter <b>T</b> specifies
-     the fixed device temperature (the default for T = 20<sup>o</sup>C).</li>
-<li> If <b>useHeatPort</b> is set to <b>true</b>, a heat port is available.</li>
-</ul>
-
-<p>
-If this model is used, the loss power has to be provided by an equation in the model which inherits from
-ConditionalHeatingPort model (<b>lossPower = ...</b>). As device temperature
-<b>T_heatPort</b> can be used to describe the influence of the device temperature
-on the model behaviour.
-</p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolventVolume;
   end Interfaces;
   annotation (Documentation(revisions="<html>

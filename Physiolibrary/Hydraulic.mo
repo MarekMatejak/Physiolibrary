@@ -9,6 +9,8 @@ package Hydraulic "Pressure and Volumetric Flow"
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
        extends Modelica.Icons.Example;
 
+       import Physiolibrary.Hydraulic;
+
       Components.ElasticVessel
                      pulmonaryVeins(
         volume_start(displayUnit="l") = 0.0004,
@@ -45,7 +47,7 @@ package Hydraulic "Pressure and Volumetric Flow"
       Components.Pump
            rightHeart
         annotation (Placement(transformation(extent={{-26,-2},{-6,18}})));
-      Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+      Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{-30,30},{-22,38}})));
       Sensors.PressureMeasure
                       pressureMeasure1
@@ -53,7 +55,7 @@ package Hydraulic "Pressure and Volumetric Flow"
       Components.Pump
            leftHeart
         annotation (Placement(transformation(extent={{46,-2},{66,18}})));
-      Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+      Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{42,32},{50,40}})));
       Components.Resistor
                kidney(cond(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
@@ -72,11 +74,11 @@ package Hydraulic "Pressure and Volumetric Flow"
         ZeroPressureVolume(displayUnit="l") = 0.0001,
         Compliance(displayUnit="l/mmHg") = 3.7503078792283e-08)
         annotation (Placement(transformation(extent={{-52,-2},{-32,18}})));
-      Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
+      Physiolibrary.Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
             0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
         "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{-26,12},{-6,32}})));
-      Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,0.72,0.29},{0,1.01,
+      Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,0.72,0.29},{0,1.01,
             0.29},{3,1.88,0.218333},{10,2.7,0}})
         "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{46,12},{66,32}})));
@@ -117,12 +119,12 @@ package Hydraulic "Pressure and Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
-          points={{-41.6,20},{-42,20},{-42,8},{-26,8}},
+          points={{-42,20},{-42,20},{-42,8},{-26,8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure1.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{28.4,20},{26,20},{26,50},{62,50},{62,74},{44,74}},
+          points={{28,20},{26,20},{26,50},{62,50},{62,74},{44,74}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -162,7 +164,7 @@ package Hydraulic "Pressure and Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(rightHeart.desiredFlow, rightStarling.y) annotation (Line(
-          points={{-16,14},{-16,20}},
+          points={{-16,14},{-16,18}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
@@ -170,7 +172,7 @@ package Hydraulic "Pressure and Volumetric Flow"
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure.actualPressure, rightStarling.u) annotation (Line(
-          points={{-32,22},{-25.8,22}},
+          points={{-32,22},{-24,22}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
@@ -178,15 +180,15 @@ package Hydraulic "Pressure and Volumetric Flow"
           color={0,0,127},
           smooth=Smooth.None));
       connect(leftHeart.desiredFlow, leftStarling.y) annotation (Line(
-          points={{56,14},{56,20}},
+          points={{56,14},{56,18}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
-          points={{38,22},{46.2,22}},
+          points={{38,22},{48,22}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-41.6,20},{-42,20},{-42,8}},
+          points={{-42,20},{-42,20},{-42,8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -207,40 +209,39 @@ package Hydraulic "Pressure and Volumetric Flow"
     extends Modelica.Icons.Package;
 
     model Resistor
-     extends Interfaces.OnePort;
-     extends Icons.HydraulicResistor;
+     extends Physiolibrary.Hydraulic.Interfaces.OnePort;
+     extends Physiolibrary.Icons.HydraulicResistor;
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.HydraulicConductance Conductance=0
+      parameter Physiolibrary.Types.HydraulicConductance Conductance=0
         "Hydraulic conductance if useConductanceInput=false"
         annotation (Dialog(enable=not useConductanceInput));
 
       Physiolibrary.Types.RealIO.HydraulicConductanceInput cond(start=Conductance)=c if useConductanceInput
                                                        annotation (Placement(
-            transformation(extent={{-58,26},{-18,66}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+            transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,40})));
+            origin={0,60})));
 
-       Types.HydraulicConductance c;
+       Physiolibrary.Types.HydraulicConductance c;
     equation
       if not useConductanceInput then
         c=Conductance;
       end if;
 
       q_in.q = c * (q_in.pressure - q_out.pressure);
-      annotation (Icon(graphics));
+      annotation (Icon(graphics), Diagram(coordinateSystem(preserveAspectRatio=
+                false, extent={{-100,-100},{100,100}}), graphics));
     end Resistor;
 
     model Pump
-      extends Interfaces.OnePort;
+      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-66,50},{-26,90}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+              extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
     equation
@@ -262,7 +263,7 @@ package Hydraulic "Pressure and Volumetric Flow"
             Text(
               extent={{-150,-90},{150,-50}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -290,44 +291,37 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     model Reabsorption "Divide inflow to outflow and reabsorption"
       import Physiolibrary;
-      extends Icons.Reabsorption;
+      extends Physiolibrary.Icons.Reabsorption;
 
       Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
                            Inflow                    annotation (Placement(
-            transformation(extent={{-106,-18},{-66,22}}), iconTransformation(
-              extent={{-110,-10},{-90,10}})));
+            transformation(extent={{-114,26},{-86,54}})));
       Physiolibrary.Hydraulic.Interfaces.NegativePressureFlow
                            Outflow
-        annotation (Placement(transformation(extent={{50,-18},{90,22}}),
-            iconTransformation(extent={{90,-10},{110,10}})));
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
       Physiolibrary.Hydraulic.Interfaces.NegativePressureFlow
                            Reabsorption                annotation (Placement(
-            transformation(extent={{-20,-100},{20,-60}}),iconTransformation(
-              extent={{-10,-110},{10,-90}})));
+            transformation(extent={{-14,-114},{14,-86}})));
 
-      Types.RealIO.FractionInput FractReab
-                                   annotation (Placement(transformation(extent={{-74,-38},
-                {-58,-22}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=180,
-            origin={100,-40})));
+      Physiolibrary.Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
 
       parameter Boolean useExternalOutflowMin = false
         "=true, if minimal outflow is garanted"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.VolumeFlowRate OutflowMin = 0
+      parameter Physiolibrary.Types.VolumeFlowRate OutflowMin = 0
         "Minimal outflow if useExternalOutflowMin=false"
         annotation (Dialog(enable=not useExternalOutflowMin));
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
-                                                           annotation (Placement(transformation(extent={{-44,84},
-                {-32,96}}),  iconTransformation(
-            extent={{-20,-20},{20,20}},
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
             rotation=270,
-            origin={38,80})));
+            origin={40,80})));
 
-       Types.VolumeFlowRate om;
+       Physiolibrary.Types.VolumeFlowRate om;
     equation
       if not useExternalOutflowMin then
         om = OutflowMin;
@@ -341,7 +335,7 @@ package Hydraulic "Pressure and Volumetric Flow"
                 {100,100}}),       graphics={Text(
               extent={{-100,130},{100,108}},
               lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -361,24 +355,22 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     model HydrostaticColumn
       "Create hydrostatic pressure between connectors in different altitude with specific pressure pump effect"
-      extends Icons.HydrostaticGradient;
-      Interfaces.PositivePressureFlow
+      extends Physiolibrary.Icons.HydrostaticGradient;
+      Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
                            q_up "Top site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{62,38},
-                {82,58}})));
+            transformation(extent={{66,26},{94,54}})));
 
       Interfaces.PositivePressureFlow
                            q_down "Bottom site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{60,-66},
-                {80,-46}})));
+            transformation(extent={{66,-74},{94,-46}})));
       Physiolibrary.Types.RealIO.HeightInput height
         "Vertical distance between top and bottom connector"
-                                                   annotation (Placement(transformation(extent={{22,
-                -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
-            rotation=180,
-            origin={-61,-5})));
+                                                   annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=0,
+            origin={-60,0})));
 
       parameter Modelica.SIunits.Density ro=1060; //liquid density
 
@@ -393,10 +385,10 @@ package Hydraulic "Pressure and Volumetric Flow"
        //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
 
       Physiolibrary.Types.RealIO.AccelerationInput G(start=GravityAcceleration)=g if useExternalG
-        "Gravity acceleration"                                                                           annotation (Placement(transformation(extent={{22,
-                -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
+        "Gravity acceleration"                                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
             rotation=90,
-            origin={1,85})));
+            origin={0,-100})));
 
       parameter Boolean usePumpEffect = false
         "=true, if musce pump effect is used"
@@ -409,10 +401,10 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     public
       Physiolibrary.Types.RealIO.FractionInput
-                            pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{22,
-                -18},{62,22}}), iconTransformation(extent={{15,-15},{-15,15}},
+                            pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
             rotation=270,
-            origin={1,-85})));
+            origin={0,100})));
 
       Types.Acceleration g;
       Types.Fraction pe;
@@ -429,7 +421,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -440,14 +432,14 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     model ElasticVessel "Elastic container"
      extends Icons.ElasticBalloon;
-     extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+     extends Physiolibrary.SteadyStates.SteadyState(
+                                        state_start=volume_start, storeUnit=
           "ml");
 
       Interfaces.PositivePressureFlow
                            q_in
-                            annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-12,-8},{8,12}}), iconTransformation(extent={{-10,
-                -10},{10,10}})));
+                            annotation (Placement(
+            transformation(extent={{-14,-14},{14,14}})));
       parameter Physiolibrary.Types.Volume volume_start "Volume start value"
          annotation (Dialog(group="Initialization"));
 
@@ -463,8 +455,7 @@ package Hydraulic "Pressure and Volumetric Flow"
         annotation (Dialog(enable=not useV0Input));
        Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume) if useV0Input
                                                         annotation (Placement(transformation(
-              extent={{-120,60},{-80,100}}), iconTransformation(extent={{-120,60},{-80,
-                100}})));
+              extent={{-120,60},{-80,100}})));
 
       parameter Boolean useComplianceInput = false
         "=true, if compliance input is used"
@@ -475,8 +466,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) if useComplianceInput
                                                             annotation (Placement(
-            transformation(extent={{-120,0},{-80,40}}), iconTransformation(extent={{
-                -120,0},{-80,40}})));
+            transformation(extent={{-120,0},{-80,40}})));
 
       parameter Boolean useExternalPressureInput = false
         "=true, if external pressure input is used"
@@ -487,13 +477,11 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Physiolibrary.Types.RealIO.PressureInput externalPressure(start=ExternalPressure) if useExternalPressureInput
                                                        annotation (Placement(transformation(
-              extent={{-120,-60},{-80,-20}}), iconTransformation(extent={{-120,-60},
-                {-80,-20}})));
+              extent={{-120,-60},{-80,-20}})));
 
       Physiolibrary.Types.RealIO.VolumeOutput volume
                                             annotation (Placement(transformation(
-              extent={{-12,-100},{8,-80}}), iconTransformation(
-            extent={{-10,-10},{10,10}},
+              extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-100})));
 
@@ -524,23 +512,23 @@ package Hydraulic "Pressure and Volumetric Flow"
                 100}}),     graphics={Text(
               extent={{-150,-150},{150,-110}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
                   Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end ElasticVessel;
 
     model ElasticMembrane "Elastic balloon in closed space"
-     extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+     extends Physiolibrary.SteadyStates.SteadyState(
+                                        state_start=volume_start, storeUnit=
           "ml");
      extends Icons.InternalElasticBalloon;
       Interfaces.PositivePressureFlow
                            q_int "Internal space"
-        annotation (Placement(transformation(extent={{-82,2},{-62,22}}),
-            iconTransformation(extent={{-82,2},{-62,22}})));
+        annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
       Interfaces.NegativePressureFlow
-                           q_ext "External space" annotation (Placement(transformation(extent={{26,2},{
-                46,22}}),   iconTransformation(extent={{26,2},{46,22}})));
+                           q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
+                {54,14}})));
 
      parameter Physiolibrary.Types.HydraulicCompliance Compliance "Compliance";
      parameter Physiolibrary.Types.Volume zeroPressureVolume=0
@@ -562,16 +550,19 @@ package Hydraulic "Pressure and Volumetric Flow"
       change = q_int.q;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+                -100},{100,100}}), graphics), Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics));
     end ElasticMembrane;
 
     model Inertia "Inertia of the volumetric flow"
-      extends Physiolibrary.States.State(state_start=volumeFlow_start,
-        storeUnit="ml/min",Simulation=Physiolibrary.States.SimulationType.NoInit);
+      extends Physiolibrary.SteadyStates.SteadyState(
+                                         state_start=volumeFlow_start,
+        storeUnit="ml/min");
       extends Interfaces.OnePort;
       extends Icons.Inertance;
 
-      parameter Physiolibrary.Types.VolumeFlowRate volumeFlow_start=5*(1e-3)*60
+      parameter Physiolibrary.Types.VolumeFlowRate volumeFlow_start=0.3
         "Volumetric flow start value"
          annotation (Dialog(group="Initialization"));                                                          //5 l/min is normal volumetric flow in aorta
 
@@ -583,7 +574,9 @@ package Hydraulic "Pressure and Volumetric Flow"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),                Documentation(info="<html>
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end Inertia;
   end Components;
 
@@ -596,10 +589,10 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
         "Actual volume flow rate"
-                             annotation (Placement(transformation(extent={{-20,30},{20,70}}),
-            iconTransformation(extent={{-20,-20},{20,20}},
-                                                         rotation=90,
-            origin={0,80})));
+                             annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={0,-60})));
     equation
       q_out.pressure = q_in.pressure;
 
@@ -607,7 +600,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -621,20 +614,17 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Interfaces.PositivePressureFlow
                            q_in annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-46,-70},
-                {-26,-50}})));
+            transformation(extent={{-60,-80},{-20,-40}})));
       Physiolibrary.Types.RealIO.PressureOutput actualPressure
-        "Actual pressure"    annotation (Placement(transformation(extent={{-20,30},{20,70}}),
-            iconTransformation(extent={{-20,-20},{20,20}},
-                                                         rotation=0,
-            origin={60,-40})));
+        "Actual pressure"    annotation (Placement(transformation(extent={{40,-60},
+                {80,-20}})));
     equation
 
       actualPressure = q_in.pressure;
       q_in.q = 0;
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -649,9 +639,8 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Interfaces.NegativePressureFlow
                            q_out
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{90,0},{110,20}}),   iconTransformation(
-              extent={{90,0},{110,20}})));
+                             annotation (Placement(
+            transformation(extent={{86,-14},{114,14}})));
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Desired volume flow value"                                                                    annotation (Placement(transformation(
               extent={{-66,50},{-26,90}}), iconTransformation(
@@ -666,19 +655,19 @@ package Hydraulic "Pressure and Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-100,-40},{100,60}},
+              extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-150,-90},{150,-50}},
+              extent={{-150,-94},{150,-54}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -708,13 +697,11 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Interfaces.PositivePressureFlow
                            q_in
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent=
-                {{-110,-10},{-90,10}})));
+                             annotation (Placement(
+            transformation(extent={{-114,-14},{-86,14}})));
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-66,50},{-26,90}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+              extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
     equation
@@ -723,19 +710,19 @@ package Hydraulic "Pressure and Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-100,-40},{100,60}},
+              extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-150,-90},{150,-50}},
+              extent={{-150,-100},{150,-60}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -766,22 +753,21 @@ package Hydraulic "Pressure and Volumetric Flow"
 
         Physiolibrary.Types.RealIO.PressureInput pressure "Pressure"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
-              rotation=0), iconTransformation(extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-100,0})));
+              rotation=0)));
         Interfaces.PositivePressureFlow
                              y "PressureFlow output connectors"
-          annotation (Placement(transformation(extent={{100,-20},{140,20}},
-              rotation=0), iconTransformation(extent={{80,-20},{120,20}})));
+          annotation (Placement(transformation(extent={{84,-16},{116,16}},
+              rotation=0)));
 
-       parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.NoInit
+       parameter Physiolibrary.SteadyStates.SimulationType
+                                                     Simulation=SteadyStates.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
       equation
         y.pressure = pressure;
 
-        if Simulation==States.SimulationType.Equilibrated then
+        if Simulation==SteadyStates.SimulationType.SteadyState then
           y.q = 0;
         end if;
 
@@ -817,7 +803,9 @@ package Hydraulic "Pressure and Volumetric Flow"
               Text(
                 extent={{-150,150},{150,110}},
                 textString="%name",
-                lineColor={0,0,255})}));
+                lineColor={0,0,255})}),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                  100}}), graphics));
       end UnlimitedVolume;
   end Sources;
 
@@ -861,19 +849,31 @@ package Hydraulic "Pressure and Volumetric Flow"
               extent={{-20,10},{20,-10}},
               lineColor={0,0,0},
               lineThickness=1), Polygon(
-              points={{0,100},{100,0},{0,-100},{-100,0},{0,100}},
+              points={{-1.22465e-014,100},{100,1.22465e-014},{1.22465e-014,-100},
+                  {-100,-1.22465e-014},{-1.22465e-014,100}},
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0})}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={0,0,0})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))));
+              fillColor={0,0,0},
+              origin={0,0},
+              rotation=180)}),
+        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={Polygon(
+              points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
+              lineColor={0,0,0},
+              smooth=Smooth.None,
+              fillPattern=FillPattern.Solid,
+              fillColor={0,0,0}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}),
+        Documentation(info="<html>
+<p>
+Connector with one flow signal of type Real.
+</p>
+</html>",
+        revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+
     end PositivePressureFlow;
 
     connector NegativePressureFlow "Hydraulical inflow connector"
@@ -891,33 +891,31 @@ package Hydraulic "Pressure and Volumetric Flow"
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
               fillColor={200,200,200})}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={0,0,0})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))));
+        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={Polygon(
+              points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
+              lineColor={0,0,0},
+              smooth=Smooth.None,
+              fillPattern=FillPattern.Solid,
+              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
     end NegativePressureFlow;
 
     partial model OnePort "Hydraulical OnePort"
 
       Interfaces.PositivePressureFlow
                            q_in "Volume inflow" annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent={{-110,
-                -10},{-90,10}})));
+            transformation(extent={{-114,-14},{-86,14}})));
       Interfaces.NegativePressureFlow
                            q_out "Volume outflow"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{18,-10},{38,10}}), iconTransformation(
-              extent={{90,-10},{110,10}})));
+                             annotation (Placement(
+            transformation(extent={{86,-14},{114,14}})));
 
     equation
       q_in.q + q_out.q = 0;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+                {100,100}}), graphics), Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end OnePort;
   end Interfaces;
   annotation (Documentation(revisions="<html>

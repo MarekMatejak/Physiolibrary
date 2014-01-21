@@ -108,11 +108,9 @@ package Blocks "Base Signal Blocks Library"
           Modelica.Blocks.Interfaces.RealOutput y
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
           Modelica.Blocks.Interfaces.RealInput base annotation (Placement(
-                transformation(extent={{-120,40},{-80,80}}), iconTransformation(extent={
-                    {-120,40},{-80,80}})));
+                transformation(extent={{-120,40},{-80,80}})));
           Modelica.Blocks.Interfaces.RealInput exponent annotation (Placement(
-                transformation(extent={{-120,-80},{-80,-40}}), iconTransformation(
-                  extent={{-120,-80},{-80,-40}})));
+                transformation(extent={{-120,-80},{-80,-40}})));
         equation
           y = base^exponent;
            annotation (defaultComponentName="pow1",
@@ -341,7 +339,8 @@ Example:
         end HomotopyStrongComponentBreaker;
 
     model Integrator "Integrator with support of equilibrium calculation."
-      extends Physiolibrary.States.State(state_start=y_start);
+      extends Physiolibrary.SteadyStates.SteadyState(
+                                         state_start=y_start);
 
       parameter Real k=1 "Integrator gain";
 
@@ -564,23 +563,44 @@ This is discussed in the description of package
              parameter Real slope[:];
 
              Modelica.Blocks.Interfaces.RealInput u
-                          annotation (Placement(transformation(extent={{-100,-60},{-60,-20}}),
-                    iconTransformation(extent={{-120,-20},{-80,20}})));
+                          annotation (Placement(transformation(extent={{-120,
+                -20},{-80,20}})));
              Modelica.Blocks.Interfaces.RealOutput val
-                             annotation (Placement(transformation(extent={{60,-20},{100,20}}),
-                    iconTransformation(extent={{82,-20},{122,20}})));
+                             annotation (Placement(transformation(extent={{80,-20},
+                {120,20}})));
 
     protected
             parameter Real a[:,:] = SplineCoefficients(x,y,slope);
 
         equation
-      val = Spline(
+          val = Spline(
                 x,
                 a,
                 u);
 
            annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics));
+                -100},{100,100}}),      graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics={
+            Rectangle(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Line(
+              points={{-70,-76},{-20,-48},{0,12},{34,62},{76,72}},
+              color={0,0,127},
+              smooth=Smooth.Bezier),
+            Line(
+              points={{-48,-82},{-48,90},{-48,90}},
+              color={0,0,127},
+              smooth=Smooth.Bezier,
+              arrow={Arrow.None,Arrow.Filled}),
+            Line(
+              points={{-72,-74},{68,-74},{68,-74}},
+              color={0,0,127},
+              smooth=Smooth.Bezier,
+              arrow={Arrow.None,Arrow.Filled})}));
         end Curve;
   end Curves;
 
@@ -592,8 +612,8 @@ This is discussed in the description of package
      parameter Real NormalValue=1
         "Normal value of u, because y=(u/NormalValue)*yBase.";
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-102,-24},{-62,16}}),
-            iconTransformation(extent={{-108,-10},{-88,10}})));
+                  annotation (Placement(transformation(extent={{-100,-20},{-60,
+                20}})));
 
      Modelica.Blocks.Math.Product product  annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -620,15 +640,15 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(u, division.u1) annotation (Line(
-          points={{-82,-4},{-46,-4}},
+          points={{-80,0},{-64,0},{-64,-4},{-46,-4}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(division.y, product.u2) annotation (Line(
           points={{-23,-10},{-6,-10},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics), Documentation(revisions="<html>
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+                -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",
@@ -695,8 +715,8 @@ This is discussed in the description of package
       "calculate multiplication factor from function defined by curve"
      extends Icons.BaseFactorIcon4;
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-102,-24},{-62,16}}),
-            iconTransformation(extent={{-108,-10},{-88,10}})));
+                  annotation (Placement(transformation(extent={{-100,-20},{-60,
+                20}})));
 
      parameter Real[:,3] data;
       Curves.Curve curve(
@@ -713,7 +733,7 @@ This is discussed in the description of package
     equation
       effect = curve.val;
       connect(curve.u, u) annotation (Line(
-          points={{-46,0},{-64,0},{-64,-4},{-82,-4}},
+          points={{-46,0},{-80,0}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
@@ -721,14 +741,14 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(curve.val, product.u2) annotation (Line(
-          points={{-25.8,0},{-6,0},{-6,-20}},
+          points={{-26,0},{-6,0},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, y) annotation (Line(
           points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -739,9 +759,8 @@ This is discussed in the description of package
       "adapt the value of multiplication coefficient calculated from curve"
      extends Icons.BaseFactorIcon3;
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-118,44},{-78,
-                84}}),
-            iconTransformation(extent={{-108,-10},{-88,10}})));
+                  annotation (Placement(transformation(extent={{-100,-20},{-60,
+                20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
      parameter Real[:,3] data;
@@ -769,7 +788,7 @@ This is discussed in the description of package
     equation
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
-          points={{-68,68},{-83,68},{-83,64},{-98,64}},
+          points={{-68,68},{-83,68},{-83,0},{-80,0}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
@@ -781,7 +800,7 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(curve.val, feedback.u1) annotation (Line(
-          points={{-47.8,68},{-26,68},{-26,52}},
+          points={{-48,68},{-26,68},{-26,52}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
@@ -796,7 +815,7 @@ This is discussed in the description of package
           points={{-26,1},{-26,-8},{-6,-8},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -807,9 +826,8 @@ This is discussed in the description of package
       "adapt the signal, from which is by curve multiplication coefficient calculated"
      extends Icons.BaseFactorIcon5;
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-118,44},{-78,
-                84}}),
-            iconTransformation(extent={{-108,-10},{-88,10}})));
+                  annotation (Placement(transformation(extent={{-100,-20},{-60,
+                20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="min")=3462.468;
                                                                  //40*60/Modelica.Math.log(2);
      parameter Real initialValue = 1; //40;
@@ -818,7 +836,7 @@ This is discussed in the description of package
       x=data[:, 1],
       y=data[:, 2],
       slope=data[:, 3])
-        annotation (Placement(transformation(extent={{-38,-16},{-18,4}})));
+        annotation (Placement(transformation(extent={{-28,18},{-8,38}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -828,12 +846,12 @@ This is discussed in the description of package
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-60,16})));
+            origin={-50,50})));
       Modelica.Blocks.Math.Feedback feedback annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-60,46})));
+            origin={-50,80})));
       Real effect;
     equation
       effect = curve.val;
@@ -846,26 +864,26 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
-          points={{-60,37},{-60,28}},
+          points={{-50,71},{-50,62}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(integrator.y, feedback.u2) annotation (Line(
-          points={{-60,5},{-60,-6},{-84,-6},{-84,46},{-68,46}},
+          points={{-50,39},{-50,28},{-74,28},{-74,80},{-58,80}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.u1, u) annotation (Line(
-          points={{-60,54},{-60,64},{-98,64}},
+          points={{-50,88},{-50,94},{-88,94},{-88,0},{-80,0}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(integrator.y, curve.u) annotation (Line(
-          points={{-60,5},{-60,-6},{-38,-6}},
+          points={{-50,39},{-50,28},{-28,28}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(curve.val, product.u2) annotation (Line(
-          points={{-17.8,-6},{-6,-6},{-6,-20}},
+          points={{-8,28},{-6,28},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -880,8 +898,7 @@ This is discussed in the description of package
       "combination of SplineDelayByDay and ZeroIfFalse"
      extends Icons.BaseFactorIcon2;
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-118,6},{-78,46}}),
-            iconTransformation(extent={{-108,-30},{-88,-10}})));
+                  annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
       Curves.Curve curve(
@@ -909,13 +926,13 @@ This is discussed in the description of package
         annotation (Placement(transformation(extent={{-82,62},{-62,82}})));
       Modelica.Blocks.Interfaces.BooleanInput
                                             Failed
-                          annotation (Placement(transformation(extent={{-118,30},{
-                -78,70}}), iconTransformation(extent={{-108,30},{-88,50}})));
+                          annotation (Placement(transformation(extent={{-120,20},{-80,
+                60}})));
       Real effect;
     equation
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
-          points={{-76,30},{-87,30},{-87,26},{-98,26}},
+          points={{-76,30},{-87,30},{-87,0},{-100,0}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
@@ -943,7 +960,7 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(curve.val, switch1.u3) annotation (Line(
-          points={{-55.8,30},{-54,30},{-54,42},{-38,42}},
+          points={{-56,30},{-54,30},{-54,42},{-38,42}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Constant1.y, switch1.u1) annotation (Line(
@@ -951,11 +968,11 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(switch1.u2, Failed) annotation (Line(
-          points={{-38,50},{-98,50}},
+          points={{-38,50},{-78,50},{-78,40},{-100,40}},
           color={255,0,255},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics), Icon(coordinateSystem(
               preserveAspectRatio=true,  extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>

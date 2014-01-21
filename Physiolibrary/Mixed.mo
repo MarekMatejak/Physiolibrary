@@ -10,7 +10,8 @@ package Mixed "All together"
     //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
     //=States.SimulationType.NoInit); for dynamic simulation
 
-      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.Equilibrated;
+      parameter Physiolibrary.SteadyStates.SimulationType
+                                                    Simulation=SteadyStates.SimulationType.SteadyState;
 
       parameter Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
@@ -33,7 +34,7 @@ package Mixed "All together"
                                 unlimitedVolume
         annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
       Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
-        annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
+        annotation (Placement(transformation(extent={{-88,36},{-68,56}})));
       Modelica.Blocks.Sources.Sine temperature(
         amplitude=10,
         freqHz=1/60,
@@ -48,7 +49,7 @@ package Mixed "All together"
 
       connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
                                                  annotation (Line(
-          points={{-59,70},{-46,70},{-46,56}},
+          points={{-67,46},{-56,46}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(temperature.y, prescribedTemperature.T) annotation (Line(
@@ -67,12 +68,12 @@ package Mixed "All together"
           thickness=1,
           smooth=Smooth.None));
       connect(unlimitedVolume.y, idealGas.v) annotation (Line(
-          points={{-46,46},{-28,46}},
+          points={{-36,46},{-28,46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(idealGas.n, partialPressure.q_out) annotation (Line(
-          points={{-8,46},{-2,46},{-2,-10}},
+          points={{-8,46},{-2,46},{-2,-8}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -98,7 +99,8 @@ package Mixed "All together"
     //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
     //=States.SimulationType.NoInit); for dynamic simulation
 
-      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.Equilibrated;
+      parameter Physiolibrary.SteadyStates.SimulationType
+                                                    Simulation=SteadyStates.SimulationType.SteadyState;
 
       parameter Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
@@ -132,7 +134,7 @@ package Mixed "All together"
 
       connect(oxygenPartialPressure.y, unlimitedVolume.pressure)
                                                  annotation (Line(
-          points={{-59,70},{-46,70},{-46,56}},
+          points={{-59,70},{-56,70},{-56,46}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(temperature.y, prescribedTemperature.T) annotation (Line(
@@ -146,12 +148,12 @@ package Mixed "All together"
           thickness=1,
           smooth=Smooth.None));
       connect(partialPressure.n, oxygen_dissolved.q_out) annotation (Line(
-          points={{-2,-24},{-2,-46}},
+          points={{-2,-26.6},{-2,-46}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(partialPressure.v, unlimitedVolume.y) annotation (Line(
-          points={{-2,-8},{-2,46},{-46,46}},
+          points={{-2,-8},{-2,46},{-36,46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -180,14 +182,12 @@ package Mixed "All together"
                                       v
         "Hydraulic pressure connector with volumetric flow"
                                              annotation (Placement(transformation(
-              extent={{-110,-12},{-90,8}}), iconTransformation(extent={{-110,30},
-                {-90,50}})));
+              extent={{-114,26},{-86,54}})));
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                                         n
         "Molar concentratio connector with substance amount flow"
                                                  annotation (Placement(
-            transformation(extent={{90,30},{110,50}}),   iconTransformation(extent={{90,30},
-                {110,50}})));
+            transformation(extent={{90,30},{110,50}})));
 
       //parameter Physiolibrary.Types.Temperature T "Temperature";
 
@@ -207,7 +207,9 @@ package Mixed "All together"
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        Diagram(graphics));
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),
+                graphics));
     end IdealGas;
 
     model PartialPressure
@@ -220,14 +222,12 @@ package Mixed "All together"
                                       v
         "Partial pressure and volumetric flow of pure substance"
                                              annotation (Placement(transformation(
-              extent={{-80,-26},{-60,-6}}), iconTransformation(extent={{-10,90},{
-                10,110}})));
+              extent={{-14,86},{14,114}})));
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                                         n
         "Molar concentratio and substance amount flow"
                                                  annotation (Placement(
-            transformation(extent={{-10,-96},{10,-76}}), iconTransformation(extent={{-10,-70},
-                {10,-50}})));
+            transformation(extent={{-10,-96},{10,-76}})));
       parameter Physiolibrary.Types.GasSolubility alpha_T0
         "Gas solubility in solvent in temperature T0";
 
@@ -275,8 +275,8 @@ package Mixed "All together"
 <p><img src=\"modelica://Physiolibrary/Resources/Documentation/partialPressure.png\"/></p>
 <p>where gas solubility &QUOT;alpha&QUOT; can be recalculated to Henry&apos;s coefficient &QUOT;kH&QUOT; by equation <code>kH=1/(alpha*R*T) using gas constant R and temperature T.&nbsp;</code></p>
 </html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),
                 graphics));
     end PartialPressure;
   end Components;

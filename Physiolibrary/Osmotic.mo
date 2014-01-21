@@ -10,19 +10,19 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     //extends States.StateSystem; //(Simulation=States.SimulationType.Equilibrated);
 
       Components.OsmoticCell
-                  cells(volume_start(displayUnit="l") = 0.01)
+                  cells(volume_start(displayUnit="l") = 0.001)
         annotation (Placement(transformation(extent={{-44,36},{-24,56}})));
       Components.OsmoticCell
-                  interstitium(volume_start(displayUnit="l") = 0.005)
+                  interstitium(volume_start(displayUnit="l") = 0.001)
         annotation (Placement(transformation(extent={{34,36},{54,56}})));
       Components.Membrane
                membrane(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,36},{16,56}})));
       Components.OsmoticCell
-                  cells1(volume_start(displayUnit="l") = 0.01)
+                  cells1(volume_start(displayUnit="l") = 0.001)
         annotation (Placement(transformation(extent={{-54,-76},{-34,-56}})));
       Components.OsmoticCell
-                  interstitium1(volume_start(displayUnit="l") = 0.005)
+                  interstitium1(volume_start(displayUnit="l") = 0.001)
         annotation (Placement(transformation(extent={{52,-76},{72,-56}})));
       Components.Membrane
                membrane1(cond=1.2501026264094e-10)
@@ -75,8 +75,21 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics),
-        experiment(StopTime=900),
+                -100},{100,100}}),      graphics={
+            Text(
+              extent={{-54,96},{40,88}},
+              lineColor={135,135,135},
+              textString="Cells in hypotonic environment"),
+            Text(
+              extent={{-52,-22},{42,-30}},
+              lineColor={95,95,95},
+              textString="Cells in hypertonic environment"),
+            Line(
+              points={{-98,8},{98,8}},
+              color={135,135,135},
+              smooth=Smooth.None,
+              thickness=1)}),
+        experiment(StopTime=60),
         __Dymola_experimentSetupOutput,
         Documentation(revisions="<html>
 <p><i>2013</i></p>
@@ -89,21 +102,20 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.Package;
     model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
-      extends Physiolibrary.States.State(state_start=volume_start, storeUnit=
+      extends Physiolibrary.SteadyStates.SteadyState(
+                                         state_start=volume_start, storeUnit=
           "mOsm/l");
 
       Interfaces.PositiveOsmoticFlow
                           q_in "Flux to/from osmotic compartment" annotation (Placement(
-            transformation(extent={{62,-32},{102,8}}),  iconTransformation(extent={{-10,-10},
-                {10,10}})));
+            transformation(extent={{-10,-10},{10,10}})));
       parameter Physiolibrary.Types.Volume volume_start
         "Initial volume of compartment"
          annotation (Dialog(group="Initialization"));
 
       Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
-                {-60,80}}),
-            iconTransformation(extent={{-100,40},{-60,80}})));
+                {-60,80}})));
       Physiolibrary.Types.RealIO.VolumeOutput volume
         "Actual volume of compartment"
         annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
@@ -114,7 +126,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       change = q_in.q;    //der(volume)=q_in.q
       state = volume;
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
                                                    graphics={
@@ -149,14 +161,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
       Types.RealIO.PressureInput hydraulicPressureIn(start=HydraulicPressureIn)=pi if useHydraulicPressureInputs annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
-            rotation=0,
-            origin={-80,78}), iconTransformation(
-            extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-80,80})));
       Types.RealIO.PressureInput hydraulicPressureOut(start=HydraulicPressureOut)=po if useHydraulicPressureInputs annotation (Placement(
-            transformation(extent={{28,56},{68,96}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+            transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={80,80})));
 
@@ -169,13 +177,11 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
         annotation (Dialog(enable=not  useTemperatureInputs));
 
       Types.RealIO.TemperatureInput temperatureIn(start=T)=ti if useTemperatureInputs annotation (Placement(
-            transformation(extent={{-100,-80},{-60,-40}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+            transformation(extent={{-20,-20},{20,20}},
             rotation=90,
             origin={-80,-80})));
       Types.RealIO.TemperatureInput temperatureOut(start=T)=to if useTemperatureInputs annotation (Placement(
-            transformation(extent={{32,-80},{72,-40}}),    iconTransformation(
-            extent={{-20,-20},{20,20}},
+            transformation(extent={{-20,-20},{20,20}},
             rotation=90,
             origin={80,-80})));
 
@@ -209,11 +215,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Permeable solution flow through membrane"
-                                     annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+                                     annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
             rotation=270,
-            origin={0,40})));
+            origin={0,60})));
 
     equation
       q_in.q = desiredFlow;
@@ -235,7 +240,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=true,
+                                      Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -253,11 +258,9 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
         "Flux through membrane"
-        annotation (Placement(transformation(extent={{-54,60},{-34,80}}),
-            iconTransformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={0,66})));
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-60})));
     equation
       q_out.o = q_in.o;
 
@@ -265,7 +268,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics),Diagram(coordinateSystem(preserveAspectRatio=true,
+                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -280,15 +283,12 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       Interfaces.NegativeOsmoticFlow
                           q_out
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
-                {50,-10},{70,10}})));
+                             annotation (Placement(
+            transformation(extent={{50,-10},{70,10}})));
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Permeable solution inflow"
-        annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
     equation
@@ -308,9 +308,9 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-92,-54},{80,-30}},
+              extent={{-92,-58},{80,-34}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -324,13 +324,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
       Interfaces.PositiveOsmoticFlow
                           q_in
                              annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,-8},{-90,12}}), iconTransformation(extent={{-70,-10},
-                {-50,10}})));
+            transformation(extent={{-70,-10},{-50,10}})));
        Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
         "Permeable solution outflow"
-        annotation (Placement(transformation(extent={{-20,20},{20,60}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
     equation
@@ -350,9 +347,9 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-78,-54},{72,-32}},
+              extent={{-78,-58},{72,-36}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -382,8 +379,8 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
     annotation (
         defaultComponentName="q_in",
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={Rectangle(
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
               lineColor={127,127,0},
               lineThickness=1),       Rectangle(
@@ -391,14 +388,13 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid)}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={0,0,0})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))),
+        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
+            graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={127,127,0},
+              fillColor={127,127,0},
+              fillPattern=FillPattern.Solid),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -416,8 +412,8 @@ Connector with one flow signal of type Real.
 
     annotation (
         defaultComponentName="q_out",
-        Icon(coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
-            graphics={Rectangle(
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
               lineColor={127,127,0},
               lineThickness=1),       Rectangle(
@@ -425,14 +421,13 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={255,255,255})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))),
+        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
+            graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={127,127,0},
+             fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -449,18 +444,15 @@ Connector with one flow signal of type Real.
 
      Interfaces.PositiveOsmoticFlow
                          q_in "Forward flux through membrane"
-                            annotation (extent=[-10, -110; 10, -90], Placement(
+                            annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
       Interfaces.NegativeOsmoticFlow
                           q_out "Backward flux through membrane"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
     equation
       q_in.q + q_out.q = 0;
       annotation (Icon(graphics), Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Icon(graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));

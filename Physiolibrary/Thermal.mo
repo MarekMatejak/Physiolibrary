@@ -29,12 +29,12 @@ package Thermal "Temperature and Heat Flow"
     equation
       connect(muscleBloodFlow.y, muscleCirculation.substanceFlow)
                                                              annotation (Line(
-          points={{11,2},{18,2},{18,-16}},
+          points={{11,2},{18,2},{18,-15}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(muscle.q_in, generatedHeat.port)
                                             annotation (Line(
-          points={{26,30},{-12,30}},
+          points={{26,32},{8,32},{8,30},{-12,30}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -44,7 +44,7 @@ package Thermal "Temperature and Heat Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(muscle.q_in, muscleCirculation.q_out) annotation (Line(
-          points={{26,30},{26,-11.8},{25.8,-11.8}},
+          points={{26,32},{26,-12},{26,-12}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -153,34 +153,34 @@ package Thermal "Temperature and Heat Flow"
     equation
       connect(GILumen.q_in, foodAbsorption.q_in)
                                              annotation (Line(
-          points={{52,-82},{52,-64},{46,-64}},
+          points={{52,-80},{52,-64},{46,-64}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(foodAbsorption.q_out, core.q_in)
                                            annotation (Line(
-          points={{26,-64},{4,-64},{4,-34},{0,-34}},
+          points={{26,-64},{4,-64},{4,-32},{0,-32}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
 
       connect(core.q_in, muscleBloodFlow.q_in) annotation (Line(
-          points={{0,-34},{0,-6},{24,-6}},
+          points={{0,-32},{0,-6},{24,-6}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skeletalMuscle.q_in, muscleBloodFlow.q_out) annotation (Line(
-          points={{48,12},{33.8,12},{33.8,2.2}},
+          points={{48,14},{34,14},{34,2}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, urination.q_in) annotation (Line(
-          points={{0,-34},{-4,-34},{-4,-88},{-26,-88}},
+          points={{0,-32},{-4,-32},{-4,-88},{-26,-88}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, lungsVapor.q_in) annotation (Line(
-          points={{0,-34},{0,38},{14,38}},
+          points={{0,-32},{0,38},{14,38}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -190,12 +190,12 @@ package Thermal "Temperature and Heat Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, skinBloodFlow.q_out) annotation (Line(
-          points={{-56,-26},{-29.8,-26},{-29.8,-25.8}},
+          points={{-56,-24},{-30,-24},{-30,-26}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, insensibleVapor.q_in) annotation (Line(
-          points={{-56,-26},{-56,4},{-42,4}},
+          points={{-56,-24},{-56,4},{-42,4}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -205,17 +205,17 @@ package Thermal "Temperature and Heat Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(GILumen.q_in, lumenVolume.port_a) annotation (Line(
-          points={{52,-82},{42,-82},{42,-88},{34,-88}},
+          points={{52,-80},{42,-80},{42,-88},{34,-88}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, lumenVolume.port_b) annotation (Line(
-          points={{0,-34},{4,-34},{4,-88},{14,-88}},
+          points={{0,-32},{4,-32},{4,-88},{14,-88}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, air.port_b) annotation (Line(
-          points={{-56,-26},{-56,-8},{-74,-8},{-74,2}},
+          points={{-56,-24},{-56,-8},{-74,-8},{-74,2}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -225,34 +225,34 @@ package Thermal "Temperature and Heat Flow"
           smooth=Smooth.None));
       connect(skin.q_in, skinMetabolicHeat.port)
                                               annotation (Line(
-          points={{-56,-26},{-70,-26}},
+          points={{-56,-24},{-64,-24},{-64,-26},{-70,-26}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(GILumen.q_in, foodHeatIntake.port)
                                              annotation (Line(
-          points={{52,-82},{62,-82},{62,-76},{70,-76}},
+          points={{52,-80},{62,-80},{62,-76},{70,-76}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skeletalMuscle.q_in, muscleMetabolicHeat.port)
                                                           annotation (Line(
-          points={{48,12},{60,12},{60,-8},{66,-8}},
+          points={{48,14},{60,14},{60,-8},{66,-8}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, coreMetabolicHeat.port)
                                               annotation (Line(
-          points={{0,-34},{68,-34}},
+          points={{0,-32},{34,-32},{34,-34},{68,-34}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscleBF.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{21,6},{26,6},{26,-2}},
+          points={{21,6},{26,6},{26,-1}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(skinBF.y, skinBloodFlow.substanceFlow) annotation (Line(
-          points={{-25,-16},{-22,-16},{-22,-30}},
+          points={{-25,-16},{-22,-16},{-22,-29}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(voiding.y, urination.liquidOutflow_) annotation (Line(
@@ -277,7 +277,7 @@ package Thermal "Temperature and Heat Flow"
           color={0,0,127},
           smooth=Smooth.None));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
-          points={{-20,-34},{0,-34}},
+          points={{-20,-34},{-10,-34},{-10,-32},{0,-32}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -309,8 +309,7 @@ package Thermal "Temperature and Heat Flow"
 
       Physiolibrary.Types.RealIO.ThermalConductanceInput conductance(start=Conductance)=c if useConductanceInput
                                                        annotation (Placement(
-            transformation(extent={{-58,26},{-18,66}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+            transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
@@ -327,7 +326,9 @@ package Thermal "Temperature and Heat Flow"
               lineColor={0,0,255})}), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end Conductor;
 
     model HeatStream "Mass flow circuit with different temperatures"
@@ -338,9 +339,7 @@ package Thermal "Temperature and Heat Flow"
 
       Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
         "Flowing speed in circuit. Can not be negative!"
-        annotation (Placement(transformation(extent={{-50,42},{-10,82}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
     equation
@@ -363,7 +362,7 @@ package Thermal "Temperature and Heat Flow"
             Text(
               extent={{20,-84},{320,-44}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -376,8 +375,7 @@ package Thermal "Temperature and Heat Flow"
 
       Interfaces.PositiveHeatFlow
                        q_in "flow circuit"     annotation (Placement(
-            transformation(extent={{-120,-20},{-80,20}}), iconTransformation(extent=
-               {{-110,-10},{-90,10}})));
+            transformation(extent={{-110,-10},{-90,10}})));
       parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
         "Used for whole outflow stream";                                            // or 2428344 for water vaporization
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
@@ -385,9 +383,7 @@ package Thermal "Temperature and Heat Flow"
 
       Physiolibrary.Types.RealIO.MassFlowRateInput liquidOutflow_
         "Mass outflow. Can not be negative!"
-        annotation (Placement(transformation(extent={{-42,38},{-2,78}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
     equation
@@ -410,7 +406,7 @@ package Thermal "Temperature and Heat Flow"
             Text(
               extent={{20,-84},{320,-44}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -429,20 +425,16 @@ package Thermal "Temperature and Heat Flow"
 
       Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
         "Flowing speed in circuit. Can not be negative!"
-        annotation (Placement(transformation(extent={{-50,42},{-10,82}}),
-            iconTransformation(
-            extent={{-20,-20},{20,20}},
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={-80,60})));
+            origin={-80,70})));
 
-      Interfaces.PositiveHeatFlow
-                       q_in annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-110,10},{-90,30}}), iconTransformation(extent={{-110,10},
-                {-90,30}})));
-      Interfaces.NegativeHeatFlow
-                       q_out annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{-12,92},{8,112}}), iconTransformation(extent=
-                {{-12,92},{8,112}})));
+      Physiolibrary.Thermal.Interfaces.PositiveHeatFlow
+                       q_in annotation (Placement(
+            transformation(extent={{-110,10},{-90,30}})));
+      Physiolibrary.Thermal.Interfaces.NegativeHeatFlow
+                       q_out annotation (Placement(
+            transformation(extent={{-10,90},{10,110}})));
     equation
       q_in.Q_flow + q_out.Q_flow = 0;
     //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
@@ -454,7 +446,7 @@ package Thermal "Temperature and Heat Flow"
             Text(
               extent={{-144,-142},{156,-102}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=true,
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -471,12 +463,12 @@ package Thermal "Temperature and Heat Flow"
     model HeatAccumulation
       "Accumulating of heat to substance mass with specific heat constant"
       extends Icons.HeatAccumulation;
-      extends Physiolibrary.States.State(state_start=relativeHeat_start, storeUnit=
+      extends Physiolibrary.SteadyStates.SteadyState(
+                                         state_start=relativeHeat_start, storeUnit=
           "kcal");
       Interfaces.PositiveHeatFlow
                        q_in "Heat inflow/outflow connector"
-        annotation (Placement(transformation(extent={{-20,-40},{20,0}}),
-            iconTransformation(extent={{-20,-40},{20,0}})));
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
       parameter Physiolibrary.Types.Heat relativeHeat_start = 0
         "Heat start value = weight*(initialTemperature - 37degC)*specificHeat"
@@ -503,8 +495,8 @@ package Thermal "Temperature and Heat Flow"
       parameter Types.Mass Weight=1 "Total mass weight if useMassInput=false"
         annotation (Dialog(enable=not useMassInput));
       Physiolibrary.Types.RealIO.MassInput weight(start=Weight)=m if useMassInput
-        "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-122,60},
-                {-82,100}}), iconTransformation(extent={{-120,60},{-80,100}})));
+        "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-120,60},
+                {-80,100}})));
     protected
       Types.Mass m;
 
@@ -522,8 +514,8 @@ package Thermal "Temperature and Heat Flow"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}),            graphics),
+         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),       graphics),
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}),
              graphics={
@@ -542,16 +534,17 @@ package Thermal "Temperature and Heat Flow"
 
       parameter Types.Temperature T "Fixed temperature at port";
 
-      parameter Physiolibrary.States.SimulationType Simulation=States.SimulationType.NoInit
+      parameter Physiolibrary.SteadyStates.SimulationType
+                                                    Simulation=SteadyStates.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-      Interfaces.NegativeHeatFlow port annotation (Placement(transformation(extent=
-               {{88,-18},{128,22}}), iconTransformation(extent={{90,-10},{110,10}})));
+      Interfaces.NegativeHeatFlow port annotation (Placement(transformation(extent={{90,-10},
+                {110,10}})));
     equation
       port.T = T;
 
-      if Simulation==States.SimulationType.Equilibrated then
+      if Simulation==SteadyStates.SimulationType.SteadyState then
         port.Q_flow = 0;
       end if;
 
@@ -591,27 +584,8 @@ This model defines a fixed temperature T at its port in Kelvin,
 i.e., it defines a fixed temperature as a boundary condition.
 </p>
 </HTML>
-"),     Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,100},{100,-101}},
-              lineColor={0,0,0},
-              pattern=LinePattern.None,
-              fillColor={159,159,223},
-              fillPattern=FillPattern.Backward),
-            Line(
-              points={{-52,0},{56,0}},
-              color={191,0,0},
-              thickness=0.5),
-            Text(
-              extent={{0,0},{-100,-100}},
-              lineColor={0,0,0},
-              textString="K"),
-            Polygon(
-              points={{52,-20},{52,20},{90,0},{52,-20}},
-              lineColor={191,0,0},
-              fillColor={191,0,0},
-              fillPattern=FillPattern.Solid)}));
+"),     Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),graphics));
     end UnlimitedHeat;
   end Sources;
 
@@ -625,16 +599,20 @@ i.e., it defines a fixed temperature as a boundary condition.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Rectangle(
-              extent={{-18,10},{22,-10}},
+              extent={{-20,10},{20,-10}},
               lineColor={191,0,0},
               lineThickness=1),       Rectangle(
               extent={{-100,100},{100,-100}},
               lineColor={191,0,0},
               fillColor={191,0,0},
-              fillPattern=FillPattern.Solid)}), Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+              fillPattern=FillPattern.Solid)}),
+        Diagram(graphics={
+                      Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end PositiveHeatFlow;
 
     connector NegativeHeatFlow "Heat outflow"
@@ -642,19 +620,8 @@ i.e., it defines a fixed temperature as a boundary condition.
 
     annotation (
         defaultComponentName="q_out",
-        Coordsys(
-          extent=[-100, -100; 100, 100],
-          grid=[1, 1],
-          component=[20, 20],
-          scale=0.2),
-        Icon(coordinateSystem(extent={{-100,-100},{100,100}},
-              preserveAspectRatio=true),                      Polygon(points=[-100,0;
-                0,100; 100,0; 0,-100; -100,0],            style(
-              color=74,
-              rgbcolor={200,200,0},
-              fillColor=0,
-              rgbfillColor={255,240,240})),
-          graphics={Rectangle(
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics={Rectangle(
               extent={{-20,10},{20,-10}},
               lineColor={191,0,0},
               lineThickness=1),       Rectangle(
@@ -662,39 +629,32 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
-        Diagram(Polygon(points=[-21,-3; 5,23; 31,-3; 5,-29; -21,-3],   style(
-              color=74,
-              rgbcolor={0,0,0},
-              fillColor=0,
-              rgbfillColor={255,255,255})), Text(
-            extent=[-105,-38; 115,-83],
-            string="%name",
-            style(color=0, rgbcolor={0,0,0}))),
-        Documentation(info="<html>
-<p>
-Connector with one flow signal of type Real.
-</p>
-</html>",
-        revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+        Diagram(graphics={
+                      Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={191,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
+
     end NegativeHeatFlow;
 
     partial model OnePort "Heat one port"
 
       Interfaces.PositiveHeatFlow
-                       q_in annotation (extent=[-10, -110; 10, -90], Placement(
+                       q_in annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
       Interfaces.NegativeHeatFlow
-                       q_out annotation (extent=[-10, -110; 10, -90], Placement(
+                       q_out annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
     equation
       q_in.Q_flow + q_out.Q_flow = 0;
       annotation (Icon(graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end OnePort;
   end Interfaces;
   annotation (Documentation(revisions="<html>
