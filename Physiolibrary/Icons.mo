@@ -1176,7 +1176,7 @@ package Icons "Icons for physiological models"
   model MichaelisMenten
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-82,78},{90,-94}},
+              -100},{100,100}}), graphics={Bitmap(extent={{-80,84},{86,-26}},
               fileName=
                 "Resources/Icons/MichaelisMenten.png")}));
   end MichaelisMenten;
@@ -1211,5 +1211,32 @@ package Icons "Icons for physiological models"
               fileName=
                 "Resources/Icons/PartialPressure.png")}));
   end PartialPressure;
+
+  model ConservationLaw
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+          Rectangle(
+            extent={{-100,100},{100,-100}},
+            fillColor={170,255,213},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None),
+          Polygon(
+            points={{-40,-60},{-40,-20},{-80,-40},{-40,-60}},
+            pattern=LinePattern.None,
+            smooth=Smooth.None,
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,0}),
+          Line(
+            points={{-80,10},{-80,-80},{-80,-80}},
+            color={0,0,0},
+            smooth=Smooth.None),
+          Text(
+            extent={{-100,60},{100,34}},
+            lineColor={0,0,0},
+            fillColor={0,0,127},
+            fillPattern=FillPattern.Solid,
+            textString="Total(%Total)")}));
+  end ConservationLaw;
   annotation (Documentation(revisions=""));
 end Icons;

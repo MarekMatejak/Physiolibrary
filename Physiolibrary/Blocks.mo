@@ -339,7 +339,7 @@ Example:
         end HomotopyStrongComponentBreaker;
 
     model Integrator "Integrator with support of equilibrium calculation."
-      extends Physiolibrary.SteadyStates.SteadyState(
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=y_start);
 
       parameter Real k=1 "Integrator gain";

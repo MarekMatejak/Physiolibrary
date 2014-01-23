@@ -432,7 +432,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     model ElasticVessel "Elastic container"
      extends Icons.ElasticBalloon;
-     extends Physiolibrary.SteadyStates.SteadyState(
+     extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
           "ml");
 
@@ -440,7 +440,8 @@ package Hydraulic "Pressure and Volumetric Flow"
                            q_in
                             annotation (Placement(
             transformation(extent={{-14,-14},{14,14}})));
-      parameter Physiolibrary.Types.Volume volume_start "Volume start value"
+      parameter Physiolibrary.Types.Volume volume_start = 0
+        "Volume start value"
          annotation (Dialog(group="Initialization"));
 
       Physiolibrary.Types.Volume excessVolume
@@ -519,7 +520,7 @@ package Hydraulic "Pressure and Volumetric Flow"
     end ElasticVessel;
 
     model ElasticMembrane "Elastic balloon in closed space"
-     extends Physiolibrary.SteadyStates.SteadyState(
+     extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
           "ml");
      extends Icons.InternalElasticBalloon;
@@ -533,7 +534,7 @@ package Hydraulic "Pressure and Volumetric Flow"
      parameter Physiolibrary.Types.HydraulicCompliance Compliance "Compliance";
      parameter Physiolibrary.Types.Volume zeroPressureVolume=0
         "Maximal volume, that does not generate pressure";
-     parameter Physiolibrary.Types.Volume volume_start "Volume start value"
+     parameter Physiolibrary.Types.Volume volume_start=0 "Volume start value"
          annotation (Dialog(group="Initialization"));
      Physiolibrary.Types.Volume volume;
      Physiolibrary.Types.Volume stressedVolume;
@@ -556,7 +557,7 @@ package Hydraulic "Pressure and Volumetric Flow"
     end ElasticMembrane;
 
     model Inertia "Inertia of the volumetric flow"
-      extends Physiolibrary.SteadyStates.SteadyState(
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=volumeFlow_start,
         storeUnit="ml/min");
       extends Interfaces.OnePort;
@@ -759,15 +760,15 @@ package Hydraulic "Pressure and Volumetric Flow"
           annotation (Placement(transformation(extent={{84,-16},{116,16}},
               rotation=0)));
 
-       parameter Physiolibrary.SteadyStates.SimulationType
-                                                     Simulation=SteadyStates.SimulationType.NormalInit
+       parameter Physiolibrary.SteadyStates.Interfaces.SimulationType
+                                                     Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
       equation
         y.pressure = pressure;
 
-        if Simulation==SteadyStates.SimulationType.SteadyState then
+        if Simulation==Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState then
           y.q = 0;
         end if;
 

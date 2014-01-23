@@ -7,7 +7,6 @@ package Thermal "Temperature and Heat Flow"
 
     model MuscleHeat
     extends Modelica.Icons.Example;
-    //extends States.StateSystem;//(Simulation=States.SimulationType.Equilibrated);
 
       Components.HeatAccumulation
                        muscle(
@@ -463,7 +462,7 @@ package Thermal "Temperature and Heat Flow"
     model HeatAccumulation
       "Accumulating of heat to substance mass with specific heat constant"
       extends Icons.HeatAccumulation;
-      extends Physiolibrary.SteadyStates.SteadyState(
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=relativeHeat_start, storeUnit=
           "kcal");
       Interfaces.PositiveHeatFlow
@@ -534,8 +533,8 @@ package Thermal "Temperature and Heat Flow"
 
       parameter Types.Temperature T "Fixed temperature at port";
 
-      parameter Physiolibrary.SteadyStates.SimulationType
-                                                    Simulation=SteadyStates.SimulationType.NormalInit
+      parameter Physiolibrary.SteadyStates.Interfaces.SimulationType
+                                                    Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -544,7 +543,7 @@ package Thermal "Temperature and Heat Flow"
     equation
       port.T = T;
 
-      if Simulation==SteadyStates.SimulationType.SteadyState then
+      if Simulation==Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState then
         port.Q_flow = 0;
       end if;
 

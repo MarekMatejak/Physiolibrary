@@ -7,31 +7,25 @@ package Mixed "All together"
 
     model O2_in_water
     extends Modelica.Icons.Example;
-    //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
-    //=States.SimulationType.NoInit); for dynamic simulation
-
-      parameter Physiolibrary.SteadyStates.SimulationType
-                                                    Simulation=SteadyStates.SimulationType.SteadyState;
-
-      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
     public
       Chemical.Components.Substance oxygen_dissolved(
-                                                    Simulation=Simulation,
-          solute_start=0.000001*7.875647668393782383419689119171e-5)
+                                                    Simulation=SteadyStates.Interfaces.SimulationType.SteadyState,
+          solute_start=0.000001*7.875647668393782383419689119171e-5,
+        isDependent=true)
         annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
       Chemical.Components.GasSolubility
                             partialPressure(
         useHeatPort=true,
-        kH_T0=1/(alpha*Modelica.Constants.R*310.15),
+        kH_T0=1/(0.0105 * 1e-3*Modelica.Constants.R*310.15),
         T0=310.15)                                     annotation (Placement(
             transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={-2,-18})));
+      //oxygen solubility in plasma by Siggaard Andersen: 0.0105 (mmol/l)/kPa
       Hydraulic.Sources.UnlimitedVolume
-                                unlimitedVolume
+                                unlimitedVolume(Simulation=SteadyStates.Interfaces.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
       Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
         annotation (Placement(transformation(extent={{-88,36},{-68,56}})));
@@ -96,29 +90,23 @@ package Mixed "All together"
 
     model O2_in_water2
     extends Modelica.Icons.Example;
-    //extends States.StateSystem(Simulation=States.SimulationType.Equilibrated);
-    //=States.SimulationType.NoInit); for dynamic simulation
-
-      parameter Physiolibrary.SteadyStates.SimulationType
-                                                    Simulation=SteadyStates.SimulationType.SteadyState;
-
-      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
     public
       Chemical.Components.Substance oxygen_dissolved(
-                                                    Simulation=Simulation,
-          solute_start=0.000001*7.875647668393782383419689119171e-5)
+                                                    Simulation=SteadyStates.Interfaces.SimulationType.SteadyState,
+          solute_start=0.000001*7.875647668393782383419689119171e-5,
+        isDependent=true)
         annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
       Components.PartialPressure
-                            partialPressure(useHeatPort=true, T0=310.15, alpha_T0=alpha)
+                            partialPressure(useHeatPort=true, T0=310.15, alpha_T0=1.05e-5)
+        "Oxygen solubility in plasma by Siggaard Andersen: 0.0105 (mmol/l)/kPa"
                                                        annotation (Placement(
             transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={-2,-18})));
       Hydraulic.Sources.UnlimitedVolume
-                                unlimitedVolume
+                                unlimitedVolume(Simulation=SteadyStates.Interfaces.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,36},{-36,56}})));
       Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
         annotation (Placement(transformation(extent={{-80,60},{-60,80}})));

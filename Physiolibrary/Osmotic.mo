@@ -7,7 +7,6 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
     model Cell
     extends Modelica.Icons.Example;
-    //extends States.StateSystem; //(Simulation=States.SimulationType.Equilibrated);
 
       Components.OsmoticCell
                   cells(volume_start(displayUnit="l") = 0.001)
@@ -102,14 +101,14 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.Package;
     model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
-      extends Physiolibrary.SteadyStates.SteadyState(
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=volume_start, storeUnit=
           "mOsm/l");
 
       Interfaces.PositiveOsmoticFlow
                           q_in "Flux to/from osmotic compartment" annotation (Placement(
             transformation(extent={{-10,-10},{10,10}})));
-      parameter Physiolibrary.Types.Volume volume_start
+      parameter Physiolibrary.Types.Volume volume_start = 0.001
         "Initial volume of compartment"
          annotation (Dialog(group="Initialization"));
 
