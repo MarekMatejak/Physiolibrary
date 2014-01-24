@@ -202,7 +202,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
     model SolventFlux "Prescripted flow of solvent"
       extends Interfaces.OnePort;
-      extends Chemical.Interfaces.ConditionalSolventFlow;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
       q_in.q = q;
@@ -264,7 +264,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
   package Sources
     extends Modelica.Icons.SourcesPackage;
     model SolventInflux "Permeable solution inflow to the system"
-      extends Chemical.Interfaces.ConditionalSolventFlow;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
       Interfaces.NegativeOsmoticFlow
                           q_out
@@ -300,7 +300,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     end SolventInflux;
 
     model SolventOutflux "Permeable solution outflow from the system"
-     extends Chemical.Interfaces.ConditionalSolventFlow;
+     extends Chemical.Interfaces.ConditionalSolutionFlow;
       Interfaces.PositiveOsmoticFlow
                           q_in
                              annotation (extent=[-10, -110; 10, -90], Placement(
@@ -509,6 +509,34 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end OnePort;
+
+    partial model ConditionalSolventFlow
+      "Input of solvent volumetric flow vs. parametric solvent volumetric flow"
+
+      parameter Boolean useSolventFlowInput = false
+        "=true, if solvent flow input is used instead of parameter SolventFlow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate SolventFlow=0
+        "Volumetric flow of solvent if useSolventFlowInput=false"
+        annotation (Dialog(enable=not useSolventFlowInput));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+
+      Physiolibrary.Types.VolumeFlowRate q "Current solvent flow";
+    equation
+      if not useSolventFlowInput then
+        q = SolventFlow;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+    end ConditionalSolventFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

@@ -1265,7 +1265,7 @@ It works in two modes:
     model Stream "One-directional flow of solution"
      //- Solute flowing together with solvent - One-directional stream (only zero or positive solvent flow values are allowed!)"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventFlow;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
     //  assert(q>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
@@ -1342,8 +1342,6 @@ It works in two modes:
 </html>"));
     end Stream;
 
-
-
     model SolutePump "Active pumping of solute"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
       extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
@@ -1381,9 +1379,6 @@ It works in two modes:
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end SolutePump;
-
-
-
 
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
@@ -1497,7 +1492,6 @@ It works in two modes:
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end Dilution;
-
 
     model Reabsorption "Reabsorption of input fraction"
        extends Physiolibrary.Icons.Reabsorption;
@@ -1646,7 +1640,7 @@ It works in two modes:
 
     model FlowConcentrationMeasure
       "The outflow concentration from absorption (i.e. portal vein concentration)"
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventFlow;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "Concentration before absorption source"
                              annotation (Placement(
@@ -2068,33 +2062,33 @@ on the model behaviour.
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolventVolume;
 
-    partial model ConditionalSolventFlow
-      "Input of solvent volumetric flow vs. parametric solvent volumetric flow"
+    partial model ConditionalSolutionFlow
+      "Input of solution volumetric flow vs. parametric solution volumetric flow"
 
-      parameter Boolean useSolventFlowInput = false
-        "=true, if solvent flow input is used instead of parameter SolventFlow"
+      parameter Boolean useSolutionFlowInput = false
+        "=true, if solution flow input is used instead of parameter SolutionFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.VolumeFlowRate SolventFlow=0
-        "Volumetric flow of solvent if useSolventFlowInput=false"
-        annotation (Dialog(enable=not useSolventFlowInput));
+      parameter Physiolibrary.Types.VolumeFlowRate SolutionFlow=0
+        "Volumetric flow of solution if useSolutionFlowInput=false"
+        annotation (Dialog(enable=not useSolutionFlowInput));
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
-      Physiolibrary.Types.VolumeFlowRate q "Current solvent flow";
+      Physiolibrary.Types.VolumeFlowRate q "Current solution flow";
     equation
-      if not useSolventFlowInput then
-        q = SolventFlow;
+      if not useSolutionFlowInput then
+        q = SolutionFlow;
       end if;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),                                                                       graphics),
                  Diagram(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
-    end ConditionalSolventFlow;
+    end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow
       "Input of solute molar flow vs. parametric solute molar flow"

@@ -27,7 +27,7 @@ package Hydraulic "Pressure and Volumetric Flow"
         useExternalPressureInput=false)
         annotation (Placement(transformation(extent={{-32,64},{-12,84}})));
       Hydraulic.Components.Conductor
-               pulmonary(cond(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)
+               pulmonary(Conductance(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)
         annotation (Placement(transformation(extent={{0,64},{20,84}})));
       Components.ElasticVessel
                      arteries(
@@ -42,13 +42,13 @@ package Hydraulic "Pressure and Volumetric Flow"
         ZeroPressureVolume(displayUnit="l") = 0.00295)
         annotation (Placement(transformation(extent={{-34,-56},{-14,-36}})));
       Hydraulic.Components.Conductor
-               nonMuscle(cond(displayUnit="l/(mmHg.min)") = 3.5627924852669e-09)
+               nonMuscle(Conductance(displayUnit="l/(mmHg.min)") = 3.5627924852669e-09)
         annotation (Placement(transformation(extent={{6,-56},{26,-36}})));
       Sensors.PressureMeasure
                       pressureMeasure
         annotation (Placement(transformation(extent={{-48,16},{-28,36}})));
       Components.Pump
-           rightHeart
+           rightHeart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-26,-2},{-6,18}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{-30,30},{-22,38}})));
@@ -56,18 +56,18 @@ package Hydraulic "Pressure and Volumetric Flow"
                       pressureMeasure1
         annotation (Placement(transformation(extent={{22,16},{42,36}})));
       Components.Pump
-           leftHeart
-        annotation (Placement(transformation(extent={{46,-2},{66,18}})));
+           leftHeart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{46,-4},{66,16}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{42,32},{50,40}})));
       Hydraulic.Components.Conductor
-               kidney(cond(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
+               kidney(Conductance(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
         annotation (Placement(transformation(extent={{6,-74},{26,-54}})));
       Hydraulic.Components.Conductor
-               muscle(cond(displayUnit="l/(mmHg.min)") = 1.3001067314658e-09)
+               muscle(Conductance(displayUnit="l/(mmHg.min)") = 1.3001067314658e-09)
         annotation (Placement(transformation(extent={{6,-38},{26,-18}})));
       Hydraulic.Components.Conductor
-               largeVeins(cond(displayUnit="l/(mmHg.min)") = 1.6888886482791e-07)
+               largeVeins(Conductance(displayUnit="l/(mmHg.min)") = 1.6888886482791e-07)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-54,-18})));
@@ -81,8 +81,8 @@ package Hydraulic "Pressure and Volumetric Flow"
             0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
         "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{-26,12},{-6,32}})));
-      Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,0.72,0.29},{0,1.01,
-            0.29},{3,1.88,0.218333},{10,2.7,0}})
+      Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,
+            0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}})
         "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{46,12},{66,32}})));
     equation
@@ -112,17 +112,17 @@ package Hydraulic "Pressure and Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(leftHeart.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{46,8},{26,8},{26,50},{62,50},{62,74},{44,74}},
+          points={{46,6},{26,6},{26,50},{62,50},{62,74},{44,74}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(leftHeart.q_out,arteries. q_in) annotation (Line(
-          points={{66,8},{66,8},{68,8},{68,-46},{54,-46}},
+          points={{66,6},{74,6},{74,-46},{54,-46}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
-          points={{-42,20},{-42,20},{-42,8},{-26,8}},
+          points={{-42,20},{-42,8},{-26,8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -166,10 +166,6 @@ package Hydraulic "Pressure and Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(rightHeart.desiredFlow, rightStarling.y) annotation (Line(
-          points={{-16,14},{-16,18}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
           points={{-21,34},{-16,34},{-16,24}},
           color={0,0,127},
@@ -182,10 +178,6 @@ package Hydraulic "Pressure and Volumetric Flow"
           points={{51,36},{56,36},{56,24}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(leftHeart.desiredFlow, leftStarling.y) annotation (Line(
-          points={{56,14},{56,18}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
           points={{38,22},{48,22}},
           color={0,0,127},
@@ -194,6 +186,14 @@ package Hydraulic "Pressure and Volumetric Flow"
           points={{-42,20},{-42,20},{-42,8}},
           color={0,0,0},
           thickness=1,
+          smooth=Smooth.None));
+      connect(rightHeart.solutionFlow, rightStarling.y) annotation (Line(
+          points={{-16,12},{-16,18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(leftStarling.y, leftHeart.solutionFlow) annotation (Line(
+          points={{56,18},{56,10}},
+          color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Documentation(info="<html>
@@ -243,13 +243,10 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     model Pump
       extends Physiolibrary.Hydraulic.Interfaces.OnePort;
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
-        "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
+
     equation
-      q_in.q = desiredFlow;
+      q_in.q = q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -660,30 +657,13 @@ package Hydraulic "Pressure and Volumetric Flow"
   package Sources
     extends Modelica.Icons.SourcesPackage;
     model UnlimitedPump
-
-      parameter Boolean useFlowInput = false "=true, if flow input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.VolumeFlowRate Q=0
-        "Volumetric flow if useFlowInput=false"
-        annotation (Dialog(enable=not useFlowInput));
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
       Interfaces.NegativePressureFlow
                            q_out
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow(start=Q) = q if useFlowInput
-        "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-
-    protected
-      Physiolibrary.Types.VolumeFlowRate q;
     equation
-      if not useFlowInput then
-        q = Q;
-      end if;
       q_out.q = - q;
 
      annotation (

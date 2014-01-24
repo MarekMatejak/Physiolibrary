@@ -77,10 +77,13 @@ package Thermal "Temperature and Heat Flow"
       Physiolibrary.Thermal.Components.HeatOutstream
                     lungsVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"),
-        MassFlow(displayUnit="g/min") = 0.0046666666666667)
+        MassFlow(displayUnit="g/min") = 4.6666666666667e-06)
         annotation (Placement(transformation(extent={{14,28},{34,48}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
-                        skin(SpecificHeat=3475.044, Weight=0.56)
+                        skin(
+        relativeHeat_start=-8373.6,
+        SpecificHeat=3475.044,
+        Weight=0.56)
         annotation (Placement(transformation(extent={{-66,-34},{-46,-14}})));
       Physiolibrary.Thermal.Components.IdealRadiator
                     skinBloodFlow(
@@ -93,7 +96,7 @@ package Thermal "Temperature and Heat Flow"
       Physiolibrary.Thermal.Components.HeatOutstream
                     insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"),
-        MassFlow(displayUnit="g/min") = 0.0065)
+        MassFlow(displayUnit="g/min") = 6.5e-06)
         annotation (Placement(transformation(extent={{-42,-6},{-22,14}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
@@ -103,7 +106,7 @@ package Thermal "Temperature and Heat Flow"
             displayUnit="kcal/(min.K)") = 1)
         annotation (Placement(transformation(extent={{34,-98},{14,-78}})));
       Modelica.Thermal.HeatTransfer.Components.ThermalConductor air(G(
-            displayUnit="kcal/(min.K)") = 7.6758)                   annotation (
+            displayUnit="kcal/(min.K)") = 2.4423)                   annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -240,7 +243,7 @@ package Thermal "Temperature and Heat Flow"
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1000),
+        experiment(StopTime=10000),
         __Dymola_experimentSetupOutput);
     end ThermalBody_QHP;
 
