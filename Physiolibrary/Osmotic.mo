@@ -345,6 +345,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
         "Fixed osmolarity at port if useOsmolarityInput=false"
         annotation (Dialog(enable=not useOsmolarityInput));
 
+      parameter Boolean isIsolatedInSteadyState = true
+        "=true, if there is no flow at port in steady state"
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
@@ -366,8 +370,8 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       port.o = o;
 
-      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
-        port.q = 0;
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+          port.q = 0;
       end if;
 
        annotation (
@@ -446,7 +450,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -479,7 +483,7 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
              fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

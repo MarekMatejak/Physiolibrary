@@ -121,31 +121,6 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end ExothermicReaction;
 
-    model SimpleReaction2_in_Equilibrium
-      import Physiolibrary.Types.*;
-
-      extends SimpleReaction2(
-        A(Simulation=SimulationType.SteadyState),
-        C(Simulation=SimulationType.SteadyState,
-            isDependent=true),
-        B(Simulation=SimulationType.SteadyState,
-            isDependent=true));
-
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                             Simulation=SimulationType.SteadyState, NumberOfDependentStates=2);
-
-      parameter Physiolibrary.Types.AmountOfSubstance totalBSubstance = 0.1,
-                                                      totalCSubstance = 0.2;
-    equation
-       totalBSubstance*normalizedState[1] = A.solute + B.solute;
-       totalCSubstance*normalizedState[1] = A.solute + C.solute;
-
-        annotation (Documentation(revisions="<html>
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
-    end SimpleReaction2_in_Equilibrium;
 
     model Allosteric_Hemoglobin_MWC
     extends Modelica.Icons.Example;
@@ -1747,6 +1722,10 @@ It works in two modes:
         "Fixed concentration if useConcentrationInput=false"
         annotation (Dialog(enable=not useSolventFlowInput));
 
+      parameter Boolean isIsolatedInSteadyState = true
+        "=true, if there is no flow at port in steady state"
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
@@ -1764,7 +1743,7 @@ It works in two modes:
 
       q_out.conc = c;
 
-      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
         q_out.q = 0;
       end if;
 
@@ -1827,6 +1806,10 @@ It works in two modes:
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
             rotation=0)));
 
+     parameter Boolean isIsolatedInSteadyState = true
+        "=true, if there is no flow at port in steady state"
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
@@ -1840,8 +1823,8 @@ It works in two modes:
 
       q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
 
-      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
-        q_out.q = 0;
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+         q_out.q = 0;
       end if;
 
       lossHeat=0; //only read temperature from heat port
@@ -1923,7 +1906,7 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1957,7 +1940,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

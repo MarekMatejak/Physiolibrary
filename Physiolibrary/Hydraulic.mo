@@ -16,7 +16,7 @@ package Hydraulic "Pressure and Volumetric Flow"
         volume_start(displayUnit="l") = 0.0004,
         ZeroPressureVolume(displayUnit="l") = 0.0004,
         Compliance(displayUnit="l/mmHg") = 7.5006157584566e-08)
-        annotation (Placement(transformation(extent={{34,64},{54,84}})));
+        annotation (Placement(transformation(extent={{4,74},{24,94}})));
       Components.ElasticVessel
                      pulmonaryArteries(
         ZeroPressureVolume(displayUnit="l") = 0.00030625,
@@ -25,174 +25,174 @@ package Hydraulic "Pressure and Volumetric Flow"
         useV0Input=false,
         useComplianceInput=false,
         useExternalPressureInput=false)
-        annotation (Placement(transformation(extent={{-32,64},{-12,84}})));
+        annotation (Placement(transformation(extent={{-62,74},{-42,94}})));
       Hydraulic.Components.Conductor
                pulmonary(Conductance(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)
-        annotation (Placement(transformation(extent={{0,64},{20,84}})));
+        annotation (Placement(transformation(extent={{-30,74},{-10,94}})));
       Components.ElasticVessel
                      arteries(
         volume_start(displayUnit="l") = 0.00085,
         ZeroPressureVolume(displayUnit="l") = 0.000495,
         Compliance(displayUnit="l/mmHg") = 2.6627185942521e-08)
-        annotation (Placement(transformation(extent={{44,-56},{64,-36}})));
+        annotation (Placement(transformation(extent={{14,-46},{34,-26}})));
       Components.ElasticVessel
                      veins(
         Compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
         volume_start(displayUnit="l") = 0.00325,
         ZeroPressureVolume(displayUnit="l") = 0.00295)
-        annotation (Placement(transformation(extent={{-34,-56},{-14,-36}})));
+        annotation (Placement(transformation(extent={{-64,-46},{-44,-26}})));
       Hydraulic.Components.Conductor
                nonMuscle(Conductance(displayUnit="l/(mmHg.min)") = 3.5627924852669e-09)
-        annotation (Placement(transformation(extent={{6,-56},{26,-36}})));
+        annotation (Placement(transformation(extent={{-24,-46},{-4,-26}})));
       Sensors.PressureMeasure
                       pressureMeasure
-        annotation (Placement(transformation(extent={{-48,16},{-28,36}})));
+        annotation (Placement(transformation(extent={{-78,26},{-58,46}})));
       Components.Pump
            rightHeart(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{-26,-2},{-6,18}})));
+        annotation (Placement(transformation(extent={{-56,8},{-36,28}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
-        annotation (Placement(transformation(extent={{-30,30},{-22,38}})));
+        annotation (Placement(transformation(extent={{-60,40},{-52,48}})));
       Sensors.PressureMeasure
                       pressureMeasure1
-        annotation (Placement(transformation(extent={{22,16},{42,36}})));
+        annotation (Placement(transformation(extent={{-8,26},{12,46}})));
       Components.Pump
            leftHeart(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{46,-4},{66,16}})));
+        annotation (Placement(transformation(extent={{16,6},{36,26}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
-        annotation (Placement(transformation(extent={{42,32},{50,40}})));
+        annotation (Placement(transformation(extent={{12,42},{20,50}})));
       Hydraulic.Components.Conductor
                kidney(Conductance(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
-        annotation (Placement(transformation(extent={{6,-74},{26,-54}})));
+        annotation (Placement(transformation(extent={{-24,-64},{-4,-44}})));
       Hydraulic.Components.Conductor
                muscle(Conductance(displayUnit="l/(mmHg.min)") = 1.3001067314658e-09)
-        annotation (Placement(transformation(extent={{6,-38},{26,-18}})));
+        annotation (Placement(transformation(extent={{-24,-28},{-4,-8}})));
       Hydraulic.Components.Conductor
                largeVeins(Conductance(displayUnit="l/(mmHg.min)") = 1.6888886482791e-07)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-54,-18})));
+            origin={-84,-8})));
       Components.ElasticVessel
                      rightAtrium(
         volume_start(displayUnit="l") = 0.0001,
         ZeroPressureVolume(displayUnit="l") = 0.0001,
         Compliance(displayUnit="l/mmHg") = 3.7503078792283e-08)
-        annotation (Placement(transformation(extent={{-52,-2},{-32,18}})));
+        annotation (Placement(transformation(extent={{-82,8},{-62,28}})));
       Physiolibrary.Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
             0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
         "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
-        annotation (Placement(transformation(extent={{-26,12},{-6,32}})));
+        annotation (Placement(transformation(extent={{-56,22},{-36,42}})));
       Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,
             0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}})
         "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
-        annotation (Placement(transformation(extent={{46,12},{66,32}})));
+        annotation (Placement(transformation(extent={{16,22},{36,42}})));
     equation
       connect(pulmonaryArteries.q_in,pulmonary. q_in) annotation (Line(
-          points={{-22,74},{0,74}},
+          points={{-52,84},{-30,84}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pulmonary.q_out,pulmonaryVeins. q_in) annotation (Line(
-          points={{20,74},{44,74}},
+          points={{-10,84},{14,84}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(veins.q_in, nonMuscle.q_in)  annotation (Line(
-          points={{-24,-46},{6,-46}},
+          points={{-54,-36},{-24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(nonMuscle.q_out, arteries.q_in)  annotation (Line(
-          points={{26,-46},{54,-46}},
+          points={{-4,-36},{24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(rightHeart.q_out,pulmonaryArteries. q_in) annotation (Line(
-          points={{-6,8},{2,8},{2,50},{-40,50},{-40,74},{-22,74}},
+          points={{-36,18},{-28,18},{-28,60},{-70,60},{-70,84},{-52,84}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(leftHeart.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{46,6},{26,6},{26,50},{62,50},{62,74},{44,74}},
+          points={{16,16},{-4,16},{-4,60},{32,60},{32,84},{14,84}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(leftHeart.q_out,arteries. q_in) annotation (Line(
-          points={{66,6},{74,6},{74,-46},{54,-46}},
+          points={{36,16},{44,16},{44,-36},{24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
-          points={{-42,20},{-42,8},{-26,8}},
+          points={{-72,30},{-72,18},{-56,18}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(pressureMeasure1.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{28,20},{26,20},{26,50},{62,50},{62,74},{44,74}},
+          points={{-2,30},{-4,30},{-4,60},{32,60},{32,84},{14,84}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscle.q_out, arteries.q_in) annotation (Line(
-          points={{26,-28},{40,-28},{40,-46},{54,-46}},
+          points={{-4,-18},{10,-18},{10,-36},{24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(kidney.q_out, arteries.q_in) annotation (Line(
-          points={{26,-64},{40,-64},{40,-46},{54,-46}},
+          points={{-4,-54},{10,-54},{10,-36},{24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(kidney.q_in, nonMuscle.q_in) annotation (Line(
-          points={{6,-64},{-4,-64},{-4,-46},{6,-46}},
+          points={{-24,-54},{-34,-54},{-34,-36},{-24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(muscle.q_in, nonMuscle.q_in) annotation (Line(
-          points={{6,-28},{-4,-28},{-4,-46},{6,-46}},
+          points={{-24,-18},{-34,-18},{-34,-36},{-24,-36}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(veins.q_in, largeVeins.q_out) annotation (Line(
-          points={{-24,-46},{-54,-46},{-54,-28}},
+          points={{-54,-36},{-84,-36},{-84,-18}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(largeVeins.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-54,-8},{-54,8},{-42,8}},
+          points={{-84,2},{-84,18},{-72,18}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(rightAtrium.q_in, rightHeart.q_in) annotation (Line(
-          points={{-42,8},{-26,8}},
+          points={{-72,18},{-56,18}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
-          points={{-21,34},{-16,34},{-16,24}},
+          points={{-51,44},{-46,44},{-46,34}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure.actualPressure, rightStarling.u) annotation (Line(
-          points={{-32,22},{-24,22}},
+          points={{-62,32},{-54,32}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
-          points={{51,36},{56,36},{56,24}},
+          points={{21,46},{26,46},{26,34}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
-          points={{38,22},{48,22}},
+          points={{8,32},{18,32}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-42,20},{-42,20},{-42,8}},
+          points={{-72,30},{-72,18}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(rightHeart.solutionFlow, rightStarling.y) annotation (Line(
-          points={{-16,12},{-16,18}},
+          points={{-46,22},{-46,28}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(leftStarling.y, leftHeart.solutionFlow) annotation (Line(
-          points={{56,18},{56,10}},
+          points={{26,28},{26,20}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -728,6 +728,10 @@ package Hydraulic "Pressure and Volumetric Flow"
           annotation (Placement(transformation(extent={{84,-16},{116,16}},
               rotation=0)));
 
+       parameter Boolean isIsolatedInSteadyState = true
+        "=true, if there is no flow at port in steady state"
+          annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
        parameter Physiolibrary.Types.SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
@@ -741,8 +745,8 @@ package Hydraulic "Pressure and Volumetric Flow"
 
         y.pressure = p;
 
-        if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
-          y.q = 0;
+        if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+           y.q = 0;
         end if;
 
         annotation (Documentation(info="<html>

@@ -21,7 +21,7 @@ package Thermal "Temperature and Heat Flow"
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow generatedHeat(Q_flow=13.956)
         "Heat energy created by muscle"
         annotation (Placement(transformation(extent={{-32,20},{-12,40}})));
-      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature body(T(displayUnit="degC")=
+      Sources.UnlimitedHeat                                  body(T(displayUnit="degC")=
              310.15)
         annotation (Placement(transformation(extent={{-32,-30},{-12,-10}})));
     equation
@@ -56,13 +56,13 @@ package Thermal "Temperature and Heat Flow"
       extends Modelica.Icons.Example;
       Physiolibrary.Thermal.Components.HeatAccumulation
                         core(SpecificHeat=3475.044, Weight=10.75)
-        annotation (Placement(transformation(extent={{-10,-42},{10,-22}})));
+        annotation (Placement(transformation(extent={{-12,-4},{8,16}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
                         GILumen(Weight=1)
-        annotation (Placement(transformation(extent={{42,-90},{62,-70}})));
+        annotation (Placement(transformation(extent={{40,-52},{60,-32}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
                         skeletalMuscle(SpecificHeat=3475.044, Weight=7.05)
-        annotation (Placement(transformation(extent={{38,4},{58,24}})));
+        annotation (Placement(transformation(extent={{36,42},{56,62}})));
       Physiolibrary.Thermal.Components.IdealRadiator
                     muscleBloodFlow(
         MassFlow(displayUnit="g/min") = 0.0114,
@@ -70,21 +70,21 @@ package Thermal "Temperature and Heat Flow"
         SpecificHeat=3851.856)      annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={34,-8})));
+            origin={32,30})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     urination
-        annotation (Placement(transformation(extent={{-26,-98},{-46,-78}})));
+        annotation (Placement(transformation(extent={{-28,-60},{-48,-40}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     lungsVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 4.6666666666667e-06)
-        annotation (Placement(transformation(extent={{14,28},{34,48}})));
+        annotation (Placement(transformation(extent={{12,66},{32,86}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
                         skin(
         relativeHeat_start=-8373.6,
         SpecificHeat=3475.044,
         Weight=0.56)
-        annotation (Placement(transformation(extent={{-66,-34},{-46,-14}})));
+        annotation (Placement(transformation(extent={{-68,4},{-48,24}})));
       Physiolibrary.Thermal.Components.IdealRadiator
                     skinBloodFlow(
         MassFlow(displayUnit="g/min") = 0.0028333333333333,
@@ -92,149 +92,150 @@ package Thermal "Temperature and Heat Flow"
         SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
-            origin={-30,-36})));
+            origin={-32,2})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 6.5e-06)
-        annotation (Placement(transformation(extent={{-42,-6},{-22,14}})));
+        annotation (Placement(transformation(extent={{-44,32},{-24,52}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"))
-        annotation (Placement(transformation(extent={{-42,20},{-22,40}})));
+        annotation (Placement(transformation(extent={{-44,58},{-24,78}})));
       Modelica.Thermal.HeatTransfer.Components.ThermalConductor lumenVolume(G(
             displayUnit="kcal/(min.K)") = 1)
-        annotation (Placement(transformation(extent={{34,-98},{14,-78}})));
+        annotation (Placement(transformation(extent={{32,-60},{12,-40}})));
       Modelica.Thermal.HeatTransfer.Components.ThermalConductor air(G(
             displayUnit="kcal/(min.K)") = 2.4423)                   annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-74,12})));
-      Modelica.Thermal.HeatTransfer.Sources.FixedTemperature ambient(T=295.15)
+            origin={-76,50})));
+      Physiolibrary.Thermal.Sources.UnlimitedHeat            ambient(T=295.15)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-74,46})));
+            origin={-76,84})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow skinMetabolicHeat(Q_flow=
             1.95384)
-        annotation (Placement(transformation(extent={{-90,-36},{-70,-16}})));
+        annotation (Placement(transformation(extent={{-92,2},{-72,22}})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow coreMetabolicHeat(Q_flow=
             55.824)
-        annotation (Placement(transformation(extent={{88,-44},{68,-24}})));
+        annotation (Placement(transformation(extent={{86,-6},{66,14}})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow muscleMetabolicHeat(Q_flow(
             displayUnit="kcal/min") = 9.7692)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={76,-8})));
+            origin={74,30})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow foodHeatIntake(Q_flow=0)
                                                                      annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={80,-76})));
+            origin={78,-38})));
       Physiolibrary.Thermal.Components.Stream
                  foodAbsorption(SpecificHeat=4186.8)
-        annotation (Placement(transformation(extent={{46,-70},{26,-50}})));
+        annotation (Placement(transformation(extent={{44,-32},{24,-12}})));
     equation
 
       connect(core.q_in, muscleBloodFlow.q_in) annotation (Line(
-          points={{0,-32},{0,-6},{24,-6}},
+          points={{-2,6},{-2,32},{22,32}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skeletalMuscle.q_in, muscleBloodFlow.q_out) annotation (Line(
-          points={{48,14},{34,14},{34,2}},
+          points={{46,52},{32,52},{32,40}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, urination.q_in) annotation (Line(
-          points={{0,-32},{-4,-32},{-4,-88},{-26,-88}},
+          points={{-2,6},{-6,6},{-6,-50},{-28,-50}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, lungsVapor.q_in) annotation (Line(
-          points={{0,-32},{0,38},{14,38}},
+          points={{-2,6},{-2,76},{12,76}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skinBloodFlow.q_in, lungsVapor.q_in) annotation (Line(
-          points={{-20,-34},{0,-34},{0,38},{14,38}},
+          points={{-22,4},{-2,4},{-2,76},{12,76}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, skinBloodFlow.q_out) annotation (Line(
-          points={{-56,-24},{-30,-24},{-30,-26}},
+          points={{-58,14},{-32,14},{-32,12}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, insensibleVapor.q_in) annotation (Line(
-          points={{-56,-24},{-56,4},{-42,4}},
+          points={{-58,14},{-58,42},{-44,42}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(sweating.q_in, insensibleVapor.q_in) annotation (Line(
-          points={{-42,30},{-56,30},{-56,4},{-42,4}},
+          points={{-44,68},{-58,68},{-58,42},{-44,42}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(GILumen.q_in, lumenVolume.port_a) annotation (Line(
-          points={{52,-80},{42,-80},{42,-88},{34,-88}},
+          points={{50,-42},{40,-42},{40,-50},{32,-50}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, lumenVolume.port_b) annotation (Line(
-          points={{0,-32},{4,-32},{4,-88},{14,-88}},
+          points={{-2,6},{2,6},{2,-50},{12,-50}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, air.port_b) annotation (Line(
-          points={{-56,-24},{-56,-8},{-74,-8},{-74,2}},
+          points={{-58,14},{-58,30},{-76,30},{-76,40}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(ambient.port, air.port_a) annotation (Line(
-          points={{-74,36},{-74,22}},
-          color={191,0,0},
-          smooth=Smooth.None));
       connect(skin.q_in, skinMetabolicHeat.port)
                                               annotation (Line(
-          points={{-56,-24},{-64,-24},{-64,-26},{-70,-26}},
+          points={{-58,14},{-66,14},{-66,12},{-72,12}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(GILumen.q_in, foodHeatIntake.port)
                                              annotation (Line(
-          points={{52,-80},{62,-80},{62,-76},{70,-76}},
+          points={{50,-42},{60,-42},{60,-38},{68,-38}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skeletalMuscle.q_in, muscleMetabolicHeat.port)
                                                           annotation (Line(
-          points={{48,14},{60,14},{60,-8},{66,-8}},
+          points={{46,52},{58,52},{58,30},{64,30}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(core.q_in, coreMetabolicHeat.port)
                                               annotation (Line(
-          points={{0,-32},{34,-32},{34,-34},{68,-34}},
+          points={{-2,6},{32,6},{32,4},{66,4}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
-          points={{-20,-34},{-10,-34},{-10,-32},{0,-32}},
+          points={{-22,4},{-12,4},{-12,6},{-2,6}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(GILumen.q_in,foodAbsorption. q_in)
                                              annotation (Line(
-          points={{52,-80},{52,-60},{46,-60}},
+          points={{50,-42},{50,-22},{44,-22}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(foodAbsorption.q_out, core.q_in)
                                            annotation (Line(
-          points={{26,-60},{4,-60},{4,-32},{0,-32}},
+          points={{24,-22},{2,-22},{2,6},{-2,6}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(ambient.port, air.port_a) annotation (Line(
+          points={{-76,74},{-76,60}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -420,15 +421,15 @@ package Thermal "Temperature and Heat Flow"
 
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat= 4186.8
         "Mass specific heat";
-      Physiolibrary.Types.Heat relativeHeat
-        "Current accumulated heat = weight*(T - 37degC)*specificHeat";
-        //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
+      Physiolibrary.Types.Temperature T "Current temperature";
 
-      Physiolibrary.Types.RealIO.TemperatureOutput T "Current temperature"
+      Physiolibrary.Types.RealIO.HeatOutput relativeHeat
+        "Current accumulated heat = weight*(T - 37degC)*specificHeat"
                                                                   annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-100})));                                            //nominal=1
+     //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
 
       constant Types.Temperature NormalBodyTemperature = 310.15
         "Shift of absolute zero temperature to normal body values";
@@ -485,6 +486,10 @@ package Thermal "Temperature and Heat Flow"
         "Fixed temperature at port if useTemperatureInput=false"
         annotation (Dialog(enable=not useTemperatureInput));
 
+      parameter Boolean isIsolatedInSteadyState = false
+        "=true, if there is no flow at port in steady state"
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
@@ -504,8 +509,8 @@ package Thermal "Temperature and Heat Flow"
 
       port.T = t;
 
-      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
-        port.Q_flow = 0;
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+          port.Q_flow = 0;
       end if;
 
        annotation (
@@ -572,7 +577,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end PositiveHeatFlow;
 
     connector NegativeHeatFlow "Heat outflow"
@@ -595,7 +600,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end NegativeHeatFlow;
 

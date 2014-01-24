@@ -9,7 +9,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       import Physiolibrary.Types.*;
 
-      SteadyStates.Components.ConservationLaw
+      SteadyStates.Components.MolarConservationLaw
         amountOfSubstanceConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
@@ -75,12 +75,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
         solute_start=0.1)
         annotation (Placement(transformation(extent={{26,16},{46,36}})));
 
-      Components.ConservationLaw B_ConservationLaw(
+      Components.MolarConservationLaw B_ConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
         Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{52,-66},{72,-46}})));
-      Components.ConservationLaw C_ConservationLaw(
+      Components.MolarConservationLaw C_ConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
         Simulation=SimulationType.SteadyState)
@@ -199,7 +199,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     //extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
     //                                         Simulation=SteadyStates.SimulationType.SteadyState);
     //=States.SimulationType.NoInit); for dynamic simulation
-
+    protected
       parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
       parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
@@ -212,13 +212,13 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Physiolibrary.Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
-
     //  Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
 
     //  parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=1;
     //  Physiolibrary.Types.AmountOfSubstance totalAmountOfRforms;
     //  Physiolibrary.Types.AmountOfSubstance totalAmountOfTforms;
 
+    public
       Chemical.Components.Substance T0(
         stateName="T0",
         Simulation=SimulationType.SteadyState,
@@ -339,14 +339,16 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Chemical.Components.Substance oxygen_unbound(solute_start=0.000001*
             7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
-      Modelica.Blocks.Sources.Clock clock(offset=1e-06)
+      Modelica.Blocks.Sources.Clock clock(offset=60)
         annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
-      SteadyStates.Components.ConservationLaw hemoglobinConservationLaw(
+      SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
         n=10, Total(displayUnit="mol") = 1,
         Simulation=Physiolibrary.Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{72,-2},{92,18}})));
 
-      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState, T=295.15)
+      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        T=295.15,
+        usePartialPressureInput=true)
                     annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -728,181 +730,209 @@ package SteadyStates "Dynamic Simulation / Steady State"
       parameter Physiolibrary.Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-      Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
-
       parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
       Physiolibrary.Chemical.Components.ChemicalReaction
                                                 quaternaryForm(K=L)
-        annotation (Placement(transformation(extent={{-4,-98},{16,-78}})));
+        annotation (Placement(transformation(extent={{-2,-56},{18,-36}})));
       Physiolibrary.Chemical.Components.Speciation
                          R0_in_R(numberOfSubunit={4})
-        annotation (Placement(transformation(extent={{-40,-90},{-60,-70}})));
+        annotation (Placement(transformation(extent={{-38,-48},{-58,-28}})));
       Physiolibrary.Chemical.Components.Speciation
                          T0_in_T(numberOfSubunit={4})
-        annotation (Placement(transformation(extent={{76,-90},{56,-70}})));
+        annotation (Placement(transformation(extent={{78,-48},{58,-28}})));
       Physiolibrary.Chemical.Components.Substance
                           OxyRHm(solute_start=0, Simulation=SimulationType.SteadyState)
         "Oxygenated subunit in R structure of hemoglobin tetramer"
-        annotation (Placement(transformation(extent={{-98,-36},{-78,-16}})));
+        annotation (Placement(transformation(extent={{-96,6},{-76,26}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
                        oxygenation_R(K=KR, nP=2)
-        annotation (Placement(transformation(extent={{-70,-36},{-50,-16}})));
+        annotation (Placement(transformation(extent={{-68,6},{-48,26}})));
       Physiolibrary.Chemical.Components.Substance
                           DeoxyRHm(Simulation=SimulationType.SteadyState,
         isDependent=true,
         solute_start=1e-08)
         "Deoxygenated subunit in R structure of hemoglobin tetramer"
-        annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
+        annotation (Placement(transformation(extent={{-38,6},{-18,26}})));
       Physiolibrary.Chemical.Components.Substance
                           OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState)
         "Oxygenated subunit in T structure of hemoglobin tetramer"
-        annotation (Placement(transformation(extent={{22,-36},{42,-16}})));
+        annotation (Placement(transformation(extent={{24,6},{44,26}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
                        oxygenation_T(K=KT, nP=2)
-        annotation (Placement(transformation(extent={{50,-36},{70,-16}})));
+        annotation (Placement(transformation(extent={{52,6},{72,26}})));
       Physiolibrary.Chemical.Components.Substance
                           DeoxyTHm(solute_start=totalAmountOfHemoglobin - 0.00001,
           Simulation=SimulationType.SteadyState)
         "Deoxygenated subunit in T structure of hemoglobin tetramer"
-        annotation (Placement(transformation(extent={{78,-36},{98,-16}})));
+        annotation (Placement(transformation(extent={{80,6},{100,26}})));
 
       Physiolibrary.Chemical.Components.Substance
                           oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
             *7.875647668393782383419689119171e-5,
         isDependent=true)
-        annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
+        annotation (Placement(transformation(extent={{-2,40},{18,60}})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
-        annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
+        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={-54,-54})));
+            origin={-52,-12})));
       Modelica.Blocks.Math.Add add1 annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={62,-54})));
-      Physiolibrary.SteadyStates.Components.ConservationLaw
-        hemoglobinConservationLaw(Total(displayUnit="mol") = 1, n=2,
-        Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-6,-54},{14,-34}})));
-      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState, T=295.15)
-                    annotation (Placement(transformation(
+            origin={64,-12})));
+      Physiolibrary.SteadyStates.Components.MolarConservationLaw
+        hemoglobinConservationLaw(                              n=2,
+        Simulation=SimulationType.SteadyState,
+        Total(displayUnit="mol") = totalAmountOfHemoglobin)
+        annotation (Placement(transformation(extent={{-4,-12},{16,8}})));
+      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        usePartialPressureInput=true,
+        T=295.15)   annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={6,66})));
+            rotation=0,
+            origin={-58,84})));
       Chemical.Components.GasSolubility gasSolubility(kH_T0=1/(0.0105*(1e-3)*
             Modelica.Constants.R*298.15), useHeatPort=false)
-        annotation (Placement(transformation(extent={{-4,28},{16,48}})));
+        annotation (Placement(transformation(extent={{-2,62},{18,82}})));
+      Modelica.Blocks.Math.Sum oxygen_bound(nin=2)
+        annotation (Placement(transformation(extent={{40,-84},{50,-74}})));
+      Modelica.Blocks.Math.Division sO2_ "hemoglobin oxygen saturation"
+        annotation (Placement(transformation(extent={{54,-88},{64,-78}})));
+      Modelica.Blocks.Math.Sum tHb(nin=2)
+        annotation (Placement(transformation(extent={{40,-98},{50,-88}})));
     equation
-
-      sO2 = (OxyRHm.solute + OxyTHm.solute)/totalAmountOfHemoglobin;
 
       connect(R0_in_R.species, quaternaryForm.substrates[1])
                                                        annotation (Line(
-          points={{-60,-88},{-4,-88}},
+          points={{-58,-46},{-2,-46}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(quaternaryForm.products[1], T0_in_T.species)
                                                      annotation (Line(
-          points={{16,-88},{46,-88},{46,-88},{56,-88}},
+          points={{18,-46},{58,-46}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(OxyRHm.q_out, oxygenation_R.substrates[1])
                                                annotation (Line(
-          points={{-88,-26},{-70,-26}},
+          points={{-86,16},{-68,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_R.products[1], DeoxyRHm.q_out)
                                              annotation (Line(
-          points={{-50,-26.5},{-42,-26.5},{-42,-26},{-32,-26}},
+          points={{-48,15.5},{-40,15.5},{-40,16},{-28,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(OxyTHm.q_out, oxygenation_T.substrates[1])
                                                annotation (Line(
-          points={{32,-26},{50,-26}},
+          points={{34,16},{52,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_T.products[1], DeoxyTHm.q_out)
                                              annotation (Line(
-          points={{70,-26.5},{80,-26.5},{80,-26},{88,-26}},
+          points={{72,15.5},{82,15.5},{82,16},{90,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(DeoxyRHm.q_out, R0_in_R.subunitSpecies[1])
                                                    annotation (Line(
-          points={{-32,-26},{-50,-26},{-50,-70}},
+          points={{-28,16},{-48,16},{-48,-28}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(T0_in_T.subunitSpecies[1], DeoxyTHm.q_out)
                                                    annotation (Line(
-          points={{66,-70},{82,-70},{82,-26},{88,-26}},
+          points={{68,-28},{84,-28},{84,16},{90,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_R.products[2], oxygen_unbound.q_out) annotation (Line(
-          points={{-50,-25.5},{-44,-25.5},{-44,8},{6,8}},
+          points={{-48,16.5},{-42,16.5},{-42,50},{8,50}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(oxygenation_T.products[2], oxygen_unbound.q_out) annotation (Line(
-          points={{70,-25.5},{76,-25.5},{76,8},{6,8}},
+          points={{72,16.5},{78,16.5},{78,50},{8,50}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(add.y, R0_in_R.totalSubunitAmount[1])
                                               annotation (Line(
-          points={{-54,-58.4},{-54,-66},{-54,-80},{-58,-80}},
+          points={{-52,-16.4},{-52,-38},{-56,-38}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(add1.y, T0_in_T.totalSubunitAmount[1])
                                                annotation (Line(
-          points={{62,-58.4},{62,-66},{62,-80},{58,-80}},
+          points={{64,-16.4},{64,-38},{60,-38}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyTHm.solute, add1.u2) annotation (Line(
-          points={{32,-36},{32,-42},{59.6,-42},{59.6,-49.2}},
+          points={{34,6},{34,0},{61.6,0},{61.6,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-          points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-36}},
+          points={{66.4,-7.2},{66.4,0},{90,0},{90,6}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(DeoxyRHm.solute, add.u1) annotation (Line(
-          points={{-32,-36},{-32,-36},{-32,-44},{-51.6,-44},{-51.6,-49.2}},
+          points={{-28,6},{-28,-2},{-49.6,-2},{-49.6,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyRHm.solute, add.u2) annotation (Line(
-          points={{-88,-36},{-88,-44},{-56.4,-44},{-56.4,-49.2}},
+          points={{-86,6},{-86,-2},{-54.4,-2},{-54.4,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add.y, hemoglobinConservationLaw.fragment[1]) annotation (Line(
-          points={{-54,-58.4},{-54,-60},{-16,-60},{-16,-49},{-6,-49}},
+          points={{-52,-16.4},{-52,-18},{-14,-18},{-14,-7},{-4,-7}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.y, hemoglobinConservationLaw.fragment[2]) annotation (Line(
-          points={{62,-58.4},{62,-62},{-14,-62},{-14,-47},{-6,-47}},
+          points={{64,-16.4},{64,-20},{-12,-20},{-12,-5},{-4,-5}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out,gasSolubility. q_in) annotation (Line(
-          points={{6,8},{6,30}},
+          points={{8,50},{8,64}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(O2_in_air.q_out,gasSolubility. q_out) annotation (Line(
-          points={{6,56},{6,48}},
+          points={{-48,84},{8,84},{8,82}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(clock.y, O2_in_air.partialPressure) annotation (Line(
-          points={{-19,84},{6,84},{6,76}},
+          points={{-75,84},{-68,84}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(oxygen_bound.y,sO2_. u1) annotation (Line(
+          points={{50.5,-79},{52,-79},{52,-80},{53,-80}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(sO2_.u2,tHb. y) annotation (Line(
+          points={{53,-86},{52,-86},{52,-93},{50.5,-93}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(OxyTHm.solute, oxygen_bound.u[2]) annotation (Line(
+          points={{34,6},{36,6},{36,-78.5},{39,-78.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(add.y, tHb.u[1]) annotation (Line(
+          points={{-52,-16.4},{-52,-18},{-14,-18},{-14,-93.5},{39,-93.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(OxyRHm.solute, oxygen_bound.u[1]) annotation (Line(
+          points={{-86,6},{-86,-79.5},{39,-79.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(add1.y, tHb.u[2]) annotation (Line(
+          points={{64,-16.4},{64,-20},{-12,-20},{-12,-92.5},{39,-92.5}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -917,222 +947,45 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model CardiovascularSystem_GCG_SteadyState
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
-       extends Modelica.Icons.Example;
+       //extends Modelica.Icons.Example;
+       extends Hydraulic.Examples.CardiovascularSystem_GCG(
+        pulmonaryArteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        pulmonaryVeins(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        rightAtrium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        arteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        veins(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true));
 
        import Physiolibrary.Types.*;
-       import Physiolibrary.Hydraulic;
 
-      Hydraulic.Components.ElasticVessel pulmonaryVeins(
-        volume_start(displayUnit="l") = 0.0004,
-        ZeroPressureVolume(displayUnit="l") = 0.0004,
-        Compliance(displayUnit="l/mmHg") = 7.5006157584566e-08,
-        Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-6,76},{14,96}})));
-      Hydraulic.Components.ElasticVessel pulmonaryArteries(
-        ZeroPressureVolume(displayUnit="l") = 0.00030625,
-        Compliance(displayUnit="l/mmHg") = 3.6002955640592e-08,
-        volume_start(displayUnit="l") = 0.00038,
-        Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-72,76},{-52,96}})));
-      Hydraulic.Components.Conductor pulmonary(
-                                              cond(displayUnit="l/(mmHg.min)")=
-             4.1665920538226e-08)
-        annotation (Placement(transformation(extent={{-40,76},{-20,96}})));
-      Hydraulic.Components.ElasticVessel arteries(
-        volume_start(displayUnit="l") = 0.00085,
-        ZeroPressureVolume(displayUnit="l") = 0.000495,
-        Compliance(displayUnit="l/mmHg") = 2.6627185942521e-08,
-        Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{4,-44},{24,-24}})));
-      Hydraulic.Components.ElasticVessel veins(
-        Compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
-        volume_start(displayUnit="l") = 0.00325,
-        ZeroPressureVolume(displayUnit="l") = 0.00295,
-        Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-74,-44},{-54,-24}})));
-
-      Hydraulic.Components.Conductor nonMuscle(
-                                              cond(displayUnit="l/(mmHg.min)")=
-             3.5627924852669e-09)
-        annotation (Placement(transformation(extent={{-34,-44},{-14,-24}})));
-      Hydraulic.Sensors.PressureMeasure pressureMeasure
-        annotation (Placement(transformation(extent={{-88,30},{-68,50}})));
-      Hydraulic.Components.Pump rightHeart(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{-66,10},{-46,30}})));
-      Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
-        annotation (Placement(transformation(extent={{-70,44},{-62,52}})));
-      Hydraulic.Sensors.PressureMeasure pressureMeasure1
-        annotation (Placement(transformation(extent={{-18,28},{2,48}})));
-      Hydraulic.Components.Pump leftHeart(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{6,10},{26,30}})));
-      Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
-        annotation (Placement(transformation(extent={{2,44},{10,52}})));
-      Hydraulic.Components.Conductor kidney(
-                                           cond(displayUnit="l/(mmHg.min)")=
-          1.4126159678427e-09)
-        annotation (Placement(transformation(extent={{-34,-62},{-14,-42}})));
-      Hydraulic.Components.Conductor muscle(
-                                           cond(displayUnit="l/(mmHg.min)")=
-          1.3001067314658e-09)
-        annotation (Placement(transformation(extent={{-34,-26},{-14,-6}})));
-      Hydraulic.Components.Conductor largeVeins(
-                                               cond(displayUnit="l/(mmHg.min)")=
-             1.6888886482791e-07)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-94,-6})));
-      Hydraulic.Components.ElasticVessel rightAtrium(
-        volume_start(displayUnit="l") = 0.0001,
-        ZeroPressureVolume(displayUnit="l") = 0.0001,
-        Compliance(displayUnit="l/mmHg") = 3.7503078792283e-08,
-        Simulation=SimulationType.SteadyState,
-        isDependent=true)
-        annotation (Placement(transformation(extent={{-92,10},{-72,30}})));
-      Physiolibrary.Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
-            0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
-        "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
-        annotation (Placement(transformation(extent={{-66,26},{-46,46}})));
-      Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,0.72,0.29},{0,1.01,
-            0.29},{3,1.88,0.218333},{10,2.7,0}})
-        "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
-        annotation (Placement(transformation(extent={{6,26},{26,46}})));
-      Components.ConservationLaw bloodVolume(
+       Components.MassConservationLaw bloodVolume(
         n=5,
-        Total=0.005,
-        Simulation=Types.SimulationType.SteadyState)
+        Simulation=Types.SimulationType.SteadyState,
+        Total=0.005)
         annotation (Placement(transformation(extent={{68,-14},{88,6}})));
     equation
-      connect(pulmonaryArteries.q_in,pulmonary. q_in) annotation (Line(
-          points={{-62,86},{-40,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pulmonary.q_out,pulmonaryVeins. q_in) annotation (Line(
-          points={{-20,86},{4,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(veins.q_in, nonMuscle.q_in)  annotation (Line(
-          points={{-64,-34},{-34,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(nonMuscle.q_out, arteries.q_in)  annotation (Line(
-          points={{-14,-34},{14,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(rightHeart.q_out,pulmonaryArteries. q_in) annotation (Line(
-          points={{-46,20},{-38,20},{-38,86},{-62,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(leftHeart.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{6,20},{-14,20},{-14,62},{22,62},{22,86},{4,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(leftHeart.q_out,arteries. q_in) annotation (Line(
-          points={{26,20},{32,20},{32,-34},{14,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
-          points={{-82,34},{-82,20},{-66,20}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pressureMeasure1.q_in,pulmonaryVeins. q_in) annotation (Line(
-          points={{-12,32},{-14,32},{-14,62},{22,62},{22,86},{4,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(muscle.q_out, arteries.q_in) annotation (Line(
-          points={{-14,-16},{0,-16},{0,-34},{14,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(kidney.q_out, arteries.q_in) annotation (Line(
-          points={{-14,-52},{0,-52},{0,-34},{14,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(kidney.q_in, nonMuscle.q_in) annotation (Line(
-          points={{-34,-52},{-44,-52},{-44,-34},{-34,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(muscle.q_in, nonMuscle.q_in) annotation (Line(
-          points={{-34,-16},{-44,-16},{-44,-34},{-34,-34}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(veins.q_in, largeVeins.q_out) annotation (Line(
-          points={{-64,-34},{-94,-34},{-94,-16}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(largeVeins.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-94,4},{-94,20},{-82,20}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(rightAtrium.q_in, rightHeart.q_in) annotation (Line(
-          points={{-82,20},{-66,20}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
-          points={{-61,48},{-56,48},{-56,38}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
-          points={{11,48},{16,48},{16,38}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-82,34},{-82,20}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pulmonaryArteries.volume, bloodVolume.fragment[4]) annotation (
+       connect(pulmonaryArteries.volume, bloodVolume.fragment[4]) annotation (
           Line(
-          points={{-62,76},{-62,68},{54,68},{54,-7.2},{68,-7.2}},
+          points={{-52,74},{-52,68},{54,68},{54,-7.2},{68,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pulmonaryVeins.volume, bloodVolume.fragment[5]) annotation (Line(
-          points={{4,76},{4,70},{56,70},{56,-6.4},{68,-6.4}},
+          points={{14,74},{14,70},{56,70},{56,-6.4},{68,-6.4}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(pressureMeasure.actualPressure, rightStarling.u) annotation (Line(
-          points={{-72,36},{-64,36}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
-          points={{-2,34},{-2,36},{8,36}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(rightAtrium.volume, bloodVolume.fragment[1]) annotation (Line(
-          points={{-82,10},{-82,-72},{56,-72},{56,-9.6},{68,-9.6}},
+       connect(rightAtrium.volume, bloodVolume.fragment[1]) annotation (Line(
+          points={{-72,8},{-72,-72},{56,-72},{56,-9.6},{68,-9.6}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(veins.volume, bloodVolume.fragment[2]) annotation (Line(
-          points={{-64,-44},{-64,-70},{54,-70},{54,-8.8},{68,-8.8}},
+          points={{-54,-46},{-54,-70},{54,-70},{54,-8.8},{68,-8.8}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(arteries.volume, bloodVolume.fragment[3]) annotation (Line(
-          points={{14,-44},{14,-68},{52,-68},{52,-8},{68,-8}},
+          points={{24,-46},{24,-68},{52,-68},{52,-8},{68,-8}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(rightStarling.y, rightHeart.solutionFlow) annotation (Line(
-          points={{-56,32},{-56,24}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(leftStarling.y, leftHeart.solutionFlow) annotation (Line(
-          points={{16,32},{16,24}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Documentation(info="<html>
 <p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
 <p><br/>Model, all parameters and all initial values are from article: </p>
@@ -1143,28 +996,125 @@ package SteadyStates "Dynamic Simulation / Steady State"
 </html>"));
     end CardiovascularSystem_GCG_SteadyState;
 
+    model ThermalBody_QHP_STeadyState
+      extends Thermal.Examples.ThermalBody_QHP(
+        skin(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        skeletalMuscle(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true),
+        core(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        GILumen(Simulation=Physiolibrary.Types.SimulationType.SteadyState));
+
+      Components.EnergyConservationLaw energyConservationLaw(
+        n=4,
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        useTotalInput=false,
+        Total=-8373.6)
+        annotation (Placement(transformation(extent={{70,-90},{90,-70}})));
+    equation
+      connect(core.relativeHeat, energyConservationLaw.fragment[1])
+                                                              annotation (Line(
+          points={{-2,-4},{-2,-85.5},{70,-85.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skin.relativeHeat, energyConservationLaw.fragment[2])
+                                                              annotation (Line(
+          points={{-58,4},{-58,-84.5},{70,-84.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(skeletalMuscle.relativeHeat, energyConservationLaw.fragment[3])
+                                                                        annotation (
+         Line(
+          points={{46,42},{46,-12},{94,-12},{94,-64},{58,-64},{58,-83.5},{70,-83.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(GILumen.relativeHeat, energyConservationLaw.fragment[4])
+                                                                 annotation (Line(
+          points={{50,-52},{52,-52},{52,-82.5},{70,-82.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end ThermalBody_QHP_STeadyState;
+
+    model Cells_SteadyState
+     extends Osmotic.Examples.Cell(
+        cells(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true),
+        interstitium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        interstitium1(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        cells1(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true));
+      Components.MassConservationLaw waterConservationLaw(
+        n=2,
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Total(displayUnit="l") = 0.002)
+        annotation (Placement(transformation(extent={{72,14},{92,34}})));
+      Components.MassConservationLaw waterConservationLaw1(
+        n=2,
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Total(displayUnit="l") = 0.002)
+        annotation (Placement(transformation(extent={{70,-92},{90,-72}})));
+    equation
+
+      connect(cells.volume, waterConservationLaw.fragment[1])
+                                                         annotation (Line(
+          points={{-34,36},{-34,19},{72,19}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(interstitium.volume, waterConservationLaw.fragment[2])
+                                                                annotation (Line(
+          points={{44,36},{44,21},{72,21}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(cells1.volume, waterConservationLaw1.fragment[1])
+                                                           annotation (Line(
+          points={{-28,-76},{-28,-87},{70,-87}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(interstitium1.volume, waterConservationLaw1.fragment[2])
+                                                                  annotation (Line(
+          points={{44,-76},{44,-85},{70,-85}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics));
+    end Cells_SteadyState;
   end Examples;
 
   package Components
     extends Modelica.Icons.Package;
 
-    model ConservationLaw "System Mass or Energy conservation law"
+    model EnergyConservationLaw "System Energy conservation law"
       extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
       extends Physiolibrary.Icons.ConservationLaw;
 
       parameter Integer n "Number of mass/energy fragments";
 
-      Modelica.Blocks.Interfaces.RealInput fragment[n] "Mass/Energy fragment"
+      Physiolibrary.Types.RealIO.EnergyInput fragment[n] "Mass/Energy fragment"
         annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
             iconTransformation(extent={{-120,-60},{-80,-20}})));
 
-      parameter Real Total "Total mass/energy if useTotalAsInput=false"
+      parameter Boolean useTotalInput = false
+        "=true, if total mass/energy is used as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Energy Total
+        "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
-    //  parameter Types.Fraction firstFragmentFraction = 0.5
-    //    "Guess of first fragment fraction from Total for homotopy operator.";
+      Types.RealIO.EnergyInput total(start=Total) = t if useTotalInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
+
+      Physiolibrary.Types.Energy t "Current Mass/Energy";
     equation
-      Total*normalizedState[1] = sum(fragment);
+      if not useTotalInput then
+        t=Total;
+      end if;
+
+      t*normalizedState[1] = sum(fragment);
 
       //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
 
@@ -1179,8 +1129,102 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Documentation(info="<html>
 <p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
 </html>"));
-    end ConservationLaw;
+    end EnergyConservationLaw;
 
+    model MassConservationLaw
+      "System Mass (incompresible volume) conservation law"
+      extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
+      extends Physiolibrary.Icons.ConservationLaw;
+
+      parameter Integer n "Number of mass/energy fragments";
+
+      Physiolibrary.Types.RealIO.VolumeInput fragment[n] "Mass/Energy fragment"
+        annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
+            iconTransformation(extent={{-120,-60},{-80,-20}})));
+
+      parameter Boolean useTotalInput = false
+        "=true, if total mass/energy is used as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Volume Total
+        "Total mass/energy if useTotalAsInput=false"
+        annotation (Dialog(enable=not useTotalInput));
+
+      Types.RealIO.VolumeInput total(start=Total) = t if useTotalInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
+
+      Physiolibrary.Types.Volume t "Current Mass/Energy";
+    equation
+      if not useTotalInput then
+        t=Total;
+      end if;
+
+      t*normalizedState[1] = sum(fragment);
+
+      //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={Text(
+              extent={{-160,-110},{160,-140}},
+              lineColor={0,0,255},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              extent={{-100,-100},{100,100}}), graphics),
+        Documentation(info="<html>
+<p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
+</html>"));
+    end MassConservationLaw;
+
+    model MolarConservationLaw
+      "System Amount of substance (=number of molecules) conservation law"
+      extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
+      extends Physiolibrary.Icons.ConservationLaw;
+
+      parameter Integer n "Number of mass/energy fragments";
+
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput fragment[n]
+        "Mass/Energy fragment"
+        annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
+            iconTransformation(extent={{-120,-60},{-80,-20}})));
+
+      parameter Boolean useTotalInput = false
+        "=true, if total mass/energy is used as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.AmountOfSubstance Total
+        "Total mass/energy if useTotalAsInput=false"
+        annotation (Dialog(enable=not useTotalInput));
+
+      Types.RealIO.AmountOfSubstanceInput total(start=Total) = t if useTotalInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
+
+      Physiolibrary.Types.AmountOfSubstance t "Current Mass/Energy";
+    equation
+      if not useTotalInput then
+        t=Total;
+      end if;
+
+      t*normalizedState[1] = sum(fragment);
+
+      //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={Text(
+              extent={{-160,-110},{160,-140}},
+              lineColor={0,0,255},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              extent={{-100,-100},{100,100}}), graphics),
+        Documentation(info="<html>
+<p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
+</html>"));
+    end MolarConservationLaw;
   end Components;
 
   package Interfaces
