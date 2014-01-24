@@ -121,7 +121,6 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end ExothermicReaction;
 
-
     model Allosteric_Hemoglobin_MWC
     extends Modelica.Icons.Example;
       import Physiolibrary.Chemical.*;
@@ -1736,6 +1735,11 @@ It works in two modes:
     protected
       Concentration c "Current concentration";
 
+    initial equation
+      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+        q_out.q = 0;
+      end if;
+
     equation
        if not useConcentrationInput then
          c=Conc;
@@ -1743,7 +1747,7 @@ It works in two modes:
 
       q_out.conc = c;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
         q_out.q = 0;
       end if;
 
@@ -1816,6 +1820,12 @@ It works in two modes:
 
     protected
       Pressure p "Current partial pressure";
+
+    initial equation
+      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+        q_out.q = 0;
+      end if;
+
     equation
       if not usePartialPressureInput then
         p=PartialPressure;
@@ -1823,7 +1833,7 @@ It works in two modes:
 
       q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
          q_out.q = 0;
       end if;
 

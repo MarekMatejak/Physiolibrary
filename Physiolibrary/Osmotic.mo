@@ -26,10 +26,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
       Components.OsmoticCell
                   interstitium1(volume_start(displayUnit="l") = 0.001,
           ImpermeableSolutes=0.29)
-        annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
+        annotation (Placement(transformation(extent={{34,-64},{54,-44}})));
       Components.Membrane
                membrane1(cond=1.2501026264094e-10)
-        annotation (Placement(transformation(extent={{-8,-64},{12,-44}})));
+        annotation (Placement(transformation(extent={{-4,-64},{16,-44}})));
     equation
       connect(cells.q_in, membrane.q_in) annotation (Line(
           points={{-34,46},{-4,46}},
@@ -42,23 +42,23 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(cells1.q_in, membrane1.q_in) annotation (Line(
-          points={{-34,-54},{-8,-54}},
+          points={{-34,-54},{-4,-54}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
       connect(membrane1.q_out, interstitium1.q_in) annotation (Line(
-          points={{12,-54},{38,-54}},
+          points={{16,-54},{44,-54}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),      graphics={
             Text(
-              extent={{-54,96},{40,88}},
+              extent={{-52,84},{42,76}},
               lineColor={135,135,135},
               textString="Cells in hypotonic environment"),
             Text(
-              extent={{-60,-22},{34,-30}},
+              extent={{-52,-16},{42,-24}},
               lineColor={95,95,95},
               textString="Cells in hypertonic environment"),
             Line(
@@ -363,6 +363,12 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
       Types.RealIO.TemperatureInput osmolarity(start=Osmolarity)=o if
                                                                useOsmolarityInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+
+    initial equation
+      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+        port.q = 0;
+      end if;
+
     equation
       if not useOsmolarityInput then
         o=Osm;
@@ -370,7 +376,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       port.o = o;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
           port.q = 0;
       end if;
 

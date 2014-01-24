@@ -738,6 +738,12 @@ package Hydraulic "Pressure and Volumetric Flow"
 
     protected
         Pressure p;
+
+      initial equation
+        if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+          y.q = 0;
+        end if;
+
       equation
         if not usePressureInput then
           p=P;
@@ -745,7 +751,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
         y.pressure = p;
 
-        if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+        if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
            y.q = 0;
         end if;
 

@@ -502,6 +502,12 @@ package Thermal "Temperature and Heat Flow"
     public
       Types.RealIO.TemperatureInput temperature(start=T)= t if useTemperatureInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+
+    initial equation
+      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+        port.Q_flow = 0;
+      end if;
+
     equation
       if not useTemperatureInput then
         t=T;
@@ -509,7 +515,7 @@ package Thermal "Temperature and Heat Flow"
 
       port.T = t;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState)) then
+      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
           port.Q_flow = 0;
       end if;
 
