@@ -9,31 +9,27 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.Example;
 
       Components.OsmoticCell
-                  cells(volume_start(displayUnit="l") = 0.001)
+                  cells(volume_start(displayUnit="l") = 0.001,
+          ImpermeableSolutes=0.285)
         annotation (Placement(transformation(extent={{-44,36},{-24,56}})));
       Components.OsmoticCell
-                  interstitium(volume_start(displayUnit="l") = 0.001)
+                  interstitium(volume_start(displayUnit="l") = 0.001,
+          ImpermeableSolutes=0.28)
         annotation (Placement(transformation(extent={{34,36},{54,56}})));
       Components.Membrane
                membrane(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,36},{16,56}})));
       Components.OsmoticCell
-                  cells1(volume_start(displayUnit="l") = 0.001)
-        annotation (Placement(transformation(extent={{-54,-76},{-34,-56}})));
+                  cells1(volume_start(displayUnit="l") = 0.001,
+          ImpermeableSolutes=0.285)
+        annotation (Placement(transformation(extent={{-38,-76},{-18,-56}})));
       Components.OsmoticCell
-                  interstitium1(volume_start(displayUnit="l") = 0.001)
-        annotation (Placement(transformation(extent={{52,-76},{72,-56}})));
+                  interstitium1(volume_start(displayUnit="l") = 0.001,
+          ImpermeableSolutes=0.29)
+        annotation (Placement(transformation(extent={{34,-76},{54,-56}})));
       Components.Membrane
                membrane1(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
-      Types.Constants.AmountOfSubstanceConst cellularProteins(k=0.285)
-        annotation (Placement(transformation(extent={{-62,68},{-54,76}})));
-      Types.Constants.AmountOfSubstanceConst interstitialProteins(k=0.28)
-        annotation (Placement(transformation(extent={{16,68},{24,76}})));
-      Types.Constants.AmountOfSubstanceConst cellularProteins1(k=0.285)
-        annotation (Placement(transformation(extent={{-72,-48},{-64,-40}})));
-      Types.Constants.AmountOfSubstanceConst interstitialProteins1(k=0.29)
-        annotation (Placement(transformation(extent={{30,-50},{38,-42}})));
     equation
       connect(cells.q_in, membrane.q_in) annotation (Line(
           points={{-34,46},{-4,46}},
@@ -46,32 +42,14 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(cells1.q_in, membrane1.q_in) annotation (Line(
-          points={{-44,-66},{-2,-66}},
+          points={{-28,-66},{-2,-66}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
       connect(membrane1.q_out, interstitium1.q_in) annotation (Line(
-          points={{18,-66},{62,-66}},
+          points={{18,-66},{44,-66}},
           color={127,127,0},
           thickness=1,
-          smooth=Smooth.None));
-      connect(cellularProteins.y, cells.impermeableSolutes) annotation (Line(
-          points={{-53,72},{-48,72},{-48,52},{-42,52}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(interstitialProteins.y, interstitium.impermeableSolutes)
-        annotation (Line(
-          points={{25,72},{30,72},{30,52},{36,52}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(cellularProteins1.y, cells1.impermeableSolutes) annotation (Line(
-          points={{-63,-44},{-58,-44},{-58,-60},{-52,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(interstitialProteins1.y, interstitium1.impermeableSolutes)
-        annotation (Line(
-          points={{39,-46},{46,-46},{46,-60},{54,-60}},
-          color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),      graphics={
@@ -112,16 +90,29 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
         "Initial volume of compartment"
          annotation (Dialog(group="Initialization"));
 
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes
+      parameter Boolean useImpermeableSolutesInput = false
+        "=true, if impermeable substance amount as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.AmountOfSubstance ImpermeableSolutes=0
+        "Amount of impermeable substance if useImpermeableSolutesInput=false"
+        annotation (Dialog(enable=not useImpermeableSolutesInput));
+
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes(start=ImpermeableSolutes)= is if useImpermeableSolutesInput
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
                 {-60,80}})));
       Physiolibrary.Types.RealIO.VolumeOutput volume
         "Actual volume of compartment"
         annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
                -90)));
-
+    protected
+      Types.AmountOfSubstance is "Current amount of impermeable solutes";
     equation
-      q_in.o = impermeableSolutes / volume;
+      if not useImpermeableSolutesInput then
+        is=ImpermeableSolutes;
+      end if;
+
+      q_in.o = is / volume;
 
       change = q_in.q;    //der(volume)=q_in.q
       state = volume;
@@ -211,16 +202,10 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
     model SolventFlux "Prescripted flow of solvent"
       extends Interfaces.OnePort;
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
-        "Permeable solution flow through membrane"
-                                     annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=270,
-            origin={0,60})));
+      extends Chemical.Interfaces.ConditionalSolventFlow;
 
     equation
-      q_in.q = desiredFlow;
+      q_in.q = q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -279,19 +264,15 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
   package Sources
     extends Modelica.Icons.SourcesPackage;
     model SolventInflux "Permeable solution inflow to the system"
+      extends Chemical.Interfaces.ConditionalSolventFlow;
 
       Interfaces.NegativeOsmoticFlow
                           q_out
                              annotation (Placement(
             transformation(extent={{50,-10},{70,10}})));
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
-        "Permeable solution inflow"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
     equation
-      q_out.q = - desiredFlow;
+      q_out.q = - q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -319,18 +300,13 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
     end SolventInflux;
 
     model SolventOutflux "Permeable solution outflow from the system"
-
+     extends Chemical.Interfaces.ConditionalSolventFlow;
       Interfaces.PositiveOsmoticFlow
                           q_in
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{-70,-10},{-50,10}})));
-       Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
-        "Permeable solution outflow"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
     equation
-      q_in.q = desiredFlow;
+      q_in.q = q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -356,6 +332,83 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end SolventOutflux;
+
+    model UnlimitedSolution
+      //extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;
+      import Physiolibrary.Types.*;
+
+      parameter Boolean useOsmolarityInput = false
+        "=true, if fixed osmolarity at port is from input instead of parameter"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+       parameter Physiolibrary.Types.Osmolarity Osm = 0
+        "Fixed osmolarity at port if useOsmolarityInput=false"
+        annotation (Dialog(enable=not useOsmolarityInput));
+
+      parameter SimulationType  Simulation=SimulationType.NormalInit
+        "If in equilibrium, then zero-flow equation is added."
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
+      Interfaces.NegativeOsmoticFlow
+                                  port annotation (Placement(transformation(extent={{90,-10},
+                {110,10}})));
+
+    protected
+      Physiolibrary.Types.Osmolarity o "Current osmolarity";
+    public
+      Types.RealIO.TemperatureInput osmolarity(start=Osmolarity)=o if
+                                                               useOsmolarityInput
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+    equation
+      if not useOsmolarityInput then
+        o=Osm;
+      end if;
+
+      port.o = o;
+
+      if Simulation==SimulationType.SteadyState then
+        port.q = 0;
+      end if;
+
+       annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                            graphics={
+            Text(
+              extent={{-150,150},{150,110}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-150,-110},{150,-140}},
+              lineColor={0,0,0},
+              textString="T=%T"),
+            Rectangle(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,0},
+              pattern=LinePattern.None,
+              fillColor={127,127,0},
+              fillPattern=FillPattern.Backward),
+            Text(
+              extent={{38,-34},{-100,-100}},
+              lineColor={0,0,0},
+              textString="Osm"),
+            Line(
+              points={{-52,0},{56,0}},
+              color={191,0,0},
+              thickness=0.5),
+            Polygon(
+              points={{50,-20},{50,20},{90,0},{50,-20}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid)}),
+        Documentation(info="<HTML>
+<p>
+This model defines a fixed temperature T at its port in Kelvin,
+i.e., it defines a fixed temperature as a boundary condition.
+</p>
+</HTML>
+"),     Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics));
+    end UnlimitedSolution;
   end Sources;
 
   package Interfaces

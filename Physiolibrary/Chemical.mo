@@ -73,16 +73,66 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end SimpleReaction2;
 
+    model ExothermicReaction
+
+       extends Modelica.Icons.Example;
+      import Physiolibrary.Chemical;
+
+      Components.Substance         A(solute_start=0.9)
+        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
+      Components.ChemicalReaction
+                                reaction(K=1,
+        useHeatPort=true,
+        dH=-1000,
+        kf=1)
+        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+      Components.Substance         B(solute_start=0.1)
+        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
+      Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
+        annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
+      Physiolibrary.Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
+        annotation (Placement(transformation(extent={{74,-58},{54,-38}})));
+    equation
+
+      connect(B.q_out, reaction.products[1]) annotation (Line(
+          points={{54,2},{10,2}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(A.q_out, reaction.substrates[1]) annotation (Line(
+          points={{-46,2},{-10,2}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(reaction.heatPort, heatFlowSensor.port_a) annotation (Line(
+          points={{0,2},{0,-48},{12,-48}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(unlimitedHeat.port, heatFlowSensor.port_b) annotation (Line(
+          points={{54,-48},{32,-48}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end ExothermicReaction;
+
     model SimpleReaction2_in_Equilibrium
+      import Physiolibrary.Types.*;
+
       extends SimpleReaction2(
-        A(Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState),
-        C(Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState,
+        A(Simulation=SimulationType.SteadyState),
+        C(Simulation=SimulationType.SteadyState,
             isDependent=true),
-        B(Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState,
+        B(Simulation=SimulationType.SteadyState,
             isDependent=true));
 
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                             Simulation=SteadyStates.Interfaces.SimulationType.SteadyState, NumberOfDependentStates=2);
+                                             Simulation=SimulationType.SteadyState, NumberOfDependentStates=2);
 
       parameter Physiolibrary.Types.AmountOfSubstance totalBSubstance = 0.1,
                                                       totalCSubstance = 0.2;
@@ -99,30 +149,32 @@ package Chemical "Molar Concentration and Molar Flow"
 
     model Allosteric_Hemoglobin_MWC
     extends Modelica.Icons.Example;
-      import Physiolibrary.Chemical;
-      import Physiolibrary.SteadyStates.Interfaces.SimulationType;
+      import Physiolibrary.Chemical.*;
+      import Physiolibrary.Types.*;
 
     extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                             Simulation=SteadyStates.Interfaces.SimulationType.SteadyState);
+                                             Simulation=SimulationType.SteadyState);
 
-      parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
-      parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
+      parameter Temperature T=310.15 "Temperature";
+      parameter GasSolubility alpha =  0.0105 * 1e-3
+        "oxygen solubility in plasma";
+                                       // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+      parameter Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-      parameter Physiolibrary.Types.Fraction c = 0.00431555
+      parameter Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Physiolibrary.Types.Concentration KR = 0.000671946
+      parameter Concentration KR = 0.000671946
         "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
                                                                 //10.500001495896 7.8756465463794e-05
 
-      parameter Physiolibrary.Types.Concentration KT=KR/c
+      parameter Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-      Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
+      Fraction sO2 "hemoglobin oxygen saturation";
 
-      parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=1;
-      Physiolibrary.Types.AmountOfSubstance totalAmountOfRforms;
-      Physiolibrary.Types.AmountOfSubstance totalAmountOfTforms;
+      parameter AmountOfSubstance totalAmountOfHemoglobin=1;
+      AmountOfSubstance totalAmountOfRforms;
+      AmountOfSubstance totalAmountOfTforms;
 
       Components.Substance                       T0(stateName="T0",Simulation=SimulationType.SteadyState,
         solute_start=1)
@@ -227,22 +279,26 @@ package Chemical "Molar Concentration and Molar Flow"
 
       Components.Substance oxygen_unbound(                                      solute_start=0.000001
             *7.875647668393782383419689119171e-5,
-        Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState)
+        Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
-      Mixed.Components.PartialPressure
-                            partialPressure(
-        alpha_T0=alpha, T=310.15)                                     annotation (Placement(
+      Components.GasSolubility
+                            partialPressure(kH_T0=1/(alpha*Modelica.Constants.R
+            *298.15), T=310.15)                                       annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-70,-8})));
-      Hydraulic.Sources.UnlimitedVolume airOxygen(Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-70,34})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
         annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
 
+      Sources.UnlimitedGasStorage oxygen_in_air(
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        usePartialPressureInput=true,
+        T=310.15)                                annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-70,30})));
     equation
        sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*totalAmountOfHemoglobin);
        totalAmountOfRforms = R0.solute + R1.solute + R2.solute + R3.solute + R4.solute;
@@ -428,19 +484,20 @@ package Chemical "Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(airOxygen.y, partialPressure.v)       annotation (Line(
-          points={{-70,24},{-70,2}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(clock.y, airOxygen.pressure)       annotation (Line(
-          points={{-73,62},{-70,62},{-70,44}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
-          points={{-70,-16.6},{-70,-26},{-46,-26}},
+      connect(partialPressure.q_in, oxygen_unbound.q_out) annotation (Line(
+          points={{-70,-16},{-70,-26},{-46,-26}},
           color={107,45,134},
           thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure.q_out, oxygen_in_air.q_out)
+                                                annotation (Line(
+          points={{-70,2},{-70,20}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(clock.y, oxygen_in_air.partialPressure) annotation (Line(
+          points={{-73,62},{-70,62},{-70,40}},
+          color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
@@ -465,29 +522,29 @@ package Chemical "Molar Concentration and Molar Flow"
 
     model Allosteric_Hemoglobin2_MWC
       "Allosteric hemoglobin model implemented by Speciation blocks"
-      import Physiolibrary;
-      import Physiolibrary.SteadyStates.Interfaces.SimulationType;
+      import Physiolibrary.Types.*;
+
      extends Modelica.Icons.Example;
 
      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                              Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState);
+                                              Simulation=SimulationType.SteadyState);
 
-      parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
+      parameter GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
-      parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
+      parameter Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-      parameter Physiolibrary.Types.Fraction c = 0.00431555
+      parameter Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Physiolibrary.Types.Concentration KR = 0.000671946
+      parameter Concentration KR = 0.000671946
         "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
                                                                 //10.500001495896 7.8756465463794e-05
 
-      parameter Physiolibrary.Types.Concentration KT=KR/c
+      parameter Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-      Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
+      Fraction sO2 "hemoglobin oxygen saturation";
 
-      parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
+      parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
       Physiolibrary.Chemical.Components.ChemicalReaction
                                                 quaternaryForm(K=L)
@@ -529,18 +586,6 @@ package Chemical "Molar Concentration and Molar Flow"
             *7.875647668393782383419689119171e-5,
         isDependent=true)
         annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-      Physiolibrary.Mixed.Components.PartialPressure
-                            partialPressure(
-        alpha_T0=alpha,
-        T=310.15)                                     annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={6,38})));
-      Physiolibrary.Hydraulic.Sources.UnlimitedVolume airOxygen(Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={6,66})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
         annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
@@ -551,6 +596,21 @@ package Chemical "Molar Concentration and Molar Flow"
             extent={{-4,-4},{4,4}},
             rotation=270,
             origin={62,-54})));
+      Sources.UnlimitedGasStorage oxygen_in_air(
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        usePartialPressureInput=true,
+        T=310.15)                                annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={6,60})));
+      Components.GasSolubility
+                            partialPressure1(T=310.15, kH_T0=1/(alpha*Modelica.Constants.R
+            *298.15))                                                 annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={6,32})));
     equation
       totalAmountOfHemoglobin*normalizedState[1] = OxyRHm.solute + DeoxyRHm.solute + OxyTHm.solute + DeoxyTHm.solute;
 
@@ -604,15 +664,6 @@ package Chemical "Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(airOxygen.y, partialPressure.v)       annotation (Line(
-          points={{6,56},{6,48}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(clock.y, airOxygen.pressure)       annotation (Line(
-          points={{-19,84},{6,84},{6,76}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(oxygenation_R.products[2], oxygen_unbound.q_out) annotation (Line(
           points={{-50,-25.5},{-44,-25.5},{-44,8},{6,8}},
           color={107,45,134},
@@ -642,17 +693,27 @@ package Chemical "Molar Concentration and Molar Flow"
           points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-36}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(partialPressure.n, oxygen_unbound.q_out) annotation (Line(
-          points={{6,29.4},{6,8}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
       connect(DeoxyRHm.solute, add.u1) annotation (Line(
           points={{-32,-36},{-32,-36},{-32,-44},{-51.6,-44},{-51.6,-49.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyRHm.solute, add.u2) annotation (Line(
           points={{-88,-36},{-88,-44},{-56.4,-44},{-56.4,-49.2}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(partialPressure1.q_out, oxygen_in_air.q_out)
+                                                annotation (Line(
+          points={{6,42},{6,50}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(partialPressure1.q_in, oxygen_unbound.q_out) annotation (Line(
+          points={{6,24},{6,8}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(clock.y, oxygen_in_air.partialPressure) annotation (Line(
+          points={{-19,84},{6,84},{6,70}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -669,30 +730,30 @@ package Chemical "Molar Concentration and Molar Flow"
       import Physiolibrary;
       extends Modelica.Icons.Example;
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                                 Simulation=SteadyStates.Interfaces.SimulationType.SteadyState);
+                                                 Simulation=Types.SimulationType.SteadyState);
+       import Physiolibrary.Types.*;
 
-      Physiolibrary.Chemical.Sources.UnlimitedStorage
-                       P(Concentration=0)
+      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+                       P(Conc=0)
         annotation (Placement(transformation(extent={{92,-12},{72,8}})));
-      Physiolibrary.Chemical.Sources.UnlimitedStorage
-                       S(Concentration=0.1)
+      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+                       S(Conc=0.1)
         annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
-         parameter Physiolibrary.Types.AmountOfSubstance tE=0.01
-        "total enzyme concentration";
-         parameter Real k_cat(unit="m3/s", displayUnit="l/min")= 1
+         parameter AmountOfSubstance tE=0.01 "total amount of enzyme";
+         parameter Real k_cat(unit="1/s", displayUnit="1/min")= 1
         "forward rate of second reaction";
          parameter Physiolibrary.Types.Concentration Km = 0.1
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
           Physiolibrary.Chemical.Components.Substance
                               ES(                       solute_start=0,
-            Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState)
+            Simulation=SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
           Physiolibrary.Chemical.Components.Substance
                               E(                       solute_start=tE,
             isDependent=true,
-            Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState)
+            Simulation=SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,38},{10,58}})));
           Components.ChemicalReaction
                            chemicalReaction(nS=2,
@@ -750,53 +811,6 @@ package Chemical "Molar Concentration and Molar Flow"
 </html>"));
     end MichaelisMenten;
 
-    model ExothermicReaction
-
-       extends Modelica.Icons.Example;
-      import Physiolibrary.Chemical;
-
-      Components.Substance         A(solute_start=0.9)
-        annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      Components.ChemicalReaction
-                                reaction(K=1,
-        useHeatPort=true,
-        dH=-1000,
-        kf=1)
-        annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Components.Substance         B(solute_start=0.1)
-        annotation (Placement(transformation(extent={{44,-8},{64,12}})));
-      Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
-        annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
-      Physiolibrary.Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
-        annotation (Placement(transformation(extent={{68,-58},{48,-38}})));
-    equation
-
-      connect(B.q_out, reaction.products[1]) annotation (Line(
-          points={{54,2},{10,2}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(A.q_out, reaction.substrates[1]) annotation (Line(
-          points={{-46,2},{-10,2}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(reaction.heatPort, heatFlowSensor.port_a) annotation (Line(
-          points={{0,2},{0,-48},{12,-48}},
-          color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(unlimitedHeat.port, heatFlowSensor.port_b) annotation (Line(
-          points={{48,-48},{32,-48}},
-          color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end ExothermicReaction;
   end Examples;
 
   package Components
@@ -805,11 +819,27 @@ package Chemical "Molar Concentration and Molar Flow"
       extends Physiolibrary.Icons.Diffusion;
       extends Physiolibrary.Chemical.Interfaces.OnePort;
 
-      parameter Physiolibrary.Types.DiffusionPermeability cond
-        "Diffusion conductance";
+      parameter Boolean useConductanceInput = false
+        "=true, if external conductance value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
+      parameter Types.DiffusionPermeability Conductance=0
+        "Diffusion conductance if useConductanceInput=false"
+        annotation (Dialog(enable=not useConductanceInput));
+
+    protected
+      Types.DiffusionPermeability c;
+    public
+      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
     equation
-       q_in.q = cond * (q_in.conc - q_out.conc);
+      if not useConductanceInput then
+        c=Conductance;
+      end if;
+
+       q_in.q = c * (q_in.conc - q_out.conc);
 
        annotation (Icon(graphics),                 Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
@@ -823,327 +853,19 @@ package Chemical "Molar Concentration and Molar Flow"
 <p>dPhi is concentration gradient [mol/m3].</p>
 <p>dx is length of diffusion [m].</p>
 <p><br/>So for example of the diffusion through membrane the parameter cond = <code>(D/membrameThicknes)*membraneArea.</code></p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end Diffusion;
 
-    model MolarStream "Molar flow of solute in stream"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow
-        "Solvent flow (solution volume flow = solventFlow + solute volume flow)!"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-    equation
-    //  assert(solventFlow>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
-      q_in.q = solventFlow*q_in.conc;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              origin={0,0},
-              rotation=360),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              origin={0,0},
-              rotation=360),
-            Text(
-              extent={{-150,-20},{150,20}},
-              textString="%name",
-              lineColor={0,0,255},
-              origin={2,-74},
-              rotation=180)}),
-         Diagram(coordinateSystem(preserveAspectRatio=true,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>2009</td>
-</tr>
-</table>
-</html>",     info="<html>
-<p><h4><font color=\"#008000\">Bidirectional mass flow by concentration</font></h4></p>
-<p>Possible field values: </p>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
-<td></td>
-<td><p align=\"center\">forward flow</p></td>
-<td><p align=\"center\">backward flow</p></td>
-</tr>
-<tr>
-<td><p align=\"center\"><h4>solventFlow</h4></p></td>
-<td><p align=\"center\">&GT;=0</p></td>
-<td><p align=\"center\">&LT;0</p></td>
-</tr>
-<tr>
-<td><p align=\"center\"><h4>q_in.q</h4></p></td>
-<td><p align=\"center\">=solventFlow*q_in.conc</p></td>
-<td><p align=\"center\">=solventFlow*q_out.conc</p></td>
-</tr>
-<tr>
-<td><p align=\"center\"><h4>q_out.q</h4></p></td>
-<td><p align=\"center\">=-q_in.q</p></td>
-<td><p align=\"center\">=-q_in.q</p></td>
-</tr>
-</table>
-</html>"));
-    end MolarStream;
-
-    model Clearance "Clearance with solvent outflow"
-
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                q_in "solute outflow"
-                                annotation (Placement(
-            transformation(extent={{-110,-10},{-90,10}})));
-
-      parameter Boolean useSolventFlow = false
-        "=true, if clearence is expressed from outflow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
-        "Clearance of solute if useSolventFlow=false"
-        annotation (Dialog(enable=not useSolventFlow));
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
-        "solvent outflow"
-       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      parameter Real K(unit="1")=1
-        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
-        annotation (Dialog(enable=useSolventFlow));
-
-      Physiolibrary.Types.VolumeFlowRate clearance;
-    equation
-      if not useSolventFlow then
-         clearance=Clearance;
-      end if;  //otherwise: clearance=K*solventFlow;
-
-      q_in.q = clearance*q_in.conc;
-
-    //  assert(clearance>=-Modelica.Constants.eps, "Clearancecan not be negative!");
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-100},{150,-60}},
-              textString="%name",
-              lineColor={0,0,255}),
-            Text(
-              extent={{-100,-30},{100,-50}},
-              lineColor={0,0,0},
-              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>2009</td>
-</tr>
-</table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end Clearance;
-
-    model Degradation "Degradation of solvent in defined volume"
-
-      Physiolibrary.Types.RealIO.VolumeInput volume
-        "Degradation volume, where degradation takes place."
-         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                q_in "Degraded solute outflow"
-                                annotation (Placement(
-            transformation(extent={{-110,-10},{-90,10}})));
-
-      parameter Physiolibrary.Types.Time HalfTime
-        "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
-
-      Physiolibrary.Types.VolumeFlowRate Clearance;
-    equation
-      Clearance = volume*Modelica.Math.log(2)/HalfTime;
-      q_in.q = Clearance*q_in.conc;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,26},{62,0},{-80,-26},{-80,26}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-100},{150,-60}},
-              textString="%name",
-              lineColor={0,0,255}),
-            Text(
-              extent={{-100,-30},{100,-50}},
-              lineColor={0,0,0},
-              textString="half-time=%HalfTime s"),
-            Polygon(
-              points={{-68,24},{-68,-24},{-58,-22},{-58,22},{-68,24}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-46,20},{-46,-20},{-36,-18},{-36,18},{-46,20}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-24,16},{-24,-16},{-14,-14},{-14,14},{-24,16}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-2,12},{-2,-12},{8,-10},{8,10},{-2,12}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{20,8},{20,-8},{30,-6},{30,6},{20,8}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{40,4},{40,-4},{50,-2},{50,2},{40,4}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>2013</td>
-</tr>
-</table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end Degradation;
-
-    model SoluteFlowPump "Active pumping of solute"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-
-      Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow
-        "Solute flow rate"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-
-    equation
-       q_in.q = soluteFlow;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              origin={0,0},
-              rotation=360),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid,
-              origin={0,0},
-              rotation=360),
-            Text(
-              extent={{-150,-20},{150,20}},
-              lineColor={0,0,255},
-              origin={-10,-76},
-              rotation=360,
-              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end SoluteFlowPump;
-
     model Substance "Concentration accumulation in solvent "
-      import Physiolibrary;
       extends Physiolibrary.Icons.Substance;
+      extends Chemical.Interfaces.ConditionalSolventVolume;
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
       change(nominal=NominalSolute/60),
       state_start=solute_start,
       storeUnit="mmol");
-      extends Chemical.Interfaces.ConditionalSolventVolume;
 
       parameter Physiolibrary.Types.AmountOfSubstance
                                         solute_start(nominal=NominalSolute) = 0
@@ -1191,7 +913,7 @@ package Chemical "Molar Concentration and Molar Flow"
         "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
         annotation (Dialog(enable=not useDissociationConstantInput));
 
-      parameter Real kf = 10^11 "Forward reaction rate coefficient [SI unit]"
+      parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
         annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
       parameter Integer nS=1 "Number of substrates types"
@@ -1322,14 +1044,14 @@ It works in two modes:
       extends Physiolibrary.Icons.GasSolubility;
       extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^3
+      parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^8
         "The rate constant of incoming gas to solution";
 
       Physiolibrary.Types.Fraction kH
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
       parameter Physiolibrary.Types.Fraction kH_T0
-        "Henry's law coefficient at base temperature";
+        "Henry's law coefficient at base temperature (i.e. at : O2..?%, CO2..?%, N2..?%, CO..?%, ..)";
       parameter Physiolibrary.Types.Temperature T0=298.15
         "Base temperature for kH_T0"
          annotation (Dialog(tab="Temperature dependence"));
@@ -1362,45 +1084,316 @@ It works in two modes:
 </html>"));
     end GasSolubility;
 
-    model Dilution "Adding the solvent to solution"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
+    model Clearance "Clearance with solvent outflow"
 
-      Physiolibrary.Types.RealIO.FractionInput dilution
-        "Fraction of final undilutes solution"
-        annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+                                q_in "solute outflow"
+                                annotation (Placement(
+            transformation(extent={{-110,-10},{-90,10}})));
+
+      parameter Boolean useSolventFlow = false
+        "=true, if clearence is expressed from outflow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
+        "Clearance of solute if useSolventFlow=false"
+        annotation (Dialog(enable=not useSolventFlow));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
+        "solvent outflow"
+       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+
+      parameter Real K(unit="1")=1
+        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
+        annotation (Dialog(enable=useSolventFlow));
+
+      Physiolibrary.Types.VolumeFlowRate clearance;
     equation
+      if not useSolventFlow then
+         clearance=Clearance;
+      end if;  //otherwise: clearance=K*solventFlow;
 
-      q_out.conc = dilution * q_in.conc;
+      q_in.q = clearance*q_in.conc;
+
+    //  assert(clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-100},{150,-60}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-100,-30},{100,-50}},
+              lineColor={0,0,0},
+              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end Clearance;
+
+    model Degradation "Degradation of solvent in defined volume"
+      extends Interfaces.ConditionalSolventVolume;
+
+      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+                                q_in "Degraded solute outflow"
+                                annotation (Placement(
+            transformation(extent={{-110,-10},{-90,10}})));
+
+      parameter Physiolibrary.Types.Time HalfTime
+        "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
+
+      Physiolibrary.Types.VolumeFlowRate Clearance;
+    equation
+      Clearance = volume*Modelica.Math.log(2)/HalfTime;
+      q_in.q = Clearance*q_in.conc;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+                            graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,26},{62,0},{-80,-26},{-80,26}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-100},{150,-60}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-100,-30},{100,-50}},
+              lineColor={0,0,0},
+              textString="half-time=%HalfTime s"),
+            Polygon(
+              points={{-68,24},{-68,-24},{-58,-22},{-58,22},{-68,24}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-46,20},{-46,-20},{-36,-18},{-36,18},{-46,20}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-24,16},{-24,-16},{-14,-14},{-14,14},{-24,16}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-2,12},{-2,-12},{8,-10},{8,10},{-2,12}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{20,8},{20,-8},{30,-6},{30,6},{20,8}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{40,4},{40,-4},{50,-2},{50,2},{40,4}},
+              lineColor={0,0,127},
+              smooth=Smooth.None,
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)}),
+                                      Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2013</td>
+</tr>
+</table>
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end Degradation;
+
+    model Stream "One-directional flow of solution"
+     //- Solute flowing together with solvent - One-directional stream (only zero or positive solvent flow values are allowed!)"
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventFlow;
+
+    equation
+    //  assert(q>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
+      q_in.q = q*q_in.conc;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              origin={0,0},
+              rotation=360),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              origin={0,0},
+              rotation=360),
+            Text(
+              extent={{-150,-20},{150,20}},
+              textString="%name",
+              lineColor={0,0,255},
+              origin={2,-74},
+              rotation=180)}),
+         Diagram(coordinateSystem(preserveAspectRatio=true,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Bidirectional mass flow by concentration</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
+<td></td>
+<td><p align=\"center\">forward flow</p></td>
+<td><p align=\"center\">backward flow</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>solventFlow</h4></p></td>
+<td><p align=\"center\">&GT;=0</p></td>
+<td><p align=\"center\">&LT;0</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_in.q</h4></p></td>
+<td><p align=\"center\">=solventFlow*q_in.conc</p></td>
+<td><p align=\"center\">=solventFlow*q_out.conc</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_out.q</h4></p></td>
+<td><p align=\"center\">=-q_in.q</p></td>
+<td><p align=\"center\">=-q_in.q</p></td>
+</tr>
+</table>
+</html>"));
+    end Stream;
+
+
+
+    model SolutePump "Active pumping of solute"
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
+
+    equation
+      q_in.q = q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics={Bitmap(extent={{-100,101},{100,-101}},
-                fileName="Resources/Icons/dilution.png",
-              origin={0,33},
-              rotation=270),
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              origin={0,0},
+              rotation=360),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              origin={0,0},
+              rotation=360),
             Text(
-              extent={{-120,20},{120,-20}},
-              textString="%name",
+              extent={{-150,-20},{150,20}},
               lineColor={0,0,255},
-              origin={-2,-60},
-              rotation=180)}),
-        Diagram(coordinateSystem(preserveAspectRatio=false,
+              origin={-10,-76},
+              rotation=360,
+              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Dilution;
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end SolutePump;
+
+
+
 
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
       extends Physiolibrary.Icons.Speciation;
-    protected
+
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                               Simulation=SteadyStates.Interfaces.SimulationType.SteadyState,
-                                                                                            NumberOfDependentStates=NumberOfSubunitTypes-1);
-    public
-             extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
+                                               Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunitTypes-1);
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
+
+      import Physiolibrary.Types.*;
 
       parameter Integer NumberOfSubunitTypes=1
         "Number of subunit types occuring in macromolecule";
@@ -1462,6 +1455,49 @@ It works in two modes:
 <p><br/>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
 </html>"));
     end Speciation;
+
+    model Dilution "Adding the solvent to solution"
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
+
+      parameter Boolean useDilutionInput = false
+        "=true, if dilition input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Fraction Dilution=1
+        "Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false"
+        annotation (Dialog(enable=not useSolventFlow));
+
+      Physiolibrary.Types.RealIO.FractionInput dilution(start=Dilution)= d if useDilutionInput
+        "Fraction of final undilutes solution"
+        annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
+    protected
+      Types.Fraction d;
+    equation
+      if not useDilutionInput then
+        d=Dilution;
+      end if;
+      q_out.conc = d * q_in.conc;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={Bitmap(extent={{-100,101},{100,-101}},
+                fileName="Resources/Icons/dilution.png",
+              origin={0,33},
+              rotation=270),
+            Text(
+              extent={{-120,20},{120,-20}},
+              textString="%name",
+              lineColor={0,0,255},
+              origin={-2,-60},
+              rotation=180)}),
+        Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end Dilution;
+
 
     model Reabsorption "Reabsorption of input fraction"
        extends Physiolibrary.Icons.Reabsorption;
@@ -1610,29 +1646,37 @@ It works in two modes:
 
     model FlowConcentrationMeasure
       "The outflow concentration from absorption (i.e. portal vein concentration)"
-
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventFlow;
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "Concentration before absorption source"
                              annotation (Placement(
             transformation(extent={{-110,-8},{-90,12}})));
 
-      Physiolibrary.Types.RealIO.ConcentrationOutput Conc
-        "Concentration after absorption source"                           annotation (Placement(transformation(extent={{80,-20},
-                {120,20}})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput SolventFlow annotation (Placement(
-            transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60}),                            iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-      Physiolibrary.Types.RealIO.MolarFlowRateInput AdditionalSoluteFlow
+      parameter Boolean useAdditionalSoluteFlowInput = false
+        "=true, if absorbed molar flow input is chosen"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.MolarFlowRate AdditionalSoluteFlow=0
+        "Additional solute molar flow if useAdditionalSoluteFlowInput=false"
+        annotation (Dialog(enable=not useAdditionalSoluteFlowInput));
+
+      Physiolibrary.Types.RealIO.MolarFlowRateInput additionalSoluteFlow(start=AdditionalSoluteFlow)=aq if useAdditionalSoluteFlowInput
         "Absorbed molar flow rate" annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
             origin={0,-60})));
+
+     Physiolibrary.Types.RealIO.ConcentrationOutput Conc
+        "Concentration after absorption source"                           annotation (Placement(transformation(extent={{80,-20},
+                {120,20}})));
+
+    protected
+      Types.MolarFlowRate aq "Current additional solute molar flow";
     equation
-      Conc = q_in.conc + AdditionalSoluteFlow/SolventFlow;
+      if not useAdditionalSoluteFlowInput then
+        aq = AdditionalSoluteFlow;
+      end if;
+      Conc = q_in.conc + aq/q;
       q_in.q = 0;
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
@@ -1656,26 +1700,22 @@ It works in two modes:
   package Sources
     extends Modelica.Icons.SourcesPackage;
 
-    model MolarInflux "Molar pump of solute"
+    model UnlimitedSolutePump "Molar pump of solute"
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
 
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out "Outflow"
                              annotation (Placement(
-            transformation(extent={{50,-10},{70,10}})));
-      Physiolibrary.Types.RealIO.MolarFlowRateInput desiredFlow
-        "Solute flow rate"
-          annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
+            transformation(extent={{90,-10},{110,10}})));
 
     equation
-      q_out.q = - desiredFlow;
+      q_out.q = - q;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-60,-30},{60,30}},
+              extent={{-100,-42},{100,40}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
@@ -1685,7 +1725,7 @@ It works in two modes:
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid),
             Text(
-              extent={{-92,-54},{80,-30}},
+              extent={{-82,-82},{90,-58}},
               textString="%name",
               lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
@@ -1694,27 +1734,43 @@ It works in two modes:
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
-    end MolarInflux;
+    end UnlimitedSolutePump;
 
-    model UnlimitedStorage "Constant concentration source"
-     //extends Icons.Substance;
+    model UnlimitedSolutionStorage "Constant concentration source"
 
+      import Physiolibrary.Types.*;
       Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
                                 q_out
         "constant concentration with any possible flow"
                                  annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
-      parameter Physiolibrary.Types.Concentration Concentration;
 
-      parameter Physiolibrary.SteadyStates.Interfaces.SimulationType
-                                                    Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.NormalInit
+      parameter Boolean useConcentrationInput = false
+        "=true, if fixed concentration is from input instead of parameter"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+       parameter Concentration Conc = 0
+        "Fixed concentration if useConcentrationInput=false"
+        annotation (Dialog(enable=not useSolventFlowInput));
+
+      parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-    equation
-      q_out.conc = Concentration;
+       Types.RealIO.ConcentrationInput concentration(start=Conc)=c if useConcentrationInput
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
-      if Simulation==Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState then
+    protected
+      Concentration c "Current concentration";
+
+    equation
+       if not useConcentrationInput then
+         c=Conc;
+       end if;
+
+      q_out.conc = c;
+
+      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
         q_out.q = 0;
       end if;
 
@@ -1748,12 +1804,97 @@ It works in two modes:
             Text(
               extent={{-150,-110},{150,-140}},
               lineColor={0,0,0},
-              textString="Conc=%Concentration")}),
+              textString="Conc=%Conc")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end UnlimitedStorage;
+    end UnlimitedSolutionStorage;
+
+    model UnlimitedGasStorage "Constant ideal gas source"
+      extends Interfaces.ConditionalHeatPort;
+      import Physiolibrary.Types.*;
+      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+                                q_out
+        "constant gas concentration with any possible flow"
+                                 annotation (Placement(
+            transformation(extent={{90,-10},{110,10}})));
+
+      parameter Boolean usePartialPressureInput = false
+        "=true, if fixed partial pressure is from input instead of parameter"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+       parameter Pressure PartialPressure = 0
+        "Fixed partial pressure if usePartialPressureInput=false"
+        annotation (Dialog(enable=not usePartialPressureInput));
+
+      RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
+        "Partial pressure of Gas = air pressure * gas fraction"
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
+            rotation=0)));
+
+      parameter SimulationType  Simulation=SimulationType.NormalInit
+        "If in equilibrium, then zero-flow equation is added."
+        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+
+    protected
+      Pressure p "Current partial pressure";
+    equation
+      if not usePartialPressureInput then
+        p=PartialPressure;
+      end if;
+
+      q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
+
+      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
+        q_out.q = 0;
+      end if;
+
+      lossHeat=0; //only read temperature from heat port
+
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+            graphics={
+            Rectangle(
+            extent={{-100,100},{100,-100}},
+            lineColor={0,0,0},
+            pattern=LinePattern.None,
+            fillColor={170,255,255},
+            fillPattern=FillPattern.Backward),
+            Polygon(
+              points={{-100,100},{100,-100},{100,100},{-100,100}},
+              smooth=Smooth.None,
+              fillColor={159,159,223},
+              fillPattern=FillPattern.Backward,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Text(
+              extent={{0,0},{-100,-100}},
+              lineColor={0,0,0},
+              textString="P,T"),
+            Line(
+              points={{-62,0},{56,0}},
+              color={191,0,0},
+              thickness=0.5),
+            Polygon(
+              points={{38,-20},{38,20},{78,0},{38,-20}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,150},{150,110}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-150,-110},{150,-140}},
+              lineColor={0,0,0},
+              textString="T=%T")}),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end UnlimitedGasStorage;
   end Sources;
 
   package Interfaces
@@ -1926,6 +2067,62 @@ on the model behaviour.
                  Diagram(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolventVolume;
+
+    partial model ConditionalSolventFlow
+      "Input of solvent volumetric flow vs. parametric solvent volumetric flow"
+
+      parameter Boolean useSolventFlowInput = false
+        "=true, if solvent flow input is used instead of parameter SolventFlow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate SolventFlow=0
+        "Volumetric flow of solvent if useSolventFlowInput=false"
+        annotation (Dialog(enable=not useSolventFlowInput));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+
+      Physiolibrary.Types.VolumeFlowRate q "Current solvent flow";
+    equation
+      if not useSolventFlowInput then
+        q = SolventFlow;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+    end ConditionalSolventFlow;
+
+    partial model ConditionalSoluteFlow
+      "Input of solute molar flow vs. parametric solute molar flow"
+
+      parameter Boolean useSoluteFlowInput = false
+        "=true, if solute flow input is used instead of parameter SoluteFlow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.MolarFlowRate SoluteFlow=0
+        "Volumetric flow of solute if useSoluteFlowInput=false"
+        annotation (Dialog(enable=not useSoluteFlowInput));
+
+      Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow(start=SoluteFlow)=q if   useSoluteFlowInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={40,40})));
+
+      Physiolibrary.Types.MolarFlowRate q "Current solute flow";
+    equation
+      if not useSoluteFlowInput then
+        q = SoluteFlow;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+    end ConditionalSoluteFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

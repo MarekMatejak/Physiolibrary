@@ -15,7 +15,8 @@ package Thermal "Temperature and Heat Flow"
         Weight(displayUnit="kg") = 15)
         annotation (Placement(transformation(extent={{16,22},{36,42}})));
       Components.IdealRadiator
-                    muscleCirculation "Blood circulation in skeletal muscle"
+                    muscleCirculation(MassFlow(displayUnit="g/min") = 0.0114)
+        "Blood circulation in skeletal muscle"
         annotation (Placement(transformation(extent={{16,-32},{36,-12}})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow generatedHeat(Q_flow=13.956)
         "Heat energy created by muscle"
@@ -23,14 +24,7 @@ package Thermal "Temperature and Heat Flow"
       Modelica.Thermal.HeatTransfer.Sources.FixedTemperature body(T(displayUnit="degC")=
              310.15)
         annotation (Placement(transformation(extent={{-32,-30},{-12,-10}})));
-      Types.Constants.MassFlowRateConst muscleBloodFlow(k(displayUnit="g/min") = 0.0114)
-                 annotation (Placement(transformation(extent={{2,-2},{10,6}})));
     equation
-      connect(muscleBloodFlow.y, muscleCirculation.substanceFlow)
-                                                             annotation (Line(
-          points={{11,2},{18,2},{18,-15}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(muscle.q_in, generatedHeat.port)
                                             annotation (Line(
           points={{26,32},{8,32},{8,30},{-12,30}},
@@ -43,7 +37,7 @@ package Thermal "Temperature and Heat Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(muscle.q_in, muscleCirculation.q_out) annotation (Line(
-          points={{26,32},{26,-12},{26,-12}},
+          points={{26,32},{26,-12}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -66,15 +60,14 @@ package Thermal "Temperature and Heat Flow"
       Physiolibrary.Thermal.Components.HeatAccumulation
                         GILumen(Weight=1)
         annotation (Placement(transformation(extent={{42,-90},{62,-70}})));
-      Physiolibrary.Thermal.Components.HeatStream
-                 foodAbsorption(SpecificHeat=4186.8)
-        annotation (Placement(transformation(extent={{46,-74},{26,-54}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
                         skeletalMuscle(SpecificHeat=3475.044, Weight=7.05)
         annotation (Placement(transformation(extent={{38,4},{58,24}})));
       Physiolibrary.Thermal.Components.IdealRadiator
-                    muscleBloodFlow(SpecificHeat=3851.856)
-                                    annotation (Placement(transformation(
+                    muscleBloodFlow(
+        MassFlow(displayUnit="g/min") = 0.0114,
+        useMassFlowInput=false,
+        SpecificHeat=3851.856)      annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={34,-8})));
@@ -83,20 +76,24 @@ package Thermal "Temperature and Heat Flow"
         annotation (Placement(transformation(extent={{-26,-98},{-46,-78}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     lungsVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
-          SpecificHeat(displayUnit="kcal/(kg.K)"))
+          SpecificHeat(displayUnit="kcal/(kg.K)"),
+        MassFlow(displayUnit="g/min") = 0.0046666666666667)
         annotation (Placement(transformation(extent={{14,28},{34,48}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
                         skin(SpecificHeat=3475.044, Weight=0.56)
         annotation (Placement(transformation(extent={{-66,-34},{-46,-14}})));
       Physiolibrary.Thermal.Components.IdealRadiator
-                    skinBloodFlow(SpecificHeat=3851.856)
-                                  annotation (Placement(transformation(
+                    skinBloodFlow(
+        MassFlow(displayUnit="g/min") = 0.0028333333333333,
+        useMassFlowInput=false,
+        SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={-30,-36})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
-          SpecificHeat(displayUnit="kcal/(kg.K)"))
+          SpecificHeat(displayUnit="kcal/(kg.K)"),
+        MassFlow(displayUnit="g/min") = 0.0065)
         annotation (Placement(transformation(extent={{-42,-6},{-22,14}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
@@ -133,35 +130,10 @@ package Thermal "Temperature and Heat Flow"
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={80,-76})));
-      Types.Constants.MassFlowRateConst muscleBF(k(displayUnit="g/min") = 0.0114)
-        "muscle blood flow"
-        annotation (Placement(transformation(extent={{12,2},{20,10}})));
-      Types.Constants.MassFlowRateConst skinBF(k(displayUnit="g/min") = 0.0028333333333333)
-        "skin blood flow"
-        annotation (Placement(transformation(extent={{-34,-20},{-26,-12}})));
-      Types.Constants.MassFlowRateConst voiding(k=0)
-        annotation (Placement(transformation(extent={{-50,-78},{-42,-70}})));
-      Types.Constants.MassFlowRateConst absorption(k=0)
-        annotation (Placement(transformation(extent={{24,-52},{32,-44}})));
-      Types.Constants.MassFlowRateConst lungsVaporization(k=4.6666666666667e-09)
-        annotation (Placement(transformation(extent={{8,48},{16,56}})));
-      Types.Constants.MassFlowRateConst sweatVaporization(k=0)
-        annotation (Placement(transformation(extent={{-48,38},{-40,46}})));
-      Types.Constants.MassFlowRateConst insensibleVaporization(k=6.5e-09)
-        annotation (Placement(transformation(extent={{-48,12},{-40,20}})));
+      Physiolibrary.Thermal.Components.Stream
+                 foodAbsorption(SpecificHeat=4186.8)
+        annotation (Placement(transformation(extent={{46,-70},{26,-50}})));
     equation
-      connect(GILumen.q_in, foodAbsorption.q_in)
-                                             annotation (Line(
-          points={{52,-80},{52,-64},{46,-64}},
-          color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(foodAbsorption.q_out, core.q_in)
-                                           annotation (Line(
-          points={{26,-64},{4,-64},{4,-32},{0,-32}},
-          color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
 
       connect(core.q_in, muscleBloodFlow.q_in) annotation (Line(
           points={{0,-32},{0,-6},{24,-6}},
@@ -246,37 +218,20 @@ package Thermal "Temperature and Heat Flow"
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(muscleBF.y, muscleBloodFlow.substanceFlow) annotation (Line(
-          points={{21,6},{26,6},{26,-1}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(skinBF.y, skinBloodFlow.substanceFlow) annotation (Line(
-          points={{-25,-16},{-22,-16},{-22,-29}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(voiding.y, urination.liquidOutflow_) annotation (Line(
-          points={{-41,-74},{-36,-74},{-36,-82}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(absorption.y, foodAbsorption.substanceFlow) annotation (Line(
-          points={{33,-48},{36,-48},{36,-58}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(lungsVaporization.y, lungsVapor.liquidOutflow_) annotation (Line(
-          points={{17,52},{24,52},{24,44}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(sweatVaporization.y, sweating.liquidOutflow_) annotation (Line(
-          points={{-39,42},{-32,42},{-32,36}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(insensibleVaporization.y, insensibleVapor.liquidOutflow_) annotation (
-         Line(
-          points={{-39,16},{-32,16},{-32,10}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
           points={{-20,-34},{-10,-34},{-10,-32},{0,-32}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(GILumen.q_in,foodAbsorption. q_in)
+                                             annotation (Line(
+          points={{52,-80},{52,-60},{46,-60}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(foodAbsorption.q_out, core.q_in)
+                                           annotation (Line(
+          points={{26,-60},{4,-60},{4,-32},{0,-32}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -312,6 +267,7 @@ package Thermal "Temperature and Heat Flow"
             rotation=270,
             origin={0,40})));
 
+    protected
        Types.ThermalConductance c;
     equation
       if not useConductanceInput then
@@ -330,24 +286,20 @@ package Thermal "Temperature and Heat Flow"
                 {100,100}}), graphics));
     end Conductor;
 
-    model HeatStream "Mass flow circuit with different temperatures"
+    model Stream "One-directional flow of heated mass"
       extends Interfaces.OnePort;
+      extends Interfaces.ConditionalMassFlow;
 
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat
         "Of flow circuit medium";
 
-      Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
-        "Flowing speed in circuit. Can not be negative!"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
     equation
     //  assert(substanceFlow>=-Modelica.Constants.eps,"In HeatStream must be always the forward flow direction! Not 'substanceFlow<0'!");
-      q_in.Q_flow = substanceFlow*q_in.T*SpecificHeat;
+      q_in.Q_flow = q*q_in.T*SpecificHeat;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics={
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
@@ -355,7 +307,7 @@ package Thermal "Temperature and Heat Flow"
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Text(
@@ -368,9 +320,10 @@ package Thermal "Temperature and Heat Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
-    end HeatStream;
+    end Stream;
 
     model HeatOutstream "Heat outflow through outflowing vaporized mass"
+      extends Interfaces.ConditionalMassFlow;
 
       Interfaces.PositiveHeatFlow
                        q_in "flow circuit"     annotation (Placement(
@@ -380,14 +333,9 @@ package Thermal "Temperature and Heat Flow"
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
         "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
-      Physiolibrary.Types.RealIO.MassFlowRateInput liquidOutflow_
-        "Mass outflow. Can not be negative!"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
     equation
     //  assert(liquidOutflow_>=-Modelica.Constants.eps,"HeatOutstream must have always one forward flow direction! Not 'liquidOutflow_<0'!");
-      q_in.Q_flow = liquidOutflow_*(q_in.T*SpecificHeat + VaporizationHeat);
+      q_in.Q_flow = q*(q_in.T*SpecificHeat + VaporizationHeat);
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -399,7 +347,7 @@ package Thermal "Temperature and Heat Flow"
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Text(
@@ -416,17 +364,11 @@ package Thermal "Temperature and Heat Flow"
 
     model IdealRadiator
       "Mass flow radiator, which outflowed temperature is the same as the ambient temperature"
-
+      extends Interfaces.ConditionalMassFlow;
       extends Icons.Radiator;
 
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
         "Of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
-
-      Physiolibrary.Types.RealIO.MassFlowRateInput substanceFlow
-        "Flowing speed in circuit. Can not be negative!"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-80,70})));
 
       Physiolibrary.Thermal.Interfaces.PositiveHeatFlow
                        q_in annotation (Placement(
@@ -437,7 +379,7 @@ package Thermal "Temperature and Heat Flow"
     equation
       q_in.Q_flow + q_out.Q_flow = 0;
     //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
-      q_in.Q_flow = substanceFlow*(q_in.T-q_out.T)*SpecificHeat;
+      q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
@@ -530,20 +472,36 @@ package Thermal "Temperature and Heat Flow"
     extends Modelica.Icons.SourcesPackage;
     model UnlimitedHeat
       //extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;
+      import Physiolibrary.Types.*;
 
-      parameter Types.Temperature T "Fixed temperature at port";
+      parameter Boolean useTemperatureInput = false
+        "=true, if fixed temperature is from input instead of parameter"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.SteadyStates.Interfaces.SimulationType
-                                                    Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.NormalInit
+       parameter Temperature T = 0
+        "Fixed temperature at port if useTemperatureInput=false"
+        annotation (Dialog(enable=not useTemperatureInput));
+
+      parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
       Interfaces.NegativeHeatFlow port annotation (Placement(transformation(extent={{90,-10},
                 {110,10}})));
-    equation
-      port.T = T;
 
-      if Simulation==Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState then
+    protected
+      Temperature t "Current temperature";
+    public
+      Types.RealIO.TemperatureInput temperature(start=T)= t if useTemperatureInput
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+    equation
+      if not useTemperatureInput then
+        t=T;
+      end if;
+
+      port.T = t;
+
+      if Simulation==SimulationType.SteadyState then
         port.Q_flow = 0;
       end if;
 
@@ -655,6 +613,34 @@ i.e., it defines a fixed temperature as a boundary condition.
         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics));
     end OnePort;
+
+    partial model ConditionalMassFlow
+      "Input of mass flow vs. parametric mass flow"
+
+      parameter Boolean useMassFlowInput = false
+        "=true, if mass flow input is used instead of parameter MassFlow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.MassFlowRate MassFlow=0
+        "Mass flow if useMassFlowInput=false"
+        annotation (Dialog(enable=not useSolventFlowInput));
+
+      Physiolibrary.Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if useMassFlowInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,70})));
+
+      Physiolibrary.Types.MassFlowRate q "Current mass flow";
+    equation
+      if not useMassFlowInput then
+        q = MassFlow;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),                                                                       graphics),
+                 Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+    end ConditionalMassFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

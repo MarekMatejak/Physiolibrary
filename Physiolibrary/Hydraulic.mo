@@ -21,9 +21,12 @@ package Hydraulic "Pressure and Volumetric Flow"
                      pulmonaryArteries(
         ZeroPressureVolume(displayUnit="l") = 0.00030625,
         Compliance(displayUnit="l/mmHg") = 3.6002955640592e-08,
-        volume_start(displayUnit="l") = 0.00038)
+        volume_start(displayUnit="l") = 0.00038,
+        useV0Input=false,
+        useComplianceInput=false,
+        useExternalPressureInput=false)
         annotation (Placement(transformation(extent={{-32,64},{-12,84}})));
-      Components.Resistor
+      Hydraulic.Components.Conductor
                pulmonary(cond(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)
         annotation (Placement(transformation(extent={{0,64},{20,84}})));
       Components.ElasticVessel
@@ -38,7 +41,7 @@ package Hydraulic "Pressure and Volumetric Flow"
         volume_start(displayUnit="l") = 0.00325,
         ZeroPressureVolume(displayUnit="l") = 0.00295)
         annotation (Placement(transformation(extent={{-34,-56},{-14,-36}})));
-      Components.Resistor
+      Hydraulic.Components.Conductor
                nonMuscle(cond(displayUnit="l/(mmHg.min)") = 3.5627924852669e-09)
         annotation (Placement(transformation(extent={{6,-56},{26,-36}})));
       Sensors.PressureMeasure
@@ -57,13 +60,13 @@ package Hydraulic "Pressure and Volumetric Flow"
         annotation (Placement(transformation(extent={{46,-2},{66,18}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{42,32},{50,40}})));
-      Components.Resistor
+      Hydraulic.Components.Conductor
                kidney(cond(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
         annotation (Placement(transformation(extent={{6,-74},{26,-54}})));
-      Components.Resistor
+      Hydraulic.Components.Conductor
                muscle(cond(displayUnit="l/(mmHg.min)") = 1.3001067314658e-09)
         annotation (Placement(transformation(extent={{6,-38},{26,-18}})));
-      Components.Resistor
+      Hydraulic.Components.Conductor
                largeVeins(cond(displayUnit="l/(mmHg.min)") = 1.6888886482791e-07)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=270,
@@ -208,7 +211,7 @@ package Hydraulic "Pressure and Volumetric Flow"
   package Components
     extends Modelica.Icons.Package;
 
-    model Resistor
+    model Conductor
      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
      extends Physiolibrary.Icons.HydraulicResistor;
 
@@ -226,6 +229,7 @@ package Hydraulic "Pressure and Volumetric Flow"
             rotation=270,
             origin={0,60})));
 
+    protected
        Physiolibrary.Types.HydraulicConductance c;
     equation
       if not useConductanceInput then
@@ -235,7 +239,7 @@ package Hydraulic "Pressure and Volumetric Flow"
       q_in.q = c * (q_in.pressure - q_out.pressure);
       annotation (Icon(graphics), Diagram(coordinateSystem(preserveAspectRatio=
                 false, extent={{-100,-100},{100,100}}), graphics));
-    end Resistor;
+    end Conductor;
 
     model Pump
       extends Physiolibrary.Hydraulic.Interfaces.OnePort;
@@ -321,6 +325,7 @@ package Hydraulic "Pressure and Volumetric Flow"
             rotation=270,
             origin={40,80})));
 
+    protected
        Physiolibrary.Types.VolumeFlowRate om;
     equation
       if not useExternalOutflowMin then
@@ -365,7 +370,15 @@ package Hydraulic "Pressure and Volumetric Flow"
                            q_down "Bottom site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{66,-74},{94,-46}})));
-      Physiolibrary.Types.RealIO.HeightInput height
+
+      parameter Boolean useHeightInput = false "=true, if height input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Height H=0
+        "Height of hydrostatic column if useHeightInput=false"
+        annotation (Dialog(enable=not useFlowInput));
+
+      Physiolibrary.Types.RealIO.HeightInput height(start=H)=h if useHeightInput
         "Vertical distance between top and bottom connector"
                                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
@@ -394,21 +407,25 @@ package Hydraulic "Pressure and Volumetric Flow"
         "=true, if musce pump effect is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-    protected
-      parameter Types.Fraction PumpEffect = 1
-        "Pump effect if usePumpEffect=false"
-        annotation (Dialog(enable=not usePumpEffect));
-
-    public
       Physiolibrary.Types.RealIO.FractionInput
                             pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
             origin={0,100})));
 
+    protected
+      parameter Types.Fraction PumpEffect = 1
+        "Pump effect if usePumpEffect=false"
+        annotation (Dialog(enable=not usePumpEffect));
+
+    protected
       Types.Acceleration g;
       Types.Fraction pe;
+      Types.Height h;
     equation
+      if not useHeightInput then
+        h=H;
+      end if;
       if not useExternalG then
         g=GravityAcceleration;
       end if;
@@ -416,7 +433,7 @@ package Hydraulic "Pressure and Volumetric Flow"
         pe = PumpEffect;
      end if;
 
-      q_down.pressure = q_up.pressure + g*ro*height*pe;
+      q_down.pressure = q_up.pressure + g*ro*h*pe;
       q_up.q + q_down.q = 0;
 
      annotation (
@@ -456,7 +473,9 @@ package Hydraulic "Pressure and Volumetric Flow"
         annotation (Dialog(enable=not useV0Input));
        Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume) if useV0Input
                                                         annotation (Placement(transformation(
-              extent={{-120,60},{-80,100}})));
+              extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,80})));
 
       parameter Boolean useComplianceInput = false
         "=true, if compliance input is used"
@@ -467,7 +486,9 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) if useComplianceInput
                                                             annotation (Placement(
-            transformation(extent={{-120,0},{-80,40}})));
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
 
       parameter Boolean useExternalPressureInput = false
         "=true, if external pressure input is used"
@@ -478,7 +499,9 @@ package Hydraulic "Pressure and Volumetric Flow"
 
       Physiolibrary.Types.RealIO.PressureInput externalPressure(start=ExternalPressure) if useExternalPressureInput
                                                        annotation (Placement(transformation(
-              extent={{-120,-60},{-80,-20}})));
+              extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={80,80})));
 
       Physiolibrary.Types.RealIO.VolumeOutput volume
                                             annotation (Placement(transformation(
@@ -636,21 +659,32 @@ package Hydraulic "Pressure and Volumetric Flow"
 
   package Sources
     extends Modelica.Icons.SourcesPackage;
-    model InputPump
+    model UnlimitedPump
+
+      parameter Boolean useFlowInput = false "=true, if flow input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate Q=0
+        "Volumetric flow if useFlowInput=false"
+        annotation (Dialog(enable=not useFlowInput));
 
       Interfaces.NegativePressureFlow
                            q_out
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow(start=Q) = q if useFlowInput
         "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-66,50},{-26,90}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
+              extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
 
+    protected
+      Physiolibrary.Types.VolumeFlowRate q;
     equation
-      q_out.q = - desiredFlow;
+      if not useFlowInput then
+        q = Q;
+      end if;
+      q_out.q = - q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -692,83 +726,43 @@ package Hydraulic "Pressure and Volumetric Flow"
 </html>",     info="<html>
 <p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
 </html>"));
-    end InputPump;
+    end UnlimitedPump;
 
-    model OutputPump
-
-      Interfaces.PositivePressureFlow
-                           q_in
-                             annotation (Placement(
-            transformation(extent={{-114,-14},{-86,14}})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput desiredFlow
-        "Desired volume flow value"                                                                    annotation (Placement(transformation(
-              extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-    equation
-      q_in.q = desiredFlow;
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-100},{150,-60}},
-              textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague, Czech Republic</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>january 2009</td>
-</tr>
-</table>
-</html>",     info="<html>
-<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
-</html>"));
-    end OutputPump;
 
       model UnlimitedVolume
       "Boundary compartment with defined pressure and any volume in/outflow"
+        import Physiolibrary.Types.*;
 
-        Physiolibrary.Types.RealIO.PressureInput pressure "Pressure"
+        parameter Boolean usePressureInput = false
+        "=true, if pressure input is used"
+          annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+        parameter Pressure P=0 "Hydraulic pressure if usePressureInput=false"
+          annotation (Dialog(enable=not usePressureInput));
+
+        RealIO.PressureInput pressure(start=P)=p if usePressureInput "Pressure"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
               rotation=0)));
+
         Interfaces.PositivePressureFlow
                              y "PressureFlow output connectors"
           annotation (Placement(transformation(extent={{84,-16},{116,16}},
               rotation=0)));
 
-       parameter Physiolibrary.SteadyStates.Interfaces.SimulationType
-                                                     Simulation=Physiolibrary.SteadyStates.Interfaces.SimulationType.NormalInit
+       parameter Physiolibrary.Types.SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
+    protected
+        Pressure p;
       equation
-        y.pressure = pressure;
+        if not usePressureInput then
+          p=P;
+        end if;
 
-        if Simulation==Physiolibrary.SteadyStates.Interfaces.SimulationType.SteadyState then
+        y.pressure = p;
+
+        if Simulation==SimulationType.SteadyState then
           y.q = 0;
         end if;
 

@@ -3435,6 +3435,17 @@ The Real output y is a constant signal:
     //algorithm
     end writeBooleanComparison;
   end Utilities;
+
+  type SimulationType = enumeration(
+      NoInit "Use start values only as a guess of state values",
+      NormalInit "Initialization by start values",
+      ReadInit "Initialization by function Utilities.readReal('state name')",
+      InitSteadyState
+        "Initialization in Steady State (initial derivations are zeros)",
+      SteadyState "Steady State = Derivations are zeros during simulation")
+    "Initialization or Steady state options (to determine model type before simulating)"
+      annotation (Evaluate=true, Diagram(coordinateSystem(preserveAspectRatio=
+           false, extent={{-100,-100},{100,100}}), graphics));
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
