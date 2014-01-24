@@ -957,13 +957,13 @@ package SteadyStates "Dynamic Simulation / Steady State"
         annotation (Placement(transformation(extent={{-34,-44},{-14,-24}})));
       Hydraulic.Sensors.PressureMeasure pressureMeasure
         annotation (Placement(transformation(extent={{-88,30},{-68,50}})));
-      Hydraulic.Components.Pump rightHeart
+      Hydraulic.Components.Pump rightHeart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-66,10},{-46,30}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{-70,44},{-62,52}})));
       Hydraulic.Sensors.PressureMeasure pressureMeasure1
         annotation (Placement(transformation(extent={{-18,28},{2,48}})));
-      Hydraulic.Components.Pump leftHeart
+      Hydraulic.Components.Pump leftHeart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{6,10},{26,30}})));
       Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{2,44},{10,52}})));
@@ -1023,7 +1023,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           thickness=1,
           smooth=Smooth.None));
       connect(rightHeart.q_out,pulmonaryArteries. q_in) annotation (Line(
-          points={{-46,20},{-38,20},{-38,62},{-80,62},{-80,86},{-62,86}},
+          points={{-46,20},{-38,20},{-38,86},{-62,86}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -1033,7 +1033,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           thickness=1,
           smooth=Smooth.None));
       connect(leftHeart.q_out,arteries. q_in) annotation (Line(
-          points={{26,20},{28,20},{28,-34},{14,-34}},
+          points={{26,20},{32,20},{32,-34},{14,-34}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -1112,14 +1112,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{-2,34},{-2,36},{8,36}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(rightStarling.y, rightHeart.desiredFlow) annotation (Line(
-          points={{-56,32},{-56,26}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(leftHeart.desiredFlow, leftStarling.y) annotation (Line(
-          points={{16,26},{16,32}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(rightAtrium.volume, bloodVolume.fragment[1]) annotation (Line(
           points={{-82,10},{-82,-72},{56,-72},{56,-9.6},{68,-9.6}},
           color={0,0,127},
@@ -1130,6 +1122,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(arteries.volume, bloodVolume.fragment[3]) annotation (Line(
           points={{14,-44},{14,-68},{52,-68},{52,-8},{68,-8}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(rightStarling.y, rightHeart.solutionFlow) annotation (Line(
+          points={{-56,32},{-56,24}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(leftStarling.y, leftHeart.solutionFlow) annotation (Line(
+          points={{16,32},{16,24}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1185,7 +1185,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
-
 
     partial model SteadyState
       "Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option."
