@@ -1069,12 +1069,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(cells1.volume, waterConservationLaw1.fragment[1])
                                                            annotation (Line(
-          points={{-28,-76},{-28,-87},{70,-87}},
+          points={{-34,-64},{-34,-87},{70,-87}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(interstitium1.volume, waterConservationLaw1.fragment[2])
                                                                   annotation (Line(
-          points={{44,-76},{44,-85},{70,-85}},
+          points={{38,-64},{38,-85},{70,-85}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1272,9 +1272,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     initial equation
 
-      if Simulation == SimulationType.NormalInit and not isDependent then
+      if Simulation == SimulationType.NormalInit then
         state = state_start;
-      elseif Simulation == SimulationType.ReadInit and not isDependent then
+      elseif Simulation == SimulationType.ReadInit then
         state = Utilities.readReal(stateName, storeUnit);
       elseif Simulation == SimulationType.InitSteadyState and not isDependent then
         der(state)=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
@@ -1361,9 +1361,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     initial equation
       for i in 1:n loop
-      if Simulation == SimulationType.NormalInit and not isDependent[i] then
+      if Simulation == SimulationType.NormalInit then
         state[i] = state_start[i];
-      elseif Simulation == SimulationType.ReadInit and not isDependent[i] then
+      elseif Simulation == SimulationType.ReadInit then
           state[i] = Utilities.readReal(stateName[i], storeUnit[i]);
       elseif Simulation == SimulationType.InitSteadyState and not isDependent[i] then
         der(state[i])=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"

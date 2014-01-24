@@ -22,14 +22,14 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
       Components.OsmoticCell
                   cells1(volume_start(displayUnit="l") = 0.001,
           ImpermeableSolutes=0.285)
-        annotation (Placement(transformation(extent={{-38,-76},{-18,-56}})));
+        annotation (Placement(transformation(extent={{-44,-64},{-24,-44}})));
       Components.OsmoticCell
                   interstitium1(volume_start(displayUnit="l") = 0.001,
           ImpermeableSolutes=0.29)
-        annotation (Placement(transformation(extent={{34,-76},{54,-56}})));
+        annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
       Components.Membrane
                membrane1(cond=1.2501026264094e-10)
-        annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
+        annotation (Placement(transformation(extent={{-8,-64},{12,-44}})));
     equation
       connect(cells.q_in, membrane.q_in) annotation (Line(
           points={{-34,46},{-4,46}},
@@ -42,12 +42,12 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(cells1.q_in, membrane1.q_in) annotation (Line(
-          points={{-28,-66},{-2,-66}},
+          points={{-34,-54},{-8,-54}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
       connect(membrane1.q_out, interstitium1.q_in) annotation (Line(
-          points={{18,-66},{44,-66}},
+          points={{12,-54},{38,-54}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
@@ -58,7 +58,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
               lineColor={135,135,135},
               textString="Cells in hypotonic environment"),
             Text(
-              extent={{-52,-22},{42,-30}},
+              extent={{-60,-22},{34,-30}},
               lineColor={95,95,95},
               textString="Cells in hypertonic environment"),
             Line(
