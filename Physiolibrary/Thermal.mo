@@ -501,7 +501,7 @@ package Thermal "Temperature and Heat Flow"
 
       port.T = t;
 
-      if Simulation==SimulationType.SteadyState then
+      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
         port.Q_flow = 0;
       end if;
 

@@ -366,7 +366,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
       port.o = o;
 
-      if Simulation==SimulationType.SteadyState then
+      if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
         port.q = 0;
       end if;
 

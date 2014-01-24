@@ -728,7 +728,6 @@ package Hydraulic "Pressure and Volumetric Flow"
 </html>"));
     end UnlimitedPump;
 
-
       model UnlimitedVolume
       "Boundary compartment with defined pressure and any volume in/outflow"
         import Physiolibrary.Types.*;
@@ -762,7 +761,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
         y.pressure = p;
 
-        if Simulation==SimulationType.SteadyState then
+        if Simulation==SimulationType.SteadyState or (initial() and Simulation==SimulationType.InitSteadyState) then
           y.q = 0;
         end if;
 
