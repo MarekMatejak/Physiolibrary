@@ -200,7 +200,6 @@ This is discussed in the description of package
                 initialScale=0.04), graphics));
         end Exponentiation;
 
-
     block Min "Pass through the smallest signal"
       extends Modelica.Blocks.Interfaces.MISO;
     equation
@@ -220,7 +219,6 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 </html>
 "));
     end Min;
-
 
         block Log10AsEffect "min( 0, log10(u) )"
 
@@ -374,7 +372,6 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
               lineColor={0,0,255},
                   textString="Homotopy")}));
         end HomotopyStrongComponentBreaker;
-
 
   end Math;
 

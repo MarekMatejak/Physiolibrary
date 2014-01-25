@@ -117,9 +117,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(A.solute, totalC_ConservationLaw.fragment[2]) annotation (Line(
           points={{-58,-8},{-58,-16},{-70,-16},{-70,40},{26,40},{26,25},{34,25}},
-
           color={0,0,127},
           smooth=Smooth.None));
+
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1235,7 +1235,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
       import Physiolibrary.Types.*;
 
-      replaceable package Utilities = Physiolibrary.FilesUtilities    constrainedby
+      replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                                      constrainedby
         Physiolibrary.Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
@@ -1319,7 +1320,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
       import Physiolibrary.Types.*;
 
-      replaceable package Utilities = Physiolibrary.FilesUtilities    constrainedby
+      replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                                      constrainedby
         Physiolibrary.Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
