@@ -93,12 +93,12 @@ package Thermal
         SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
-            origin={-32,2})));
+            origin={-28,2})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 6.5e-06)
-        annotation (Placement(transformation(extent={{-44,32},{-24,52}})));
+        annotation (Placement(transformation(extent={{-48,32},{-28,52}})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
           SpecificHeat(displayUnit="kcal/(kg.K)"))
@@ -127,7 +127,7 @@ package Thermal
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={74,30})));
+            origin={78,60})));
       Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow foodHeatIntake(Q_flow=0)
                                                                      annotation (
           Placement(transformation(
@@ -160,22 +160,22 @@ package Thermal
           thickness=1,
           smooth=Smooth.None));
       connect(skinBloodFlow.q_in, lungsVapor.q_in) annotation (Line(
-          points={{-22,4},{-2,4},{-2,76},{12,76}},
+          points={{-18,4},{-2,4},{-2,76},{12,76}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, skinBloodFlow.q_out) annotation (Line(
-          points={{-58,14},{-32,14},{-32,12}},
+          points={{-58,14},{-28,14},{-28,12}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(skin.q_in, insensibleVapor.q_in) annotation (Line(
-          points={{-58,14},{-58,42},{-44,42}},
+          points={{-58,14},{-58,42},{-48,42}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
       connect(sweating.q_in, insensibleVapor.q_in) annotation (Line(
-          points={{-44,68},{-58,68},{-58,42},{-44,42}},
+          points={{-44,68},{-58,68},{-58,42},{-48,42}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -208,7 +208,7 @@ package Thermal
           smooth=Smooth.None));
       connect(skeletalMuscle.q_in, muscleMetabolicHeat.port)
                                                           annotation (Line(
-          points={{46,52},{58,52},{58,30},{64,30}},
+          points={{46,52},{58,52},{58,60},{68,60}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -219,7 +219,7 @@ package Thermal
           thickness=1,
           smooth=Smooth.None));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
-          points={{-22,4},{-12,4},{-12,6},{-2,6}},
+          points={{-18,4},{-12,4},{-12,6},{-2,6}},
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
