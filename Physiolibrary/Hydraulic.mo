@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Hydraulic "Pressure and Volumetric Flow"
+package Hydraulic "Domain with Pressure and Volumetric Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
@@ -77,11 +77,11 @@ package Hydraulic "Pressure and Volumetric Flow"
         ZeroPressureVolume(displayUnit="l") = 0.0001,
         Compliance(displayUnit="l/mmHg") = 3.7503078792283e-08)
         annotation (Placement(transformation(extent={{-82,8},{-62,28}})));
-      Physiolibrary.Blocks.Factors.Input2Effect rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
+      Physiolibrary.Blocks.Factors.Spline       rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
             0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}})
         "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{-56,22},{-36,42}})));
-      Physiolibrary.Blocks.Factors.Input2Effect leftStarling(data={{-4,0,0},{-1,
+      Physiolibrary.Blocks.Factors.Spline       leftStarling(data={{-4,0,0},{-1,
             0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}})
         "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{16,22},{36,42}})));
@@ -211,7 +211,7 @@ package Hydraulic "Pressure and Volumetric Flow"
   package Components
     extends Modelica.Icons.Package;
 
-    model Conductor
+    model Conductor "Hydraulic resistor, where conductance=1/resistance"
      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
      extends Physiolibrary.Icons.HydraulicResistor;
 
@@ -241,7 +241,7 @@ package Hydraulic "Pressure and Volumetric Flow"
                 false, extent={{-100,-100},{100,100}}), graphics));
     end Conductor;
 
-    model Pump
+    model Pump "Prescribed volumetric flow"
       extends Physiolibrary.Hydraulic.Interfaces.OnePort;
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
@@ -356,7 +356,7 @@ package Hydraulic "Pressure and Volumetric Flow"
     end Reabsorption;
 
     model HydrostaticColumn
-      "Create hydrostatic pressure between connectors in different altitude with specific pressure pump effect"
+      "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
       extends Physiolibrary.Icons.HydrostaticGradient;
       Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
                            q_up "Top site"
@@ -444,7 +444,7 @@ package Hydraulic "Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics));
     end HydrostaticColumn;
 
-    model ElasticVessel "Elastic container"
+    model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
@@ -539,7 +539,7 @@ package Hydraulic "Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics));
     end ElasticVessel;
 
-    model ElasticMembrane "Elastic balloon in closed space"
+    model ElasticMembrane "Interaction between internal and external cavities"
      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
           "ml");
@@ -603,8 +603,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
   package Sensors
     extends Modelica.Icons.SensorsPackage;
-    model FlowMeasure
-      "Convert connector volume flow value to signal flow value"
+    model FlowMeasure "Volumetric flow between ports"
       extends Interfaces.OnePort;
       extends Icons.FlowMeasure;
 
@@ -629,8 +628,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 </html>"));
     end FlowMeasure;
 
-    model PressureMeasure
-      "Convert connector hydraulic pressure value to signal flow value"
+    model PressureMeasure "Hydraulic pressure at port"
       extends Icons.PressureMeasure;
 
       Interfaces.PositivePressureFlow
@@ -656,7 +654,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 
   package Sources
     extends Modelica.Icons.SourcesPackage;
-    model UnlimitedPump
+    model UnlimitedPump "Prescribed flow at port"
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
       Interfaces.NegativePressureFlow
@@ -708,8 +706,7 @@ package Hydraulic "Pressure and Volumetric Flow"
 </html>"));
     end UnlimitedPump;
 
-      model UnlimitedVolume
-      "Boundary compartment with defined pressure and any volume in/outflow"
+      model UnlimitedVolume "Prescribed pressure at port"
         import Physiolibrary.Types.*;
 
         parameter Boolean usePressureInput = false
@@ -795,7 +792,8 @@ package Hydraulic "Pressure and Volumetric Flow"
 
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
-    connector PressureFlow "Hydraulical Pressure-VolumeFlow connector"
+    connector PressureFlow
+      "Hydraulical connector with pressure and volumetric flow"
       Physiolibrary.Types.Pressure pressure "Pressure";
       flow Physiolibrary.Types.VolumeFlowRate q "Volume flow";
       annotation (Documentation(revisions="<html>
@@ -860,7 +858,7 @@ Connector with one flow signal of type Real.
 
     end PositivePressureFlow;
 
-    connector NegativePressureFlow "Hydraulical inflow connector"
+    connector NegativePressureFlow "Hydraulical outflow connector"
       extends Interfaces.PressureFlow;
 
     annotation (

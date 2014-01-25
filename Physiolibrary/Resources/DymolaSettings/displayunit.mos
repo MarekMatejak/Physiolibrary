@@ -53,11 +53,19 @@ defineUnitConversion("mol/s", "mOsm/min", (10^3)*60 );
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (10^6)*133.322387415*60 ); //osmotic permeability
 
 
-
-//Mass action with gases volumes?
-//defineUnitConversion("mol", "ml_gas",  R*T/P );
-//defineUnitConversion("mol", "l_gas",  R*T/P );
-//defineUnitConversion("mol/s", "ml_gas/min", (R*T/P)*60 );
+//Gases
+defineUnitConversion("mol", "litre_STP",  22.71095322615 );
+defineUnitConversion("mol", "ml_STP",  22710.95322615 );
+defineUnitConversion("mol/s", "l_STP/min", 1362.657193569 );
+defineUnitConversion("mol/s", "ml_STP/min", 1362657.193569 );
+defineUnitConversion("mol", "litre_SATP",  24.78956875115 );
+defineUnitConversion("mol", "ml_SATP",  24789.56875115 );
+defineUnitConversion("mol/s", "l_SATP/min", 1487.374125069 );
+defineUnitConversion("mol/s", "ml_SATP/min", 1487374.125069 );
+defineUnitConversion("mol", "litre_NIST",  24.05511536753 );
+defineUnitConversion("mol", "ml_NIST",  24055.11536753 );
+defineUnitConversion("mol/s", "l_NIST/min", 1443.3069220518 );
+defineUnitConversion("mol/s", "ml_NIST/min", 1443306.9220518 );
 
 //Chemical equivalents
 defineUnitConversion("C", "Eq", 1/(9.64853399*10^4) );
@@ -111,9 +119,11 @@ defineUnitConversion("Pa", "bar", 1e-5);
 defineUnitConversion("Pa", "mmHg", 1/133.322387415);
 defineUnitConversion("Pa", "cmH2O", 1/98.0665);
 defineUnitConversion("Pa", "torr", 760/101325);
-defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60);
+defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //conductance
 defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);
-defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));
+defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //resistance
+defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
+defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //compliance
 defineUnitConversion("m3/Pa", "l/mmHg", (1e+3)*(133.322387415));
 defineUnitConversion("Pa.s2/m3", "mmHg.min2/ml", (1/133.322387415)*(1/(60^2))/(1e+6));
 

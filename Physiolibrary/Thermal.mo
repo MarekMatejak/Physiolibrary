@@ -1,5 +1,6 @@
 within Physiolibrary;
-package Thermal "Temperature and Heat Flow"
+package Thermal
+  "Domain with Temperature and Heat Flow - extension of Modelica.Thermal.HeatTransfer"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
@@ -253,7 +254,7 @@ package Thermal "Temperature and Heat Flow"
   package Components
     extends Modelica.Icons.Package;
 
-    model Conductor "Heat resistor with input heat conductance"
+    model Conductor "Heat resistor"
      extends Interfaces.OnePort;
      extends Icons.Resistor;
 
@@ -326,7 +327,8 @@ package Thermal "Temperature and Heat Flow"
                 -100},{100,100}}), graphics));
     end Stream;
 
-    model HeatOutstream "Heat outflow through outflowing vaporized mass"
+    model HeatOutstream
+      "One-directional outflow of heated mass (with effect of vaporization)"
       extends Interfaces.ConditionalMassFlow;
 
       Interfaces.PositiveHeatFlow
@@ -367,12 +369,12 @@ package Thermal "Temperature and Heat Flow"
     end HeatOutstream;
 
     model IdealRadiator
-      "Mass flow radiator, which outflowed temperature is the same as the ambient temperature"
+      "Closed circiut radiator, where outflowed = ambient temperature"
       extends Interfaces.ConditionalMassFlow;
       extends Icons.Radiator;
 
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
-        "Of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
+        "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
 
       Physiolibrary.Thermal.Interfaces.PositiveHeatFlow
                        q_in annotation (Placement(
@@ -405,8 +407,7 @@ package Thermal "Temperature and Heat Flow"
                 -100},{100,100}}), graphics));
     end IdealRadiator;
 
-    model HeatAccumulation
-      "Accumulating of heat to substance mass with specific heat constant"
+    model HeatAccumulation "Accumulating of heat to substance"
       extends Icons.HeatAccumulation;
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=relativeHeat_start, storeUnit=
@@ -474,7 +475,7 @@ package Thermal "Temperature and Heat Flow"
 
   package Sources
     extends Modelica.Icons.SourcesPackage;
-    model UnlimitedHeat
+    model UnlimitedHeat "Prescribed temperature"
       //extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;
       import Physiolibrary.Types.*;
 
@@ -610,7 +611,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 
     end NegativeHeatFlow;
 
-    partial model OnePort "Heat one port"
+    partial model OnePort "Heat OnePort"
 
       Interfaces.PositiveHeatFlow
                        q_in annotation (Placement(

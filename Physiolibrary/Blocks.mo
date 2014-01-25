@@ -3,7 +3,88 @@ package Blocks "Base Signal Blocks Library"
   extends Modelica.Icons.Package;
   package Math "Modelica.Math extension"
     extends Modelica.Icons.Package;
-        block Add "Output the addition of a value with the input signal"
+    model Integrator "Integrator with support of steady state calculation."
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+                                         state_start=y_start);
+
+      parameter Real k=1 "Integrator gain";
+
+      parameter Real y_start=0 "Initial or guess value of output (= state)"
+        annotation (Dialog(group="Initialization"));
+      extends Modelica.Blocks.Interfaces.SISO;
+
+    equation
+      state = y;  //der(y) = k*u
+      change = k*u;
+
+      annotation (defaultComponentName="int",
+        Documentation(info="<html>
+<p>
+This blocks computes output <b>y</b> (element-wise) as
+<i>integral</i> of the input <b>u</b> multiplied with
+the gain <i>k</i>:
+</p>
+<pre>
+         k
+     y = - u
+         s
+</pre>
+
+<p>
+It might be difficult to initialize the integrator in steady state.
+This is discussed in the description of package
+<a href=\"Modelica://Modelica.Blocks.Continuous#info\">Continuous</a>.
+</p>
+
+</html>
+"),     Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={
+            Line(points={{-80,78},{-80,-90}}, color={192,192,192}),
+            Polygon(
+              points={{-80,90},{-88,68},{-72,68},{-80,90}},
+              lineColor={192,192,192},
+              fillColor={192,192,192},
+              fillPattern=FillPattern.Solid),
+            Line(points={{-90,-80},{82,-80}}, color={192,192,192}),
+            Polygon(
+              points={{90,-80},{68,-72},{68,-88},{90,-80}},
+              lineColor={192,192,192},
+              fillColor={192,192,192},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{0,-10},{60,-70}},
+              lineColor={192,192,192},
+              textString="I"),
+            Text(
+              extent={{-150,-150},{150,-110}},
+              lineColor={0,0,0},
+              textString="k=%k"),
+            Line(points={{-80,-80},{80,80}}, color={0,0,127}),
+            Text(
+              extent={{-150,106},{150,146}},
+              lineColor={0,0,0},
+              textString="%stateName")}),
+        Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={
+            Rectangle(extent={{-60,60},{60,-60}}, lineColor={0,0,255}),
+            Line(points={{-100,0},{-60,0}}, color={0,0,255}),
+            Line(points={{60,0},{100,0}}, color={0,0,255}),
+            Text(
+              extent={{-36,60},{32,2}},
+              lineColor={0,0,0},
+              textString="k"),
+            Text(
+              extent={{-32,0},{36,-58}},
+              lineColor={0,0,0},
+              textString="s"),
+            Line(points={{-46,0},{46,0}}, color={0,0,0})}));
+    end Integrator;
+
+        block Add "u + parameter"
 
           parameter Real k(start=1) "value added to input signal";
     public
@@ -16,7 +97,7 @@ package Blocks "Base Signal Blocks Library"
 
         equation
           y = k+u;
-          annotation (
+          annotation (defaultComponentName="add",
             Documentation(info="<html>
 <p>This block computes output <i>y</i> as <i>sum</i> of offset <i>k</i> with the input <i>u</i>: </p>
 <p><code>    y = k + u;</code> </p>
@@ -51,11 +132,11 @@ package Blocks "Base Signal Blocks Library"
               textString="k")}));
         end Add;
 
-        block Reciprocal "Output the value y=1/u of the input u"
+        block Reciprocal "1 / u"
           extends Modelica.Blocks.Interfaces.SISO;
         equation
           y = 1/u;
-          annotation (defaultComponentName="reciprocal",
+          annotation (defaultComponentName="rec",
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -73,47 +154,31 @@ package Blocks "Base Signal Blocks Library"
 </html>"));
         end Reciprocal;
 
-        block Pow "the power of parameter"
-          extends Modelica.Blocks.Interfaces.SISO;
-          parameter Real power_base=10 "base";
-        equation
-          y = power_base^u;
-           annotation (defaultComponentName="pow1",
-            Documentation(info="<html>
-<p>y=power_base^u</p>
-</html>"),  Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-                initialScale=0.04), graphics={Text(
-              extent={{-100,-40},{100,40}},
-              lineColor={0,0,0},
-              textString="%power_base^u")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-                initialScale=0.04), graphics={Rectangle(
-              extent={{-100,-100},{100,100}},
-              lineColor={0,0,255},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-100,-46},{100,52}},
-              lineColor={0,0,255},
-              textString="Pow")}));
-        end Pow;
+        block Exponentiation "b ^ u"
 
-        block Pow2 "the power"
+          parameter Boolean useBaseInput = false
+        "=true, if exponential base input is used instead of parameter Base"
+          annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+          parameter Real Base=10 "exponential base if useBaseInput=false"
+            annotation (Dialog(enable=not useBaseInput));
 
           Modelica.Blocks.Interfaces.RealOutput y
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-          Modelica.Blocks.Interfaces.RealInput base annotation (Placement(
+          Modelica.Blocks.Interfaces.RealInput base(start=Base) = b if useBaseInput annotation (Placement(
                 transformation(extent={{-120,40},{-80,80}})));
           Modelica.Blocks.Interfaces.RealInput exponent annotation (Placement(
                 transformation(extent={{-120,-80},{-80,-40}})));
+
+    protected
+          Real b "Current exponential base";
         equation
-          y = base^exponent;
-           annotation (defaultComponentName="pow1",
+          if not useBaseInput then
+            b = Base;
+          end if;
+
+          y = b^exponent;
+           annotation (defaultComponentName="pow",
             Documentation(info="<html>
 <p>y = base^exponent</p>
 </html>"),  Icon(coordinateSystem(
@@ -127,19 +192,20 @@ package Blocks "Base Signal Blocks Library"
               fillPattern=FillPattern.Solid), Text(
               extent={{-100,-40},{100,40}},
               lineColor={0,0,0},
-                  textString="a^b")}),
+                  textString="b^u")}),
             Diagram(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
             grid={2,2},
                 initialScale=0.04), graphics));
-        end Pow2;
+        end Exponentiation;
+
 
     block Min "Pass through the smallest signal"
       extends Modelica.Blocks.Interfaces.MISO;
     equation
        y = min(u);
-      annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+      annotation (defaultComponentName="min", Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics={Text(
               extent={{-90,36},{90,-36}},
               lineColor={160,160,164},
@@ -155,76 +221,13 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 "));
     end Min;
 
-        block MultiProduct
-      "Output the product of the elements of the input vector"
-          extends Modelica.Blocks.Interfaces.MISO;
-        equation
-          y = product(u);
-          annotation (defaultComponentName="product1",
-            Documentation(info="
-<HTML>
-<p>
-This blocks computes output <b>y</b> as
-<i>product</i> of the elements of the input signal vector
-<b>u</b>:
-</p>
-<pre>
-    <b>y</b> = <b>u</b>[1] * <b>u</b>[2] * ...;
-</pre>
-<p>
-Example:
-</p>
-<pre>
-     parameter:   nin = 3;
 
-  results in the following equations:
-
-     y = u[1] * u[2] * u[3];
-</pre>
-
-</HTML>
-"),         Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={
-            Text(
-              extent={{-150,150},{150,110}},
-              textString="%name",
-              lineColor={0,0,255}),
-            Line(
-              points={{56,38},{-48,38},{-10,38},{-10,-42},{-10,-42}},
-              color={0,0,0},
-              thickness=0.25),
-            Line(
-              points={{16,38},{16,-44}},
-              color={0,0,0},
-              smooth=Smooth.None)}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={
-            Rectangle(
-              extent={{-100,-100},{100,100}},
-              lineColor={0,0,255},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Line(
-              points={{26,42},{-34,42},{-10,42},{-10,-38},{-10,-38}},
-              color={0,0,0},
-              thickness=0.25),
-            Line(
-              points={{0,42},{0,-38}},
-              color={0,0,0},
-              smooth=Smooth.None)}));
-        end MultiProduct;
-
-        block Log10AsEffect
-      "Output the base 10 logarithm of the input > 1, or 0 otherwise"
+        block Log10AsEffect "min( 0, log10(u) )"
 
           extends Modelica.Blocks.Interfaces.SISO;
         equation
           y = if u>1 then Modelica.Math.log10(u) else 0;
-          annotation (
+          annotation (defaultComponentName="logEffect",
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -301,16 +304,50 @@ Example:
 </html>"));
         end Log10AsEffect;
 
+        block Parts "Divide the input value by weights"
+          extends Modelica.Blocks.Interfaces.SIMO;
+          parameter Real w[nout]=ones(nout) "Optional: weight coefficients";
+    protected
+         Real coef;
+         Real weight[nout];
+        equation
+          ones(nout)*weight = 1;
+          for i in 1:nout loop
+              weight[i] = w[i] * coef;
+              y[i] = u * weight[i];
+          end for;
+          annotation (defaultComponentName="parts",
+            Documentation(info="<html>
+<p>This blocks divide input value u to output array y by weights. The sum of output values is equal to input value <b>u</b>: </p>
+<p><code>    u = (w[1]*y[1] + w[2]*y[2] + ... + w[n]*y[n]) / (w[1] + w[2] + ... + w[n]);</code></p>
+<p>Example: </p>
+<pre>     parameter:   nin = 3;  w=ones(3);
+ 
+  results in the following equations:
+ 
+<p><code>     y[1]=u/3,  y[2]=u/3,  y[3]=u/3;</code> </p>
+</html>"),  Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Text(
+              extent={{-100,-100},{100,100}},
+              lineColor={0,0,0},
+              textString="Parts")}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics));
+        end Parts;
+
         block HomotopyStrongComponentBreaker
-      "break the strong component in normalized signal with independent constant default value"
+      "Break the strong component in normalized signal with independent default constant value"
           extends Modelica.Blocks.Interfaces.SISO;
           parameter Real defaultValue=1;
-         parameter Real defaultSlope=0;
+          parameter Real defaultSlope=0;
         equation
           y = homotopy(u,defaultValue + defaultSlope*(u-defaultValue));
-        //equation
-        //  y = homotopy(u,defaultValue);
-           annotation (defaultComponentName="homotopyOperator",
+          //y = homotopy(u,defaultValue);
+           annotation (defaultComponentName="homotopy",
             Documentation(info="<html>
 <p>This blocks should solve the initial strong component problem. In the non-linear-strong-component-cycled place, where the default or mean value of variable is known.</p>
 <p>For example the regulation loop L driven by loop-dependent effect E with default value 1:</p>
@@ -338,126 +375,12 @@ Example:
                   textString="Homotopy")}));
         end HomotopyStrongComponentBreaker;
 
-    model Integrator "Integrator with support of equilibrium calculation."
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
-                                         state_start=y_start);
 
-      parameter Real k=1 "Integrator gain";
-
-      parameter Real y_start=0 "Initial or guess value of output (= state)"
-        annotation (Dialog(group="Initialization"));
-      extends Modelica.Blocks.Interfaces.SISO;
-
-    equation
-      state = y;  //der(y) = k*u
-      change = k*u;
-
-      annotation (
-        Documentation(info="<html>
-<p>
-This blocks computes output <b>y</b> (element-wise) as
-<i>integral</i> of the input <b>u</b> multiplied with
-the gain <i>k</i>:
-</p>
-<pre>
-         k
-     y = - u
-         s
-</pre>
-
-<p>
-It might be difficult to initialize the integrator in steady state.
-This is discussed in the description of package
-<a href=\"Modelica://Modelica.Blocks.Continuous#info\">Continuous</a>.
-</p>
-
-</html>
-"),     Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={
-            Line(points={{-80,78},{-80,-90}}, color={192,192,192}),
-            Polygon(
-              points={{-80,90},{-88,68},{-72,68},{-80,90}},
-              lineColor={192,192,192},
-              fillColor={192,192,192},
-              fillPattern=FillPattern.Solid),
-            Line(points={{-90,-80},{82,-80}}, color={192,192,192}),
-            Polygon(
-              points={{90,-80},{68,-72},{68,-88},{90,-80}},
-              lineColor={192,192,192},
-              fillColor={192,192,192},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{0,-10},{60,-70}},
-              lineColor={192,192,192},
-              textString="I"),
-            Text(
-              extent={{-150,-150},{150,-110}},
-              lineColor={0,0,0},
-              textString="k=%k"),
-            Line(points={{-80,-80},{80,80}}, color={0,0,127}),
-            Text(
-              extent={{-150,106},{150,146}},
-              lineColor={0,0,0},
-              textString="%stateName")}),
-        Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={
-            Rectangle(extent={{-60,60},{60,-60}}, lineColor={0,0,255}),
-            Line(points={{-100,0},{-60,0}}, color={0,0,255}),
-            Line(points={{60,0},{100,0}}, color={0,0,255}),
-            Text(
-              extent={{-36,60},{32,2}},
-              lineColor={0,0,0},
-              textString="k"),
-            Text(
-              extent={{-32,0},{36,-58}},
-              lineColor={0,0,0},
-              textString="s"),
-            Line(points={{-46,0},{46,0}}, color={0,0,0})}));
-    end Integrator;
-
-        block Parts "Divide the input value by weights"
-          extends Modelica.Blocks.Interfaces.SIMO;
-          parameter Real w[nout]=ones(nout) "Optional: weight coefficients";
-    protected
-         Real coef;
-         Real weight[nout];
-        equation
-          ones(nout)*weight = 1;
-          for i in 1:nout loop
-              weight[i] = w[i] * coef;
-              y[i] = u * weight[i];
-          end for;
-          annotation (defaultComponentName="parts1",
-            Documentation(info="<html>
-<p>This blocks divide input value u to output array y by weights. The sum of output values is equal to input value <b>u</b>: </p>
-<p><code>    u = (w[1]*y[1] + w[2]*y[2] + ... + w[n]*y[n]) / (w[1] + w[2] + ... + w[n]);</code></p>
-<p>Example: </p>
-<pre>     parameter:   nin = 3;  w=ones(3);
- 
-  results in the following equations:
- 
-<p><code>     y[1]=u/3,  y[2]=u/3,  y[3]=u/3;</code> </p>
-</html>"),  Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Text(
-              extent={{-100,-100},{100,100}},
-              lineColor={0,0,0},
-              textString="Parts")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics));
-        end Parts;
   end Math;
 
-  package Curves "Empirical Dependence of Two Variables"
+  package Interpolation "Empirical Dependence of Two Variables"
     extends Modelica.Icons.Package;
-   function Spline
+   function Spline "Cubic spline interpolation function"
 
         input Real[:] x; //souradnice x souradnice uzlovych bodu
         input Real[:,4] a; //parametry kubiky
@@ -512,7 +435,7 @@ This is discussed in the description of package
 </html>"));
    end Spline;
 
-   function SplineCoefficients
+   function SplineCoefficients "Cubic spline interpolation coefficients"
 
         input Real[:] x;
         input Real[:] y;
@@ -602,11 +525,11 @@ This is discussed in the description of package
               smooth=Smooth.Bezier,
               arrow={Arrow.None,Arrow.Filled})}));
         end Curve;
-  end Curves;
+  end Interpolation;
 
-  package Factors "Multiplication Effect Types"
+  package Factors "Multiplication Effects"
     extends Modelica.Icons.Package;
-    model Effect "normalization and multiplication"
+    model Normalization "effect = u/NormalValue"
      extends Icons.BaseFactorIcon;
 
      parameter Real NormalValue=1
@@ -615,38 +538,10 @@ This is discussed in the description of package
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
-     Modelica.Blocks.Math.Product product  annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={0,-32})));
-      Real effect;
-      Modelica.Blocks.Math.Division division
-        annotation (Placement(transformation(extent={{-44,-20},{-24,0}})));
-      Modelica.Blocks.Sources.Constant      Constant2(k=NormalValue)
-                                               annotation (Placement(
-            transformation(extent={{-82,-46},{-62,-26}})));
+      Physiolibrary.Types.Fraction effect;
     equation
-      effect = u;
-      connect(yBase, product.u1) annotation (Line(
-          points={{6,80},{6,30},{6,-20},{6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Constant2.y, division.u2) annotation (Line(
-          points={{-61,-36},{-56,-36},{-56,-16},{-46,-16}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(u, division.u1) annotation (Line(
-          points={{-80,0},{-64,0},{-64,-4},{-46,-4}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(division.y, product.u2) annotation (Line(
-          points={{-23,-10},{-6,-10},{-6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
+      effect = u/NormalValue;
+      y=effect*yBase;
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -656,107 +551,45 @@ This is discussed in the description of package
 <p><h4>y = yBase * u</h4></p>
 </html>"),
         Icon(graphics));
-    end Effect;
+    end Normalization;
 
-    model DamagedFraction
+    model DamagedFraction "effect = 1 - DamagedAreaFraction"
      extends Icons.BaseFactorIcon;
 
-     parameter Real DamagedArea_percent = 0;
+     parameter Physiolibrary.Types.Fraction DamagedAreaFraction = 0;
 
-      Modelica.Blocks.Sources.Constant      Constant0(k=DamagedArea_percent)
-        annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
-      Modelica.Blocks.Sources.Constant      Constant1(k=1)
-        annotation (Placement(transformation(extent={{-60,6},{-40,26}})));
-      Modelica.Blocks.Sources.Constant      Constant2(k=100)
-                                               annotation (Placement(
-            transformation(extent={{-94,-38},{-74,-18}})));
-      Modelica.Blocks.Math.Division division
-        annotation (Placement(transformation(extent={{-60,-24},{-40,-4}})));
-      Modelica.Blocks.Math.Feedback feedback
-        annotation (Placement(transformation(extent={{-32,6},{-12,26}})));
-      Modelica.Blocks.Math.Product product annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={0,-30})));
+      Physiolibrary.Types.Fraction effect;
     equation
-
-      connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-41},{-2.02067e-015,-52.5},{0,-52.5},{0,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(product.u1, yBase) annotation (Line(
-          points={{6,-18},{6,-18},{6,80}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(feedback.y, product.u2) annotation (Line(
-          points={{-13,16},{-6,16},{-6,-18}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Constant0.y, division.u1) annotation (Line(
-          points={{-73,-2},{-68,-2},{-68,-8},{-62,-8}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Constant2.y, division.u2) annotation (Line(
-          points={{-73,-28},{-68,-28},{-68,-20},{-62,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Constant1.y, feedback.u1) annotation (Line(
-          points={{-39,16},{-30,16}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(division.y, feedback.u2) annotation (Line(
-          points={{-39,-14},{-22,-14},{-22,8}},
-          color={0,0,127},
-          smooth=Smooth.None));
+      effect = 1-DamagedAreaFraction;
+      y=yBase*effect;
     end DamagedFraction;
 
-    model Input2Effect
-      "calculate multiplication factor from function defined by curve"
+    model Spline "effect = spline(data,u)"
      extends Icons.BaseFactorIcon4;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
      parameter Real[:,3] data;
-      Curves.Curve curve(
-      x=data[:, 1],
-      y=data[:, 2],
-      slope=data[:, 3])
-        annotation (Placement(transformation(extent={{-46,-10},{-26,10}})));
-      Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={0,-32})));
 
-      Real effect;
+      Physiolibrary.Types.Fraction effect;
+
+    protected
+        parameter Real a[:,:] = Interpolation.SplineCoefficients(
+                                                          data[:, 1],data[:, 2],data[:, 3]);
+
     equation
-      effect = curve.val;
-      connect(curve.u, u) annotation (Line(
-          points={{-46,0},{-80,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(yBase, product.u1) annotation (Line(
-          points={{6,80},{6,30},{6,-20},{6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(curve.val, product.u2) annotation (Line(
-          points={{-26,0},{-6,0},{-6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
-          color={0,0,127},
-          smooth=Smooth.None));
+      effect = Interpolation.Spline(
+                             data[:, 1],a,u);
+      y=effect*yBase;
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end Input2Effect;
+    end Spline;
 
-    model Input2EffectDelayed
-      "adapt the value of multiplication coefficient calculated from curve"
+    model SplineLag "Adapt the effect after interpolation"
      extends Icons.BaseFactorIcon3;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
@@ -764,7 +597,8 @@ This is discussed in the description of package
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
      parameter Real[:,3] data;
-      Curves.Curve curve(
+      Interpolation.Curve
+                   curve(
       x=data[:, 1],
       y=data[:, 2],
       slope=data[:, 3])
@@ -784,19 +618,20 @@ This is discussed in the description of package
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-26,44})));
-      Real effect;
+      Physiolibrary.Types.Fraction effect;
     equation
+      //der(effect) = (ln(2)/HalfTime)*(spline(data,u)-effect)
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
           points={{-68,68},{-83,68},{-83,0},{-80,0}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
-          points={{6,80},{6,30},{6,-20},{6,-20}},
+          points={{0,20},{0,30},{0,-20},{6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
+          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-40}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(curve.val, feedback.u1) annotation (Line(
@@ -804,7 +639,7 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
-          points={{-26,35},{-26,29.5},{-26,24},{-26,24}},
+          points={{-26,35},{-26,24}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(integrator.y, feedback.u2) annotation (Line(
@@ -820,10 +655,9 @@ This is discussed in the description of package
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end Input2EffectDelayed;
+    end SplineLag;
 
-    model DelayedInput2Effect
-      "adapt the signal, from which is by curve multiplication coefficient calculated"
+    model LagSpline "Adapt the input signal before interpolation"
      extends Icons.BaseFactorIcon5;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
@@ -832,7 +666,8 @@ This is discussed in the description of package
                                                                  //40*60/Modelica.Math.log(2);
      parameter Real initialValue = 1; //40;
      parameter Real[:,3] data;
-      Curves.Curve curve(
+      Interpolation.Curve
+                   curve(
       x=data[:, 1],
       y=data[:, 2],
       slope=data[:, 3])
@@ -852,15 +687,15 @@ This is discussed in the description of package
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-50,80})));
-      Real effect;
+      Physiolibrary.Types.Fraction effect;
     equation
       effect = curve.val;
       connect(yBase, product.u1) annotation (Line(
-          points={{6,80},{6,30},{6,-20},{6,-20}},
+          points={{0,20},{0,30},{0,-20},{6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
+          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-40}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
@@ -892,16 +727,16 @@ This is discussed in the description of package
 <p>The mathematical background:</p>
 <p>d&apos;(t) = k*(u(t) - d(t))       =&GT;       The solution of d(t) in special case, if u(t) is constant at each time t:  d(t)=u+(d(0)-u)*e^(-k*t),  where the definition of HalfTime is  d(HalfTime) = d(0) + (d(0)-u)/2.</p>
 </html>"));
-    end DelayedInput2Effect;
+    end LagSpline;
 
-    model Input2EffectDelayedOrZero
-      "combination of SplineDelayByDay and ZeroIfFalse"
+    model SplineLagOrZero "LagSpline if not Failed"
      extends Icons.BaseFactorIcon2;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
-      Curves.Curve curve(
+      Interpolation.Curve
+                   curve(
       x=data[:, 1],
       y=data[:, 2],
       slope=data[:, 3])
@@ -928,7 +763,7 @@ This is discussed in the description of package
                                             Failed
                           annotation (Placement(transformation(extent={{-120,20},{-80,
                 60}})));
-      Real effect;
+       Physiolibrary.Types.Fraction effect;
     equation
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
@@ -936,11 +771,11 @@ This is discussed in the description of package
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
-          points={{6,100},{6,31},{6,-38},{6,-38}},
+          points={{0,60},{0,31},{0,-38},{6,-38}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-61},{-2.02067e-015,-55.5},{0,-55.5},{0,-80}},
+          points={{-2.02067e-015,-61},{-2.02067e-015,-55.5},{0,-55.5},{0,-60}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
@@ -978,7 +813,7 @@ This is discussed in the description of package
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end Input2EffectDelayedOrZero;
+    end SplineLagOrZero;
   end Factors;
 
   annotation (Documentation(revisions="<html>

@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Osmotic "Osmorarity and Solvent Volumetric Flow"
+package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Osmotic flow components"
@@ -130,7 +130,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end OsmoticCell;
 
-    model Membrane "Solvent diffusion on semipermeable membrane"
+    model Membrane "Solvent diffusion through semipermeable membrane"
      extends Interfaces.OnePort;
      extends Icons.Membrane; //Icons.Resistor;
 
@@ -200,7 +200,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end Membrane;
 
-    model SolventFlux "Prescripted flow of solvent"
+    model SolventFlux "Prescripted solvent flow"
       extends Interfaces.OnePort;
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
@@ -263,7 +263,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
 
   package Sources
     extends Modelica.Icons.SourcesPackage;
-    model SolventInflux "Permeable solution inflow to the system"
+    model SolventInflux "Prescribed solvent inflow"
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
       Interfaces.NegativeOsmoticFlow
@@ -299,7 +299,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
                 -100},{100,100}}), graphics));
     end SolventInflux;
 
-    model SolventOutflux "Permeable solution outflow from the system"
+    model SolventOutflux "Prescribed solvent outflow"
      extends Chemical.Interfaces.ConditionalSolutionFlow;
       Interfaces.PositiveOsmoticFlow
                           q_in
@@ -333,8 +333,7 @@ package Osmotic "Osmorarity and Solvent Volumetric Flow"
                 -100},{100,100}}), graphics));
     end SolventOutflux;
 
-    model UnlimitedSolution
-      //extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;
+    model UnlimitedSolution "Prescribed osmolarity"
       import Physiolibrary.Types.*;
 
       parameter Boolean useOsmolarityInput = false

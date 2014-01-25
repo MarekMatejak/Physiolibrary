@@ -60,64 +60,64 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       Chemical.Components.Substance A(Simulation=SimulationType.SteadyState,
           solute_start=0.9)
-        annotation (Placement(transformation(extent={{-44,-10},{-24,10}})));
+        annotation (Placement(transformation(extent={{-68,-8},{-48,12}})));
       Chemical.Components.ChemicalReaction reaction(K=1, nP=2)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        annotation (Placement(transformation(extent={{-34,-8},{-14,12}})));
       Chemical.Components.Substance B(
         Simulation=SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
-        annotation (Placement(transformation(extent={{26,-12},{46,8}})));
+        annotation (Placement(transformation(extent={{2,-10},{22,10}})));
 
       Chemical.Components.Substance C(
         Simulation=SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
-        annotation (Placement(transformation(extent={{26,16},{46,36}})));
+        annotation (Placement(transformation(extent={{2,18},{22,38}})));
 
-      Components.MolarConservationLaw B_ConservationLaw(
+      Components.MolarConservationLaw totalB_ConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
         Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{52,-66},{72,-46}})));
-      Components.MolarConservationLaw C_ConservationLaw(
+        annotation (Placement(transformation(extent={{34,-10},{54,10}})));
+      Components.MolarConservationLaw totalC_ConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
         Simulation=SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{78,-34},{98,-14}})));
+        annotation (Placement(transformation(extent={{34,18},{54,38}})));
     equation
       connect(A.q_out,reaction. substrates[1]) annotation (Line(
-          points={{-34,0},{-10,0}},
+          points={{-58,2},{-34,2}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[1],B. q_out) annotation (Line(
-          points={{10,-0.5},{20,-0.5},{20,-2},{36,-2}},
+          points={{-14,1.5},{-4,1.5},{-4,0},{12,0}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
       connect(reaction.products[2],C. q_out) annotation (Line(
-          points={{10,0.5},{20,0.5},{20,26},{36,26}},
+          points={{-14,2.5},{-4,2.5},{-4,28},{12,28}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(A.solute, B_ConservationLaw.fragment[1])                annotation (
+      connect(A.solute, totalB_ConservationLaw.fragment[1])           annotation (
           Line(
-          points={{-34,-10},{-34,-61},{52,-61}},
+          points={{-58,-8},{-58,-16},{26,-16},{26,-5},{34,-5}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(B.solute, B_ConservationLaw.fragment[2])                annotation (
+      connect(B.solute, totalB_ConservationLaw.fragment[2])           annotation (
           Line(
-          points={{36,-12},{36,-59},{52,-59}},
+          points={{12,-10},{12,-14},{24,-14},{24,-3},{34,-3}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(A.solute, C_ConservationLaw.fragment[1])                annotation (
-          Line(
-          points={{-34,-10},{-34,-29},{78,-29}},
+      connect(C.solute, totalC_ConservationLaw.fragment[1]) annotation (Line(
+          points={{12,18},{12,14},{26,14},{26,23},{34,23}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(C.solute, C_ConservationLaw.fragment[2]) annotation (Line(
-          points={{36,16},{36,10},{62,10},{62,-27},{78,-27}},
+      connect(A.solute, totalC_ConservationLaw.fragment[2]) annotation (Line(
+          points={{-58,-8},{-58,-16},{-70,-16},{-70,40},{26,40},{26,25},{34,25}},
+
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Documentation(revisions="<html>
@@ -1074,7 +1074,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(interstitium1.volume, waterConservationLaw1.fragment[2])
                                                                   annotation (Line(
-          points={{38,-64},{38,-85},{70,-85}},
+          points={{44,-64},{44,-85},{70,-85}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1315,7 +1315,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     end SteadyState;
 
     partial model SteadyStates
-      "Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option."
+      "Abstract class for any dynamic states calculation (for any derivations), which is driven by SimulationType option."
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
       import Physiolibrary.Types.*;
 

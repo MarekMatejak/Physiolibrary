@@ -1,5 +1,5 @@
 within Physiolibrary;
-package Chemical "Molar Concentration and Molar Flow"
+package Chemical "Domain with Molar Concentration and Molar Flow"
  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
@@ -9,12 +9,13 @@ package Chemical "Molar Concentration and Molar Flow"
 
        extends Modelica.Icons.Example;
 
-      Components.Substance         A(solute_start=0.9)
+       import Physiolibrary.Chemical.Components.*;
+
+      Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      Components.ChemicalReaction
-                                reaction(K=1)
+      ChemicalReaction          reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Components.Substance         B(solute_start=0.1)
+      Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-8},{62,12}})));
     equation
 
@@ -38,16 +39,15 @@ package Chemical "Molar Concentration and Molar Flow"
     model SimpleReaction2
        extends Modelica.Icons.Example;
 
-      import Physiolibrary.Chemical;
+      import Physiolibrary.Chemical.Components.*;
 
-      Components.Substance         A(solute_start=0.9)
+      Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
-      Components.ChemicalReaction
-                                reaction(K=1, nP=2)
+      ChemicalReaction          reaction(K=1, nP=2)
         annotation (Placement(transformation(extent={{-6,-8},{14,12}})));
-      Components.Substance         B(solute_start=0.1)
+      Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,-8},{56,12}})));
-      Components.Substance         C(solute_start=0.1)
+      Substance         C(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,16},{56,36}})));
     equation
 
@@ -832,7 +832,7 @@ package Chemical "Molar Concentration and Molar Flow"
                 100}}), graphics));
     end Diffusion;
 
-    model Substance "Concentration accumulation in solvent "
+    model Substance "Substance accumulation in solvent"
       extends Physiolibrary.Icons.Substance;
       extends Chemical.Interfaces.ConditionalSolventVolume;
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
@@ -898,9 +898,15 @@ package Chemical "Molar Concentration and Molar Flow"
       parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
         "Stoichiometric reaction coefficient for substrates"
         annotation (Dialog(group="Substrates", tab="Reaction type"));
+      parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
+        "Activity coefficients of substrates"
+        annotation (Dialog(group="Substrates", tab="Reaction type"));
 
       parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
         "Stoichiometric reaction coefficients for products"
+        annotation (Dialog(group="Products", tab="Reaction type"));
+       parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
+        "Activity coefficients of products"
         annotation (Dialog(group="Products", tab="Reaction type"));
 
      extends Chemical.Interfaces.ConditionalHeatPort;
@@ -946,7 +952,7 @@ package Chemical "Molar Concentration and Molar Flow"
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
 
-      rr = kf*volume*(product(substrates.conc.^s) - (1/KaT)*product(products.conc.^p));  //Elementary first-order rate kinetics - the main equation
+      rr = kf*volume*(product((as.*substrates.conc).^s) - (1/KaT)*product((ap.*products.conc).^p));  //Elementary first-order rate kinetics - the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -1012,8 +1018,8 @@ It works in two modes:
                 -100},{100,100}}), graphics));
     end ChemicalReaction;
 
-    model GasSolubility
-      "Henry's law about the solubility of a gas in a liquid. q_in is dissolved in liquid and q_out is in gaseous solution"
+    model GasSolubility "Henry's law of gas solubility in liquid."
+       //q_in is dissolved in liquid and q_out is in gaseous solution"
 
       extends Physiolibrary.Icons.GasSolubility;
       extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
@@ -1058,7 +1064,7 @@ It works in two modes:
 </html>"));
     end GasSolubility;
 
-    model Clearance "Clearance with solvent outflow"
+    model Clearance "Clearance with or without solvent outflow"
 
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
                                 q_in "solute outflow"
@@ -1138,7 +1144,7 @@ It works in two modes:
                 -100},{100,100}}), graphics));
     end Clearance;
 
-    model Degradation "Degradation of solvent in defined volume"
+    model Degradation "Degradation of solute"
       extends Interfaces.ConditionalSolventVolume;
 
       Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
@@ -1316,7 +1322,7 @@ It works in two modes:
 </html>"));
     end Stream;
 
-    model SolutePump "Active pumping of solute"
+    model SolutePump "Prescribed solute flow"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
       extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
 
@@ -1467,7 +1473,7 @@ It works in two modes:
 </html>"));
     end Dilution;
 
-    model Reabsorption "Reabsorption of input fraction"
+    model Reabsorption "Reabsorption as input fraction"
        extends Physiolibrary.Icons.Reabsorption;
 
       parameter Boolean useEffect = false
@@ -1896,7 +1902,8 @@ It works in two modes:
 </html>"));
     end ConcentrationFlow;
 
-    connector PositiveConcentrationFlow "Concentration and Solute inflow"
+    connector PositiveConcentrationFlow
+      "Concentration and expected positive Solute inflow"
       extends ConcentrationFlow;
 
     annotation (
@@ -1930,7 +1937,7 @@ Connector with one flow signal of type Real.
     end PositiveConcentrationFlow;
 
     connector NegativeConcentrationFlow
-      "Concentration and negative Solute outflow"
+      "Concentration and expected negative Solute outflow"
       extends ConcentrationFlow;
 
     annotation (
@@ -1964,6 +1971,8 @@ Connector with one flow signal of type Real.
     end NegativeConcentrationFlow;
 
     partial model OnePort
+      "Partial transfer of solute beween two ports without its accumulation"
+
       NegativeConcentrationFlow q_out
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
       PositiveConcentrationFlow q_in

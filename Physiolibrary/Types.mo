@@ -35,7 +35,7 @@ package Types "Physiological units with nominals"
        parameter HeatFlowRate heatFlowRate;
       parameter ThermalConductance thermalConductance;
       parameter SpecificHeatCapacity specificHeatCapacity;
-      parameter SpecificEnergy specificEnergy;
+      parameter SpecificEnergy specificEnergy(displayUnit="cal/g");
 
       parameter Fraction fraction;
       parameter OsmoticPermeability osmoticPermeability;
@@ -43,6 +43,11 @@ package Types "Physiological units with nominals"
       parameter HydraulicConductance hydraulicConductance;
       parameter HydraulicInertance hydraulicInertance;
       parameter GasSolubility gasSolubility;
+
+      parameter AmountOfSubstance gasSTP(displayUnit="litre_STP");
+      parameter AmountOfSubstance gasSATP(displayUnit="litre_SATP");
+      parameter AmountOfSubstance gasNIST(displayUnit="litre_NIST");
+
      end ParametricClass;
 
       ParametricClass parametricClass(
@@ -68,13 +73,16 @@ package Types "Physiological units with nominals"
         heatFlowRate=69.78,
         thermalConductance=69.78,
         specificHeatCapacity=4186.8,
-        specificEnergy(displayUnit="kcal/g") = 4186.8,
+        specificEnergy=4186.8,
         fraction=0.01,
         osmoticPermeability=1.2501026264094e-10,
         diffusionPermeability=1.6666666666667e-08,
         hydraulicConductance=1.2501026264094e-10,
         hydraulicInertance=479960594694,
-        gasSolubility=0.0075006157584566)
+        gasSolubility=0.0075006157584566,
+        gasSTP(displayUnit="litre_STP") = 0.0440316172572,
+        gasSATP=0.040339548059044,
+        gasNIST=0.041571199502531)
         annotation (Placement(transformation(extent={{-14,8},{6,28}})));
       annotation (Documentation(info="<html>
 <p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
@@ -587,6 +595,35 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end HeatFlowRateConst;
+
+  block HydraulicResistanceConst "Constant signal of type HydraulicConductance"
+   parameter Types.HydraulicResistance k
+        "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=1/k;
+    annotation (defaultComponentName="hydraulicconductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicResistanceConst;
 
   block HydraulicConductanceConst
       "Constant signal of type HydraulicConductance"
@@ -2848,6 +2885,7 @@ constructed by the signals connected to this bus.
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
+  type HydraulicResistance = Real(final quantity="HydraulicResistance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e-6)/((133.322387415)*60));
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
