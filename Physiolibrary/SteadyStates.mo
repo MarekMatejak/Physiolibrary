@@ -1,6 +1,6 @@
 within Physiolibrary;
 package SteadyStates "Dynamic Simulation / Steady State"
-  extends Modelica.Icons.BasesPackage;
+  extends Modelica.Icons.Package;
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
