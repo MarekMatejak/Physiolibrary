@@ -54,6 +54,7 @@ package Types "Physiological units with nominals"
         acceleration=1,
         concentration=1,
         osmolarity=1,
+        gasSTP(displayUnit="litre_STP") = 0.0440316172572,
         temperature=274.15,
         heat=4186.8,
         pressure=133.322387415,
@@ -63,7 +64,7 @@ package Types "Physiological units with nominals"
         electricCurrent=1.6080889983333,
         time_=60,
         energy=4186.8,
-        mass=0.001,
+        mass(displayUnit="ug") = 1e-09,
         electricalPotential=0.001,
         massFlowRate=1.6666666666667e-08,
         density=1000,
@@ -80,7 +81,6 @@ package Types "Physiological units with nominals"
         hydraulicConductance=1.2501026264094e-10,
         hydraulicInertance=479960594694,
         gasSolubility=0.0075006157584566,
-        gasSTP(displayUnit="litre_STP") = 0.0440316172572,
         gasSATP=0.040339548059044,
         gasNIST=0.041571199502531)
         annotation (Placement(transformation(extent={{-14,8},{6,28}})));
@@ -2864,7 +2864,7 @@ constructed by the signals connected to this bus.
   type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol");
   type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
 
-  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mOsm/l", nominal=1);
+  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mosm/l", nominal=1);
 
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
@@ -2875,8 +2875,8 @@ constructed by the signals connected to this bus.
     "vaporization, ..";
 
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
-  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="mEq", nominal=96.4853365);
-  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="mEq/min", nominal=1.60808894);
+  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=96.4853365);
+  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=1.60808894);
 
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);

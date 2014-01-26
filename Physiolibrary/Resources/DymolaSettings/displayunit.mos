@@ -44,12 +44,12 @@ defineUnitConversion("mol/(m3.Pa)", "mmol/(l.mmHg)", 133.322387415 ); //gas solu
 defineUnitConversion("mol/(m3.Pa)", "mmol/(l.kPa)", 1000 ); //gas solubility
 
 //Osmolarity
-defineUnitConversion("mol", "Osm", 1 );
-defineUnitConversion("mol", "mOsm", 10^3 );
-defineUnitConversion("mol/m3", "Osm/l", 10^(-3) );
-defineUnitConversion("mol/m3", "mOsm/l", 1 );
-defineUnitConversion("mol/m3", "mOsm/ml", 10^(-3) );
-defineUnitConversion("mol/s", "mOsm/min", (10^3)*60 );
+defineUnitConversion("mol", "osm", 1 );
+defineUnitConversion("mol", "mosm", 10^3 );
+defineUnitConversion("mol/m3", "osm/l", 10^(-3) );
+defineUnitConversion("mol/m3", "mosm/l", 1 );
+defineUnitConversion("mol/m3", "mosm/ml", 10^(-3) );
+defineUnitConversion("mol/s", "mosm/min", (10^3)*60 );
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (10^6)*133.322387415*60 ); //osmotic permeability
 
 
@@ -68,10 +68,10 @@ defineUnitConversion("mol/s", "l_NIST/min", 1443.3069220518 );
 defineUnitConversion("mol/s", "ml_NIST/min", 1443306.9220518 );
 
 //Chemical equivalents
-defineUnitConversion("C", "Eq", 1/(9.64853399*10^4) );
-defineUnitConversion("C", "mEq", 1000/(9.64853399*10^4) );
-defineUnitConversion("C/s", "mEq/min", (1000/(9.64853399*10^4))*60 );
-defineUnitConversion("C/m3", "mEq/l", 1/(9.64853399*10^4) );
+defineUnitConversion("C", "eq", 1/(9.64853399*10^4) );
+defineUnitConversion("C", "meq", 1000/(9.64853399*10^4) );
+defineUnitConversion("C/s", "meq/min", (1000/(9.64853399*10^4))*60 );
+defineUnitConversion("C/m3", "meq/l", 1/(9.64853399*10^4) );
 
 
 // Time
@@ -174,7 +174,7 @@ defineUnitConversion("V", "kV", 0.001);
 // Currrent
 defineUnitConversion("A", "mA", 1000);
 defineUnitConversion("A", "kA", 0.001);
-defineUnitConversion("A", "mEq/min", (1000/(9.64853399*10^4))*60 );
+defineUnitConversion("A", "meq/min", (1000/(9.64853399*10^4))*60 );
 
 // Capacitance
 defineUnitConversion("F", "uF", 1e6);
@@ -201,18 +201,18 @@ defineUnitConversion("1", "%",100);
 //
 // defineDefaultDisplayUnit(<unit>, <derived unit>);
 
- defineDefaultDisplayUnit("Pa", "mmHg");
- defineDefaultDisplayUnit("C", "mEq");
- defineDefaultDisplayUnit("C/m3", "mEq/l");
- defineDefaultDisplayUnit("C/s", "mEq/min");
- defineDefaultDisplayUnit("m3/s", "ml/min");
- defineDefaultDisplayUnit("kg/s", "mg/min");
- defineDefaultDisplayUnit("K", "degC");
- defineDefaultDisplayUnit("J", "kcal");
- defineDefaultDisplayUnit("W", "kcal/min");
- defineDefaultDisplayUnit("mol/m3", "mol/l");
- defineDefaultDisplayUnit("mol/s", "mol/min");
- defineDefaultDisplayUnit("s", "min");
- defineDefaultDisplayUnit("C", "mEq");
- defineDefaultDisplayUnit("V", "mV");
+// defineDefaultDisplayUnit("Pa", "mmHg");
+// defineDefaultDisplayUnit("C", "meq");
+// defineDefaultDisplayUnit("C/m3", "meq/l");
+// defineDefaultDisplayUnit("C/s", "meq/min");
+// defineDefaultDisplayUnit("m3/s", "ml/min");
+// defineDefaultDisplayUnit("kg/s", "mg/min");
+// defineDefaultDisplayUnit("K", "degC");
+// defineDefaultDisplayUnit("J", "kcal");
+// defineDefaultDisplayUnit("W", "kcal/min");
+// defineDefaultDisplayUnit("mol/m3", "mol/l");
+// defineDefaultDisplayUnit("mol/s", "mol/min");
+// defineDefaultDisplayUnit("s", "min");
+// defineDefaultDisplayUnit("C", "meq");
+// defineDefaultDisplayUnit("V", "mV");
 
