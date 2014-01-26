@@ -504,7 +504,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                                               Simulation=SimulationType.SteadyState);
 
       parameter GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+        "oxygen solubility in plasma";
+                                       // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
       parameter Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
       parameter Fraction c = 0.00431555
@@ -565,11 +566,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={-54,-54})));
+            origin={-66,-54})));
       Modelica.Blocks.Math.Add add1 annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={62,-54})));
+            origin={52,-54})));
       Sources.UnlimitedGasStorage oxygen_in_air(
         Simulation=Physiolibrary.Types.SimulationType.SteadyState,
         usePartialPressureInput=true,
@@ -650,29 +651,29 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           smooth=Smooth.None));
       connect(add.y, R0_in_R.totalSubunitAmount[1])
                                               annotation (Line(
-          points={{-54,-58.4},{-54,-66},{-54,-80},{-58,-80}},
+          points={{-66,-58.4},{-66,-80},{-58,-80}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(add1.y, T0_in_T.totalSubunitAmount[1])
                                                annotation (Line(
-          points={{62,-58.4},{62,-66},{62,-80},{58,-80}},
+          points={{52,-58.4},{52,-80},{58,-80}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyTHm.solute, add1.u2) annotation (Line(
-          points={{32,-36},{32,-42},{59.6,-42},{59.6,-49.2}},
+          points={{32,-36},{32,-42},{49.6,-42},{49.6,-49.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-          points={{64.4,-49.2},{64.4,-42},{88,-42},{88,-36}},
+          points={{54.4,-49.2},{54.4,-42},{88,-42},{88,-36}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(DeoxyRHm.solute, add.u1) annotation (Line(
-          points={{-32,-36},{-32,-36},{-32,-44},{-51.6,-44},{-51.6,-49.2}},
+          points={{-32,-36},{-32,-44},{-63.6,-44},{-63.6,-49.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyRHm.solute, add.u2) annotation (Line(
-          points={{-88,-36},{-88,-44},{-56.4,-44},{-56.4,-49.2}},
+          points={{-88,-36},{-88,-44},{-68.4,-44},{-68.4,-49.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(partialPressure1.q_out, oxygen_in_air.q_out)
@@ -1921,7 +1922,7 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1955,7 +1956,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

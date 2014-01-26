@@ -43,7 +43,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
-<p>ThePhysiolibrary defines the most important <b>elementary connectors</b> in various domains. If any possible, a user should utilize these connectors in order that components from the Physiolibrary and from other libraries can be combined without problems. The following elementary connectors are defined (the meaning of potential, flow, and stream variables is explained in section &QUOT;Connector Equations&QUOT; below): </p>
+<p>The Physiolibrary defines the most important <b>elementary connectors</b> in various domains. If any possible, a user should utilize these connectors in order that components from the Physiolibrary and from other libraries can be combined without problems. The following elementary connectors are defined (the meaning of potential, flow, and stream variables is explained in section &QUOT;Connector Equations&QUOT; below): </p>
 <table cellspacing=\"0\" cellpadding=\"1\" border=\"1\"><tr>
 <td valign=\"top\"><p><h4>domain</h4></p></td>
 <td valign=\"top\"><p><h4>potential</h4></p><p>variables</p></td>
@@ -57,14 +57,15 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <td valign=\"top\"><p>molar concentration</p></td>
 <td valign=\"top\"><p>molar flow</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><a href=\"Physiolibrary.Chemical.Interfaces\">Physiolibrary.Chemical.Interfaces</a> </p><p>ChemicalPort, ChemicalPort_a, ChemicalPort_b</p></td>
+<td valign=\"top\"><p><br/><a href=\"Physiolibrary.Chemical.Interfaces\">Physiolibrary.Chemical.Interfaces</a> </p><p>ChemicalPort, ChemicalPort_a, ChemicalPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ChemicalPorts.png\"/></p></td>
+</tr>
 <tr>
 <td valign=\"top\"><p><h4>hydraulic</h4></p></td>
 <td valign=\"top\"><p>pressure</p></td>
 <td valign=\"top\"><p>volumetric flow</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><a href=\"Physiolibrary.Hydraulic.Interfaces\">Physiolibrary.Hydraulic.Interfaces</a> </p><p>HydraulicPort, HydraulicPort_a, HydraulicPort_b</p></td>
+<td valign=\"top\"><p><br/><a href=\"Physiolibrary.Hydraulic.Interfaces\">Physiolibrary.Hydraulic.Interfaces</a> </p><p>HydraulicPort, HydraulicPort_a, HydraulicPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicPorts.png\"/></p></td>
 </tr>
 <tr>
@@ -72,7 +73,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <td valign=\"top\"><p>osmolarity</p></td>
 <td valign=\"top\"><p>permeable liquid volumetric flow </p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><a href=\"Physiolibrary.Osmotic.Interfaces\">Physiolibrary.Osmotic.Interfaces</a> </p><p>OsmoticPort, OsmoticPort_a, OsmoticPort_b</p></td>
+<td valign=\"top\"><p><br/><a href=\"Physiolibrary.Osmotic.Interfaces\">Physiolibrary.Osmotic.Interfaces</a> </p><p>OsmoticPort, OsmoticPort_a, OsmoticPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/OsmoticPorts.png\"/></p></td>
 </tr>
 <tr>
@@ -80,7 +81,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <td valign=\"top\"><p>temperature</p></td>
 <td valign=\"top\"><p>heat flow rate</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Physiolibrary.Thermal.Interfaces\">Physiolibrary.Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
+<td valign=\"top\"><p><br/><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Physiolibrary.Thermal.Interfaces\">Physiolibrary.Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
 <td valign=\"top\"><p><br/><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ThermalPorts.png\"/></p></td>
 </tr>
 <tr>
@@ -88,11 +89,11 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <td valign=\"top\"><p>Real unit-typed variables</p></td>
 <td valign=\"top\"></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><a href=\"Physiolibrary.Types.RealIO\">Physiolibrary.Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
+<td valign=\"top\"><p><br/><br/><a href=\"Physiolibrary.Types.RealIO\">Physiolibrary.Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Signals.png\"/></p></td>
 </tr>
 </table>
-<p><br/><br/>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
+<p><br/><br/><br/>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
 </html>"));
   end Connectors;
 
@@ -226,15 +227,6 @@ package Physiolibrary "Physiological domains library (version v2.0)"
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
-
-
-
-
-
-
-
-
-
   class Version_2_0 "Version 2.0 (Jan. 26, 2014)"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -353,13 +345,6 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",
