@@ -24,7 +24,7 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Current release
 
-Download [Physiolibrary v1.2.0 (2014-1-15)](../../archive/v1.2.0.zip)
+Download [Physiolibrary 2.0.0 (2014-01-26)](../../archive/v2.0.0.zip)
 
 #### Release notes
 
