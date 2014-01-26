@@ -28,8 +28,14 @@ Download [Physiolibrary v1.2.0 (2014-1-15)](../../archive/v1.2.0.zip)
 
 #### Release notes
 
+*  [Version v2.0.0 (2014-01-26)](../../archive/v2.0.0.zip)
+ * Support for steady states calculation by energy/mass conservation laws or enviroment sources
+ * Conditional inputs for each domain blocks
+ * Package States renamed to SteadyStates, added SteadyStates.Components
+ * Removed package Mixed
+ * Package FileUtilities moved to Types.FileUtilities
 
-*  [Version v1.2.0 (2014-1-15)](../../archive/v1.2.0.zip)
+*  [Version v1.2.0 (2014-01-15)](../../archive/v1.2.0.zip)
  * Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}
  * New icons
  * Thermal: Relative heat energy to normal body temperature (37degC) 
