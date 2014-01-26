@@ -1,4 +1,4 @@
-@echo on
+@echo off
 
 for /F delims^=^"^ tokens^=2 %%s in ('ftype mofile') DO set x=%%s
 set suffix=%x:*bin=%
