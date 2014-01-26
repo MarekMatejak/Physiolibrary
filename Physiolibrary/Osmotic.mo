@@ -83,7 +83,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
                                          state_start=volume_start, storeUnit=
           "mOsm/l");
 
-      Interfaces.PositiveOsmoticFlow
+      Interfaces.OsmoticPort_a
                           q_in "Flux to/from osmotic compartment" annotation (Placement(
             transformation(extent={{-10,-10},{10,10}})));
       parameter Physiolibrary.Types.Volume volume_start = 0.001
@@ -266,7 +266,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     model SolventInflux "Prescribed solvent inflow"
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
-      Interfaces.NegativeOsmoticFlow
+      Interfaces.OsmoticPort_b
                           q_out
                              annotation (Placement(
             transformation(extent={{50,-10},{70,10}})));
@@ -301,7 +301,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
     model SolventOutflux "Prescribed solvent outflow"
      extends Chemical.Interfaces.ConditionalSolutionFlow;
-      Interfaces.PositiveOsmoticFlow
+      Interfaces.OsmoticPort_a
                           q_in
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{-70,-10},{-50,10}})));
@@ -352,8 +352,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-      Interfaces.NegativeOsmoticFlow
-                                  port annotation (Placement(transformation(extent={{90,-10},
+      Interfaces.OsmoticPort_b    port annotation (Placement(transformation(extent={{90,-10},
                 {110,10}})));
 
     protected
@@ -423,7 +422,7 @@ i.e., it defines a fixed temperature as a boundary condition.
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
 
-     connector OsmoticFlowConnector
+     connector OsmoticPort
       "Flux through semipermeable membrane by osmotic pressure gradient"
       Physiolibrary.Types.Concentration o
         "Osmolarity is the molar concentration of the impermeable solutes";
@@ -433,13 +432,13 @@ i.e., it defines a fixed temperature as a boundary condition.
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-     end OsmoticFlowConnector;
+     end OsmoticPort;
 
-    connector PositiveOsmoticFlow "Influx"
-      extends Interfaces.OsmoticFlowConnector;
+    connector OsmoticPort_a "Influx"
+      extends OsmoticPort;
 
     annotation (
-        defaultComponentName="q_in",
+        defaultComponentName="port_a",
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
                 100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -466,13 +465,13 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
 
-    end PositiveOsmoticFlow;
+    end OsmoticPort_a;
 
-    connector NegativeOsmoticFlow "Outflux"
-      extends Interfaces.OsmoticFlowConnector;
+    connector OsmoticPort_b "Outflux"
+      extends OsmoticPort;
 
     annotation (
-        defaultComponentName="q_out",
+        defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
                 100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -499,16 +498,14 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
 
-    end NegativeOsmoticFlow;
+    end OsmoticPort_b;
 
     partial model OnePort "Osmotic one port"
 
-     Interfaces.PositiveOsmoticFlow
-                         q_in "Forward flux through membrane"
+     OsmoticPort_a       q_in "Forward flux through membrane"
                             annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
-      Interfaces.NegativeOsmoticFlow
-                          q_out "Backward flux through membrane"
+      OsmoticPort_b       q_out "Backward flux through membrane"
                              annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
     equation
@@ -552,6 +549,7 @@ Connector with one flow signal of type Real.
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
-<p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mOsm/l. In Physiolibrary the osmotic connector OsmoticFlowConnector is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane.</p>
+<p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p>
+<p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p>
 </html>"));
 end Osmotic;

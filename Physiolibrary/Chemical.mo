@@ -857,7 +857,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
           annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow q_out
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b            q_out
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
     equation
@@ -930,12 +930,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             rotation=270,
             origin={0,40})));
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 products[nP] "Products"
                              annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 substrates[nS] "Substrates"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));  /*s[nS]*/
@@ -1039,12 +1039,12 @@ It works in two modes:
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
         annotation (Dialog(tab="Temperature dependence"));
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out "Gaseous solution"
                              annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "Dissolved in liquid"
                                 annotation (Placement(
             transformation(extent={{-10,-90},{10,-70}})));
@@ -1066,7 +1066,7 @@ It works in two modes:
 
     model Clearance "Clearance with or without solvent outflow"
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "solute outflow"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
@@ -1147,7 +1147,7 @@ It works in two modes:
     model Degradation "Degradation of solute"
       extends Interfaces.ConditionalSolventVolume;
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "Degraded solute outflow"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
@@ -1373,12 +1373,10 @@ It works in two modes:
       parameter Integer NumberOfSubunitTypes=1
         "Number of subunit types occuring in macromolecule";
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                                       species
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a species
         "Defined macromolecule form"                                                        annotation (Placement(
             transformation(extent={{90,-90},{110,-70}})));
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
-                                                       subunitSpecies[NumberOfSubunitTypes]
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a subunitSpecies[NumberOfSubunitTypes]
         "Definid species of macromolecule subunit types (in NormalSolventVolume)"
                                                                                                             annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
@@ -1492,14 +1490,14 @@ It works in two modes:
         "Maximal reabsorption molar flow if useMaxReabInput=false"
         annotation (Dialog(enable=not useMaxReabInput));
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 Inflow "Tubular inflow"              annotation (Placement(
             transformation(extent={{-110,30},{-90,50}})));
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 Outflow "Tubular outflow"
         annotation (Placement(transformation(extent={{90,30},{110,50}})));
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 Reabsorption "Reabsorption from tubules"          annotation (Placement(
             transformation(extent={{-10,-110},{10,-90}})));
       Physiolibrary.Types.RealIO.FractionInput baseReabsorption=baseReabFract if useBaseReabsorption
@@ -1588,7 +1586,7 @@ It works in two modes:
 
     model ConcentrationMeasure "Measure of molar concentration"
 
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "For measure only"
                                 annotation (Placement(
             transformation(extent={{-10,-30},{10,-10}})));
@@ -1621,7 +1619,7 @@ It works in two modes:
     model FlowConcentrationMeasure
       "The outflow concentration from absorption (i.e. portal vein concentration)"
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
-      Physiolibrary.Chemical.Interfaces.PositiveConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "Concentration before absorption source"
                              annotation (Placement(
             transformation(extent={{-110,-8},{-90,12}})));
@@ -1677,7 +1675,7 @@ It works in two modes:
     model UnlimitedSolutePump "Molar pump of solute"
       extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
 
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out "Outflow"
                              annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
@@ -1713,7 +1711,7 @@ It works in two modes:
     model UnlimitedSolutionStorage "Constant concentration source"
 
       import Physiolibrary.Types.*;
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out
         "constant concentration with any possible flow"
                                  annotation (Placement(
@@ -1797,7 +1795,7 @@ It works in two modes:
     model UnlimitedGasStorage "Constant ideal gas source"
       extends Interfaces.ConditionalHeatPort;
       import Physiolibrary.Types.*;
-      Physiolibrary.Chemical.Interfaces.NegativeConcentrationFlow
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out
         "constant gas concentration with any possible flow"
                                  annotation (Placement(
@@ -1893,21 +1891,21 @@ It works in two modes:
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
 
-    connector ConcentrationFlow "Concentration and Solute flow"
+    connector ChemicalPort "Concentration and Solute flow"
       Physiolibrary.Types.Concentration conc "Solute concentration";
       flow Physiolibrary.Types.MolarFlowRate q "Solute flow";
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
-    end ConcentrationFlow;
+    end ChemicalPort;
 
-    connector PositiveConcentrationFlow
+    connector ChemicalPort_a
       "Concentration and expected positive Solute inflow"
-      extends ConcentrationFlow;
+      extends ChemicalPort;
 
     annotation (
-        defaultComponentName="p",
+        defaultComponentName="port_a",
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
                 100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -1934,14 +1932,14 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
 
-    end PositiveConcentrationFlow;
+    end ChemicalPort_a;
 
-    connector NegativeConcentrationFlow
+    connector ChemicalPort_b
       "Concentration and expected negative Solute outflow"
-      extends ConcentrationFlow;
+      extends ChemicalPort;
 
     annotation (
-        defaultComponentName="n",
+        defaultComponentName="port_b",
         Icon(coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
             graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -1968,14 +1966,14 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
 
-    end NegativeConcentrationFlow;
+    end ChemicalPort_b;
 
     partial model OnePort
       "Partial transfer of solute beween two ports without its accumulation"
 
-      NegativeConcentrationFlow q_out
+      ChemicalPort_b            q_out
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-      PositiveConcentrationFlow q_in
+      ChemicalPort_a            q_in
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
       q_in.q + q_out.q = 0;
@@ -1994,7 +1992,7 @@ Connector with one flow signal of type Real.
         "Fixed device temperature if useHeatPort = false"
         annotation (Dialog(enable=not useHeatPort,tab="Temperature dependence"));
 
-      Physiolibrary.Thermal.Interfaces.PositiveHeatFlow heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
+      Physiolibrary.Thermal.Interfaces.HeatPort_a       heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
         annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
             iconTransformation(extent={{-10,-10},{10,10}})));
       Physiolibrary.Types.HeatFlowRate lossHeat
@@ -2126,6 +2124,6 @@ on the model behaviour.
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p>
-<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ConcentrationFlow, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. For usage examples, please open the Chemical.Examples package.</p>
+<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p>
 </html>"));
 end Chemical;

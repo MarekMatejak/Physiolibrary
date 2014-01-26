@@ -6,16 +6,106 @@ package Physiolibrary "Physiological domains library (version v2.0)"
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
 
+  class Overview "Overview of Physiolibrary"
+    extends Modelica.Icons.Information;
+
+   annotation (Documentation(info="<html>
+<p>ThePhysiolibrary consists of the following main sub-libraries: </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<td><p align=\"center\"><h4>Library Components</h4></p></td>
+<td><p align=\"center\"><h4>Description</h4></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Chemical.png\"/></p></td>
+<td valign=\"middle\"><p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p><p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Hydraulic.png\"/></p></td>
+<td valign=\"middle\"><p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Thermal.png\"/></p></td>
+<td valign=\"middle\"><p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p><p>In the Physiolibrary.Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Physiolibrary.Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Osmotic.png\"/></p></td>
+<td valign=\"middle\"><p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p><p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/SteadyState.png\"/></p></td>
+<td valign=\"middle\"><p>One of the main question in clinical medicine is how to stabilize the patient. In the fact of the oscillating heart, breathing, circadian rhythm or menstruation cycle the model could be designed as non-oscillating with variables such as period times, amplitudes, frequencies, mean values and other phase space variables. This type of model has better numerical stability for longer simulation time and even more it can be &QUOT;stabilized&QUOT;. This stabilization we called steady state. </p><p>To be mathematically exact, we define an <i><b>steady state system</b></i> (SSS) as a non-differential system derived from a original differential system (DS) by using zero derivations and by adding <b>additional steady state equations</b> (ASSE). The number of the ASSE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASSE describes the system from the top view mostly such as the equations of mass conservation laws or the boundary equation of environment sources. To define a model as an SSS the user must switch each Simulation parameter in each block to value Types.SimulationType.SteadyState and must have correctly defined all necessary ASSE. This setting caused to ignoring any start values for any state and add zero derivation equations instead. Today does not exist Modelica environment, which could automatically find and remove generated dependent equations by this way. So the correct number of states must be marked as dependent (parameter isDependent) and the same number of ASSE must be inserted. Despite the fact, that model in this steady-state setting will be not locally balanced it should be globally balanced and without any dependent equation.</p><p>Adding of one ASSE is possible by inserting and connecting of the energy or mass conservation law block from package SteadyState.Components. Other possibilities is in blocks of environment&nbsp; sources, where the setting of parameter isIsolatedInSteadyState&nbsp; add the equation of the zero mass/volume/energy flow from or to environment. </p><p>The model in steady state often changes to one big nonlinear strong component, but without solver stiff or convergence problems. Especially in quick chemical reaction kinetics is not necessary to have very rapid molar fluxes, when it always reach equilibrium. This design also approve to create steady stated parts in dynamical model without huge rebuilding. It also&nbsp; brings other benefits. To see these possibilities, one have to realize that conservation laws could be invariances in a dynamical simulation. This is really useful for debugging. </p><p>It is always a big challenge to nicely solve initial values of differential system. However, it should be possible to solve the SSS in initial phase. And this is the idea behind the Types.SimulationTypes.InitSteadyState option for models already extended with ASSE to support SSS. </p></td>
+</tr>
+</table>
+</html>"));
+  end Overview;
+
+  class Connectors "Connectors"
+    extends Modelica.Icons.Information;
+
+   annotation (Documentation(info="<html>
+<p>ThePhysiolibrary defines the most important <b>elementary connectors</b> in various domains. If any possible, a user should utilize these connectors in order that components from the Physiolibrary and from other libraries can be combined without problems. The following elementary connectors are defined (the meaning of potential, flow, and stream variables is explained in section &QUOT;Connector Equations&QUOT; below): </p>
+<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\"><tr>
+<td valign=\"top\"><p><h4>domain</h4></p></td>
+<td valign=\"top\"><p><h4>potential</h4></p><p>variables</p></td>
+<td valign=\"top\"><p><h4>flow</h4></p><p>variables</p></td>
+<td valign=\"top\"><p><h4>stream</h4></p><p>variables</p></td>
+<td valign=\"top\"><p><h4>connector definition</h4></p></td>
+<td valign=\"top\"><p><h4>icons</h4></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><h4>chemical</h4></p></td>
+<td valign=\"top\"><p>molar concentration</p></td>
+<td valign=\"top\"><p>molar flow</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><a href=\"Physiolibrary.Chemical.Interfaces\">Physiolibrary.Chemical.Interfaces</a> </p><p>ChemicalPort, ChemicalPort_a, ChemicalPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ChemicalPorts.png\"/></p></td>
+<tr>
+<td valign=\"top\"><p><h4>hydraulic</h4></p></td>
+<td valign=\"top\"><p>pressure</p></td>
+<td valign=\"top\"><p>volumetric flow</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><a href=\"Physiolibrary.Hydraulic.Interfaces\">Physiolibrary.Hydraulic.Interfaces</a> </p><p>HydraulicPort, HydraulicPort_a, HydraulicPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><h4>osmotic</h4></p></td>
+<td valign=\"top\"><p>osmolarity</p></td>
+<td valign=\"top\"><p>permeable liquid volumetric flow </p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><a href=\"Physiolibrary.Osmotic.Interfaces\">Physiolibrary.Osmotic.Interfaces</a> </p><p>OsmoticPort, OsmoticPort_a, OsmoticPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/OsmoticPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><h4>thermal</h4></p></td>
+<td valign=\"top\"><p>temperature</p></td>
+<td valign=\"top\"><p>heat flow rate</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Physiolibrary.Thermal.Interfaces\">Physiolibrary.Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
+<td valign=\"top\"><p><br/><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ThermalPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><h4>block</h4></p><p>diagram</p></td>
+<td valign=\"top\"><p>Real unit-typed variables</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><a href=\"Physiolibrary.Types.RealIO\">Physiolibrary.Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Signals.png\"/></p></td>
+</tr>
+</table>
+<p><br/><br/>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
+</html>"));
+  end Connectors;
+
     class ModelicaLicense2 "Modelica License 2"
 
       annotation (Documentation(info="<html>
 <p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &QUOT;Physiolibrary&QUOT; are licensed by <u><b>Marek Matejak</b></u> under the <u><b>Modelica License 2 </b></u>(with exception of files &QUOT;Resources/*&QUOT;). </p>
 <p><h4>Licensor:</h4></p>
 <p>Marek Matej&aacute;k,</p>
-<p>Zdaril&aacute; 8,</p>
-<p>140 00 Prague 4, </p>
-<p>Czech Republic, </p>
-<p>Charles University in Prague</p>
+<p>Hviezdoslavova 632/41,</p>
+<p>916 01 Star&aacute; Tur&aacute;, </p>
+<p>Slovak Republic, </p>
+<p>Charles University in Prague, Czech Republic</p>
 <p><br/>email: marek@matfyz.cz</p>
 <p><h4>Copyright notices of the files:</h4></p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
@@ -23,7 +113,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <p><br/><a href=\"#The_Modelica_License_2-outline\">The Modelica License 2</a></p>
 <p><br/><a href=\"#How_to_Apply_the_Modelica_License_2-outline\">How to Apply the Modelica License 2</a></p>
 <p><br/><a href=\"#Frequently_Asked_Questions-outline\">Frequently Asked Questions</a></p>
-<p><br/><b><a name=\"The_Modelica_License_2-outline\">T</a><font style=\"color: #008000; \">he Modelica License 2</font></b> </p>
+<p><br/><b><font style=\"color: #008000; \">The Modelica License 2</font></b> </p>
 <p><b><font style=\"font-size: 10pt; \">Preamble.</b> The goal of this license is that Modelica related model libraries, software, images, documents, data files etc. can be used freely in the original or a modified form, in open source and in commercial environments (as long as the license conditions below are fulfilled, in particular sections 2c) and 2d). The Original Work is provided free of charge and the use is completely at your own risk. Developers of free Modelica packages are encouraged to utilize this license for their work. </p>
 <p>The Modelica License applies to any Original Work that contains the following licensing notice adjacent to the copyright notice(s) for this Original Work: </p>
 <p><b>Licensed by Marek Matejak under the Modelica License 2</b> </p>
@@ -70,7 +160,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <p>If any provision of this License is held to be unenforceable, such provision shall be reformed only to the extent necessary to make it enforceable. </p>
 <p>No verbal ancillary agreements have been made. Changes and additions to this License must appear in writing to be valid. This also applies to changing the clause pertaining to written form. </p>
 <p>You may use the Original Work in all ways not otherwise restricted or conditioned by this License or by law, and Licensor promises not to interfere with or be responsible for such uses by You. </p>
-<p><br/><b><a name=\"How_to_Apply_the_Modelica_License_2-outline\">H</a></font><font style=\"color: #008000; \">ow to Apply the Modelica License 2</font></b> </p>
+<p><br/><b></font><font style=\"color: #008000; \">How to Apply the Modelica License 2</font></b> </p>
 <p><font style=\"font-size: 10pt; \">At the top level of your Modelica package and at every important subpackage, add the following notices in the info layer of the package: </p>
 <p>Licensed by &LT;Licensor&GT; under the Modelica License 2</p>
 <p>Copyright &copy; &LT;year1&GT;-&LT;year2&GT;, &LT;name of copyright holder(s)&GT;. </p>
@@ -83,7 +173,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <p>For C-source code and documents, add similar notices in the corresponding file. </p>
 <p>For images, add a &ldquo;readme.txt&rdquo; file to the directories where the images are stored and include a similar notice in this file. </p>
 <p>In these cases, save a copy of the Modelica License 2 in one directory of the distribution, e.g., <a href=\"http://www.modelica.org/licenses/ModelicaLicense2.html\">http://www.modelica.org/licenses/ModelicaLicense2.html</a> in directory <b>&LT;library&GT;/Resources/Documentation/ModelicaLicense2.html</b>. </p>
-<p><br/><b></font><font style=\"font-size: 6pt; \"><a name=\"Frequently_Asked_Questions-outline\">F</a><font style=\"color: #008000; \">requently Asked Questions</font></b></p>
+<p><br/><b><font style=\"font-size: 6pt; color: #008000; \">Frequently Asked Questions</font></b></p>
 <p><font style=\"font-size: 10pt; \">This section contains questions/answer to users and/or distributors of Modelica packages and/or documents under Modelica License 2. Note, the answers to the questions below are not a legal interpretation of the Modelica License 2. In case of a conflict, the language of the license shall prevail. </p>
 <p><b></font><font style=\"color: #008000; \">Using or Distributing a Modelica <u>Package</u> under the Modelica License 2</font></b> </p>
 <p><b><font style=\"font-size: 10pt; \">What are the main differences to the previous version of the Modelica License?</b></p>
@@ -133,6 +223,78 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 </html>"));
     end ModelicaLicense2;
 
+  package ReleaseNotes "Release notes"
+    extends Modelica.Icons.ReleaseNotes;
+
+
+
+
+
+
+
+
+
+
+  class Version_2_0 "Version 2.0 (Jan. 26, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Renamed classes</font></li>
+<li>Conditional inputs to blocks</li>
+<li>Removed Mixed package</li>
+<li>Rebuilt steady states</li>
+<li><font style=\"color: #333333; \">New icons and examples</font></li>
+</ul></p>
+</html>"));
+  end Version_2_0;
+
+  class Version_1_2 "Version 1.2 (Jan 15, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}</font></li>
+<li><font style=\"color: #333333; \">New icons</font></li>
+<li><font style=\"color: #333333; \">Thermal: Relative heat energy to normal body temperature (37degC)</font></li>
+<li><font style=\"color: #333333; \">New examples: Guyton-Coleman-Granger cardiovascular model, Coleman thermal energy transfers</font></li>
+</ul></p>
+</html>"));
+  end Version_1_2;
+
+  class Version_1_1 "Version 1.1 (Dec. 30, 2013)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Heat connector compatibility between Physiolibrary.Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)</font></li>
+<li><font style=\"color: #333333; \">Some English language corrections</font></li>
+<li><font style=\"color: #333333; \">Hydrostatic pressure patch</font></li>
+<li><font style=\"color: #333333; \">New examples</font></li>
+</ul></p>
+</html>"));
+  end Version_1_1;
+
+  class Version_1_0 "Version 1.0.0 (Dec. 09, 2013)"
+    extends Modelica.Icons.ReleaseNotes;
+
+  annotation (Documentation(info="<html>
+<p><ul>
+<li>migration to GITHub https://github.com/MarekMatejak/Physiolibrary from http://patf-biokyb.lf1.cuni.cz/repos/Modelica/Physiolibrary svn repository, commit 4947 </li>
+<li><font style=\"color: #333333; \">The library uses the Modelica Standard Libary (MSL) version 3.2.</font></li>
+<li><font style=\"color: #333333; \">Contains nice physiological icons.</font></li>
+<li><font style=\"color: #333333; \">Support for physiological units: min,kcal,mmHg,ml,mEq,..</font></li>
+<li><font style=\"color: #333333; \">Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</font></li>
+<li><font style=\"color: #333333; \">Support of euilibrated systems</font></li>
+<li><font style=\"color: #333333; \">Support for expandable inputs/outputs/tests lists</font></li>
+</ul></p>
+</html>"));
+  end Version_1_0;
+   annotation (Documentation(info="<html>
+<p>This section summarizes the changes that have been performed on the Physiolibrary. </p>
+</html>"));
+  end ReleaseNotes;
+
   class Contact "Contact"
     extends Modelica.Icons.Contact;
 
@@ -142,6 +304,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <p>skype: marek.matejak</p>
 <p>tel: 00420 776 301 395</p>
 <p><br/>Graphics of icons:</p>
+<p>Martin Bro~</p>
 <p>Veronika Sykorova</p>
 <p>email: elvenfall@gmail.com</p>
 </html>"));
@@ -192,11 +355,18 @@ package Physiolibrary "Physiological domains library (version v2.0)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
   annotation (preferredView="info",
 version="2.0",
 versionBuild=1,
-versionDate="2014-01-20",
-dateModified = "2014-01-20 15:30:00Z",
+versionDate="2014-01-26",
+dateModified = "2014-01-26 14:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2")),
 conversion,

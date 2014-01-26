@@ -331,7 +331,7 @@ package Thermal
       "One-directional outflow of heated mass (with effect of vaporization)"
       extends Interfaces.ConditionalMassFlow;
 
-      Interfaces.PositiveHeatFlow
+      Interfaces.HeatPort_a
                        q_in "flow circuit"     annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
       parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
@@ -376,10 +376,10 @@ package Thermal
       parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
         "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
 
-      Physiolibrary.Thermal.Interfaces.PositiveHeatFlow
+      Physiolibrary.Thermal.Interfaces.HeatPort_a
                        q_in annotation (Placement(
             transformation(extent={{-110,10},{-90,30}})));
-      Physiolibrary.Thermal.Interfaces.NegativeHeatFlow
+      Physiolibrary.Thermal.Interfaces.HeatPort_b
                        q_out annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
     equation
@@ -412,7 +412,7 @@ package Thermal
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                          state_start=relativeHeat_start, storeUnit=
           "kcal");
-      Interfaces.PositiveHeatFlow
+      Interfaces.HeatPort_a
                        q_in "Heat inflow/outflow connector"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
@@ -495,7 +495,7 @@ package Thermal
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-      Interfaces.NegativeHeatFlow port annotation (Placement(transformation(extent={{90,-10},
+      Interfaces.HeatPort_b       port annotation (Placement(transformation(extent={{90,-10},
                 {110,10}})));
 
     protected
@@ -564,12 +564,13 @@ i.e., it defines a fixed temperature as a boundary condition.
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
 
-    connector HeatFlowConnector =
-                         Modelica.Thermal.HeatTransfer.Interfaces.HeatPort(T(displayUnit="degC"),Q_flow(displayUnit="kcal/min", nominal=4186.8/60));
-    connector PositiveHeatFlow "Heat inflow"
-      extends Interfaces.HeatFlowConnector;
+    connector HeatPort = Modelica.Thermal.HeatTransfer.Interfaces.HeatPort(T(displayUnit="degC"),Q_flow(displayUnit="kcal/min", nominal=4186.8/60));
+    connector HeatPort_a "Heat inflow"
+      extends HeatPort;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+      annotation (
+        defaultComponentName="port_a",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Rectangle(
               extent={{-20,10},{20,-10}},
               lineColor={191,0,0},
@@ -585,13 +586,13 @@ i.e., it defines a fixed temperature as a boundary condition.
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
        Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
-    end PositiveHeatFlow;
+    end HeatPort_a;
 
-    connector NegativeHeatFlow "Heat outflow"
-      extends Interfaces.HeatFlowConnector;
+    connector HeatPort_b "Heat outflow"
+      extends HeatPort;
 
     annotation (
-        defaultComponentName="q_out",
+        defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -609,15 +610,13 @@ i.e., it defines a fixed temperature as a boundary condition.
               fillPattern=FillPattern.Solid),
        Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
 
-    end NegativeHeatFlow;
+    end HeatPort_b;
 
     partial model OnePort "Heat OnePort"
 
-      Interfaces.PositiveHeatFlow
-                       q_in annotation (Placement(
+      HeatPort_a       q_in annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
-      Interfaces.NegativeHeatFlow
-                       q_out annotation (Placement(
+      HeatPort_b       q_out annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
     equation
       q_in.Q_flow + q_out.Q_flow = 0;
@@ -662,6 +661,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
-<p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;&nbsp;C. A fever of 41&deg;&nbsp;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg; C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. In the Physiolibrary.Thermal package, the connector HeatConnector is composed of temperature and thermal flow. The main blocks are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity.</p>
+<p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p>
+<p>In the Physiolibrary.Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Physiolibrary.Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p>
 </html>"));
 end Thermal;

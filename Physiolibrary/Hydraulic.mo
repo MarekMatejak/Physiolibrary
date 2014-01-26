@@ -294,13 +294,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       import Physiolibrary;
       extends Physiolibrary.Icons.Reabsorption;
 
-      Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
                            Inflow                    annotation (Placement(
             transformation(extent={{-114,26},{-86,54}})));
-      Physiolibrary.Hydraulic.Interfaces.NegativePressureFlow
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
                            Outflow
         annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Physiolibrary.Hydraulic.Interfaces.NegativePressureFlow
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
                            Reabsorption                annotation (Placement(
             transformation(extent={{-14,-114},{14,-86}})));
 
@@ -346,11 +346,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
 <p>If useOutflowMin=false then the next schema is used.</p>
 <p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Documentation/HydraulicReabsorption.png\"/></li>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
 </ul></p>
 <p><br/>If  useOutflowMin=true then the extended schema is used:</p>
 <p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Documentation/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
 </ul></p>
 </html>"));
     end Reabsorption;
@@ -358,12 +358,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
       extends Physiolibrary.Icons.HydrostaticGradient;
-      Physiolibrary.Hydraulic.Interfaces.PositivePressureFlow
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
                            q_up "Top site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{66,26},{94,54}})));
 
-      Interfaces.PositivePressureFlow
+      Interfaces.HydraulicPort_a
                            q_down "Bottom site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{66,-74},{94,-46}})));
@@ -450,7 +450,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                                         state_start=volume_start, storeUnit=
           "ml");
 
-      Interfaces.PositivePressureFlow
+      Interfaces.HydraulicPort_a
                            q_in
                             annotation (Placement(
             transformation(extent={{-14,-14},{14,14}})));
@@ -544,10 +544,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                                         state_start=volume_start, storeUnit=
           "ml");
      extends Icons.InternalElasticBalloon;
-      Interfaces.PositivePressureFlow
+      Interfaces.HydraulicPort_a
                            q_int "Internal space"
         annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
-      Interfaces.NegativePressureFlow
+      Interfaces.HydraulicPort_b
                            q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
                 {54,14}})));
 
@@ -631,7 +631,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model PressureMeasure "Hydraulic pressure at port"
       extends Icons.PressureMeasure;
 
-      Interfaces.PositivePressureFlow
+      Interfaces.HydraulicPort_a
                            q_in annotation (Placement(
             transformation(extent={{-60,-80},{-20,-40}})));
       Physiolibrary.Types.RealIO.PressureOutput actualPressure
@@ -657,7 +657,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model UnlimitedPump "Prescribed flow at port"
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
-      Interfaces.NegativePressureFlow
+      Interfaces.HydraulicPort_b
                            q_out
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
@@ -720,7 +720,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
               rotation=0)));
 
-        Interfaces.PositivePressureFlow
+        Interfaces.HydraulicPort_a
                              y "PressureFlow output connectors"
           annotation (Placement(transformation(extent={{84,-16},{116,16}},
               rotation=0)));
@@ -792,7 +792,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
   package Interfaces
     extends Modelica.Icons.InterfacesPackage;
-    connector PressureFlow
+    connector HydraulicPort
       "Hydraulical connector with pressure and volumetric flow"
       Physiolibrary.Types.Pressure pressure "Pressure";
       flow Physiolibrary.Types.VolumeFlowRate q "Volume flow";
@@ -819,13 +819,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         info="<html>
 <p><font style=\"font-size: 9pt; \">This connector connects hydraulic domains elements. The elements contains one equation for each his pressure-flow connector. The equation defines relation between variables in the connector. Variables are hydraulic pressure and volume flow of hydraulic medium. The pressure is the same in each connector that are connected together. The sum of flow in connectors connected together is zero (</font><b><font style=\"font-size: 9pt; \">Kirchhoff&apos;s circuit laws</font></b><font style=\"font-size: 9pt; \">).</font> </p>
 </html>"));
-    end PressureFlow;
+    end HydraulicPort;
 
-    connector PositivePressureFlow "Hydraulical inflow connector"
-      extends Interfaces.PressureFlow;
+    connector HydraulicPort_a "Hydraulical inflow connector"
+      extends HydraulicPort;
 
     annotation (
-        defaultComponentName="q_in",
+        defaultComponentName="port_a",
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -856,13 +856,13 @@ Connector with one flow signal of type Real.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
 
-    end PositivePressureFlow;
+    end HydraulicPort_a;
 
-    connector NegativePressureFlow "Hydraulical outflow connector"
-      extends Interfaces.PressureFlow;
+    connector HydraulicPort_b "Hydraulical outflow connector"
+      extends HydraulicPort;
 
     annotation (
-        defaultComponentName="q_out",
+        defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Rectangle(
               extent={{-20,10},{20,-10}},
@@ -880,15 +880,13 @@ Connector with one flow signal of type Real.
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
               fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
-    end NegativePressureFlow;
+    end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"
 
-      Interfaces.PositivePressureFlow
-                           q_in "Volume inflow" annotation (Placement(
+      HydraulicPort_a      q_in "Volume inflow" annotation (Placement(
             transformation(extent={{-114,-14},{-86,14}})));
-      Interfaces.NegativePressureFlow
-                           q_out "Volume outflow"
+      HydraulicPort_b      q_out "Volume outflow"
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
 
@@ -905,6 +903,6 @@ Connector with one flow signal of type Real.
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
 <p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
-<p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the ideal block of blood accumulation called ElasticBalloon.</p>
+<p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p>
 </html>"));
 end Hydraulic;
