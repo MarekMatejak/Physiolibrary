@@ -24,11 +24,11 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Current release
 
-Download [Physiolibrary 2.0.0 (2014-01-26)](../../archive/v2.0.0.zip)
+Download [Physiolibrary 2.0.1 (2014-01-26)](../../archive/v2.0.1.zip)
 
 #### Release notes
 
-*  [Version v2.0.0 (2014-01-26)](../../archive/v2.0.0.zip)
+*  [Version v2.0.1 (2014-01-26)](../../archive/v2.0.1.zip)
  * Support for steady states calculation by energy/mass conservation laws or enviroment sources
  * Conditional inputs for each domain blocks
  * Package States renamed to SteadyStates, added SteadyStates.Components
