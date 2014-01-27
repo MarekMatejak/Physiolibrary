@@ -21,10 +21,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                      pulmonaryArteries(
         ZeroPressureVolume(displayUnit="l") = 0.00030625,
         Compliance(displayUnit="l/mmHg") = 3.6002955640592e-08,
-        volume_start(displayUnit="l") = 0.00038,
-        useV0Input=false,
-        useComplianceInput=false,
-        useExternalPressureInput=false)
+        volume_start(displayUnit="l") = 0.00038)
         annotation (Placement(transformation(extent={{-62,74},{-42,94}})));
       Hydraulic.Components.Conductor
                pulmonary(Conductance(displayUnit="l/(mmHg.min)") = 4.1665920538226e-08)

@@ -1135,7 +1135,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
-<p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
 </html>"));
     end EnergyConservationLaw;
 
@@ -1182,7 +1181,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
-<p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
 </html>"));
     end MassConservationLaw;
 
@@ -1230,9 +1228,55 @@ package SteadyStates "Dynamic Simulation / Steady State"
               textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
-<p>This block was design to be used instead of obcure inheritance from SteadyState.Interfaces.SteadyStateSystem, but for unknown reason it does not work in OpenModelica 1.9.0 nor in Dymola 2014 for more complex models in steady state. </p>
 </html>"));
     end MolarConservationLaw;
+
+    model ElectricChargeConservationLaw
+      "System amount of electric charge (=number of elementary charges) conservation law"
+      extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
+      extends Physiolibrary.Icons.ConservationLaw;
+
+      parameter Integer n "Number of mass/energy fragments";
+
+      Physiolibrary.Types.RealIO.ElectricChargeInput fragment[n]
+        "Mass/Energy fragment"
+        annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
+            iconTransformation(extent={{-120,-60},{-80,-20}})));
+
+      parameter Boolean useTotalInput = false
+        "=true, if total mass/energy is used as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.ElectricCharge Total
+        "Total mass/energy if useTotalAsInput=false"
+        annotation (Dialog(enable=not useTotalInput));
+
+      Types.RealIO.ElectricChargeInput total(start=Total) = t if useTotalInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
+
+      Physiolibrary.Types.ElectricCharge t "Current Mass/Energy";
+    equation
+      if not useTotalInput then
+        t=Total;
+      end if;
+
+      t*normalizedState[1] = sum(fragment);
+
+      //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={Text(
+              extent={{-160,-110},{160,-140}},
+              lineColor={0,0,255},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              extent={{-100,-100},{100,100}}), graphics),
+        Documentation(info="<html>
+</html>"));
+    end ElectricChargeConservationLaw;
   end Components;
 
   package Interfaces
