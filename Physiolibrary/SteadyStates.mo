@@ -150,8 +150,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Chemical.Components.GasSolubility gasSolubility(useHeatPort=true, kH_T0=1
             /(0.0105*(1e-3)*Modelica.Constants.R*298.15))
         annotation (Placement(transformation(extent={{-12,-28},{8,-8}})));
-      Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(T=295.15,
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+      Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        usePartialPressureInput=true,
+        useHeatPort=true,
+        T=295.15)
         annotation (Placement(transformation(extent={{-40,60},{-20,80}})));
     equation
 
@@ -178,6 +181,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{-20,70},{-2,70},{-2,-8}},
           color={107,45,134},
           thickness=1,
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, unlimitedGasStorage.heatPort)
+        annotation (Line(
+          points={{-36,-18},{-30,-18},{-30,70}},
+          color={191,0,0},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics),
