@@ -1,28 +1,10 @@
 within Physiolibrary;
 package Icons "Icons for physiological models"
-  extends Modelica.Icons.Package;
+  extends Modelica.Icons.IconsPackage;
   package Library
+      extends Modelica.Icons.Library;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,-100},{98,102}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{-100,102},{-80,122},{118,122},{98,102},{-100,102}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{118,122},{118,-80},{98,-100},{98,102},{118,122}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Text(
-            extent={{-120,175},{120,120}},
-            lineColor={255,0,0},
-            textString="%name")}));
+              -100},{100,100}}), graphics));
   end Library;
 
   model Golem
@@ -299,6 +281,9 @@ package Icons "Icons for physiological models"
 
   model Cell
 
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="Resources/Icons/OsmothicCell.png")}));
   end Cell;
 
   package HeatLib
@@ -349,27 +334,9 @@ package Icons "Icons for physiological models"
   end GolemLib;
 
   package BaseLib
+    extends Modelica.Icons.Library2;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-          Rectangle(
-            extent={{-100,-100},{80,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{-100,50},{-80,70},{100,70},{80,50},{-100,50}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Polygon(
-            points={{100,70},{100,-80},{80,-100},{80,50},{100,70}},
-            fillColor={235,235,235},
-            fillPattern=FillPattern.Solid,
-            lineColor={0,0,255}),
-          Text(
-            extent={{-120,122},{120,73}},
-            lineColor={255,0,0},
-            textString="%name")}));
+              -100},{100,100}}), graphics));
   end BaseLib;
 
   package HormonesLib
@@ -525,10 +492,10 @@ package Icons "Icons for physiological models"
               -100},{100,100}}), graphics={
                                Rectangle(
             extent={{-100,100},{100,-100}},
-            lineColor={0,0,255},
             fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),Bitmap(extent={{-100,100},{100,
-                -100}}, fileName=
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None),     Bitmap(extent={{-100,100},{100,-100}},
+                        fileName=
                 "Resources/Icons/glykogen.png")}));
   end Glycogen;
 
@@ -582,12 +549,7 @@ package Icons "Icons for physiological models"
     annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
               {100,120}}),            graphics), Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,120}}),
-          graphics={             Rectangle(
-            extent={{-100,120},{100,-100}},
-            lineColor={0,0,255},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-                                 Bitmap(extent={{28,120},{98,44}}, fileName=
+          graphics={             Bitmap(extent={{28,120},{98,44}}, fileName=
                "Resources/Icons/ohen.png")}));
   end MetabolismPart;
 
@@ -1213,6 +1175,7 @@ package Icons "Icons for physiological models"
   end PartialPressure;
 
   model ConservationLaw
+
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
           Rectangle(

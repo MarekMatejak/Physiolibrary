@@ -353,7 +353,7 @@ versionBuild=1,
 versionDate="2014-01-26",
 dateModified = "2014-01-26 14:30:00Z",
 revisionId="",
-uses(Modelica(version="3.2")),
+uses(Modelica(version="3.2.1")),
 conversion,
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
