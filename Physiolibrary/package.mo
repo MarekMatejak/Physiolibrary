@@ -296,7 +296,7 @@ package Physiolibrary "Physiological domains library (version v2.0)"
 <p>skype: marek.matejak</p>
 <p>tel: 00420 776 301 395</p>
 <p><br/>Graphics of icons:</p>
-<p>Martin Bro~</p>
+<p>Martin Broz,</p>
 <p>Veronika Sykorova</p>
 <p>email: elvenfall@gmail.com</p>
 </html>"));
