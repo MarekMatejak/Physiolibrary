@@ -29,9 +29,8 @@
       <div id="main" role="main">
         <div class="download-bar">
         <div class="inner">
-          <a href="https://github.com/MarekMatejak/Physiolibrary/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/MarekMatejak/Physiolibrary/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/MarekMatejak/Physiolibrary" class="code">View Physiolibrary on GitHub</a>
+          <a href="https://github.com/MarekMatejak/Physiolibrary/zipball/release" class="download-button zip" download="Physiolibrary.zip"><span>Download</span></a>
+	  <a href="https://github.com/MarekMatejak/Physiolibrary" class="code">GitHub</a><br/>
         </div>
         <span class="blc"></span><span class="trc"></span>
         </div>
@@ -39,7 +38,7 @@
           <h1>
 <a name="physiolibrary" class="anchor" href="#physiolibrary"><span class="octicon octicon-link"></span></a>Physiolibrary</h1>
 
-<p>Physiolibrary is a free open-source Modelica library designed for modeling human physiology. 
+<p>Physiolibrary is a free open-source <a href="http://modelica.org">Modelica</a> library designed for modeling human physiology. 
 This library contains basic physical laws governing human physiology, usable for cardiovascular circulation,
 metabolic processes, nutrient distribution, thermoregulation, gases transport, electrolyte regulation, 
 water distribution, hormonal regulation and pharmacological regulation.</p>
@@ -47,88 +46,23 @@ water distribution, hormonal regulation and pharmacological regulation.</p>
 <h2>
 <a name="library-description" class="anchor" href="#library-description"><span class="octicon octicon-link"></span></a>Library description</h2>
 
-<p>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation,
-where it was called HumMod.Library. As the successors of Guyton's Medical Physiology School write, 
-the original HumMod model is “The best, most complete, mathematical model of human phys-iology ever created” ( <a href="http://hummod.org">http://hummod.org</a> ).</p>
+<p><a href="http://www.physiome.cz">Our laboratory</a> have a long tradition building physiological libraries, starting with <a href="http://patf-biokyb.lf1.cuni.cz/wiki/projekty/physiolibrary">Physiolibrary in Matlab/Simulink</a> environment.  The origin of this Modelica Physiolibrary was in the first version of our <a href="http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod">HumMod Golem Edition</a> model implementation, where it was called HumMod.Library. As the successors of Guyton's Medical Physiology School write, the original <a href="http://hummod.org">HumMod</a> model is  “The best, most complete, mathematical model of human physiology ever created”. </p>
 
-<p>We are also developing many types of smaller physiological models for use in medical education, 
-so it was essential to separate this library from our HumMod Modelica implementation. This separation improves 
-the quality of the next HumMod release and provides a useful Modelica library to modelers in this bioscience.
-The library contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological
-processes. For example from only two type of blocks (Chemical.ChemicalReaction and Chemical.Substance) it is 
-possible to compose the allosteric transitions or the Michaelis-Menten equation.</p>
+<p>We are also developing many types of smaller physiological models for use in <a href="http://www.physiome.cz/atlas">medical education</a>, so it was essential to separate this library from our HumMod Modelica implementation. 
+Our Physiolibrary contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological processes. For example from only three type of blocks (ChemicalReaction, Substance and MolarConservationMass) it is possible to compose the allosteric transitions or the Michaelis-Menten equation. </p>
 
 <p>Library contains also the icons for higher level (HumMod) subsystem implementations:</p>
 
 <p><img src="https://raw.github.com/MarekMatejak/Physiolibrary/master/screenshot.png" alt="screenshot"></p>
 
+
 <h2>
-<a name="current-release" class="anchor" href="#current-release"><span class="octicon octicon-link"></span></a>Current release</h2>
-
-<p>Download <a href="https://github.com/MarekMatejak/Physiolibrary/archive/v2.0.2.zip">Physiolibrary 2.0.2 (2014-01-26)</a></p>
-
-<h4>
-<a name="release-notes" class="anchor" href="#release-notes"><span class="octicon octicon-link"></span></a>Release notes</h4>
-
-<ul>
-<li>
-<p><a href="https://github.com/MarekMatejak/Physiolibrary/archive/v2.0.2.zip">Version v2.0.2 (2014-01-26)</a></p>
-
-<ul>
-<li>Support for steady states calculation by energy/mass conservation laws or enviroment sources</li>
-<li>Conditional inputs for each domain blocks</li>
-<li>Package States renamed to SteadyStates, added SteadyStates.Components</li>
-<li>Removed package Mixed</li>
-<li>Package FileUtilities moved to Types.FileUtilities</li>
-</ul>
-</li>
-<li>
-<p><a href="https://github.com/MarekMatejak/Physiolibrary/archive/v1.2.0.zip">Version v1.2.0 (2014-01-15)</a></p>
-
-<ul>
-<li>Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}</li>
-<li>New icons</li>
-<li>Thermal: Relative heat energy to normal body temperature (37degC) </li>
-<li>New examples: 
-Guyton-Coleman-Granger cardiovascular model, 
-Coleman thermal energy transfers</li>
-</ul>
-</li>
-<li>
-<p><a href="https://github.com/MarekMatejak/Physiolibrary/archive/v1.1.0.zip">Version v1.1.0 (2013-12-30)</a></p>
-
-<ul>
-<li>Heat connector compatibility between Physiolibrary.Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)</li>
-<li>Some English language corrections</li>
-<li>Hydrostatic pressure patch</li>
-<li>New examples </li>
-</ul>
-</li>
-<li>
-<p><a href="https://github.com/MarekMatejak/Physiolibrary/archive/v1.0.1.zip">Version v1.0.1 (2013-12-11)</a></p>
-
-<ul>
-<li>The library uses the Modelica Standard Libary (MSL) version 3.2.</li>
-<li>Contains nice physiological icons.</li>
-<li>Support for physiological units: min,kcal,mmHg,ml,mEq,.. </li>
-<li>Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</li>
-<li>Support of euilibrated systems</li>
-<li>Support for expandable inputs/outputs/tests lists </li>
-</ul>
-</li>
-</ul><h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>This Modelica package is free software and the use is completely at your own risk;
 it can be redistributed and/or modified under the terms of the <a href="https://modelica.org/licenses/ModelicaLicense2">Modelica License 2</a>.</p>
 
-<h2>
-<a name="development-and-contribution" class="anchor" href="#development-and-contribution"><span class="octicon octicon-link"></span></a>Development and contribution</h2>
-
-<p>Release manager: <a href="http://www.physiome.cz">Marek Matejak</a></p>
-
-<p>You may report bugs or issues to e-mail: marek&lt;at&gt;matfyz&lt;dot&gt;cz</p>
-        </article>
+      </article>
       </div>
     </div>
     <footer>
@@ -144,7 +78,7 @@ it can be redistributed and/or modified under the terms of the <a href="https://
   </div>
   <div class="current-section">
     <a href="#top">Scroll to top</a>
-    <a href="https://github.com/MarekMatejak/Physiolibrary/tarball/master" class="tar">tar</a><a href="https://github.com/MarekMatejak/Physiolibrary/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <a href="https://github.com/MarekMatejak/Physiolibrary/zipball/release" class="zip">zip</a><a href="" class="code">source code</a>
     <p class="name"></p>
   </div>
 
