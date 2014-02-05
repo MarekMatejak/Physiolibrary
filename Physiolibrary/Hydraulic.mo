@@ -329,6 +329,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Inflow.pressure = Outflow.pressure;
       0 = Inflow.q + Outflow.q + Reabsorption.q;
 
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+
       Reabsorption.q = -min(0,FractReab*(Inflow.q-OutflowMin));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),       graphics={Text(
@@ -525,6 +527,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       state = volume; // der(volume) =  q_in.q;
       change = q_in.q;
 
+     // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
+
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
                 100}}),     graphics={Text(
@@ -567,6 +571,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       state = volume; // der(volume) =  q_int.q;
       change = q_int.q;
 
+      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Diagram(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}),

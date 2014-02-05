@@ -116,6 +116,9 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
       change = q_in.q;    //der(volume)=q_in.q
       state = volume;
+
+      //  assert(volume>=-Modelica.Constants.eps,"Collapsed cells by osmotic pressure are not supported!");
+
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
@@ -454,7 +457,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -487,7 +490,7 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
              fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

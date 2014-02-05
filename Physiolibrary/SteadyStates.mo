@@ -147,8 +147,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
         prescribedTemperature
         annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
-      Chemical.Components.GasSolubility gasSolubility(useHeatPort=true, kH_T0=1
-            /(0.0105*(1e-3)*Modelica.Constants.R*298.15))
+      Chemical.Components.GasSolubility gasSolubility(useHeatPort=true, kH_T0(
+            displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736)
         annotation (Placement(transformation(extent={{-12,-28},{8,-8}})));
       Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -361,8 +361,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-66,32})));
-      Chemical.Components.GasSolubility gasSolubility(kH_T0=1/(0.0105*(1e-3)*
-            Modelica.Constants.R*298.15), useHeatPort=false)
+      Chemical.Components.GasSolubility gasSolubility(
+                                          useHeatPort=false, kH_T0=
+            0.026029047188736)
         annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
       Modelica.Blocks.Math.Sum oxygen_bound(k={1,1,2,2,3,3,4,4}, nin=8)
         annotation (Placement(transformation(extent={{72,-56},{82,-46}})));
@@ -765,7 +766,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Physiolibrary.Chemical.Components.Substance
                           OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState)
         "Oxygenated subunit in T structure of hemoglobin tetramer"
-        annotation (Placement(transformation(extent={{24,6},{44,26}})));
+        annotation (Placement(transformation(extent={{26,6},{46,26}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
                        oxygenation_T(K=KT, nP=2)
         annotation (Placement(transformation(extent={{52,6},{72,26}})));
@@ -785,11 +786,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={-52,-12})));
+            origin={-64,-10})));
       Modelica.Blocks.Math.Add add1 annotation (Placement(transformation(
             extent={{-4,-4},{4,4}},
             rotation=270,
-            origin={64,-12})));
+            origin={52,-12})));
       Physiolibrary.SteadyStates.Components.MolarConservationLaw
         hemoglobinConservationLaw(                              n=2,
         Simulation=SimulationType.SteadyState,
@@ -801,8 +802,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-58,84})));
-      Chemical.Components.GasSolubility gasSolubility(kH_T0=1/(0.0105*(1e-3)*
-            Modelica.Constants.R*298.15), useHeatPort=false)
+      Chemical.Components.GasSolubility gasSolubility(
+                                          useHeatPort=false, kH_T0=
+            0.026029047188736)
         annotation (Placement(transformation(extent={{-2,62},{18,82}})));
       Modelica.Blocks.Math.Sum oxygen_bound(nin=2)
         annotation (Placement(transformation(extent={{56,-90},{66,-80}})));
@@ -838,7 +840,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(OxyTHm.q_out, oxygenation_T.substrates[1])
                                                annotation (Line(
-          points={{34,16},{52,16}},
+          points={{36,16},{52,16}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
@@ -872,37 +874,37 @@ package SteadyStates "Dynamic Simulation / Steady State"
           smooth=Smooth.None));
       connect(add.y, R0_in_R.totalSubunitAmount[1])
                                               annotation (Line(
-          points={{-52,-16.4},{-52,-38},{-56,-38}},
+          points={{-64,-14.4},{-64,-38},{-56,-38}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(add1.y, T0_in_T.totalSubunitAmount[1])
                                                annotation (Line(
-          points={{64,-16.4},{64,-38},{60,-38}},
+          points={{52,-16.4},{52,-38},{60,-38}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyTHm.solute, add1.u2) annotation (Line(
-          points={{34,6},{34,0},{61.6,0},{61.6,-7.2}},
+          points={{36,6},{36,0},{49.6,0},{49.6,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-          points={{66.4,-7.2},{66.4,0},{90,0},{90,6}},
+          points={{54.4,-7.2},{54.4,0},{90,0},{90,6}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(DeoxyRHm.solute, add.u1) annotation (Line(
-          points={{-28,6},{-28,-2},{-49.6,-2},{-49.6,-7.2}},
+          points={{-28,6},{-28,-2},{-61.6,-2},{-61.6,-5.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyRHm.solute, add.u2) annotation (Line(
-          points={{-86,6},{-86,-2},{-54.4,-2},{-54.4,-7.2}},
+          points={{-86,6},{-86,-2},{-66.4,-2},{-66.4,-5.2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add.y, hemoglobinConservationLaw.fragment[1]) annotation (Line(
-          points={{-52,-16.4},{-52,-18},{34,-18},{34,-67},{74,-67}},
+          points={{-64,-14.4},{-64,-18},{34,-18},{34,-67},{74,-67}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.y, hemoglobinConservationLaw.fragment[2]) annotation (Line(
-          points={{64,-16.4},{64,-20},{38,-20},{38,-65},{74,-65}},
+          points={{52,-16.4},{52,-20},{38,-20},{38,-65},{74,-65}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(oxygen_unbound.q_out,gasSolubility. q_in) annotation (Line(
@@ -928,11 +930,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyTHm.solute, oxygen_bound.u[2]) annotation (Line(
-          points={{34,6},{36,6},{36,-84.5},{55,-84.5}},
+          points={{36,6},{36,-84.5},{55,-84.5}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add.y, tHb.u[1]) annotation (Line(
-          points={{-52,-16.4},{-52,-18},{34,-18},{34,-93.5},{71,-93.5}},
+          points={{-64,-14.4},{-64,-18},{34,-18},{34,-93.5},{71,-93.5}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(OxyRHm.solute, oxygen_bound.u[1]) annotation (Line(
@@ -940,7 +942,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           color={0,0,127},
           smooth=Smooth.None));
       connect(add1.y, tHb.u[2]) annotation (Line(
-          points={{64,-16.4},{64,-20},{38,-20},{38,-92.5},{71,-92.5}},
+          points={{52,-16.4},{52,-20},{38,-20},{38,-92.5},{71,-92.5}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

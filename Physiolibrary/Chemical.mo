@@ -130,9 +130,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                                              Simulation=SimulationType.SteadyState);
 
       parameter Temperature T=310.15 "Temperature";
-      parameter GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma";
+    //  parameter GasSolubility alpha =  Modelica.Constants.R*298.15 * 0.0105 * 1e-3
+    //    "oxygen solubility in plasma";
                                        // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
       parameter Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
       parameter Fraction c = 0.00431555
@@ -256,8 +257,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
       Components.GasSolubility
-                            partialPressure(kH_T0=1/(alpha*Modelica.Constants.R
-            *298.15), T=310.15)                                       annotation (Placement(
+                            partialPressure(T=310.15, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+             0.026029047188736)                                       annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -503,9 +504,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
                                               Simulation=SimulationType.SteadyState);
 
-      parameter GasSolubility alpha =  0.0105 * 1e-3
-        "oxygen solubility in plasma";
-                                       // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+    //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
       parameter Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
       parameter Fraction c = 0.00431555
@@ -580,8 +580,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             rotation=270,
             origin={6,60})));
       Components.GasSolubility
-                            partialPressure1(T=310.15, kH_T0=1/(alpha*Modelica.Constants.R
-            *298.15))                                                 annotation (Placement(
+                            partialPressure1(T=310.15, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+             0.026029047188736)                                       annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -1028,11 +1028,11 @@ It works in two modes:
       parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^8
         "The rate constant of incoming gas to solution";
 
-      Physiolibrary.Types.Fraction kH
+      Physiolibrary.Types.GasSolubility kH
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
-      parameter Physiolibrary.Types.Fraction kH_T0
-        "Henry's law coefficient at base temperature (i.e. at : O2..?%, CO2..?%, N2..?%, CO..?%, ..)";
+      parameter Physiolibrary.Types.GasSolubility kH_T0
+        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/mmHg at 37degC: aO2=1.34e-3, aCO2=22.9e-3, ..)";
       parameter Physiolibrary.Types.Temperature T0=298.15
         "Base temperature for kH_T0"
          annotation (Dialog(tab="Temperature dependence"));
@@ -1054,14 +1054,20 @@ It works in two modes:
 
       kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
-      // equilibrium:  gas.conc = kH * liquid.conc;
-      q_out.q = solubilityRateCoef*(q_out.conc - kH * q_in.conc); //negative because of outflow
+      // equilibrium:  liquid.conc = kH * gas.conc;
+      q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc); //negative because of outflow
 
       lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
        annotation (Documentation(revisions="<html>
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p><h4><font color=\"#008000\">Henry's law of The solubility of a Gas in Liquid</font></h4></p>
+<p>Henry&apos;s law at equilibrium: The concentration of a gas in a liquid is proportional to the partial pressure of the gas.</p>
+<p>p=k*c</p>
+<p>where<b> p</b> is the partial pressure of the gas, <b>k</b> is a Henry&apos;s law constant and<b> c</b> is a small concentration of the gas in the liquid.</p>
+<p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
 </html>"));
     end GasSolubility;
 

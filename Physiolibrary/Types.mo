@@ -2889,7 +2889,7 @@ constructed by the signals connected to this bus.
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
-  type GasSolubility = Real(final quantity="GasSolubility", final unit="mol/(m3.Pa)", displayUnit="mmol/(l.mmHg)", nominal=(1e-3)/((1e-3)*(133.322387415)))
+  type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2)
     "Gas solubility in liquid";
 
   partial block AbstractReal

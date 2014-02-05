@@ -40,8 +40,46 @@ defineUnitConversion("mol/s", "mol/min", 60 );
 defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
 defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
 defineUnitConversion("m3/s", "(mmol/min)/(mmol/l)", (10^3)*60 ); //diffusion permeability
-defineUnitConversion("mol/(m3.Pa)", "mmol/(l.mmHg)", 133.322387415 ); //gas solubility
-defineUnitConversion("mol/(m3.Pa)", "mmol/(l.kPa)", 1000 ); //gas solubility
+
+//gas solubility - Henry's constant
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/(mmol/l)", 1 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "%", 100 ); 
+
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/Pa at 0 degC", 4.40316172572e-4 ); // 1/(R*T)=1/(8.3144621*273.15)
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/Pa at 20degC", 4.10275840143e-4 ); // 1/(R*T)=1/(8.3144621*293.15)
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/Pa at 25degC", 4.03395480590e-4 ); // 1/(R*T)=1/(8.3144621*298.15) 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/Pa at 37degC", 3.87787723805e-4 ); // 1/(R*T)=1/(8.3144621*310.15)
+
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/Pa at 0 degC",  4.40316172572e-7 );  //STP:   0degC
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/Pa at 20degC",  4.10275840143e-7 );  //NIST: 20degC
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/Pa at 25degC",  4.03395480590e-7 );  //SATP: 25degC
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/Pa at 37degC",  3.87787723805e-7 );  //SBTP = standard body temperature: 37degC
+
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/kPa at 0 degC", 4.40316172572e-4 ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/kPa at 20degC", 4.10275840143e-4  ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/kPa at 25degC", 4.03395480590e-4  ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/kPa at 37degC", 3.87787723805e-4  ); 
+
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/kPa at 0 degC",  4.40316172572e-1 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/kPa at 20degC",  4.10275840143e-1 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/kPa at 25degC",  4.03395480590e-1 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/kPa at 37degC",  3.87787723805e-1 ); 
+
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/mmHg at 0 degC", (4.40316172572e-7)*133.322387415 ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/mmHg at 20degC", (4.10275840143e-7)*133.322387415 ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/mmHg at 25degC", (4.03395480590e-7)*133.322387415 ); 
+//defineUnitConversion("(mol/m3)/(mol/m3)", "(mol/l)/mmHg at 37degC", (3.87787723805e-7)*133.322387415 ); 
+
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/mmHg at 0 degC",  (4.40316172572e-4)*133.322387415 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/mmHg at 20degC",  (4.10275840143e-4)*133.322387415 );
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/mmHg at 25degC",  (4.03395480590e-4)*133.322387415 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/mmHg at 37degC",  (3.87787723805e-4)*133.322387415 );
+
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/atm at 0 degC", (4.40316172572e-1)*101.325 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/atm at 20degC", (4.10275840143e-1)*101.325 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/atm at 25degC", (4.03395480590e-1)*101.325 ); 
+defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/atm at 37degC", (3.87787723805e-1)*101.325 ); 
+
 
 //Osmolarity
 defineUnitConversion("mol", "osm", 1 );
@@ -54,18 +92,22 @@ defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (10^6)*133.322387415*60 ); //
 
 
 //Gases
-defineUnitConversion("mol", "litre_STP",  22.71095322615 );
+defineUnitConversion("mol", "litre_STP",  22.71095322615 ); //STP: 100Pa, 0degC
 defineUnitConversion("mol", "ml_STP",  22710.95322615 );
 defineUnitConversion("mol/s", "l_STP/min", 1362.657193569 );
 defineUnitConversion("mol/s", "ml_STP/min", 1362657.193569 );
-defineUnitConversion("mol", "litre_SATP",  24.78956875115 );
+defineUnitConversion("mol", "litre_SATP",  24.78956875115 ); //SATP: 100kPa, 25degC
 defineUnitConversion("mol", "ml_SATP",  24789.56875115 );
 defineUnitConversion("mol/s", "l_SATP/min", 1487.374125069 );
 defineUnitConversion("mol/s", "ml_SATP/min", 1487374.125069 );
-defineUnitConversion("mol", "litre_NIST",  24.05511536753 );
+defineUnitConversion("mol", "litre_NIST",  24.05511536753 ); //NIST: 101.325kPa, 20degC
 defineUnitConversion("mol", "ml_NIST",  24055.11536753 );
 defineUnitConversion("mol/s", "l_NIST/min", 1443.3069220518 );
 defineUnitConversion("mol/s", "ml_NIST/min", 1443306.9220518 );
+defineUnitConversion("mol", "l_SBTP",  25.45009050397 ); //standard body temperature, pressure: 101.325kPa, 37degC
+defineUnitConversion("mol", "ml_SBTP",  25450.09050397 );
+defineUnitConversion("mol/s", "l_SBTP/min", 1527.00543023834197 );
+defineUnitConversion("mol/s", "ml_SBTP/min", 1527005.43023834197 );
 
 //Chemical equivalents
 defineUnitConversion("C", "eq", 1/(9.64853399*10^4) );
