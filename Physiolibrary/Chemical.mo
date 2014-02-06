@@ -862,7 +862,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
     equation
-      q_out.conc = solute/volume;
+      q_out.conc = solute/volume; //TODO: solute/(solvent+solute)?
 
       state = solute; // der(solute)=q_out.q
       change = q_out.q;
@@ -1249,14 +1249,13 @@ It works in two modes:
                 -100},{100,100}}), graphics));
     end Degradation;
 
-    model Stream "One-directional flow of solution"
-     //- Solute flowing together with solvent - One-directional stream (only zero or positive solvent flow values are allowed!)"
+    model Stream "Flow of whole solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
-    //  assert(q>=-Modelica.Constants.eps,"In MolarStream must be always the forward flow in forward direction! Not 'solventFlow<0'!");
-      q_in.q = q*q_in.conc;
+      q_in.q = if
+                 (q>0) then q*q_in.conc else q*q_out.conc;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -1281,7 +1280,7 @@ It works in two modes:
               lineColor={0,0,255},
               origin={2,-74},
               rotation=180)}),
-         Diagram(coordinateSystem(preserveAspectRatio=true,
+         Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
@@ -1307,25 +1306,26 @@ It works in two modes:
 <p>Possible field values: </p>
 <table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
 <td></td>
-<td><p align=\"center\">forward flow</p></td>
-<td><p align=\"center\">backward flow</p></td>
+<td><p align=\"center\"><h4>forward flow</h4></p></td>
+<td><p align=\"center\"><h4>backward flow</h4></p></td>
 </tr>
 <tr>
-<td><p align=\"center\"><h4>solventFlow</h4></p></td>
+<td><p align=\"center\"><h4>solutionFlow</h4></p></td>
 <td><p align=\"center\">&GT;=0</p></td>
-<td><p align=\"center\">&LT;0</p></td>
+<td><p align=\"center\">&LT;=0</p></td>
 </tr>
 <tr>
 <td><p align=\"center\"><h4>q_in.q</h4></p></td>
-<td><p align=\"center\">=solventFlow*q_in.conc</p></td>
-<td><p align=\"center\">=solventFlow*q_out.conc</p></td>
+<td><p align=\"center\">=solutionFlow*q_in.conc</p></td>
+<td><p align=\"center\">=-q_out.q</p></td>
 </tr>
 <tr>
 <td><p align=\"center\"><h4>q_out.q</h4></p></td>
 <td><p align=\"center\">=-q_in.q</p></td>
-<td><p align=\"center\">=-q_in.q</p></td>
+<td><p align=\"center\">=solutionFlow*q_out.conc</p></td>
 </tr>
 </table>
+<br/>
 </html>"));
     end Stream;
 
@@ -1436,7 +1436,7 @@ It works in two modes:
 </html>"));
     end Speciation;
 
-    model Dilution "Adding the solvent to solution"
+    model Dilution "Adding/removing of the solvent to/from solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
 
       parameter Boolean useDilutionInput = false

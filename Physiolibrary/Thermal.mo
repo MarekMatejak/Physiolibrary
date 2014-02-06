@@ -291,7 +291,7 @@ package Thermal
                 {100,100}}), graphics));
     end Conductor;
 
-    model Stream "One-directional flow of heated mass"
+    model Stream "Flow of whole heated mass"
       extends Interfaces.OnePort;
       extends Interfaces.ConditionalMassFlow;
 
@@ -299,8 +299,7 @@ package Thermal
         "Of flow circuit medium";
 
     equation
-    //  assert(substanceFlow>=-Modelica.Constants.eps,"In HeatStream must be always the forward flow direction! Not 'substanceFlow<0'!");
-      q_in.Q_flow = q*q_in.T*SpecificHeat;
+      q_in.Q_flow = if (q>0) then q*q_in.T*SpecificHeat else q*q_out.T*SpecificHeat;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
@@ -323,6 +322,31 @@ package Thermal
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p><h4><font color=\"#008000\">Bidirectional heated mass flow by temperature</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
+<td></td>
+<td><p align=\"center\"><h4>forward flow</h4></p></td>
+<td><p align=\"center\"><h4>backward flow</h4></p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>massFlow</h4></p></td>
+<td><p align=\"center\">&GT;=0</p></td>
+<td><p align=\"center\">&LT;=0</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_in.q</h4></p></td>
+<td><p align=\"center\">=massFlow*q_in.T*SpecificHeat</p></td>
+<td><p align=\"center\">=-q_out.q</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_out.q</h4></p></td>
+<td><p align=\"center\">=-q_in.q</p></td>
+<td><p align=\"center\">=massFlow*q_out.T*SpecificHeat</p></td>
+</tr>
+</table>
+<br/>
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end Stream;
@@ -585,7 +609,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end HeatPort_a;
 
     connector HeatPort_b "Heat outflow"
@@ -608,7 +632,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end HeatPort_b;
 
