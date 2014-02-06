@@ -161,14 +161,14 @@ defineUnitConversion("Pa", "bar", 1e-5);
 defineUnitConversion("Pa", "mmHg", 1/133.322387415);
 defineUnitConversion("Pa", "cmH2O", 1/98.0665);
 defineUnitConversion("Pa", "torr", 760/101325);
-defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //conductance
+defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);
-defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //resistance
+defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
-defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //compliance
+defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //hydraulic compliance
 defineUnitConversion("m3/Pa", "l/mmHg", (1e+3)*(133.322387415));
+defineUnitConversion("Pa/m3", "mmHg/ml", 1/((1e+6)*(133.322387415)));  //hydraulic elastance
 defineUnitConversion("Pa.s2/m3", "mmHg.min2/ml", (1/133.322387415)*(1/(60^2))/(1e+6));
-
 
 
 // Bulk Modulus

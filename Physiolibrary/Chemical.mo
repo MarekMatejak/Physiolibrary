@@ -1928,7 +1928,7 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
+       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1962,7 +1962,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
+       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

@@ -596,35 +596,6 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HeatFlowRateConst;
 
-  block HydraulicResistanceConst "Constant signal of type HydraulicConductance"
-   parameter Types.HydraulicResistance k
-        "Constant HydraulicConductance output value";
-        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
-      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-                  iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=1/k;
-    annotation (defaultComponentName="hydraulicconductance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
-          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
-              graphics={
-          Rectangle(extent={{-40,40},{40,-40}},
-            lineColor={0,0,0},
-                radius=10,
-            fillColor={236,236,236},
-                            fillPattern=FillPattern.Solid),
-          Text( extent={{-100,-44},{100,-64}},
-            lineColor={0,0,0},
-                    fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                textString="%name"),
-          Text(         extent={{-40,10},{40,-10}},
-            lineColor={0,0,0},
-                fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                    textString="Const")}));
-  end HydraulicResistanceConst;
-
   block HydraulicConductanceConst
       "Constant signal of type HydraulicConductance"
    parameter Types.HydraulicConductance k
@@ -655,6 +626,36 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicConductanceConst;
 
+  block HydraulicResistanceToConductanceConst
+      "Constant signal of type HydraulicConductance from HydraulicResistance parameter"
+   parameter Types.HydraulicResistance k
+        "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=1/k;
+    annotation (defaultComponentName="hydraulicconductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicResistanceToConductanceConst;
+
   block HydraulicComplianceConst "Constant signal of type HydraulicCompliance"
    parameter Types.HydraulicCompliance k
         "Constant HydraulicCompliance output value";
@@ -683,6 +684,36 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end HydraulicComplianceConst;
+
+  block HydraulicElastanceToComplianceConst
+      "Constant signal of type HydraulicCompliance from HydraulicElastance constant"
+   parameter Types.HydraulicElastance k
+        "Constant HydraulicCompliance output value";
+        RealIO.HydraulicComplianceOutput y "HydraulicCompliance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=1/k;
+    annotation (defaultComponentName="hydrauliccompliance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicElastanceToComplianceConst;
 
   block HydraulicInertanceConst "Constant signal of type HydraulicInertance"
    parameter Types.HydraulicInertance k
@@ -2885,8 +2916,11 @@ constructed by the signals connected to this bus.
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
-  type HydraulicResistance = Real(final quantity="HydraulicResistance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e-6)/((133.322387415)*60));
+  type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60);
+
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
+  type HydraulicElastance = Real(final quantity="HydraulicCompliance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
+
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
   type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2)

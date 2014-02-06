@@ -467,7 +467,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
        parameter Physiolibrary.Types.Volume ZeroPressureVolume = 0
         "Maximal volume, that does not generate pressure if useV0Input=false"
         annotation (Dialog(enable=not useV0Input));
-       Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume) if useV0Input
+       Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume)= zpv if useV0Input
                                                         annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
@@ -480,7 +480,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "Compliance if useComplianceInput=false"
         annotation (Dialog(enable=not useComplianceInput));
 
-      Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) if useComplianceInput
+      Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) = c if useComplianceInput
                                                             annotation (Placement(
             transformation(extent={{-20,-20},{20,20}},
             rotation=270,
@@ -493,7 +493,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
         annotation (Dialog(enable=not useExternalPressureInput));
 
-      Physiolibrary.Types.RealIO.PressureInput externalPressure(start=ExternalPressure) if useExternalPressureInput
+      Physiolibrary.Types.RealIO.PressureInput externalPressure(start=ExternalPressure) = ep if useExternalPressureInput
                                                        annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,

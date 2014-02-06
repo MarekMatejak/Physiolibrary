@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version v2.0)"
+package Physiolibrary "Physiological domains library (version v2.1)"
  extends Modelica.Icons.Package;
 
 
@@ -347,14 +347,22 @@ package Physiolibrary "Physiological domains library (version v2.0)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
   annotation (preferredView="info",
-version="2.0",
+version="2.1",
 versionBuild=1,
-versionDate="2014-01-26",
-dateModified = "2014-01-26 14:30:00Z",
+versionDate="2014-02-06",
+dateModified = "2014-02-06 17:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
-conversion,
+conversion(
+  from(version="2.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>

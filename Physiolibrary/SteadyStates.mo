@@ -1302,7 +1302,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       parameter Real state_start "State start or init value"
        annotation (Dialog(enable=false,group="Initialization", tab="IO"));
 
-      parameter SimulationType  Simulation(start=SimulationType.NormalInit)
+      parameter SimulationType  Simulation=SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -1390,7 +1390,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       parameter Real state_start[n] "State start or init value"
        annotation (Dialog(enable=false,group="Initialization", tab="IO"));
 
-      parameter SimulationType  Simulation(start=SimulationType.NormalInit)
+      parameter SimulationType  Simulation=SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
