@@ -22,6 +22,14 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ![screenshot](screenshot.png)
 
+## Installation
+Download the current release. Unzip it. 
+For Dymola users: execute \Resources\DymolaSettings\"installDisplayUnits.bat" which will copy the .
+
+To unistall this support of display units please run generated "uninstallDisplayUnit.bat".
+
+If new version of Dymola is installed please run "uninstallDisplayUnit.bat" first, if exists!
+
 ## Current release
 
 Download [Physiolibrary 2.0.2 (2014-01-26)](../../archive/v2.0.2.zip)
@@ -64,6 +72,7 @@ it can be redistributed and/or modified under the terms of the [Modelica License
 
 ## Development and contribution
 Release manager: [Marek Matejak](http://www.physiome.cz)
+Contributor: [Tomas Kulhanek] (https://github.com/TomasKulhanek)
 
 You may report bugs or issues to e-mail: marek\<at\>matfyz\<dot\>cz
 

@@ -1,0 +1,8 @@
+LibraryInfoMenuCommand(category="libraries",
+  text="Physiolibrary",
+  reference="Physiolibrary",
+  description="Physiological library",
+  version="2.1",
+  ModelicaVersion=">= 3.2.1",
+  pos=2002);
+  
