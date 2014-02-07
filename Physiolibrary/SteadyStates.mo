@@ -50,7 +50,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+</html>"),
+     experiment(StopTime=1),
+     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics));
     end SimpleReaction_in_Equilibrium;
 
@@ -123,7 +125,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+</html>"), experiment(StopTime=1),
+           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
     end SimpleReaction2_in_Equilibrium;
 
@@ -996,7 +999,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
           color={0,0,127},
           smooth=Smooth.None));
        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(info="<html>
+                -100},{100,100}}), graphics),
+     experiment(StopTime=1),
+     Documentation(info="<html>
 <p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
 <p><br/>Model, all parameters and all initial values are from article: </p>
 <p>A.C. Guyton, T.G. Coleman, H.J. Granger (1972). &QUOT;Circulation: overall regulation.&QUOT; Annual review of physiology 34(1): 13-44.</p>
@@ -1043,7 +1048,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{50,-52},{52,-52},{52,-82.5},{70,-82.5}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+      annotation (experiment(StopTime=1),
+     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
     end ThermalBody_QHP_STeadyState;
 
@@ -1087,7 +1093,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{44,-64},{44,-85},{70,-85}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+      annotation (experiment(StopTime=1),
+     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
     end Cells_SteadyState;
   end Examples;

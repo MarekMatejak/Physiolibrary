@@ -245,7 +245,7 @@ package Thermal
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=10000),
+        experiment(StopTime=3600),
         __Dymola_experimentSetupOutput);
     end ThermalBody_QHP;
 

@@ -200,7 +200,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>", revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        experiment(StopTime=300),
+        __Dymola_experimentSetupOutput);
     end CardiovascularSystem_GCG;
 
   end Examples;
@@ -847,7 +849,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}),
+              fillColor={0,0,0}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -881,7 +883,7 @@ Connector with one flow signal of type Real.
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
+              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"

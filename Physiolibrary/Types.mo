@@ -84,7 +84,8 @@ package Types "Physiological units with nominals"
         gasSATP=0.040339548059044,
         gasNIST=0.041571199502531)
         annotation (Placement(transformation(extent={{-14,8},{6,28}})));
-      annotation (Documentation(info="<html>
+      annotation (experiment(StopTime=1),
+     Documentation(info="<html>
 <p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
 </html>"));
     end Units;
@@ -141,31 +142,29 @@ package Types "Physiological units with nominals"
           string="%second",
           index=1,
           extent={{6,3},{6,3}}));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+      annotation (experiment(StopTime=1),
+      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Icon(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ParameterSet;
 
     model InputParameterSet
-    extends Modelica.Icons.Example;
     extends ParameterSet( T(redeclare block Variable =
               RealExtension.InputParameter (                                       redeclare
-                package Utilities = Physiolibrary.Types.Utilities)));
+                package Utilities = Physiolibrary.Types.ZeroUtilities)));
 
     end InputParameterSet;
 
     model OutputFinalSet
-    extends Modelica.Icons.Example;
     extends ParameterSet( T(redeclare block Variable =
             RealExtension.OutputFinal (
-              redeclare package Utilities = Physiolibrary.Types.Utilities)));
+              redeclare package Utilities = Physiolibrary.Types.ZeroUtilities)));
     end OutputFinalSet;
 
     model OutputComparisonSet
-    extends Modelica.Icons.Example;
     extends ParameterSet( T(redeclare block Variable =
               RealExtension.OutputComparison (
-              redeclare package Utilities = Physiolibrary.Types.Utilities)));
+              redeclare package Utilities = Physiolibrary.Types.ZeroUtilities)));
     end OutputComparisonSet;
   end Examples;
 
@@ -629,7 +628,7 @@ package Types "Physiological units with nominals"
   block HydraulicResistanceToConductanceConst
       "Constant signal of type HydraulicConductance from HydraulicResistance parameter"
    parameter Types.HydraulicResistance k
-        "Constant HydraulicConductance output value";
+        "Reciprocal constant value of hydraulic conductance";
         RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -688,7 +687,7 @@ package Types "Physiological units with nominals"
   block HydraulicElastanceToComplianceConst
       "Constant signal of type HydraulicCompliance from HydraulicElastance constant"
    parameter Types.HydraulicElastance k
-        "Constant HydraulicCompliance output value";
+        "Reciprocal constant value of hydraulic compliance";
         RealIO.HydraulicComplianceOutput y "HydraulicCompliance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -3445,7 +3444,7 @@ The Real output y is a constant signal:
         end OutputComparison;
   end BooleanExtension;
 
-  package Utilities
+  package Utilities "Value input/output/test support"
     extends Modelica.Icons.BasesPackage;
     replaceable function readReal "Read the real value of parameter from file with lines in format: 
   <parameterName>
@@ -3462,6 +3461,8 @@ The Real output y is a constant signal:
     replaceable function readBoolean "Read the boolean value of parameter from file with lines in format: 
   <parameterName>
   <value> <unit>"
+      extends Modelica.Icons.Function;
+
       input String name "Variable name";
       output Boolean value "Variable value";
     //algorithm
@@ -3477,6 +3478,8 @@ The Real output y is a constant signal:
     end writeReal;
 
     replaceable function writeBoolean "Write the boolean value to file"
+      extends Modelica.Icons.Function;
+
       input String name "Variable name";
       input Boolean value "Variable value";
     //algorithm
@@ -3510,7 +3513,38 @@ The Real output y is a constant signal:
     end writeBooleanComparison;
   end Utilities;
 
-  package FilesUtilities "Value input/output/test support"
+  package ZeroUtilities "No input/output/test"
+    import Physiolibrary;
+    extends Physiolibrary.Types.Utilities;
+    extends Modelica.Icons.VariantsPackage;
+
+    redeclare function extends readReal
+    algorithm
+    end readReal;
+
+    redeclare function extends readBoolean
+    algorithm
+    end readBoolean;
+
+    redeclare function extends writeReal
+    algorithm
+    end writeReal;
+
+    redeclare function extends writeBoolean
+    algorithm
+    end writeBoolean;
+
+    redeclare function extends writeComparison
+    algorithm
+    end writeComparison;
+
+    redeclare function extends writeBooleanComparison
+    algorithm
+    end writeBooleanComparison;
+
+  end ZeroUtilities;
+
+  package FilesUtilities "File input/output/test"
     import Physiolibrary;
     extends Physiolibrary.Types.Utilities;
     extends Modelica.Icons.VariantsPackage;

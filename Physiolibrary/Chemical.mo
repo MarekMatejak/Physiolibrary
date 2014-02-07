@@ -33,7 +33,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        experiment(StopTime=1e-007),
+        __Dymola_experimentSetupOutput);
     end SimpleReaction;
 
     model SimpleReaction2
@@ -70,7 +72,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        experiment(StopTime=1e-009),
+        __Dymola_experimentSetupOutput);
     end SimpleReaction2;
 
     model ExothermicReaction
@@ -118,7 +122,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        experiment(StopTime=5),
+        __Dymola_experimentSetupOutput);
     end ExothermicReaction;
 
     model Allosteric_Hemoglobin_MWC
@@ -783,7 +789,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 -100},{100,100}}), graphics), Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        experiment(StopTime=1),
+        __Dymola_experimentSetupOutput);
     end MichaelisMenten;
 
   end Examples;
