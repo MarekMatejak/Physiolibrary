@@ -23,12 +23,13 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 ![screenshot](screenshot.png)
 
 ## Installation
-Download the current release. Unzip it. 
-For Dymola users: execute \Resources\DymolaSettings\"installDisplayUnits.bat" which will copy the .
-
-To unistall this support of display units please run generated "uninstallDisplayUnit.bat".
-
-If new version of Dymola is installed please run "uninstallDisplayUnit.bat" first, if exists!
+Download and unzip. 
+* For Dymola users: 
+ * either execute as admin \Resources\DymolaSettings\"installDisplayUnits.bat" which will copy the Resources/DymolaSettings/displayunits.mos.
+ * or manually copy Resources/DymolaSettings/displayunits.mos into Dymola\insert folder  
+ * To unistall this support of display units please run generated "uninstallDisplayUnit.bat".
+ * If new version of Dymola is installed please run "uninstallDisplayUnit.bat" first, if exists!
+* If unzipped into Dymola\Modelica\Libraries the Physiolibrary should appear within File>Libraries menu.
 
 ## Current release
 
