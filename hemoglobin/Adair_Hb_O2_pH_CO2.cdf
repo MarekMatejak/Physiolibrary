@@ -23,10 +23,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[      1063,         20]
-NotebookDataLength[    151869,       3306]
-NotebookOptionsPosition[    150328,       3232]
-NotebookOutlinePosition[    150864,       3254]
-CellTagsIndexPosition[    150821,       3251]
+NotebookDataLength[    149515,       3224]
+NotebookOptionsPosition[    148457,       3166]
+NotebookOutlinePosition[    148997,       3188]
+CellTagsIndexPosition[    148954,       3185]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -67,72 +67,43 @@ Cell[BoxData[{
   RowBox[{"(*", " ", 
    RowBox[{
     RowBox[{
-     RowBox[{"mmol", "/", "l"}], "/", "mmHg"}], ";", " ", 
-    RowBox[{"O2", " ", "solubility", " ", "by", " ", "Siggaard"}]}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"pKzD", "=", "7.73"}], ";", " ", 
-   RowBox[{"pKcD", "=", 
-    RowBox[{"4.54", "+", "3"}]}], ";", " ", 
-   RowBox[{"pKzO", "=", "7.25"}], ";", " ", 
-   RowBox[{"pKcO", "=", 
-    RowBox[{"5.35", "+", "3"}]}], ";"}], "   ", 
-  RowBox[{"(*", " ", 
-   RowBox[{"fitted", " ", "to", " ", "Bauer", " ", "et", " ", 
-    RowBox[{"al", "'"}], "s", " ", "carboxylation"}], " ", 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"pKhD", "=", "7.52"}], ";", " ", 
-   RowBox[{"pKhO", "=", "6.89"}], ";"}], " ", 
-  RowBox[{"(*", " ", 
-   RowBox[{
-   "fitted", " ", "parameters", " ", "to", " ", "Siggaard", " ", "at", " ", 
-    RowBox[{"al", ".", "'"}], "s"}], " ", "*)"}]}]}], "Input", \
+     RowBox[{"mmol", "/", "l"}], "/", "mmHg"}], ";", 
+    RowBox[{
+    "O2", " ", "solubility", " ", "by", " ", "Siggaard", " ", "et", " ", 
+     RowBox[{"al", "."}]}]}], "*)"}]}], "\[IndentingNewLine]"}], "Input", \
 "PluginEmbeddedContent"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{
-   RowBox[{"a1", "=", "77.49"}], ";", 
-   RowBox[{"a2", "=", "6003"}], ";", 
-   RowBox[{"a3", "=", "62623"}], ";", 
-   RowBox[{"a4", "=", "1.473*^8"}], ";"}], 
+  RowBox[{"pKzD", "=", "7.73"}], ";", " ", 
+  RowBox[{"pKcD", "=", 
+   RowBox[{"4.54", "+", "3"}]}], ";", " ", 
+  RowBox[{"pKzO", "=", "7.25"}], ";", " ", 
+  RowBox[{"pKcO", "=", 
+   RowBox[{"5.35", "+", "3"}]}], ";", "   ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"fitted", " ", "to", " ", "Bauer", " ", "et", " ", 
+    RowBox[{"al", "'"}], "s", " ", "carboxylation"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"pKhD", "=", "7.52"}], ";", " ", 
+  RowBox[{"pKhO", "=", "6.89"}], ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "fitted", " ", "parameters", " ", "to", " ", "Siggaard", " ", "at", " ", 
+    RowBox[{"al", ".", "'"}], "s"}], " ", "*)"}]}]], "Input", \
+"PluginEmbeddedContent"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"a1", "=", "81.3"}], ";", 
+  RowBox[{"a2", "=", "7195"}], ";", 
+  RowBox[{"a3", "=", "71948"}], ";", 
+  RowBox[{"a4", "=", 
+   RowBox[{"2.0939", "*", 
+    RowBox[{"10", "^", "8"}]}]}], ";", 
   RowBox[{"(*", " ", 
    RowBox[{"fitted", " ", "to", " ", "Severinghaus", " ", "ODC"}], " ", 
-   "*)"}]}]], "Input", "PluginEmbeddedContent"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[{
- RowBox[{"a1", "=", 
-  RowBox[{"1", "/", ".0123"}]}], "\[IndentingNewLine]", 
- RowBox[{"a2", "=", 
-  RowBox[{"1", "/", 
-   RowBox[{"(", 
-    RowBox[{".0123", "*", ".0113"}], ")"}]}]}], "\[IndentingNewLine]", 
- RowBox[{"a3", "=", 
-  RowBox[{"1", "/", 
-   RowBox[{"(", 
-    RowBox[{".0123", "*", ".0113", "*", ".1"}], 
-    ")"}]}]}], "\[IndentingNewLine]", 
- RowBox[{"a4", "=", 
-  RowBox[{"1", "/", 
-   RowBox[{"(", 
-    RowBox[{".0123", "*", ".0113", "*", ".1", "*", ".0003436"}], ")"}], 
-   RowBox[{"(*", " ", 
-    RowBox[{"fitted", " ", "to", " ", "Severinghaus", " ", "ODC"}], " ", 
-    "*)"}]}]}]}], "Input", "PluginEmbeddedContent"],
-
-Cell[BoxData["81.30081300813008`"], "Output", "PluginEmbeddedContent"],
-
-Cell[BoxData["7194.762213108857`"], "Output", "PluginEmbeddedContent"],
-
-Cell[BoxData["71947.62213108856`"], "Output", "PluginEmbeddedContent"],
-
-Cell[BoxData["2.0939354520107266`*^8"], "Output", "PluginEmbeddedContent"]
-}, Open  ]]
+   "*)"}]}]], "Input", "PluginEmbeddedContent"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -295,9 +266,7 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"(", 
       RowBox[{"1", "-", "sO2"}], ")"}], "*", "sCO2D"}]}]}], ";"}]], "Input", \
-"PluginEmbeddedContent"],
-
-Cell[BoxData[""], "Input", "PluginEmbeddedContent"]
+"PluginEmbeddedContent"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -311,24 +280,6 @@ Severinghaus, J. W. (1979). \[OpenCurlyDoubleQuote]Simple, accurate equations \
 for human blood O2 dissociation computations.\[CloseCurlyDoubleQuote] Journal \
 of applied physiology 46(3): 599-602.\
 \>", "Subsection", "PluginEmbeddedContent"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"(", 
-   RowBox[{"fnD", "/", "fnO"}], ")"}], "/.", 
-  RowBox[{"{", 
-   RowBox[{
-    RowBox[{"pH", "\[Rule]", "7.2464"}], ",", " ", 
-    RowBox[{"CO2", "\[Rule]", 
-     RowBox[{"aCO2", "*", "0"}]}]}], "}"}]}]], "Input", \
-"PluginEmbeddedContent"],
-
-Cell[BoxData["0.24847616345225676`"], "Output", "PluginEmbeddedContent"]
-}, Open  ]],
-
-Cell[BoxData["0.24847616345225676`"], "Input", "PluginEmbeddedContent"],
 
 Cell[BoxData[
  RowBox[{
@@ -422,52 +373,25 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell[BoxData[
- RowBox[{"ss", "=", 
-  RowBox[{
-   RowBox[{"100", "*", "sO2"}], "/.", " ", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"O2", "\[Rule]", 
-      RowBox[{"pO2", "*", "aO2"}]}], ",", 
-     RowBox[{"pH", "\[Rule]", "7.2464"}], ",", " ", 
-     RowBox[{"CO2", "\[Rule]", 
-      RowBox[{"aCO2", "*", "0"}]}]}], "}"}]}]}]], "Input", \
-"PluginEmbeddedContent"],
-
-Cell[BoxData[
- FractionBox[
-  RowBox[{"100", " ", 
-   RowBox[{"(", 
-    RowBox[{
-     RowBox[{"0.006767440224106179`", " ", "pO2"}], "+", 
-     RowBox[{"0.0003988095153262011`", " ", 
-      SuperscriptBox["pO2", "2"]}], "+", 
-     RowBox[{"1.991802632161819`*^-6", " ", 
-      SuperscriptBox["pO2", "3"]}], "+", 
-     RowBox[{"2.5734836568394465`*^-6", " ", 
-      SuperscriptBox["pO2", "4"]}]}], ")"}]}], 
-  RowBox[{"1", "+", 
-   RowBox[{"0.027069760896424717`", " ", "pO2"}], "+", 
-   RowBox[{"0.0007976190306524022`", " ", 
-    SuperscriptBox["pO2", "2"]}], "+", 
-   RowBox[{"2.6557368428824257`*^-6", " ", 
-    SuperscriptBox["pO2", "3"]}], "+", 
-   RowBox[{"2.5734836568394465`*^-6", " ", 
-    SuperscriptBox["pO2", "4"]}]}]]], "Output", "PluginEmbeddedContent"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
  RowBox[{"Show", "[", 
   RowBox[{
    RowBox[{"Plot", "[", 
-    RowBox[{"ss", ",", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"100", "*", "sO2"}], "/.", " ", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"O2", "\[Rule]", 
+         RowBox[{"pO2", "*", "aO2"}]}], ",", 
+        RowBox[{"pH", "\[Rule]", "7.2464"}], ",", " ", 
+        RowBox[{"CO2", "\[Rule]", 
+         RowBox[{"aCO2", "*", "0"}]}]}], "}"}]}], ",", " ", 
      RowBox[{"{", 
       RowBox[{"pO2", ",", "0", ",", "120"}], "}"}], ",", " ", 
      RowBox[{"AxesLabel", " ", "\[Rule]", 
       RowBox[{"{", 
        RowBox[{"\"\<pO2 [mmHg]\>\"", ",", "\"\<sO2 [%]\>\""}], "}"}]}], ",", 
+     " ", 
      RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
      RowBox[{"PlotLegends", "\[Rule]", 
       RowBox[{"{", "\"\<model\>\"", "}"}]}]}], "]"}], ",", 
@@ -481,44 +405,44 @@ Cell[BoxData[
  TemplateBox[{GraphicsBox[{{{}, {}, {
        Hue[0.67, 0.6, 0.6], 
        LineBox[CompressedData["
-1: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
-hShCIuGK2P8B354A/g==
+1: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
+XV6m8wej0RW0/webUARB
         "]]}}, {{}, {
        RGBColor[0.24720000000000014`, 0.24, 0.6], 
        PointBox[CompressedData["
@@ -682,28 +606,39 @@ Cell[BoxData[
          RowBox[{
           RowBox[{"O2", "\[Rule]", 
            RowBox[{"pO2", "*", "aO2"}]}], ",", 
-          RowBox[{"pH", "\[Rule]", "pHe"}], 
-          RowBox[{"(*", 
+          RowBox[{"pH", "\[Rule]", 
            RowBox[{"7.2464", "+", 
             RowBox[{"0.796", 
              RowBox[{"(", 
-              RowBox[{"pHp", "-", "7.4"}], ")"}]}]}], "*)"}], ",", " ", 
+              RowBox[{"pHp", "-", "7.4"}], ")"}]}]}]}], ",", " ", 
           RowBox[{"CO2", "\[Rule]", 
            RowBox[{"aCO2", "*", "pCO2"}]}]}], "}"}]}], ",", " ", 
        RowBox[{"{", 
         RowBox[{"pO2", ",", "0", ",", "120"}], "}"}], ",", " ", 
-       RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}], ",", 
-     RowBox[{"ListPlot", "[", "Severinghaus", "]"}]}], "]"}], ",", 
+       RowBox[{"AxesLabel", " ", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<pO2 [mmHg]\>\"", ",", "\"\<sO2 [%]\>\""}], "}"}]}], ",",
+        " ", 
+       RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+       RowBox[{"PlotLegends", "\[Rule]", 
+        RowBox[{"{", "\"\<model\>\"", "}"}]}]}], "]"}], ",", 
+     RowBox[{"ListPlot", "[", 
+      RowBox[{"Severinghaus", ",", 
+       RowBox[{"PlotLegends", "\[Rule]", 
+        RowBox[{"{", "\"\<Data by Severinghaus1979\>\"", "}"}]}]}], "]"}]}], 
+    "]"}], ",", 
    RowBox[{"{", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"pHe", ",", "7.2464"}], "}"}], ",", "7", ",", "7.8"}], "}"}], 
-   ",", 
+      RowBox[{"pHp", ",", "7.4", ",", "\"\<Plasma pH\>\""}], "}"}], ",", "7", 
+     ",", "7.8"}], "}"}], ",", 
    RowBox[{"{", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"pCO2", ",", "0"}], "}"}], ",", "0", ",", "200"}], "}"}]}], 
-  "]"}]], "Input", "PluginEmbeddedContent"]
+      RowBox[{
+      "pCO2", ",", "0", ",", " ", "\"\<Partial pressure of pCO2 [mmHg]\>\""}],
+       "}"}], ",", "0", ",", "200"}], "}"}]}], "]"}]], "Input", \
+"PluginEmbeddedContent"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -3004,8 +2939,7 @@ HL09GLwt7JbQDzC7c89dT3Clvx6/4SrUq/N8IvZgC895rhywxn3JOBPwnNM9
     NCache[GoldenRatio^(-1), 0.6180339887498948], Axes -> True, AxesLabel -> {
       FormBox["\"pHp\"", TraditionalForm], 
       FormBox["\"sO2\"", TraditionalForm]}, AxesOrigin -> {7., 0.6}, 
-    ImageSize -> {440., Automatic}, Method -> {}, 
-    PlotRange -> {{7, 8}, {0.6, 1}}, PlotRangeClipping -> True, 
+    Method -> {}, PlotRange -> {{7, 8}, {0.6, 1}}, PlotRangeClipping -> True, 
     PlotRangePadding -> {
       Scaled[0.02], Automatic}],TagBox[
     GridBox[{{
@@ -3230,9 +3164,9 @@ HL09GLwt7JbQDzC7c89dT3Clvx6/4SrUq/N8IvZgC895rhywxn3JOBPwnNM9
 }, Open  ]]
 }, Open  ]]
 },
-WindowSize->{929.2333333333333, 3608.},
+WindowSize->{1166.1166666666666`, 2989.},
 Visible->True,
-AuthoredSize->{929.2333333333333, 3608.},
+AuthoredSize->{1166.1166666666666`, 2989.},
 ScrollingOptions->{"HorizontalScrollRange"->Fit,
 "VerticalScrollRange"->Fit},
 ShowCellBracket->False,
@@ -3254,69 +3188,53 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[1485, 35, 276, 5, 294, "Title"],
+Cell[1485, 35, 276, 5, 229, "Title"],
 Cell[CellGroupData[{
 Cell[1786, 44, 54, 0, 44, "Section"],
-Cell[1843, 46, 1524, 46, 77, "Input"],
-Cell[3370, 94, 337, 9, 16, "Input"],
+Cell[1843, 46, 849, 27, 57, "Input"],
+Cell[2695, 75, 716, 18, 57, "Input"],
+Cell[3414, 95, 367, 10, 16, "Input"]
+}, Open  ]],
 Cell[CellGroupData[{
-Cell[3732, 107, 651, 18, 77, "Input"],
-Cell[4386, 127, 70, 0, 16, "Output"],
-Cell[4459, 129, 70, 0, 16, "Output"],
-Cell[4532, 131, 70, 0, 16, "Output"],
-Cell[4605, 133, 74, 0, 16, "Output"]
+Cell[3818, 110, 49, 0, 44, "Section"],
+Cell[3870, 112, 3631, 120, 177, "Input"],
+Cell[7504, 234, 768, 24, 37, "Input"],
+Cell[8275, 260, 251, 8, 16, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8563, 273, 56, 0, 44, "Section"],
+Cell[CellGroupData[{
+Cell[8644, 277, 252, 4, 59, "Subsection"],
+Cell[8899, 283, 2907, 87, 77, "Input"],
+Cell[CellGroupData[{
+Cell[11831, 374, 1023, 27, 37, "Input"],
+Cell[12857, 403, 9378, 189, 206, "Output"]
+}, Open  ]],
+Cell[22250, 595, 1622, 45, 77, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23909, 645, 264, 5, 59, "Subsection"],
+Cell[CellGroupData[{
+Cell[24198, 654, 4743, 133, 197, "Input"],
+Cell[28944, 789, 13304, 274, 242, "Output"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4728, 139, 49, 0, 44, "Section"],
-Cell[4780, 141, 3631, 120, 177, "Input"],
-Cell[8414, 263, 768, 24, 37, "Input"],
-Cell[9185, 289, 251, 8, 16, "Input"],
-Cell[9439, 299, 51, 0, 16, "Input"]
-}, Open  ]],
+Cell[42297, 1069, 352, 5, 59, "Subsection"],
+Cell[42652, 1076, 7080, 196, 257, "Input"],
 Cell[CellGroupData[{
-Cell[9527, 304, 56, 0, 44, "Section"],
-Cell[CellGroupData[{
-Cell[9608, 308, 252, 4, 59, "Subsection"],
-Cell[CellGroupData[{
-Cell[9885, 316, 279, 9, 16, "Input"],
-Cell[10167, 327, 72, 0, 16, "Output"]
-}, Open  ]],
-Cell[10254, 330, 71, 0, 16, "Input"],
-Cell[10328, 332, 2907, 87, 117, "Input"],
-Cell[CellGroupData[{
-Cell[13260, 423, 364, 11, 16, "Input"],
-Cell[13627, 436, 767, 19, 39, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[14431, 460, 699, 17, 37, "Input"],
-Cell[15133, 479, 9378, 189, 206, "Output"]
-}, Open  ]],
-Cell[24526, 671, 1180, 34, 57, "Input"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[25743, 710, 264, 5, 59, "Subsection"],
-Cell[CellGroupData[{
-Cell[26032, 719, 4743, 133, 237, "Input"],
-Cell[30778, 854, 13304, 274, 242, "Output"]
+Cell[49757, 1276, 1738, 47, 77, "Input"],
+Cell[51498, 1325, 44182, 799, 314, "Output"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[44131, 1134, 352, 5, 89, "Subsection"],
-Cell[44486, 1141, 7080, 196, 317, "Input"],
+Cell[95729, 2130, 367, 6, 59, "Subsection"],
+Cell[96099, 2138, 5972, 146, 257, "Input"],
+Cell[102074, 2286, 421, 13, 16, "Input"],
+Cell[102498, 2301, 928, 29, 16, "Input"],
 Cell[CellGroupData[{
-Cell[51591, 1341, 1738, 47, 117, "Input"],
-Cell[53332, 1390, 44182, 799, 314, "Output"]
-}, Open  ]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[97563, 2195, 367, 6, 89, "Subsection"],
-Cell[97933, 2203, 5972, 146, 297, "Input"],
-Cell[103908, 2351, 421, 13, 16, "Input"],
-Cell[104332, 2366, 928, 29, 37, "Input"],
-Cell[CellGroupData[{
-Cell[105285, 2399, 1053, 30, 37, "Input"],
-Cell[106341, 2431, 43935, 795, 287, "Output"]
+Cell[103451, 2334, 1053, 30, 37, "Input"],
+Cell[104507, 2366, 43898, 794, 237, "Output"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
@@ -3327,4 +3245,4 @@ Cell[106341, 2431, 43935, 795, 287, "Output"]
 
 (* End of internal cache information *)
 
-(* NotebookSignature 2uD8Pp#SYoifDCwqbD4c#0sY *)
+(* NotebookSignature 2xTR79Q2ekMnTAKsRCU8wq7l *)
