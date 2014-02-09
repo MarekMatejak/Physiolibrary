@@ -1,0 +1,13 @@
+LibraryInfoMenuSeparator(
+	category = "libraries",
+	pos = 3000);
+LibraryInfoMenuCommand(
+    category = "libraries",
+    text = "Physiolibrary",
+    reference = "Physiolibrary",
+    isModel = true,
+    description = "Human Physiology Library 2.1.0",
+    version = "2.1.0",
+    ModelicaVersion = ">=3.2",
+    pos = 3753);
+  
