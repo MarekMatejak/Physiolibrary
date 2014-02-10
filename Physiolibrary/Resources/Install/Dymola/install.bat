@@ -67,7 +67,7 @@ rem ****** Copy files into ProgramFiles\Dymola directory *****
 
 xcopy /Y "Resources\DisplayUnits\displayunit.mos" "%DYMOLADIR%\insert\"
 mkdir "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
-xcopy /S "%PHYSIOLIBRARYDIR%" "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
+xcopy /S /Y "%PHYSIOLIBRARYDIR%" "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
 
 cd "%CurrentDirectory%"
 set CurrentDirectory=

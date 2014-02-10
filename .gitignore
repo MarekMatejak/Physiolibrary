@@ -1,0 +1,13 @@
+/Physiolibrary/*.c
+/Physiolibrary/*.exe
+/Physiolibrary/*.exp
+/Physiolibrary/*.lib
+/Physiolibrary/*.mat
+/Physiolibrary/*.mo~
+/Physiolibrary/*.bak-mo
+/Physiolibrary/dsfinal.txt
+/Physiolibrary/dsin.txt
+/Physiolibrary/dslog.txt
+/Physiolibrary/buildlog.txt
+/Physiolibrary/Resources/Install/Dymola/backup
+/Physiolibrary/Resources/Install/Dymola/uninstall.bat
