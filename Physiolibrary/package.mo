@@ -347,13 +347,6 @@ package Physiolibrary "Physiological domains library (version v2.1)"
   end UsersGuide;
 
 
-
-
-
-
-
-
-
   annotation (preferredView="info",
 version="2.1",
 versionBuild=1,

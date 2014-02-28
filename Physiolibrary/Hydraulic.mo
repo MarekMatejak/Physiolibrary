@@ -240,211 +240,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 false, extent={{-100,-100},{100,100}}), graphics));
     end Conductor;
 
-    model Pump "Prescribed volumetric flow"
-      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
-
-    equation
-      q_in.q = q;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-40},{100,60}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-90},{150,-50}},
-              textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague, Czech Republic</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>january 2009</td>
-</tr>
-</table>
-</html>",     info="<html>
-<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
-</html>"));
-    end Pump;
-
-    model Reabsorption "Divide inflow to outflow and reabsorption"
-      import Physiolibrary;
-      extends Physiolibrary.Icons.Reabsorption;
-
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
-                           Inflow                    annotation (Placement(
-            transformation(extent={{-114,26},{-86,54}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
-                           Outflow
-        annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
-                           Reabsorption                annotation (Placement(
-            transformation(extent={{-14,-114},{14,-86}})));
-
-      Physiolibrary.Types.RealIO.FractionInput FractReab
-                                   annotation (Placement(transformation(extent={{-100,
-                -60},{-60,-20}})));
-
-      parameter Boolean useExternalOutflowMin = false
-        "=true, if minimal outflow is garanted"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.VolumeFlowRate OutflowMin = 0
-        "Minimal outflow if useExternalOutflowMin=false"
-        annotation (Dialog(enable=not useExternalOutflowMin));
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
-                                                           annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=270,
-            origin={40,80})));
-
-    protected
-       Physiolibrary.Types.VolumeFlowRate om;
-    equation
-      if not useExternalOutflowMin then
-        om = OutflowMin;
-      end if;
-
-      Inflow.pressure = Outflow.pressure;
-      0 = Inflow.q + Outflow.q + Reabsorption.q;
-
-     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
-
-      Reabsorption.q = -min(0,FractReab*(Inflow.q-OutflowMin));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics={Text(
-              extent={{-100,130},{100,108}},
-              lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
-<p>If useOutflowMin=false then the next schema is used.</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
-</ul></p>
-<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
-</ul></p>
-</html>"));
-    end Reabsorption;
-
-    model HydrostaticColumn
-      "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
-      extends Physiolibrary.Icons.HydrostaticGradient;
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
-                           q_up "Top site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{66,26},{94,54}})));
-
-      Interfaces.HydraulicPort_a
-                           q_down "Bottom site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
-            transformation(extent={{66,-74},{94,-46}})));
-
-      parameter Boolean useHeightInput = false "=true, if height input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.Height H=0
-        "Height of hydrostatic column if useHeightInput=false"
-        annotation (Dialog(enable=not useFlowInput));
-
-      Physiolibrary.Types.RealIO.HeightInput height(start=H)=h if useHeightInput
-        "Vertical distance between top and bottom connector"
-                                                   annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=0,
-            origin={-60,0})));
-
-      parameter Modelica.SIunits.Density ro=1060; //liquid density
-
-      parameter Boolean useExternalG = false
-        "=true, if external gravity acceleration is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.Acceleration GravityAcceleration = 9.81
-        "Gravity acceleration if useExternalG=false"
-        annotation (Dialog(enable=not useExternalG));
-
-       //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
-
-      Physiolibrary.Types.RealIO.AccelerationInput G(start=GravityAcceleration)=g if useExternalG
-        "Gravity acceleration"                                                                           annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=90,
-            origin={0,-100})));
-
-      parameter Boolean usePumpEffect = false
-        "=true, if musce pump effect is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      Physiolibrary.Types.RealIO.FractionInput
-                            pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=270,
-            origin={0,100})));
-
-    protected
-      parameter Types.Fraction PumpEffect = 1
-        "Pump effect if usePumpEffect=false"
-        annotation (Dialog(enable=not usePumpEffect));
-
-    protected
-      Types.Acceleration g;
-      Types.Fraction pe;
-      Types.Height h;
-    equation
-      if not useHeightInput then
-        h=H;
-      end if;
-      if not useExternalG then
-        g=GravityAcceleration;
-      end if;
-      if not usePumpEffect then
-        pe = PumpEffect;
-     end if;
-
-      q_down.pressure = q_up.pressure + g*ro*h*pe;
-      q_up.q + q_down.q = 0;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end HydrostaticColumn;
-
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
@@ -542,6 +337,146 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics));
     end ElasticVessel;
 
+    model Pump "Prescribed volumetric flow"
+      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
+
+    equation
+      q_in.q = q;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-40},{100,60}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-90},{150,-50}},
+              textString="%name",
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague, Czech Republic</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>january 2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
+</html>"));
+    end Pump;
+
+    model HydrostaticColumn
+      "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
+      extends Physiolibrary.Icons.HydrostaticGradient;
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
+                           q_up "Top site"
+                             annotation (extent=[-10, -110; 10, -90], Placement(
+            transformation(extent={{66,26},{94,54}})));
+
+      Interfaces.HydraulicPort_a
+                           q_down "Bottom site"
+                             annotation (extent=[-10, -110; 10, -90], Placement(
+            transformation(extent={{66,-74},{94,-46}})));
+
+      parameter Boolean useHeightInput = false "=true, if height input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Height H=0
+        "Height of hydrostatic column if useHeightInput=false"
+        annotation (Dialog(enable=not useFlowInput));
+
+      Physiolibrary.Types.RealIO.HeightInput height(start=H)=h if useHeightInput
+        "Vertical distance between top and bottom connector"
+                                                   annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=0,
+            origin={-60,0})));
+
+      parameter Modelica.SIunits.Density ro=1060; //liquid density
+
+      parameter Boolean useExternalG = false
+        "=true, if external gravity acceleration is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Acceleration GravityAcceleration = 9.81
+        "Gravity acceleration if useExternalG=false"
+        annotation (Dialog(enable=not useExternalG));
+
+       //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
+
+      Physiolibrary.Types.RealIO.AccelerationInput G(start=GravityAcceleration)=g if useExternalG
+        "Gravity acceleration"                                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=90,
+            origin={0,-100})));
+
+      parameter Boolean usePumpEffect = false
+        "=true, if musce pump effect is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      Physiolibrary.Types.RealIO.FractionInput
+                            pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={0,100})));
+
+    protected
+      parameter Types.Fraction PumpEffect = 1
+        "Pump effect if usePumpEffect=false"
+        annotation (Dialog(enable=not usePumpEffect));
+
+    protected
+      Types.Acceleration g;
+      Types.Fraction pe;
+      Types.Height h;
+    equation
+      if not useHeightInput then
+        h=H;
+      end if;
+      if not useExternalG then
+        g=GravityAcceleration;
+      end if;
+      if not usePumpEffect then
+        pe = PumpEffect;
+     end if;
+
+      q_down.pressure = q_up.pressure + g*ro*h*pe;
+      q_up.q + q_down.q = 0;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end HydrostaticColumn;
+
+
+
     model ElasticMembrane "Interaction between internal and external cavities"
      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
@@ -603,6 +538,73 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics));
     end Inertia;
+
+    model Reabsorption "Divide inflow to outflow and reabsorption"
+      import Physiolibrary;
+      extends Physiolibrary.Icons.Reabsorption;
+
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
+                           Inflow                    annotation (Placement(
+            transformation(extent={{-114,26},{-86,54}})));
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
+                           Outflow
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
+      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
+                           Reabsorption                annotation (Placement(
+            transformation(extent={{-14,-114},{14,-86}})));
+
+      Physiolibrary.Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
+
+      parameter Boolean useExternalOutflowMin = false
+        "=true, if minimal outflow is garanted"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate OutflowMin = 0
+        "Minimal outflow if useExternalOutflowMin=false"
+        annotation (Dialog(enable=not useExternalOutflowMin));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,80})));
+
+    protected
+       Physiolibrary.Types.VolumeFlowRate om;
+    equation
+      if not useExternalOutflowMin then
+        om = OutflowMin;
+      end if;
+
+      Inflow.pressure = Outflow.pressure;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+
+      Reabsorption.q = -min(0,FractReab*(Inflow.q-OutflowMin));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={Text(
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+                      extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+</ul></p>
+</html>"));
+    end Reabsorption;
   end Components;
 
   package Sensors
@@ -849,7 +851,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}),
+              fillColor={0,0,0}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -883,7 +885,7 @@ Connector with one flow signal of type Real.
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
+              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"

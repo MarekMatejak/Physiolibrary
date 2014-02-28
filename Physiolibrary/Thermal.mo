@@ -254,6 +254,109 @@ package Thermal
   package Components
     extends Modelica.Icons.Package;
 
+    model IdealRadiator
+      "Closed circiut radiator, where outflowed = ambient temperature"
+      extends Interfaces.ConditionalMassFlow;
+      extends Icons.Radiator;
+
+      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
+        "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
+
+      Physiolibrary.Thermal.Interfaces.HeatPort_a
+                       q_in annotation (Placement(
+            transformation(extent={{-110,10},{-90,30}})));
+      Physiolibrary.Thermal.Interfaces.HeatPort_b
+                       q_out annotation (Placement(
+            transformation(extent={{-10,90},{10,110}})));
+    equation
+      q_in.Q_flow + q_out.Q_flow = 0;
+    //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
+      q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={
+            Text(
+              extent={{-144,-142},{156,-102}},
+              textString="%name",
+              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
+<p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
+<p>The environment temperature is the same as radiator output temperature q_out.T. </p>
+<p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end IdealRadiator;
+
+    model HeatAccumulation "Accumulating of heat to substance"
+      extends Icons.HeatAccumulation;
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+                                         state_start=relativeHeat_start, storeUnit=
+          "kcal");
+      Interfaces.HeatPort_a
+                       q_in "Heat inflow/outflow connector"
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+
+      parameter Physiolibrary.Types.Heat relativeHeat_start = 0
+        "Heat start value = weight*(initialTemperature - 37degC)*specificHeat"
+         annotation (Dialog(group="Initialization"));
+
+      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat= 4186.8
+        "Mass specific heat";
+      Physiolibrary.Types.Temperature T "Current temperature";
+
+      Physiolibrary.Types.RealIO.HeatOutput relativeHeat
+        "Current accumulated heat = weight*(T - 37degC)*specificHeat"
+                                                                  annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-100})));                                            //nominal=1
+     //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
+
+      constant Types.Temperature NormalBodyTemperature = 310.15
+        "Shift of absolute zero temperature to normal body values";
+
+      parameter Boolean useMassInput = false "=true, if mass input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Mass Weight=1 "Total mass weight if useMassInput=false"
+        annotation (Dialog(enable=not useMassInput));
+      Physiolibrary.Types.RealIO.MassInput weight(start=Weight)=m if useMassInput
+        "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-120,60},
+                {-80,100}})));
+    protected
+      Types.Mass m;
+
+    equation
+      if not useMassInput then
+        m=Weight;
+      end if;
+
+      q_in.T=NormalBodyTemperature + relativeHeat/(m*SpecificHeat);
+      T = q_in.T;
+
+      state = relativeHeat;  // der(relativeHeat)=q_in.q
+      change = q_in.Q_flow;
+      annotation (Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),       graphics),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}),
+             graphics={
+            Text(
+              extent={{-20,-140},{280,-100}},
+              textString="%name",
+              lineColor={0,0,255})}));
+    end HeatAccumulation;
+
     model Conductor "Heat resistor"
      extends Interfaces.OnePort;
      extends Icons.Resistor;
@@ -392,108 +495,7 @@ package Thermal
                 -100},{100,100}}), graphics));
     end HeatOutstream;
 
-    model IdealRadiator
-      "Closed circiut radiator, where outflowed = ambient temperature"
-      extends Interfaces.ConditionalMassFlow;
-      extends Icons.Radiator;
 
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
-        "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
-
-      Physiolibrary.Thermal.Interfaces.HeatPort_a
-                       q_in annotation (Placement(
-            transformation(extent={{-110,10},{-90,30}})));
-      Physiolibrary.Thermal.Interfaces.HeatPort_b
-                       q_out annotation (Placement(
-            transformation(extent={{-10,90},{10,110}})));
-    equation
-      q_in.Q_flow + q_out.Q_flow = 0;
-    //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
-      q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={
-            Text(
-              extent={{-144,-142},{156,-102}},
-              textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
-<p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
-<p>The environment temperature is the same as radiator output temperature q_out.T. </p>
-<p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end IdealRadiator;
-
-    model HeatAccumulation "Accumulating of heat to substance"
-      extends Icons.HeatAccumulation;
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
-                                         state_start=relativeHeat_start, storeUnit=
-          "kcal");
-      Interfaces.HeatPort_a
-                       q_in "Heat inflow/outflow connector"
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-
-      parameter Physiolibrary.Types.Heat relativeHeat_start = 0
-        "Heat start value = weight*(initialTemperature - 37degC)*specificHeat"
-         annotation (Dialog(group="Initialization"));
-
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat= 4186.8
-        "Mass specific heat";
-      Physiolibrary.Types.Temperature T "Current temperature";
-
-      Physiolibrary.Types.RealIO.HeatOutput relativeHeat
-        "Current accumulated heat = weight*(T - 37degC)*specificHeat"
-                                                                  annotation (Placement(transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,-100})));                                            //nominal=1
-     //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
-
-      constant Types.Temperature NormalBodyTemperature = 310.15
-        "Shift of absolute zero temperature to normal body values";
-
-      parameter Boolean useMassInput = false "=true, if mass input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.Mass Weight=1 "Total mass weight if useMassInput=false"
-        annotation (Dialog(enable=not useMassInput));
-      Physiolibrary.Types.RealIO.MassInput weight(start=Weight)=m if useMassInput
-        "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-120,60},
-                {-80,100}})));
-    protected
-      Types.Mass m;
-
-    equation
-      if not useMassInput then
-        m=Weight;
-      end if;
-
-      q_in.T=NormalBodyTemperature + relativeHeat/(m*SpecificHeat);
-      T = q_in.T;
-
-      state = relativeHeat;  // der(relativeHeat)=q_in.q
-      change = q_in.Q_flow;
-      annotation (Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),       graphics),
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}),
-             graphics={
-            Text(
-              extent={{-20,-140},{280,-100}},
-              textString="%name",
-              lineColor={0,0,255})}));
-    end HeatAccumulation;
 
   end Components;
 
@@ -609,7 +611,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end HeatPort_a;
 
     connector HeatPort_b "Heat outflow"
@@ -632,7 +634,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end HeatPort_b;
 

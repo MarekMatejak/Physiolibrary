@@ -798,49 +798,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
   package Components
     extends Modelica.Icons.Package;
-    model Diffusion "Solute diffusion"
-      extends Physiolibrary.Icons.Diffusion;
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-
-      parameter Boolean useConductanceInput = false
-        "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.DiffusionPermeability Conductance=0
-        "Diffusion conductance if useConductanceInput=false"
-        annotation (Dialog(enable=not useConductanceInput));
-
-    protected
-      Types.DiffusionPermeability c;
-    public
-      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-    equation
-      if not useConductanceInput then
-        c=Conductance;
-      end if;
-
-       q_in.q = c * (q_in.conc - q_out.conc);
-
-       annotation (Icon(graphics),                 Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the F</a>ick&apos;s laws of diffusion: </p>
-<p>J= -D*(dPhi)/dx</p>
-<p>where</p>
-<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
-<p>D is diffusion constant [m2/s]. </p>
-<p>dPhi is concentration gradient [mol/m3].</p>
-<p>dx is length of diffusion [m].</p>
-<p><br/>So for example of the diffusion through membrane the parameter cond = <code>(D/membrameThicknes)*membraneArea.</code></p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
-    end Diffusion;
-
     model Substance "Substance accumulation in solvent"
       extends Physiolibrary.Icons.Substance;
       extends Chemical.Interfaces.ConditionalSolventVolume;
@@ -1027,6 +984,51 @@ It works in two modes:
                 -100},{100,100}}), graphics));
     end ChemicalReaction;
 
+    model Diffusion "Solute diffusion"
+      extends Physiolibrary.Icons.Diffusion;
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
+
+      parameter Boolean useConductanceInput = false
+        "=true, if external conductance value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.DiffusionPermeability Conductance=0
+        "Diffusion conductance if useConductanceInput=false"
+        annotation (Dialog(enable=not useConductanceInput));
+
+    protected
+      Types.DiffusionPermeability c;
+    public
+      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+    equation
+      if not useConductanceInput then
+        c=Conductance;
+      end if;
+
+       q_in.q = c * (q_in.conc - q_out.conc);
+
+       annotation (Icon(graphics),                 Documentation(revisions="<html>
+<p><i>2009-2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the F</a>ick&apos;s laws of diffusion: </p>
+<p>J= -D*(dPhi)/dx</p>
+<p>where</p>
+<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
+<p>D is diffusion constant [m2/s]. </p>
+<p>dPhi is concentration gradient [mol/m3].</p>
+<p>dx is length of diffusion [m].</p>
+<p><br/>So for example of the diffusion through membrane the parameter cond = <code>(D/membrameThicknes)*membraneArea.</code></p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end Diffusion;
+
+
+
     model GasSolubility "Henry's law of gas solubility in liquid."
        //q_in is dissolved in liquid and q_out is in gaseous solution"
 
@@ -1078,86 +1080,6 @@ It works in two modes:
 <p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
 </html>"));
     end GasSolubility;
-
-    model Clearance "Clearance with or without solvent outflow"
-
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
-                                q_in "solute outflow"
-                                annotation (Placement(
-            transformation(extent={{-110,-10},{-90,10}})));
-
-      parameter Boolean useSolventFlow = false
-        "=true, if clearence is expressed from outflow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
-        "Clearance of solute if useSolventFlow=false"
-        annotation (Dialog(enable=not useSolventFlow));
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
-        "solvent outflow"
-       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      parameter Real K(unit="1")=1
-        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
-        annotation (Dialog(enable=useSolventFlow));
-
-      Physiolibrary.Types.VolumeFlowRate clearance;
-    equation
-      if not useSolventFlow then
-         clearance=Clearance;
-      end if;  //otherwise: clearance=K*solventFlow;
-
-      q_in.q = clearance*q_in.conc;
-
-    //  assert(clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-100},{150,-60}},
-              textString="%name",
-              lineColor={0,0,255}),
-            Text(
-              extent={{-100,-30},{100,-50}},
-              lineColor={0,0,0},
-              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>2009</td>
-</tr>
-</table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
-    end Clearance;
 
     model Degradation "Degradation of solute"
       extends Interfaces.ConditionalSolventVolume;
@@ -1256,6 +1178,87 @@ It works in two modes:
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end Degradation;
+
+    model Clearance "Clearance with or without solvent outflow"
+
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+                                q_in "solute outflow"
+                                annotation (Placement(
+            transformation(extent={{-110,-10},{-90,10}})));
+
+      parameter Boolean useSolventFlow = false
+        "=true, if clearence is expressed from outflow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
+        "Clearance of solute if useSolventFlow=false"
+        annotation (Dialog(enable=not useSolventFlow));
+
+      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
+        "solvent outflow"
+       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+
+      parameter Real K(unit="1")=1
+        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
+        annotation (Dialog(enable=useSolventFlow));
+
+      Physiolibrary.Types.VolumeFlowRate clearance;
+    equation
+      if not useSolventFlow then
+         clearance=Clearance;
+      end if;  //otherwise: clearance=K*solventFlow;
+
+      q_in.q = clearance*q_in.conc;
+
+    //  assert(clearance>=-Modelica.Constants.eps, "Clearance can not be negative!");
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-100},{150,-60}},
+              textString="%name",
+              lineColor={0,0,255}),
+            Text(
+              extent={{-100,-30},{100,-50}},
+              lineColor={0,0,0},
+              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
+                       extent={{-100,-100},{100,100}}), graphics),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
+                -100},{100,100}}), graphics));
+    end Clearance;
+
 
     model Stream "Flow of whole solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
@@ -1936,7 +1939,7 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1970,7 +1973,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
