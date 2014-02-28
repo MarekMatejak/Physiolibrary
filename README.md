@@ -41,7 +41,7 @@ Download [Physiolibrary 2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
  * Fix: gas solution in liquid with corrected GasSolubility type
  * Fix: bidirectional stream flows
  * Fix: steady state example of dissolved oxygen 
- * Fix: Dymola installation batch file
+ * Fix: installation batch file for Dymola in Windows
  * Fix: references in overview (user's guide)
 
 *  [Version v2.0.2 (2014-01-26)](../../archive/v2.0.2.zip)
