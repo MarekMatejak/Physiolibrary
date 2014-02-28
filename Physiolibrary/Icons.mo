@@ -1,6 +1,7 @@
 within Physiolibrary;
 package Icons "Icons for physiological models"
-  extends Modelica.Icons.IconsPackage;
+  //extends Modelica.Icons.IconsPackage;
+  extends Modelica.Icons.Package;
   package Library
       extends Modelica.Icons.Library;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -294,59 +295,6 @@ package Icons "Icons for physiological models"
 
   end HeatLib;
 
-   package AutonomicControlLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="Resources/Icons/sympatetickeNervy.png")}));
-
-   end AutonomicControlLib;
-
-   package KidneyLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
-              fileName="Resources/Icons/Kidney.png")}));
-
-   end KidneyLib;
-
-  package ElectrolytesLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-78,38},{64,-94}},
-              fileName="Resources/Icons/electrolytes.png")}));
-
-  end ElectrolytesLib;
-
-  package GasesLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-88,34},{66,-82}},
-              fileName="Resources/Icons/gases.png")}));
-
-  end GasesLib;
-
-  package GolemLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
-              fileName="Resources/Icons/golem.png")}));
-  end GolemLib;
-
-  package BaseLib
-    extends Modelica.Icons.Library2;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics));
-  end BaseLib;
-
-  package HormonesLib
-    extends BaseLib;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={Bitmap(extent={{-88,30},{74,-88}},
-              fileName="Resources/Icons/hormony.png")}));
-
-  end HormonesLib;
-
   package StatusLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -409,6 +357,59 @@ package Icons "Icons for physiological models"
               fileName="Resources/Icons/indexVoda.png")}));
 
   end WaterLib;
+
+   package KidneyLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
+              fileName="Resources/Icons/Kidney.png")}));
+
+   end KidneyLib;
+
+  package ElectrolytesLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-78,38},{64,-94}},
+              fileName="Resources/Icons/electrolytes.png")}));
+
+  end ElectrolytesLib;
+
+  package GasesLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-88,34},{66,-82}},
+              fileName="Resources/Icons/gases.png")}));
+
+  end GasesLib;
+
+  package GolemLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
+              fileName="Resources/Icons/golem.png")}));
+  end GolemLib;
+
+  package BaseLib
+    extends Modelica.Icons.Library2;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics));
+  end BaseLib;
+
+  package HormonesLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-88,30},{74,-88}},
+              fileName="Resources/Icons/hormony.png")}));
+
+  end HormonesLib;
+
+   package AutonomicControlLib
+    extends BaseLib;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
+              fileName="Resources/Icons/sympatetickeNervy.png")}));
+
+   end AutonomicControlLib;
 
   partial model Resistor
 

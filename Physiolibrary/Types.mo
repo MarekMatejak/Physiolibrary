@@ -1,6 +1,7 @@
 within Physiolibrary;
 package Types "Physiological units with nominals"
-  extends Modelica.Icons.TypesPackage;
+  //extends Modelica.Icons.TypesPackage;
+  extends Modelica.Icons.Package;
 //If you have an idea to add the next physiological type to the next version, please write me at marek@matfyz.cz. Thank you
 
   package Examples
@@ -1110,6 +1111,37 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end VolumeConst;
+
+  block HydraulicResistanceConst
+      "Constant signal of HydraulicResistance parameter"
+   parameter Physiolibrary.Types.HydraulicResistance k
+        "Reciprocal constant value of hydraulic resistance";
+        Physiolibrary.Types.RealIO.HydraulicResistanceOutput
+                                  y "HydraulicResistance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicresistance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicResistanceConst;
   end Constants;
 
   package RealIO
@@ -2767,6 +2799,7 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
+
   end RealIO;
 
     expandable connector BusConnector
