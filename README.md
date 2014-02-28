@@ -28,9 +28,21 @@ Download and unzip.
 
 ## Current release
 
-Download [Physiolibrary 2.0.2 (2014-01-26)](../../archive/v2.0.2.zip)
+Download [Physiolibrary 2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
 
 #### Release notes
+
+*  [Version v2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
+ * Upgrade to MSL 3.2.1 (but still compatible with MSL 3.2)
+ * New: constants HydraulicResistanceConst, HydraulicElastanceConst and HydraulicElastanceToComplianceConst and type HydraulicElastance
+ * New: steady state component ElectricChargeConservationLaw
+ * New: display units for hydraulic resistance/conductance/compliance/elastance, for gas solubility 
+ * Rename:  HydraulicResistanceConst to HydraulicResistanceToConductanceConst
+ * Fix: gas solution in liquid with corrected GasSolubility type
+ * Fix: bidirectional stream flows
+ * Fix: steady state example of dissolved oxygen 
+ * Fix: Dymola installation batch file
+ * Fix: references in overview (user's guide)
 
 *  [Version v2.0.2 (2014-01-26)](../../archive/v2.0.2.zip)
  * Support for steady states calculation by energy/mass conservation laws or enviroment sources
