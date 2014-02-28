@@ -1027,8 +1027,6 @@ It works in two modes:
                 100}}), graphics));
     end Diffusion;
 
-
-
     model GasSolubility "Henry's law of gas solubility in liquid."
        //q_in is dissolved in liquid and q_out is in gaseous solution"
 
@@ -1258,7 +1256,6 @@ It works in two modes:
 </html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                 -100},{100,100}}), graphics));
     end Clearance;
-
 
     model Stream "Flow of whole solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;

@@ -347,11 +347,18 @@ package Physiolibrary "Physiological domains library (version v2.1)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
   annotation (preferredView="info",
 version="2.1",
 versionBuild=1,
-versionDate="2014-02-07",
-dateModified = "2014-02-07 13:08:00Z",
+versionDate="2014-02-28",
+dateModified = "2014-02-28 22:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(

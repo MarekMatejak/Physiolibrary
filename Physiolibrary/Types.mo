@@ -208,7 +208,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="amountofsubstance",
+    annotation (defaultComponentName="amountOfSubstance",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -294,7 +294,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="diffusionpermeability",
+    annotation (defaultComponentName="diffusionPermeability",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -322,7 +322,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="electriccharge",
+    annotation (defaultComponentName="electricCharge",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -350,7 +350,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="electriccurrent",
+    annotation (defaultComponentName="electricCurrent",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -379,7 +379,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="electricpotential",
+    annotation (defaultComponentName="electricPotential",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -491,7 +491,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="gassolubility",
+    annotation (defaultComponentName="gasSolubility",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -575,7 +575,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="heatflowrate",
+    annotation (defaultComponentName="heatFlowRate",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -596,66 +596,6 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HeatFlowRateConst;
 
-  block HydraulicConductanceConst
-      "Constant signal of type HydraulicConductance"
-   parameter Types.HydraulicConductance k
-        "Constant HydraulicConductance output value";
-        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
-      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-                  iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="hydraulicconductance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
-          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
-              graphics={
-          Rectangle(extent={{-40,40},{40,-40}},
-            lineColor={0,0,0},
-                radius=10,
-            fillColor={236,236,236},
-                            fillPattern=FillPattern.Solid),
-          Text( extent={{-100,-44},{100,-64}},
-            lineColor={0,0,0},
-                    fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                textString="%name"),
-          Text(         extent={{-40,10},{40,-10}},
-            lineColor={0,0,0},
-                fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                    textString="Const")}));
-  end HydraulicConductanceConst;
-
-  block HydraulicResistanceToConductanceConst
-      "Constant signal of type HydraulicConductance from HydraulicResistance parameter"
-   parameter Types.HydraulicResistance k
-        "Reciprocal constant value of hydraulic conductance";
-        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
-      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-                  iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=1/k;
-    annotation (defaultComponentName="hydraulicconductance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
-          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
-              graphics={
-          Rectangle(extent={{-40,40},{40,-40}},
-            lineColor={0,0,0},
-                radius=10,
-            fillColor={236,236,236},
-                            fillPattern=FillPattern.Solid),
-          Text( extent={{-100,-44},{100,-64}},
-            lineColor={0,0,0},
-                    fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                textString="%name"),
-          Text(         extent={{-40,10},{40,-10}},
-            lineColor={0,0,0},
-                fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                    textString="Const")}));
-  end HydraulicResistanceToConductanceConst;
-
   block HydraulicComplianceConst "Constant signal of type HydraulicCompliance"
    parameter Types.HydraulicCompliance k
         "Constant HydraulicCompliance output value";
@@ -664,7 +604,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="hydrauliccompliance",
+    annotation (defaultComponentName="hydraulicCompliance",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -685,6 +625,38 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicComplianceConst;
 
+  block HydraulicElastanceConst
+      "Constant signal of type HydraulicElastance constant"
+   parameter Types.HydraulicElastance k "Hydraulic elastance";
+        Modelica.Blocks.Interfaces.RealOutput
+                                         y(final quantity="HydraulicCompliance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6))
+        "HydraulicElastance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicElastance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
+            preserveAspectRatio=false), graphics),                    Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicElastanceConst;
+
   block HydraulicElastanceToComplianceConst
       "Constant signal of type HydraulicCompliance from HydraulicElastance constant"
    parameter Types.HydraulicElastance k
@@ -694,7 +666,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=1/k;
-    annotation (defaultComponentName="hydrauliccompliance",
+    annotation (defaultComponentName="hydraulicElastance2Compliance",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -715,6 +687,100 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicElastanceToComplianceConst;
 
+  block HydraulicConductanceConst
+      "Constant signal of type HydraulicConductance"
+   parameter Types.HydraulicConductance k
+        "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicConductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicConductanceConst;
+
+  block HydraulicResistanceConst
+      "Constant signal of type HydraulicResistance parameter"
+   parameter Types.HydraulicResistance k "Hydraulic resistance";
+        Modelica.Blocks.Interfaces.RealOutput
+                                          y(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60)
+        "HydraulicResistance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicResistance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
+            preserveAspectRatio=false), graphics),                    Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicResistanceConst;
+
+  block HydraulicResistanceToConductanceConst
+      "Constant signal of type HydraulicConductance from HydraulicResistance parameter"
+   parameter Types.HydraulicResistance k
+        "Reciprocal constant value of hydraulic conductance";
+        RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=1/k;
+    annotation (defaultComponentName="hydraulicResistance2conductance",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end HydraulicResistanceToConductanceConst;
+
+
+
   block HydraulicInertanceConst "Constant signal of type HydraulicInertance"
    parameter Types.HydraulicInertance k
         "Constant HydraulicInertance output value";
@@ -723,7 +789,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="hydraulicinertance",
+    annotation (defaultComponentName="hydraulicInertance",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -779,7 +845,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="massflowrate",
+    annotation (defaultComponentName="massFlowRate",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -807,7 +873,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="molarflowrate",
+    annotation (defaultComponentName="molarFlowRate",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -864,7 +930,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="osmoticpermeability",
+    annotation (defaultComponentName="osmoticPermeability",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -920,7 +986,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="specificenergy",
+    annotation (defaultComponentName="specificEnergy",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -950,7 +1016,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="specificheatcapacity",
+    annotation (defaultComponentName="specificHeatCapacity",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -1007,7 +1073,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="thermalconductance",
+    annotation (defaultComponentName="thermalConductance",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -1063,7 +1129,7 @@ package Types "Physiological units with nominals"
                   iconTransformation(extent={{40,-10},{60,10}})));
   equation
         y=k;
-    annotation (defaultComponentName="volumeflowrate",
+    annotation (defaultComponentName="volumeFlowRate",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -1112,36 +1178,6 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end VolumeConst;
 
-  block HydraulicResistanceConst
-      "Constant signal of HydraulicResistance parameter"
-   parameter Physiolibrary.Types.HydraulicResistance k
-        "Reciprocal constant value of hydraulic resistance";
-        Physiolibrary.Types.RealIO.HydraulicResistanceOutput
-                                  y "HydraulicResistance constant"
-      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-                  iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="hydraulicresistance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
-          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
-              graphics={
-          Rectangle(extent={{-40,40},{40,-40}},
-            lineColor={0,0,0},
-                radius=10,
-            fillColor={236,236,236},
-                            fillPattern=FillPattern.Solid),
-          Text( extent={{-100,-44},{100,-64}},
-            lineColor={0,0,0},
-                    fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                textString="%name"),
-          Text(         extent={{-40,10},{40,-10}},
-            lineColor={0,0,0},
-                fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                    textString="Const")}));
-  end HydraulicResistanceConst;
   end Constants;
 
   package RealIO

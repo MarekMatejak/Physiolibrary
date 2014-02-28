@@ -495,8 +495,6 @@ package Thermal
                 -100},{100,100}}), graphics));
     end HeatOutstream;
 
-
-
   end Components;
 
   package Sources

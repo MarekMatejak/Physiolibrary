@@ -475,8 +475,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics));
     end HydrostaticColumn;
 
-
-
     model ElasticMembrane "Interaction between internal and external cavities"
      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
