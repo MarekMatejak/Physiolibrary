@@ -1,6 +1,7 @@
 within Physiolibrary;
 package Types "Physiological units with nominals"
-  extends Modelica.Icons.TypesPackage;
+  //extends Modelica.Icons.TypesPackage;
+  extends Modelica.Icons.Package;
 //If you have an idea to add the next physiological type to the next version, please write me at marek@matfyz.cz. Thank you
 
   package Examples
