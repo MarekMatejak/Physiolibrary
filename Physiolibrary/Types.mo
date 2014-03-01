@@ -626,7 +626,8 @@ package Types "Physiological units with nominals"
   end HydraulicComplianceConst;
 
   block HydraulicElastanceConst
-      "Constant signal of type HydraulicElastance constant"
+      "Obsolete, please use HydraulicCompliance instead!"
+    extends Modelica.Icons.ObsoleteModel;
    parameter Types.HydraulicElastance k "Hydraulic elastance";
         Modelica.Blocks.Interfaces.RealOutput
                                          y(final quantity="HydraulicCompliance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6))
@@ -654,7 +655,10 @@ package Types "Physiological units with nominals"
             lineColor={0,0,0},
                 fillColor={236,236,236},
             fillPattern=FillPattern.Solid,
-                    textString="Const")}));
+                    textString="Const")}),
+        Documentation(info="<html>
+<p>Please use the reciprocal value of hydraulic elastance, wich is called hydraulic compliance for the compatibility with other blocks and models!</p>
+</html>"));
   end HydraulicElastanceConst;
 
   block HydraulicElastanceToComplianceConst
@@ -718,7 +722,9 @@ package Types "Physiological units with nominals"
   end HydraulicConductanceConst;
 
   block HydraulicResistanceConst
-      "Constant signal of type HydraulicResistance parameter"
+      "Obsolete, please use HydraulicConductance instead!"
+    extends Modelica.Icons.ObsoleteModel;
+
    parameter Types.HydraulicResistance k "Hydraulic resistance";
         Modelica.Blocks.Interfaces.RealOutput
                                           y(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60)
@@ -746,7 +752,11 @@ package Types "Physiological units with nominals"
             lineColor={0,0,0},
                 fillColor={236,236,236},
             fillPattern=FillPattern.Solid,
-                    textString="Const")}));
+                    textString="Const")}),
+        Documentation(info="<html>
+<p>Please use the reciprocal value of hydraulic resistance, wich is called hydraulic conductance for the compatibility with other blocks and models!</p>
+<p>Because zero hydraulic conductance means zero volumetric flow, it is much better to use this reciprocal value of hydraulic resistance.</p>
+</html>"));
   end HydraulicResistanceConst;
 
   block HydraulicResistanceToConductanceConst
@@ -778,8 +788,6 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end HydraulicResistanceToConductanceConst;
-
-
 
   block HydraulicInertanceConst "Constant signal of type HydraulicInertance"
    parameter Types.HydraulicInertance k
