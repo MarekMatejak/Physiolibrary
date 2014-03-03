@@ -33,7 +33,7 @@ Download [Physiolibrary 2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
 #### Release notes
 
 *  [Version v2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
- * Upgrade to MSL 3.2.1 (but still compatible with MSL 3.2)
+ * Upgrade to MSL 3.2.1 (still compatible with MSL 3.2)
  * New: constants HydraulicResistanceConst, HydraulicElastanceConst and HydraulicElastanceToComplianceConst and type HydraulicElastance
  * New: steady state component ElectricChargeConservationLaw
  * New: display units for hydraulic resistance/conductance/compliance/elastance, for gas solubility 
