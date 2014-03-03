@@ -1194,13 +1194,7 @@ package Icons "Icons for physiological models"
           Line(
             points={{-80,10},{-80,-80},{-80,-80}},
             color={0,0,0},
-            smooth=Smooth.None),
-          Text(
-            extent={{-100,60},{100,34}},
-            lineColor={0,0,0},
-            fillColor={0,0,127},
-            fillPattern=FillPattern.Solid,
-            textString="Total(%Total)")}));
+            smooth=Smooth.None)}));
   end ConservationLaw;
   annotation (Documentation(revisions=""));
 end Icons;

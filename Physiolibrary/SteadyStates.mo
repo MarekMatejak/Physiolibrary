@@ -754,7 +754,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
                          T0_in_T(numberOfSubunit={4})
         annotation (Placement(transformation(extent={{78,-48},{58,-28}})));
       Physiolibrary.Chemical.Components.Substance
-                          OxyRHm(solute_start=0, Simulation=SimulationType.SteadyState)
+                          OxyRHm(solute_start=0, Simulation=SimulationType.SteadyState,
+        isDependent=true)
         "Oxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-96,6},{-76,26}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
@@ -762,12 +763,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
         annotation (Placement(transformation(extent={{-68,6},{-48,26}})));
       Physiolibrary.Chemical.Components.Substance
                           DeoxyRHm(Simulation=SimulationType.SteadyState,
-        isDependent=true,
-        solute_start=1e-08)
+          solute_start=1e-08)
         "Deoxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-38,6},{-18,26}})));
       Physiolibrary.Chemical.Components.Substance
-                          OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState)
+                          OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState,
+        isDependent=true)
         "Oxygenated subunit in T structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{26,6},{46,26}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
@@ -781,8 +782,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       Physiolibrary.Chemical.Components.Substance
                           oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
-            *7.875647668393782383419689119171e-5,
-        isDependent=true)
+            *7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{-2,40},{18,60}})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
         annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
@@ -1116,7 +1116,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Energy Total
+      parameter Physiolibrary.Types.Energy Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1141,7 +1141,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
               lineColor={0,0,255},
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              textString="%name"),
+            Text(
+              extent={{-100,50},{100,24}},
+              lineColor={0,0,0},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              textString="Total(%Total)")}),
+                                     Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
@@ -1162,7 +1169,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Volume Total
+      parameter Physiolibrary.Types.Volume Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1187,7 +1194,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
               lineColor={0,0,255},
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              textString="%name"),
+            Text(
+              extent={{-100,50},{100,24}},
+              lineColor={0,0,0},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              textString="Total(%Total)")}),
+                                     Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
@@ -1209,7 +1223,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.AmountOfSubstance Total
+      parameter Physiolibrary.Types.AmountOfSubstance Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1219,6 +1233,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
             origin={0,80})));
 
       Physiolibrary.Types.AmountOfSubstance t "Current Mass/Energy";
+      Types.RealIO.AmountOfSubstanceOutput totalAmountOfSubstance
+        annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
     equation
       if not useTotalInput then
         t=Total;
@@ -1227,6 +1243,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       t*normalizedState[1] = sum(fragment);
 
       //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
+      totalAmountOfSubstance = t;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics={Text(
@@ -1234,7 +1251,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
               lineColor={0,0,255},
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              textString="%name"),
+            Text(
+              extent={{-100,50},{100,24}},
+              lineColor={0,0,0},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              textString="Total(%Total)")}),
+                                     Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
@@ -1256,7 +1280,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.ElectricCharge Total
+      parameter Physiolibrary.Types.ElectricCharge Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1281,7 +1305,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
               lineColor={0,0,255},
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
+              textString="%name"),
+            Text(
+              extent={{-100,50},{100,24}},
+              lineColor={0,0,0},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              textString="Total(%Total)")}),
+                                     Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
@@ -1518,8 +1549,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>One of the main question in clinical medicine is how to stabilize the patient. In the fact of the oscillating heart, breathing, circadian rhythm or menstruation cycle the model could be designed as non-oscillating with variables such as period times, amplitudes, frequencies, mean values and other phase space variables. This type of model has better numerical stability for longer simulation time and even more it can be &QUOT;stabilized&QUOT;. This stabilization we called steady state. </p>
 <p>To be mathematically exact, we define an <i><b>steady state system</b></i> (SSS) as a non-differential system derived from a original differential system (DS) by using zero derivations and by adding <b>additional steady state equations</b> (ASSE). The number of the ASSE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASSE describes the system from the top view mostly such as the equations of mass conservation laws or the boundary equation of environment sources. To define a model as an SSS the user must switch each Simulation parameter in each block to value Types.SimulationType.SteadyState and must have correctly defined all necessary ASSE. This setting caused to ignoring any start values for any state and add zero derivation equations instead. Today does not exist Modelica environment, which could automatically find and remove generated dependent equations by this way. So the correct number of states must be marked as dependent (parameter isDependent) and the same number of ASSE must be inserted. Despite the fact, that model in this steady-state setting will be not locally balanced it should be globally balanced and without any dependent equation.</p>

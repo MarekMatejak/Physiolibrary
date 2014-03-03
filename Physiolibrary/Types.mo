@@ -658,6 +658,7 @@ package Types "Physiological units with nominals"
                     textString="Const")}),
         Documentation(info="<html>
 <p>Please use the reciprocal value of hydraulic elastance, wich is called hydraulic compliance for the compatibility with other blocks and models!</p>
+<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Physiolibrary.Blocks.Math.Reciprocal) before connecting to library components!</p>
 </html>"));
   end HydraulicElastanceConst;
 
@@ -756,6 +757,7 @@ package Types "Physiological units with nominals"
         Documentation(info="<html>
 <p>Please use the reciprocal value of hydraulic resistance, wich is called hydraulic conductance for the compatibility with other blocks and models!</p>
 <p>Because zero hydraulic conductance means zero volumetric flow, it is much better to use this reciprocal value of hydraulic resistance.</p>
+<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Physiolibrary.Blocks.Math.Reciprocal) before connecting to library components!</p>
 </html>"));
   end HydraulicResistanceConst;
 
@@ -1191,6 +1193,318 @@ package Types "Physiological units with nominals"
   package RealIO
     extends Modelica.Icons.Package;
 
+    connector AccelerationInput = input Acceleration
+      "input Acceleration as connector"
+      annotation (defaultComponentName="acceleration",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Acceleration. 
+    </p> 
+    </html>"));
+    connector AccelerationOutput = output Acceleration
+      "output Acceleration as connector"
+      annotation (defaultComponentName="acceleration",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector AmountOfSubstanceInput = input AmountOfSubstance
+      "input AmountOfSubstance as connector"
+      annotation (defaultComponentName="amountofsubstance",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type AmountOfSubstance. 
+    </p> 
+    </html>"));
+    connector AmountOfSubstanceOutput = output AmountOfSubstance
+      "output AmountOfSubstance as connector"
+      annotation (defaultComponentName="amountofsubstance",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector ConcentrationInput = input Concentration
+      "input Concentration as connector"
+      annotation (defaultComponentName="concentration",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Concentration. 
+    </p> 
+    </html>"));
+    connector ConcentrationOutput = output Concentration
+      "output Concentration as connector"
+      annotation (defaultComponentName="concentration",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector DiffusionPermeabilityInput = input DiffusionPermeability
+      "input DiffusionPermeability as connector"
+      annotation (defaultComponentName="diffusionmembranepermeability",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type DiffusionMembranePermeability. 
+    </p> 
+    </html>"));
+    connector DiffusionPermeabilityOutput = output DiffusionPermeability
+      "output DiffusionPermeability as connector"
+      annotation (defaultComponentName="diffusionmembranepermeability",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector ElectricCurrentInput = input ElectricCurrent
+      "input ElectricCurrent as connector"
+      annotation (defaultComponentName="electriccurrent",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type ElectricCurrent. 
+    </p> 
+    </html>"));
+    connector ElectricCurrentOutput = output ElectricCurrent
+      "output ElectricCurrent as connector"
+      annotation (defaultComponentName="electriccurrent",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector ElectricChargeInput = input ElectricCharge
+      "input ElectricCharge as connector"
+      annotation (defaultComponentName="electriccharge",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type ElectricCharge. 
+    </p> 
+    </html>"));
+    connector ElectricChargeOutput = output ElectricCharge
+      "output ElectricCharge as connector"
+      annotation (defaultComponentName="electriccharge",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
     connector EnergyInput = input Energy "input Energy as connector"
       annotation (defaultComponentName="energy",
       Icon(graphics={Polygon(
@@ -1243,8 +1557,8 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector TimeInput = input Time "input Time as connector"
-      annotation (defaultComponentName="time",
+    connector HeatInput = input Heat "input Heat as connector"
+      annotation (defaultComponentName="heat",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
               lineColor={0,0,127},
@@ -1264,12 +1578,11 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html> 
     <p> 
-    Connector with one input signal of type Time. 
+    Connector with one input signal of type Heat. 
     </p> 
     </html>"));
-
-    connector TimeOutput = output Time "output Time as connector"
-      annotation (defaultComponentName="time",
+    connector HeatOutput = output Heat "output Heat as connector"
+      annotation (defaultComponentName="heat",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -1294,7 +1607,108 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-
+    connector HeatFlowRateInput = input HeatFlowRate
+      "input HeatFlowRate as connector"
+      annotation (defaultComponentName="heatflowrate",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type HeatFlowRate. 
+    </p> 
+    </html>"));
+    connector HeatFlowRateOutput = output HeatFlowRate
+      "output HeatFlowRate as connector"
+      annotation (defaultComponentName="heatflowrate",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    connector HeightInput = input Height "input Height as connector"
+      annotation (defaultComponentName="height",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Height. 
+    </p> 
+    </html>"));
+    connector HeightOutput = output Height "output Height as connector"
+      annotation (defaultComponentName="height",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
     connector MassInput = input Mass "input Mass as connector"
       annotation (defaultComponentName="mass",
       Icon(graphics={Polygon(
@@ -1401,8 +1815,9 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector HeightInput = input Height "input Height as connector"
-      annotation (defaultComponentName="height",
+    connector MolarFlowRateInput = input MolarFlowRate
+      "input MolarFlowRate as connector"
+      annotation (defaultComponentName="molarflowrate",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
               lineColor={0,0,127},
@@ -1422,12 +1837,12 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html> 
     <p> 
-    Connector with one input signal of type Height. 
+    Connector with one input signal of type MolarFlowRate. 
     </p> 
     </html>"));
-
-    connector HeightOutput = output Height "output Height as connector"
-      annotation (defaultComponentName="height",
+    connector MolarFlowRateOutput = output MolarFlowRate
+      "output MolarFlowRate as connector"
+      annotation (defaultComponentName="molarflowrate",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -1452,10 +1867,9 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-
-    connector AccelerationInput = input Acceleration
-      "input Acceleration as connector"
-      annotation (defaultComponentName="acceleration",
+    connector OsmolarityInput = input Osmolarity
+      "input Concentration as connector"
+      annotation (defaultComponentName="osmolarity",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
               lineColor={0,0,127},
@@ -1475,13 +1889,12 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html> 
     <p> 
-    Connector with one input signal of type Acceleration. 
+    Connector with one input signal of type Concentration. 
     </p> 
     </html>"));
-
-    connector AccelerationOutput = output Acceleration
-      "output Acceleration as connector"
-      annotation (defaultComponentName="acceleration",
+    connector OsmolarityOutput = output Osmolarity
+      "output Concentration as connector"
+      annotation (defaultComponentName="osmolarity",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -1506,7 +1919,6 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-
     connector PressureInput = input Pressure "input Pressure as connector"
       annotation (defaultComponentName="pressure",
       Icon(graphics={Polygon(
@@ -1665,328 +2077,6 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector ConcentrationInput = input Concentration
-      "input Concentration as connector"
-      annotation (defaultComponentName="concentration",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Concentration. 
-    </p> 
-    </html>"));
-
-    connector ConcentrationOutput = output Concentration
-      "output Concentration as connector"
-      annotation (defaultComponentName="concentration",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector OsmolarityInput = input Osmolarity
-      "input Concentration as connector"
-      annotation (defaultComponentName="osmolarity",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Concentration. 
-    </p> 
-    </html>"));
-
-    connector OsmolarityOutput = output Osmolarity
-      "output Concentration as connector"
-      annotation (defaultComponentName="osmolarity",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector AmountOfSubstanceInput = input AmountOfSubstance
-      "input AmountOfSubstance as connector"
-      annotation (defaultComponentName="amountofsubstance",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type AmountOfSubstance. 
-    </p> 
-    </html>"));
-
-    connector AmountOfSubstanceOutput = output AmountOfSubstance
-      "output AmountOfSubstance as connector"
-      annotation (defaultComponentName="amountofsubstance",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector MolarFlowRateInput = input MolarFlowRate
-      "input MolarFlowRate as connector"
-      annotation (defaultComponentName="molarflowrate",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type MolarFlowRate. 
-    </p> 
-    </html>"));
-
-    connector MolarFlowRateOutput = output MolarFlowRate
-      "output MolarFlowRate as connector"
-      annotation (defaultComponentName="molarflowrate",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector DiffusionPermeabilityInput = input DiffusionPermeability
-      "input DiffusionPermeability as connector"
-      annotation (defaultComponentName="diffusionmembranepermeability",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type DiffusionMembranePermeability. 
-    </p> 
-    </html>"));
-
-    connector DiffusionPermeabilityOutput = output DiffusionPermeability
-      "output DiffusionPermeability as connector"
-      annotation (defaultComponentName="diffusionmembranepermeability",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector HeatInput = input Heat "input Heat as connector"
-      annotation (defaultComponentName="heat",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Heat. 
-    </p> 
-    </html>"));
-
-    connector HeatOutput = output Heat "output Heat as connector"
-      annotation (defaultComponentName="heat",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
     connector TemperatureInput = input Temperature
       "input Temperature as connector"
       annotation (defaultComponentName="temperature",
@@ -2040,10 +2130,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-
-    connector HeatFlowRateInput = input HeatFlowRate
-      "input HeatFlowRate as connector"
-      annotation (defaultComponentName="heatflowrate",
+    connector TimeInput = input Time "input Time as connector"
+      annotation (defaultComponentName="time",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
               lineColor={0,0,127},
@@ -2063,13 +2151,11 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html> 
     <p> 
-    Connector with one input signal of type HeatFlowRate. 
+    Connector with one input signal of type Time. 
     </p> 
     </html>"));
-
-    connector HeatFlowRateOutput = output HeatFlowRate
-      "output HeatFlowRate as connector"
-      annotation (defaultComponentName="heatflowrate",
+    connector TimeOutput = output Time "output Time as connector"
+      annotation (defaultComponentName="time",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -2124,114 +2210,6 @@ package Types "Physiological units with nominals"
     connector ThermalConductanceOutput = output ThermalConductance
       "output ThermalConductance as connector"
       annotation (defaultComponentName="thermalconductance",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector ElectricCurrentInput = input ElectricCurrent
-      "input ElectricCurrent as connector"
-      annotation (defaultComponentName="electriccurrent",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ElectricCurrent. 
-    </p> 
-    </html>"));
-
-    connector ElectricCurrentOutput = output ElectricCurrent
-      "output ElectricCurrent as connector"
-      annotation (defaultComponentName="electriccurrent",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-
-    connector ElectricChargeInput = input ElectricCharge
-      "input ElectricCharge as connector"
-      annotation (defaultComponentName="electriccharge",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ElectricCharge. 
-    </p> 
-    </html>"));
-
-    connector ElectricChargeOutput = output ElectricCharge
-      "output ElectricCharge as connector"
-      annotation (defaultComponentName="electriccharge",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -2578,6 +2556,56 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
+    connector DensityInput =input Density "input Density as connector"
+      annotation (defaultComponentName="density",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type Volume. 
+    </p> 
+    </html>"));
+    connector DensityOutput =output Density "output Density as connector"
+      annotation (defaultComponentName="density",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
     connector HydraulicInertanceInput = input HydraulicInertance
       "input HydraulicInertance as connector"
       annotation (defaultComponentName="hydraulicinertance",
@@ -2685,56 +2713,6 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector DensityInput =input Density "input Density as connector"
-      annotation (defaultComponentName="density",
-      Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
-           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true, initialScale=0.2,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Volume. 
-    </p> 
-    </html>"));
-    connector DensityOutput =output Density "output Density as connector"
-      annotation (defaultComponentName="density",
-      Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-      Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
-        Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
     connector SpecificEnergyInput =
                             input SpecificEnergy
       "input SpecificEnergy as connector"
@@ -4041,8 +4019,8 @@ The Real output y is a constant signal:
            false, extent={{-100,-100},{100,100}}), graphics));
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &QUOT;physiological&QUOT; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
 </html>"));

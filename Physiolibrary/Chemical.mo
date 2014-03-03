@@ -127,7 +127,94 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         __Dymola_experimentSetupOutput);
     end ExothermicReaction;
 
-    model Allosteric_Hemoglobin_MWC
+    model MichaelisMenten "Basic enzyme kinetics"
+      import Physiolibrary;
+      extends Modelica.Icons.Example;
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+                                                 Simulation=Types.SimulationType.SteadyState);
+       import Physiolibrary.Types.*;
+
+      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+                       P(Conc=0)
+        annotation (Placement(transformation(extent={{92,-12},{72,8}})));
+      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+                       S(Conc=0.1)
+        annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
+
+         parameter AmountOfSubstance tE=0.01 "total amount of enzyme";
+         parameter Real k_cat(unit="1/s", displayUnit="1/min")= 1
+        "forward rate of second reaction";
+         parameter Physiolibrary.Types.Concentration Km = 0.1
+        "Michaelis constant = substrate concentration at rate of half Vmax";
+
+          Physiolibrary.Chemical.Components.Substance
+                              ES(                       solute_start=0,
+            Simulation=SimulationType.SteadyState)
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+          Physiolibrary.Chemical.Components.Substance
+                              E(                       solute_start=tE,
+            isDependent=true,
+            Simulation=SimulationType.SteadyState)
+            annotation (Placement(transformation(extent={{-10,38},{10,58}})));
+          Components.ChemicalReaction
+                           chemicalReaction(nS=2,
+            K=2/Km,
+            kf=2*k_cat/Km)
+            annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
+          Components.ChemicalReaction
+                           chemicalReaction1(nP=2,
+            K=Modelica.Constants.inf,
+            kf=k_cat)
+            annotation (Placement(transformation(extent={{24,-10},{44,10}})));
+
+         // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
+    equation
+          normalizedState[1]*tE = E.solute + ES.solute;
+
+         //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
+
+      connect(S.q_out, chemicalReaction.substrates[1]) annotation (Line(
+          points={{-74,-2},{-60,-2},{-60,-0.5},{-42,-0.5}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(chemicalReaction1.products[1], P.q_out) annotation (Line(
+          points={{44,-0.5},{54,-0.5},{54,-2},{72,-2}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
+          points={{0,48},{-50,48},{-50,0.5},{-42,0.5}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(E.q_out, chemicalReaction1.products[2]) annotation (Line(
+          points={{0,48},{50,48},{50,0.5},{44,0.5}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
+          points={{-22,0},{0,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+          points={{0,0},{24,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),     graphics),
+                  Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        experiment(StopTime=1),
+        __Dymola_experimentSetupOutput);
+    end MichaelisMenten;
+
+    model Allosteric_Hemoglobin_MWC "Monod,Wyman,Changeux (1965)"
     extends Modelica.Icons.Example;
       import Physiolibrary.Chemical.*;
       import Physiolibrary.Types.*;
@@ -502,7 +589,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     end Allosteric_Hemoglobin_MWC;
 
     model Allosteric_Hemoglobin2_MWC
-      "Allosteric hemoglobin model implemented by Speciation blocks"
+      "Monod,Wyman,Changeux (1965)Allosteric hemoglobin model implemented by Speciation blocks"
       import Physiolibrary.Types.*;
 
      extends Modelica.Icons.Example;
@@ -530,14 +617,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Physiolibrary.Chemical.Components.ChemicalReaction
                                                 quaternaryForm(K=L)
         annotation (Placement(transformation(extent={{-4,-98},{16,-78}})));
-      Physiolibrary.Chemical.Components.Speciation
+      Components.Speciation
                          R0_in_R(numberOfSubunit={4})
         annotation (Placement(transformation(extent={{-40,-90},{-60,-70}})));
-      Physiolibrary.Chemical.Components.Speciation
+      Components.Speciation
                          T0_in_T(numberOfSubunit={4})
         annotation (Placement(transformation(extent={{76,-90},{56,-70}})));
       Physiolibrary.Chemical.Components.Substance
-                          OxyRHm(solute_start=0, Simulation=SimulationType.SteadyState)
+                          OxyRHm(solute_start=0, Simulation=SimulationType.SteadyState,
+        isDependent=true)
         "Oxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-98,-36},{-78,-16}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
@@ -545,12 +633,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation (Placement(transformation(extent={{-70,-36},{-50,-16}})));
       Physiolibrary.Chemical.Components.Substance
                           DeoxyRHm(Simulation=SimulationType.SteadyState,
-        isDependent=true,
-        solute_start=1e-08)
+          solute_start=1e-08)
         "Deoxygenated subunit in R structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
       Physiolibrary.Chemical.Components.Substance
-                          OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState)
+                          OxyTHm(solute_start=0, Simulation=SimulationType.SteadyState,
+        isDependent=true)
         "Oxygenated subunit in T structure of hemoglobin tetramer"
         annotation (Placement(transformation(extent={{22,-36},{42,-16}})));
       Physiolibrary.Chemical.Components.ChemicalReaction
@@ -564,8 +652,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       Physiolibrary.Chemical.Components.Substance
                           oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
-            *7.875647668393782383419689119171e-5,
-        isDependent=true)
+            *7.875647668393782383419689119171e-5)
         annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
       Modelica.Blocks.Sources.Clock clock(offset=1e-06)
         annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
@@ -707,92 +794,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>"));
     end Allosteric_Hemoglobin2_MWC;
 
-    model MichaelisMenten "Basic enzyme kinetics"
-      import Physiolibrary;
-      extends Modelica.Icons.Example;
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                                 Simulation=Types.SimulationType.SteadyState);
-       import Physiolibrary.Types.*;
 
-      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
-                       P(Conc=0)
-        annotation (Placement(transformation(extent={{92,-12},{72,8}})));
-      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
-                       S(Conc=0.1)
-        annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
-         parameter AmountOfSubstance tE=0.01 "total amount of enzyme";
-         parameter Real k_cat(unit="1/s", displayUnit="1/min")= 1
-        "forward rate of second reaction";
-         parameter Physiolibrary.Types.Concentration Km = 0.1
-        "Michaelis constant = substrate concentration at rate of half Vmax";
 
-          Physiolibrary.Chemical.Components.Substance
-                              ES(                       solute_start=0,
-            Simulation=SimulationType.SteadyState)
-            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-          Physiolibrary.Chemical.Components.Substance
-                              E(                       solute_start=tE,
-            isDependent=true,
-            Simulation=SimulationType.SteadyState)
-            annotation (Placement(transformation(extent={{-10,38},{10,58}})));
-          Components.ChemicalReaction
-                           chemicalReaction(nS=2,
-            K=2/Km,
-            kf=2*k_cat/Km)
-            annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
-          Components.ChemicalReaction
-                           chemicalReaction1(nP=2,
-            K=Modelica.Constants.inf,
-            kf=k_cat)
-            annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
-         // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
-    equation
-          normalizedState[1]*tE = E.solute + ES.solute;
 
-         //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);
 
-      connect(S.q_out, chemicalReaction.substrates[1]) annotation (Line(
-          points={{-74,-2},{-60,-2},{-60,-0.5},{-42,-0.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(chemicalReaction1.products[1], P.q_out) annotation (Line(
-          points={{44,-0.5},{54,-0.5},{54,-2},{72,-2}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(E.q_out, chemicalReaction.substrates[2]) annotation (Line(
-          points={{0,48},{-50,48},{-50,0.5},{-42,0.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(E.q_out, chemicalReaction1.products[2]) annotation (Line(
-          points={{0,48},{50,48},{50,0.5},{44,0.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(chemicalReaction.products[1], ES.q_out) annotation (Line(
-          points={{-22,0},{0,0}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(ES.q_out, chemicalReaction1.substrates[1]) annotation (Line(
-          points={{0,0},{24,0}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),     graphics),
-                  Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        experiment(StopTime=1),
-        __Dymola_experimentSetupOutput);
-    end MichaelisMenten;
+
 
   end Examples;
 
@@ -1380,7 +1388,7 @@ It works in two modes:
       extends Physiolibrary.Icons.Speciation;
 
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                               Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunitTypes-1);
+                                               Simulation=Physiolibrary.Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunitTypes-1);
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
 
       import Physiolibrary.Types.*;
@@ -1396,7 +1404,7 @@ It works in two modes:
                                                                                                             annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
 
-      parameter Real numberOfSubunit[NumberOfSubunitTypes]
+      parameter Real numberOfSubunit[NumberOfSubunitTypes] = ones(NumberOfSubunitTypes)
         "Number of identical subunits instances in macromolecule. First should be non-zero.";
 
     protected
@@ -1570,6 +1578,7 @@ It works in two modes:
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end Reabsorption;
+
   end Components;
 
   package Sensors
@@ -2135,8 +2144,8 @@ on the model behaviour.
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p>
 <p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p>

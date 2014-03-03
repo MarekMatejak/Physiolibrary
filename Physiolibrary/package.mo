@@ -362,6 +362,7 @@ dateModified = "2014-02-28 22:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
+  from(version="1.2", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.1.mos"),
   from(version="2.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
