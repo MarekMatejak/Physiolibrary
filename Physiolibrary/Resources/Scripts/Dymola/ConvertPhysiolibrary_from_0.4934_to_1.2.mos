@@ -3,123 +3,6 @@
 // clear
 convertClear();
 
-convertClass("Physiolibrary.Blocks.Constant","Physiolibrary.Types.Constants.FractionConst");
-convertModifiers("Physiolibrary.Blocks.FractConstant",{"displayUnit"}  , {"displayUnit=\"1\""}, true);
-
-convertClass("Physiolibrary.Blocks.FractConstant","Physiolibrary.Types.Constants.FractionConst");
-convertModifiers("Physiolibrary.Blocks.FractConstant",{"k"}  , {"k=%k%*0.01"}, true);
-convertClass("Physiolibrary.Blocks.PressureConstant","Physiolibrary.Types.Constants.PressureConst");
-convertModifiers("Physiolibrary.Blocks.PressureConstant",{"k"}  , {"k=%k%*133.322387415"}, true);
-convertClass("Physiolibrary.Blocks.VolumeConstant","Physiolibrary.Types.Constants.VolumeConst");
-convertModifiers("Physiolibrary.Blocks.VolumeConstant",{"k"}  , {"k=%k%*1e-06"}, true);
-convertClass("Physiolibrary.Blocks.InitialVolumeConstant","Physiolibrary.Types.Constants.VolumeConst");
-convertModifiers("Physiolibrary.Blocks.InitialVolumeConstant",{"k"}  , {"k=%k%*1e-06"}, true);
-convertClass("Physiolibrary.Blocks.TemperatureConstant","Physiolibrary.Types.Constants.TemperatureConst");
-convertModifiers("Physiolibrary.Blocks.TemperatureConstant",{"k"}  , {"k=%k%+273.15"}, true);
-convertClass("Physiolibrary.Blocks.OsmolarityConstant","Physiolibrary.Types.Constants.OsmolarityConst");
-convertModifiers("Physiolibrary.Blocks.OsmolarityConstant",{"k"}  , {"k=%k%"}, true);
-convertClass("Physiolibrary.Blocks.TimeConstant","Physiolibrary.Types.Constants.TimeConst");
-convertModifiers("Physiolibrary.Blocks.TimeConstant",{"k"}  , {"k=%k%*60"}, true);
-convertClass("Physiolibrary.Blocks.FlowConstant","Physiolibrary.Types.Constants.VolumeFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.FlowConstant",{"k"}  , {"k=%k%*1.6666666666667e-08"}, true);
-convertClass("Physiolibrary.Blocks.CaloriesConstant","Physiolibrary.Types.Constants.HeatConst");
-convertModifiers("Physiolibrary.Blocks.CaloriesConstant",{"k"}  , {"k=%k%*4.1868"}, true);
-convertClass("Physiolibrary.Blocks.ElectrolytesMassConstant","Physiolibrary.Types.Constants.ElectricChargeConst");
-convertModifiers("Physiolibrary.Blocks.ElectrolytesMassConstant",{"k"}  , {"k=%k%*96.4853399"}, true);
-convertClass("Physiolibrary.Blocks.ComplianceConstant","Physiolibrary.Types.Constants.HydraulicComplianceConst");
-convertModifiers("Physiolibrary.Blocks.ComplianceConstant",{"k"}  , {"k=%k%*7.5006157584566e-09"}, true);
-convertClass("Physiolibrary.Blocks.CondConstant","Physiolibrary.Types.Constants.HydraulicConductanceConst");
-convertModifiers("Physiolibrary.Blocks.CondConstant",{"k"}  , {"k=%k%*1.2501026264094e-10"}, true);
-convertClass("Physiolibrary.Blocks.MassFlowConstant_kg","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.MassFlowConstant_kg",{"k"}  , {"k=%k%*1.6666666666667e-02"}, true); //kg/min
-convertClass("Physiolibrary.Blocks.MassFlowConstant","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.MassFlowConstant",{"k"}  , {"k=%k%*1.6666666666667e-08"}, true); //mg/min
-convertClass(    "Physiolibrary.Blocks.HormoneFlowConstant_uG","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_uG",{"k"}  , {"k=%k%*1.6666666666667e-011"}, true); //ug/min
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_nG","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_nG",{"k"}  , {"k=%k%*1.6666666666667e-014"}, true); //ng/min
-convertClass("Physiolibrary.Blocks.HeightConstant","Physiolibrary.Types.Constants.HeightConst");
-convertModifiers("Physiolibrary.Blocks.HeightConstant",{"k"}  , {"k=%k%"}, true); //m
-convertClass("Physiolibrary.Blocks.ElectrolytesFlowConstant","Physiolibrary.Types.Constants.ElectricCurrentConst");
-convertModifiers("Physiolibrary.Blocks.ElectrolytesFlowConstant",{"k"}  , {"k=%k%*1.6080889983333"}, true);
-convertClass("Physiolibrary.Blocks.GConstant","Physiolibrary.Types.Constants.AccelerationConst");
-convertModifiers("Physiolibrary.Blocks.GConstant",{"k"}  , {"k=%k%"}, true);
-convertClass("Physiolibrary.Blocks.CaloriesFlowConstant","Physiolibrary.Types.Constants.HeatFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.CaloriesFlowConstant",{"k"}  , {"k=%k%*0.06978"}, true);
-convertClass("Physiolibrary.Blocks.SoluteMassConstant","Physiolibrary.Types.Constants.AmountOfSubstanceConst");
-convertModifiers("Physiolibrary.Blocks.SoluteMassConstant",{"k"}  , {"k=%k%*0.001"}, true);
-convertClass("Physiolibrary.Blocks.FlowConstant_mmol_per_hour","Physiolibrary.Types.Constants.MolarFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.FlowConstant_mmol_per_hour",{"k"}  , {"k=%k%*2.777777777778e-7"}, true); //mmol/h
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_mmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mmol",{"k"}  , {"k=%k%*1.6666666666667e-05"}, true); //mmol/min 
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_nmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_nmol",{"k"}  , {"k=%k%*1.6666666666667e-11"}, true); //nmol/min
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_pmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_pmol",{"k"}  , {"k=%k%*1.6666666666667e-14"}, true); //pmol/min
-convertClass("Physiolibrary.Blocks.ConcentrationConstant_pg_per_ml","Physiolibrary.Types.Constants.DensityConst");
-convertModifiers("Physiolibrary.Blocks.ConcentrationConstant_pg_per_ml",{"k"}  , {"k=%k%*1.0e-9"}, true); //pg/ml=ug/m3
-
-
-convertClass("Physiolibrary.Blocks.Fract2Constant","ObsoletePhysiolibrary1.Types.Constants.Fract2Constant");
-convertModifiers("Physiolibrary.Blocks.Fract2Constant",{"k"},{"k=%k%*0.01"}, true);
-convertClass("Physiolibrary.Blocks.ElectrolytesConcentrationConstant_per_l","Physiolibrary.Types.Constants.ConcentrationConst");
-convertModifiers("Physiolibrary.Blocks.ElectrolytesConcentrationConstant_per_l",{"k"},{"k=%k%*ChargePerMolecule"});
-convertClass("Physiolibrary.Blocks.ConcentrationConstant_uU_per_ml","Physiolibrary.Types.Constants.MassConst");
-convertModifiers("Physiolibrary.Blocks.ConcentrationConstant_uU_per_ml",{"k"},{"k=%k%*(1e-6)*MassPerIU"});
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_mU","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mU",{"k"},{"k=%k%*(1/(60*1000))*MassPerIU"}); //mU/min
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_GU","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_GU",{"k"},{"k=%k%*((1e+09)/60)*MassPerIU"});
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_IU","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_IU",{"k"},{"k=%k%/60*MassPerIU"});
-convertClass("Physiolibrary.Blocks.HormoneFlowConstant_U","Physiolibrary.Types.Constants.MassFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_U",{"k"},{"k=%k%/60*MassPerIU"});
-
-
-
- convertClass("Physiolibrary.Interfaces.BaseModel","Physiolibrary.Icons.Golem");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon","Physiolibrary.Icons.BaseFactorIcon");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon2","Physiolibrary.Icons.BaseFactorIcon2");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon3","Physiolibrary.Icons.BaseFactorIcon3");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon4","Physiolibrary.Icons.BaseFactorIcon4");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon5","Physiolibrary.Icons.BaseFactorIcon5");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon6","Physiolibrary.Icons.BaseFactorIcon6");
- convertClass("Physiolibrary.Interfaces.BaseFactorIcon0","Physiolibrary.Icons.BaseFactorIcon0");
- convertClass("Physiolibrary.Interfaces.ConversionIcon","Physiolibrary.Icons.ConversionIcon");
-
-convertClass("Physiolibrary.Interfaces.RealInput","Modelica.Blocks.Interfaces.RealInput");
-convertClass("Physiolibrary.Interfaces.RealInput_","Modelica.Blocks.Interfaces.RealInput");
-convertClass("Physiolibrary.Interfaces.RealInput_G","Modelica.Blocks.Interfaces.RealInput");
-convertClass("Physiolibrary.Interfaces.RealOutput","Modelica.Blocks.Interfaces.RealOutput");
-convertClass("Physiolibrary.Interfaces.RealOutput_","Modelica.Blocks.Interfaces.RealOutput");
-convertClass("Physiolibrary.Interfaces.RealOutput_G","Modelica.Blocks.Interfaces.RealOutput");
-convertClass("Physiolibrary.Interfaces.BooleanInput","Modelica.Blocks.Interfaces.BooleanInput");
-convertClass("Physiolibrary.Interfaces.BooleanOutput","Modelica.Blocks.Interfaces.BooleanOutput");
-convertClass("Physiolibrary.Interfaces.SIMO","Modelica.Blocks.Interfaces.SIMO");
-convertClass("Physiolibrary.Interfaces.SISO","Modelica.Blocks.Interfaces.SISO");
-
-convertClass("Physiolibrary.Interfaces.BusConnector","Physiolibrary.Types.BusConnector");
-
-convertClass("Physiolibrary.Blocks.Add","Physiolibrary.Blocks.Math.Add");
-convertClass("Physiolibrary.Blocks.Inv","Physiolibrary.Blocks.Math.Reciprocal");
-convertClass("Physiolibrary.Blocks.Pow","Physiolibrary.Blocks.Math.Pow");
-convertClass("Physiolibrary.Blocks.Min","Physiolibrary.Blocks.Math.Min");
-convertClass("Physiolibrary.Blocks.MultiProduct","Physiolibrary.Blocks.Math.MultiProduct");
-convertClass("Physiolibrary.Blocks.Log10AsEffect","Physiolibrary.Blocks.Math.Log10AsEffect");
-convertClass("Physiolibrary.Blocks.deprecated_HomotopyStrongComponentBreaker","Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker");
-convertClass("Physiolibrary.Blocks.Integrator","Physiolibrary.Blocks.Math.Integrator");
-convertClass("Physiolibrary.Blocks.IntegratorWithRestart","Physiolibrary.Blocks.Math.Integrator");
-convertClass("Physiolibrary.Blocks.Parts","Physiolibrary.Blocks.Math.Parts");
-convertClass("Physiolibrary.Blocks.Limiter_","Modelica.Blocks.Nonlinear.Limiter");
-convertClass("Physiolibrary.Blocks.SafeDivision","Modelica.Blocks.Math.Division");
-
-
-
-
-
-
-
-
 convertClass("Physiolibrary.Icons.Reabsorbtion","Physiolibrary.Icons.Reabsorption");
 convertClass("Physiolibrary.Icons.Reabsorbtion2","Physiolibrary.Icons.Reabsorption2");
 convertElement("Physiolibrary.Hydraulic.Reabsorbtion","Reabsorbtion","Reabsorption");
@@ -245,4 +128,115 @@ convertClass("Physiolibrary.Mixed.IdealGas","Physiolibrary.Mixed.Components.Idea
 convertClass("Physiolibrary.Mixed.IdealGas2","Physiolibrary.Mixed.Components.IdealGas2");
 convertClass("Physiolibrary.Mixed.PartialPressure","Physiolibrary.Mixed.Components.PartialPressure");
 convertClass("Physiolibrary.Mixed.PartialPressure2","Physiolibrary.Mixed.Components.PartialPressure2");
+
+
+
+
+
+convertClass("Physiolibrary.Blocks.FractConstant","Physiolibrary.Types.Constants.FractionConst");
+convertModifiers("Physiolibrary.Blocks.FractConstant",{"k"}  , {"k=%k%*0.01"}, true);
+convertClass("Physiolibrary.Blocks.PressureConstant","Physiolibrary.Types.Constants.PressureConst");
+convertModifiers("Physiolibrary.Blocks.PressureConstant",{"k"}  , {"k=%k%*133.322387415"}, true);
+convertClass("Physiolibrary.Blocks.VolumeConstant","Physiolibrary.Types.Constants.VolumeConst");
+convertModifiers("Physiolibrary.Blocks.VolumeConstant",{"k"}  , {"k=%k%*1e-06"}, true);
+convertClass("Physiolibrary.Blocks.InitialVolumeConstant","Physiolibrary.Types.Constants.VolumeConst");
+convertModifiers("Physiolibrary.Blocks.InitialVolumeConstant",{"k"}  , {"k=%k%*1e-06"}, true);
+convertClass("Physiolibrary.Blocks.TemperatureConstant","Physiolibrary.Types.Constants.TemperatureConst");
+convertModifiers("Physiolibrary.Blocks.TemperatureConstant",{"k"}  , {"k=%k%+273.15"}, true);
+convertClass("Physiolibrary.Blocks.OsmolarityConstant","Physiolibrary.Types.Constants.OsmolarityConst");
+convertModifiers("Physiolibrary.Blocks.OsmolarityConstant",{"k"}  , {"k=%k%"}, true);
+convertClass("Physiolibrary.Blocks.TimeConstant","Physiolibrary.Types.Constants.TimeConst");
+convertModifiers("Physiolibrary.Blocks.TimeConstant",{"k"}  , {"k=%k%*60"}, true);
+convertClass("Physiolibrary.Blocks.FlowConstant","Physiolibrary.Types.Constants.VolumeFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.FlowConstant",{"k"}  , {"k=%k%*1.6666666666667e-08"}, true);
+convertClass("Physiolibrary.Blocks.CaloriesConstant","Physiolibrary.Types.Constants.HeatConst");
+convertModifiers("Physiolibrary.Blocks.CaloriesConstant",{"k"}  , {"k=%k%*4.1868"}, true);
+convertClass("Physiolibrary.Blocks.ElectrolytesMassConstant","Physiolibrary.Types.Constants.ElectricChargeConst");
+convertModifiers("Physiolibrary.Blocks.ElectrolytesMassConstant",{"k"}  , {"k=%k%*96.4853399"}, true);
+convertClass("Physiolibrary.Blocks.ComplianceConstant","Physiolibrary.Types.Constants.HydraulicComplianceConst");
+convertModifiers("Physiolibrary.Blocks.ComplianceConstant",{"k"}  , {"k=%k%*7.5006157584566e-09"}, true);
+convertClass("Physiolibrary.Blocks.CondConstant","Physiolibrary.Types.Constants.HydraulicConductanceConst");
+convertModifiers("Physiolibrary.Blocks.CondConstant",{"k"}  , {"k=%k%*1.2501026264094e-10"}, true);
+convertClass("Physiolibrary.Blocks.MassFlowConstant_kg","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.MassFlowConstant_kg",{"k"}  , {"k=%k%*1.6666666666667e-02"}, true); //kg/min
+convertClass("Physiolibrary.Blocks.MassFlowConstant","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.MassFlowConstant",{"k"}  , {"k=%k%*1.6666666666667e-08"}, true); //mg/min
+convertClass(    "Physiolibrary.Blocks.HormoneFlowConstant_uG","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_uG",{"k"}  , {"k=%k%*1.6666666666667e-011"}, true); //ug/min
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_nG","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_nG",{"k"}  , {"k=%k%*1.6666666666667e-014"}, true); //ng/min
+convertClass("Physiolibrary.Blocks.HeightConstant","Physiolibrary.Types.Constants.HeightConst");
+convertModifiers("Physiolibrary.Blocks.HeightConstant",{"k"}  , {"k=%k%"}, true); //m
+convertClass("Physiolibrary.Blocks.ElectrolytesFlowConstant","Physiolibrary.Types.Constants.ElectricCurrentConst");
+convertModifiers("Physiolibrary.Blocks.ElectrolytesFlowConstant",{"k"}  , {"k=%k%*1.6080889983333"}, true);
+convertClass("Physiolibrary.Blocks.GConstant","Physiolibrary.Types.Constants.AccelerationConst");
+convertModifiers("Physiolibrary.Blocks.GConstant",{"k"}  , {"k=%k%"}, true);
+convertClass("Physiolibrary.Blocks.CaloriesFlowConstant","Physiolibrary.Types.Constants.HeatFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.CaloriesFlowConstant",{"k"}  , {"k=%k%*0.06978"}, true);
+convertClass("Physiolibrary.Blocks.SoluteMassConstant","Physiolibrary.Types.Constants.AmountOfSubstanceConst");
+convertModifiers("Physiolibrary.Blocks.SoluteMassConstant",{"k"}  , {"k=%k%*0.001"}, true);
+convertClass("Physiolibrary.Blocks.FlowConstant_mmol_per_hour","Physiolibrary.Types.Constants.MolarFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.FlowConstant_mmol_per_hour",{"k"}  , {"k=%k%*2.777777777778e-7"}, true); //mmol/h
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_mmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mmol",{"k"}  , {"k=%k%*1.6666666666667e-05"}, true); //mmol/min 
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_nmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_nmol",{"k"}  , {"k=%k%*1.6666666666667e-11"}, true); //nmol/min
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_pmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_pmol",{"k"}  , {"k=%k%*1.6666666666667e-14"}, true); //pmol/min
+convertClass("Physiolibrary.Blocks.ConcentrationConstant_pg_per_ml","Physiolibrary.Types.Constants.DensityConst");
+convertModifiers("Physiolibrary.Blocks.ConcentrationConstant_pg_per_ml",{"k"}  , {"k=%k%*1.0e-9"}, true); //pg/ml=ug/m3
+
+
+convertClass("Physiolibrary.Blocks.Fract2Constant","ObsoletePhysiolibrary1.Types.Constants.Fract2Constant");
+convertModifiers("Physiolibrary.Blocks.Fract2Constant",{"k"},{"k=%k%*0.01"}, true);
+convertClass("Physiolibrary.Blocks.ElectrolytesConcentrationConstant_per_l","Physiolibrary.Types.Constants.ConcentrationConst");
+convertModifiers("Physiolibrary.Blocks.ElectrolytesConcentrationConstant_per_l",{"k"},{"k=%k%*ChargePerMolecule"});
+convertClass("Physiolibrary.Blocks.ConcentrationConstant_uU_per_ml","Physiolibrary.Types.Constants.MassConst");
+convertModifiers("Physiolibrary.Blocks.ConcentrationConstant_uU_per_ml",{"k"},{"k=%k%*(1e-6)*MassPerIU"});
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_mU","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mU",{"k"},{"k=%k%*(1/(60*1000))*MassPerIU"}); //mU/min
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_GU","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_GU",{"k"},{"k=%k%*((1e+09)/60)*MassPerIU"});
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_IU","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_IU",{"k"},{"k=%k%/60*MassPerIU"});
+convertClass("Physiolibrary.Blocks.HormoneFlowConstant_U","Physiolibrary.Types.Constants.MassFlowRateConst");
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_U",{"k"},{"k=%k%/60*MassPerIU"});
+
+
+
+ convertClass("Physiolibrary.Interfaces.BaseModel","Physiolibrary.Icons.Golem");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon","Physiolibrary.Icons.BaseFactorIcon");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon2","Physiolibrary.Icons.BaseFactorIcon2");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon3","Physiolibrary.Icons.BaseFactorIcon3");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon4","Physiolibrary.Icons.BaseFactorIcon4");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon5","Physiolibrary.Icons.BaseFactorIcon5");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon6","Physiolibrary.Icons.BaseFactorIcon6");
+ convertClass("Physiolibrary.Interfaces.BaseFactorIcon0","Physiolibrary.Icons.BaseFactorIcon0");
+ convertClass("Physiolibrary.Interfaces.ConversionIcon","Physiolibrary.Icons.ConversionIcon");
+
+convertClass("Physiolibrary.Interfaces.RealInput","Modelica.Blocks.Interfaces.RealInput");
+convertClass("Physiolibrary.Interfaces.RealInput_","Modelica.Blocks.Interfaces.RealInput");
+convertClass("Physiolibrary.Interfaces.RealInput_G","Modelica.Blocks.Interfaces.RealInput");
+convertClass("Physiolibrary.Interfaces.RealOutput","Modelica.Blocks.Interfaces.RealOutput");
+convertClass("Physiolibrary.Interfaces.RealOutput_","Modelica.Blocks.Interfaces.RealOutput");
+convertClass("Physiolibrary.Interfaces.RealOutput_G","Modelica.Blocks.Interfaces.RealOutput");
+convertClass("Physiolibrary.Interfaces.BooleanInput","Modelica.Blocks.Interfaces.BooleanInput");
+convertClass("Physiolibrary.Interfaces.BooleanOutput","Modelica.Blocks.Interfaces.BooleanOutput");
+convertClass("Physiolibrary.Interfaces.SIMO","Modelica.Blocks.Interfaces.SIMO");
+convertClass("Physiolibrary.Interfaces.SISO","Modelica.Blocks.Interfaces.SISO");
+
+convertClass("Physiolibrary.Interfaces.BusConnector","Physiolibrary.Types.BusConnector");
+
+convertClass("Physiolibrary.Blocks.Add","Physiolibrary.Blocks.Math.Add");
+convertClass("Physiolibrary.Blocks.Inv","Physiolibrary.Blocks.Math.Reciprocal");
+convertClass("Physiolibrary.Blocks.Pow","Physiolibrary.Blocks.Math.Pow");
+convertClass("Physiolibrary.Blocks.Min","Physiolibrary.Blocks.Math.Min");
+convertClass("Physiolibrary.Blocks.MultiProduct","Physiolibrary.Blocks.Math.MultiProduct");
+convertClass("Physiolibrary.Blocks.Log10AsEffect","Physiolibrary.Blocks.Math.Log10AsEffect");
+convertClass("Physiolibrary.Blocks.deprecated_HomotopyStrongComponentBreaker","Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker");
+convertClass("Physiolibrary.Blocks.Integrator","Physiolibrary.Blocks.Math.Integrator");
+convertClass("Physiolibrary.Blocks.IntegratorWithRestart","Physiolibrary.Blocks.Math.Integrator");
+convertClass("Physiolibrary.Blocks.Parts","Physiolibrary.Blocks.Math.Parts");
+convertClass("Physiolibrary.Blocks.Limiter_","Modelica.Blocks.Nonlinear.Limiter");
+convertClass("Physiolibrary.Blocks.SafeDivision","Modelica.Blocks.Math.Division");
 

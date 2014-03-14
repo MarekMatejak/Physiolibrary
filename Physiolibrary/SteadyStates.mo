@@ -56,6 +56,112 @@ package SteadyStates "Dynamic Simulation / Steady State"
                 {100,100}}), graphics));
     end SimpleReaction_in_Equilibrium;
 
+    model SimpleReaction_NormalInit
+      extends Modelica.Icons.Example;
+
+      import Physiolibrary.Types.*;
+
+      SteadyStates.Components.MolarConservationLaw
+        amountOfSubstanceConservationLaw(
+        n=2,
+        Total(displayUnit="mol") = 1,
+        Simulation=Physiolibrary.Types.SimulationType.NormalInit)
+        annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
+      Chemical.Components.Substance A(Simulation=Physiolibrary.Types.SimulationType.NormalInit,
+          solute_start=0.9)
+        annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
+      Chemical.Components.ChemicalReaction reaction(K=1)
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+      Chemical.Components.Substance B(
+        isDependent=true,
+        Simulation=Physiolibrary.Types.SimulationType.NormalInit,
+        solute_start=0.1)
+        annotation (Placement(transformation(extent={{42,-10},{62,10}})));
+
+    equation
+      connect(A.solute, amountOfSubstanceConservationLaw.fragment[1]) annotation (
+          Line(
+          points={{-48,-10},{-48,-39},{68,-39}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(B.solute, amountOfSubstanceConservationLaw.fragment[2]) annotation (
+          Line(
+          points={{52,-10},{52,-37},{68,-37}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(B.q_out,reaction. products[1]) annotation (Line(
+          points={{52,0},{10,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(A.q_out,reaction. substrates[1]) annotation (Line(
+          points={{-48,0},{-10,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+     experiment(StopTime=1e-008),
+     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),  graphics),
+        __Dymola_experimentSetupOutput);
+    end SimpleReaction_NormalInit;
+
+    model SimpleReaction_InitSteadyState
+      extends Modelica.Icons.Example;
+
+      import Physiolibrary.Types.*;
+
+      SteadyStates.Components.MolarConservationLaw
+        amountOfSubstanceConservationLaw(
+        n=2,
+        Total(displayUnit="mol") = 1,
+        Simulation=Physiolibrary.Types.SimulationType.InitSteadyState)
+        annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
+      Chemical.Components.Substance A(Simulation=Physiolibrary.Types.SimulationType.InitSteadyState,
+          solute_start=0.9)
+        annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
+      Chemical.Components.ChemicalReaction reaction(K=1)
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+      Chemical.Components.Substance B(
+        isDependent=true,
+        Simulation=Physiolibrary.Types.SimulationType.InitSteadyState,
+        solute_start=0.1)
+        annotation (Placement(transformation(extent={{42,-10},{62,10}})));
+
+    equation
+      connect(A.solute, amountOfSubstanceConservationLaw.fragment[1]) annotation (
+          Line(
+          points={{-48,-10},{-48,-39},{68,-39}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(B.solute, amountOfSubstanceConservationLaw.fragment[2]) annotation (
+          Line(
+          points={{52,-10},{52,-37},{68,-37}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(B.q_out,reaction. products[1]) annotation (Line(
+          points={{52,0},{10,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(A.q_out,reaction. substrates[1]) annotation (Line(
+          points={{-48,0},{-10,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+     experiment(StopTime=1e-008),
+     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),  graphics),
+        __Dymola_experimentSetupOutput);
+    end SimpleReaction_InitSteadyState;
+
     model SimpleReaction2_in_Equilibrium
     extends Modelica.Icons.Example;
       import Physiolibrary.Types.*;
@@ -1126,6 +1232,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
             origin={0,80})));
 
       Physiolibrary.Types.Energy t "Current Mass/Energy";
+
     equation
       if not useTotalInput then
         t=Total;
@@ -1525,9 +1632,10 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "In differential systems has the same meaning as the normalizedState. In steady state has no meaning.";
 
     initial equation
-
-      state=ones(NumberOfDependentStates);
-
+      if (Simulation == SimulationType.SteadyState) or
+                                                     (Simulation == SimulationType.InitSteadyState) then
+        state=ones(NumberOfDependentStates);
+      end if;
     equation
 
       if Simulation == SimulationType.SteadyState then

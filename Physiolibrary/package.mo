@@ -362,6 +362,9 @@ dateModified = "2014-02-28 22:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
+  from(version="BioChem-1.0.1", script="Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.1.mos"),
+  from(version="1.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.1.mos"),
+  from(version="1.1", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.1.mos"),
   from(version="1.2", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.1.mos"),
   from(version="2.0", script="Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos")),
   Documentation(revisions="<html>
