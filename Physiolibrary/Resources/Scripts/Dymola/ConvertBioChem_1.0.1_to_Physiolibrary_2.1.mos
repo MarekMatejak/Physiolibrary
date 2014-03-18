@@ -3,6 +3,10 @@
 // clear
 convertClear();
 
+
+
+convertClass("BioChem.Compartments.Compartment","")
+
 convertClass("BioChem.Interfaces.Nodes.SubstanceConnector","Physiolibrary.Chemical.Interfaces.ChemicalPort_a")
 convertElement("BioChem.Interfaces.Nodes.SubstanceConnector","c","conc")
 convertElement("BioChem.Interfaces.Nodes.SubstanceConnector","r","q")
@@ -79,6 +83,7 @@ convertElement("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","p2","produ
 convertClass("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","Physiolibrary.Chemical.Components.ChemicalReaction")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","k1","kf")
 convertModifiers("BioChem.Reactions.MassAction.Reversible.UniUni.Uur",{"k1","k2"}  , {"kf=%k1%", "K=%k1%/%k2%"}, true);
+convertModifiers("BioChem.Reactions.MassAction.Reversible.UniUni.Uur",{"k1","k2=0"}  , {"kf=%k1%", "K=Modelica.Constants.inf"}, true);
 convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","s1","substrates[1]")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","p1","products[1]")
 
@@ -95,7 +100,7 @@ convertElement("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","p1","product
 convertClass("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","Physiolibrary.Chemical.Components.ChemicalReaction")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","k1","kf")
 convertModifiers("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr",{"k1","k2"}  , {"kf=%k1%","K=%k1%/%k2%"}, true);
-convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Bur", fill("",0)  , {"nP=2"}, true);
+convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Ubr", fill("",0)  , {"nP=2"}, true);
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","s1","substrates[1]")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p1","products[1]")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p2","products[2]")
