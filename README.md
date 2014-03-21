@@ -1,6 +1,6 @@
-# Physiolibrary - http://www.physiolibrary.org 
+# Physiolibrary  
 
-Physiolibrary is a free open-source Modelica library designed for modeling human physiology. 
+Physiolibrary ( http://www.physiolibrary.org ) is a free open-source Modelica library designed for modeling human physiology. 
 This library contains basic physical laws governing human physiology, usable for cardiovascular circulation,
 metabolic processes, nutrient distribution, thermoregulation, gases transport, electrolyte regulation, 
 water distribution, hormonal regulation and pharmacological regulation.
