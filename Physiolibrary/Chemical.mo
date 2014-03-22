@@ -794,14 +794,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>"));
     end Allosteric_Hemoglobin2_MWC;
 
-
-
-
-
-
-
-
-
   end Examples;
 
   package Components
@@ -1454,6 +1446,7 @@ It works in two modes:
 
     model Dilution "Adding/removing of the solvent to/from solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Physiolibrary.Icons.Dilution;
 
       parameter Boolean useDilutionInput = false
         "=true, if dilition input is used"
@@ -1476,15 +1469,12 @@ It works in two modes:
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics={Bitmap(extent={{-100,101},{100,-101}},
-                fileName="Resources/Icons/dilution.png",
-              origin={0,33},
-              rotation=270),
+                100,100}}), graphics={
             Text(
               extent={{-120,20},{120,-20}},
               textString="%name",
               lineColor={0,0,255},
-              origin={-2,-60},
+              origin={0,-60},
               rotation=180)}),
         Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),
