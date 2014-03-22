@@ -85,7 +85,7 @@ Contributor: [Tomas Kulhanek] (https://github.com/TomasKulhanek)
 Do you want to contribute?
 It is easy. Make a fork in your GitHub account, do your commit and do the pull request. The project is now open for new contributors.
 
-You may report bugs or issues to project issues (https://github.com/MarekMatejak/Physiolibrary/issues) or to e-mail: marek\<at\>matfyz\<dot\>cz
+You may report bugs or issues to [project issues](https://github.com/MarekMatejak/Physiolibrary/issues) or to e-mail: marek\<at\>matfyz\<dot\>cz
 
 
 
