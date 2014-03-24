@@ -214,6 +214,68 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         __Dymola_experimentSetupOutput);
     end MichaelisMenten;
 
+    model HendersonHaselbalch
+        extends Modelica.Icons.Example;
+      Components.Substance HCO3(isDependent=true, Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+        annotation (Placement(transformation(extent={{-18,46},{2,66}})));
+      Components.ChemicalReaction HendersonHasselbalch(
+        nP=2,
+        K=10^(-6.103 + 3),
+        dH=15.13)
+        annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
+      Sources.UnlimitedGasStorage CO2_gas(PartialPressure=5332.8954966,
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-80,82})));
+      Sources.UnlimitedSolutionStorage pH(
+        q_out(conc(nominal=10^(-7.4 + 3))),
+        Conc=10^(-7.4 + 3),
+        isIsolatedInSteadyState=false,
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-8,12})));
+      Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+             0.81805576878885)
+        annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+      Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+        annotation (Placement(transformation(extent={{-90,22},{-70,42}})));
+    equation
+      connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
+          points={{-38,31.5},{-26,31.5},{-26,56},{-8,56}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pH.q_out, HendersonHasselbalch.products[2]) annotation (Line(
+          points={{-18,12},{-26,12},{-26,32.5},{-38,32.5}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_liquid.q_out, HendersonHasselbalch.substrates[1]) annotation
+        (Line(
+          points={{-80,32},{-58,32}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
+          points={{-80,48},{-80,32}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
+          points={{-80,72},{-80,66}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(info="<html>
+<p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+</html>"));
+    end HendersonHaselbalch;
+
     model Allosteric_Hemoglobin_MWC "Monod,Wyman,Changeux (1965)"
     extends Modelica.Icons.Example;
       import Physiolibrary.Chemical.*;
@@ -350,8 +412,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
       Components.GasSolubility
-                            partialPressure(T=310.15, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-             0.026029047188736)                                       annotation (Placement(
+                            partialPressure(          kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+             0.026029047188736, T=310.15)                             annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -673,8 +735,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             rotation=270,
             origin={6,60})));
       Components.GasSolubility
-                            partialPressure1(T=310.15, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-             0.026029047188736)                                       annotation (Placement(
+                            partialPressure1(          kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+             0.026029047188736, T=310.15)                             annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -801,6 +863,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     model Substance "Substance accumulation in solvent"
       extends Physiolibrary.Icons.Substance;
       extends Chemical.Interfaces.ConditionalSolventVolume;
+
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
       change(nominal=NominalSolute/60),
@@ -810,7 +873,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       parameter Physiolibrary.Types.AmountOfSubstance
                                         solute_start(nominal=NominalSolute) = 0
         "Initial solute amount in compartment"
-         annotation (Dialog(group="Initialization"));
+         annotation ( HideResult=true, Dialog(group="Initialization"));
 
       Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
           NominalSolute) "Current amount of solute"
@@ -821,11 +884,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       parameter Physiolibrary.Types.AmountOfSubstance
                                         NominalSolute = 0.001
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
-          annotation (Dialog(tab="Solver",group="Numerical support of very small concentrations"));
+          annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_b            q_out
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
+
     equation
       q_out.conc = solute/volume; //TODO: solute/(solvent+solute)?
 
@@ -849,42 +913,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     model ChemicalReaction "Chemical Reaction"
       import Physiolibrary;
 
-      parameter Real K = 1
-        "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
-        annotation (Dialog(enable=not useDissociationConstantInput));
+      Real KaT "Dissociation constant at current temperature";
+      Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
-        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
-
-      parameter Integer nS=1 "Number of substrates types"
-        annotation (Dialog(group="Substrates", tab="Reaction type"));
-      parameter Integer nP=1 "Number of products types"
-        annotation (Dialog(group="Products", tab="Reaction type"));
-
-      parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
-        "Stoichiometric reaction coefficient for substrates"
-        annotation (Dialog(group="Substrates", tab="Reaction type"));
-      parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
-        "Activity coefficients of substrates"
-        annotation (Dialog(group="Substrates", tab="Reaction type"));
-
-      parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
-        "Stoichiometric reaction coefficients for products"
-        annotation (Dialog(group="Products", tab="Reaction type"));
-       parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
-        "Activity coefficients of products"
-        annotation (Dialog(group="Products", tab="Reaction type"));
-
-     extends Chemical.Interfaces.ConditionalHeatPort;
-
-      parameter Physiolibrary.Types.Temperature TK=298.15 "Base temperature"
-        annotation (Dialog(tab="Temperature dependence"));
-
-      parameter Modelica.SIunits.MolarInternalEnergy dH=0
-        "Standard Enthalpy Change (negative=exothermic)"
-        annotation (Dialog(tab="Temperature dependence"));
-
-    extends Chemical.Interfaces.ConditionalSolventVolume;
+      extends Chemical.Interfaces.ConditionalSolventVolume;
 
       parameter Boolean useDissociationConstantInput = false
         "=true, if external dissociation ratio is used"
@@ -905,11 +937,43 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                                 substrates[nS] "Substrates"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));  /*s[nS]*/
-    protected
-      Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      Real KaT "Dissociation constant in current temperature";
-      Real KBase "dissociation constant at TK";
+      parameter Real K = 1
+        "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
+        annotation ( HideResult=true, Dialog(enable=not useDissociationConstantInput));
+
+      parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
+        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
+
+      parameter Integer nS=1 "Number of substrates types"
+        annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
+      parameter Integer nP=1 "Number of products types"
+        annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
+
+      parameter Modelica.SIunits.StoichiometricNumber s[nS]=ones(nS)
+        "Stoichiometric reaction coefficient for substrates"
+        annotation (  HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
+      parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
+        "Activity coefficients of substrates"
+        annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
+
+      parameter Modelica.SIunits.StoichiometricNumber p[nP]=ones(nP)
+        "Stoichiometric reaction coefficients for products"
+        annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
+       parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
+        "Activity coefficients of products"
+        annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
+
+     extends Chemical.Interfaces.ConditionalHeatPort;
+
+      parameter Physiolibrary.Types.Temperature TK=298.15 "Base temperature"
+        annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
+
+      parameter Modelica.SIunits.MolarInternalEnergy dH=0
+        "Standard Enthalpy Change (negative=exothermic)"
+        annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
+
+      Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
     equation
       if not useDissociationConstantInput then
@@ -1034,19 +1098,20 @@ It works in two modes:
       extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
       parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^8
-        "The rate constant of incoming gas to solution";
+        "The rate constant of incoming gas to solution" annotation ( HideResult=true);
 
       Physiolibrary.Types.GasSolubility kH
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
       parameter Physiolibrary.Types.GasSolubility kH_T0
-        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/mmHg at 37degC: aO2=1.34e-3, aCO2=22.9e-3, ..)";
+        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.0105, aCO2=0.33, ..)"
+                                                                                                            annotation ( HideResult=true);
       parameter Physiolibrary.Types.Temperature T0=298.15
         "Base temperature for kH_T0"
-         annotation (Dialog(tab="Temperature dependence"));
+         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
       parameter Physiolibrary.Types.Temperature C(displayUnit="K") = 1700
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
-        annotation (Dialog(tab="Temperature dependence"));
+        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out "Gaseous solution"
@@ -1090,6 +1155,7 @@ It works in two modes:
       parameter Physiolibrary.Types.Time HalfTime
         "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
 
+    protected
       Physiolibrary.Types.VolumeFlowRate Clearance;
     equation
       Clearance = volume*Modelica.Math.log(2)/HalfTime;
@@ -1741,11 +1807,11 @@ It works in two modes:
 
       parameter Boolean isIsolatedInSteadyState = true
         "=true, if there is no flow at port in steady state"
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
        Types.RealIO.ConcentrationInput concentration(start=Conc)=c if useConcentrationInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
@@ -1797,9 +1863,9 @@ It works in two modes:
               textString="%name",
               lineColor={0,0,255}),
             Text(
-              extent={{-150,-110},{150,-140}},
+              extent={{140,-100},{-140,-160}},
               lineColor={0,0,0},
-              textString="Conc=%Conc")}),
+              textString="%Conc mmol/l")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1830,11 +1896,11 @@ It works in two modes:
 
      parameter Boolean isIsolatedInSteadyState = true
         "=true, if there is no flow at port in steady state"
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
     protected
       Pressure p "Current partial pressure";
@@ -2004,14 +2070,15 @@ Connector with one flow signal of type Real.
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="External inputs/outputs"));
       parameter Physiolibrary.Types.Temperature T=310.15
         "Fixed device temperature if useHeatPort = false"
-        annotation (Dialog(enable=not useHeatPort,tab="Temperature dependence"));
+        annotation ( HideResult=true, Dialog(enable=not useHeatPort,tab="Temperature dependence"));
 
       Physiolibrary.Thermal.Interfaces.HeatPort_a       heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
         annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
             iconTransformation(extent={{-10,-10},{10,10}})));
+
+      Physiolibrary.Types.Temperature T_heatPort "Temperature of HeatPort";
       Physiolibrary.Types.HeatFlowRate lossHeat
         "Loss heat leaving component via HeatPort";
-      Physiolibrary.Types.Temperature T_heatPort "Temperature of HeatPort";
     equation
       if not useHeatPort then
          T_heatPort = T;
@@ -2053,13 +2120,13 @@ on the model behaviour.
     partial model ConditionalSolventVolume
       "Chemical processes can be modeled with or without(normalized to 1 liter) variable solvent volume"
 
-      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter";
+      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
 
       parameter Boolean useNormalizedVolume = true
         "=true, if solvent volume is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Physiolibrary.Types.Volume volume "SolventVolume";
+      Physiolibrary.Types.Volume volume "SolventVolume" annotation(HideResult=useNormalizedVolume);
 
       Physiolibrary.Types.RealIO.VolumeInput solventVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -2085,7 +2152,7 @@ on the model behaviour.
 
       parameter Physiolibrary.Types.VolumeFlowRate SolutionFlow=0
         "Volumetric flow of solution if useSolutionFlowInput=false"
-        annotation (Dialog(enable=not useSolutionFlowInput));
+        annotation ( HideResult=not useSolutionFlowInput, Dialog(enable=not useSolutionFlowInput));
 
       Physiolibrary.Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -2113,7 +2180,7 @@ on the model behaviour.
 
       parameter Physiolibrary.Types.MolarFlowRate SoluteFlow=0
         "Volumetric flow of solute if useSoluteFlowInput=false"
-        annotation (Dialog(enable=not useSoluteFlowInput));
+        annotation (HideResult=not useSoluteFlowInput, Dialog(enable=not useSoluteFlowInput));
 
       Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow(start=SoluteFlow)=q if   useSoluteFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},

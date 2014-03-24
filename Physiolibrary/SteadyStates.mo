@@ -1439,33 +1439,33 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Physiolibrary.Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
-      Real state(start=state_start, stateSelect=StateSelect.prefer)
-        "This state must be connected in inherited class definition";
-
-      Real change "Dynamic change of state value per minute";
-
-      parameter Real state_start "State start or init value"
-       annotation (Dialog(enable=false,group="Initialization", tab="IO"));
-
       parameter SimulationType  Simulation=SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
-
-      parameter Boolean SAVE_RESULTS = false
-        "save and test final state values with original values"
-         annotation (Dialog(group="Value I/O",tab="IO"));
-
-      parameter String storeUnit="" "Unit in Utilities input/output function"
-         annotation (Dialog(group="Value I/O",tab="IO"));
-
-      parameter String stateName="" "Name in Utilities input/output function"
-         annotation (Dialog(group="Value I/O",tab="IO"));
-                                    //getInstanceName()
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
       parameter Boolean isDependent = false
         "=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc."
-        annotation (Dialog(group="Simulation",tab="Equilibrium"));
+        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
+      Real state(start=state_start, stateSelect=StateSelect.prefer)
+        "This state must be connected in inherited class definition"
+        annotation (HideResult=true);
+
+      Real change "Dynamic change of state value per minute" annotation (HideResult=true);
+
+      parameter Real state_start "State start or init value"
+       annotation (HideResult=true,Dialog(enable=false,group="Initialization", tab="IO"));
+
+      parameter Boolean SAVE_RESULTS = false
+        "save and test final state values with original values"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
+      parameter String storeUnit="" "Unit in Utilities input/output function"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
+      parameter String stateName="" "Name in Utilities input/output function"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+                                    //getInstanceName()
     protected
       parameter Real defaultValue(fixed=false) "Default value of state.";
       parameter Real initialValue(fixed=false) "Initial value of state.";
