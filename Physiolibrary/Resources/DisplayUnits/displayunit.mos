@@ -163,7 +163,8 @@ defineUnitConversion("Pa", "cmH2O", 1/98.0665);
 defineUnitConversion("Pa", "torr", 760/101325);
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.s)", (1e+6)*(133.322387415)); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //hydraulic conductance
-defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);
+defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);  //hydraulic conductance
+defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.day)", (1e+6)*(133.322387415)*60*60*24); //osmotic permeability
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/ml", (1e-6)/(133.322387415)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
@@ -179,6 +180,7 @@ defineUnitConversion("N/m2","bar",1/1e5);
 
 // Volume Flow Rate
 defineUnitConversion("m3/s", "l/min", 1e3*60);
+defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
 
 // Density
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);

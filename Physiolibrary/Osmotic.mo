@@ -73,6 +73,230 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end Cell;
+
+    model CerebrospinalFluid
+    extends Modelica.Icons.Example;
+
+      Components.OsmoticCell CSF_osmotic(volume_start(displayUnit="ml")=
+          0.00015, ImpermeableSolutes=0.286*0.15) "cerebro-spinal fluid"
+        annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
+      Components.Membrane choroid_plexus(useHydraulicPressureInputs=true, cond(
+            displayUnit="ml/(mmHg.day)") = 1.9966916949595e-12)
+        "choroid plexus"
+        annotation (Placement(transformation(extent={{-16,-6},{-36,14}})));
+      Hydraulic.Components.ElasticVessel CSF_hydraulic(
+        volume_start=0.00015,
+        ZeroPressureVolume=0.000145,
+        Compliance=2.250184727537e-09) "cerebro-spinal fluid"
+        annotation (Placement(transformation(extent={{-96,-32},{-76,-12}})));
+      Hydraulic.Components.Pump choroid_plexus_hydraulic(useSolutionFlowInput=
+            true) annotation (Placement(transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=180,
+            origin={8,-22})));
+      Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=180,
+            origin={8,4})));
+      Hydraulic.Sensors.PressureMeasure pressureMeasure
+        annotation (Placement(transformation(extent={{-90,64},{-70,84}})));
+      Sources.UnlimitedSolution ECF_osmotic(Osm=285)
+        "extracellular (extracerebrospinal) fluid osmolarity" annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={46,32})));
+      Hydraulic.Sources.UnlimitedVolume veins(P=0) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={82,86})));
+      Components.Membrane arachnoid_villi(useHydraulicPressureInputs=true, cond(
+            displayUnit="ml/(mmHg.day)") = 1.1285648710641e-11)
+        "choroid plexus"
+        annotation (Placement(transformation(extent={{-36,46},{-16,66}})));
+      Hydraulic.Components.Pump arachnoid_villi_hydraulic(useSolutionFlowInput=
+            true)
+        annotation (Placement(transformation(extent={{-2,96},{18,76}})));
+      Sensors.FlowMeasure flowMeasure1
+        annotation (Placement(transformation(extent={{-2,66},{18,46}})));
+      Hydraulic.Sources.UnlimitedVolume arteries(P=12665.626804425) annotation (
+         Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=180,
+            origin={80,26})));
+      Hydraulic.Components.Conductor conductor(Conductance(displayUnit=
+              "ml/(mmHg.min)") = 3.7503078792283e-11)
+                                                     annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={96,0})));
+      Hydraulic.Components.ElasticVessel choroidPlexusCapilaries(volume_start=
+            1.4e-05, Compliance=3.7503078792283e-09)
+        annotation (Placement(transformation(extent={{56,-32},{76,-12}})));
+      Hydraulic.Components.Conductor conductor1(Conductance=8.750718384866e-11)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={66,50})));
+      Hydraulic.Sensors.PressureMeasure pressureMeasure1
+        annotation (Placement(transformation(extent={{68,64},{48,84}})));
+      Hydraulic.Sensors.PressureMeasure pressureMeasure2
+        annotation (Placement(transformation(extent={{62,-22},{42,-2}})));
+    equation
+      connect(flowMeasure.actualFlow, choroid_plexus_hydraulic.solutionFlow)
+        annotation (Line(
+          points={{8,-2},{8,-18}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(CSF_hydraulic.q_in, pressureMeasure.q_in) annotation (Line(
+          points={{-86,-22},{-86,68},{-84,68}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CSF_hydraulic.q_in, choroid_plexus_hydraulic.q_out) annotation (
+          Line(
+          points={{-86,-22},{-2,-22}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(flowMeasure.q_in, ECF_osmotic.port) annotation (Line(
+          points={{18,4},{32,4},{32,32},{36,32}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CSF_osmotic.q_in, arachnoid_villi.q_in) annotation (Line(
+          points={{-66,4},{-66,56},{-36,56}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CSF_hydraulic.q_in, arachnoid_villi_hydraulic.q_in) annotation (
+          Line(
+          points={{-86,-22},{-86,86},{-2,86}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arachnoid_villi_hydraulic.q_out, veins.y) annotation (Line(
+          points={{18,86},{72,86}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure.actualPressure, arachnoid_villi.hydraulicPressureIn)
+        annotation (Line(
+          points={{-74,70},{-34,70},{-34,64}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(arachnoid_villi.q_out, flowMeasure1.q_in) annotation (Line(
+          points={{-16,56},{-2,56}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(flowMeasure1.q_out, ECF_osmotic.port) annotation (Line(
+          points={{18,56},{32,56},{32,32},{36,32}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(flowMeasure1.actualFlow, arachnoid_villi_hydraulic.solutionFlow)
+        annotation (Line(
+          points={{8,62},{8,82}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(conductor.q_out, choroidPlexusCapilaries.q_in) annotation (Line(
+          points={{96,-10},{96,-22},{66,-22}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(choroidPlexusCapilaries.q_in, conductor1.q_in) annotation (Line(
+          points={{66,-22},{66,40}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(veins.y, conductor1.q_out) annotation (Line(
+          points={{72,86},{66,86},{66,60}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arteries.y, conductor.q_in) annotation (Line(
+          points={{90,26},{96,26},{96,10}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(choroid_plexus_hydraulic.q_in, choroidPlexusCapilaries.q_in)
+        annotation (Line(
+          points={{18,-22},{66,-22}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure1.q_in, veins.y) annotation (Line(
+          points={{62,68},{66,68},{66,86},{72,86}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure1.actualPressure, arachnoid_villi.hydraulicPressureOut)
+        annotation (Line(
+          points={{52,70},{-18,70},{-18,64}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(choroidPlexusCapilaries.q_in, pressureMeasure2.q_in) annotation (
+          Line(
+          points={{66,-22},{56,-22},{56,-18}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CSF_osmotic.q_in, choroid_plexus.q_out) annotation (Line(
+          points={{-66,4},{-36,4}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(choroid_plexus.q_in, flowMeasure.q_out) annotation (Line(
+          points={{-16,4},{-2,4}},
+          color={127,127,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pressureMeasure.actualPressure, choroid_plexus.hydraulicPressureOut)
+        annotation (Line(
+          points={{-74,70},{-42,70},{-42,20},{-34,20},{-34,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure2.actualPressure, choroid_plexus.hydraulicPressureIn)
+        annotation (Line(
+          points={{46,-16},{28,-16},{28,20},{-18,20},{-18,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),      graphics={
+            Text(
+              extent={{-46,-64},{50,-50}},
+              lineColor={215,215,215},
+              textString="the same volume of CSF"),
+            Line(
+              points={{-50,-54},{-62,-14}},
+              color={215,215,215},
+              smooth=Smooth.None,
+              arrow={Arrow.None,Arrow.Filled}),
+            Line(
+              points={{-50,-54},{-72,-30}},
+              color={215,215,215},
+              smooth=Smooth.None,
+              arrow={Arrow.None,Arrow.Filled})}),
+        experiment(StopTime=86400),
+        __Dymola_experimentSetupOutput,
+        Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>Parameters are only manually estimated to reach steady state at 150ml CSF with CSF production and rebsorbtion 550ml/day and osmolarity 285 mosm/l.</p>
+<p><br>[1] Dee Unglaub Silverthorn: Human Physiology</p>
+<p>The cerebrospinal fluid (CSF) circulation: blood capilaries -&GT; choriod plexus of third and fourth ventricle -&GT; arachnoid villi -&GT; blood in venous sinus.</p>
+<p><br><font style=\"color: #222222; \">[2] Hochwald, G. M., Wald, A., DiMattio, J., &AMP; Malhan, C. (1974). The effects of serum osmolarity on cerebrospinal fluid volume flow.&nbsp;<i>Life sciences</i>,&nbsp;<i>15</i>(7), 1309-1316.</font></p>
+<p><br><font style=\"color: #2e2e2e; \">The effects of changes in serum osmolarity on cerebrospinal fluid (CSF) formation were studied in cats. CSF production rates were measured by ventriculocisternal perfusion both before and after intravenous infusion of glucose solutions.</font></p>
+<p><font style=\"color: #2e2e2e; \">Infusion of glucose, hyperosmolar with respect to serum, increased serum osmolarity and caused a decrease in CSF formation rate; conversely, infusion of hypoosmolar solutions lowered serum osmolarity and increased CSF formation. CSF production and serum osmolarity were found to be linearly related. A 1&percnt; serum osmolarity change resulted in a 6.7&percnt; change in CSF formation. CSF formation increased by 130&percnt; with a serum osmolarity of 265 m0sm/1 and was undetectable with serum of 380 m0sm/1.</font></p>
+<p><br><font style=\"color: #2e2e2e; \">[3] https://en.wikipedia.org/wiki/Cerebrospinal_fluid</font></p>
+<p>The brain produces roughly 500 mL of cerebrospinal fluid per day. This fluid is constantly reabsorbed, so that only 100-160 mL is present at any one time.&nbsp;<a href=\"https://en.wikipedia.org/wiki/Ependymal_cells\">Ependymal cells</a>&nbsp;of the&nbsp;<a href=\"https://en.wikipedia.org/wiki/Choroid_plexus\">choroid plexus</a>&nbsp;produce more than two thirds of CSF. The&nbsp;<a href=\"https://en.wikipedia.org/wiki/Choroid_plexus\">choroid plexus</a>&nbsp;is a&nbsp;<a href=\"https://en.wikipedia.org/wiki/Venous_plexus\">venous plexus</a>&nbsp;contained within the&nbsp;<a href=\"https://en.wikipedia.org/wiki/Ventricular_system\">four ventricles</a>&nbsp;of the brain, hollow structures inside the brain filled with CSF. The remainder of the CSF is produced by the surfaces of the ventricles and by the lining surrounding the&nbsp;<a href=\"https://en.wikipedia.org/wiki/Subarachnoid_space\">subarachnoid space</a>.&nbsp;</p>
+<p>Ependymal cells actively secrete sodium into the lateral ventricles. This creates&nbsp;<a href=\"https://en.wikipedia.org/wiki/Osmotic_pressure\">osmotic pressure</a>&nbsp;and draws water into the CSF space. Chloride, with a negative charge, maintains&nbsp;<a href=\"https://en.wikipedia.org/w/index.php?title=Electroneutrality&action=edit&redlink=1\">electroneutrality</a>&nbsp;and moves with the positively-charged sodium. As a result, CSF contains a higher concentration of sodium and chloride than blood plasma, but less potassium, calcium and glucose and protein.&nbsp;</p>
+</html>"));
+    end CerebrospinalFluid;
   end Examples;
 
   package Components
@@ -191,7 +415,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         to=T;
       end if;
 
-      q_in.q = cond * ( (po + q_out.o*(Modelica.Constants.R*to)) - (pi + q_in.o*(Modelica.Constants.R*ti)));
+      q_in.q = cond * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
                           graphics), Icon(coordinateSystem(preserveAspectRatio=false,

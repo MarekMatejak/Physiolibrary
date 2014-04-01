@@ -227,6 +227,34 @@ package Physiolibrary "Physiological domains library (version v2.1)"
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
+  class Version_2_1 "Version 2.1 (Feb. 28, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">Upgrade to MSL 3.2.1 (still compatible with MSL 3.2)</font></li>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">constants HydraulicResistanceConst, HydraulicElastanceConst and HydraulicElastanceToComplianceConst and type HydraulicElastance</font></li>
+<li><font style=\"color: #333333; \">display units for hydraulic resistance/conductance/compliance/elastance, for gas solubility</font></li>
+<li><font style=\"color: #333333; \">steady state component ElectricChargeConservationLaw</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">HydraulicResistanceConst to HydraulicResistanceToConductanceConst</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">gas solution in liquid with corrected GasSolubility type</font></li>
+<li><font style=\"color: #333333; \">bidirectional stream flows</font></li>
+<li><font style=\"color: #333333; \">steady state example of dissolved oxygen</font></li>
+<li><font style=\"color: #333333; \">installation batch file for Dymola in Windows</font></li>
+<li><font style=\"color: #333333; \">references in overview (user&apos;s guide)</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_1;
+
   class Version_2_0 "Version 2.0 (Jan. 26, 2014)"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -345,13 +373,6 @@ package Physiolibrary "Physiological domains library (version v2.1)"
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",

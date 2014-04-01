@@ -6,6 +6,37 @@ package Thermal
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
+    model SkinHeatFlow
+    extends Modelica.Icons.Example;
+
+      Components.IdealRadiator skinCirculation(MassFlow(displayUnit="g/min") =
+          0.0028333333333333) "Blood flow through skin"
+        annotation (Placement(transformation(extent={{16,-32},{36,-12}})));
+      Sources.UnlimitedHeat bodyCore(T(displayUnit="degC") = 310.15)
+        annotation (Placement(transformation(extent={{-20,-30},{0,-10}})));
+      Sources.UnlimitedHeat skin(T(displayUnit="degC") = 301.15)
+        annotation (Placement(transformation(extent={{-8,4},{12,24}})));
+    equation
+      connect(skinCirculation.q_in, bodyCore.port) annotation (Line(
+          points={{16,-20},{0,-20}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(skin.port, skinCirculation.q_out) annotation (Line(
+          points={{12,14},{26,14},{26,-12}},
+          color={191,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),      graphics),
+        experiment(StopTime=10000, Tolerance=1e-006),
+        __Dymola_experimentSetupOutput,
+        Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end SkinHeatFlow;
+
     model MuscleHeat
     extends Modelica.Icons.Example;
 
