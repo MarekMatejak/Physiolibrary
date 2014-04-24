@@ -745,30 +745,55 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model IdealValve
       extends Interfaces.OnePort;
 
-       Boolean open(start=true);
-       Real passableVariable;
+       Boolean open(start=true) "Switching state";
 
-      parameter Physiolibrary.Types.HydraulicResistance Ron(final min=0, displayUnit="(mmHg.min)/ml") = 79993.432449
-        "Forward state-on differential resistance (closed diode resistance)"; //1e-5 mmHg/(ml/min)
-      parameter Physiolibrary.Types.HydraulicConductance Goff(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-15
-        "Backward state-off conductance (opened diode conductance)"; //1e-5 (ml/min)/mmHg
+       Real passableVariable(start=0, final unit="1")
+        "Auxiliary variable for actual position on the ideal diode characteristic";
+      /*  = 0: knee point
+      < 0: below knee point, diode locking
+      > 0: above knee point, diode conducting */
+
+      parameter Physiolibrary.Types.HydraulicConductance _Gon(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-05
+        "Forward state-on conductance (open valve conductance)"
+        annotation (Dialog(enable=not useLimitationInputs)); //= the same as resistance 1e-5 mmHg/(ml/min)
+      parameter Physiolibrary.Types.HydraulicConductance _Goff(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-15
+        "Backward state-off conductance (closed valve conductance)"
+        annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (ml/min)/mmHg
       parameter Physiolibrary.Types.Pressure Pknee(final min=0, start=0)
         "Forward threshold pressure";
 
+      parameter Boolean useLimitationInputs = false
+        "=true, if Gon and Goff are from inputs"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      Types.RealIO.HydraulicConductanceInput Gon(start=_Gon)=gon if useLimitationInputs
+        "open valve conductance = infinity for ideal case" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-60,100})));
+      Types.RealIO.HydraulicConductanceInput Goff(start=_Goff)=goff if useLimitationInputs
+        "closed valve conductance = zero for ideal case" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,100})));
+
     protected
+      Physiolibrary.Types.HydraulicConductance gon,goff;
       constant Physiolibrary.Types.Pressure unitPressure=1;
       constant Physiolibrary.Types.VolumeFlowRate unitFlow=1;
+
     equation
+      if not useLimitationInputs then
+        gon = _Gon;
+        goff = _Goff;
+      end if;
 
       open = passableVariable > 0;
 
-      q  = (passableVariable*unitFlow)*(if open then 1 else Goff) + Goff*Pknee;
-      dp = (passableVariable*unitPressure)*(if open then Ron else 1) + Pknee;
-
-      /*
-   q  = (passableVariable)*(if open then 1 else 0);
-  dp = (passableVariable)*(if open then 0 else 1);
-  */
+      dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
+      q  = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
@@ -789,8 +814,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               fillPattern=FillPattern.Sphere,
               fillColor={255,85,85},
               textString="%name")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}),      graphics),
         Documentation(info="<html>
 <p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
 </html>", revisions="<html>
@@ -799,133 +824,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end IdealValve;
 
-    model CardiacValve
-
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow
-        "inflow of blood" annotation (Placement(transformation(extent={{-110,-12},
-                {-90,8}}), iconTransformation(extent={{-108,-12},{-88,8}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow
-        "outflow of blood" annotation (Placement(transformation(extent={{90,-10},
-                {110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
-      Physiolibrary.Types.RealIO.HydraulicConductanceInput backflowConductance
-        "conductance of backflow in case of insufficiency" annotation (Placement(
-            transformation(extent={{-26,-18},{14,22}}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-74,76})));
-      Physiolibrary.Hydraulic.Components.IdealValve outflowValve
-        annotation (Placement(transformation(extent={{-44,32},{-24,52}})));
-      Physiolibrary.Hydraulic.Components.IdealValve backflowValve(open(start=
-              false)) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-36,-38})));
-      Physiolibrary.Hydraulic.Components.Conductor outflowBloodResistor(
-          useConductanceInput=true) "from Conductor"
-        annotation (Placement(transformation(extent={{26,28},{46,48}})));
-      Physiolibrary.Hydraulic.Components.Conductor variableBloodConductor(
-          useConductanceInput=true)
-        annotation (Placement(transformation(extent={{54,-56},{18,-34}})));
-      Physiolibrary.Types.RealIO.HydraulicConductanceInput outflowConductance
-        "conductance of flow in normal direction" annotation (Placement(
-            transformation(extent={{-36,56},{4,96}}),  iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={52,88})));
-    equation
-      connect(variableBloodConductor.cond, backflowConductance) annotation (Line(
-          points={{36,-38.4},{36,-38.4},{36,2},{-6,2}},
-          color={0,0,127},
-          smooth=Smooth.Bezier));
-      connect(inflow, outflowValve.bloodFlowInflow) annotation (Line(
-          points={{-100,-2},{-98,-2},{-98,42},{-44,42}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(outflowValve.bloodFlowOutflow, outflowBloodResistor.q_in)
-        annotation (Line(
-          points={{-24,42},{2,42},{2,38},{26,38}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(outflowBloodResistor.q_out, outflow) annotation (Line(
-          points={{46,38},{72,38},{72,0},{100,0}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(outflow, variableBloodConductor.q_in) annotation (Line(
-          points={{100,0},{78,0},{78,-45},{54,-45}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(variableBloodConductor.q_out, backflowValve.bloodFlowInflow)
-        annotation (Line(
-          points={{18,-45},{-4,-45},{-4,-38},{-26,-38}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(inflow, backflowValve.bloodFlowOutflow) annotation (Line(
-          points={{-100,-2},{-100,-2},{-100,-36},{-74,-36},{-74,-38},{-46,-38}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-
-      connect(outflowConductance, outflowBloodResistor.cond) annotation (Line(
-          points={{-16,76},{36,76},{36,44}},
-          color={0,0,127},
-          smooth=Smooth.Bezier));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),            graphics={
-                                       Polygon(
-              points={{-72,66},{-72,-82},{38,-10},{38,12},{-62,68},{-72,82},{
-                  -72,66}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={255,85,85},
-              fillPattern=FillPattern.Sphere),Rectangle(
-              extent={{44,96},{72,-94}},
-              lineColor={0,0,127},
-              fillColor={255,85,85},
-              fillPattern=FillPattern.Sphere),
-            Text(
-              extent={{-194,-106},{206,-136}},
-              lineColor={0,0,127},
-              textString="%name"),
-            Rectangle(
-              extent={{-64,50},{-14,42}},
-              lineColor={0,0,127},
-              fillColor={255,255,170},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{4,1},{-4,7},{-4,-7},{4,1}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={255,255,170},
-              fillPattern=FillPattern.Solid,
-              origin={-70,47},
-              rotation=180),
-            Polygon(
-              points={{-4,1},{4,7},{4,-7},{-4,1}},
-              lineColor={0,0,127},
-              smooth=Smooth.None,
-              fillColor={255,255,170},
-              fillPattern=FillPattern.Solid,
-              origin={68,63},
-              rotation=180),
-            Rectangle(
-              extent={{10,68},{60,60}},
-              lineColor={0,0,127},
-              fillColor={255,255,170},
-              fillPattern=FillPattern.Solid)}),  Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics),
-        Documentation(info="<html>
-<p>Valve is characterized by the direction where the flow is allowed. And by backflow conductance, which in normal condition is 0. Pathological non-zero value may model some valve insufficiency.</p>
-</html>", revisions="<html>
-<p><i>2014</i></p>
-<p>Tomas Kulhanek, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end CardiacValve;
   end Components;
 
   package Sensors
@@ -1217,8 +1115,8 @@ Connector with one flow signal of type Real.
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
 
-       Physiolibrary.Types.VolumeFlowRate q;
-       Physiolibrary.Types.Pressure dp;
+       Physiolibrary.Types.VolumeFlowRate q "Volumetric flow";
+       Physiolibrary.Types.Pressure dp "Pressure gradient";
     equation
       q_in.q + q_out.q = 0;
 
