@@ -5,6 +5,98 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
+    model Windkessel "Minimal circulation models driven by cardiac output"
+       extends Modelica.Icons.Example;
+
+      Components.Pump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
+      Components.ElasticVessel
+                     arteries(
+        volume_start(displayUnit="l") = 0.001,
+        ZeroPressureVolume(displayUnit="l") = 0.00085,
+        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
+        annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
+      Components.Conductor resistance(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
+        annotation (Placement(transformation(extent={{-4,-84},{16,-64}})));
+      Components.ElasticVessel
+                     veins(
+        Compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
+        ZeroPressureVolume(displayUnit="l") = 0.00295,
+        volume_start(displayUnit="l") = 0.0032)
+        annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
+      Modelica.Blocks.Sources.Pulse pulse(
+        width=25,
+        amplitude=3.3e-4,
+        period=60/75)
+        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
+      Sources.UnlimitedPump heart1(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Components.ElasticVessel
+                     arteries1(
+        volume_start(displayUnit="l") = 0.001,
+        ZeroPressureVolume(displayUnit="l") = 0.00085,
+        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
+        annotation (Placement(transformation(extent={{-14,38},{6,58}})));
+      Components.Conductor resistance1(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
+        annotation (Placement(transformation(extent={{22,38},{42,58}})));
+      Sources.UnlimitedVolume veins1 annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={76,48})));
+    equation
+      connect(heart.q_out, arteries.q_in) annotation (Line(
+          points={{14,-40},{46,-40},{46,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arteries.q_in, resistance.q_out) annotation (Line(
+          points={{46,-74},{16,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(resistance.q_in, veins.q_in) annotation (Line(
+          points={{-4,-74},{-32,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(veins.q_in, heart.q_in) annotation (Line(
+          points={{-32,-74},{-32,-40},{-6,-40}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulse.y, heart.solutionFlow) annotation (Line(
+          points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-36}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(resistance1.q_out, veins1.y) annotation (Line(
+          points={{42,48},{66,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arteries1.q_in, resistance1.q_in) annotation (Line(
+          points={{-4,48},{22,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(heart1.q_out, arteries1.q_in) annotation (Line(
+          points={{-30,48},{-4,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulse.y, heart1.solutionFlow) annotation (Line(
+          points={{-73,84},{-40,84},{-40,52}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics={Text(
+              extent={{-34,74},{86,64}},
+              lineColor={175,175,175},
+              textString="Windkessel model driven by cardiac output"), Text(
+              extent={{-40,-12},{80,-22}},
+              lineColor={175,175,175},
+              textString="Minimal circulation driven by cardiac output")}));
+    end Windkessel;
+
     model CardiovascularSystem_GCG
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
        extends Modelica.Icons.Example;
@@ -195,7 +287,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(info="<html>
+                -100},{100,100}}), graphics={Text(
+              extent={{-82,-80},{80,-100}},
+              lineColor={175,175,175},
+              textString=
+                  "Circulation part of Guyton-Coleman-Granger's model from 1972")}),
+                                              Documentation(info="<html>
 <p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
 <p><br/>Model, all parameters and all initial values are from article: </p>
 <p>A.C. Guyton, T.G. Coleman, H.J. Granger (1972). &QUOT;Circulation: overall regulation.&QUOT; Annual review of physiology 34(1): 13-44.</p>

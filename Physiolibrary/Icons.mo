@@ -1012,7 +1012,7 @@ package Icons "Icons for physiological models"
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/Speciation.png"), Text(
-            extent={{-22,-102},{220,-136}},
+            extent={{-182,-84},{60,-118}},
             lineColor={0,0,255},
             textString="%name")}));
   end Speciation;

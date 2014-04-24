@@ -379,15 +379,16 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
     extends Modelica.Icons.Package;
    function Spline "Cubic spline interpolation function"
 
-        input Real[:] x; //souradnice x souradnice uzlovych bodu
-        input Real[:,4] a; //parametry kubiky
-        input Real xVal; //vstupni hodnota
+        input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
+        input Real[:,4] a
+        "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
+        input Real xVal "input value of x to calculate y value"; //vstupni hodnota
 
-        output Real yVal;
+        output Real yVal "y value at xVal";
    //     output Real outExtra;
     protected
-      Integer index;
-      Integer n;
+      Integer index "index of segment";
+      Integer n "number of interpolating points";
 
    algorithm
           // Najdi interval, ve kterem se nachazi xVal
@@ -434,23 +435,24 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
    function SplineCoefficients "Cubic spline interpolation coefficients"
 
-        input Real[:] x;
-        input Real[:] y;
-        input Real[:] slope;
+        input Real[:] x "x coordinations of interpolating points";
+        input Real[:] y "y coordinations of interpolating points";
+        input Real[:] slope "slopes at interpolating points";
 
-        output Real[size(x,1)+1,4] a;//pocet hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu
+        output Real[size(x,1)+1,4] a
+        "cubic polynom coefficients of curve segments between interpolating points";                               //pocet hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu
 
     protected
-      Integer n;
-      Integer i;
+      Integer n "number of interpolating points";
+      Integer i "index of segment";
 
-      Real x1;
-      Real x2;
+      Real x1 "previos point";
+      Real x2 "current point";
 
-      Real y1;
-      Real y2;
-      Real slope1;
-      Real slope2;
+      Real y1 "previous point";
+      Real y2 "current point";
+      Real slope1 "previous point";
+      Real slope2 "current point";
 
    algorithm
       n := size(x,1);//pocet uzlovych bodu
@@ -478,9 +480,15 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
         model Curve
       "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
-             parameter Real x[:];
-             parameter Real y[:];
-             parameter Real slope[:];
+             parameter Real x[:] = data[:, 1]
+        "x coordinations of interpolating points";
+             parameter Real y[:] = data[:, 2]
+        "y coordinations of interpolating points";
+             parameter Real slope[:] = data[:, 3]
+        "slopes at interpolating points";
+
+             parameter Real[:,3] data = transpose({x,y,slope})
+        "Array of interpolating points as {x,y,slope}";
 
              Modelica.Blocks.Interfaces.RealInput u
                           annotation (Placement(transformation(extent={{-120,
@@ -490,11 +498,12 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                 {120,20}})));
 
     protected
-            parameter Real a[:,:] = SplineCoefficients(x,y,slope);
+            parameter Real a[:,:] = SplineCoefficients( data[:, 1],data[:, 2],data[:, 3])
+        "cubic polynom coefficients of curve segments between interpolating points";
 
         equation
           val = Spline(
-                x,
+                data[:, 1],
                 a,
                 u);
 
@@ -567,13 +576,15 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
-     parameter Real[:,3] data;
+     parameter Real[:,3] data "Array of interpolating points as {x,y,slope}";
 
-      Physiolibrary.Types.Fraction effect;
+      Physiolibrary.Types.Fraction effect
+        "Multiplication coeffecient for yBase to reach y";
 
     protected
         parameter Real a[:,:] = Interpolation.SplineCoefficients(
-                                                          data[:, 1],data[:, 2],data[:, 3]);
+                                                          data[:, 1],data[:, 2],data[:, 3])
+        "Cubic polynom coefficients of curve segments between interpolating points";
 
     equation
       effect = Interpolation.Spline(
