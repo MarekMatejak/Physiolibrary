@@ -1184,11 +1184,7 @@ package Types "Physiological units with nominals"
             lineColor={0,0,0},
                 fillColor={236,236,236},
             fillPattern=FillPattern.Solid,
-                    textString="Const"),
-            Text(
-              extent={{-120,-8},{120,-34}},
-              lineColor={0,0,255},
-              textString="%k")}));
+                    textString="Const")}));
   end VolumeConst;
 
   end Constants;
