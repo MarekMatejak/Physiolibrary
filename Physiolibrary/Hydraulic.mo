@@ -753,12 +753,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       < 0: below knee point, diode locking
       > 0: above knee point, diode conducting */
 
-      parameter Physiolibrary.Types.HydraulicConductance _Gon(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-05
+      parameter Physiolibrary.Types.HydraulicConductance _Gon(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-02
         "Forward state-on conductance (open valve conductance)"
-        annotation (Dialog(enable=not useLimitationInputs)); //= the same as resistance 1e-5 mmHg/(ml/min)
-      parameter Physiolibrary.Types.HydraulicConductance _Goff(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-15
+        annotation (Dialog(enable=not useLimitationInputs)); //= the same as resistance 1e-5 mmHg/(l/min)
+      parameter Physiolibrary.Types.HydraulicConductance _Goff(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-12
         "Backward state-off conductance (closed valve conductance)"
-        annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (ml/min)/mmHg
+        annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (l/min)/mmHg
       parameter Physiolibrary.Types.Pressure Pknee(final min=0, start=0)
         "Forward threshold pressure";
 
