@@ -155,7 +155,7 @@ package Icons "Icons for physiological models"
   model LeftHeart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-              {100,100}}),        graphics={Bitmap(extent={{-110,100},{10,-100}},
+              {100,100}}),        graphics={Bitmap(extent={{-96,100},{24,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/srdceLeva.png")}), Diagram(
           coordinateSystem(extent={{-100,-100},{100,100}})));
   end LeftHeart;
@@ -163,7 +163,7 @@ package Icons "Icons for physiological models"
   model RightHeart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-              {100,100}}),       graphics={Bitmap(extent={{-18,66},{100,-100}},
+              {100,100}}),       graphics={Bitmap(extent={{-26,66},{92,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/srdceprava.png")}), Diagram(
           coordinateSystem(extent={{-100,-100},{100,100}})));
   end RightHeart;

@@ -11,8 +11,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
        import Physiolibrary.Hydraulic;
 
-      Components.ElasticVessel
-                     pulmonaryVeins(
+      Components.ElasticVessel pulmonaryVeinsAndLeftAtrium(
         volume_start(displayUnit="l") = 0.0004,
         ZeroPressureVolume(displayUnit="l") = 0.0004,
         Compliance(displayUnit="l/mmHg") = 7.5006157584566e-08)
@@ -88,7 +87,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonary.q_out,pulmonaryVeins. q_in) annotation (Line(
+      connect(pulmonary.q_out, pulmonaryVeinsAndLeftAtrium.q_in) annotation (
+          Line(
           points={{-10,84},{14,84}},
           color={0,0,0},
           thickness=1,
@@ -108,7 +108,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(leftHeart.q_in,pulmonaryVeins. q_in) annotation (Line(
+      connect(leftHeart.q_in, pulmonaryVeinsAndLeftAtrium.q_in) annotation (
+          Line(
           points={{16,16},{-4,16},{-4,60},{32,60},{32,84},{14,84}},
           color={0,0,0},
           thickness=1,
@@ -123,7 +124,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pressureMeasure1.q_in,pulmonaryVeins. q_in) annotation (Line(
+      connect(pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in)
+        annotation (Line(
           points={{-2,30},{-4,30},{-4,60},{32,60},{32,84},{14,84}},
           color={0,0,0},
           thickness=1,
@@ -236,7 +238,15 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end if;
 
       q_in.q = c * (q_in.pressure - q_out.pressure);
-      annotation (Icon(graphics), Diagram(coordinateSystem(preserveAspectRatio=
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}),
+                       graphics={Text(
+              extent={{-220,-40},{200,-80}},
+              lineColor={0,0,255},
+              fillColor={58,117,175},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}),
+                                  Diagram(coordinateSystem(preserveAspectRatio=
                 false, extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -335,7 +345,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
                 100}}),     graphics={Text(
-              extent={{-150,-150},{150,-110}},
+              extent={{-240,-150},{238,-110}},
               textString="%name",
               lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
                        extent={{-100,-100},{100,100}}), graphics),

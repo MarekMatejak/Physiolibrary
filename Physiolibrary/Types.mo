@@ -724,7 +724,6 @@ package Types "Physiological units with nominals"
 
   block HydraulicResistanceConst
       "Obsolete, please use HydraulicConductance instead!"
-    extends Modelica.Icons.ObsoleteModel;
 
    parameter Types.HydraulicResistance k "Hydraulic resistance";
         Modelica.Blocks.Interfaces.RealOutput
@@ -1185,7 +1184,11 @@ package Types "Physiological units with nominals"
             lineColor={0,0,0},
                 fillColor={236,236,236},
             fillPattern=FillPattern.Solid,
-                    textString="Const")}));
+                    textString="Const"),
+            Text(
+              extent={{-120,-8},{120,-34}},
+              lineColor={0,0,255},
+              textString="%k")}));
   end VolumeConst;
 
   end Constants;
@@ -2973,7 +2976,7 @@ constructed by the signals connected to this bus.
   type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60);
 
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
-  type HydraulicElastance = Real(final quantity="HydraulicCompliance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
+  type HydraulicElastance = Real(final quantity="HydraulicElastance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
 
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
