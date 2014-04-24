@@ -731,20 +731,20 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model IdealValve
 
       Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow
-        "input volumetric flow" annotation (Placement(transformation(extent={{-110,
-                -12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,10}})));
+        "input volumetric flow" annotation (Placement(transformation(extent={{-110,-12},
+                {-90,8}}), iconTransformation(extent={{-110,-10},{-90,10}})));
       Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow
-        "output volumetric flow" annotation (Placement(transformation(extent={{
-                90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
+        "output volumetric flow" annotation (Placement(transformation(extent={{90,-10},
+                {110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
 
       Physiolibrary.Types.VolumeFlowRate q;
        Physiolibrary.Types.Pressure dp;
        Boolean open(start=true);
        Real passableVariable;
     equation
-      bloodFlowInflow.q + bloodFlowOutflow.q = 0;
-      q = bloodFlowInflow.q;
-      dp = bloodFlowInflow.pressure - bloodFlowOutflow.pressure;
+      inflow.q + outflow.q = 0;
+      q = inflow.q;
+      dp = inflow.pressure - outflow.pressure;
       open = passableVariable > 0;
       if open then
         dp=0;
@@ -756,8 +756,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
                              graphics={Polygon(
-              points={{-76,66},{-76,-82},{34,-10},{34,12},{-66,68},{-76,74},{
-                  -76,66}},
+              points={{-76,66},{-76,-82},{34,-10},{34,12},{-66,68},{-76,74},{-76,66}},
               lineColor={0,0,127},
               smooth=Smooth.None,
               fillColor={0,0,255},
@@ -772,11 +771,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               fillPattern=FillPattern.Sphere,
               fillColor={255,85,85},
               textString="%name")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics),
         Documentation(info="<html>
 <p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
-</html>", revisions="<html>
+</html>",     revisions="<html>
 <p><i>2014</i></p>
 <p>Tomas Kulhanek, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -820,17 +819,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           points={{36,-38.4},{36,-38.4},{36,2},{-6,2}},
           color={0,0,127},
           smooth=Smooth.Bezier));
-      connect(inflow, outflowValve.bloodFlowInflow) annotation (Line(
-          points={{-100,-2},{-98,-2},{-98,42},{-44,42}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(outflowValve.bloodFlowOutflow, outflowBloodResistor.q_in)
-        annotation (Line(
-          points={{-24,42},{2,42},{2,38},{26,38}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
       connect(outflowBloodResistor.q_out, outflow) annotation (Line(
           points={{46,38},{72,38},{72,0},{100,0}},
           color={0,0,0},
@@ -841,22 +829,31 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.Bezier));
-      connect(variableBloodConductor.q_out, backflowValve.bloodFlowInflow)
-        annotation (Line(
-          points={{18,-45},{-4,-45},{-4,-38},{-26,-38}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
-      connect(inflow, backflowValve.bloodFlowOutflow) annotation (Line(
-          points={{-100,-2},{-100,-2},{-100,-36},{-74,-36},{-74,-38},{-46,-38}},
-
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.Bezier));
 
       connect(outflowConductance, outflowBloodResistor.cond) annotation (Line(
           points={{-16,76},{36,76},{36,44}},
           color={0,0,127},
+          smooth=Smooth.Bezier));
+      connect(inflow, outflowValve.inflow) annotation (Line(
+          points={{-100,-2},{-92,-2},{-92,40},{-44,40},{-44,42}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.Bezier));
+      connect(inflow, backflowValve.outflow) annotation (Line(
+          points={{-100,-2},{-92,-2},{-92,-34},{-46,-34},{-46,-38}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.Bezier));
+      connect(outflowBloodResistor.q_in, outflowValve.outflow) annotation (Line(
+          points={{26,38},{2,38},{2,42},{-24,42}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.Bezier));
+      connect(variableBloodConductor.q_out, backflowValve.inflow) annotation (
+          Line(
+          points={{18,-45},{-4,-45},{-4,-38},{-26,-38}},
+          color={0,0,0},
+          thickness=1,
           smooth=Smooth.Bezier));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}),            graphics={
