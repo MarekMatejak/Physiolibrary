@@ -8,6 +8,56 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model Windkessel "Minimal circulation models driven by cardiac output"
        extends Modelica.Icons.Example;
 
+      Modelica.Blocks.Sources.Pulse pulse(
+        width=25,
+        amplitude=3.3e-4,
+        period=60/75)
+        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
+      Sources.UnlimitedPump heart1(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Components.ElasticVessel
+                     arteries1(
+        volume_start(displayUnit="l") = 0.001,
+        ZeroPressureVolume(displayUnit="l") = 0.00085,
+        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
+        annotation (Placement(transformation(extent={{-14,38},{6,58}})));
+      Components.Conductor resistance1(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
+        annotation (Placement(transformation(extent={{22,38},{42,58}})));
+      Sources.UnlimitedVolume veins1 annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={76,48})));
+    equation
+      connect(resistance1.q_out, veins1.y) annotation (Line(
+          points={{42,48},{66,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arteries1.q_in, resistance1.q_in) annotation (Line(
+          points={{-4,48},{22,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(heart1.q_out, arteries1.q_in) annotation (Line(
+          points={{-30,48},{-4,48}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulse.y, heart1.solutionFlow) annotation (Line(
+          points={{-73,84},{-40,84},{-40,52}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics={Text(
+              extent={{-34,74},{86,64}},
+              lineColor={175,175,175},
+              textString="Windkessel model driven by cardiac output")}));
+    end Windkessel;
+
+    model MinimalCirculation
+      "Minimal circulation models driven by cardiac output"
+       extends Modelica.Icons.Example;
+
       Components.Pump heart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
       Components.ElasticVessel
@@ -29,20 +79,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         amplitude=3.3e-4,
         period=60/75)
         annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
-      Sources.UnlimitedPump heart1(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
-      Components.ElasticVessel
-                     arteries1(
-        volume_start(displayUnit="l") = 0.001,
-        ZeroPressureVolume(displayUnit="l") = 0.00085,
-        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
-        annotation (Placement(transformation(extent={{-14,38},{6,58}})));
-      Components.Conductor resistance1(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
-        annotation (Placement(transformation(extent={{22,38},{42,58}})));
-      Sources.UnlimitedVolume veins1 annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={76,48})));
     equation
       connect(heart.q_out, arteries.q_in) annotation (Line(
           points={{14,-40},{46,-40},{46,-74}},
@@ -68,34 +104,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-36}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(resistance1.q_out, veins1.y) annotation (Line(
-          points={{42,48},{66,48}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(arteries1.q_in, resistance1.q_in) annotation (Line(
-          points={{-4,48},{22,48}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(heart1.q_out, arteries1.q_in) annotation (Line(
-          points={{-30,48},{-4,48}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pulse.y, heart1.solutionFlow) annotation (Line(
-          points={{-73,84},{-40,84},{-40,52}},
-          color={0,0,127},
-          smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics={Text(
-              extent={{-34,74},{86,64}},
-              lineColor={175,175,175},
-              textString="Windkessel model driven by cardiac output"), Text(
+                -100},{100,100}}), graphics={                          Text(
               extent={{-40,-12},{80,-22}},
               lineColor={175,175,175},
               textString="Minimal circulation driven by cardiac output")}));
-    end Windkessel;
+    end MinimalCirculation;
 
     model CardiovascularSystem_GCG
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
@@ -729,30 +743,33 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end Reabsorption;
 
     model IdealValve
+      extends Interfaces.OnePort;
 
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow
-        "input volumetric flow" annotation (Placement(transformation(extent={{-110,
-                -12},{-90,8}}), iconTransformation(extent={{-110,-10},{-90,10}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow
-        "output volumetric flow" annotation (Placement(transformation(extent={{
-                90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
-
-      Physiolibrary.Types.VolumeFlowRate q;
-       Physiolibrary.Types.Pressure dp;
        Boolean open(start=true);
        Real passableVariable;
+
+      parameter Physiolibrary.Types.HydraulicResistance Ron(final min=0, displayUnit="(mmHg.min)/ml") = 79993.432449
+        "Forward state-on differential resistance (closed diode resistance)"; //1e-5 mmHg/(ml/min)
+      parameter Physiolibrary.Types.HydraulicConductance Goff(final min=0, displayUnit="ml/(mmHg.min)") = 1.2501026264094e-15
+        "Backward state-off conductance (opened diode conductance)"; //1e-5 (ml/min)/mmHg
+      parameter Physiolibrary.Types.Pressure Pknee(final min=0, start=0)
+        "Forward threshold pressure";
+
+    protected
+      constant Physiolibrary.Types.Pressure unitPressure=1;
+      constant Physiolibrary.Types.VolumeFlowRate unitFlow=1;
     equation
-      bloodFlowInflow.q + bloodFlowOutflow.q = 0;
-      q = bloodFlowInflow.q;
-      dp = bloodFlowInflow.pressure - bloodFlowOutflow.pressure;
+
       open = passableVariable > 0;
-      if open then
-        dp=0;
-        q=passableVariable;
-      else
-        dp=passableVariable;
-        q=0;
-      end if;
+
+      q  = (passableVariable*unitFlow)*(if open then 1 else Goff) + Goff*Pknee;
+      dp = (passableVariable*unitPressure)*(if open then Ron else 1) + Pknee;
+
+      /*
+   q  = (passableVariable)*(if open then 1 else 0);
+  dp = (passableVariable)*(if open then 0 else 1);
+  */
+
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
                              graphics={Polygon(
@@ -849,7 +866,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           smooth=Smooth.Bezier));
       connect(inflow, backflowValve.bloodFlowOutflow) annotation (Line(
           points={{-100,-2},{-100,-2},{-100,-36},{-74,-36},{-74,-38},{-46,-38}},
-
           color={0,0,0},
           thickness=1,
           smooth=Smooth.Bezier));
@@ -1201,9 +1217,13 @@ Connector with one flow signal of type Real.
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
 
+       Physiolibrary.Types.VolumeFlowRate q;
+       Physiolibrary.Types.Pressure dp;
     equation
       q_in.q + q_out.q = 0;
 
+      q = q_in.q;
+      dp = q_in.pressure - q_out.pressure;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics), Diagram(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
