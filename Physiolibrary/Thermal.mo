@@ -9,7 +9,7 @@ package Thermal
     model SkinHeatFlow
     extends Modelica.Icons.Example;
 
-      Components.IdealRadiator skinCirculation(MassFlow(displayUnit="g/min") =
+      Components.IdealRadiator skinCirculation(MassFlow(displayUnit="g/min")=
           0.0028333333333333) "Blood flow through skin"
         annotation (Placement(transformation(extent={{16,-32},{36,-12}})));
       Sources.UnlimitedHeat bodyCore(T(displayUnit="degC") = 310.15)
@@ -283,7 +283,7 @@ package Thermal
     model SkinHeatTransferOnBloodFlow
     extends Modelica.Icons.Example;
 
-      Components.IdealRadiator skinCirculation(MassFlow(displayUnit="g/min") =
+      Components.IdealRadiator skinCirculation(MassFlow(displayUnit="g/min")=
           0.0028333333333333) "Blood circulation through skin"
         annotation (Placement(transformation(extent={{16,-32},{36,-12}})));
       Sources.UnlimitedHeat                                  core(T(displayUnit="degC")=
@@ -675,7 +675,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
     end HeatPort_a;
 
     connector HeatPort_b "Heat outflow"
@@ -698,7 +698,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
 
     end HeatPort_b;
 

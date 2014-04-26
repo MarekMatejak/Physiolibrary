@@ -94,8 +94,7 @@ package Types "Physiological units with nominals"
     model ParameterSet
     extends Modelica.Icons.Example;
 
-      replaceable package T = RealTypes
-            constrainedby RealTypes;
+      package T=Physiolibrary.Types.RealTypes;
 
       T.Pressure Bone_PO2(varName="Bone-Flow.PO2")
         "Partial oxygen pressure in bone blood venules."
@@ -1187,6 +1186,40 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end VolumeConst;
 
+  block DeprecatedUntypedConstant
+      "Deprecated Untyped Constant for automatic conversion from initial versions of Physiolibrary"
+    extends Modelica.Icons.ObsoleteModel;
+   parameter Real k "Untyped constant output value";
+   parameter String varName="";
+   parameter String units="1";
+
+        Modelica.Blocks.Interfaces.RealOutput
+                                  y "Untyped constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="acceleration",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
+            preserveAspectRatio=false), graphics),                    Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end DeprecatedUntypedConstant;
   end Constants;
 
   package RealIO
@@ -2960,11 +2993,14 @@ constructed by the signals connected to this bus.
 
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
   type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=96.4853365);
+  type VolumeDensityOfCharge =
+                        Modelica.SIunits.VolumeDensityOfCharge(displayUnit="meq/l", nominal=0.0964853365);
   type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=1.60808894);
 
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
+  type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7);
   type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
 
@@ -3250,67 +3286,73 @@ The Real output y is a constant signal:
       replaceable block Variable = RealExtension.Parameter constrainedby
       AbstractReal;
 
-      block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy);
-      block Time = Variable(redeclare type T=Physiolibrary.Types.Time);
-      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency);
+      block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy, storeUnit="kcal");
+      block Time = Variable(redeclare type T=Physiolibrary.Types.Time, storeUnit="min");
+      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency, storeUnit="1/min");
 
-      block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass);
+      block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass, storeUnit="g");
       block MassFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MassFlowRate);
-      block Density = Variable(redeclare type T=Physiolibrary.Types.Density);
+            Physiolibrary.Types.MassFlowRate, storeUnit="g/min");
+      block Density = Variable(redeclare type T=Physiolibrary.Types.Density, storeUnit="kg/l");
 
-      block Height = Variable(redeclare type T=Physiolibrary.Types.Height);
+      block Height = Variable(redeclare type T=Physiolibrary.Types.Height, storeUnit="cm");
       block Acceleration = Variable(redeclare type T =
-            Physiolibrary.Types.Acceleration);
+            Physiolibrary.Types.Acceleration, storeUnit="m/s");
 
-      block Pressure = Variable(redeclare type T=Physiolibrary.Types.Pressure);
-      block Volume = Variable(redeclare type T=Physiolibrary.Types.Volume);
+      block Pressure = Variable(redeclare type T=Physiolibrary.Types.Pressure,storeUnit="mmHg");
+      block Volume = Variable(redeclare type T=Physiolibrary.Types.Volume,storeUnit="ml");
       block VolumeFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.VolumeFlowRate);
+            Physiolibrary.Types.VolumeFlowRate,storeUnit="ml/min");
 
       block Concentration = Variable(redeclare type T =
-            Physiolibrary.Types.Concentration);
+            Physiolibrary.Types.Concentration, storeUnit="mmol/l");
       block AmountOfSubstance = Variable(redeclare type T =
-            Physiolibrary.Types.AmountOfSubstance);
+            Physiolibrary.Types.AmountOfSubstance,storeUnit="mmol");
       block MolarFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MolarFlowRate);
+            Physiolibrary.Types.MolarFlowRate,storeUnit="mmol/min");
 
-      block Heat = Variable(redeclare type T=Physiolibrary.Types.Heat);
+      block Heat = Variable(redeclare type T=Physiolibrary.Types.Heat,storeUnit="kcal");
       block Temperature = Variable(redeclare type T =
-          Physiolibrary.Types.Temperature,                             k=310.15);
+          Physiolibrary.Types.Temperature,                             k=310.15, storeUnit="degC");
       block HeatFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.HeatFlowRate);
+            Physiolibrary.Types.HeatFlowRate,storeUnit="kcal/min");
       block ThermalConductance = Variable(redeclare type T =
-            Physiolibrary.Types.ThermalConductance);
+            Physiolibrary.Types.ThermalConductance, storeUnit="kcal/(min.K)");
       block SpecificHeatCapacity = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificHeatCapacity);
+            Physiolibrary.Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
       block SpecificEnergy = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificEnergy);
+            Physiolibrary.Types.SpecificEnergy,storeUnit="kcal/kg");
 
       block ElectricPotential = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricPotential);
+            Physiolibrary.Types.ElectricPotential,storeUnit="mV");
       block ElectricCharge = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCharge);
+            Physiolibrary.Types.ElectricCharge,storeUnit="meq");
+      block VolumeDensityOfCharge =
+                             Variable(redeclare type T =
+            Physiolibrary.Types.VolumeDensityOfCharge,storeUnit="meq/l");
       block ElectricCurrent = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCurrent);
+            Physiolibrary.Types.ElectricCurrent,storeUnit="meq/min");
 
-      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction);
+      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="1");
 
+      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="1");
       block OsmoticPermeability = Variable(redeclare type T =
-            Physiolibrary.Types.OsmoticPermeability);
+            Physiolibrary.Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
       block DiffusionPermeability =         Variable(redeclare type T =
-            Physiolibrary.Types.DiffusionPermeability);
+            Physiolibrary.Types.DiffusionPermeability,storeUnit="ml/min");
 
       block HydraulicConductance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicConductance);
+            Physiolibrary.Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
       block HydraulicCompliance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicCompliance);
+            Physiolibrary.Types.HydraulicCompliance,storeUnit="ml/mmHg");
       block HydraulicInertance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicInertance);
+            Physiolibrary.Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
 
       block GasSolubility = Variable(redeclare type T =
-            Physiolibrary.Types.GasSolubility);
+            Physiolibrary.Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
 
+      block Osmolarity =    Variable(redeclare type T =
+            Physiolibrary.Types.Osmolarity,storeUnit="mosm/l");
   end RealTypes;
 
   partial block AbstractBoolean

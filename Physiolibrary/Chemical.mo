@@ -408,7 +408,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Components.ChemicalReaction               quaternaryForm4(K=(c^4)*L)
           annotation (Placement(transformation(extent={{10,-92},{30,-72}})));
 
-
         SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
           n=10, Total(displayUnit="mol") = 1,
           Simulation=Physiolibrary.Types.SimulationType.SteadyState)
@@ -2718,7 +2717,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Components.ChemicalReaction               quaternaryForm4(K=(c^4)*L)
           annotation (Placement(transformation(extent={{6,-94},{26,-74}})));
 
-
         Components.Substance oxygen_unbound(                                      solute_start=0.000001
               *7.875647668393782383419689119171e-5,
           Simulation=SimulationType.SteadyState)
@@ -4645,7 +4643,7 @@ It works in two modes:
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
+       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -4679,7 +4677,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
+       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

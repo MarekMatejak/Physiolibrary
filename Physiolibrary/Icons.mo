@@ -3,7 +3,7 @@ package Icons "Icons for physiological models"
   //extends Modelica.Icons.IconsPackage;
   extends Modelica.Icons.Package;
   package Library
-      extends Modelica.Icons.Library;
+      extends Modelica.Icons.Package;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics));
   end Library;
@@ -390,7 +390,7 @@ package Icons "Icons for physiological models"
   end GolemLib;
 
   package BaseLib
-    extends Modelica.Icons.Library2;
+    extends Modelica.Icons.Package;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics));
   end BaseLib;

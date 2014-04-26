@@ -375,6 +375,13 @@ package Physiolibrary "Physiological domains library (version v2.1)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
   annotation (preferredView="info",
 version="2.1",
 versionBuild=1,
@@ -384,6 +391,7 @@ revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.1.mos"),
+  from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.1.mos"),
   from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.1.mos"),
   from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.1.mos"),
   from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.1.mos"),
