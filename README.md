@@ -28,9 +28,15 @@ Download and unzip.
 
 ## Current release
 
-Download [Physiolibrary 2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
+Download [Physiolibrary 2.1.1 (2014-05-02)](../../archive/v2.1.1.zip)
 
 #### Release notes
+
+*  [Version v2.1.1 (2014-05-02)](../../archive/v2.1.1.zip)
+ * New compoment: HydraulicComponents.IdealValve for modeling aortic, pulmonary, triscupid and mitral valve
+ * New types: pH, VolumeDensityOfCharge
+ * New examples: Osmotic.Examples.CelebrospinalFluid, Hydraulic.Examples.Windkessel and Hydraulic.Example.MinimalCirculation
+ * Fix: role of hydraulic pressure in Osmotic.Components.Membrane
 
 *  [Version v2.1.0 (2014-02-28)](../../archive/v2.1.0.zip)
  * Upgrade to MSL 3.2.1 (still compatible with MSL 3.2)

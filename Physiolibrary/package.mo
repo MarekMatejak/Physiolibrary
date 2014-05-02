@@ -396,10 +396,10 @@ package Physiolibrary "Physiological domains library (version v2.1)"
 
 
   annotation (preferredView="info",
-version="2.1",
+version="2.1.1",
 versionBuild=1,
-versionDate="2014-02-28",
-dateModified = "2014-02-28 22:30:00Z",
+versionDate="2014-05-02",
+dateModified = "2014-05-02 12:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
@@ -425,5 +425,5 @@ conversion(
 <p>We are also developing many types of smaller physiological models for use in medical education, so it was essential to separate this library from our HumMod Modelica implementation. This separation improves the quality of the next HumMod release and provides a useful Modelica library to modelers in this bioscience.</p>
 <p>The library contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological processes. For example from only two type of blocks (Chemical.ChemicalReaction and Chemical.Substance) it is possible to compose the allosteric transitions or the Michaelis-Menten equation.</p>
 <p><br/>Physiology is a very progressive discipline, that examines how the living body works. And it is no surprise that all processes in the human body are driven by physical laws of nature. The great challenge is to marry old empirical experiments with the &ldquo;new&rdquo; physical principles. Many teams and projects in the word deal with this formalization of physiology, for example: Physiome, SBML, EuroPhysiome, VPH, CellML etc. It is our hope that this library helps this unflagging effort of physiologists to exactly describe the processes.</p>
-</html>"), uses(Modelica(version="3.2")));
+</html>"));
 end Physiolibrary;
