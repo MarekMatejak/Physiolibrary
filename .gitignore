@@ -11,3 +11,14 @@
 /Physiolibrary/buildlog.txt
 /Physiolibrary/Resources/Install/Dymola/backup
 /Physiolibrary/Resources/Install/Dymola/uninstall.bat
+/Physiolibrary 2.1.1/*.mat
+/Physiolibrary 2.1.1/*.mo~
+/Physiolibrary 2.1.1/Resources/DymolaSettings/*.bak
+/Physiolibrary 2.1.1/buildlog.txt
+/Physiolibrary 2.1.1/dsfinal.txt
+/Physiolibrary 2.1.1/dsin.txt
+/Physiolibrary 2.1.1/dslog.txt
+/Physiolibrary 2.1.1/dsmodel.c
+/Physiolibrary 2.1.1/dymosim.exe
+/Physiolibrary 2.1.1/dymosim.exp
+/Physiolibrary 2.1.1/dymosim.lib
