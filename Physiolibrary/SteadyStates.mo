@@ -1069,7 +1069,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
        //extends Modelica.Icons.Example;
        extends Hydraulic.Examples.CardiovascularSystem_GCG(
         pulmonaryArteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        pulmonaryVeins(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
+        pulmonaryVeinsAndLeftAtrium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
         rightAtrium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
         arteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
         veins(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -1088,7 +1088,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{-52,74},{-52,68},{54,68},{54,-7.2},{68,-7.2}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(pulmonaryVeins.volume, bloodVolume.fragment[5]) annotation (Line(
+      connect(pulmonaryVeinsAndLeftAtrium.volume, bloodVolume.fragment[5]) annotation (Line(
           points={{14,74},{14,70},{56,70},{56,-6.4},{68,-6.4}},
           color={0,0,127},
           smooth=Smooth.None));

@@ -227,6 +227,25 @@ package Physiolibrary "Physiological domains library (version v2.1)"
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
+  class Version_2_1_1 "Version 2.1.1 (May. 02, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">compoment HydraulicComponents.IdealValve for modeling aortic, pulmonary, triscupid and mitral valve</font></li>
+<li><font style=\"color: #333333; \">types pH, VolumeDensityOfCharge</font></li>
+<li><font style=\"color: #333333; \">examples: Osmotic.Examples.CelebrospinalFluid, Hydraulic.Examples.Windkessel and Hydraulic.Example.MinimalCirculation</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li>role of hydraulic pressure in Osmotic.Components.Membrane</li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_1_1;
+
   class Version_2_1 "Version 2.1 (Feb. 28, 2014)"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -254,6 +273,7 @@ package Physiolibrary "Physiological domains library (version v2.1)"
 </ul>
 </html>"));
   end Version_2_1;
+
 
   class Version_2_0 "Version 2.0 (Jan. 26, 2014)"
     extends Modelica.Icons.ReleaseNotes;
@@ -373,13 +393,6 @@ package Physiolibrary "Physiological domains library (version v2.1)"
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",

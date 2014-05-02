@@ -473,7 +473,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
-      q_in.q = q;
+      volumeFlowRate = q;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
@@ -793,7 +793,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       open = passableVariable > 0;
 
       dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
-      q  = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
+      volumeFlowRate = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
@@ -1070,7 +1070,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}),
+              fillColor={0,0,0}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1104,7 +1104,7 @@ Connector with one flow signal of type Real.
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
+              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"
@@ -1115,12 +1115,12 @@ Connector with one flow signal of type Real.
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
 
-       Physiolibrary.Types.VolumeFlowRate q "Volumetric flow";
+       Physiolibrary.Types.VolumeFlowRate volumeFlowRate "Volumetric flow";
        Physiolibrary.Types.Pressure dp "Pressure gradient";
     equation
       q_in.q + q_out.q = 0;
 
-      q = q_in.q;
+      volumeFlowRate = q_in.q;
       dp = q_in.pressure - q_out.pressure;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics), Diagram(coordinateSystem(
