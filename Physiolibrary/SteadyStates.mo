@@ -51,9 +51,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-     experiment(StopTime=1),
-     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+     experiment(StopTime=1));
     end SimpleReaction_in_Equilibrium;
 
     model SimpleReaction_NormalInit
@@ -103,10 +101,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-     experiment(StopTime=1e-008),
-     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}}),  graphics),
-        __Dymola_experimentSetupOutput);
+     experiment(StopTime=1e-008));
     end SimpleReaction_NormalInit;
 
     model SimpleReaction_InitSteadyState
@@ -156,10 +151,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-     experiment(StopTime=1e-008),
-     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}}),  graphics),
-        __Dymola_experimentSetupOutput);
+     experiment(StopTime=1e-008));
     end SimpleReaction_InitSteadyState;
 
     model SimpleReaction2_in_Equilibrium
@@ -231,9 +223,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"), experiment(StopTime=1),
-           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"), experiment(StopTime=1));
     end SimpleReaction2_in_Equilibrium;
 
     model O2_in_water
@@ -296,11 +286,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{-36,-18},{-30,-18},{-30,70}},
           color={191,0,0},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),
-        experiment(StopTime=100),
-        __Dymola_experimentSetupOutput,
-        Documentation(info="<html>
+      annotation (        experiment(StopTime=100),
+Documentation(info="<html>
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
 </html>", revisions="<html>
 <p><i>2013</i></p>
@@ -809,11 +796,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{44,-92},{44,-98},{64,-98},{64,-64.1},{71,-64.1}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),
-        experiment(StopTime=10000),
-        __Dymola_experimentSetupOutput,
-        Documentation(info="<html>
+      annotation (        experiment(StopTime=10000),
+Documentation(info="<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br/>In short it is about binding oxygen to hemoglobin.</p>
@@ -909,7 +893,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
         usePartialPressureInput=true,
         T=295.15)   annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-58,84})));
       Chemical.Components.GasSolubility gasSolubility(
                                           useHeatPort=false, kH_T0=
@@ -1054,11 +1037,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{52,-16.4},{52,-20},{38,-20},{38,-92.5},{71,-92.5}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),
-        experiment(StopTime=10000),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+      annotation (        experiment(StopTime=10000),
+Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -1104,9 +1084,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{24,-46},{24,-68},{52,-68},{52,-8},{68,-8}},
           color={0,0,127},
           smooth=Smooth.None));
-       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),
-     experiment(StopTime=1),
+       annotation (     experiment(StopTime=1),
      Documentation(info="<html>
 <p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
 <p><br/>Model, all parameters and all initial values are from article: </p>
@@ -1154,9 +1132,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{50,-52},{52,-52},{52,-82.5},{70,-82.5}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (experiment(StopTime=1),
-     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+      annotation (experiment(StopTime=1));
     end ThermalBody_QHP_STeadyState;
 
     model Cells_SteadyState
@@ -1199,9 +1175,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{44,-64},{44,-85},{70,-85}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (experiment(StopTime=1),
-     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics));
+      annotation (experiment(StopTime=1));
     end Cells_SteadyState;
   end Examples;
 
@@ -1255,8 +1229,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               textString="Total(%Total)")}),
-                                     Diagram(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
     end EnergyConservationLaw;
@@ -1308,8 +1280,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               textString="Total(%Total)")}),
-                                     Diagram(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
     end MassConservationLaw;
@@ -1365,8 +1335,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               textString="Total(%Total)")}),
-                                     Diagram(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
     end MolarConservationLaw;
@@ -1419,8 +1387,6 @@ package SteadyStates "Dynamic Simulation / Steady State"
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               textString="Total(%Total)")}),
-                                     Diagram(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}), graphics),
         Documentation(info="<html>
 </html>"));
     end ElectricChargeConservationLaw;
@@ -1507,8 +1473,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
          change = 0;
       end if;
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),Documentation(revisions="<html>
+      annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -1604,8 +1569,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         end for;
       end if;
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),Documentation(revisions="<html>
+      annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -1648,8 +1612,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         //The difference from vector 'ones(NumberOfDependentStates)' could be used as the solver calculation error vector.
       end if;
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2013-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));

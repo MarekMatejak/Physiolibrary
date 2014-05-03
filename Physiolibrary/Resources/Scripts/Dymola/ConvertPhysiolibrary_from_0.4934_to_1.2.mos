@@ -178,7 +178,7 @@ convertModifiers("Physiolibrary.Blocks.SoluteMassConstant",{"k"}  , {"k=%k%*0.00
 convertClass("Physiolibrary.Blocks.FlowConstant_mmol_per_hour","Physiolibrary.Types.Constants.MolarFlowRateConst");
 convertModifiers("Physiolibrary.Blocks.FlowConstant_mmol_per_hour",{"k"}  , {"k=%k%*2.777777777778e-7"}, true); //mmol/h
 convertClass("Physiolibrary.Blocks.HormoneFlowConstant_mmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
-convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mmol",{"k"}  , {"k=%k%*1.6666666666667e-05"}, true); //mmol/min 
+convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_mmol",{"k"}  , {"k=%k%*1.6666666666667e-05"}, true); //mmol/min
 convertClass("Physiolibrary.Blocks.HormoneFlowConstant_nmol","Physiolibrary.Types.Constants.MolarFlowRateConst");
 convertModifiers("Physiolibrary.Blocks.HormoneFlowConstant_nmol",{"k"}  , {"k=%k%*1.6666666666667e-11"}, true); //nmol/min
 convertClass("Physiolibrary.Blocks.HormoneFlowConstant_pmol","Physiolibrary.Types.Constants.MolarFlowRateConst");

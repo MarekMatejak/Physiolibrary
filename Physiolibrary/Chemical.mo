@@ -29,13 +29,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1e-007),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=1e-007));
     end SimpleReaction;
 
     model SimpleReaction2
@@ -68,13 +66,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1e-009),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=1e-009));
     end SimpleReaction2;
 
     model ExothermicReaction
@@ -118,13 +114,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=5),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=5));
     end ExothermicReaction;
 
     model MichaelisMenten "Basic enzyme kinetics"
@@ -203,15 +197,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),     graphics),
-                  Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+          annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=1));
     end MichaelisMenten;
 
     model HendersonHaselbalch
@@ -269,8 +259,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(info="<html>
+      annotation ( Documentation(info="<html>
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
 <p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
 </html>"));
@@ -762,11 +751,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{-73,54},{-66,54},{-66,34}},
             color={0,0,127},
             smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-          experiment(StopTime=10000),
-          __Dymola_experimentSetupOutput,
-          Documentation(info="<html>
+        annotation (          experiment(StopTime=10000),
+Documentation(info="<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br/>In short it is about binding oxygen to hemoglobin.</p>
@@ -871,7 +857,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                0.026029047188736, T=310.15)                             annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={6,32})));
         SteadyStates.Components.MolarConservationLaw totalHb(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -1054,8 +1039,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 fillPattern=FillPattern.Solid,
                 pattern=LinePattern.None)}),
           experiment(StopTime=10000),
-          __Dymola_experimentSetupOutput,
-          Documentation(revisions="<html>
+Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -1125,8 +1109,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       change = q_out.q;
 
                                                                                                         annotation (choicesAllMatching=true,
-                  Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
+ Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={                                    Text(
               extent={{-22,-102},{220,-136}},
@@ -1241,8 +1224,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               smooth=Smooth.None,
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1250,21 +1231,21 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <pre>The Chemical reaction
 
 Schema of chemical reaction:
-s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP] 
+s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP]
 
 where
-S are substrates, 
-s are stochiometric coefficients of substrates,  
-P are products, 
-p are stochiometric coefficients of products.  
+S are substrates,
+s are stochiometric coefficients of substrates,
+P are products,
+p are stochiometric coefficients of products.
 
 In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
 <p><br/><code>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
-<pre> 
+<pre>
 The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
 <p><br/><code>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
 <p><code>The backward rate is (kf/K)*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
-<pre> 
+<pre>
 
 It works in two modes:
 
@@ -1272,8 +1253,7 @@ It works in two modes:
 1. Dynamic mode, if EQUILIBRIUM=false.
 
 2. Equilibrium mode, if EQUILIBRIUM=true and all Substances are in STEADY mode. But some zero flows must be removed instead of additional steady-state equation. </pre>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end ChemicalReaction;
 
     model Diffusion "Solute diffusion"
@@ -1302,7 +1282,7 @@ It works in two modes:
 
        q_in.q = c * (q_in.conc - q_out.conc);
 
-       annotation (Icon(graphics),                 Documentation(revisions="<html>
+       annotation (                 Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
@@ -1314,9 +1294,7 @@ It works in two modes:
 <p>dPhi is concentration gradient [mol/m3].</p>
 <p>dx is length of diffusion [m].</p>
 <p><br/>So for example of the diffusion through membrane the parameter cond = <code>(D/membrameThicknes)*membraneArea.</code></p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end Diffusion;
 
     model GasSolubility "Henry's law of gas solubility in liquid."
@@ -1446,8 +1424,6 @@ It works in two modes:
               smooth=Smooth.None,
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
 <tr>
@@ -1467,8 +1443,7 @@ It works in two modes:
 <td>2013</td>
 </tr>
 </table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end Degradation;
 
     model Clearance "Clearance with or without solvent outflow"
@@ -1526,9 +1501,7 @@ It works in two modes:
             Text(
               extent={{-100,-30},{100,-50}},
               lineColor={0,0,0},
-              textString="K=%K")}),   Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              textString="K=%K")}),        Documentation(revisions="<html>
 <table>
 <tr>
 <td>Author:</td>
@@ -1547,8 +1520,7 @@ It works in two modes:
 <td>2009</td>
 </tr>
 </table>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end Clearance;
 
     model Stream "Flow of whole solution"
@@ -1567,14 +1539,12 @@ It works in two modes:
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
-              origin={0,0},
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
-              origin={0,0},
               rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
@@ -1582,8 +1552,6 @@ It works in two modes:
               lineColor={0,0,255},
               origin={2,-74},
               rotation=180)}),
-         Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <table>
 <tr>
@@ -1646,27 +1614,22 @@ It works in two modes:
               lineColor={0,0,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
-              origin={0,0},
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
-              origin={0,0},
               rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
               lineColor={0,0,255},
               origin={-10,-76},
               rotation=360,
-              textString="%name")}),  Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              textString="%name")}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end SolutePump;
 
     model Speciation
@@ -1770,8 +1733,6 @@ It works in two modes:
               lineColor={0,0,255},
               origin={0,-60},
               rotation=180)}),
-        Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1855,9 +1816,7 @@ It works in two modes:
             Text(
               extent={{0,-102},{154,-132}},
               lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              textString="%name")}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -1883,9 +1842,6 @@ It works in two modes:
       actualFlow = q_in.q;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1916,8 +1872,6 @@ It works in two modes:
               lineColor={0,0,255},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1967,13 +1921,10 @@ It works in two modes:
               fillPattern=FillPattern.Solid), Text(
               extent={{-88,-50},{80,50}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end FlowConcentrationMeasure;
   end Sensors;
 
@@ -2007,13 +1958,10 @@ It works in two modes:
             Text(
               extent={{-82,-82},{90,-58}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end UnlimitedSolutePump;
 
     model UnlimitedSolutionStorage "Constant concentration source"
@@ -2063,8 +2011,7 @@ It works in two modes:
         q_out.q = 0;
       end if;
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics), Icon(coordinateSystem(
+      annotation ( Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={
             Rectangle(
@@ -2119,8 +2066,7 @@ It works in two modes:
 
       RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
         "Partial pressure of Gas = air pressure * gas fraction"
-        annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
-            rotation=0)));
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
      parameter Boolean isIsolatedInSteadyState = true
         "=true, if there is no flow at port in steady state"
@@ -2151,8 +2097,7 @@ It works in two modes:
 
       lossHeat=0; //only read temperature from heat port
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics), Icon(coordinateSystem(
+      annotation ( Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={
             Rectangle(
@@ -2285,10 +2230,6 @@ Connector with one flow signal of type Real.
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
       q_in.q + q_out.q = 0;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),
-                             graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end OnePort;
 
     partial model ConditionalHeatPort
@@ -2312,18 +2253,14 @@ Connector with one flow signal of type Real.
          T_heatPort = T;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+      annotation (        Documentation(revisions="<html>
 <ul>
 <li><i> February 17, 2009   </i>
        by Christoph Clauss<br> initially implemented<br>
        </li>
 <li><i> January 21, 2014   </i>
        by Marek Matejak<br> integrated to Physiolibrary<br>
-       </li>  
+       </li>
 </ul>
 </html>",     info="<html>
 <p>
@@ -2365,10 +2302,6 @@ on the model behaviour.
         volume = NormalSolventVolume;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolventVolume;
 
     partial model ConditionalSolutionFlow
@@ -2393,10 +2326,6 @@ on the model behaviour.
         q = SolutionFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow
@@ -2421,10 +2350,6 @@ on the model behaviour.
         q = SoluteFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSoluteFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>

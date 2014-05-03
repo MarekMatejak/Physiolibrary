@@ -67,8 +67,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               smooth=Smooth.None,
               thickness=1)}),
         experiment(StopTime=60),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -281,8 +280,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               smooth=Smooth.None,
               arrow={Arrow.None,Arrow.Filled})}),
         experiment(StopTime=86400),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -343,8 +341,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
       //  assert(volume>=-Modelica.Constants.eps,"Collapsed cells by osmotic pressure are not supported!");
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
+      annotation ( Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
                                                    graphics={
                                    Text(
@@ -416,12 +413,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       end if;
 
       q_in.q = cond * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),
-                          graphics), Icon(coordinateSystem(preserveAspectRatio=false,
-              extent={{-100,-100},{100,100}}),
-                                          graphics),
-        Documentation(revisions="<html>
+      annotation (        Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -451,13 +443,10 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               lineColor={0,0,127},
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid)}),
-                                      Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end SolventFlux;
   end Components;
 
@@ -478,9 +467,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       actualFlow = q_in.q;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -517,13 +503,10 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
             Text(
               extent={{-92,-58},{80,-34}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end SolventInflux;
 
     model SolventOutflux "Prescribed solvent outflow"
@@ -551,13 +534,10 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
             Text(
               extent={{-78,-58},{72,-36}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end SolventOutflux;
 
     model UnlimitedSolution "Prescribed osmolarity"
@@ -641,8 +621,7 @@ This model defines a fixed temperature T at its port in Kelvin,
 i.e., it defines a fixed temperature as a boundary condition.
 </p>
 </HTML>
-"),     Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics));
+"));
     end UnlimitedSolution;
   end Sources;
 
@@ -737,7 +716,7 @@ Connector with one flow signal of type Real.
             transformation(extent={{90,-10},{110,10}})));
     equation
       q_in.q + q_out.q = 0;
-      annotation (Icon(graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -765,10 +744,6 @@ Connector with one flow signal of type Real.
         q = SolventFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalSolventFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
