@@ -4,8 +4,6 @@ package Icons "Icons for physiological models"
   extends Modelica.Icons.Package;
   package Library
       extends Modelica.Icons.Package;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics));
   end Library;
 
   model Golem
@@ -391,8 +389,6 @@ package Icons "Icons for physiological models"
 
   package BaseLib
     extends Modelica.Icons.Package;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics));
   end BaseLib;
 
   package HormonesLib
@@ -547,8 +543,7 @@ package Icons "Icons for physiological models"
 
   model MetabolismPart
 
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-              {100,120}}),            graphics), Icon(coordinateSystem(
+    annotation ( Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,120}}),
           graphics={             Bitmap(extent={{28,120},{98,44}}, fileName=
                "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
@@ -819,9 +814,7 @@ package Icons "Icons for physiological models"
             fillPattern=FillPattern.Sphere), Text(
             extent={{-90,-10},{92,10}},
             textString="%name",
-            lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+            lineColor={0,0,0})}));
   end BaseFactorIcon;
 
   partial model BaseFactorIcon2
@@ -849,9 +842,7 @@ package Icons "Icons for physiological models"
             extent={{-86,-36},{100,40}},
             textString="%name",
             lineColor={0,0,0},
-            fillPattern=FillPattern.Sphere)}), Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+            fillPattern=FillPattern.Sphere)}));
   end BaseFactorIcon2;
 
   partial model BaseFactorIcon3
@@ -878,9 +869,7 @@ package Icons "Icons for physiological models"
             fillPattern=FillPattern.Sphere), Text(
             extent={{-90,-10},{92,10}},
             textString="%name",
-            lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+            lineColor={0,0,0})}));
   end BaseFactorIcon3;
 
   partial model BaseFactorIcon4
@@ -907,9 +896,7 @@ package Icons "Icons for physiological models"
             fillPattern=FillPattern.Sphere), Text(
             extent={{-90,-10},{92,10}},
             textString="%name",
-            lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+            lineColor={0,0,0})}));
   end BaseFactorIcon4;
 
   partial model BaseFactorIcon5
@@ -936,9 +923,7 @@ package Icons "Icons for physiological models"
             fillPattern=FillPattern.Sphere), Text(
             extent={{-90,-10},{92,10}},
             textString="%name",
-            lineColor={0,0,0})}), Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+            lineColor={0,0,0})}));
   end BaseFactorIcon5;
 
   partial model BaseFactorIcon6
@@ -962,10 +947,7 @@ package Icons "Icons for physiological models"
           extent={{-100,20},{100,-20}},
           lineColor={0,87,87},
           fillColor={255,255,255},
-          fillPattern=FillPattern.Sphere)}),
-                                  Diagram(coordinateSystem(
-            preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-          graphics));
+          fillPattern=FillPattern.Sphere)}));
   end BaseFactorIcon6;
 
   partial class ConversionIcon "Base icon for conversion functions"
@@ -995,8 +977,7 @@ package Icons "Icons for physiological models"
 
   model Substance
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics), Icon(coordinateSystem(
+      annotation ( Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/Concentration.png"), Text(
@@ -1007,8 +988,7 @@ package Icons "Icons for physiological models"
 
   model Speciation
 
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-              -100},{100,100}}), graphics), Icon(coordinateSystem(
+    annotation ( Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/Speciation.png"), Text(
@@ -1101,8 +1081,7 @@ package Icons "Icons for physiological models"
 
   model PressureMeasure
 
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-              -100,-100},{100,100}}), graphics), Icon(graphics={Bitmap(extent={
+    annotation ( Icon(graphics={Bitmap(extent={
                 {-100,100},{100,-100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/pressureMeassure.png")}));
   end PressureMeasure;

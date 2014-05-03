@@ -314,8 +314,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=300),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=300));
     end CardiovascularSystem_GCG;
 
   end Examples;
@@ -357,8 +356,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               fillColor={58,117,175},
               fillPattern=FillPattern.Solid,
               textString="%name")}),
-                                  Diagram(coordinateSystem(preserveAspectRatio=
-                false, extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -458,11 +455,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 100}}),     graphics={Text(
               extent={{-240,-150},{238,-110}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-                  Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -491,9 +484,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             Text(
               extent={{-150,-90},{150,-50}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <table>
 <tr>
 <td>Author:</td>
@@ -541,7 +532,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "Vertical distance between top and bottom connector"
                                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
-            rotation=0,
             origin={-60,0})));
 
       parameter Modelica.SIunits.Density ro=1060; //liquid density
@@ -596,14 +586,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       q_up.q + q_down.q = 0;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end HydrostaticColumn;
 
     model ElasticMembrane "Interaction between internal and external cavities"
@@ -638,11 +624,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       change = q_int.q;
 
       // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics),
-        Documentation(revisions="<html>
+      annotation (        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -664,15 +646,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     equation
       state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
       change = (q_in.pressure - q_out.pressure)/I;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),                Documentation(info="<html>
+      annotation (                Documentation(info="<html>
 <p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
 </html>", revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+</html>"));
     end Inertia;
 
     model Reabsorption "Divide inflow to outflow and reabsorption"
@@ -724,9 +703,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 {100,100}}),       graphics={Text(
               extent={{-100,130},{100,108}},
               lineColor={0,0,255},
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                      extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              textString="%name")}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
@@ -814,8 +791,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               fillPattern=FillPattern.Sphere,
               fillColor={255,85,85},
               textString="%name")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}),      graphics),
         Documentation(info="<html>
 <p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
 </html>", revisions="<html>
@@ -844,9 +819,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       actualFlow = q_in.q;
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -867,9 +839,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       actualPressure = q_in.pressure;
       q_in.q = 0;
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics),Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -905,9 +874,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             Text(
               extent={{-150,-94},{150,-54}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <table>
 <tr>
 <td>Author:</td>
@@ -942,13 +909,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           annotation (Dialog(enable=not usePressureInput));
 
         RealIO.PressureInput pressure(start=P)=p if usePressureInput "Pressure"
-          annotation (Placement(transformation(extent={{-120,-20},{-80,20}},
-              rotation=0)));
+          annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
         Interfaces.HydraulicPort_a
                              y "PressureFlow output connectors"
-          annotation (Placement(transformation(extent={{84,-16},{116,16}},
-              rotation=0)));
+          annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
        parameter Boolean isIsolatedInSteadyState = true
         "=true, if there is no flow at port in steady state"
@@ -1009,9 +974,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               Text(
                 extent={{-150,150},{150,110}},
                 textString="%name",
-                lineColor={0,0,255})}),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                  100}}), graphics));
+                lineColor={0,0,255})}));
       end UnlimitedVolume;
   end Sources;
 
@@ -1062,7 +1025,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
               fillColor={0,0,0},
-              origin={0,0},
               rotation=180)}),
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Polygon(
@@ -1122,9 +1084,6 @@ Connector with one flow signal of type Real.
 
       volumeFlowRate = q_in.q;
       dp = q_in.pressure - q_out.pressure;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end OnePort;
   end Interfaces;
   annotation (Documentation(revisions="<html>

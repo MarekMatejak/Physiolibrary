@@ -27,11 +27,8 @@ package Thermal
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics),
-        experiment(StopTime=10000, Tolerance=1e-006),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+      annotation (        experiment(StopTime=10000, Tolerance=1e-006),
+Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -73,11 +70,8 @@ package Thermal
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics),
-        experiment(StopTime=10000, Tolerance=1e-006),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+      annotation (        experiment(StopTime=10000, Tolerance=1e-006),
+Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -101,7 +95,6 @@ package Thermal
         useMassFlowInput=false,
         SpecificHeat=3851.856)      annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={32,30})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     urination
@@ -123,7 +116,6 @@ package Thermal
         useMassFlowInput=false,
         SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
-            rotation=0,
             origin={-28,2})));
       Physiolibrary.Thermal.Components.HeatOutstream
                     insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
@@ -271,13 +263,11 @@ package Thermal
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=3600),
-        __Dymola_experimentSetupOutput);
+        experiment(StopTime=3600));
     end ThermalBody_QHP;
 
     model SkinHeatTransferOnBloodFlow
@@ -302,11 +292,8 @@ package Thermal
           color={191,0,0},
           thickness=1,
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics),
-        experiment(StopTime=10000, Tolerance=1e-006),
-        __Dymola_experimentSetupOutput,
-        Documentation(revisions="<html>
+      annotation (        experiment(StopTime=10000, Tolerance=1e-006),
+Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -341,9 +328,7 @@ package Thermal
             Text(
               extent={{-144,-142},{156,-102}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
@@ -351,8 +336,7 @@ package Thermal
 <p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
 <p>The environment temperature is the same as radiator output temperature q_out.T. </p>
 <p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end IdealRadiator;
 
     model HeatAccumulation "Accumulating of heat to substance"
@@ -408,8 +392,6 @@ package Thermal
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),       graphics),
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}),
              graphics={
@@ -451,9 +433,7 @@ package Thermal
               lineColor={0,0,255})}), Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+</html>"));
     end Conductor;
 
     model Stream "Flow of whole heated mass"
@@ -482,9 +462,7 @@ package Thermal
             Text(
               extent={{20,-84},{320,-44}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -512,8 +490,7 @@ package Thermal
 </tr>
 </table>
 <br/>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end Stream;
 
     model HeatOutstream
@@ -548,13 +525,10 @@ package Thermal
             Text(
               extent={{20,-84},{320,-44}},
               textString="%name",
-              lineColor={0,0,255})}), Diagram(coordinateSystem(preserveAspectRatio=false,
-                       extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-                -100},{100,100}}), graphics));
+</html>"));
     end HeatOutstream;
 
   end Components;
@@ -645,9 +619,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 ", revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),graphics));
+</html>"));
     end UnlimitedHeat;
   end Sources;
 
@@ -710,12 +682,10 @@ i.e., it defines a fixed temperature as a boundary condition.
             transformation(extent={{90,-10},{110,10}})));
     equation
       q_in.Q_flow + q_out.Q_flow = 0;
-      annotation (Icon(graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+</html>"));
     end OnePort;
 
     partial model ConditionalMassFlow
@@ -740,10 +710,6 @@ i.e., it defines a fixed temperature as a boundary condition.
         q = MassFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),                                                                       graphics),
-                 Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
     end ConditionalMassFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>

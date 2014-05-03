@@ -142,10 +142,7 @@ package Types "Physiological units with nominals"
           string="%second",
           index=1,
           extent={{6,3},{6,3}}));
-      annotation (experiment(StopTime=1),
-      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+      annotation (experiment(StopTime=1));
     end ParameterSet;
 
     model InputParameterSet
@@ -636,8 +633,7 @@ package Types "Physiological units with nominals"
   equation
         y=k;
     annotation (defaultComponentName="hydraulicElastance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
-            preserveAspectRatio=false), graphics),                    Icon(
+                    Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
           Rectangle(extent={{-40,40},{40,-40}},
@@ -733,8 +729,7 @@ package Types "Physiological units with nominals"
   equation
         y=k;
     annotation (defaultComponentName="hydraulicResistance",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
-            preserveAspectRatio=false), graphics),                    Icon(
+                    Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
           Rectangle(extent={{-40,40},{40,-40}},
@@ -1200,8 +1195,7 @@ package Types "Physiological units with nominals"
   equation
         y=k;
     annotation (defaultComponentName="acceleration",
-               Diagram(coordinateSystem(extent={{-40,-40},{40,40}},
-            preserveAspectRatio=false), graphics),                    Icon(
+                    Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
           Rectangle(extent={{-40,40},{40,-40}},
@@ -1245,10 +1239,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Acceleration. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Acceleration.
+    </p>
     </html>"));
     connector AccelerationOutput = output Acceleration
       "output Acceleration as connector"
@@ -1297,10 +1291,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type AmountOfSubstance. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type AmountOfSubstance.
+    </p>
     </html>"));
     connector AmountOfSubstanceOutput = output AmountOfSubstance
       "output AmountOfSubstance as connector"
@@ -1349,10 +1343,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Concentration. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Concentration.
+    </p>
     </html>"));
     connector ConcentrationOutput = output Concentration
       "output Concentration as connector"
@@ -1401,10 +1395,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type DiffusionMembranePermeability. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type DiffusionMembranePermeability.
+    </p>
     </html>"));
     connector DiffusionPermeabilityOutput = output DiffusionPermeability
       "output DiffusionPermeability as connector"
@@ -1453,10 +1447,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ElectricCurrent. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type ElectricCurrent.
+    </p>
     </html>"));
     connector ElectricCurrentOutput = output ElectricCurrent
       "output ElectricCurrent as connector"
@@ -1505,10 +1499,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ElectricCharge. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type ElectricCharge.
+    </p>
     </html>"));
     connector ElectricChargeOutput = output ElectricCharge
       "output ElectricCharge as connector"
@@ -1556,10 +1550,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Energy. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Energy.
+    </p>
     </html>"));
 
     connector EnergyOutput = output Energy "output Energy as connector"
@@ -1608,10 +1602,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Heat. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Heat.
+    </p>
     </html>"));
     connector HeatOutput = output Heat "output Heat as connector"
       annotation (defaultComponentName="heat",
@@ -1659,10 +1653,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type HeatFlowRate. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type HeatFlowRate.
+    </p>
     </html>"));
     connector HeatFlowRateOutput = output HeatFlowRate
       "output HeatFlowRate as connector"
@@ -1710,10 +1704,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Height. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Height.
+    </p>
     </html>"));
     connector HeightOutput = output Height "output Height as connector"
       annotation (defaultComponentName="height",
@@ -1760,10 +1754,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Mass. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Mass.
+    </p>
     </html>"));
 
     connector MassOutput = output Mass "output Mass as connector"
@@ -1813,10 +1807,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type MassFlowRate. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type MassFlowRate.
+    </p>
     </html>"));
 
     connector MassFlowRateOutput = output MassFlowRate
@@ -1867,10 +1861,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type MolarFlowRate. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type MolarFlowRate.
+    </p>
     </html>"));
     connector MolarFlowRateOutput = output MolarFlowRate
       "output MolarFlowRate as connector"
@@ -1919,10 +1913,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Concentration. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Concentration.
+    </p>
     </html>"));
     connector OsmolarityOutput = output Osmolarity
       "output Concentration as connector"
@@ -1970,10 +1964,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Pressure. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Pressure.
+    </p>
     </html>"));
 
     connector PressureOutput = output Pressure "output Pressure as connector"
@@ -2022,10 +2016,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Volume. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Volume.
+    </p>
     </html>"));
 
     connector VolumeOutput = output Volume "output Volume as connector"
@@ -2075,10 +2069,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type VolumeFlowRate. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type VolumeFlowRate.
+    </p>
     </html>"));
 
     connector VolumeFlowRateOutput = output VolumeFlowRate
@@ -2129,10 +2123,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Temperature. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Temperature.
+    </p>
     </html>"));
 
     connector TemperatureOutput = output Temperature
@@ -2181,10 +2175,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Time. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Time.
+    </p>
     </html>"));
     connector TimeOutput = output Time "output Time as connector"
       annotation (defaultComponentName="time",
@@ -2233,10 +2227,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ThermalConductance. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type ThermalConductance.
+    </p>
     </html>"));
 
     connector ThermalConductanceOutput = output ThermalConductance
@@ -2287,10 +2281,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type ElectricPotential. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type ElectricPotential.
+    </p>
     </html>"));
 
     connector ElectricPotentialOutput = output ElectricPotential
@@ -2340,10 +2334,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Fraction. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Fraction.
+    </p>
     </html>"));
 
     connector FractionOutput = output Fraction "output Fraction as connector"
@@ -2392,10 +2386,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Frequency. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Frequency.
+    </p>
     </html>"));
 
     connector FrequencyOutput = output Frequency
@@ -2446,10 +2440,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type OsmoticMembranePermeability. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type OsmoticMembranePermeability.
+    </p>
     </html>"));
 
     connector OsmoticPermeabilityOutput = output OsmoticPermeability
@@ -2500,10 +2494,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type HydraulicConductance. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type HydraulicConductance.
+    </p>
     </html>"));
 
     connector HydraulicConductanceOutput = output HydraulicConductance
@@ -2554,10 +2548,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type HydraulicCompliance. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type HydraulicCompliance.
+    </p>
     </html>"));
 
     connector HydraulicComplianceOutput = output HydraulicCompliance
@@ -2607,10 +2601,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Volume. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Volume.
+    </p>
     </html>"));
     connector DensityOutput =output Density "output Density as connector"
       annotation (defaultComponentName="density",
@@ -2658,10 +2652,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type HydraulicInertance. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type HydraulicInertance.
+    </p>
     </html>"));
 
     connector HydraulicInertanceOutput = output HydraulicInertance
@@ -2711,10 +2705,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type GasSolubility. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type GasSolubility.
+    </p>
     </html>"));
 
     connector GasSolubilityOutput = output GasSolubility
@@ -2766,10 +2760,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Volume. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Volume.
+    </p>
     </html>"));
     connector SpecificEnergyOutput =
                              output SpecificEnergy
@@ -2820,10 +2814,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Volume. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Volume.
+    </p>
     </html>"));
     connector SpecificHeatCapacityOutput =
                              output SpecificHeatCapacity
@@ -2955,9 +2949,6 @@ constructed by the signals connected to this bus.
         extent={{-20,2},{22,-2}},
         lineColor={0,0,255},
         lineThickness=0.5)}),
-    Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,
-          -100},{100,100}}),
-            graphics),
     ));
 */
     end BusConnector;
@@ -3043,8 +3034,7 @@ constructed by the signals connected to this bus.
              annotation (Dialog(group="Packages",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = k;
@@ -3052,8 +3042,7 @@ constructed by the signals connected to this bus.
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
+            grid={2,2}), graphics={Rectangle(
               extent={{-100,20},{100,-20}},
               lineColor={0,0,255},
               fillPattern=FillPattern.Solid,
@@ -3063,11 +3052,6 @@ constructed by the signals connected to this bus.
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3086,8 +3070,7 @@ The Real output y is a constant signal:
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = k;
@@ -3095,8 +3078,7 @@ The Real output y is a constant signal:
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
+            grid={2,2}), graphics={Rectangle(
               extent={{-100,20},{100,-20}},
               lineColor={0,0,255},
               fillPattern=FillPattern.Solid,
@@ -3106,11 +3088,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3127,8 +3104,7 @@ The Real output y is a constant signal:
                                                          constrainedby
         Physiolibrary.Types.Utilities;
           IO.Input              y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-120,-10},{-100,10}})));
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
         equation
           when terminal() then
@@ -3152,11 +3128,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3177,8 +3148,7 @@ The Real output y is a constant signal:
 
           Modelica.Blocks.Interfaces.RealInput
                                 y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-120,-10},{-100,10}})));
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
     protected
           parameter T initialValue(fixed=false);
@@ -3209,11 +3179,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3244,10 +3209,10 @@ The Real output y is a constant signal:
                 extent={{-10,85},{-10,60}},
                 lineColor={0,0,127},
                 textString="%name")}),
-          Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type Energy. 
-    </p> 
+          Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Energy.
+    </p>
     </html>"));
 
       connector Output = output Type "output connector"
@@ -3373,8 +3338,7 @@ The Real output y is a constant signal:
 
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = k;
@@ -3382,8 +3346,7 @@ The Real output y is a constant signal:
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
+            grid={2,2}), graphics={Rectangle(
               extent={{-100,20},{100,-20}},
               lineColor={0,0,255},
               fillPattern=FillPattern.Solid,
@@ -3393,11 +3356,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3411,8 +3369,7 @@ The Real output y is a constant signal:
 
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-                rotation=0)));
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
           replaceable package Utilities = Physiolibrary.Types.Utilities;
 
         equation
@@ -3421,8 +3378,7 @@ The Real output y is a constant signal:
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
+            grid={2,2}), graphics={Rectangle(
               extent={{-100,20},{100,-20}},
               lineColor={0,0,255},
               fillPattern=FillPattern.Solid,
@@ -3432,11 +3388,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3452,8 +3403,7 @@ The Real output y is a constant signal:
           Modelica.Blocks.Interfaces.BooleanInput
                                                 y
         "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-100,-10},{-80,10}})));
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-100,-10},{-80,10}})));
 
         equation
           when terminal() then
@@ -3464,8 +3414,7 @@ The Real output y is a constant signal:
             Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics={Rectangle(
+            grid={2,2}), graphics={Rectangle(
               extent={{-100,20},{100,-20}},
               lineColor={0,0,255},
               fillPattern=FillPattern.Solid,
@@ -3475,11 +3424,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.1), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3496,8 +3440,7 @@ The Real output y is a constant signal:
 
           Modelica.Blocks.Interfaces.BooleanInput
                                 y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}},
-                rotation=0), iconTransformation(extent={{-120,-10},{-100,10}})));
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
     protected
           parameter Boolean initialValue(fixed=false);
@@ -3527,11 +3470,6 @@ The Real output y is a constant signal:
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               textString="%varName")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics),
         Documentation(info="<html>
 <p>
 The Real output y is a constant signal:
@@ -3542,7 +3480,7 @@ The Real output y is a constant signal:
 
   package Utilities "Value input/output/test support"
     extends Modelica.Icons.BasesPackage;
-    replaceable function readReal "Read the real value of parameter from file with lines in format: 
+    replaceable function readReal "Read the real value of parameter from file with lines in format:
   <parameterName>
   <value> <unit>"
       extends Modelica.Icons.Function;
@@ -3554,7 +3492,7 @@ The Real output y is a constant signal:
     //algorithm
     end readReal;
 
-    replaceable function readBoolean "Read the boolean value of parameter from file with lines in format: 
+    replaceable function readBoolean "Read the boolean value of parameter from file with lines in format:
   <parameterName>
   <value> <unit>"
       extends Modelica.Icons.Function;
@@ -3677,8 +3615,8 @@ The Real output y is a constant signal:
                lineLen := Strings.length(line);
                nextIndex:=1;
 
-               /* 
-  //Format "<variableName>=<value><unit>" 
+               /*
+  //Format "<variableName>=<value><unit>"
   while not found and not endOfFile loop
        iline:=iline+1;
        (line, endOfFile) :=Streams.readLine(fn, iline);
@@ -3695,7 +3633,7 @@ The Real output y is a constant signal:
          str := Strings.substring(line,1,nextIndex-1);
 
          if str==name then
-                 
+
            nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
            nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex+1); //skip '=' and white-spaces before/after
 */
@@ -4056,8 +3994,7 @@ The Real output y is a constant signal:
         "Initialization in Steady State (initial derivations are zeros)",
       SteadyState "Steady State = Derivations are zeros during simulation")
     "Initialization or Steady state options (to determine model type before simulating)"
-      annotation (Evaluate=true, Diagram(coordinateSystem(preserveAspectRatio=
-           false, extent={{-100,-100},{100,100}}), graphics));
+      annotation (Evaluate=true);
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>

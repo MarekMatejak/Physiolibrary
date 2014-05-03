@@ -13,11 +13,11 @@ echo %PHYSIOLIBRARY%
 
 for /F delims^=^"^ tokens^=2 %%s in ('ftype mofile') DO set x=%%s
 call set DYMOLADIR=%%x:\bin%x:*\bin=%=%%
-set x= 
+set x=
 
 echo Selected Dymola directory is "%DYMOLADIR%".
 
-if "%1" == "EVEL" goto gotPrivileges  
+if "%1" == "EVEL" goto gotPrivileges
 
 
 
@@ -27,13 +27,13 @@ if NOT EXIST "%CurrentDirectory%\backup" mkdir "%CurrentDirectory%\backup"
 set DISPLAYUNIT_BACKUP_FILE=%CurrentDirectory%\backup\displayunit.mos-install_%date%_%time::=-%.bak
 copy "%DYMOLADIR%\insert\displayunit.mos" "%DISPLAYUNIT_BACKUP_FILE%"
 
-set UNINST=%CurrentDirectory%\uninstall.bat 
+set UNINST=%CurrentDirectory%\uninstall.bat
 
 echo NET FILE 1^>NUL 2^>NUL > "%UNINST%"
 echo if '%%errorlevel%%' == '0'  goto gotPrivileges >> "%UNINST%"
 echo ECHO Set UAC = CreateObject^^^("Shell.Application"^^^) ^> "%%temp%%\OEgetPrivileges.vbs"  >> "%UNINST%"
 echo ECHO UAC.ShellExecute "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola\uninstall.bat", "EVEL", "", "runas", 1 ^>^> "%%temp%%\OEgetPrivileges.vbs" >> "%UNINST%"
-echo "%%temp%%\OEgetPrivileges.vbs" >> "%UNINST%" 
+echo "%%temp%%\OEgetPrivileges.vbs" >> "%UNINST%"
 echo exit /B >> "%UNINST%"
 echo :gotPrivileges >> "%UNINST%"
 echo copy "%DYMOLADIR%\insert\displayunit.mos" "%CurrentDirectory%\backup\displayunit.mos-uninstall_%%date%%_%%time::=-%%.bak" >>  "%UNINST%"
@@ -45,25 +45,25 @@ if "%PHYSIOLIBRARY%" NEQ "" echo rmdir /S /Q "%DYMOLADIR%\Modelica\Library\%PHYS
 rem ****** Check administration privileges *****
 
 NET FILE 1>NUL 2>NUL
-if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges ) 
+if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
 
 
 
 
 rem ****** Get administration privileges *****
-:getPrivileges 
+:getPrivileges
 
-ECHO Set UAC = CreateObject^("Shell.Application"^) > "%temp%\OEgetPrivileges.vbs" 
-ECHO UAC.ShellExecute "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola\install.bat", "EVEL", "", "runas", 1 >> "%temp%\OEgetPrivileges.vbs" 
-"%temp%\OEgetPrivileges.vbs" 
+ECHO Set UAC = CreateObject^("Shell.Application"^) > "%temp%\OEgetPrivileges.vbs"
+ECHO UAC.ShellExecute "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola\install.bat", "EVEL", "", "runas", 1 >> "%temp%\OEgetPrivileges.vbs"
+"%temp%\OEgetPrivileges.vbs"
 
 cd "%CurrentDirectory%"
 set CurrentDirectory=
-exit /B 
+exit /B
 
 
 rem ****** Copy files into ProgramFiles\Dymola directory *****
-:gotPrivileges 
+:gotPrivileges
 
 xcopy /Y "Resources\DisplayUnits\displayunit.mos" "%DYMOLADIR%\insert\"
 mkdir "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
