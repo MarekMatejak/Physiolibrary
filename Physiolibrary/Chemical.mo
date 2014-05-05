@@ -262,7 +262,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       annotation ( Documentation(info="<html>
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
 <p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
-</html>"));
+</html>",    revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        experiment(StopTime=1));
     end HendersonHaselbalch;
 
     package Hemoglobin "Hemoglobin blood gases binding"
@@ -751,8 +755,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{-73,54},{-66,54},{-66,34}},
             color={0,0,127},
             smooth=Smooth.None));
-        annotation (          experiment(StopTime=10000),
-Documentation(info="<html>
+        annotation (          experiment(StopTime=10000), Documentation(info=
+                   "<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br/>In short it is about binding oxygen to hemoglobin.</p>
@@ -1039,7 +1043,8 @@ Documentation(info="<html>
                 fillPattern=FillPattern.Solid,
                 pattern=LinePattern.None)}),
           experiment(StopTime=10000),
-Documentation(revisions="<html>
+          Documentation(revisions=
+                        "<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -1055,17 +1060,6 @@ Documentation(revisions="<html>
 <p><br>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
 </html>"));
       end Allosteric_Hemoglobin2_MWC;
-
-
-
-
-
-
-
-
-
-
-
 
     end Hemoglobin;
   end Examples;
@@ -1109,7 +1103,7 @@ Documentation(revisions="<html>
       change = q_out.q;
 
                                                                                                         annotation (choicesAllMatching=true,
- Icon(coordinateSystem(
+        Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={                                    Text(
               extent={{-22,-102},{220,-136}},

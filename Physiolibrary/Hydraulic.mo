@@ -51,7 +51,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics={Text(
               extent={{-34,74},{86,64}},
               lineColor={175,175,175},
-              textString="Windkessel model driven by cardiac output")}));
+              textString="Windkessel model driven by cardiac output")}),
+          Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        experiment(StopTime=10));
     end Windkessel;
 
     model MinimalCirculation
@@ -108,7 +113,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 -100},{100,100}}), graphics={                          Text(
               extent={{-40,-12},{80,-22}},
               lineColor={175,175,175},
-              textString="Minimal circulation driven by cardiac output")}));
+              textString="Minimal circulation driven by cardiac output")}),
+          Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        experiment(StopTime=10));
     end MinimalCirculation;
 
     model CardiovascularSystem_GCG
