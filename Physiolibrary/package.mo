@@ -325,7 +325,7 @@ package Physiolibrary "Physiological domains library (version v2.1)"
 <li><font style=\"color: #333333; \">Contains nice physiological icons.</font></li>
 <li><font style=\"color: #333333; \">Support for physiological units: min,kcal,mmHg,ml,mEq,..</font></li>
 <li><font style=\"color: #333333; \">Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</font></li>
-<li><font style=\"color: #333333; \">Support of euilibrated systems</font></li>
+<li><font style=\"color: #333333; \">Support of equilibrated systems</font></li>
 <li><font style=\"color: #333333; \">Support for expandable inputs/outputs/tests lists</font></li>
 </ul></p>
 </html>"));
