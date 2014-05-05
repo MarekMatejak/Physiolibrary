@@ -89,11 +89,9 @@ This is discussed in the description of package
           parameter Real k(start=1) "value added to input signal";
     public
           Modelica.Blocks.Interfaces.RealInput u "Input signal connector"
-            annotation (Placement(transformation(extent={{-140,-20},{-100,20}},
-              rotation=0)));
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
           Modelica.Blocks.Interfaces.RealOutput y "Output signal connector"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}},
-              rotation=0)));
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = k+u;
@@ -144,10 +142,6 @@ This is discussed in the description of package
               extent={{-100,100},{100,-100}},
               lineColor={0,0,0},
               textString="1/u")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics),
             Documentation(info="<html>
 <p>This blocks computes the output <b>y</b> as <i>reciprocal value</i> of the input <b>u</b>: </p>
 <p><code>    y = 1 / u ;</code> </p>
@@ -192,12 +186,7 @@ This is discussed in the description of package
               fillPattern=FillPattern.Solid), Text(
               extent={{-100,-40},{100,40}},
               lineColor={0,0,0},
-                  textString="b^u")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-                initialScale=0.04), graphics));
+                  textString="b^u")}));
         end Exponentiation;
 
     block Min "Pass through the smallest signal"
@@ -320,9 +309,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 <p><code>    u = (w[1]*y[1] + w[2]*y[2] + ... + w[n]*y[n]) / (w[1] + w[2] + ... + w[n]);</code></p>
 <p>Example: </p>
 <pre>     parameter:   nin = 3;  w=ones(3);
- 
+
   results in the following equations:
- 
+
 <p><code>     y[1]=u/3,  y[2]=u/3,  y[3]=u/3;</code> </p>
 </html>"),  Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -330,11 +319,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             grid={2,2}), graphics={Text(
               extent={{-100,-100},{100,100}},
               lineColor={0,0,0},
-              textString="Parts")}),
-            Diagram(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics));
+              textString="Parts")}));
         end Parts;
 
         block HomotopyStrongComponentBreaker
@@ -507,8 +492,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                 a,
                 u);
 
-           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),      graphics), Icon(coordinateSystem(
+           annotation ( Icon(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
             graphics={
             Rectangle(
@@ -548,15 +532,13 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
     equation
       effect = u/NormalValue;
       y=effect*yBase;
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",
         info="<html>
 <p><h4>y = yBase * u</h4></p>
-</html>"),
-        Icon(graphics));
+</html>"));
     end Normalization;
 
     model DamagedFraction "effect = 1 - DamagedAreaFraction"
@@ -590,8 +572,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
       effect = Interpolation.Spline(
                              data[:, 1],a,u);
       y=effect*yBase;
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -658,8 +639,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           points={{-26,1},{-26,-8},{-6,-8},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -726,8 +706,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           points={{-8,28},{-6,28},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -100},{100,100}}), graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -814,10 +793,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           points={{-38,50},{-78,50},{-78,40},{-100,40}},
           color={255,0,255},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics), Icon(coordinateSystem(
-              preserveAspectRatio=true,  extent={{-100,-100},{100,100}}), graphics),
-        Documentation(revisions="<html>
+      annotation (        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
