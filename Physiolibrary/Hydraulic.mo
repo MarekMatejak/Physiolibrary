@@ -384,9 +384,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                            q_in
                             annotation (Placement(
             transformation(extent={{-14,-14},{14,14}})));
-      parameter Physiolibrary.Types.Volume volume_start = 0
+      parameter Physiolibrary.Types.Volume volume_start = 1e-11
         "Volume start value"
-         annotation (Dialog(group="Initialization"));
+         annotation (Dialog(group="Initialization"));                                //default = 1e-5 ml
 
       Physiolibrary.Types.Volume excessVolume
         "Additional volume, that generate pressure";
@@ -395,9 +395,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "=true, if zero-pressure-volume input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Physiolibrary.Types.Volume ZeroPressureVolume = 0
+       parameter Physiolibrary.Types.Volume ZeroPressureVolume = 1e-11
         "Maximal volume, that does not generate pressure if useV0Input=false"
-        annotation (Dialog(enable=not useV0Input));
+        annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
+
+        parameter Physiolibrary.Types.Volume CollapsingPressureVolume = 1e-12
+        "Maximal volume, which generate negative collapsing pressure"; //default = 1e-6 ml
+
        Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume)= zpv if useV0Input
                                                         annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
@@ -453,7 +457,14 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end if;
 
       excessVolume = max( 0, volume - zpv);
-      q_in.pressure = excessVolume/c + ep;
+      q_in.pressure =
+      smooth(0, if noEvent(volume>CollapsingPressureVolume)
+      then
+      excessVolume/c + ep
+     else
+      log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)));
+      //then: normal physiological state
+      //else: abnormal collapsing state
 
       state = volume; // der(volume) =  q_in.q;
       change = q_in.q;
@@ -466,8 +477,15 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               extent={{-240,-150},{238,-110}},
               textString="%name",
               lineColor={0,0,255})}),        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
+<p><i>2009-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<ul>
+<li>Increassing volume above ZeroPressureVolume (V0) generate positive pressure (greater than external pressure) lineary dependent on excess volume.</li>
+<li>Decreasing volume below CollapsingPressureVolume (V00) generate negative pressure (lower than external pressure) logarithmicaly dependent on volume.</li>
+<li>Otherwise external pressure is presented as pressure inside ElasticVessel.</li>
+</ul>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
 </html>"));
     end ElasticVessel;
 

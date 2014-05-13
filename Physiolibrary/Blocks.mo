@@ -465,11 +465,11 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
         model Curve
       "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
-             parameter Real x[:] = data[:, 1]
+             parameter Real x[:] = fill(Modelica.Constants.N_A,1)
         "x coordinations of interpolating points";
-             parameter Real y[:] = data[:, 2]
+             parameter Real y[:] = fill(Modelica.Constants.N_A,1)
         "y coordinations of interpolating points";
-             parameter Real slope[:] = data[:, 3]
+             parameter Real slope[:] = fill(Modelica.Constants.N_A,1)
         "slopes at interpolating points";
 
              parameter Real[:,3] data = transpose({x,y,slope})
