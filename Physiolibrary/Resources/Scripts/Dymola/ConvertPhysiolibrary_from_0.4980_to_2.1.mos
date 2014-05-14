@@ -133,6 +133,7 @@ convertModifiers("Physiolibrary.Thermal.Resistor2", fill("",0)  , {"useConductan
 convertClass("Physiolibrary.Thermal.HeatStream","Physiolibrary.Thermal.Components.Stream")
 convertModifiers("Physiolibrary.Thermal.HeatStream", fill("",0)  , {"useMassFlowInput=true"}, true);
 convertElement("Physiolibrary.Thermal.HeatStream","substanceFlow","massFlow")
+convertElement("Physiolibrary.Thermal.HeatStream","specificHeat_","SpecificHeat")
 convertClass("Physiolibrary.Thermal.HeatOutstream","Physiolibrary.Thermal.Components.HeatOutstream")
 convertModifiers("Physiolibrary.Thermal.HeatOutstream", fill("",0)  , {"useMassFlowInput=true"}, true);
 convertElement("Physiolibrary.Thermal.HeatOutstream","liquidOutflow_","massFlow")
@@ -140,11 +141,12 @@ convertElement("Physiolibrary.Thermal.HeatOutstream","specificHeat_","SpecificHe
 convertClass("Physiolibrary.Thermal.IdealRadiator","Physiolibrary.Thermal.Components.IdealRadiator")
 convertModifiers("Physiolibrary.Thermal.IdealRadiator", fill("",0)  , {"useMassFlowInput=true"}, true);
 convertElement("Physiolibrary.Thermal.IdealRadiator","substanceFlow","massFlow")
-convertElement("Physiolibrary.Thermal.IdealRadiotor","specificHeat_","SpecificHeat")
-convertClass("Physiolibrary.Thermal.HeatAccumulation0","Physiolibrary.Thermal.Components.HeatAccumulation")
+convertElement("Physiolibrary.Thermal.IdealRadiator","specificHeat_","SpecificHeat")
 convertClass("Physiolibrary.Thermal.HeatAccumulation","Physiolibrary.Thermal.Components.HeatAccumulation")
 convertModifiers("Physiolibrary.Thermal.HeatAccumulation", fill("",0)  , {"useMassInput=true"}, true);
 convertElement("Physiolibrary.Thermal.HeatAccumulation","specificHeat_","SpecificHeat")
+convertElement("Physiolibrary.Thermal.HeatAccumulation","initialHeatMass_","relativeHeat_start")
+convertModifiers("Physiolibrary.Thermal.HeatAccumulation",{"initialHeatMass_","specificHeat_"}  , {"relativeHeat_start=%initialHeatMass_%-310.15*weight*%specificHeat_%"}, true);
 
 convertClass("Physiolibrary.Thermal.HeatFlowConnector","Physiolibrary.Thermal.Interfaces.HeatPort")
 convertElement("Physiolibrary.Thermal.HeatFlowConnector","q","Q_flow")
@@ -167,11 +169,11 @@ convertElement("Physiolibrary.Osmotic.SolventFlux","desiredFlow","solutionFlow")
 convertClass("Physiolibrary.Osmotic.FlowMeasure","Physiolibrary.Osmotic.Sensors.FlowMeasure")
 
 convertClass("Physiolibrary.Osmotic.SolventInflux","Physiolibrary.Osmotic.Sources.SolventInflux")
-convertModifiers("Physiolibrary.Osmotic.Sources.SolventInflux", fill("",0)  , {"useSolutionFlowInput=true"}, true);
-convertElement("Physiolibrary.Osmotic.Sources.SolventInflux","desiredFlow","solutionFlow")
+convertModifiers("Physiolibrary.Osmotic.SolventInflux", fill("",0)  , {"useSolutionFlowInput=true"}, true);
+convertElement("Physiolibrary.Osmotic.SolventInflux","desiredFlow","solutionFlow")
 convertClass("Physiolibrary.Osmotic.SolventOutflux","Physiolibrary.Osmotic.Sources.SolventOutflux")
-convertModifiers("Physiolibrary.Osmotic.Sources.SolventOutflux", fill("",0)  , {"useSolutionFlowInput=true"}, true);
-convertElement("Physiolibrary.Osmotic.Sources.SolventOutflux","desiredFlow","solutionFlow")
+convertModifiers("Physiolibrary.Osmotic.SolventOutflux", fill("",0)  , {"useSolutionFlowInput=true"}, true);
+convertElement("Physiolibrary.Osmotic.SolventOutflux","desiredFlow","solutionFlow")
 
 convertClass("Physiolibrary.Osmotic.OsmoticFlowConnector","Physiolibrary.Osmotic.Interfaces.OsmoticPort")
 convertClass("Physiolibrary.Osmotic.PositiveOsmoticFlow","Physiolibrary.Osmotic.Interfaces.OsmoticPort_a")
@@ -323,4 +325,30 @@ convertClass("Physiolibrary.Factors.Input2EffectDelayed","Physiolibrary.Blocks.F
 convertClass("Physiolibrary.Factors.DelayedInput2Effect","Physiolibrary.Blocks.Factors.LagSpline")
 convertClass("Physiolibrary.Factors.Input2EffectDelayedOrZero","Physiolibrary.Blocks.Factors.SplineLagOrZero")
 
+convertClass("Physiolibrary.Blocks.unitConvertors.mlPmin2kgPs","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.mlPmin2kgPs", fill("",0)  , {"k(unit=\"(kg/s)/(ml/min)\")=0.001/60", "u(unit=\"ml/min\")", "y(unit=\"kg/s\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.ml2kg","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.ml2kg", fill("",0)  , {"k(unit=\"kg/ml\")=0.001", "u(unit=\"ml\")", "y(unit=\"kg\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.calPmin2watt","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.callPmin2watt", fill("",0)  , {"k(unit=\"(W.min)/cal\")=4.1868/60", "u(unit=\"cal/min\")", "y(unit=\"W\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.g2kg","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.ml2kg", fill("",0)  , {"k(unit=\"kg/g\")=0.001", "u(unit=\"g\")", "y(unit=\"kg\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.mmHg2Pa","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.mmHg2Pa", fill("",0)  , {"k(unit=\"Pa/mmHg\")=101325/760", "u(unit=\"mmHg\")", "y(unit=\"Pa\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.K2degC","Physiolibrary.Blocks.Math.Add")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.K2degC", fill("",0)  , {"k(unit=\"degC\")=-273.15", "u(unit=\"K\")", "y(unit=\"degC\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.mEqPml2mEqPl","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.mEqPml2mEqPl", fill("",0)  , {"k(unit=\"ml/l\")=1000", "u(unit=\"meq/ml\")", "y(unit=\"meq/l\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.mgPml2mgPdl","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.mgPml2mgPdl", fill("",0)  , {"k(unit=\"ml/dl\")=100", "u(unit=\"mg/ml\")", "y(unit=\"mg/dl\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.UREAmgPml2mOsmPl","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.UREAmgPml2mOsmPl", fill("",0)  , {"k(unit=\"(mosm/l)/(mg/ml)\")=16.67", "u(unit=\"mg/ml\")", "y(unit=\"mosm/l\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.KETOACIDmgPml2mmolPl","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.KETOACIDmgPml2mmolPl", fill("",0)  , {"k(unit=\"(mmol/l)/(mg/ml)\")=9.8", "u(unit=\"mg/ml\")", "y(unit=\"mmol/l\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.FATTYACIDSmgPml2mmolPl","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.FATTYACIDSmgPml2mmolPl", fill("",0)  , {"k(unit=\"(mosm/l)/(mg/ml)\")=3.92", "u(unit=\"mg/ml\")", "y(unit=\"mosm/l\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.l2ml","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.l2ml", fill("",0)  , {"k(unit=\"ml/l\")=1000", "u(unit=\"l\")", "y(unit=\"ml\")"}, true);
+convertClass("Physiolibrary.Blocks.unitConvertors.Pa2mmHg","Modelica.Blocks.Math.Gain")
+convertModifiers("Physiolibrary.Blocks.unitConvertors.Pa2mmHg", fill("",0)  , {"k(unit=\"mmHg/Pa\")=760/101325", "u(unit=\"Pa\")", "y(unit=\"mmHg\")"}, true);
 

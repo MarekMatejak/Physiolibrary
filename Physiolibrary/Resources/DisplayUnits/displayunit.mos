@@ -23,10 +23,14 @@ defineUnitConversion("W/K", "kcal/(min.K)", 60/4186.8 );  //conductance
 defineUnitConversion("W", "kcal/min", 60/4186.8 );               //flow
 
 //Pharmacological international units
-//defineUnitConversion("mg", "U_EPO", 1/1.48 );
-//defineUnitConversion("mg", "U_Insulin", 1/0.0347 );
-//defineUnitConversion("mg", "U_Glucagon", 1/1 );
-//defineUnitConversion("mg", "U_ADH", 600 );
+//defineUnitConversion("kg", "U_EPO", 1e+6/1.48 );
+//defineUnitConversion("kg", "U_Insulin", 1e+6/0.0347 );
+defineUnitConversion("kg/m3", "U_Insulin/m3", (1e+6)/0.0347 );
+defineUnitConversion("kg/m3", "U_Insulin/l", (1e+3)/0.0347 );
+defineUnitConversion("kg/m3", "uU_Insulin/l", (1e+9)/0.0347 );
+defineUnitConversion("kg/m3", "uU_Insulin/ml", (1e+6)/0.0347 );
+//defineUnitConversion("kg", "U_Glucagon", 1e+6/1 );
+//defineUnitConversion("kg", "U_ADH", 600e+6 );
 
 //Number of molecules
 defineUnitConversion("mol", "mmol", 10^3 );
@@ -35,7 +39,7 @@ defineUnitConversion("mol", "nmol", 10^9 );
 defineUnitConversion("mol", "pmol", 10^12 );
 defineUnitConversion("mol/m3", "mol/l", 10^(-3) );
 defineUnitConversion("mol/m3", "mmol/l", 1 );
-defineUnitConversion("mol/m3", "mmol/ml", 10^3 );
+defineUnitConversion("mol/m3", "mmol/ml", 10^(-3) );
 defineUnitConversion("mol/s", "mol/min", 60 );
 defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
 defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
