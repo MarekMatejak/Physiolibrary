@@ -11,7 +11,8 @@ set PHYSIOLIBRARYDIR=%cd%
 FOR /f "delims=!" %%i IN ("%PHYSIOLIBRARYDIR%") DO (set PHYSIOLIBRARY=%%~nxi)
 echo %PHYSIOLIBRARY%
 
-for /F delims^=^"^ tokens^=2 %%s in ('ftype mofile') DO set x=%%s
+for /F delims^=^=^ tokens^=2 %%z in ('assoc .mo') DO set mofile=%%z
+for /F delims^=^"^ tokens^=2 %%s in ('ftype %mofile%') DO set x=%%s
 call set DYMOLADIR=%%x:\bin%x:*\bin=%=%%
 set x=
 
