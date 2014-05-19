@@ -4,6 +4,74 @@ package Types "Physiological units with nominals"
   extends Modelica.Icons.Package;
 //If you have an idea to add the next physiological type to the next version, please write me at marek@matfyz.cz. Thank you
 
+  package UsersGuide "User's Guide"
+    extends Modelica.Icons.Information;
+
+  class NewType "Adding new type"
+    extends Modelica.Icons.Information;
+
+   annotation (Documentation(info="<html>
+<p>Definition of new type (&QUOT;QuantityX&QUOT;) in Physiolibrary:</p>
+<ul>
+<li>Define base type Types.QuantityX with SI units in &QUOT;final unit&QUOT;, default display units and nominal (e.g. value of one display unit at SI units). </li>
+</ul>
+<p>Optional: </p>
+<ul>
+<li>Define typed input and output connectors for QuantityX: Types.RealIO.QuantityXInput and Types.RealIO.QuantityXOutput. </li>
+<li>Define typed constant for QuantityX: Types.Constants.QuantityXConst </li>
+<li>Define typed RealInputParameter for QuantityX: Types.RealInputParameters.QuantityX </li>
+<li>Define typed replaceable variable RealTypes for QuantityX: Types.RealTypes.QuantityX </li>
+</ul>
+</html>"));
+  end NewType;
+
+
+
+
+
+  annotation (__Dymola_DocumentationClass=true, Documentation(info="<html>
+<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
+<p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<td valign=\"top\"><p>Types </p></td>
+<td valign=\"top\"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Blocks</p></td>
+<td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Chemical</p></td>
+<td valign=\"top\"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Hydraulic</p></td>
+<td valign=\"top\"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Thermal</p></td>
+<td valign=\"top\"><p>Library of termoregulation support.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Osmotic</p></td>
+<td valign=\"top\"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Mixed</p></td>
+<td valign=\"top\"><p>Library to join domains above together.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Icons</p></td>
+<td valign=\"top\"><p>Icons</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>FileUtilities</p></td>
+<td valign=\"top\"><p>Read/write values from/to file. </p></td>
+</tr>
+</table>
+</html>"));
+  end UsersGuide;
+
   package Examples
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
@@ -81,7 +149,7 @@ package Types "Physiological units with nominals"
         diffusionPermeability=1.6666666666667e-08,
         hydraulicConductance=1.2501026264094e-10,
         hydraulicInertance=479960594694,
-        gasSolubility=0.0075006157584566,
+        gasSolubility=2.4789568751177,
         gasSATP=0.040339548059044,
         gasNIST=0.041571199502531)
         annotation (Placement(transformation(extent={{-14,8},{6,28}})));
@@ -1214,6 +1282,65 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end DeprecatedUntypedConstant;
+
+  block pHConst "Constant signal of type pH"
+   parameter Physiolibrary.Types.pH k "Constant pH output value";
+        Physiolibrary.Types.RealIO.pHOutput y "pH constant" annotation (Placement(
+          transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={{40,
+              -10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pH",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end pHConst;
+
+  block VolumeDensityOfChargeConst
+      "Constant signal of type VolumeDensityOfCharge"
+   parameter Physiolibrary.Types.VolumeDensityOfCharge k
+        "Constant VolumeDensityOfCharge output value";
+        Physiolibrary.Types.RealIO.VolumeDensityOfChargeOutput y
+        "VolumeDensityOfCharge constant"
+                                       annotation (Placement(transformation(
+            extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeDensityOfCharge",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end VolumeDensityOfChargeConst;
   end Constants;
 
   package RealIO
@@ -2848,6 +2975,162 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
+    connector pHInput =           input pH "input pH as connector"
+      annotation (defaultComponentName="pH",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type pH. 
+    </p> 
+    </html>"));
+    connector pHOutput =           output pH "output pH as connector"
+      annotation (defaultComponentName="pH",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type pH.
+  </p>
+  </html>"));
+    connector VolumeDensityOfChargeInput =           input
+        VolumeDensityOfCharge "input VolumeDensityOfCharge as connector"
+      annotation (defaultComponentName="volumeDensityOfCharge",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html> 
+    <p> 
+    Connector with one input signal of type VolumeDensityOfCharge. 
+    </p> 
+    </html>"));
+    connector VolumeDensityOfChargeOutput =           output
+        VolumeDensityOfCharge "output VolumeDensityOfCharge as connector"
+      annotation (defaultComponentName="volumeDensityOfCharge",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type VolumeDensityOfCharge.
+  </p>
+  </html>"));
+    connector MassConcentrationInput =
+                                   input MassConcentration
+      "input MassConcentration as connector"
+      annotation (defaultComponentName="massConcentration",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type MassConcentration.
+    </p>
+    </html>"));
+    connector MassConcentrationOutput =
+                                    output MassConcentration
+      "output MassConcentration as connector"
+      annotation (defaultComponentName="massConcentration",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -2969,6 +3252,8 @@ constructed by the signals connected to this bus.
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
   type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l");
+  type MassConcentration =
+                 Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3);
   type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol");
   type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
 
@@ -3023,6 +3308,492 @@ constructed by the signals connected to this bus.
     parameter String storeUnit="" "Stored units"
     annotation (Dialog(group="Value I/O",tab="IO"));
   end AbstractReal;
+
+  package RealTypeInputParameters
+    extends Modelica.Icons.SourcesPackage;
+
+    replaceable package Utilities = Physiolibrary.Types.FilesUtilities constrainedby
+      Physiolibrary.Types.Utilities
+                   annotation (Dialog(group="Functions to read or store",tab="Types"));
+     block Base
+       parameter String varName=
+       "Stored name"
+       annotation (Dialog(group="Value I/O",tab="IO"));
+                                //getInstanceName()
+       parameter String storeUnit="" "Stored units"
+       annotation (Dialog(group="Value I/O",tab="IO"));
+       annotation (Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Text(         extent={{-44,6},{36,-14}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString=""),   Rectangle(
+           extent={{-40,12},{40,-14}},
+           lineColor={0,0,255},
+           fillPattern=FillPattern.Solid,
+           fillColor={170,255,170}), Text(
+           extent={{-40,-8},{40,6}},
+           lineColor={0,0,0},
+           fillColor={255,255,255},
+           fillPattern=FillPattern.Solid,
+              textString="%varName")}));
+     end Base;
+
+  block Acceleration "Constant signal of type Acceleration"
+
+    extends Base(storeUnit="m/s");
+   parameter Types.Acceleration k=Utilities.readReal(varName, storeUnit)
+        "Constant Acceleration output value";
+        RealIO.AccelerationOutput y "Acceleration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="acceleration");
+  end Acceleration;
+
+  block AmountOfSubstance "Constant signal of type AmountOfSubstance"
+
+    extends Base(storeUnit="mmol");
+   parameter Types.AmountOfSubstance k=Utilities.readReal(varName, storeUnit)
+        "Constant AmountOfSubstance output value";
+        RealIO.AmountOfSubstanceOutput y "AmountOfSubstance input parameter"
+                                            annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="amountOfSubstance");
+  end AmountOfSubstance;
+
+  block Concentration "Constant signal of type Concentration"
+
+    extends Base(storeUnit="mmol/l");
+   parameter Types.Concentration k=Utilities.readReal(varName, storeUnit)
+        "Constant Concentration output value";
+        RealIO.ConcentrationOutput y "Concentration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="concentration");
+  end Concentration;
+
+  block MassConcentration "Constant signal of type MassConcentration"
+
+    extends Base(storeUnit="mmol/l");
+   parameter Types.MassConcentration k=Utilities.readReal(varName, storeUnit)
+        "Constant Concentration output value";
+        RealIO.MassConcentrationOutput y "Concentration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="concentration");
+  end MassConcentration;
+
+  block Density "Constant signal of type Density"
+
+    extends Base(storeUnit="kg/l");
+   parameter Types.Density k=Utilities.readReal(varName, storeUnit)
+        "Constant Density output value";
+        RealIO.DensityOutput y "Density input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="density");
+  end Density;
+
+  block DiffusionPermeability "Constant signal of type DiffusionPermeability"
+
+    extends Base(storeUnit="ml/min");
+   parameter Types.DiffusionPermeability k=Utilities.readReal(varName,
+          storeUnit) "Constant DiffusionPermeability output value";
+        RealIO.DiffusionPermeabilityOutput y
+        "DiffusionPermeability input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="diffusionPermeability");
+  end DiffusionPermeability;
+
+  block ElectricCharge "Constant signal of type ElectricCharge"
+
+    extends Base(storeUnit="meq");
+   parameter Types.ElectricCharge k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricCharge output value";
+        RealIO.ElectricChargeOutput y "ElectricCharge input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricCharge");
+  end ElectricCharge;
+
+  block ElectricCurrent "Constant signal of type ElectricCurrent"
+
+    extends Base(storeUnit="meq/min");
+   parameter Types.ElectricCurrent k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricCurrent output value";
+        RealIO.ElectricCurrentOutput y "ElectricCurrent input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricCurrent");
+  end ElectricCurrent;
+
+  block ElectricPotential "Constant signal of type ElectricPotential"
+
+    extends Base(storeUnit="mV");
+   parameter Types.ElectricPotential k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricPotential output value";
+        RealIO.ElectricPotentialOutput y "ElectricPotential input parameter"
+                                            annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricPotential");
+  end ElectricPotential;
+
+    block Energy "Constant signal of type Energy"
+
+      extends Base(storeUnit="kcal");
+      parameter Types.Energy k=Utilities.readReal(varName, storeUnit)
+        "Constant Energy output value";
+        RealIO.EnergyOutput y "Energy input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="energy");
+    end Energy;
+
+  block Fraction "Constant signal of type Fraction"
+
+    extends Base(storeUnit="1");
+   parameter Types.Fraction k=Utilities.readReal(varName, storeUnit)
+        "Constant Fraction output value";
+        RealIO.FractionOutput y "Fraction input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="fraction");
+  end Fraction;
+
+  block Frequency "Constant signal of type Frequency"
+
+    extends Base(storeUnit="1/min");
+   parameter Types.Frequency k=Utilities.readReal(varName, storeUnit)
+        "Constant Frequency output value";
+        RealIO.FrequencyOutput y "Frequency input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="frequency");
+  end Frequency;
+
+  block GasSolubility "Constant signal of type GasSolubility"
+
+    extends Base(storeUnit="(mmol/l)/kPa at 25degC");
+   parameter Types.GasSolubility k=Utilities.readReal(varName, storeUnit)
+        "Constant GasSolubility output value";
+        RealIO.GasSolubilityOutput y "GasSolubility input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="gasSolubility");
+  end GasSolubility;
+
+  block Heat "Constant signal of type Heat"
+
+     extends Base(storeUnit="kcal");
+   parameter Types.Heat k=Utilities.readReal(varName, storeUnit)
+        "Constant Heat output value";
+        RealIO.HeatOutput y "Heat input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heat");
+  end Heat;
+
+  block Height "Constant signal of type Height"
+
+    extends Base(storeUnit="cm");
+   parameter Types.Height k=Utilities.readReal(varName, storeUnit)
+        "Constant Height output value";
+        RealIO.HeightOutput y "Height input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height");
+  end Height;
+
+  block HeatFlowRate "Constant signal of type HeatFlowRate"
+
+    extends Base(storeUnit="kcal/min");
+   parameter Types.HeatFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant HeatFlowRate output value";
+        RealIO.HeatFlowRateOutput y "HeatFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heatFlowRate");
+  end HeatFlowRate;
+
+  block HydraulicCompliance "Constant signal of type HydraulicCompliance"
+
+    extends Base(storeUnit="ml/mmHg");
+   parameter Types.HydraulicCompliance k=Utilities.readReal(varName, storeUnit)
+        "Constant HydraulicCompliance output value";
+        RealIO.HydraulicComplianceOutput y
+        "HydraulicCompliance input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicCompliance");
+  end HydraulicCompliance;
+
+  block HydraulicConductance "Constant signal of type HydraulicConductance"
+
+    extends Base(storeUnit="ml/(mmHg.min)");
+   parameter Types.HydraulicConductance k=Utilities.readReal(varName,
+          storeUnit) "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y
+        "HydraulicConductance input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicConductance");
+  end HydraulicConductance;
+
+  block HydraulicInertance "Constant signal of type HydraulicInertance"
+
+    extends Base(storeUnit="mmHg.min2/ml");
+   parameter Types.HydraulicInertance k=Utilities.readReal(varName, storeUnit)
+        "Constant HydraulicInertance output value";
+        RealIO.HydraulicInertanceOutput y "HydraulicInertance input parameter"
+                                             annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicInertance");
+  end HydraulicInertance;
+
+  block Mass "Constant signal of type Mass"
+
+    extends Base(storeUnit="g");
+   parameter Types.Mass k=Utilities.readReal(varName, storeUnit)
+        "Constant Mass output value";
+        RealIO.MassOutput y "Mass input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="mass");
+  end Mass;
+
+  block MassFlowRate "Constant signal of type MassFlowRate"
+
+    extends Base(storeUnit="g/min");
+   parameter Types.MassFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant MassFlowRate output value";
+        RealIO.MassFlowRateOutput y "MassFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="massFlowRate");
+  end MassFlowRate;
+
+  block MolarFlowRate "Constant signal of type MolarFlowRate"
+
+    extends Base(storeUnit="mmol/min");
+   parameter Types.MolarFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant MolarFlowRate output value";
+        RealIO.MolarFlowRateOutput y "MolarFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="molarFlowRate");
+  end MolarFlowRate;
+
+  block Osmolarity "Constant signal of type Osmolarity"
+
+    extends Base(storeUnit="mosm/l");
+   parameter Types.Osmolarity k=Utilities.readReal(varName, storeUnit)
+        "Constant Osmolarity output value";
+        RealIO.OsmolarityOutput y "Osmolarity input parameter" annotation (
+         Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmolarity");
+  end Osmolarity;
+
+  block OsmoticPermeability "Constant signal of type OsmoticPermeability"
+
+    extends Base(storeUnit="ml/(mmHg.min)");
+   parameter Types.OsmoticPermeability k=Utilities.readReal(varName, storeUnit)
+        "Constant OsmoticPermeability output value";
+        RealIO.OsmoticPermeabilityOutput y
+        "OsmoticPermeability input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmoticPermeability");
+  end OsmoticPermeability;
+
+  block Pressure "Constant signal of type Pressure"
+
+    extends Base(storeUnit="mmHg");
+   parameter Types.Pressure k=Utilities.readReal(varName, storeUnit)
+        "Constant Pressure output value";
+        RealIO.PressureOutput y "Pressure input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pressure");
+  end Pressure;
+
+  block SpecificEnergy "Constant signal of type SpecificEnergy"
+
+    extends Base(storeUnit="kcal/kg");
+   parameter Types.SpecificEnergy k=Utilities.readReal(varName, storeUnit)
+        "Constant SpecificEnergy output value";
+        RealIO.SpecificEnergyOutput y "SpecificEnergy input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificEnergy");
+  end SpecificEnergy;
+
+  block SpecificHeatCapacity "Constant signal of type SpecificHeatCapacity"
+
+    extends Base(storeUnit="kcal/(kg.K)");
+   parameter Types.SpecificHeatCapacity k=Utilities.readReal(varName,
+          storeUnit) "Constant SpecificHeatCapacity output value";
+        RealIO.SpecificHeatCapacityOutput y
+        "SpecificHeatCapacity input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificHeatCapacity");
+  end SpecificHeatCapacity;
+
+  block Temperature "Constant signal of type Temperature"
+
+    extends Base(storeUnit="degC");
+   parameter Types.Temperature k=Utilities.readReal(varName, storeUnit)
+        "Constant Temperature output value";
+        RealIO.TemperatureOutput y "Temperature input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="temperature");
+  end Temperature;
+
+  block ThermalConductance "Constant signal of type ThermalConductance"
+
+    extends Base(storeUnit="kcal/(min.K)");
+   parameter Types.ThermalConductance k=Utilities.readReal(varName, storeUnit)
+        "Constant ThermalConductance output value";
+        RealIO.ThermalConductanceOutput y "ThermalConductance input parameter"
+                                             annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="thermalConductance");
+  end ThermalConductance;
+
+  block Time "Constant signal of type Time"
+
+    extends Base(storeUnit="min");
+   parameter Types.Time k=Utilities.readReal(varName, storeUnit)
+        "Constant Time output value";
+        RealIO.TimeOutput y "Time input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="time");
+  end Time;
+
+  block VolumeFlowRate "Constant signal of type VolumeFlowRate"
+
+    extends Base(storeUnit="ml/min");
+   parameter Types.VolumeFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant VolumeFlowRate output value";
+        RealIO.VolumeFlowRateOutput y "VolumeFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeFlowRate");
+  end VolumeFlowRate;
+
+  block Volume "Constant signal of type Volume"
+
+    extends Base(storeUnit="ml");
+   parameter Types.Volume k=Utilities.readReal(varName, storeUnit)
+        "Constant Volume output value";
+        RealIO.VolumeOutput y "Volume input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volume");
+  end Volume;
+
+  block pH "Constant signal of type pH"
+
+    extends Base(storeUnit="1");
+   parameter Types.pH k=Utilities.readReal(varName, storeUnit)
+        "Constant pH output value";
+        RealIO.pHOutput y "pH input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pH");
+  end pH;
+
+  block VolumeDensityOfCharge "Constant signal of type VolumeDensityOfCharge"
+
+    extends Base(storeUnit="meq/l");
+   parameter Types.VolumeDensityOfCharge k=Utilities.readReal(varName,
+          storeUnit) "Constant VolumeDensityOfCharge output value";
+        RealIO.VolumeDensityOfChargeOutput y
+        "VolumeDensityOfCharge input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeDensityOfCharge");
+  end VolumeDensityOfCharge;
+
+  end RealTypeInputParameters;
 
   package RealExtension
     extends Modelica.Icons.VariantsPackage;
@@ -3271,6 +4042,8 @@ The Real output y is a constant signal:
 
       block Concentration = Variable(redeclare type T =
             Physiolibrary.Types.Concentration, storeUnit="mmol/l");
+      block MassConcentration = Variable (redeclare type T =
+            Physiolibrary.Types.MassConcentration, storeUnit="mg/l");
       block AmountOfSubstance = Variable(redeclare type T =
             Physiolibrary.Types.AmountOfSubstance,storeUnit="mmol");
       block MolarFlowRate = Variable(redeclare type T =

@@ -334,6 +334,34 @@ package Physiolibrary "Physiological domains library (version v2.1.1)"
 </html>"));
   end ReleaseNotes;
 
+  class NewRealease "Publishing new release"
+    extends Modelica.Icons.Information;
+
+   annotation (Documentation(info="<html>
+<p><br>New release must be numbered by Semantic Versioning 2.0, see <a href=\"http://semver.org/\">semver.org</a>. </p><p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using \"annotation(conversion(from(version=..)))\"! </p><p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p><p><br>Update version number to &QUOT;X.Y.Z&QUOT;: </p>
+<ul>
+<li>At package Physiolibrary annotation: (version=&QUOT;X.Y.Z&QUOT;) together with &QUOT;versionBuild&QUOT;, &QUOT;versionDate&QUOT; and &QUOT;dateModified&QUOT; attribute </li>
+<li>At head of package Physiolibrary &QUOT;Physiological domains library (version X.Y.Z)&QUOT; </li>
+<li>At file &QUOT;./Physiolibrary/libraryinfo.mos&QUOT; </li>
+</ul>
+<p><br>Update release notes: </p>
+<ul>
+<li>At Physiolibrary.UsersGuide.ReleaseNotes</li>
+<li>At file &QUOT;./README.md&QUOT;, together with update of &QUOT;Current release&QUOT; section.</li>
+</ul>
+<p><br>Publish release in GitHub: </p>
+<ul>
+<li>Prepare release in &QUOT;master&QUOT; branch</li>
+<li>Install, Check, Test, Test, Test.. </li>
+<li>Delete branch &QUOT;release&QUOT; </li>
+<li>Create new branch &QUOT;release&QUOT; from &QUOT;master&QUOT; branch </li>
+<li>Rename directory &QUOT;Physiolibrary&QUOT; in release branch to directory &QUOT;Physiolibrary X.Y.Z&QUOT; </li>
+<li>Commint and Push  </li>
+<li>Draft a new release from &QUOT;release&QUOT; branch with number &QUOT;vX.Y.Z&QUOT; and with release notes. </li>
+</ul>
+</html>"));
+  end NewRealease;
+
   class Contact "Contact"
     extends Modelica.Icons.Contact;
 
@@ -392,13 +420,6 @@ package Physiolibrary "Physiological domains library (version v2.1.1)"
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",
