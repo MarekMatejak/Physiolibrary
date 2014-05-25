@@ -807,7 +807,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{-32,-76},{-52,-56}})));
         Components.Speciation
                            T0_in_T(NumberOfSubunitTypes=4)
-          annotation (Placement(transformation(extent={{68,-76},{48,-56}})));
+          annotation (Placement(transformation(extent={{68,-74},{48,-54}})));
         Physiolibrary.Chemical.Components.Substance OxyRHm[4](
           each Simulation=SimulationType.SteadyState,
           each isDependent=true,
@@ -887,7 +887,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
         connect(quaternaryForm.products[1], T0_in_T.species)
                                                        annotation (Line(
-            points={{16,-74},{48,-74}},
+            points={{16,-74},{32,-74},{32,-72},{48,-72}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
@@ -997,13 +997,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
         connect(T0_in_T.subunitSpecies, DeoxyTHm.q_out)
                                                      annotation (Line(
-            points={{58,-56},{84,-56},{84,-26},{80,-26}},
+            points={{58,-54},{84,-54},{84,-26},{80,-26}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(add1.y, T0_in_T.totalSubunitAmount)
                                                  annotation (Line(
-            points={{44,-58.4},{44,-66},{50,-66}},
+            points={{44,-58.4},{44,-64},{50,-64}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(R0_in_R.totalSubsystemAmount, totalHb.fragment[1]) annotation (Line(
@@ -1011,7 +1011,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(T0_in_T.totalSubsystemAmount, totalHb.fragment[2]) annotation (Line(
-            points={{58,-74},{58,-74},{58,-85},{70,-85}},
+            points={{58,-72},{58,-72},{58,-85},{70,-85}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.solute, sum1.u[1:4]) annotation (Line(
@@ -1062,6 +1062,126 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       end Allosteric_Hemoglobin2_MWC;
 
     end Hemoglobin;
+
+    model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
+      extends Modelica.Icons.Example;
+
+      parameter Integer n=218 "Number of weak acid group in albumin molecule";
+      parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
+        "acid dissociation constants";
+
+      Physiolibrary.Chemical.Components.Substance A[n](
+        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        each solute_start=0.0005) "deprotonated acid groups"
+        annotation (Placement(transformation(extent={{4,-16},{24,4}})));
+      Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+        each nP=2,
+        K=fill(10.0, n) .^ (-pKAs .+ 3))
+        annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
+      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage H(
+        q_out(conc(nominal=10^(-7.4 + 3))),
+        Conc=10^(-7.4 + 3),
+        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        isIsolatedInSteadyState=false,
+        useConcentrationInput=true) "hydrogen ions activity" annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={14,22})));
+      Physiolibrary.Chemical.Components.Substance HA[n](
+        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        each isDependent=true,
+        each solute_start=0.0005) "protonated acid groups"
+        annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
+      Physiolibrary.SteadyStates.Components.MolarConservationLaw
+        molarConservationLaw[n](
+        each n=2,
+        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        each Total=0.001)
+        annotation (Placement(transformation(extent={{36,-28},{56,-8}})));
+      Modelica.Blocks.Math.Sum HAsum(nin=n) "total amount of protonated groups"
+        annotation (Placement(transformation(extent={{-54,-80},{-34,-60}})));
+      Physiolibrary.Blocks.Math.Exponentiation pow
+        annotation (Placement(transformation(extent={{26,82},{34,90}})));
+      Modelica.Blocks.Math.Gain gain(k=-1)
+        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
+      Physiolibrary.Blocks.Math.Add add(k=3)
+        annotation (Placement(transformation(extent={{-10,74},{10,94}})));
+      Modelica.Blocks.Sources.Clock pH(offset=5) "source of pH"
+        annotation (Placement(transformation(extent={{-84,74},{-64,94}})));
+      Modelica.Blocks.Math.Division division "protonated groups per molecule"
+        annotation (Placement(transformation(extent={{-20,-88},{0,-68}})));
+      Physiolibrary.Blocks.Math.Add charge(k=-118) "charge of albumin molecule"
+        annotation (Placement(transformation(extent={{10,-88},{30,-68}})));
+    equation
+      connect(react.products[1], A.q_out) annotation (Line(
+          points={{-24,7.5},{-12,7.5},{-12,-6},{14,-6}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      for i in 1:n loop
+        connect(react[i].products[2], H.q_out) annotation (Line(
+            points={{-24,8.5},{-14,8.5},{-14,22},{4,22}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+      end for;
+      connect(HA.q_out, react.substrates[1]) annotation (Line(
+          points={{-66,8},{-44,8}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(A.solute, molarConservationLaw.fragment[1]) annotation (Line(
+          points={{14,-16},{14,-22},{36,-22},{36,-23}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HA.solute, molarConservationLaw.fragment[2]) annotation (Line(
+          points={{-66,-2},{-66,-24},{36,-24},{36,-21}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HA.solute, HAsum.u) annotation (Line(
+          points={{-66,-2},{-66,-70},{-56,-70}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pow.y, H.concentration) annotation (Line(
+          points={{34.4,86},{44,86},{44,22},{24,22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(gain.y, add.u) annotation (Line(
+          points={{-23,84},{-12,84}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(add.y, pow.exponent) annotation (Line(
+          points={{11,84},{26,84},{26,83.6}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pH.y, gain.u) annotation (Line(
+          points={{-63,84},{-46,84}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HAsum.y, division.u1) annotation (Line(
+          points={{-33,-70},{-28,-70},{-28,-72},{-22,-72}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(molarConservationLaw[1].totalAmountOfSubstance, division.u2)
+        annotation (Line(
+          points={{56,-22},{78,-22},{78,-94},{-24,-94},{-24,-84},{-22,-84}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(division.y, charge.u) annotation (Line(
+          points={{1,-78},{8,-78}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (                                      Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}},
+        experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p>Data and model is described in</p>
+<p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
+</html>"));
+    end AlbuminTitration;
   end Examples;
 
   package Components
@@ -1647,6 +1767,7 @@ It works in two modes:
                                                                                                             annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
 
+    protected
       parameter Real numberOfSubunit[NumberOfSubunitTypes] = ones(NumberOfSubunitTypes)
         "Number of identical subunits instances in macromolecule. First should be non-zero.";
 
