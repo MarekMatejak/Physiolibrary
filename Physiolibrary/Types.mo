@@ -25,10 +25,6 @@ package Types "Physiological units with nominals"
 </html>"));
   end NewType;
 
-
-
-
-
   annotation (__Dymola_DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
@@ -3240,7 +3236,7 @@ constructed by the signals connected to this bus.
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
   type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
 
-  type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3);
+  type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3, min=0);
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
   type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
 
@@ -3248,19 +3244,19 @@ constructed by the signals connected to this bus.
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
   type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
-  type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6);
+  type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l");
+  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0);
   type MassConcentration =
-                 Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3);
-  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol");
+                 Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
+  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0);
   type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
 
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mosm/l", nominal=1);
 
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
-  type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1);
+  type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1, min=0);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
   type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
@@ -3276,20 +3272,22 @@ constructed by the signals connected to this bus.
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
 
-  type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7);
-  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
-  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60);
+  type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7, min=0, max=14);
+  type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
+  type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60, min=0);
 
-  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60));
-  type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60);
+  type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
+  type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60, min=0);
 
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
   type HydraulicElastance = Real(final quantity="HydraulicElastance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
 
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
-  type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2)
+  type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
     "Gas solubility in liquid";
+
+  type StoichiometricNumber = Integer (final quantity="StoichiometricNumber", min=1);
 
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
@@ -3308,6 +3306,304 @@ constructed by the signals connected to this bus.
     parameter String storeUnit="" "Stored units"
     annotation (Dialog(group="Value I/O",tab="IO"));
   end AbstractReal;
+
+  package RealExtension
+    extends Modelica.Icons.VariantsPackage;
+        block Parameter "Generate constant signal in SI units from file"
+          extends AbstractReal;
+
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+            redeclare type Type = T) "Real type with units"
+             annotation (Dialog(group="Packages",tab="Types"));
+
+          IO.Output y "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end Parameter;
+
+        block InputParameter "Generate constant signal in SI units from file"
+          extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit));
+
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+            redeclare type Type = T)
+                         annotation (Dialog(group="Real type with units",tab="Types"));
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+        constrainedby Physiolibrary.Types.Utilities
+                         annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          IO.Output y "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end InputParameter;
+
+        block OutputFinal "Save variable to Output"
+      import Physiolibrary;
+          extends Physiolibrary.Types.AbstractReal;
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                         constrainedby
+        Physiolibrary.Types.Utilities;
+          IO.Input              y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+        equation
+          when terminal() then
+            Utilities.writeReal(
+              varName,
+              y,
+              storeUnit);
+          end when;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputFinal;
+
+        block OutputComparison "Save variable comparison to file"
+      import Physiolibrary;
+          extends Physiolibrary.Types.AbstractReal(
+                                                  k=Utilities.readReal(varName,storeUnit));
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                         constrainedby
+        Physiolibrary.Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.RealInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter T initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when terminal() then
+           Utilities.writeComparison(
+            varName,
+            k,
+            initialValue,
+            y,
+            storeUnit);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputComparison;
+
+    package IO
+      extends Modelica.Icons.BasesPackage;
+
+      replaceable type Type=Real;
+      connector Input = input Type "input connector"
+        annotation (defaultComponentName="i",
+        Icon(graphics={Polygon(
+                points={{-100,100},{100,0},{-100,-100},{-100,100}},
+                lineColor={0,0,127},
+                fillColor={0,0,127},
+                fillPattern=FillPattern.Solid)},
+             coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+        Diagram(coordinateSystem(
+              preserveAspectRatio=true, initialScale=0.2,
+              extent={{-100,-100},{100,100}},
+              grid={1,1}), graphics={Polygon(
+                points={{0,50},{100,0},{0,-50},{0,50}},
+                lineColor={0,0,127},
+                fillColor={0,0,127},
+                fillPattern=FillPattern.Solid), Text(
+                extent={{-10,85},{-10,60}},
+                lineColor={0,0,127},
+                textString="%name")}),
+          Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Energy.
+    </p>
+    </html>"));
+
+      connector Output = output Type "output connector"
+        annotation (defaultComponentName="o",
+        Icon(coordinateSystem(
+              preserveAspectRatio=true,
+              extent={{-100,-100},{100,100}},
+              grid={1,1}), graphics={Polygon(
+                points={{-100,100},{100,0},{-100,-100},{-100,100}},
+                lineColor={0,0,127},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid)}),
+        Diagram(coordinateSystem(
+              preserveAspectRatio=true,
+              extent={{-100,-100},{100,100}},
+              grid={1,1}), graphics={Polygon(
+                points={{-100,50},{0,0},{-100,-50},{-100,50}},
+                lineColor={0,0,127},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid), Text(
+                extent={{30,110},{30,60}},
+                lineColor={0,0,127},
+                textString="%name")}),
+          Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Real.
+  </p>
+  </html>"));
+    end IO;
+  end RealExtension;
+
+  package RealTypes
+    extends Modelica.Icons.BasesPackage;
+    import Physiolibrary;
+
+      replaceable block Variable = RealExtension.Parameter constrainedby
+      AbstractReal;
+
+      block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy, storeUnit="kcal");
+      block Time = Variable(redeclare type T=Physiolibrary.Types.Time, storeUnit="min");
+      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency, storeUnit="1/min");
+
+      block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass, storeUnit="g");
+      block MassFlowRate = Variable(redeclare type T =
+            Physiolibrary.Types.MassFlowRate, storeUnit="g/min");
+      block Density = Variable(redeclare type T=Physiolibrary.Types.Density, storeUnit="kg/l");
+
+      block Height = Variable(redeclare type T=Physiolibrary.Types.Height, storeUnit="cm");
+      block Acceleration = Variable(redeclare type T =
+            Physiolibrary.Types.Acceleration, storeUnit="m/s");
+
+      block Pressure = Variable(redeclare type T=Physiolibrary.Types.Pressure,storeUnit="mmHg");
+      block Volume = Variable(redeclare type T=Physiolibrary.Types.Volume,storeUnit="ml");
+      block VolumeFlowRate = Variable(redeclare type T =
+            Physiolibrary.Types.VolumeFlowRate,storeUnit="ml/min");
+
+      block Concentration = Variable(redeclare type T =
+            Physiolibrary.Types.Concentration, storeUnit="mmol/l");
+      block MassConcentration = Variable (redeclare type T =
+            Physiolibrary.Types.MassConcentration, storeUnit="mg/l");
+      block AmountOfSubstance = Variable(redeclare type T =
+            Physiolibrary.Types.AmountOfSubstance,storeUnit="mmol");
+      block MolarFlowRate = Variable(redeclare type T =
+            Physiolibrary.Types.MolarFlowRate,storeUnit="mmol/min");
+
+      block Heat = Variable(redeclare type T=Physiolibrary.Types.Heat,storeUnit="kcal");
+      block Temperature = Variable(redeclare type T =
+          Physiolibrary.Types.Temperature,                             k=310.15, storeUnit="degC");
+      block HeatFlowRate = Variable(redeclare type T =
+            Physiolibrary.Types.HeatFlowRate,storeUnit="kcal/min");
+      block ThermalConductance = Variable(redeclare type T =
+            Physiolibrary.Types.ThermalConductance, storeUnit="kcal/(min.K)");
+      block SpecificHeatCapacity = Variable(redeclare type T =
+            Physiolibrary.Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
+      block SpecificEnergy = Variable(redeclare type T =
+            Physiolibrary.Types.SpecificEnergy,storeUnit="kcal/kg");
+
+      block ElectricPotential = Variable(redeclare type T =
+            Physiolibrary.Types.ElectricPotential,storeUnit="mV");
+      block ElectricCharge = Variable(redeclare type T =
+            Physiolibrary.Types.ElectricCharge,storeUnit="meq");
+      block VolumeDensityOfCharge =
+                             Variable(redeclare type T =
+            Physiolibrary.Types.VolumeDensityOfCharge,storeUnit="meq/l");
+      block ElectricCurrent = Variable(redeclare type T =
+            Physiolibrary.Types.ElectricCurrent,storeUnit="meq/min");
+
+      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="1");
+
+      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="1");
+      block OsmoticPermeability = Variable(redeclare type T =
+            Physiolibrary.Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
+      block DiffusionPermeability =         Variable(redeclare type T =
+            Physiolibrary.Types.DiffusionPermeability,storeUnit="ml/min");
+
+      block HydraulicConductance = Variable(redeclare type T =
+            Physiolibrary.Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
+      block HydraulicCompliance = Variable(redeclare type T =
+            Physiolibrary.Types.HydraulicCompliance,storeUnit="ml/mmHg");
+      block HydraulicInertance = Variable(redeclare type T =
+            Physiolibrary.Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
+
+      block GasSolubility = Variable(redeclare type T =
+            Physiolibrary.Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
+
+      block Osmolarity =    Variable(redeclare type T =
+            Physiolibrary.Types.Osmolarity,storeUnit="mosm/l");
+  end RealTypes;
 
   package RealTypeInputParameters
     extends Modelica.Icons.SourcesPackage;
@@ -3795,304 +4091,6 @@ constructed by the signals connected to this bus.
 
   end RealTypeInputParameters;
 
-  package RealExtension
-    extends Modelica.Icons.VariantsPackage;
-        block Parameter "Generate constant signal in SI units from file"
-          extends AbstractReal;
-
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
-            redeclare type Type = T) "Real type with units"
-             annotation (Dialog(group="Packages",tab="Types"));
-
-          IO.Output y "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end Parameter;
-
-        block InputParameter "Generate constant signal in SI units from file"
-          extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit));
-
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
-            redeclare type Type = T)
-                         annotation (Dialog(group="Real type with units",tab="Types"));
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-        constrainedby Physiolibrary.Types.Utilities
-                         annotation (Dialog(group="Functions to read or store",tab="Types"));
-
-          IO.Output y "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end InputParameter;
-
-        block OutputFinal "Save variable to Output"
-      import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal;
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
-                                            redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-                                                         constrainedby
-        Physiolibrary.Types.Utilities;
-          IO.Input              y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
-
-        equation
-          when terminal() then
-            Utilities.writeReal(
-              varName,
-              y,
-              storeUnit);
-          end when;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputFinal;
-
-        block OutputComparison "Save variable comparison to file"
-      import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal(
-                                                  k=Utilities.readReal(varName,storeUnit));
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
-                                            redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-                                                         constrainedby
-        Physiolibrary.Types.Utilities
-           annotation (Dialog(group="Functions to read or store",tab="Types"));
-
-          Modelica.Blocks.Interfaces.RealInput
-                                y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
-
-    protected
-          parameter T initialValue(fixed=false);
-        initial equation
-          initialValue = y;
-        equation
-          when terminal() then
-           Utilities.writeComparison(
-            varName,
-            k,
-            initialValue,
-            y,
-            storeUnit);
-          end when;
-
-            annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputComparison;
-
-    package IO
-      extends Modelica.Icons.BasesPackage;
-
-      replaceable type Type=Real;
-      connector Input = input Type "input connector"
-        annotation (defaultComponentName="i",
-        Icon(graphics={Polygon(
-                points={{-100,100},{100,0},{-100,-100},{-100,100}},
-                lineColor={0,0,127},
-                fillColor={0,0,127},
-                fillPattern=FillPattern.Solid)},
-             coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
-        Diagram(coordinateSystem(
-              preserveAspectRatio=true, initialScale=0.2,
-              extent={{-100,-100},{100,100}},
-              grid={1,1}), graphics={Polygon(
-                points={{0,50},{100,0},{0,-50},{0,50}},
-                lineColor={0,0,127},
-                fillColor={0,0,127},
-                fillPattern=FillPattern.Solid), Text(
-                extent={{-10,85},{-10,60}},
-                lineColor={0,0,127},
-                textString="%name")}),
-          Documentation(info="<html>
-    <p>
-    Connector with one input signal of type Energy.
-    </p>
-    </html>"));
-
-      connector Output = output Type "output connector"
-        annotation (defaultComponentName="o",
-        Icon(coordinateSystem(
-              preserveAspectRatio=true,
-              extent={{-100,-100},{100,100}},
-              grid={1,1}), graphics={Polygon(
-                points={{-100,100},{100,0},{-100,-100},{-100,100}},
-                lineColor={0,0,127},
-                fillColor={255,255,255},
-                fillPattern=FillPattern.Solid)}),
-        Diagram(coordinateSystem(
-              preserveAspectRatio=true,
-              extent={{-100,-100},{100,100}},
-              grid={1,1}), graphics={Polygon(
-                points={{-100,50},{0,0},{-100,-50},{-100,50}},
-                lineColor={0,0,127},
-                fillColor={255,255,255},
-                fillPattern=FillPattern.Solid), Text(
-                extent={{30,110},{30,60}},
-                lineColor={0,0,127},
-                textString="%name")}),
-          Documentation(info="<html>
-  <p>
-  Connector with one output signal of type Real.
-  </p>
-  </html>"));
-    end IO;
-  end RealExtension;
-
-  package RealTypes
-    extends Modelica.Icons.BasesPackage;
-    import Physiolibrary;
-
-      replaceable block Variable = RealExtension.Parameter constrainedby
-      AbstractReal;
-
-      block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy, storeUnit="kcal");
-      block Time = Variable(redeclare type T=Physiolibrary.Types.Time, storeUnit="min");
-      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency, storeUnit="1/min");
-
-      block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass, storeUnit="g");
-      block MassFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MassFlowRate, storeUnit="g/min");
-      block Density = Variable(redeclare type T=Physiolibrary.Types.Density, storeUnit="kg/l");
-
-      block Height = Variable(redeclare type T=Physiolibrary.Types.Height, storeUnit="cm");
-      block Acceleration = Variable(redeclare type T =
-            Physiolibrary.Types.Acceleration, storeUnit="m/s");
-
-      block Pressure = Variable(redeclare type T=Physiolibrary.Types.Pressure,storeUnit="mmHg");
-      block Volume = Variable(redeclare type T=Physiolibrary.Types.Volume,storeUnit="ml");
-      block VolumeFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.VolumeFlowRate,storeUnit="ml/min");
-
-      block Concentration = Variable(redeclare type T =
-            Physiolibrary.Types.Concentration, storeUnit="mmol/l");
-      block MassConcentration = Variable (redeclare type T =
-            Physiolibrary.Types.MassConcentration, storeUnit="mg/l");
-      block AmountOfSubstance = Variable(redeclare type T =
-            Physiolibrary.Types.AmountOfSubstance,storeUnit="mmol");
-      block MolarFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MolarFlowRate,storeUnit="mmol/min");
-
-      block Heat = Variable(redeclare type T=Physiolibrary.Types.Heat,storeUnit="kcal");
-      block Temperature = Variable(redeclare type T =
-          Physiolibrary.Types.Temperature,                             k=310.15, storeUnit="degC");
-      block HeatFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.HeatFlowRate,storeUnit="kcal/min");
-      block ThermalConductance = Variable(redeclare type T =
-            Physiolibrary.Types.ThermalConductance, storeUnit="kcal/(min.K)");
-      block SpecificHeatCapacity = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
-      block SpecificEnergy = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificEnergy,storeUnit="kcal/kg");
-
-      block ElectricPotential = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricPotential,storeUnit="mV");
-      block ElectricCharge = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCharge,storeUnit="meq");
-      block VolumeDensityOfCharge =
-                             Variable(redeclare type T =
-            Physiolibrary.Types.VolumeDensityOfCharge,storeUnit="meq/l");
-      block ElectricCurrent = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCurrent,storeUnit="meq/min");
-
-      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="1");
-
-      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="1");
-      block OsmoticPermeability = Variable(redeclare type T =
-            Physiolibrary.Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
-      block DiffusionPermeability =         Variable(redeclare type T =
-            Physiolibrary.Types.DiffusionPermeability,storeUnit="ml/min");
-
-      block HydraulicConductance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
-      block HydraulicCompliance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicCompliance,storeUnit="ml/mmHg");
-      block HydraulicInertance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
-
-      block GasSolubility = Variable(redeclare type T =
-            Physiolibrary.Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
-
-      block Osmolarity =    Variable(redeclare type T =
-            Physiolibrary.Types.Osmolarity,storeUnit="mosm/l");
-  end RealTypes;
-
   partial block AbstractBoolean
     "Abstract parameter or the value at defined time of the model - can be input or output parameter"
 
@@ -4103,153 +4101,6 @@ The Real output y is a constant signal:
       annotation (Dialog(group="Parameters"));
 
   end AbstractBoolean;
-
-  package BooleanExtension
-    extends Modelica.Icons.VariantsPackage;
-        block Parameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean;
-
-          Modelica.Blocks.Interfaces.BooleanOutput y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end Parameter;
-
-        block InputParameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean(k=
-            Utilities.readBoolean(varName));
-
-          Modelica.Blocks.Interfaces.BooleanOutput y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
-
-        equation
-          y = k;
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end InputParameter;
-
-        block OutputFinal "Save boolean value to file"
-         extends Physiolibrary.Types.AbstractBoolean;
-
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
-
-          Modelica.Blocks.Interfaces.BooleanInput
-                                                y
-        "Connector of Real output signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-100,-10},{-80,10}})));
-
-        equation
-          when terminal() then
-             Utilities.writeBoolean(varName,y);
-          end when;
-
-          annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2}), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputFinal;
-
-        block OutputComparison "Save variable comparison to file"
-      import Physiolibrary;
-          extends Physiolibrary.Types.AbstractBoolean(
-                                                  k=Utilities.readBoolean(varName));
-          replaceable package Utilities = Physiolibrary.Types.Utilities
-           annotation (Dialog(group="Functions to read or store",tab="Types"));
-
-          Modelica.Blocks.Interfaces.BooleanInput
-                                y "Connector of Real input signal"
-            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
-
-    protected
-          parameter Boolean initialValue(fixed=false);
-        initial equation
-          initialValue = y;
-        equation
-          when terminal() then
-           Utilities.writeBooleanComparison(
-            varName,
-            k,
-            initialValue,
-            y);
-          end when;
-
-            annotation (
-            Icon(coordinateSystem(
-            preserveAspectRatio=true,
-            extent={{-100,-100},{100,100}},
-            grid={2,2},
-            initialScale=0.04), graphics={Rectangle(
-              extent={{-100,20},{100,-20}},
-              lineColor={0,0,255},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,255,255}), Text(
-              extent={{-100,-10},{100,10}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              textString="%varName")}),
-        Documentation(info="<html>
-<p>
-The Real output y is a constant signal:
-</p>
-</html>"));
-        end OutputComparison;
-  end BooleanExtension;
 
   package Utilities "Value input/output/test support"
     extends Modelica.Icons.BasesPackage;
@@ -4758,6 +4609,153 @@ The Real output y is a constant signal:
 <p>Because the number of output variables for each subsytem changes during development, it is a good idea to have only one list for each subsystem. And generating consistent sets to store, restore, compare initial and final values is possible by the same pattern as presented in the package Types.Example. In this package it is also possible to define a customized &nbsp;way to save and load the variables that connect subsystems together. For this purpose, one has to redeclare the package Types.Utilities with simple functions for reading and writing values, such as is done in the default package FileUtilities. </p>
 </html>"));
   end FilesUtilities;
+
+  package BooleanExtension
+    extends Modelica.Icons.VariantsPackage;
+        block Parameter "Read constant boolean signal"
+          extends Physiolibrary.Types.AbstractBoolean;
+
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end Parameter;
+
+        block InputParameter "Read constant boolean signal"
+          extends Physiolibrary.Types.AbstractBoolean(k=
+            Utilities.readBoolean(varName));
+
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          replaceable package Utilities = Physiolibrary.Types.Utilities;
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end InputParameter;
+
+        block OutputFinal "Save boolean value to file"
+         extends Physiolibrary.Types.AbstractBoolean;
+
+          replaceable package Utilities = Physiolibrary.Types.Utilities;
+
+          Modelica.Blocks.Interfaces.BooleanInput
+                                                y
+        "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-100,-10},{-80,10}})));
+
+        equation
+          when terminal() then
+             Utilities.writeBoolean(varName,y);
+          end when;
+
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputFinal;
+
+        block OutputComparison "Save variable comparison to file"
+      import Physiolibrary;
+          extends Physiolibrary.Types.AbstractBoolean(
+                                                  k=Utilities.readBoolean(varName));
+          replaceable package Utilities = Physiolibrary.Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.BooleanInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter Boolean initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when terminal() then
+           Utilities.writeBooleanComparison(
+            varName,
+            k,
+            initialValue,
+            y);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputComparison;
+  end BooleanExtension;
 
   type SimulationType = enumeration(
       NoInit "Use start values only as a guess of state values",

@@ -286,8 +286,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
           points={{-36,-18},{-30,-18},{-30,70}},
           color={191,0,0},
           smooth=Smooth.None));
-      annotation (        experiment(StopTime=100),
-Documentation(info="<html>
+      annotation (        experiment(StopTime=100), Documentation(info=
+                   "<html>
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
 </html>", revisions="<html>
 <p><i>2013</i></p>
@@ -796,8 +796,8 @@ Documentation(info="<html>
           points={{44,-92},{44,-98},{64,-98},{64,-64.1},{71,-64.1}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (        experiment(StopTime=10000),
-Documentation(info="<html>
+      annotation (        experiment(StopTime=10000), Documentation(info=
+                   "<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br/>In short it is about binding oxygen to hemoglobin.</p>
@@ -1037,8 +1037,8 @@ Documentation(info="<html>
           points={{52,-16.4},{52,-20},{38,-20},{38,-92.5},{71,-92.5}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (        experiment(StopTime=10000),
-Documentation(revisions="<html>
+      annotation (        experiment(StopTime=10000), Documentation(revisions=
+                        "<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -1263,7 +1263,7 @@ Documentation(revisions="<html>
         t=Total;
       end if;
 
-      t*normalizedState[1] = sum(fragment);
+      t*normalizedState[1] = sum(abs(fragment));
 
       //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
 
@@ -1317,7 +1317,7 @@ Documentation(revisions="<html>
         t=Total;
       end if;
 
-      t*normalizedState[1] = sum(fragment);
+      t*normalizedState[1] = sum(abs(fragment));
 
       //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
       totalAmountOfSubstance = t;
@@ -1390,6 +1390,65 @@ Documentation(revisions="<html>
         Documentation(info="<html>
 </html>"));
     end ElectricChargeConservationLaw;
+
+    model ElementaryChargeConservationLaw
+      "System amount of electric charge (=number of elementary charges) conservation law"
+      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem;
+                                            //(Simulation=Types.SimulationType.SteadyState);
+      extends Physiolibrary.Icons.ConservationLaw;
+
+      parameter Integer NumberOfParticles=1 "Number of mass/energy fragments";
+      parameter Integer Charges[NumberOfParticles] = {1}
+        "Elementary charges of particles";
+
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput fragment[NumberOfParticles]
+        "Mass/Energy fragment" annotation (Placement(transformation(extent={{-120,-60},
+                {-80,-20}}), iconTransformation(extent={{-120,-60},{-80,-20}})));
+
+      parameter Boolean useTotalInput = false
+        "=true, if total mass/energy is used as an input"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.ElectricCharge Total = 1
+        "Total mass/energy if useTotalAsInput=false"
+        annotation (Dialog(enable=not useTotalInput));
+
+      Physiolibrary.Types.RealIO.ElectricChargeInput total(start=Total)=t if
+        useTotalInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
+
+      Physiolibrary.Types.ElectricCharge t "Current Mass/Energy";
+    equation
+      if not useTotalInput then
+        t=Total;
+      end if;
+
+      //original meaning:
+      t*normalizedState[1] = Modelica.Constants.F*Charges*abs(fragment); //elementary charge from Eq to C
+
+      //hacked, but still the same:  (because Dymola find steady state solution for specific problems in negative concentrations, when abs() not used)
+      //t*normalizedState[1] = Modelica.Constants.F*(Charges[1]*(if noEvent(fragment[1]>=0) then fragment[1] else -fragment[1]) + sum(Charges[i]*fragment[i] for i in 2:NumberOfParticles));
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={Text(
+              extent={{-160,-110},{160,-140}},
+              lineColor={0,0,255},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              textString="%name"),
+            Text(
+              extent={{-100,50},{100,24}},
+              lineColor={0,0,0},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid,
+              textString="Total(%Total)")}),
+        Documentation(info="<html>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end ElementaryChargeConservationLaw;
   end Components;
 
   package Interfaces
