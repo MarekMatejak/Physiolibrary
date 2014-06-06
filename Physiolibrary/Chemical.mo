@@ -204,367 +204,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         experiment(StopTime=1));
     end MichaelisMenten;
 
-    model WaterSelfIonization
-      "2 H2O  <->  OH-   +   H3O+ (It is better to solve this model using Euler solver, because there is only time dependence/no integration needed/)"
-        extends Modelica.Icons.Example;
-      Components.Substance H3O(
-        q_out(conc(nominal=10^(-7 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7 + 3))
-                          annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-8,12})));
-      SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        NumberOfParticles=2,
-        Total=0,
-        Charges={1,-1},
-        useTotalInput=true) "strong ion difference of solution"
-        annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-      Components.Substance OH(
-        q_out(conc(nominal=10^(-7.4 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7 + 3),
-        isDependent=true)         annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-8,-32})));
-      Components.Substance H2O(
-        q_out(conc(nominal=5.55e+4)),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start(displayUnit="mol") = 1/0.018,
-        isDependent=true) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-82,-12})));
-      Components.ChemicalReaction waterDissociation(nP=2,
-        s={2},
-        K=(1e-8)*((18e-6)^2))
-        annotation (Placement(transformation(extent={{-56,-22},{-36,-2}})));
-      SteadyStates.Components.MolarConservationLaw tH2O(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        n=3,
-        Total(displayUnit="mol") = 1/0.018) "total water concentration"
-        annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
-      Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
-        "strong ions difference with respect to albumin charge shift"
-        annotation (Placement(transformation(extent={{52,74},{72,94}})));
-      Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-        "from elementary charge to electric charge, which is needed in system"
-                                            annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={80,-74})));
-    equation
-      connect(H2O.q_out, waterDissociation.substrates[1]) annotation (Line(
-          points={{-82,-12},{-56,-12}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(waterDissociation.products[2], H3O.q_out) annotation (Line(
-          points={{-36,-11.5},{-26,-11.5},{-26,12},{-8,12}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(waterDissociation.products[1], OH.q_out) annotation (Line(
-          points={{-36,-12.5},{-26,-12.5},{-26,-32},{-8,-32}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(tH2O.fragment[1], H2O.solute) annotation (Line(
-          points={{-48,-69.3333},{-82,-69.3333},{-82,-22}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(OH.solute, tH2O.fragment[2]) annotation (Line(
-          points={{-8,-42},{-8,-50},{-76,-50},{-76,-68},{-48,-68}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(H3O.solute, tH2O.fragment[3]) annotation (Line(
-          points={{-8,2},{-8,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
-              -66.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-
-      connect(SID.y,toColoumn. u) annotation (Line(
-          points={{73,84},{100,84},{100,-74},{92,-74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(toColoumn.y, electroneutrality.total) annotation (Line(
-          points={{69,-74},{56,-74},{56,-76}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(H3O.solute, electroneutrality.fragment[1]) annotation (Line(
-          points={{-8,2},{-8,-6},{8,-6},{8,-89},{46,-89}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(OH.solute, electroneutrality.fragment[2]) annotation (Line(
-          points={{-8,-42},{-8,-87},{46,-87}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation ( Documentation(info="<html>
-<p>Self-ionization of water.</p>
-<p>Ions difference (SID) in water causes the acidity/basicity, where pH = -log10(aH+). An activity of hydrogen ions aH+ is approximated with concentration (mol/l) of the oxonium cations H3O+.</p>
-<pre><b>plotExpression(apply(-log10(WaterSelfIonization.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
-<p><br>The titration slope der(pH)/der(SID)=1.48e+6 1/(mol/L) at pH=7.4.</p>
-</html>",    revisions="<html>
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics),
-        __Dymola_experimentSetupOutput);
-    end WaterSelfIonization;
-
-    model CarbonDioxideInWater "CO2 as alone acid-base buffer"
-        extends Modelica.Icons.Example;
-      Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-18,46},{2,66}})));
-      Components.ChemicalReaction HendersonHasselbalch(
-        nP=2,
-        dH=15.13,
-        K=10^(-6.103 + 3),
-        nS=1)
-        annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
-      Sources.UnlimitedGasStorage CO2_gas(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          PartialPressure=5332.8954966)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-80,82})));
-      Components.Substance H3O(
-        q_out(conc(nominal=10^(-7.4 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7 + 3)) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-8,12})));
-      Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-             0.81805576878885)
-        annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-      Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          isDependent=true)
-        annotation (Placement(transformation(extent={{-90,22},{-70,42}})));
-      SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        useTotalInput=true,
-        NumberOfParticles=3,
-        Charges={-1,-2,1},
-        Total=2894.560197) "strong ion difference of solution"
-        annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-      Components.Substance CO3(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        isDependent=true,
-        solute_start=1e-08)
-        annotation (Placement(transformation(extent={{54,46},{74,66}})));
-      Components.ChemicalReaction c2(
-        nP=2,
-        dH=15.13,
-        K=10^(-10.33 + 3),
-        nS=1)
-        annotation (Placement(transformation(extent={{16,46},{36,66}})));
-      Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-        "from elementary charge to to electric charge, which is needed in system"
-                                            annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={80,-74})));
-      Modelica.Blocks.Sources.Clock SID(offset=-0.01)
-        "strong ions difference with respect to albumin charge shift"
-        annotation (Placement(transformation(extent={{54,74},{74,94}})));
-    equation
-      connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
-          points={{-38,31.5},{-26,31.5},{-26,56},{-8,56}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(H3O.q_out, HendersonHasselbalch.products[2]) annotation (Line(
-          points={{-8,12},{-26,12},{-26,32.5},{-38,32.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(CO2_liquid.q_out, HendersonHasselbalch.substrates[1]) annotation (
-         Line(
-          points={{-80,32},{-58,32}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
-          points={{-80,48},{-80,32}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
-          points={{-80,72},{-80,66}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
-          points={{-8,46},{-8,38},{16,38},{16,-89.3333},{46,-89.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(CO3.solute, electroneutrality.fragment[2]) annotation (Line(
-          points={{64,46},{64,38},{18,38},{18,-88},{46,-88}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(H3O.solute, electroneutrality.fragment[3]) annotation (Line(
-          points={{-8,2},{-8,-6},{22,-6},{22,-86.6667},{46,-86.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(H3O.q_out, c2.products[2]) annotation (Line(
-          points={{-8,12},{48,12},{48,56.5},{36,56.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(HCO3.q_out, c2.substrates[1]) annotation (Line(
-          points={{-8,56},{16,56}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(c2.products[1], CO3.q_out) annotation (Line(
-          points={{36,55.5},{52,55.5},{52,56},{64,56}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(SID.y,toColoumn. u) annotation (Line(
-          points={{75,84},{100,84},{100,-74},{92,-74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(electroneutrality.total, toColoumn.y) annotation (Line(
-          points={{56,-76},{56,-74},{69,-74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation ( Documentation(info="<html>
-<p>CO2 solution in water without any other acid-base buffers.</p>
-<pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
-<p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
-<p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
-<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
-<p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
-</html>",    revisions="<html>
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        experiment(StopTime=0.02, __Dymola_Algorithm="Euler"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),
-                        graphics),
-        __Dymola_experimentSetupOutput);
-    end CarbonDioxideInWater;
-
-    model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
-      extends Modelica.Icons.Example;
-
-      Components.Substance H3O(
-        q_out(conc(nominal=10^(-7.4 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7.4 + 3),
-        isDependent=true) "hydrogen ions activity" annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={14,22})));
-
-      Physiolibrary.SteadyStates.Components.MolarConservationLaw
-        molarConservationLaw[n](
-        each n=2,
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        each Total=0.00066)
-        annotation (Placement(transformation(extent={{44,-6},{64,14}})));
-      SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        NumberOfParticles=n,
-        Charges=ones(n),
-        useTotalInput=true,
-        Total=6425.92363734) "strong ion difference of solution"
-        annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-      Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-        "from elementary charge to to electric charge, which is needed in system"
-                                            annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={80,-74})));
-      Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
-        "strong ions difference with respect to albumin charge shift"
-        annotation (Placement(transformation(extent={{54,76},{74,96}})));
-
-      parameter Integer n=218 "Number of weak acid group in albumin molecule";
-      parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
-        "acid dissociation constants";
-
-      Physiolibrary.Chemical.Components.Substance A[n](
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        isDependent=true,
-        each solute_start=0.00033) "deprotonated acid groups"
-        annotation (Placement(transformation(extent={{4,-16},{24,4}})));
-      Physiolibrary.Chemical.Components.ChemicalReaction react[n](
-        each nP=2,
-        K=fill(10.0, n) .^ (-pKAs .+ 3))
-        annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
-
-      Physiolibrary.Chemical.Components.Substance HA[n](
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
-          solute_start=0.00033) "protonated acid groups"
-        annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
-
-    equation
-      connect(react.products[1], A.q_out) annotation (Line(
-          points={{-24,7.5},{-12,7.5},{-12,-6},{14,-6}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      for i in 1:n loop
-        connect(react[i].products[2], H3O.q_out) annotation (Line(
-            points={{-24,8.5},{-14,8.5},{-14,22},{14,22}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-      end for;
-      connect(HA.q_out, react.substrates[1]) annotation (Line(
-          points={{-66,8},{-44,8}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(A.solute, molarConservationLaw.fragment[1]) annotation (Line(
-          points={{14,-16},{14,-20},{36,-20},{36,-1},{44,-1}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(HA.solute, molarConservationLaw.fragment[2]) annotation (Line(
-          points={{-66,-2},{-66,-8},{-78,-8},{-78,36},{36,36},{36,0},{44,0},{44,
-              1}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(SID.y,toColoumn. u) annotation (Line(
-          points={{75,86},{100,86},{100,-74},{92,-74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(HA.solute, electroneutrality.fragment) annotation (Line(
-          points={{-66,-2},{-66,-88},{46,-88}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(toColoumn.y, electroneutrality.total) annotation (Line(
-          points={{69,-74},{56,-74},{56,-76}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (                                      Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}},
-        experiment(StopTime=4)), graphics), Documentation(revisions="<html>
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<pre><b>plotExpression(apply(-log10(AlbuminTitration.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
-<p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
-<p><br>Data and model is described in</p>
-<p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-</html>"),
-        experiment(
-          StopTime=0.0235,
-          __Dymola_fixedstepsize=5e-005,
-          __Dymola_Algorithm="Euler"),
-        __Dymola_experimentSetupOutput);
-    end AlbuminTitration;
-
     package Hemoglobin "Hemoglobin blood gases binding"
       model Allosteric_Hemoglobin_MWC "Monod,Wyman,Changeux (1965)"
       extends Modelica.Icons.Example;
@@ -1359,209 +998,807 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
     end Hemoglobin;
 
-    model PlasmaAcidBase
-
-      Components.Substance H3O(
-        q_out(conc(nominal=10^(-7.4 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7.4 + 3),
-        isDependent=true) "hydrogen ions activity" annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={44,22})));
-
-      Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
-        each n=2,
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        each Total=0.00066)
-        annotation (Placement(transformation(extent={{-42,-24},{-22,-4}})));
-      SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        NumberOfParticles=n,
-        Charges=ones(n),
-        useTotalInput=true,
-        Total=6425.92363734) "strong ion difference of solution"
-        annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-      Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-        "from elementary charge to to electric charge, which is needed in system"
-                                            annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={80,-74})));
-      Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
-        "strong ions difference with respect to albumin charge shift"
-        annotation (Placement(transformation(extent={{54,76},{74,96}})));
-
-      parameter Integer n=218 "Number of weak acid group in albumin molecule";
-      parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
-        "acid dissociation constants";
-
-      Physiolibrary.Chemical.Components.Substance A[n](
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        isDependent=true,
-        each solute_start=0.00033) "deprotonated acid groups"
-        annotation (Placement(transformation(extent={{-10,-4},{10,16}})));
-      Physiolibrary.Chemical.Components.ChemicalReaction react[n](
-        each nP=2,
-        K=fill(10.0, n) .^ (-pKAs .+ 3))
-        annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
-
-      Physiolibrary.Chemical.Components.Substance HA[n](
-        each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
-          solute_start=0.00033) "protonated acid groups"
-        annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
-
-      Sources.UnlimitedGasStorage CO2_gas(
+    package AcidBase
+      model WaterSelfIonization
+        "2 H2O  <->  OH-   +   H3O+ (It is better to solve this model using Euler solver, because there is only time dependence/no integration needed/)"
+          extends Modelica.Icons.Example;
+        Components.Substance H3O(
+          q_out(conc(nominal=10^(-7 + 3))),
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          PartialPressure=5332.8954966)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-66,86})));
-      Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-             0.81805576878885)
-        annotation (Placement(transformation(extent={{-76,52},{-56,72}})));
-      Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          isDependent=true)
-        annotation (Placement(transformation(extent={{-76,32},{-56,52}})));
-      Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-10,32},{10,52}})));
-      Interfaces.ChemicalPort_a substances[3]
-        "{free dissolved CO2, bicarbonate, chloride}"
-        annotation (Placement(transformation(extent={{-30,68},{-10,88}})));
-    equation
-      connect(react.products[1], A.q_out) annotation (Line(
-          points={{-24,7.5},{-12,7.5},{-12,6},{0,6}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      for i in 1:n loop
-        connect(react[i].products[2], H3O.q_out) annotation (Line(
-            points={{-24,8.5},{-14,8.5},{-14,22},{44,22}},
+          solute_start=10^(-7 + 3))
+                            annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-8,12})));
+        SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          NumberOfParticles=2,
+          Total=0,
+          Charges={1,-1},
+          useTotalInput=true) "strong ion difference of solution"
+          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
+        Components.Substance OH(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7 + 3),
+          isDependent=true)         annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-8,-32})));
+        Components.Substance H2O(
+          q_out(conc(nominal=5.55e+4)),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start(displayUnit="mol") = 1/0.018,
+          isDependent=true) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-82,-12})));
+        Components.ChemicalReaction waterDissociation(nP=2,
+          s={2},
+          K=(1e-8)*((18e-6)^2))
+          annotation (Placement(transformation(extent={{-56,-22},{-36,-2}})));
+        SteadyStates.Components.MolarConservationLaw tH2O(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          n=3,
+          Total(displayUnit="mol") = 1/0.018) "total water concentration"
+          annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
+        Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{52,74},{72,94}})));
+        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+          "from elementary charge to electric charge, which is needed in system"
+                                              annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={80,-74})));
+      equation
+        connect(H2O.q_out, waterDissociation.substrates[1]) annotation (Line(
+            points={{-82,-12},{-56,-12}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-      end for;
-      connect(HA.q_out, react.substrates[1]) annotation (Line(
-          points={{-66,8},{-44,8}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(A.solute, tAlb.fragment[1]) annotation (Line(
-          points={{0,-4},{0,-19},{-42,-19}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(HA.solute, tAlb.fragment[2]) annotation (Line(
-          points={{-66,-2},{-66,-16},{-42,-16},{-42,-17}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(SID.y,toColoumn. u) annotation (Line(
-          points={{75,86},{100,86},{100,-74},{92,-74}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(HA.solute, electroneutrality.fragment) annotation (Line(
-          points={{-66,-2},{-66,-88},{46,-88}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(toColoumn.y, electroneutrality.total) annotation (Line(
-          points={{69,-74},{56,-74},{56,-76}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(gasSolubility.q_in,CO2_liquid. q_out) annotation (Line(
-          points={{-66,54},{-66,42}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(CO2_gas.q_out,gasSolubility. q_out) annotation (Line(
-          points={{-66,76},{-66,72}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(substances[1], CO2_liquid.q_out) annotation (Line(
-          points={{-20,71.3333},{-20,42},{-66,42}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(HCO3.q_out, substances[2]) annotation (Line(
-          points={{0,42},{-20,42},{-20,78}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (                                      Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}},
-        experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+        connect(waterDissociation.products[2], H3O.q_out) annotation (Line(
+            points={{-36,-11.5},{-26,-11.5},{-26,12},{-8,12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(waterDissociation.products[1], OH.q_out) annotation (Line(
+            points={{-36,-12.5},{-26,-12.5},{-26,-32},{-8,-32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(tH2O.fragment[1], H2O.solute) annotation (Line(
+            points={{-48,-69.3333},{-82,-69.3333},{-82,-22}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OH.solute, tH2O.fragment[2]) annotation (Line(
+            points={{-8,-42},{-8,-50},{-76,-50},{-76,-68},{-48,-68}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H3O.solute, tH2O.fragment[3]) annotation (Line(
+            points={{-8,2},{-8,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
+                -66.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        connect(SID.y,toColoumn. u) annotation (Line(
+            points={{73,84},{100,84},{100,-74},{92,-74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{69,-74},{56,-74},{56,-76}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H3O.solute, electroneutrality.fragment[1]) annotation (Line(
+            points={{-8,2},{-8,-6},{8,-6},{8,-89},{46,-89}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OH.solute, electroneutrality.fragment[2]) annotation (Line(
+            points={{-8,-42},{-8,-87},{46,-87}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>Self-ionization of water.</p>
+<p>Ions difference (SID) in water causes the acidity/basicity, where pH = -log10(aH+). An activity of hydrogen ions aH+ is approximated with concentration (mol/l) of the oxonium cations H3O+.</p>
+<pre><b>plotExpression(apply(-log10(WaterSelfIonization.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
+<p><br>The titration slope der(pH)/der(SID)=1.48e+6 1/(mol/L) at pH=7.4.</p>
+</html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
+</html>"),experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                  100}}), graphics),
+          __Dymola_experimentSetupOutput);
+      end WaterSelfIonization;
+
+      model CarbonDioxideInWater "CO2 as alone acid-base buffer"
+          extends Modelica.Icons.Example;
+        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          annotation (Placement(transformation(extent={{-18,46},{2,66}})));
+        Components.ChemicalReaction HendersonHasselbalch(
+          nP=2,
+          dH=15.13,
+          K=10^(-6.103 + 3),
+          nS=1)
+          annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
+        Sources.UnlimitedGasStorage CO2_gas(
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            PartialPressure=5332.8954966)
+          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-80,82})));
+        Components.Substance H3O(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7 + 3)) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-8,12})));
+        Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+               0.81805576878885)
+          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true)
+          annotation (Placement(transformation(extent={{-90,22},{-70,42}})));
+        SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          useTotalInput=true,
+          NumberOfParticles=3,
+          Charges={-1,-2,1},
+          Total=2894.560197) "strong ion difference of solution"
+          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
+        Components.Substance CO3(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          solute_start=1e-08)
+          annotation (Placement(transformation(extent={{54,46},{74,66}})));
+        Components.ChemicalReaction c2(
+          nP=2,
+          dH=15.13,
+          K=10^(-10.33 + 3),
+          nS=1)
+          annotation (Placement(transformation(extent={{16,46},{36,66}})));
+        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+          "from elementary charge to to electric charge, which is needed in system"
+                                              annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={80,-74})));
+        Modelica.Blocks.Sources.Clock SID(offset=-0.01)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{54,74},{74,94}})));
+      equation
+        connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
+            points={{-38,31.5},{-26,31.5},{-26,56},{-8,56}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H3O.q_out, HendersonHasselbalch.products[2]) annotation (Line(
+            points={{-8,12},{-26,12},{-26,32.5},{-38,32.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid.q_out, HendersonHasselbalch.substrates[1]) annotation (
+           Line(
+            points={{-80,32},{-58,32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
+            points={{-80,48},{-80,32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
+            points={{-80,72},{-80,66}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
+            points={{-8,46},{-8,38},{16,38},{16,-89.3333},{46,-89.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(CO3.solute, electroneutrality.fragment[2]) annotation (Line(
+            points={{64,46},{64,38},{18,38},{18,-88},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H3O.solute, electroneutrality.fragment[3]) annotation (Line(
+            points={{-8,2},{-8,-6},{22,-6},{22,-86.6667},{46,-86.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H3O.q_out, c2.products[2]) annotation (Line(
+            points={{-8,12},{48,12},{48,56.5},{36,56.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.q_out, c2.substrates[1]) annotation (Line(
+            points={{-8,56},{16,56}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(c2.products[1], CO3.q_out) annotation (Line(
+            points={{36,55.5},{52,55.5},{52,56},{64,56}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(SID.y,toColoumn. u) annotation (Line(
+            points={{75,84},{100,84},{100,-74},{92,-74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(electroneutrality.total, toColoumn.y) annotation (Line(
+            points={{56,-76},{56,-74},{69,-74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>CO2 solution in water without any other acid-base buffers.</p>
+<pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
+<p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
+<p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
+<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
+</html>",      revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),experiment(StopTime=0.02, __Dymola_Algorithm="Euler"),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                  {100,100}}),
+                          graphics),
+          __Dymola_experimentSetupOutput);
+      end CarbonDioxideInWater;
+
+      model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
+        extends Modelica.Icons.Example;
+
+        Components.Substance H3O(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7.4 + 3),
+          isDependent=true) "hydrogen ions activity" annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={14,22})));
+
+        Physiolibrary.SteadyStates.Components.MolarConservationLaw
+          molarConservationLaw[n](
+          each n=2,
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each Total=0.00066)
+          annotation (Placement(transformation(extent={{44,-6},{64,14}})));
+        SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          NumberOfParticles=n,
+          Charges=ones(n),
+          useTotalInput=true,
+          Total=6425.92363734) "strong ion difference of solution"
+          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
+        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+          "from elementary charge to to electric charge, which is needed in system"
+                                              annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={80,-74})));
+        Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{54,76},{74,96}})));
+
+        parameter Integer n=218 "Number of weak acid group in albumin molecule";
+        parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
+          "acid dissociation constants";
+
+        Physiolibrary.Chemical.Components.Substance A[n](
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          each solute_start=0.00033) "deprotonated acid groups"
+          annotation (Placement(transformation(extent={{4,-16},{24,4}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+          each nP=2,
+          K=fill(10.0, n) .^ (-pKAs .+ 3))
+          annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
+
+        Physiolibrary.Chemical.Components.Substance HA[n](
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+            solute_start=0.00033) "protonated acid groups"
+          annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
+
+      equation
+        connect(react.products[1], A.q_out) annotation (Line(
+            points={{-24,7.5},{-12,7.5},{-12,-6},{14,-6}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        for i in 1:n loop
+          connect(react[i].products[2], H3O.q_out) annotation (Line(
+              points={{-24,8.5},{-14,8.5},{-14,22},{14,22}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+        end for;
+        connect(HA.q_out, react.substrates[1]) annotation (Line(
+            points={{-66,8},{-44,8}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(A.solute, molarConservationLaw.fragment[1]) annotation (Line(
+            points={{14,-16},{14,-20},{36,-20},{36,-1},{44,-1}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HA.solute, molarConservationLaw.fragment[2]) annotation (Line(
+            points={{-66,-2},{-66,-8},{-78,-8},{-78,36},{36,36},{36,0},{44,0},{44,
+                1}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(SID.y,toColoumn. u) annotation (Line(
+            points={{75,86},{100,86},{100,-74},{92,-74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HA.solute, electroneutrality.fragment) annotation (Line(
+            points={{-66,-2},{-66,-88},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{69,-74},{56,-74},{56,-76}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (                                      Diagram(coordinateSystem(
+                preserveAspectRatio=false, extent={{-100,-100},{100,100}},
+          experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",       info="<html>
 <pre><b>plotExpression(apply(-log10(AlbuminTitration.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
 <p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
 <p><br>Data and model is described in</p>
 <p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-</html>"),
-        experiment(
-          StopTime=0.0235,
-          __Dymola_fixedstepsize=5e-005,
-          __Dymola_Algorithm="Euler"),
-        __Dymola_experimentSetupOutput);
-    end PlasmaAcidBase;
+</html>"),experiment(
+            StopTime=0.0235,
+            __Dymola_fixedstepsize=5e-005,
+            __Dymola_Algorithm="Euler"),
+          __Dymola_experimentSetupOutput);
+      end AlbuminTitration;
 
-    model ErythrocyteAcidBase
-      Components.Substance H3O(
-        q_out(conc(nominal=10^(-7.4 + 3))),
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-        solute_start=10^(-7.4 + 3),
-        isDependent=true) "hydrogen ions activity" annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-12,36})));
-      Components.ChemicalReaction HendersonHasselbalch(
-        nP=2,
-        dH=15.13,
-        K=10^(-6.103 + 3),
-        nS=1)
-        annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
-      Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          isDependent=true)
-        annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-      Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-        annotation (Placement(transformation(extent={{-22,72},{-2,92}})));
-      Interfaces.ChemicalPort_a substances[3]
-        "{free dissolved CO2, bicarbonate, chloride}"
-        annotation (Placement(transformation(extent={{-90,72},{-70,92}})));
-    equation
-      connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
-          points={{-40,55.5},{-30,55.5},{-30,82},{-12,82}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(H3O.q_out,HendersonHasselbalch. products[2]) annotation (Line(
-          points={{-12,36},{-30,36},{-30,56.5},{-40,56.5}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
-         Line(
-          points={{-80,56},{-60,56}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(substances[1], CO2_liquid.q_out) annotation (Line(
-          points={{-80,75.3333},{-80,56}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(HCO3.q_out, substances[2]) annotation (Line(
-          points={{-12,82},{-80,82}},
-          color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics));
-    end ErythrocyteAcidBase;
+      model Phosphate
+          extends Modelica.Icons.Example;
 
-    model BloodAcidBase
-    end BloodAcidBase;
+        parameter Physiolibrary.Types.Pressure pCO2=5332.8954966
+          "Partial pressure of CO2";
+        parameter Physiolibrary.Types.Concentration totalPO4=0.00115
+          "Total phosphate concentration";
+        parameter Physiolibrary.Types.Concentration totalAlb=0.00066
+          "Total albumin concentration";
+
+        parameter Integer n=218 "Number of weak acid group in albumin molecule";
+
+        Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
+          annotation (Placement(transformation(extent={{64,-20},{84,0}})));
+
+        Modelica.Blocks.Sources.Clock SID(offset=0)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{44,74},{64,94}})));
+
+        Physiolibrary.Chemical.Components.Substance H(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7.4 + 3),
+          isDependent=true) "hydrogen ions activity" annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={36,-12})));
+
+        Physiolibrary.Chemical.Components.Substance H3PO4(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          solute_start=1e-08)
+          annotation (Placement(transformation(extent={{-98,-58},{-78,-38}})));
+        Physiolibrary.Chemical.Components.Substance H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=0.0005)
+          annotation (Placement(transformation(extent={{-44,-58},{-24,-38}})));
+        Physiolibrary.Chemical.Components.Substance HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=0.0006)
+          annotation (Placement(transformation(extent={{16,-58},{36,-38}})));
+        Physiolibrary.Chemical.Components.Substance PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=1e-08)
+          annotation (Placement(transformation(extent={{72,-58},{92,-38}})));
+
+        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction(nP=2, K=10
+              ^(-1.915 + 3))
+          annotation (Placement(transformation(extent={{-70,-58},{-50,-38}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction1(nP=2, K=10
+              ^(-6.66 + 3))
+          annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction2(nP=2, K=10
+              ^(-11.78 + 3))
+          annotation (Placement(transformation(extent={{44,-58},{64,-38}})));
+        Physiolibrary.SteadyStates.Components.MolarConservationLaw tP04(
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each n=4,
+          each Total=totalPO4*1)
+          annotation (Placement(transformation(extent={{-28,-90},{-8,-70}})));
+
+        Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw
+          electroneutrality(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Total(displayUnit="meq") = 3502.41783837,
+          NumberOfParticles=n + 4,
+          Charges=cat(
+                1,
+                {-1},
+                {-1,-2,-3},
+                fill(1, n)),
+          useTotalInput=true)
+          annotation (Placement(transformation(extent={{48,-94},{68,-74}})));
+
+        Modelica.Blocks.Math.Gain toColoumn(k=Modelica.Constants.F)
+          "from elementary charge to Coloumn" annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={84,-86})));
+
+        parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
+          "acid dissociation constants";
+
+      equation
+        for i in 1:n loop
+        end for;
+        connect(H3PO4.q_out, chemicalReaction.substrates[1]) annotation (Line(
+            points={{-88,-48},{-70,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction.products[1], H2PO4.q_out) annotation (Line(
+            points={{-50,-48.5},{-42,-48.5},{-42,-48},{-34,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2PO4.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+            points={{-34,-48},{-14,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction1.products[1], HPO4.q_out) annotation (Line(
+            points={{6,-48.5},{16,-48.5},{16,-48},{26,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HPO4.q_out, chemicalReaction2.substrates[1]) annotation (Line(
+            points={{26,-48},{44,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction2.products[1], PO4.q_out) annotation (Line(
+            points={{64,-48.5},{74,-48.5},{74,-48},{82,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction.products[2], H.q_out) annotation (Line(
+            points={{-50,-47.5},{-44,-47.5},{-44,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction1.products[2], H.q_out) annotation (Line(
+            points={{6,-47.5},{14,-47.5},{14,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction2.products[2], H.q_out) annotation (Line(
+            points={{64,-47.5},{72,-47.5},{72,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H3PO4.solute, tP04.fragment[1]) annotation (Line(
+            points={{-88,-58},{-88,-86},{-28,-86},{-28,-85.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute, tP04.fragment[2]) annotation (Line(
+            points={{-34,-58},{-34,-62},{-64,-62},{-64,-84.5},{-28,-84.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, tP04.fragment[3]) annotation (Line(
+            points={{26,-58},{26,-64},{-50,-64},{-50,-83.5},{-28,-83.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO4.solute, tP04.fragment[4]) annotation (Line(
+            points={{82,-58},{82,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO4.solute, electroneutrality.fragment[2]) annotation (Line(
+            points={{82,-58},{82,-68},{30,-68},{30,-88},{48,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
+            points={{26,-58},{26,-88},{48,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute, electroneutrality.fragment[4]) annotation (Line(
+            points={{-34,-58},{-34,-62},{22,-62},{22,-88},{48,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H.solute, minusPh.u) annotation (Line(
+            points={{36,-22},{36,-26},{54,-26},{54,-10},{62,-10}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(SID.y, toColoumn.u) annotation (Line(
+            points={{65,84},{100,84},{100,-86},{96,-86}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{73,-86},{70,-86},{70,-76},{58,-76}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+</html>",      revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),experiment(StopTime=0.05),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                  100,100}}),
+                          graphics));
+      end Phosphate;
+
+      model PlasmaAcidBase
+
+        Components.Substance H3O(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7.4 + 3),
+          isDependent=true) "hydrogen ions activity" annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={38,40})));
+
+        Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
+          each n=2,
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each Total=0.00066)
+          annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+        SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          useTotalInput=true,
+          NumberOfParticles=n + 3,
+          Charges=-cat(
+              1,
+              {1,1,2},
+              ones(n)),
+          Total=6425.92363734) "strong ion difference of solution"
+          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
+        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+          "from elementary charge to to electric charge, which is needed in system"
+                                              annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={80,-74})));
+        Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{72,-48},{92,-28}})));
+
+        parameter Physiolibrary.Types.Concentration totalPO4=0.00115
+          "Total phosphate concentration";
+        parameter Physiolibrary.Types.Concentration totalAlb=0.00066
+          "Total albumin concentration";
+
+        parameter Integer n=218 "Number of weak acid group in albumin molecule";
+        parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
+          "acid dissociation constants";
+
+        Physiolibrary.Chemical.Components.Substance A[n](
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          each solute_start=0.00033) "deprotonated acid groups"
+          annotation (Placement(transformation(extent={{-10,14},{10,34}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+          each nP=2,
+          K=fill(10.0, n) .^ (-pKAs .+ 3))
+          annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
+
+        Physiolibrary.Chemical.Components.Substance HA[n](
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+            solute_start=0.00033) "protonated acid groups"
+          annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
+
+        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true)
+          annotation (Placement(transformation(extent={{-76,64},{-56,84}})));
+        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          annotation (Placement(transformation(extent={{48,70},{68,90}})));
+        Interfaces.ChemicalPort_a substances[3]
+          "{free dissolved CO2, bicarbonate, chloride}"
+          annotation (Placement(transformation(extent={{-10,70},{10,90}})));
+        Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=0.0005)
+          annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
+        Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
+          annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
+        Components.Substance                        HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=0.0006)
+          annotation (Placement(transformation(extent={{-2,-54},{18,-34}})));
+        SteadyStates.Components.MolarConservationLaw               tP04(
+          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each Total=totalPO4*1,
+          each n=2)
+          annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
+      equation
+        connect(react.products[1], A.q_out) annotation (Line(
+            points={{-24,25.5},{-12,25.5},{-12,24},{0,24}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        for i in 1:n loop
+          connect(react[i].products[2], H3O.q_out) annotation (Line(
+              points={{-24,26.5},{-14,26.5},{-14,40},{38,40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+        end for;
+        connect(HA.q_out, react.substrates[1]) annotation (Line(
+            points={{-66,26},{-44,26}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(A.solute, tAlb.fragment[1]) annotation (Line(
+            points={{0,14},{0,10},{-54,10},{-54,-5},{-40,-5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HA.solute, tAlb.fragment[2]) annotation (Line(
+            points={{-66,16},{-66,-4},{-40,-4},{-40,-3}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(SID.y,toColoumn. u) annotation (Line(
+            points={{93,-38},{100,-38},{100,-74},{92,-74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HA.solute, electroneutrality.fragment) annotation (Line(
+            points={{-66,16},{-66,-88},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{69,-74},{56,-74},{56,-76}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(substances[1], CO2_liquid.q_out) annotation (Line(
+            points={{0,73.3333},{0,74},{-66,74}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.q_out, substances[2]) annotation (Line(
+            points={{58,80},{0,80}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2PO4.q_out, phosphateAcidification.substrates[1]) annotation (Line(
+            points={{-52,-44},{-32,-44}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(phosphateAcidification.products[1], HPO4.q_out) annotation (Line(
+            points={{-12,-44.5},{-2,-44.5},{-2,-44},{8,-44}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2PO4.solute, tP04.fragment[1]) annotation (Line(
+            points={{-52,-54},{-52,-75},{-28,-75}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, tP04.fragment[2]) annotation (Line(
+            points={{8,-54},{8,-60},{-40,-60},{-40,-73},{-28,-73}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(phosphateAcidification.products[2], H3O.q_out) annotation (Line(
+            points={{-12,-43.5},{-4,-43.5},{-4,-28},{20,-28},{20,40},{38,40}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
+            points={{58,70},{58,-62},{32,-62},{32,-88},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute, electroneutrality.fragment[2]) annotation (Line(
+            points={{-52,-54},{-52,-86},{46,-86},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
+            points={{8,-54},{8,-88},{46,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (                                      Diagram(coordinateSystem(
+                preserveAspectRatio=false, extent={{-100,-100},{100,100}},
+          experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",       info="<html>
+<pre><b>plotExpression(apply(-log10(AlbuminTitration.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
+<p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
+<p><br>Data and model is described in</p>
+<p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
+</html>"),experiment(
+            StopTime=0.0235,
+            __Dymola_fixedstepsize=5e-005,
+            __Dymola_Algorithm="Euler"),
+          __Dymola_experimentSetupOutput);
+      end PlasmaAcidBase;
+
+      model ErythrocyteAcidBase
+        Components.Substance H3O(
+          q_out(conc(nominal=10^(-7.4 + 3))),
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=10^(-7.4 + 3),
+          isDependent=true) "hydrogen ions activity" annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=0,
+              origin={-12,36})));
+        Components.ChemicalReaction HendersonHasselbalch(
+          nP=2,
+          dH=15.13,
+          K=10^(-6.103 + 3),
+          nS=1)
+          annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
+        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true)
+          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
+        Interfaces.ChemicalPort_a substances[3]
+          "{free dissolved CO2, bicarbonate, chloride}"
+          annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
+      equation
+        connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
+            points={{-40,55.5},{-30,55.5},{-30,80},{-12,80}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H3O.q_out,HendersonHasselbalch. products[2]) annotation (Line(
+            points={{-12,36},{-30,36},{-30,56.5},{-40,56.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
+           Line(
+            points={{-80,56},{-60,56}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(substances[1], CO2_liquid.q_out) annotation (Line(
+            points={{-80,73.3333},{-80,56}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.q_out, substances[2]) annotation (Line(
+            points={{-12,80},{-80,80}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}),      graphics));
+      end ErythrocyteAcidBase;
+
+      model BloodAcidBase
+        PlasmaAcidBase plasmaAcidBase
+          annotation (Placement(transformation(extent={{-34,-6},{-14,14}})));
+        ErythrocyteAcidBase erythrocyteAcidBase
+          annotation (Placement(transformation(extent={{56,-6},{76,14}})));
+        Components.Membrane membrane
+          annotation (Placement(transformation(extent={{14,2},{34,22}})));
+      equation
+        connect(plasmaAcidBase.substances, membrane.particlesInside)
+          annotation (Line(
+            points={{-24,12},{14,12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(membrane.particlesOutside, erythrocyteAcidBase.substances)
+          annotation (Line(
+            points={{34,12},{46,12},{46,12},{58,12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
+                  {{-100,-100},{100,100}}), graphics));
+      end BloodAcidBase;
+    end AcidBase;
   end Examples;
 
   package Components
@@ -1753,6 +1990,7 @@ It works in two modes:
     model Diffusion "Solute diffusion"
       extends Physiolibrary.Icons.Diffusion;
       extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Modelica.Icons.ObsoleteModel;
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
@@ -2317,8 +2555,9 @@ It works in two modes:
 </html>"));
     end Reabsorption;
 
-    model Filtration
+    model Membrane
       "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
+      extends Physiolibrary.Icons.Membrane;
 
       parameter Integer NumberOfParticles = 1
         "Number of penetrating particle types";
@@ -2341,7 +2580,7 @@ It works in two modes:
       Types.RealIO.DiffusionPermeabilityInput permeability[NumberOfParticles] = p if usePermeabilityInput
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,40})));
+            origin={0,100})));
 
     protected
        Real KAdjustment
@@ -2395,7 +2634,7 @@ It works in two modes:
 <p>C_in/C_out = (1+KAdjustment) </p>
 <p>where KAdjustment = P/(2*C_in-P) and C_out=ALP_out=(2*C_in-P)/2, because ALP_in/ALP_out = (C_in - P)/C_out = (2C_in-2P)/(2C_in-P) = 1 - P/(2C_in-P) = 1-KAdjustment and C_in/C_out = (2C_in)/(2C_in-P) = 1 + P/(2C_in-P) = 1+KAdjustment .</p>
 </html>"));
-    end Filtration;
+    end Membrane;
   end Components;
 
   package Sensors
