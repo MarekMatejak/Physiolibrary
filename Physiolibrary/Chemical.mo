@@ -1990,7 +1990,6 @@ It works in two modes:
     model Diffusion "Solute diffusion"
       extends Physiolibrary.Icons.Diffusion;
       extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Modelica.Icons.ObsoleteModel;
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
@@ -2018,14 +2017,14 @@ It works in two modes:
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
-<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the F</a>ick&apos;s laws of diffusion: </p>
+<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the Fick&apos;s laws of diffusion: </a></p>
 <p>J= -D*(dPhi)/dx</p>
 <p>where</p>
 <p>J is molar flow of solute per area [mol/(m2.s)]. </p>
 <p>D is diffusion constant [m2/s]. </p>
 <p>dPhi is concentration gradient [mol/m3].</p>
 <p>dx is length of diffusion [m].</p>
-<p><br/>So for example of the diffusion through membrane the parameter cond = <code>(D/membrameThicknes)*membraneArea.</code></p>
+<p><br>The solution on both sides must have the same properties (for example solubilities, chemical activities, osmolarities,...)!</p>
 </html>"));
     end Diffusion;
 
@@ -2558,6 +2557,7 @@ It works in two modes:
     model Membrane
       "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
       extends Physiolibrary.Icons.Membrane;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
       parameter Integer NumberOfParticles = 1
         "Number of penetrating particle types";
@@ -2582,6 +2582,19 @@ It works in two modes:
             rotation=270,
             origin={0,100})));
 
+      Physiolibrary.Types.GasSolubility kH[NumberOfParticles]
+        "Concentration ratio at equilibrium";
+
+      parameter Physiolibrary.Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
+        "Equilibrated concentration ratio at temperature T0 - can be estimated by Henry's law coefficient ratios (kH1/kH2)"
+         annotation ( HideResult=true,Dialog(tab="Different solubilities"));
+      parameter Physiolibrary.Types.Temperature T0=298.15
+        "Base temperature for kH_T0"
+         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+      parameter Physiolibrary.Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
+        "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
+        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+
     protected
        Real KAdjustment
         "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
@@ -2591,6 +2604,9 @@ It works in two modes:
       if not usePermeabilityInput then
         p=Permeabilities;
       end if;
+
+       kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
+       lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
 
        particlesInside.q + particlesOutside.q = zeros(NumberOfParticles); //nothing lost inside
 
@@ -2602,21 +2618,22 @@ It works in two modes:
 
        for i in 1:NumberOfParticles loop
          if Charges[i]==0 then //normal diffusion
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc - kH[i]*particlesOutside[i].conc);
          elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1+KAdjustment)*particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1+KAdjustment)*kH[i]*particlesOutside[i].conc);
          else //anion goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1-KAdjustment)*particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1-KAdjustment)*kH[i]*particlesOutside[i].conc);
          end if;
        end for;
 
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Documentation(info="<html>
-<p>Filtration throught semipermeable membrane.</p>
+<p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
 <p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium. The permeabilities of particles are used only in dynamic simulation with non-zero fluxes. If zero-flow Donnan&apos;s equilibrium is reached, it is independent on the permeabilities. </p>
 <p>This class can be used for glomerular membrane, open(leak) channels (pores) of cellular (or any lipid bilayer) membrane, chloride schift, ...</p>
+<p><br>The membrane permeabilities depends on <code>(D/membrameThicknes)*membraneArea</code>, where D is Fick&apos;s diffusion coefficient.<code> </code></p>
 <p>................................</p>
-<p>Filtration example of tree particles</p>
+<h4><span style=\"color:#008000\">Filtration example of tree particles</span></h4>
 <p>ALP .. small penetrating anion</p>
 <p>P .. nonpenetrating protein with negative charge</p>
 <p>C .. small penetrating cation</p>
@@ -2633,6 +2650,18 @@ It works in two modes:
 <p>ALP_in/ALP_out = (1-KAdjustment) </p>
 <p>C_in/C_out = (1+KAdjustment) </p>
 <p>where KAdjustment = P/(2*C_in-P) and C_out=ALP_out=(2*C_in-P)/2, because ALP_in/ALP_out = (C_in - P)/C_out = (2C_in-2P)/(2C_in-P) = 1 - P/(2C_in-P) = 1-KAdjustment and C_in/C_out = (2C_in)/(2C_in-P) = 1 + P/(2C_in-P) = 1+KAdjustment .</p>
+<p><br><h4><span style=\"color:#008000\">Problem with different solubilities/Henry constants/ (kH1, kH2)</span></h4></p>
+<p>Equilibrated is chemical potential, not concentrations (c1,c2)!</p>
+<p>Equality of chemical potential is approximated by equality of partial pressure (p1,p2): </p>
+<p>p1=kH1*c1 </p>
+<p>p2=kH2*c2</p>
+<p><br>c2 = (kH1/kH2) * c1</p>
+<p>Henry constant between both side can be defined as<b> kH_T0 = kH1/kH2</b> at temperature T0, where kH1 is Henry constant in first side of membrane and kH2 is Henry constant in second side of membrane.</p>
+<h4><span style=\"color:#008000\">Temperature dependence of Henry constants by Van't Hoff</span></h4>
+<p><code>kH1&nbsp;=&nbsp;kH1_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C1*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p><code>kH2&nbsp;=&nbsp;kH2_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C2*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p>kH1/kH2 = <code>kH_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C *&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p>Specific&nbsp;constant&nbsp;for&nbsp;Van&apos;t&nbsp;Hoff&apos;s&nbsp;change&nbsp;of&nbsp;kH_T0 can be defined as<b> C = C1-C2</b>, where C1 is specific constant in first side of membrane and C2 is specific constant in second side of membrane.</p>
 </html>"));
     end Membrane;
   end Components;
