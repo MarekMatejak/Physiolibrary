@@ -2605,17 +2605,17 @@ It works in two modes:
         p=Permeabilities;
       end if;
 
-       kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
-       lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
-
+       //no accumulation of particles:
        particlesInside.q + particlesOutside.q = zeros(NumberOfParticles); //nothing lost inside
 
+       //electroneutrality:
        if abs(Charges.*Charges*p)<=Modelica.Constants.eps then
          KAdjustment=0; //no penetrating electrolytes => KAdjustment and electroneutrality of flux is not needed
        else
          Charges*particlesInside.q = 0; //electroneutrality of flux through membrane
        end if;
 
+       //diffusion, penetration, particle movement:
        for i in 1:NumberOfParticles loop
          if Charges[i]==0 then //normal diffusion
            particlesInside[i].q = p[i] * (particlesInside[i].conc - kH[i]*particlesOutside[i].conc);
@@ -2625,6 +2625,10 @@ It works in two modes:
            particlesInside[i].q = p[i] * (particlesInside[i].conc - (1-KAdjustment)*kH[i]*particlesOutside[i].conc);
          end if;
        end for;
+
+       //different solubilities:
+       kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
+       lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
 
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics), Documentation(info="<html>
