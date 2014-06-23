@@ -67,7 +67,8 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               smooth=Smooth.None,
               thickness=1)}),
         experiment(StopTime=60),
-Documentation(revisions="<html>
+        Documentation(revisions=
+                        "<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -280,7 +281,8 @@ Documentation(revisions="<html>
               smooth=Smooth.None,
               arrow={Arrow.None,Arrow.Filled})}),
         experiment(StopTime=86400),
-Documentation(revisions="<html>
+        Documentation(revisions=
+                        "<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -351,6 +353,8 @@ Documentation(revisions="<html>
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>The liquid volume of the penetrating solution is accumulated in &QUOT;OsmoticCell&QUOT;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
 </html>"));
     end OsmoticCell;
 
@@ -416,6 +420,8 @@ Documentation(revisions="<html>
       annotation (        Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>The main element of osmotic phenomena is a semipermeable membrane, which generates the flow of penetrating substances together with water. The connector on both sides is composed of molar concentration of non-penetrating solutes (osmolarity), and from penetrating volumetric flow (osmotic flux). Flow through the membrane depends on a pressure gradient, where pressure on both sides is calculated from the osmotic and hydraulic component.</p>
 </html>"));
     end Membrane;
 
