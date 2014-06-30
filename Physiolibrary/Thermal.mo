@@ -28,7 +28,8 @@ package Thermal
           thickness=1,
           smooth=Smooth.None));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
-Documentation(revisions="<html>
+          Documentation(revisions=
+                        "<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -71,7 +72,8 @@ Documentation(revisions="<html>
           thickness=1,
           smooth=Smooth.None));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
-Documentation(revisions="<html>
+          Documentation(revisions=
+                        "<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -293,9 +295,12 @@ Documentation(revisions="<html>
           thickness=1,
           smooth=Smooth.None));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
-Documentation(revisions="<html>
+          Documentation(revisions=
+                        "<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>This flow rate can affect how much heat leaves the body, especially in cold conditions. This is shown in this model, where modeling constant temperatures of the body core (37&deg;C) and skin (28&deg;C), with a skin blood flow of 170 g/min and blood specific heat of 0.92 kcal/(kg.K), gives heat losses of about 1.4 kcal/min.</p>
 </html>"));
     end SkinHeatTransferOnBloodFlow;
   end Examples;
@@ -332,7 +337,8 @@ Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
-<p>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
+<p>This class has two thermal connectors &ndash; one for liquid inside the radiator and another for the material around the radiator. Note that there is no liquid flow inside these connectors. The liquid flow can be described by a parameter or input to the instance. Together with the liquid specific heat, this flow determines the amount of heat flux from the liquid to a surrounding environment of different temperature. The calculation fulfills the ideal condition of microcirculation, where the outflowing blood has the same temperature as a tissue. This is really useful for modeling body thermal transfers, because the transfer of heat with blood flow is more significant than the typical rate of conduction through solid mass.&nbsp;</p>
+<p><br>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
 <p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
 <p>The environment temperature is the same as radiator output temperature q_out.T. </p>
 <p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
@@ -391,6 +397,8 @@ Documentation(revisions="<html>
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>The &QUOT;HeatAccumulation&QUOT; library class models heat accumulation in Physiolibrary. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &QUOT;relativeHeat&QUOT;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
 </html>"),
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}),
@@ -647,7 +655,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end HeatPort_a;
 
     connector HeatPort_b "Heat outflow"
@@ -670,7 +678,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end HeatPort_b;
 

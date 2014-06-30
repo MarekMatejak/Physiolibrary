@@ -1517,6 +1517,909 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Before Dymola silumation please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;2&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
 </html>"));
       end Hemoglobin_MKM_Adair;
+
+
+
+
+
+      package Develop
+        extends Modelica.Icons.UnderConstruction;
+
+        model QuaternaryForm
+          "Model of hemoglobin space-structure form (can be parametrized as relaxed or tensed)"
+          import Physiolibrary.Types.*;
+
+          parameter Concentration KA = 10^(-6.89+3)
+            "dissociation coefficient for acid chains of subunit";
+          parameter Concentration Kz = 10^(-7.25+3)
+            "valine 1 amino terminus dissociation coefficient of protonation to NH3+";
+          parameter Concentration Kc = 10^(-8.35+3)
+            "valine 1 amino terminus dissociation coefficient of protonation to NH3+";
+          parameter Concentration KO2 = 0.000671946
+            "oxygen dissociation coefficient of hemoglobin subunit";   //*7.875647668393782383419689119171e-5
+                                                                    //10.500001495896 7.8756465463794e-05
+
+          Physiolibrary.Chemical.Components.Speciation Speciation(
+              NumberOfSubunitTypes=12)
+            annotation (Placement(transformation(extent={{60,-20},{40,0}})));
+          Physiolibrary.Chemical.Components.Substance OxyHm[4](
+            solute_start=0,
+            Simulation=SimulationType.SteadyState,
+            isDependent=true) "Oxygenated subunit of hemoglobin tetramer"
+            annotation (Placement(transformation(extent={{-90,-68},{-70,-48}})));
+          Physiolibrary.Chemical.Components.ChemicalReaction oxygenation[4](nP=2, K=KO2)
+            annotation (Placement(transformation(extent={{-62,-68},{-42,-48}})));
+          Physiolibrary.Chemical.Components.Substance DeoxyHm[4](Simulation=
+                SimulationType.SteadyState, solute_start=1e-08)
+            "Deoxygenated subunit of hemoglobin tetramer"
+            annotation (Placement(transformation(extent={{-34,-68},{-14,-48}})));
+
+          Modelica.Blocks.Math.Add add[4] annotation (Placement(transformation(
+                extent={{-4,-4},{4,4}},
+                rotation=270,
+                origin={-58,-80})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a O2 annotation (Placement(
+                transformation(extent={{-26,-50},{-6,-30}}), iconTransformation(
+                  extent={{-26,-50},{-6,-30}})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a sForm annotation (
+              Placement(transformation(extent={{72,-54},{92,-34}}),
+                iconTransformation(extent={{68,-50},{88,-30}})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a H
+            "hydrogen ion (proton)" annotation (Placement(transformation(extent={{-32,
+                    18},{-12,38}}), iconTransformation(extent={{-32,18},{-12,38}})));
+          Physiolibrary.Chemical.Components.Substance A[4](                Simulation=
+                SimulationType.SteadyState, solute_start=1e-08)
+            "residual acid chains of hemoglobin subunits "
+            annotation (Placement(transformation(extent={{-24,-14},{-4,6}})));
+          Physiolibrary.Chemical.Components.Substance HA[4](
+            solute_start=0,
+            Simulation=SimulationType.SteadyState,
+            isDependent=true) "residual acid chains of hemoglobin subunits "
+            annotation (Placement(transformation(extent={{-90,-14},{-70,6}})));
+          Physiolibrary.Chemical.Components.ChemicalReaction protonation1[4](nP=2, K=KA)
+            annotation (Placement(transformation(extent={{-62,-14},{-42,6}})));
+          Modelica.Blocks.Math.Add add1[
+                                       4] annotation (Placement(transformation(
+                extent={{-4,-4},{4,4}},
+                rotation=270,
+                origin={-52,-24})));
+          Physiolibrary.Chemical.Components.Substance NH2[4](                Simulation=
+               SimulationType.SteadyState, solute_start=1e-08)
+            "Val1 terminal of hemoglobin subunits "
+            annotation (Placement(transformation(extent={{-10,52},{10,72}})));
+          Physiolibrary.Chemical.Components.Substance NH3[
+                                                         4](
+            solute_start=0,
+            Simulation=SimulationType.SteadyState,
+            isDependent=true) "Val1 terminal of hemoglobin subunits "
+            annotation (Placement(transformation(extent={{-86,52},{-66,72}})));
+          Physiolibrary.Chemical.Components.ChemicalReaction protonation2[4](
+                                                                            nP=2, K=Kz)
+            annotation (Placement(transformation(extent={{-58,52},{-38,72}})));
+          Modelica.Blocks.Math.Add3 add2[
+                                       4] annotation (Placement(transformation(
+                extent={{-4,-4},{4,4}},
+                rotation=270,
+                origin={0,40})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a CO2 annotation (
+              Placement(transformation(extent={{-6,76},{14,96}}),
+                iconTransformation(extent={{-6,76},{14,96}})));
+          Physiolibrary.Chemical.Components.ChemicalReaction carboxylation[4](
+            nP=2,
+            nS=2,
+            K=Kc) "Carboxylation of Valin1 amino terminus of hemogloni subunit"
+            annotation (Placement(transformation(extent={{36,52},{56,72}})));
+          Physiolibrary.Chemical.Components.Substance NHCOO[4](Simulation=
+                SimulationType.SteadyState, solute_start=1e-08)
+            "Val1 terminal of hemoglobin subunits "
+            annotation (Placement(transformation(extent={{66,52},{86,72}})));
+          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput tAmount(start=1e-08)
+            annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={50,-86}), iconTransformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={40,-90})));
+          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput protonation annotation (
+              Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={100,14}), iconTransformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-80,-90})));
+          Modelica.Blocks.Math.Sum add3(k=cat(
+                1,
+                -ones(4),
+                ones(8)), nin=12)
+            annotation (Placement(transformation(extent={{78,10},{86,18}})));
+        equation
+
+          connect(OxyHm.solute, add.u2) annotation (Line(
+              points={{-80,-68},{-80,-74},{-60.4,-74},{-60.4,-75.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(DeoxyHm.solute, add.u1) annotation (Line(
+              points={{-24,-68},{-26,-68},{-26,-75.2},{-55.6,-75.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(OxyHm.q_out, oxygenation.substrates[1]) annotation (Line(
+              points={{-80,-58},{-62,-58}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(oxygenation.products[1], DeoxyHm.q_out) annotation (Line(
+              points={{-42,-58.5},{-34,-58.5},{-34,-58},{-24,-58}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(Speciation.species, sForm) annotation (Line(
+              points={{40,-18},{40,-44},{82,-44}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(oxygenation[1].products[2], O2) annotation (Line(
+              points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(oxygenation[2].products[2], O2) annotation (Line(
+              points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(oxygenation[3].products[2], O2) annotation (Line(
+              points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(oxygenation[4].products[2], O2) annotation (Line(
+              points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HA.q_out, protonation1.substrates[1]) annotation (Line(
+              points={{-80,-4},{-62,-4}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation1.products[1], A.q_out) annotation (Line(
+              points={{-42,-4.5},{-42,-4},{-14,-4}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(H, protonation1[1].products[2]) annotation (Line(
+              points={{-22,28},{-32,28},{-32,-3.5},{-42,-3.5}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation1[2].products[2], H) annotation (Line(
+              points={{-42,-3.5},{-32,-3.5},{-32,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation1[3].products[2], H) annotation (Line(
+              points={{-42,-3.5},{-32,-3.5},{-32,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation1[4].products[2], H) annotation (Line(
+              points={{-42,-3.5},{-32,-3.5},{-32,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HA.solute, add1.u2) annotation (Line(
+              points={{-80,-14},{-80,-19.2},{-54.4,-19.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(A.solute, add1.u1) annotation (Line(
+              points={{-14,-14},{-14,-16},{-49.6,-16},{-49.6,-19.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(DeoxyHm.q_out, Speciation.subunitSpecies[1:4]) annotation (Line(
+              points={{-24,-58},{-24,-52},{28,-52},{28,0},{50,0},{50,-0.416667}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(A.q_out, Speciation.subunitSpecies[5:8]) annotation (Line(
+              points={{-14,-4},{-14,0.25},{50,0.25}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(add.y, Speciation.totalSubunitAmount[1:4]) annotation (Line(
+              points={{-58,-84.4},{-58,-86},{14,-86},{14,-10.8333},{42,-10.8333}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, Speciation.totalSubunitAmount[5:8]) annotation (Line(
+              points={{-52,-28.4},{-52,-28},{12,-28},{12,-9.5},{42,-9.5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NH3.q_out, protonation2.substrates[1]) annotation (Line(
+              points={{-76,62},{-58,62}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation2.products[1], NH2.q_out) annotation (Line(
+              points={{-38,61.5},{0,61.5},{0,62}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(H, protonation2[1].products[2]) annotation (Line(
+              points={{-22,28},{-22,62.5},{-38,62.5}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation2[2].products[2], H) annotation (Line(
+              points={{-38,62.5},{-22,62.5},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation2[3].products[2], H) annotation (Line(
+              points={{-38,62.5},{-22,62.5},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(protonation2[4].products[2], H) annotation (Line(
+              points={{-38,62.5},{-22,62.5},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(add2.y, Speciation.totalSubunitAmount[9:12]) annotation (Line(
+              points={{0,35.6},{0,32},{12,32},{12,-8.16667},{42,-8.16667}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NH2.q_out, Speciation.subunitSpecies[9:12]) annotation (Line(
+              points={{0,62},{0,58},{28,58},{28,0.916667},{50,0.916667}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(NH2.q_out, carboxylation.substrates[1]) annotation (Line(
+              points={{0,62},{0,61.5},{36,61.5}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation.products[1], NHCOO.q_out) annotation (Line(
+              points={{56,61.5},{76,61.5},{76,62}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[1].products[2], H) annotation (Line(
+              points={{56,62.5},{62,62.5},{62,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[1].substrates[2], CO2) annotation (Line(
+              points={{36,62.5},{26,62.5},{26,86},{4,86}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[2].products[2], H) annotation (Line(
+              points={{56,62.5},{62,62.5},{62,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[2].substrates[2], CO2) annotation (Line(
+              points={{36,62.5},{26,62.5},{26,86},{4,86}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[3].products[2], H) annotation (Line(
+              points={{56,62.5},{62,62.5},{62,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[3].substrates[2], CO2) annotation (Line(
+              points={{36,62.5},{26,62.5},{26,86},{4,86}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[4].products[2], H) annotation (Line(
+              points={{56,62.5},{62,62.5},{62,28},{-22,28}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(carboxylation[4].substrates[2], CO2) annotation (Line(
+              points={{36,62.5},{26,62.5},{26,86},{4,86}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(NH3.solute, add2.u3) annotation (Line(
+              points={{-76,52},{-76,44.8},{-3.2,44.8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NH2.solute, add2.u2) annotation (Line(
+              points={{0,52},{0,44.8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NHCOO.solute, add2.u1) annotation (Line(
+              points={{76,52},{76,44.8},{3.2,44.8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Speciation.totalSubsystemAmount, tAmount) annotation (Line(
+              points={{50,-18},{50,-86}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(HA.solute, add3.u[9:12]) annotation (Line(
+              points={{-80,-14},{-80,-20},{-98,-20},{-98,14.7333},{77.2,14.7333}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NH3.solute, add3.u[5:8]) annotation (Line(
+              points={{-76,52},{-76,14.2},{77.2,14.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(NHCOO.solute, add3.u[1:4]) annotation (Line(
+              points={{76,52},{76,13.6667},{77.2,13.6667}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add3.y, protonation) annotation (Line(
+              points={{86.4,14},{100,14}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics={
+                Ellipse(
+                  extent={{-94,-44},{4,-80}},
+                  lineColor={127,0,0},
+                  fillColor={255,170,170},
+                  fillPattern=FillPattern.Solid),
+                Ellipse(
+                  extent={{-98,16},{8,-28}},
+                  lineColor={0,0,255},
+                  fillColor={179,254,255},
+                  fillPattern=FillPattern.Solid),
+                Ellipse(
+                  extent={{-94,80},{98,42}},
+                  lineColor={127,127,0},
+                  fillColor={213,255,170},
+                  fillPattern=FillPattern.Solid)}),
+            Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",   info="<html>
+<p>[1] Morrow J, Matthew J, Wittebort R, Gurd F. Carbon 13 resonances of 13CO2 carbamino adducts of alpha and beta chains in human adult hemoglobin. Journal of Biological Chemistry 1976;251:477-84.</p>
+<p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
+<p>[3] Antonini E, Wyman J, Brunori M, Fronticelli C, Bucci E, Rossi-Fanelli A. Studies on the relations between molecular and functional properties of hemoglobin V. The influence of temperature on the Bohr effect in human and in horse hemoglobin. Journal of Biological Chemistry 1965;240:1096-103.</p>
+</html>"),  Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                    100}}),
+                graphics={
+                Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,127}),
+                Ellipse(
+                  extent={{-94,78},{98,40}},
+                  lineColor={127,127,0},
+                  fillColor={213,255,170},
+                  fillPattern=FillPattern.Solid),
+                Ellipse(
+                  extent={{-98,14},{8,-30}},
+                  lineColor={0,0,255},
+                  fillColor={179,254,255},
+                  fillPattern=FillPattern.Solid),
+                Ellipse(
+                  extent={{-94,-46},{4,-82}},
+                  lineColor={127,0,0},
+                  fillColor={255,170,170},
+                  fillPattern=FillPattern.Solid),
+                Text(
+                  extent={{-240,-110},{40,-160}},
+                  lineColor={0,0,0},
+                  textString="%name")}));
+        end QuaternaryForm;
+
+        model Hemoglobin2 "Hemoglobin model"
+          import Physiolibrary.Types.*;
+          import Physiolibrary;
+
+         extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+                                                  Simulation=SimulationType.SteadyState);
+
+        //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
+          parameter Fraction L = 7.0529*10^6
+            "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
+          parameter Fraction Ln = 26884.8
+            "quaternaly form ratio for specific stripped species of hemoglobin tetramer";
+                                         //L*0.00381188                                                                     //"=L*(fnT/fnR)^4 for pH=7.2464 and CO2=0";
+          parameter Fraction c = 0.00431555
+            "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
+          parameter Concentration KR = 0.000671946
+            "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
+                                                                    //10.500001495896 7.8756465463794e-05
+
+          parameter Concentration KT=KR/c
+            "oxygen dissociation on tensed(T) hemoglobin subunit";
+
+          parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
+
+          Physiolibrary.Chemical.Components.ChemicalReaction
+                                                    quaternaryForm(K=Ln)
+            annotation (Placement(transformation(extent={{-16,26},{4,46}})));
+
+          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.QuaternaryForm R(
+            KO2=KR,
+            KA=10^(-6.89 + 3),
+            Kz=10^(-7.25 + 3),
+            Kc=10^(-8.35 + 3))
+            annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
+          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.QuaternaryForm T(
+            KO2=KT,
+            KA=10^(-7.52 + 3),
+            Kz=10^(-7.73 + 3),
+            Kc=10^(-7.54 + 3))
+            annotation (Placement(transformation(extent={{32,30},{12,50}})));
+          Physiolibrary.SteadyStates.Components.MolarConservationLaw totalHb(
+            n=2,
+            Total=totalAmountOfHemoglobin,
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={0,-8})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a H "H+ (proton)"
+            annotation (Placement(transformation(extent={{6,66},{26,86}}),
+                iconTransformation(extent={{90,90},{110,110}})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+                                    CO2 "carbon dioxide"
+                                        annotation (Placement(transformation(extent={{-22,54},
+                    {-2,74}}),     iconTransformation(extent={{14,40},{34,60}})));
+          Physiolibrary.Chemical.Interfaces.ChemicalPort_a O2 "oxygen"
+            annotation (Placement(transformation(extent={{-54,78},{-34,98}}),
+                iconTransformation(extent={{90,-10},{110,10}})));
+          Physiolibrary.Types.RealIO.FractionOutput          protonation annotation (
+              Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={98,-76}), iconTransformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-80,-90})));
+          Modelica.Blocks.Math.Add add(k1=1/4, k2=1/4)
+            annotation (Placement(transformation(extent={{38,-58},{48,-48}})));
+          Modelica.Blocks.Math.Division division
+            annotation (Placement(transformation(extent={{62,-86},{82,-66}})));
+        equation
+
+          connect(R.CO2, CO2) annotation (Line(
+              points={{-29.6,48.6},{-29.6,64},{-12,64}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(CO2, T.CO2) annotation (Line(
+              points={{-12,64},{22,64},{22,48},{21.6,48},{21.6,48.6}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+
+          connect(R.O2, O2) annotation (Line(
+              points={{-31.6,36},{-44,36},{-44,88}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(R.H, H) annotation (Line(
+              points={{-32.2,42.8},{-32.2,42},{-34,42},{-34,76},{16,76}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(R.sForm, quaternaryForm.substrates[1]) annotation (Line(
+              points={{-22.2,36},{-16,36}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(T.O2, O2) annotation (Line(
+              points={{23.6,36},{36,36},{36,88},{-44,88}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(T.H, H) annotation (Line(
+              points={{24.2,42.8},{26,42.8},{26,76},{16,76}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(T.sForm, quaternaryForm.products[1]) annotation (Line(
+              points={{14.2,36},{4,36}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(R.tAmount, totalHb.fragment[1]) annotation (Line(
+              points={{-26,31},{-26,8},{-4,8},{-4,2},{-5,2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(T.tAmount, totalHb.fragment[2]) annotation (Line(
+              points={{18,31},{18,8},{-3,8},{-3,2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(T.protonation, add.u1) annotation (Line(
+              points={{30,31},{30,31},{30,-50},{37,-50}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(R.protonation, add.u2) annotation (Line(
+              points={{-38,31},{-38,-56},{37,-56}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(division.u2, totalHb.totalAmountOfSubstance) annotation (Line(
+              points={{60,-82},{-4,-82},{-4,-20},{-4,-20},{-4,-18},{-4,-18}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(division.u1, add.y) annotation (Line(
+              points={{60,-70},{56,-70},{56,-53},{48.5,-53}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(protonation, division.y) annotation (Line(
+              points={{98,-76},{83,-76}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+             Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",   info="<html>
+<p>[1] Monod J, Wyman J, Changeux J-P. On the nature of allosteric transitions: a plausible model. Journal of Molecular Biology 1965;12:88-118.</p>
+</html>"));
+        end Hemoglobin2;
+
+        model Hemoglobin_oxygenation "Hemoglobin oxygenation experiment"
+          import Physiolibrary.Types.*;
+          import Physiolibrary;
+
+         extends Modelica.Icons.Example;
+
+          Physiolibrary.Chemical.Components.Substance
+                              oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
+                *7.875647668393782383419689119171e-5)
+            annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
+          Modelica.Blocks.Sources.Clock clock(offset=1e-06)
+            annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
+          Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            usePartialPressureInput=true,
+            T=310.15) annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={6,60})));
+          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(kH_T0(
+                displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736, T=310.15)
+            annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={6,32})));
+          Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
+            q_out(conc(nominal=10^(-7.4 + 3))),
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Conc=10^(-7.2464 + 3),
+            isIsolatedInSteadyState=false)
+                                   annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=180,
+                origin={62,-10})));
+          Physiolibrary.Chemical.Sources.UnlimitedGasStorage
+                                      CO2_gas(
+              Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              PartialPressure=5332.8954966)
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-34,56})));
+          Physiolibrary.Chemical.Components.GasSolubility
+                                   gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+                 0.81805576878885)
+            annotation (Placement(transformation(extent={{-44,20},{-24,40}})));
+          Physiolibrary.Chemical.Components.Substance
+                               CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=true)
+            annotation (Placement(transformation(extent={{-44,-4},{-24,16}})));
+          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.Hemoglobin2 hemoglobin
+            annotation (Placement(transformation(extent={{-26,-74},{-6,-54}})));
+        equation
+
+          connect(partialPressure1.q_out, oxygen_in_air.q_out)
+                                                    annotation (Line(
+              points={{6,42},{6,50}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(partialPressure1.q_in, oxygen_unbound.q_out) annotation (Line(
+              points={{6,24},{6,8}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(clock.y, oxygen_in_air.partialPressure) annotation (Line(
+              points={{-19,84},{6,84},{6,70}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(gasSolubility.q_in,CO2_liquid. q_out) annotation (Line(
+              points={{-34,22},{-34,6}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(CO2_gas.q_out,gasSolubility. q_out) annotation (Line(
+              points={{-34,46},{-34,40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(hemoglobin.CO2, CO2_liquid.q_out) annotation (Line(
+              points={{-13.6,-59},{-13.6,-23.5},{-34,-23.5},{-34,6}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(hemoglobin.H, pH.q_out) annotation (Line(
+              points={{-6,-54},{26,-54},{26,-10},{52,-10}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(hemoglobin.O2, oxygen_unbound.q_out) annotation (Line(
+              points={{-6,-64},{-10,-64},{-10,8},{6,8}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+            experiment(StopTime=18000),
+            __Dymola_experimentSetupOutput,
+            Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",   info="<html>
+<p>[1] Severinghaus JW. Simple, accurate equations for human blood O2 dissociation computations. Journal of Applied Physiology 1979;46:599-602.</p>
+</html>"));
+        end Hemoglobin_oxygenation;
+
+        model Hemoglobin_titration "Hemoglobin titration experiment"
+          import Physiolibrary.Types.*;
+          import Physiolibrary;
+
+         extends Modelica.Icons.Example;
+
+         extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+                                                  Simulation=SimulationType.SteadyState);
+
+        //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
+
+          parameter Fraction L = 7.0529*10^6
+            "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
+          parameter Fraction Ln = 26884.8
+            "quaternaly form ratio for specific stripped species of hemoglobin tetramer";
+                                         //L*0.00381188                                                                     //"=L*(fnT/fnR)^4 for pH=7.2464 and CO2=0";
+          parameter Fraction c = 0.00431555
+            "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
+          parameter Concentration KR = 0.000671946
+            "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
+                                                                    //10.500001495896 7.8756465463794e-05
+
+          parameter Concentration KT=KR/c
+            "oxygen dissociation on tensed(T) hemoglobin subunit";
+
+          parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
+
+          Physiolibrary.Chemical.Components.Substance
+                              oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
+                *7.875647668393782383419689119171e-5)
+            annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
+          Modelica.Blocks.Sources.Clock clock(offset=6.7)
+            annotation (Placement(transformation(extent={{30,34},{50,54}})));
+          Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            usePartialPressureInput=false,
+            PartialPressure=0,
+            T=310.15) annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={6,60})));
+          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(T=310.15,
+              kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.024913516594933)
+            annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={6,32})));
+          Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
+            q_out(conc(nominal=10^(-7.4 + 3))),
+            isIsolatedInSteadyState=false,
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Conc=10^(-7.2464 + 3),
+            useConcentrationInput=true) annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=180,
+                origin={62,-10})));
+          Physiolibrary.Chemical.Sources.UnlimitedGasStorage
+                                      CO2_gas(
+              Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            usePartialPressureInput=false,
+            PartialPressure=0)
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-34,56})));
+          Physiolibrary.Chemical.Components.GasSolubility
+                                   gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
+                 0.81805576878885)
+            annotation (Placement(transformation(extent={{-44,20},{-24,40}})));
+          Physiolibrary.Chemical.Components.Substance
+                               CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=true)
+            annotation (Placement(transformation(extent={{-44,-4},{-24,16}})));
+          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.Hemoglobin2
+            deoxyhemoglobin
+            annotation (Placement(transformation(extent={{-22,-68},{-2,-48}})));
+          Physiolibrary.Types.RealIO.FractionOutput protonation
+            "allosteric-dependent protonation"
+            annotation (Placement(transformation(extent={{68,-76},{88,-56}})));
+          Physiolibrary.Blocks.Math.Exponentiation pow annotation (Placement(
+                transformation(
+                extent={{-4,-4},{4,4}},
+                rotation=270,
+                origin={92,38})));
+          Modelica.Blocks.Math.Gain gain(k=-1)
+            annotation (Placement(transformation(extent={{62,34},{82,54}})));
+          Modelica.Blocks.Math.Gain toMolPerM3(k=1000)
+            "from mol/liter to mmol/liter (=mol/m3)" annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={92,12})));
+        equation
+
+          connect(partialPressure1.q_out, oxygen_in_air.q_out)
+                                                    annotation (Line(
+              points={{6,42},{6,50}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(partialPressure1.q_in, oxygen_unbound.q_out) annotation (Line(
+              points={{6,24},{6,8}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(gasSolubility.q_in,CO2_liquid. q_out) annotation (Line(
+              points={{-34,22},{-34,6}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(CO2_gas.q_out,gasSolubility. q_out) annotation (Line(
+              points={{-34,46},{-34,40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(deoxyhemoglobin.CO2, CO2_liquid.q_out) annotation (Line(
+              points={{-9.6,-53},{-9.6,-23.5},{-34,-23.5},{-34,6}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(clock.y, gain.u) annotation (Line(
+              points={{51,44},{60,44}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(gain.y, pow.exponent) annotation (Line(
+              points={{83,44},{90,44},{90,42},{89.6,42}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(pH.concentration, toMolPerM3.y) annotation (Line(
+              points={{72,-10},{92,-10},{92,1}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(toMolPerM3.u, pow.y) annotation (Line(
+              points={{92,24},{92,33.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(deoxyhemoglobin.H, pH.q_out) annotation (Line(
+              points={{-2,-48},{26,-48},{26,-10},{52,-10}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(deoxyhemoglobin.O2, oxygen_unbound.q_out) annotation (Line(
+              points={{-2,-58},{-6,-58},{-6,8},{6,8}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(deoxyhemoglobin.protonation, protonation) annotation (Line(
+              points={{-20,-67},{-20,-66},{78,-66}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+            experiment(StopTime=1.3),
+            __Dymola_experimentSetupOutput,
+            Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",   info="<html>
+<p>[1] Siggaard-Andersen O, Garby L. The Bohr effect and the Haldane effect. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1973;31:1-8.</p>
+</html>"));
+        end Hemoglobin_titration;
+
+        model Hemoglobin_titration_shifts
+          "Hemoglobin titration shift caused by full deoxygenation (Bohr protons binding)"
+          extends Modelica.Icons.Example;
+
+          Develop.Hemoglobin_titration hemoglobin_titration
+            annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
+          Develop.Hemoglobin_titration hemoglobin_titration1(CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 1470))
+            annotation (Placement(transformation(extent={{-28,60},{-8,80}})));
+          Develop.Hemoglobin_titration hemoglobin_titration2(CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 4530))
+            annotation (Placement(transformation(extent={{0,60},{20,80}})));
+          Develop.Hemoglobin_titration hemoglobin_titration3(CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 10670))
+            annotation (Placement(transformation(extent={{30,60},{50,80}})));
+          Develop.Hemoglobin_titration hemoglobin_titration4(CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 26660))
+            annotation (Placement(transformation(extent={{60,60},{80,80}})));
+          Develop.Hemoglobin_titration hemoglobin_titration5(oxygen_in_air(
+                PartialPressure=19998.35811225))
+            annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
+          Develop.Hemoglobin_titration hemoglobin_titration6(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
+                   1470))
+            annotation (Placement(transformation(extent={{-28,-26},{-8,-6}})));
+          Develop.Hemoglobin_titration hemoglobin_titration7(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
+                   4530))
+            annotation (Placement(transformation(extent={{0,-26},{20,-6}})));
+          Develop.Hemoglobin_titration hemoglobin_titration8(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
+                   10670))
+            annotation (Placement(transformation(extent={{30,-26},{50,-6}})));
+          Develop.Hemoglobin_titration hemoglobin_titration9(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
+                   26660))
+            annotation (Placement(transformation(extent={{60,-26},{80,-6}})));
+          Modelica.Blocks.Math.Feedback dH
+            annotation (Placement(transformation(extent={{-54,22},{-34,42}})));
+          Modelica.Blocks.Math.Feedback dH1
+            annotation (Placement(transformation(extent={{-26,22},{-6,42}})));
+          Modelica.Blocks.Math.Feedback dH2
+            annotation (Placement(transformation(extent={{10,22},{30,42}})));
+          Modelica.Blocks.Math.Feedback dH3
+            annotation (Placement(transformation(extent={{36,22},{56,42}})));
+          Modelica.Blocks.Math.Feedback dH4
+            annotation (Placement(transformation(extent={{70,20},{90,40}})));
+        equation
+          connect(hemoglobin_titration.protonation, dH.u1) annotation (Line(
+              points={{-42.2,63.4},{-42.2,47.7},{-52,47.7},{-52,32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(dH.u2, hemoglobin_titration5.protonation) annotation (Line(
+              points={{-44,24},{-42,24},{-42,-22.6},{-42.2,-22.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(hemoglobin_titration1.protonation, dH1.u1) annotation (Line(
+              points={{-10.2,63.4},{-10.2,47.7},{-24,47.7},{-24,32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(dH1.u2, hemoglobin_titration6.protonation) annotation (Line(
+              points={{-16,24},{-14,24},{-14,-22.6},{-10.2,-22.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(dH2.u2, hemoglobin_titration7.protonation) annotation (Line(
+              points={{20,24},{20,-22.6},{17.8,-22.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(hemoglobin_titration2.protonation, dH2.u1) annotation (Line(
+              points={{17.8,63.4},{17.8,47.7},{12,47.7},{12,32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(hemoglobin_titration3.protonation, dH3.u1) annotation (Line(
+              points={{47.8,63.4},{47.8,46.7},{38,46.7},{38,32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(dH3.u2, hemoglobin_titration8.protonation) annotation (Line(
+              points={{46,24},{47.8,24},{47.8,-22.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(hemoglobin_titration4.protonation, dH4.u1) annotation (Line(
+              points={{77.8,63.4},{77.8,46.7},{72,46.7},{72,30}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(dH4.u2, hemoglobin_titration9.protonation) annotation (Line(
+              points={{80,22},{80,-22.6},{77.8,-22.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (
+            Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+            experiment(StopTime=1.1),
+            __Dymola_experimentSetupOutput,
+            Documentation(info="<html>
+<p>[1] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+</html>"));
+        end Hemoglobin_titration_shifts;
+      end Develop;
     end Hemoglobin;
 
     package AcidBase
@@ -2059,266 +2962,272 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                           graphics));
       end Phosphate;
 
-      model PlasmaAcidBase
 
-        Components.Substance H3O(
-          q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          solute_start=10^(-7.4 + 3),
-          isDependent=true) "hydrogen ions activity" annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=0,
-              origin={38,40})));
 
-        Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
-          each n=2,
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          each Total=0.00066)
-          annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
-        SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          useTotalInput=true,
-          NumberOfParticles=n + 3,
-          Charges=-cat(
-              1,
-              {1,1,2},
-              ones(n)),
-          Total=6425.92363734) "strong ion difference of solution"
-          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-          "from elementary charge to to electric charge, which is needed in system"
-                                              annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={80,-74})));
-        Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
-          "strong ions difference with respect to albumin charge shift"
-          annotation (Placement(transformation(extent={{72,-48},{92,-28}})));
+      class Develop
+        extends Modelica.Icons.UnderConstruction;
+        model PlasmaAcidBase
 
-        parameter Physiolibrary.Types.Concentration totalPO4=0.00115
-          "Total phosphate concentration";
-        parameter Physiolibrary.Types.Concentration totalAlb=0.00066
-          "Total albumin concentration";
+          Components.Substance H3O(
+            q_out(conc(nominal=10^(-7.4 + 3))),
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=10^(-7.4 + 3),
+            isDependent=true) "hydrogen ions activity" annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={38,40})));
 
-        parameter Integer n=218 "Number of weak acid group in albumin molecule";
-        parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
-          "acid dissociation constants";
+          Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
+            each n=2,
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            each Total=0.00066)
+            annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+          SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            useTotalInput=true,
+            NumberOfParticles=n + 3,
+            Charges=-cat(
+                1,
+                {1,1,2},
+                ones(n)),
+            Total=6425.92363734) "strong ion difference of solution"
+            annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
+          Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+            "from elementary charge to to electric charge, which is needed in system"
+                                                annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=180,
+                origin={80,-74})));
+          Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
+            "strong ions difference with respect to albumin charge shift"
+            annotation (Placement(transformation(extent={{72,-48},{92,-28}})));
 
-        Physiolibrary.Chemical.Components.Substance A[n](
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          isDependent=true,
-          each solute_start=0.00033) "deprotonated acid groups"
-          annotation (Placement(transformation(extent={{-10,14},{10,34}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction react[n](
-          each nP=2,
-          K=fill(10.0, n) .^ (-pKAs .+ 3))
-          annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
+          parameter Physiolibrary.Types.Concentration totalPO4=0.00115
+            "Total phosphate concentration";
+          parameter Physiolibrary.Types.Concentration totalAlb=0.00066
+            "Total albumin concentration";
 
-        Physiolibrary.Chemical.Components.Substance HA[n](
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
-            solute_start=0.00033) "protonated acid groups"
-          annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
+          parameter Integer n=218
+            "Number of weak acid group in albumin molecule";
+          parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
+            "acid dissociation constants";
 
-        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true)
-          annotation (Placement(transformation(extent={{-76,64},{-56,84}})));
-        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-          annotation (Placement(transformation(extent={{48,70},{68,90}})));
-        Interfaces.ChemicalPort_a substances[3]
-          "{free dissolved CO2, bicarbonate, chloride}"
-          annotation (Placement(transformation(extent={{-10,70},{10,90}})));
-        Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            solute_start=0.0005)
-          annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
-        Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
-          annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
-        Components.Substance                        HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            solute_start=0.0006)
-          annotation (Placement(transformation(extent={{-2,-54},{18,-34}})));
-        SteadyStates.Components.MolarConservationLaw               tP04(
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          each Total=totalPO4*1,
-          each n=2)
-          annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
-      equation
-        connect(react.products[1], A.q_out) annotation (Line(
-            points={{-24,25.5},{-12,25.5},{-12,24},{0,24}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        for i in 1:n loop
-          connect(react[i].products[2], H3O.q_out) annotation (Line(
-              points={{-24,26.5},{-14,26.5},{-14,40},{38,40}},
+          Physiolibrary.Chemical.Components.Substance A[n](
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true,
+            each solute_start=0.00033) "deprotonated acid groups"
+            annotation (Placement(transformation(extent={{-10,14},{10,34}})));
+          Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+            each nP=2,
+            K=fill(10.0, n) .^ (-pKAs .+ 3))
+            annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
+
+          Physiolibrary.Chemical.Components.Substance HA[n](
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+              solute_start=0.00033) "protonated acid groups"
+            annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
+
+          Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=true)
+            annotation (Placement(transformation(extent={{-76,64},{-56,84}})));
+          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+            annotation (Placement(transformation(extent={{48,70},{68,90}})));
+          Interfaces.ChemicalPort_a substances[3]
+            "{free dissolved CO2, bicarbonate, chloride}"
+            annotation (Placement(transformation(extent={{-10,70},{10,90}})));
+          Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              solute_start=0.0005)
+            annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
+          Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
+            annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
+          Components.Substance                        HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              solute_start=0.0006)
+            annotation (Placement(transformation(extent={{-2,-54},{18,-34}})));
+          SteadyStates.Components.MolarConservationLaw               tP04(
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            each Total=totalPO4*1,
+            each n=2)
+            annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
+        equation
+          connect(react.products[1], A.q_out) annotation (Line(
+              points={{-24,25.5},{-12,25.5},{-12,24},{0,24}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-        end for;
-        connect(HA.q_out, react.substrates[1]) annotation (Line(
-            points={{-66,26},{-44,26}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(A.solute, tAlb.fragment[1]) annotation (Line(
-            points={{0,14},{0,10},{-54,10},{-54,-5},{-40,-5}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HA.solute, tAlb.fragment[2]) annotation (Line(
-            points={{-66,16},{-66,-4},{-40,-4},{-40,-3}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(SID.y,toColoumn. u) annotation (Line(
-            points={{93,-38},{100,-38},{100,-74},{92,-74}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HA.solute, electroneutrality.fragment) annotation (Line(
-            points={{-66,16},{-66,-88},{46,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(toColoumn.y, electroneutrality.total) annotation (Line(
-            points={{69,-74},{56,-74},{56,-76}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(substances[1], CO2_liquid.q_out) annotation (Line(
-            points={{0,73.3333},{0,74},{-66,74}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(HCO3.q_out, substances[2]) annotation (Line(
-            points={{58,80},{0,80}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(H2PO4.q_out, phosphateAcidification.substrates[1]) annotation (Line(
-            points={{-52,-44},{-32,-44}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(phosphateAcidification.products[1], HPO4.q_out) annotation (Line(
-            points={{-12,-44.5},{-2,-44.5},{-2,-44},{8,-44}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(H2PO4.solute, tP04.fragment[1]) annotation (Line(
-            points={{-52,-54},{-52,-75},{-28,-75}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HPO4.solute, tP04.fragment[2]) annotation (Line(
-            points={{8,-54},{8,-60},{-40,-60},{-40,-73},{-28,-73}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(phosphateAcidification.products[2], H3O.q_out) annotation (Line(
-            points={{-12,-43.5},{-4,-43.5},{-4,-28},{20,-28},{20,40},{38,40}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
-            points={{58,70},{58,-62},{32,-62},{32,-88},{46,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(H2PO4.solute, electroneutrality.fragment[2]) annotation (Line(
-            points={{-52,-54},{-52,-86},{46,-86},{46,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
-            points={{8,-54},{8,-88},{46,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (                                      Diagram(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}},
-          experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+          for i in 1:n loop
+            connect(react[i].products[2], H3O.q_out) annotation (Line(
+                points={{-24,26.5},{-14,26.5},{-14,40},{38,40}},
+                color={107,45,134},
+                thickness=1,
+                smooth=Smooth.None));
+          end for;
+          connect(HA.q_out, react.substrates[1]) annotation (Line(
+              points={{-66,26},{-44,26}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(A.solute, tAlb.fragment[1]) annotation (Line(
+              points={{0,14},{0,10},{-54,10},{-54,-5},{-40,-5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(HA.solute, tAlb.fragment[2]) annotation (Line(
+              points={{-66,16},{-66,-4},{-40,-4},{-40,-3}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(SID.y,toColoumn. u) annotation (Line(
+              points={{93,-38},{100,-38},{100,-74},{92,-74}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(HA.solute, electroneutrality.fragment) annotation (Line(
+              points={{-66,16},{-66,-88},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(toColoumn.y, electroneutrality.total) annotation (Line(
+              points={{69,-74},{56,-74},{56,-76}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(substances[1], CO2_liquid.q_out) annotation (Line(
+              points={{0,73.3333},{0,74},{-66,74}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HCO3.q_out, substances[2]) annotation (Line(
+              points={{58,80},{0,80}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(H2PO4.q_out, phosphateAcidification.substrates[1]) annotation (Line(
+              points={{-52,-44},{-32,-44}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(phosphateAcidification.products[1], HPO4.q_out) annotation (Line(
+              points={{-12,-44.5},{-2,-44.5},{-2,-44},{8,-44}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(H2PO4.solute, tP04.fragment[1]) annotation (Line(
+              points={{-52,-54},{-52,-75},{-28,-75}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(HPO4.solute, tP04.fragment[2]) annotation (Line(
+              points={{8,-54},{8,-60},{-40,-60},{-40,-73},{-28,-73}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(phosphateAcidification.products[2], H3O.q_out) annotation (Line(
+              points={{-12,-43.5},{-4,-43.5},{-4,-28},{20,-28},{20,40},{38,40}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
+              points={{58,70},{58,-62},{32,-62},{32,-88},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(H2PO4.solute, electroneutrality.fragment[2]) annotation (Line(
+              points={{-52,-54},{-52,-86},{46,-86},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
+              points={{8,-54},{8,-88},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (                                      Diagram(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-100,-100},{100,100}},
+            experiment(StopTime=4)), graphics), Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",       info="<html>
+</html>",         info="<html>
 <pre><b>plotExpression(apply(-log10(AlbuminTitration.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
 <p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
 <p><br>Data and model is described in</p>
 <p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-</html>"),experiment(
-            StopTime=0.0235,
-            __Dymola_fixedstepsize=5e-005,
-            __Dymola_Algorithm="Euler"),
-          __Dymola_experimentSetupOutput);
-      end PlasmaAcidBase;
+</html>"),  experiment(
+              StopTime=0.0235,
+              __Dymola_fixedstepsize=5e-005,
+              __Dymola_Algorithm="Euler"),
+            __Dymola_experimentSetupOutput);
+        end PlasmaAcidBase;
 
-      model ErythrocyteAcidBase
-        Components.Substance H3O(
-          q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          solute_start=10^(-7.4 + 3),
-          isDependent=true) "hydrogen ions activity" annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=0,
-              origin={-12,36})));
-        Components.ChemicalReaction HendersonHasselbalch(
-          nP=2,
-          dH=15.13,
-          K=10^(-6.103 + 3),
-          nS=1)
-          annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
-        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true)
-          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-          annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
-        Interfaces.ChemicalPort_a substances[3]
-          "{free dissolved CO2, bicarbonate, chloride}"
-          annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
-      equation
-        connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
-            points={{-40,55.5},{-30,55.5},{-30,80},{-12,80}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(H3O.q_out,HendersonHasselbalch. products[2]) annotation (Line(
-            points={{-12,36},{-30,36},{-30,56.5},{-40,56.5}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
-           Line(
-            points={{-80,56},{-60,56}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(substances[1], CO2_liquid.q_out) annotation (Line(
-            points={{-80,73.3333},{-80,56}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(HCO3.q_out, substances[2]) annotation (Line(
-            points={{-12,80},{-80,80}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),      graphics));
-      end ErythrocyteAcidBase;
+        model ErythrocyteAcidBase
+          Components.Substance H3O(
+            q_out(conc(nominal=10^(-7.4 + 3))),
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            solute_start=10^(-7.4 + 3),
+            isDependent=true) "hydrogen ions activity" annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=0,
+                origin={-12,36})));
+          Components.ChemicalReaction HendersonHasselbalch(
+            nP=2,
+            dH=15.13,
+            K=10^(-6.103 + 3),
+            nS=1)
+            annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
+          Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=true)
+            annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+            annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
+          Interfaces.ChemicalPort_a substances[3]
+            "{free dissolved CO2, bicarbonate, chloride}"
+            annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
+        equation
+          connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
+              points={{-40,55.5},{-30,55.5},{-30,80},{-12,80}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(H3O.q_out,HendersonHasselbalch. products[2]) annotation (Line(
+              points={{-12,36},{-30,36},{-30,56.5},{-40,56.5}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
+             Line(
+              points={{-80,56},{-60,56}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(substances[1], CO2_liquid.q_out) annotation (Line(
+              points={{-80,73.3333},{-80,56}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HCO3.q_out, substances[2]) annotation (Line(
+              points={{-12,80},{-80,80}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}),      graphics));
+        end ErythrocyteAcidBase;
 
-      model BloodAcidBase
-        PlasmaAcidBase plasmaAcidBase
-          annotation (Placement(transformation(extent={{-34,-6},{-14,14}})));
-        ErythrocyteAcidBase erythrocyteAcidBase
-          annotation (Placement(transformation(extent={{56,-6},{76,14}})));
-        Components.Membrane membrane
-          annotation (Placement(transformation(extent={{14,2},{34,22}})));
-      equation
-        connect(plasmaAcidBase.substances, membrane.particlesInside)
-          annotation (Line(
-            points={{-24,12},{14,12}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(membrane.particlesOutside, erythrocyteAcidBase.substances)
-          annotation (Line(
-            points={{34,12},{46,12},{46,12},{58,12}},
-            color={107,45,134},
-            thickness=1,
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
-                  {{-100,-100},{100,100}}), graphics));
-      end BloodAcidBase;
+        model BloodAcidBase
+          PlasmaAcidBase plasmaAcidBase
+            annotation (Placement(transformation(extent={{-34,-6},{-14,14}})));
+          Develop.ErythrocyteAcidBase erythrocyteAcidBase
+            annotation (Placement(transformation(extent={{56,-6},{76,14}})));
+          Components.Membrane membrane
+            annotation (Placement(transformation(extent={{14,2},{34,22}})));
+        equation
+          connect(plasmaAcidBase.substances, membrane.particlesInside)
+            annotation (Line(
+              points={{-24,12},{14,12}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(membrane.particlesOutside, erythrocyteAcidBase.substances)
+            annotation (Line(
+              points={{34,12},{46,12},{46,12},{58,12}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
+                    {{-100,-100},{100,100}}), graphics));
+        end BloodAcidBase;
+      end Develop;
     end AcidBase;
   end Examples;
 
@@ -2370,6 +3279,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the solvent volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external inputs. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
 </html>"));
     end Substance;
 
