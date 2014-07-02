@@ -349,7 +349,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Components.Substance          oxygen_unbound(solute_start=0.000001*
               7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
-        Modelica.Blocks.Sources.Clock clock(offset=60)
+        Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
         Sources.UnlimitedGasStorage          O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
@@ -690,22 +690,24 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{-73,54},{-66,54},{-66,34}},
             color={0,0,127},
             smooth=Smooth.None));
-        annotation (          experiment(StopTime=10000), Documentation(info=
-                   "<html>
+        annotation (          experiment(
+            StopTime=15000,
+            Tolerance=1e-014,
+            __Dymola_Algorithm="Euler"),                  Documentation(info="<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
-<p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
-<p><br/>In short it is about binding oxygen to hemoglobin.</p>
+<p>[1] Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
+<p><br>In short it is about binding oxygen to hemoglobin.</p>
 <p>Oxgen are driven by its partial pressure using clock source - from very little pressure to pressure of 10kPa.</p>
 <p>(Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air.)</p>
 <p>Hemoglobin was observed (by Perutz) in two structuraly different forms R and T.</p>
 <p>These forms are represented by blocks T0..T4 and R0..R4, where the suffexed index means the number of oxygen bounded to the form.</p>
-<p><br/>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
+<p><br>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
 <p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
-<p><br/>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
+<p><br>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
 </html>",   revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),__Dymola_experimentSetupOutput);
       end Allosteric_Hemoglobin_MWC;
 
       model Allosteric_Hemoglobin2_MWC
@@ -713,11 +715,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         import Physiolibrary.Types.*;
 
        extends Modelica.Icons.Example;
-
-      // extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-      //                                          Simulation=SimulationType.SteadyState);
-
-      //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
         parameter Fraction L = 7.0529*10^6
           "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
@@ -729,8 +726,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
         parameter Concentration KT=KR/c
           "oxygen dissociation on tensed(T) hemoglobin subunit";
-
-       // Fraction sO2 "hemoglobin oxygen saturation";
 
         parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
@@ -757,15 +752,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
         Physiolibrary.Chemical.Components.Substance OxyTHm[4](
           each Simulation=SimulationType.SteadyState,
-          each isDependent=true,
+          isDependent={false,true,true,true},
           each solute_start=1e-14)
           "Oxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{14,-36},{34,-16}})));
         Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2)
           annotation (Placement(transformation(extent={{42,-36},{62,-16}})));
         Physiolibrary.Chemical.Components.Substance DeoxyTHm[4](
-                                                 each Simulation=SimulationType.SteadyState,
-            each solute_start=0.00025)
+                                                 each Simulation=SimulationType.SteadyState, each
+            solute_start=0.00025)
           "Deoxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{70,-36},{90,-16}})));
 
@@ -773,7 +768,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                             oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
               *7.875647668393782383419689119171e-5)
           annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-        Modelica.Blocks.Sources.Clock clock(offset=60)
+        Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
         Modelica.Blocks.Math.Add add[4] annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
@@ -786,6 +781,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Sources.UnlimitedGasStorage oxygen_in_air(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
+          isIsolatedInSteadyState=false,
           T=310.15)                                annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -810,9 +806,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Modelica.Blocks.Math.Division sO2_ "hemoglobin oxygen saturation"
           annotation (Placement(transformation(extent={{-64,-96},{-54,-86}})));
       equation
-      //  totalAmountOfHemoglobin*normalizedState[1] = sum(OxyRHm.solute) + sum(DeoxyRHm.solute) + sum(OxyTHm.solute) + sum(DeoxyTHm.solute);
-
-      //  sO2 = (sum(OxyRHm.solute) + sum(OxyTHm.solute))/totalAmountOfHemoglobin;
 
         connect(R0_in_R.species, quaternaryForm.substrates[1])
                                                          annotation (Line(
@@ -977,14 +970,18 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 fillColor={255,181,181},
                 fillPattern=FillPattern.Solid,
                 pattern=LinePattern.None)}),
-          experiment(StopTime=10000),
+          experiment(
+            StopTime=15000,
+            Tolerance=1e-014,
+            __Dymola_Algorithm="Euler"),
           Documentation(revisions=
                         "<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
-<p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
+<p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please chose &QUOT;Euler&QUOT; method!</p>
+<p><br>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
+<p>[1] Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br>In short it is about binding oxygen to hemoglobin.</p>
 <p>Oxgen are driven by its partial pressure using clock source - from very little pressure to pressure of 10kPa.</p>
 <p>(Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air.)</p>
@@ -993,7 +990,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p><br>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
 <p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
 <p><br>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
-</html>"));
+</html>"),__Dymola_experimentSetupOutput);
       end Allosteric_Hemoglobin2_MWC;
 
       model Hemoglobin_MKM_Specie "Part of model Hemoglobin_MKM_Adair"
@@ -1215,7 +1212,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
 
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                  {100,100}}),     graphics));
+                  {100,100}}),     graphics), Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>Parameters are chosen to fit following measurements:</p>
+<p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
+<p>[2] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+</html>"));
       end Hemoglobin_MKM_Specie;
 
       model Hemoglobin_MKM_Adair "Matejak,Kulhanek,Matousek (2014)"
@@ -1318,9 +1322,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Physiolibrary.Chemical.Components.Substance oxygen_unbound(
                                                             Simulation=
               Physiolibrary.Types.SimulationType.SteadyState, solute_start=
-              1e-09)
+              1e-08)
           annotation (Placement(transformation(extent={{-88,-28},{-68,-8}})));
-        Modelica.Blocks.Sources.Clock clock(offset=1)
+        Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-78,70})));
@@ -1514,13 +1518,16 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             __Dymola_Algorithm="Euler"),
           __Dymola_experimentSetupOutput,
           Documentation(info="<html>
-<p>Before Dymola silumation please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;2&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
+<p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
+<p>Parameters are chosen to fit following measurements:</p>
+<p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
+<p>[2] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+<p>[3] Severinghaus JW. Simple, accurate equations for human blood O2 dissociation computations. Journal of Applied Physiology 1979;46:599-602.</p>
+</html>", revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
       end Hemoglobin_MKM_Adair;
-
-
-
-
 
       package Develop
         extends Modelica.Icons.UnderConstruction;
@@ -1529,6 +1536,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           "Model of hemoglobin space-structure form (can be parametrized as relaxed or tensed)"
           import Physiolibrary.Types.*;
 
+          parameter Boolean isDependent = false;
+
           parameter Concentration KA = 10^(-6.89+3)
             "dissociation coefficient for acid chains of subunit";
           parameter Concentration Kz = 10^(-7.25+3)
@@ -1536,21 +1545,22 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           parameter Concentration Kc = 10^(-8.35+3)
             "valine 1 amino terminus dissociation coefficient of protonation to NH3+";
           parameter Concentration KO2 = 0.000671946
-            "oxygen dissociation coefficient of hemoglobin subunit";   //*7.875647668393782383419689119171e-5
-                                                                    //10.500001495896 7.8756465463794e-05
+            "oxygen dissociation coefficient of hemoglobin subunit";
 
           Physiolibrary.Chemical.Components.Speciation Speciation(
               NumberOfSubunitTypes=12)
             annotation (Placement(transformation(extent={{60,-20},{40,0}})));
           Physiolibrary.Chemical.Components.Substance OxyHm[4](
-            solute_start=0,
-            Simulation=SimulationType.SteadyState,
-            isDependent=true) "Oxygenated subunit of hemoglobin tetramer"
+            each solute_start=0,
+            each Simulation=SimulationType.SteadyState,
+            isDependent={isDependent,true,true,true})
+            "Oxygenated subunit of hemoglobin tetramer"
             annotation (Placement(transformation(extent={{-90,-68},{-70,-48}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction oxygenation[4](nP=2, K=KO2)
-            annotation (Placement(transformation(extent={{-62,-68},{-42,-48}})));
-          Physiolibrary.Chemical.Components.Substance DeoxyHm[4](Simulation=
-                SimulationType.SteadyState, solute_start=1e-08)
+          Physiolibrary.Chemical.Components.ChemicalReaction oxygenation1[4](each
+              nP=2, each K=KO2) annotation (Placement(transformation(extent={{-62,
+                    -68},{-42,-48}})));
+          Physiolibrary.Chemical.Components.Substance DeoxyHm[4](each Simulation=
+                SimulationType.SteadyState,each  solute_start=1e-08)
             "Deoxygenated subunit of hemoglobin tetramer"
             annotation (Placement(transformation(extent={{-34,-68},{-14,-48}})));
 
@@ -1567,34 +1577,35 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Physiolibrary.Chemical.Interfaces.ChemicalPort_a H
             "hydrogen ion (proton)" annotation (Placement(transformation(extent={{-32,
                     18},{-12,38}}), iconTransformation(extent={{-32,18},{-12,38}})));
-          Physiolibrary.Chemical.Components.Substance A[4](                Simulation=
-                SimulationType.SteadyState, solute_start=1e-08)
+          Physiolibrary.Chemical.Components.Substance A[4]( each                Simulation=
+                SimulationType.SteadyState,each  solute_start=1e-08)
             "residual acid chains of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-24,-14},{-4,6}})));
           Physiolibrary.Chemical.Components.Substance HA[4](
-            solute_start=0,
-            Simulation=SimulationType.SteadyState,
-            isDependent=true) "residual acid chains of hemoglobin subunits "
+            each solute_start=0,
+            each Simulation=SimulationType.SteadyState,
+            each isDependent=true)
+            "residual acid chains of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-90,-14},{-70,6}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction protonation1[4](nP=2, K=KA)
+          Physiolibrary.Chemical.Components.ChemicalReaction protonation1[4](each nP=2,each  K=KA)
             annotation (Placement(transformation(extent={{-62,-14},{-42,6}})));
           Modelica.Blocks.Math.Add add1[
                                        4] annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={-52,-24})));
-          Physiolibrary.Chemical.Components.Substance NH2[4](                Simulation=
-               SimulationType.SteadyState, solute_start=1e-08)
+          Physiolibrary.Chemical.Components.Substance NH2[4](each                 Simulation=
+               SimulationType.SteadyState,each  solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-10,52},{10,72}})));
           Physiolibrary.Chemical.Components.Substance NH3[
                                                          4](
-            solute_start=0,
-            Simulation=SimulationType.SteadyState,
-            isDependent=true) "Val1 terminal of hemoglobin subunits "
+            each solute_start=0,
+            each Simulation=SimulationType.SteadyState,
+            each isDependent=true) "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-86,52},{-66,72}})));
           Physiolibrary.Chemical.Components.ChemicalReaction protonation2[4](
-                                                                            nP=2, K=Kz)
+                                                                            each nP=2, each K=Kz)
             annotation (Placement(transformation(extent={{-58,52},{-38,72}})));
           Modelica.Blocks.Math.Add3 add2[
                                        4] annotation (Placement(transformation(
@@ -1605,12 +1616,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               Placement(transformation(extent={{-6,76},{14,96}}),
                 iconTransformation(extent={{-6,76},{14,96}})));
           Physiolibrary.Chemical.Components.ChemicalReaction carboxylation[4](
-            nP=2,
-            nS=2,
-            K=Kc) "Carboxylation of Valin1 amino terminus of hemogloni subunit"
+            each nP=2,
+            each nS=2,
+            each K=Kc)
+            "Carboxylation of Valin1 amino terminus of hemogloni subunit"
             annotation (Placement(transformation(extent={{36,52},{56,72}})));
-          Physiolibrary.Chemical.Components.Substance NHCOO[4](Simulation=
-                SimulationType.SteadyState, solute_start=1e-08)
+          Physiolibrary.Chemical.Components.Substance NHCOO[4](each Simulation=
+                SimulationType.SteadyState, each solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{66,52},{86,72}})));
           Physiolibrary.Types.RealIO.AmountOfSubstanceOutput tAmount(start=1e-08)
@@ -1627,13 +1639,25 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 rotation=0,
                 origin={100,14}), iconTransformation(
                 extent={{-10,-10},{10,10}},
-                rotation=270,
-                origin={-80,-90})));
+                rotation=0,
+                origin={90,20})));
           Modelica.Blocks.Math.Sum add3(k=cat(
                 1,
                 -ones(4),
                 ones(8)), nin=12)
             annotation (Placement(transformation(extent={{78,10},{86,18}})));
+          Modelica.Blocks.Math.Sum add4(nin=4)
+            annotation (Placement(transformation(extent={{-4,-4},{4,4}},
+                rotation=270,
+                origin={-80,-86})));
+          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput oxygenation
+            annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-80,-110}), iconTransformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-80,-90})));
         equation
 
           connect(OxyHm.solute, add.u2) annotation (Line(
@@ -1644,12 +1668,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-24,-68},{-26,-68},{-26,-75.2},{-55.6,-75.2}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(OxyHm.q_out, oxygenation.substrates[1]) annotation (Line(
+          connect(OxyHm.q_out, oxygenation1.substrates[1]) annotation (Line(
               points={{-80,-58},{-62,-58}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(oxygenation.products[1], DeoxyHm.q_out) annotation (Line(
+          connect(oxygenation1.products[1], DeoxyHm.q_out) annotation (Line(
               points={{-42,-58.5},{-34,-58.5},{-34,-58},{-24,-58}},
               color={107,45,134},
               thickness=1,
@@ -1659,22 +1683,22 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(oxygenation[1].products[2], O2) annotation (Line(
+          connect(oxygenation1[1].products[2], O2) annotation (Line(
               points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(oxygenation[2].products[2], O2) annotation (Line(
+          connect(oxygenation1[2].products[2], O2) annotation (Line(
               points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(oxygenation[3].products[2], O2) annotation (Line(
+          connect(oxygenation1[3].products[2], O2) annotation (Line(
               points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(oxygenation[4].products[2], O2) annotation (Line(
+          connect(oxygenation1[4].products[2], O2) annotation (Line(
               points={{-42,-57.5},{-36,-57.5},{-36,-40},{-16,-40}},
               color={107,45,134},
               thickness=1,
@@ -1856,6 +1880,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{86.4,14},{100,14}},
               color={0,0,127},
               smooth=Smooth.None));
+          connect(OxyHm.solute, add4.u) annotation (Line(
+              points={{-80,-68},{-80,-81.2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add4.y, oxygenation) annotation (Line(
+              points={{-80,-90.4},{-80,-110}},
+              color={0,0,127},
+              smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                     -100},{100,100}}), graphics={
                 Ellipse(
@@ -1880,10 +1912,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>[1] Morrow J, Matthew J, Wittebort R, Gurd F. Carbon 13 resonances of 13CO2 carbamino adducts of alpha and beta chains in human adult hemoglobin. Journal of Biological Chemistry 1976;251:477-84.</p>
 <p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 <p>[3] Antonini E, Wyman J, Brunori M, Fronticelli C, Bucci E, Rossi-Fanelli A. Studies on the relations between molecular and functional properties of hemoglobin V. The influence of temperature on the Bohr effect in human and in horse hemoglobin. Journal of Biological Chemistry 1965;240:1096-103.</p>
-</html>"),  Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                    100}}),
+</html>"),  Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                    {100,100}}),
                 graphics={
-                Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,127}),
+                Rectangle(
+                  extent={{-100,100},{100,-100}},
+                  lineColor={0,0,127},
+                  fillColor={215,215,215},
+                  fillPattern=FillPattern.Solid),
                 Ellipse(
                   extent={{-94,78},{98,40}},
                   lineColor={127,127,0},
@@ -1938,7 +1974,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             KO2=KR,
             KA=10^(-6.89 + 3),
             Kz=10^(-7.25 + 3),
-            Kc=10^(-8.35 + 3))
+            Kc=10^(-8.35 + 3),
+            isDependent=true)
             annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
           Physiolibrary.Chemical.Examples.Hemoglobin.Develop.QuaternaryForm T(
             KO2=KT,
@@ -1952,7 +1989,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             Simulation=Physiolibrary.Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 rotation=270,
-                origin={0,-8})));
+                origin={0,2})));
           Physiolibrary.Chemical.Interfaces.ChemicalPort_a H "H+ (proton)"
             annotation (Placement(transformation(extent={{6,66},{26,86}}),
                 iconTransformation(extent={{90,90},{110,110}})));
@@ -1967,14 +2004,21 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=0,
-                origin={98,-76}), iconTransformation(
+                origin={100,-40}),iconTransformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={-80,-90})));
           Modelica.Blocks.Math.Add add(k1=1/4, k2=1/4)
-            annotation (Placement(transformation(extent={{38,-58},{48,-48}})));
+            annotation (Placement(transformation(extent={{16,-40},{26,-30}})));
           Modelica.Blocks.Math.Division division
-            annotation (Placement(transformation(extent={{62,-86},{82,-66}})));
+            annotation (Placement(transformation(extent={{42,-46},{54,-34}})));
+          Modelica.Blocks.Math.Add add1(
+                                       k1=1/4, k2=1/4)
+            annotation (Placement(transformation(extent={{42,-62},{54,-50}})));
+          Modelica.Blocks.Math.Division division1
+            annotation (Placement(transformation(extent={{66,-86},{78,-74}})));
+          Physiolibrary.Types.RealIO.FractionOutput sO2
+            annotation (Placement(transformation(extent={{90,-90},{110,-70}})));
         equation
 
           connect(R.CO2, CO2) annotation (Line(
@@ -2019,31 +2063,52 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(R.tAmount, totalHb.fragment[1]) annotation (Line(
-              points={{-26,31},{-26,8},{-4,8},{-4,2},{-5,2}},
+              points={{-26,31},{-26,18},{-4,18},{-4,12},{-5,12}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(T.tAmount, totalHb.fragment[2]) annotation (Line(
-              points={{18,31},{18,8},{-3,8},{-3,2}},
+              points={{18,31},{18,18},{-3,18},{-3,12}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(T.protonation, add.u1) annotation (Line(
-              points={{30,31},{30,31},{30,-50},{37,-50}},
+              points={{13,42},{13,-32},{15,-32}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(R.protonation, add.u2) annotation (Line(
-              points={{-38,31},{-38,-56},{37,-56}},
+              points={{-21,42},{-21,-38},{15,-38}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(division.u2, totalHb.totalAmountOfSubstance) annotation (Line(
-              points={{60,-82},{-4,-82},{-4,-20},{-4,-20},{-4,-18},{-4,-18}},
+              points={{40.8,-43.6},{-4,-43.6},{-4,-8}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(division.u1, add.y) annotation (Line(
-              points={{60,-70},{56,-70},{56,-53},{48.5,-53}},
+              points={{40.8,-36.4},{38,-36.4},{38,-35},{26.5,-35}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(protonation, division.y) annotation (Line(
-              points={{98,-76},{83,-76}},
+              points={{100,-40},{54.6,-40}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(division1.u1, add1.y) annotation (Line(
+              points={{64.8,-76.4},{56,-76.4},{56,-56},{54.6,-56}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(R.oxygenation, add1.u2) annotation (Line(
+              points={{-38,31},{-38,-59.6},{40.8,-59.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(T.oxygenation, add1.u1) annotation (Line(
+              points={{30,31},{30,-52.4},{40.8,-52.4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(totalHb.totalAmountOfSubstance, division1.u2) annotation (
+              Line(
+              points={{-4,-8},{-4,-83.6},{64.8,-83.6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(division1.y, sO2) annotation (Line(
+              points={{78.6,-80},{100,-80}},
               color={0,0,127},
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -2071,7 +2136,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
             usePartialPressureInput=true,
-            T=310.15) annotation (Placement(transformation(
+            T=310.15,
+            isIsolatedInSteadyState=false)
+                      annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={6,60})));
@@ -2151,7 +2218,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                     -100},{100,100}}), graphics),
-            experiment(StopTime=18000),
+            experiment(
+              StopTime=18000,
+              Tolerance=1e-014,
+              __Dymola_Algorithm="Euler"),
             __Dymola_experimentSetupOutput,
             Documentation(revisions="<html>
 <p><i>2014</i></p>
@@ -2198,7 +2268,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
             usePartialPressureInput=false,
             PartialPressure=0,
-            T=310.15) annotation (Placement(transformation(
+            T=310.15,
+            isIsolatedInSteadyState=false)
+                      annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={6,60})));
@@ -2413,7 +2485,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (
             Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                     -100},{100,100}}), graphics),
-            experiment(StopTime=1.1),
+            experiment(
+              StopTime=1.1,
+              Tolerance=1e-014,
+              __Dymola_Algorithm="Euler"),
             __Dymola_experimentSetupOutput,
             Documentation(info="<html>
 <p>[1] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
@@ -2962,8 +3037,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                           graphics));
       end Phosphate;
 
-
-
       class Develop
         extends Modelica.Icons.UnderConstruction;
         model PlasmaAcidBase
@@ -2971,8 +3044,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            solute_start=10^(-7.4 + 3),
-            isDependent=true) "hydrogen ions activity" annotation (Placement(
+            solute_start=10^(-7.4 + 3)) "hydrogen ions activity"
+                                                       annotation (Placement(
                 transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=0,
@@ -2986,22 +3059,27 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
             useTotalInput=true,
-            NumberOfParticles=n + 3,
+            NumberOfParticles=n + 4,
             Charges=-cat(
                 1,
-                {1,1,2},
+                {1,1,2,1},
                 ones(n)),
             Total=6425.92363734) "strong ion difference of solution"
             annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
           Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
             "from elementary charge to to electric charge, which is needed in system"
                                                 annotation (Placement(transformation(
-                extent={{-10,-10},{10,10}},
+                extent={{-8,-8},{8,8}},
                 rotation=180,
-                origin={80,-74})));
-          Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
-            "strong ions difference with respect to albumin charge shift"
-            annotation (Placement(transformation(extent={{72,-48},{92,-28}})));
+                origin={78,-70})));
+          Modelica.Blocks.Sources.Clock SID_less_Cl(offset=-0.0832)
+            "strong ions difference without chloride with respect to albumin charge shift"
+            annotation (Placement(transformation(extent={{68,-42},{88,-22}})));
+
+          constant Integer m=4
+            "number of particle types in electroneutrality equation";
+
+          parameter Boolean isDependent[3] = {false,false,true};
 
           parameter Physiolibrary.Types.Concentration totalPO4=0.00115
             "Total phosphate concentration";
@@ -3014,9 +3092,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             "acid dissociation constants";
 
           Physiolibrary.Chemical.Components.Substance A[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true,
-            each solute_start=0.00033) "deprotonated acid groups"
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+              solute_start=0.00033) "deprotonated acid groups"
             annotation (Placement(transformation(extent={{-10,14},{10,34}})));
           Physiolibrary.Chemical.Components.ChemicalReaction react[n](
             each nP=2,
@@ -3024,20 +3101,23 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
 
           Physiolibrary.Chemical.Components.Substance HA[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
-              solute_start=0.00033) "protonated acid groups"
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true,
+            each solute_start=0.00033) "protonated acid groups"
             annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
 
           Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-              isDependent=true)
+              isDependent=isDependent[1])
             annotation (Placement(transformation(extent={{-76,64},{-56,84}})));
-          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
-            annotation (Placement(transformation(extent={{48,70},{68,90}})));
+          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=isDependent[2])
+            annotation (Placement(transformation(extent={{42,70},{62,90}})));
           Interfaces.ChemicalPort_a substances[3]
             "{free dissolved CO2, bicarbonate, chloride}"
             annotation (Placement(transformation(extent={{-10,70},{10,90}})));
           Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-              solute_start=0.0005)
+            isDependent=true,
+            solute_start=0.0005)
             annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
           Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
             annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
@@ -3049,6 +3129,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             each Total=totalPO4*1,
             each n=2)
             annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
+          Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=isDependent[3]) "chloride anion"
+            annotation (Placement(transformation(extent={{76,42},{96,62}})));
         equation
           connect(react.products[1], A.q_out) annotation (Line(
               points={{-24,25.5},{-12,25.5},{-12,24},{0,24}},
@@ -3075,16 +3158,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-66,16},{-66,-4},{-40,-4},{-40,-3}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(SID.y,toColoumn. u) annotation (Line(
-              points={{93,-38},{100,-38},{100,-74},{92,-74}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(HA.solute, electroneutrality.fragment) annotation (Line(
-              points={{-66,16},{-66,-88},{46,-88}},
-              color={0,0,127},
-              smooth=Smooth.None));
           connect(toColoumn.y, electroneutrality.total) annotation (Line(
-              points={{69,-74},{56,-74},{56,-76}},
+              points={{69.2,-70},{56,-70},{56,-76}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(substances[1], CO2_liquid.q_out) annotation (Line(
@@ -3093,7 +3168,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(HCO3.q_out, substances[2]) annotation (Line(
-              points={{58,80},{0,80}},
+              points={{52,80},{0,80}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
@@ -3121,7 +3196,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
-              points={{58,70},{58,-62},{32,-62},{32,-88},{46,-88}},
+              points={{52,70},{52,-62},{32,-62},{32,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(H2PO4.solute, electroneutrality.fragment[2]) annotation (Line(
@@ -3130,6 +3205,23 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               smooth=Smooth.None));
           connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
               points={{8,-54},{8,-88},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Cl.q_out, substances[3]) annotation (Line(
+              points={{86,52},{0,52},{0,86.6667}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(HA.solute, electroneutrality.fragment[(m+1):(n+m)]) annotation (Line(
+              points={{-66,16},{-66,-88},{46,-88}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(SID_less_Cl.y, toColoumn.u) annotation (Line(
+              points={{89,-32},{92,-32},{92,-70},{87.6,-70}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Cl.solute, electroneutrality.fragment[4]) annotation (Line(
+              points={{86,42},{86,10},{54,10},{54,-64},{34,-64},{34,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           annotation (                                      Diagram(coordinateSystem(
@@ -3150,6 +3242,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         end PlasmaAcidBase;
 
         model ErythrocyteAcidBase
+          parameter Boolean isDependent[3] = {false,false,false};
+
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -3166,13 +3260,33 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             nS=1)
             annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
           Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-              isDependent=true)
+              isDependent=isDependent[1])
             annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=isDependent[2])
             annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
           Interfaces.ChemicalPort_a substances[3]
             "{free dissolved CO2, bicarbonate, chloride}"
             annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
+          Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              isDependent=isDependent[3]) "chloride anion"
+            annotation (Placement(transformation(extent={{76,82},{96,102}})));
+          Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+            "from elementary charge to to electric charge, which is needed in system"
+                                                annotation (Placement(transformation(
+                extent={{-8,-8},{8,8}},
+                rotation=180,
+                origin={68,-66})));
+          SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
+            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            useTotalInput=true,
+            NumberOfParticles=n + 3,
+            Charges=-cat(
+                1,
+                {1,1,2},
+                ones(n)),
+            Total=6425.92363734) "strong ion difference of solution"
+            annotation (Placement(transformation(extent={{36,-90},{56,-70}})));
         equation
           connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
               points={{-40,55.5},{-30,55.5},{-30,80},{-12,80}},
@@ -3199,6 +3313,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-12,80},{-80,80}},
               color={107,45,134},
               thickness=1,
+              smooth=Smooth.None));
+          connect(Cl.q_out, substances[3]) annotation (Line(
+              points={{86,92},{-80,92},{-80,86.6667}},
+              color={107,45,134},
+              thickness=1,
+              smooth=Smooth.None));
+          connect(toColoumn.y,electroneutrality. total) annotation (Line(
+              points={{59.2,-66},{46,-66},{46,-72}},
+              color={0,0,127},
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                     -100},{100,100}}),      graphics));
@@ -3817,7 +3940,7 @@ It works in two modes:
             transformation(extent={{-10,90},{10,110}})));
 
     protected
-      parameter Real numberOfSubunit[NumberOfSubunitTypes] = ones(NumberOfSubunitTypes)
+      constant Real numberOfSubunit[NumberOfSubunitTypes] = ones(NumberOfSubunitTypes)
         "Number of identical subunits instances in macromolecule. First should be non-zero.";
 
     protected
@@ -3865,7 +3988,7 @@ It works in two modes:
 </html>"));
     end Speciation;
 
-    model Dilution "Adding/removing of the solvent to/from solution"
+    model Dilution "Adding/removing of the solvent to/from running solution"
       extends Physiolibrary.Chemical.Interfaces.OnePort;
       extends Physiolibrary.Icons.Dilution;
 
