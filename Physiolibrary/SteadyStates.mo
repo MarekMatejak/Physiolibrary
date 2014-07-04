@@ -247,7 +247,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
         prescribedTemperature
         annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
       Chemical.Components.GasSolubility gasSolubility(useHeatPort=true, kH_T0(
-            displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736)
+            displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
+        C=1700)
         annotation (Placement(transformation(extent={{-12,-28},{8,-8}})));
       Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -458,8 +459,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
             rotation=270,
             origin={-66,32})));
       Chemical.Components.GasSolubility gasSolubility(
-                                          useHeatPort=false, kH_T0=
-            0.026029047188736)
+                                          useHeatPort=false,
+        kH_T0=0.026029047188736,
+        C=1700)
         annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
       Modelica.Blocks.Math.Sum oxygen_bound(k={1,1,2,2,3,3,4,4}, nin=8)
         annotation (Placement(transformation(extent={{72,-56},{82,-46}})));
@@ -895,8 +897,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
             extent={{-10,-10},{10,10}},
             origin={-58,84})));
       Chemical.Components.GasSolubility gasSolubility(
-                                          useHeatPort=false, kH_T0=
-            0.026029047188736)
+                                          useHeatPort=false,
+        kH_T0=0.026029047188736,
+        C=1700)
         annotation (Placement(transformation(extent={{-2,62},{18,82}})));
       Modelica.Blocks.Math.Sum oxygen_bound(nin=2)
         annotation (Placement(transformation(extent={{56,-90},{66,-80}})));

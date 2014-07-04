@@ -358,8 +358,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               rotation=270,
               origin={-66,24})));
         Components.GasSolubility          gasSolubility(
-                                            useHeatPort=false, kH_T0=
-              0.026029047188736)
+                                            useHeatPort=false,
+          kH_T0=0.026029047188736,
+          C=1700)
           annotation (Placement(transformation(extent={{-76,-14},{-56,6}})));
       equation
        //  sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*totalAmountOfHemoglobin);
@@ -789,7 +790,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               origin={6,60})));
         Components.GasSolubility
                               partialPressure1(          kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-               0.026029047188736, T=310.15)                             annotation (Placement(
+               0.026029047188736,
+          T=310.15,
+          C=1700)                                                       annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               origin={6,32})));
@@ -1337,7 +1340,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               rotation=270,
               origin={-78,34})));
         Physiolibrary.Chemical.Components.GasSolubility partialPressure1(
-            kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736, T=310.15)
+            kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
+          T=310.15,
+          C=1700)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=0,
@@ -2143,7 +2148,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 rotation=270,
                 origin={6,60})));
           Physiolibrary.Chemical.Components.GasSolubility partialPressure1(kH_T0(
-                displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736, T=310.15)
+                displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
+            T=310.15,
+            C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=0,
@@ -2274,8 +2281,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={6,60})));
-          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(T=310.15,
-              kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.024913516594933)
+          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(
+              kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.024913516594933,
+            T=310.15,
+            C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=0,
@@ -3601,7 +3610,7 @@ It works in two modes:
       parameter Physiolibrary.Types.Temperature T0=298.15
         "Base temperature for kH_T0"
          annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Physiolibrary.Types.Temperature C(displayUnit="K") = 1700
+      parameter Physiolibrary.Types.Temperature C(displayUnit="K")
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
@@ -4282,40 +4291,21 @@ It works in two modes:
     model FlowConcentrationMeasure
       "The outflow concentration from absorption (i.e. portal vein concentration)"
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
-                                q_in "Concentration before absorption source"
-                             annotation (Placement(
-            transformation(extent={{-110,-8},{-90,12}})));
-
-      parameter Boolean useAdditionalSoluteFlowInput = false
-        "=true, if absorbed molar flow input is chosen"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.MolarFlowRate AdditionalSoluteFlow=0
-        "Additional solute molar flow if useAdditionalSoluteFlowInput=false"
-        annotation (Dialog(enable=not useAdditionalSoluteFlowInput));
-
-      Physiolibrary.Types.RealIO.MolarFlowRateInput additionalSoluteFlow(start=AdditionalSoluteFlow)=aq if useAdditionalSoluteFlowInput
-        "Absorbed molar flow rate" annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=90,
-            origin={0,-60})));
+      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
      Physiolibrary.Types.RealIO.ConcentrationOutput Conc
-        "Concentration after absorption source"                           annotation (Placement(transformation(extent={{80,-20},
-                {120,20}})));
+        "Concentration after absorption source"                           annotation (Placement(transformation(extent={{-12,-86},
+                {28,-46}}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-62})));
 
-    protected
-      Types.MolarFlowRate aq "Current additional solute molar flow";
     equation
-      if not useAdditionalSoluteFlowInput then
-        aq = AdditionalSoluteFlow;
-      end if;
-      Conc = q_in.conc + aq/q;
-      q_in.q = 0;
+      Conc = q_in.q/q;
+      q_in.conc = q_out.conc;
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
-                100,100}}), graphics={Rectangle(
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                            graphics={Rectangle(
               extent={{-100,-50},{100,50}},
               lineColor={0,0,127},
               fillColor={255,255,255},
@@ -4325,7 +4315,9 @@ It works in two modes:
               lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end FlowConcentrationMeasure;
   end Sensors;
 
