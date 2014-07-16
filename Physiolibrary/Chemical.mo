@@ -2625,9 +2625,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{-18,46},{2,66}})));
         Components.ChemicalReaction HendersonHasselbalch(
           nP=2,
-          dH=15.13,
           K=10^(-6.103 + 3),
-          nS=1)
+          nS=1,
+          dH(displayUnit="kJ/mol") = 7300)
           annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
         Sources.UnlimitedGasStorage CO2_gas(
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -2662,9 +2662,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{54,46},{74,66}})));
         Components.ChemicalReaction c2(
           nP=2,
-          dH=15.13,
           K=10^(-10.33 + 3),
-          nS=1)
+          nS=1,
+          dH(displayUnit="kJ/mol") = 14900)
           annotation (Placement(transformation(extent={{16,46},{36,66}})));
         Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
           "from elementary charge to to electric charge, which is needed in system"
@@ -2744,6 +2744,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
 <p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
 <p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
+<p><br>Molar heat of formation (aqueous):</p>
+<p>CO2:	-413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
+<p>H2O:	-285.8 kJ/mol</p>
+<p>HCO3-:	-692.0 kJ/mol</p>
+<p>CO3^-2:	-677.1 kJ/mol</p>
+<p><br>Enthalphy of reaction H2O + CO2 &LT;-&GT; HCO3- + H+  :	 7.3 kJ/mol</p>
+<p>Enthalphy of reaction HCO3- &LT;-&GT; CO3^-2 + H+  :	14.9 kJ/mol</p>
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
