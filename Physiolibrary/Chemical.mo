@@ -2875,14 +2875,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       model Phosphate
           extends Modelica.Icons.Example;
 
-        parameter Physiolibrary.Types.Pressure pCO2=5332.8954966
-          "Partial pressure of CO2";
         parameter Physiolibrary.Types.Concentration totalPO4=0.00115
           "Total phosphate concentration";
-        parameter Physiolibrary.Types.Concentration totalAlb=0.00066
-          "Total albumin concentration";
-
-        parameter Integer n=218 "Number of weak acid group in albumin molecule";
 
         Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
           annotation (Placement(transformation(extent={{64,-20},{84,0}})));
@@ -2935,13 +2929,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           electroneutrality(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           Total(displayUnit="meq") = 3502.41783837,
-          NumberOfParticles=n + 4,
-          Charges=cat(
-                1,
-                {-1},
-                {-1,-2,-3},
-                fill(1, n)),
-          useTotalInput=true)
+          useTotalInput=true,
+          NumberOfParticles=3,
+          Charges={-1,-2,-3})
           annotation (Placement(transformation(extent={{48,-94},{68,-74}})));
 
         Modelica.Blocks.Math.Gain toColoumn(k=Modelica.Constants.F)
@@ -2950,12 +2940,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               rotation=180,
               origin={84,-86})));
 
-        parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
-          "acid dissociation constants";
-
       equation
-        for i in 1:n loop
-        end for;
         connect(H3PO4.q_out, chemicalReaction.substrates[1]) annotation (Line(
             points={{-88,-48},{-70,-48}},
             color={107,45,134},
@@ -3017,18 +3002,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{82,-58},{82,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(PO4.solute, electroneutrality.fragment[2]) annotation (Line(
-            points={{82,-58},{82,-68},{30,-68},{30,-88},{48,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
-            points={{26,-58},{26,-88},{48,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(H2PO4.solute, electroneutrality.fragment[4]) annotation (Line(
-            points={{-34,-58},{-34,-62},{22,-62},{22,-88},{48,-88}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(H.solute, minusPh.u) annotation (Line(
             points={{36,-22},{36,-26},{54,-26},{54,-10},{62,-10}},
             color={0,0,127},
@@ -3041,6 +3014,18 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{73,-86},{70,-86},{70,-76},{58,-76}},
             color={0,0,127},
             smooth=Smooth.None));
+        connect(H2PO4.solute, electroneutrality.fragment[1]) annotation (Line(
+            points={{-34,-58},{-34,-62},{24,-62},{24,-89.3333},{48,-89.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, electroneutrality.fragment[2]) annotation (Line(
+            points={{26,-58},{26,-88},{48,-88}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO4.solute, electroneutrality.fragment[3]) annotation (Line(
+            points={{82,-58},{82,-68},{28,-68},{28,-86.6667},{48,-86.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
         annotation ( Documentation(info="<html>
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
 <p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
@@ -3048,8 +3033,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),experiment(StopTime=0.05),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                  100,100}}),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}),
                           graphics));
       end Phosphate;
 
@@ -3060,8 +3045,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            solute_start=10^(-7.4 + 3)) "hydrogen ions activity"
-                                                       annotation (Placement(
+            solute_start=10^(-7.4 + 3),
+            isDependent=true) "hydrogen ions activity" annotation (Placement(
                 transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=0,
@@ -3075,11 +3060,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
             useTotalInput=true,
-            NumberOfParticles=n + 4,
-            Charges=-cat(
+            Charges=cat(
                 1,
-                {1,1,2,1},
+                {-1,-1,-2,-1},
                 ones(n)),
+            NumberOfParticles=m + n,
             Total=6425.92363734) "strong ion difference of solution"
             annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
           Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
@@ -3095,11 +3080,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           constant Integer m=4
             "number of particle types in electroneutrality equation";
 
-          parameter Boolean isDependent[3] = {false,false,true};
+          parameter Boolean isDependent[3] = {false,false,false};
 
-          parameter Physiolibrary.Types.Concentration totalPO4=0.00115
+          parameter Physiolibrary.Types.AmountOfSubstance totalPO4=0.00115
             "Total phosphate concentration";
-          parameter Physiolibrary.Types.Concentration totalAlb=0.00066
+          parameter Physiolibrary.Types.AmountOfSubstance totalAlb=0.00066
             "Total albumin concentration";
 
           parameter Integer n=218
@@ -3108,8 +3093,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             "acid dissociation constants";
 
           Physiolibrary.Chemical.Components.Substance A[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
-              solute_start=0.00033) "deprotonated acid groups"
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            isDependent=true,
+            each solute_start=0.00033) "deprotonated acid groups"
             annotation (Placement(transformation(extent={{-10,14},{10,34}})));
           Physiolibrary.Chemical.Components.ChemicalReaction react[n](
             each nP=2,
@@ -3117,9 +3103,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
 
           Physiolibrary.Chemical.Components.Substance HA[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true,
-            each solute_start=0.00033) "protonated acid groups"
+            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+              solute_start=0.00033) "protonated acid groups"
             annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
 
           Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -3132,18 +3117,18 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             "{free dissolved CO2, bicarbonate, chloride}"
             annotation (Placement(transformation(extent={{-10,70},{10,90}})));
           Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true,
-            solute_start=0.0005)
+              solute_start=0.0005)
             annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
           Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
             annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
           Components.Substance                        HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-              solute_start=0.0006)
+            isDependent=true,
+            solute_start=0.0006)
             annotation (Placement(transformation(extent={{-2,-54},{18,-34}})));
           SteadyStates.Components.MolarConservationLaw               tP04(
             each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            each Total=totalPO4*1,
-            each n=2)
+            each n=2,
+            each Total=totalPO4)
             annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
           Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
               isDependent=isDependent[3]) "chloride anion"
