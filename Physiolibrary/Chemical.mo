@@ -3527,25 +3527,24 @@ P are products,
 p are stochiometric coefficients of products.
 
 In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
-<p><br><code>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
+<p><br><code></p><p><br>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
 <pre>The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
-<p><code></p><p>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
+<p><br><code></p><p><br>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
 <p><code>The backward rate is (kf/K)*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
 <pre>
-
 Temperature dependence is calculated by Van&apos;t Hoff equation using enthalpy change of reaction as parameter dH:
-<p><code>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
+<p><br><code></p><p><br>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
 <pre>where KBase is base equilibrium constant at base temperature TK and T_heatPort is current temperature.
-<p><br><code>If only standard Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> is known, please calculate the dissociation constant K from equation</code></p>
-<p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
-<pre>where R is gass constant and T is temperature.
-
-You can also calculate the change of entropy dS from equation
-<p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
-<pre>where T is temperature.
-<p><br><code>Or may be the change of number of microstates of particles <i><b>&omega; from equation</b></i></code></p>
+<p><br><code></p><p><br>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
 <pre><i><b>dS = k ln(&omega;)</b></i>
-<i><b>where k is Boltzmann constant.</b></i></pre>
+<i>where k is Boltzmann constant.</i>
+
+The Gibbs energy of reaction can be calculate from the change of entropy dS at defined temperature by equation
+<p><br><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
+<pre>where T is temperature.
+<p><br><code>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
+<p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
+<pre>where R is gass constant and T is temperature.</pre>
 </html>"));
     end ChemicalReaction;
 

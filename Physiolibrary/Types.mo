@@ -3239,6 +3239,7 @@ constructed by the signals connected to this bus.
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3, min=0);
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
   type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
+  type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
 
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);

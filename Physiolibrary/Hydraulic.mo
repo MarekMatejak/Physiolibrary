@@ -1007,6 +1007,54 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 textString="%name",
                 lineColor={0,0,255})}));
       end UnlimitedVolume;
+
+    model UnlimitedOutflowPump "Prescribed flow at port"
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
+
+      Interfaces.HydraulicPort_a q_in annotation (Placement(transformation(extent={{
+                -114,-14},{-86,14}}), iconTransformation(extent={{-114,-14},{-86,14}})));
+    equation
+      q_in.q = q;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                            graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-94},{150,-54}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague, Czech Republic</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>january 2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
+</html>"));
+    end UnlimitedOutflowPump;
   end Sources;
 
   package Interfaces

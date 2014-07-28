@@ -45,6 +45,12 @@ defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
 defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
 defineUnitConversion("m3/s", "(mmol/min)/(mmol/l)", (10^3)*60 ); //diffusion permeability
 
+//molar mass
+defineUnitConversion("kg/mol", "g/mol", 10^3 );
+defineUnitConversion("kg/mol", "Da", 10^3 );
+defineUnitConversion("kg/mol", "kDa", 1 );
+
+
 //gas solubility - Henry's constant
 defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/(mmol/l)", 1 );
 defineUnitConversion("(mol/m3)/(mol/m3)", "%", 100 );
@@ -190,9 +196,13 @@ defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);
 defineUnitConversion("kg/m3", "kg/l", 1e-3);
 // defineUnitConversion("kg/m3", "g/cm3", 1e-3);
+
+//Mass flow rate
 defineUnitConversion("kg/s", "kg/min", 60);
 defineUnitConversion("kg/s", "g/min", 60e3);
 defineUnitConversion("kg/s", "mg/min", 60e6);
+defineUnitConversion("kg/s", "ug/min", 60e9);
+defineUnitConversion("kg/s", "ng/min", 60e12);
 
 // Speed
 defineUnitConversion("m/s", "km/h", 3.6);
