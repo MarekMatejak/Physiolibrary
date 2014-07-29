@@ -3343,14 +3343,14 @@ The Real output y is a constant signal:
 </html>"));
         end Parameter;
 
-        block InputParameter "Generate constant signal in SI units from file"
+        block InputParameter "Generate constant signal from file"
           extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit));
 
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
           replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-        constrainedby Physiolibrary.Types.Utilities
+            constrainedby Physiolibrary.Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
@@ -3378,6 +3378,43 @@ The Real output y is a constant signal:
 </p>
 </html>"));
         end InputParameter;
+
+        block InputParameter_SI
+      "Generate constant signal in SI units from file"
+          extends AbstractReal(                   k = Utilities.readReal_SI( varName));
+
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+            redeclare type Type = T)
+                         annotation (Dialog(group="Real type with units",tab="Types"));
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+            constrainedby Physiolibrary.Types.Utilities
+                         annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          IO.Output y "Connector of Real output signal"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+        equation
+          y = k;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2}), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end InputParameter_SI;
 
         block OutputFinal "Save variable to Output"
       import Physiolibrary;
@@ -3418,6 +3455,45 @@ The Real output y is a constant signal:
 </p>
 </html>"));
         end OutputFinal;
+
+        block OutputFinal_SI "Save variable to Output"
+          import Physiolibrary;
+          extends Physiolibrary.Types.AbstractReal;
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                         constrainedby
+        Physiolibrary.Types.Utilities;
+          IO.Input              y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+        equation
+          when terminal() then
+            Utilities.writeReal_SI(
+              varName,
+              y);
+          end when;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputFinal_SI;
 
         block OutputComparison "Save variable comparison to file"
       import Physiolibrary;
@@ -3469,6 +3545,57 @@ The Real output y is a constant signal:
 </p>
 </html>"));
         end OutputComparison;
+
+        block OutputComparison_SI
+      "Save variable comparison to file using SI units during input and output"
+          import Physiolibrary;
+          extends Physiolibrary.Types.AbstractReal(
+                                                  k=Utilities.readReal_SI(varName));
+          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+                                                         constrainedby
+        Physiolibrary.Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.RealInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter T initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when terminal() then
+           Utilities.writeComparison_SI(
+            varName,
+            k,
+            initialValue,
+            y);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputComparison_SI;
 
     package IO
       extends Modelica.Icons.BasesPackage;
@@ -3584,7 +3711,7 @@ The Real output y is a constant signal:
       block ElectricCurrent = Variable(redeclare type T =
             Physiolibrary.Types.ElectricCurrent,storeUnit="meq/min");
 
-      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="1");
+      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="");
 
       block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="1");
       block OsmoticPermeability = Variable(redeclare type T =
@@ -4117,6 +4244,15 @@ The Real output y is a constant signal:
     //algorithm
     end readReal;
 
+    replaceable function readReal_SI "Read the real value in SI units of parameter from file with lines in format:
+  <parameterName>\\n<value>"
+      extends Modelica.Icons.Function;
+
+      input String name "Name of parameter";
+      output Real value=0 "Actual value of parameter in SI units";
+    //algorithm
+    end readReal_SI;
+
     replaceable function readBoolean "Read the boolean value of parameter from file with lines in format:
   <parameterName>
   <value> <unit>"
@@ -4135,6 +4271,15 @@ The Real output y is a constant signal:
       input String storeUnit "Prefered units to store variable value";
     //algorithm
     end writeReal;
+
+    replaceable function writeReal_SI
+      "Write the real value using SI unit to file"
+      extends Modelica.Icons.Function;
+
+      input String name "Variable name";
+      input Real value "Variable value";
+    //algorithm
+    end writeReal_SI;
 
     replaceable function writeBoolean "Write the boolean value to file"
       extends Modelica.Icons.Function;
@@ -4159,6 +4304,20 @@ The Real output y is a constant signal:
     //algorithm
     end writeComparison;
 
+    replaceable function writeComparison_SI
+      "Compare and write the result and the value to file using SI units"
+
+      extends Modelica.Icons.Function;
+
+      input String name "Variable name";
+      input Real defaultValue
+        "Original value[in SIunits] to compare with final value";
+      input Real initialValue "Initial variable value[in SI units]";
+      input Real finalValue "Final variable value[in SI units]";
+
+    //algorithm
+    end writeComparison_SI;
+
     replaceable function writeBooleanComparison
       "Compare and write the result and the value to file"
       extends Modelica.Icons.Function;
@@ -4181,6 +4340,10 @@ The Real output y is a constant signal:
     algorithm
     end readReal;
 
+    redeclare function extends readReal_SI
+    algorithm
+    end readReal_SI;
+
     redeclare function extends readBoolean
     algorithm
     end readBoolean;
@@ -4189,6 +4352,10 @@ The Real output y is a constant signal:
     algorithm
     end writeReal;
 
+    redeclare function extends writeReal_SI
+    algorithm
+    end writeReal_SI;
+
     redeclare function extends writeBoolean
     algorithm
     end writeBoolean;
@@ -4196,6 +4363,10 @@ The Real output y is a constant signal:
     redeclare function extends writeComparison
     algorithm
     end writeComparison;
+
+    redeclare function extends writeComparison_SI
+    algorithm
+    end writeComparison_SI;
 
     redeclare function extends writeBooleanComparison
     algorithm
@@ -4231,7 +4402,7 @@ The Real output y is a constant signal:
 
       typeDef:=UnitDerivations.findUnit(storeUnit);
 
-      //Format "<variableName>\n<value><unit>"
+      //Format "<variableName>\n<value> <unit>"
       (line, endOfFile) :=Streams.readLine(fn, iline);
       while not found and not endOfFile loop
            if line == name then
@@ -4240,8 +4411,8 @@ The Real output y is a constant signal:
                lineLen := Strings.length(line);
                nextIndex:=1;
 
-               /*
-  //Format "<variableName>=<value><unit>"
+    /*
+other wariant: //Format "<variableName>=<value><unit>"
   while not found and not endOfFile loop
        iline:=iline+1;
        (line, endOfFile) :=Streams.readLine(fn, iline);
@@ -4264,31 +4435,34 @@ The Real output y is a constant signal:
 */
 
                (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
+
                nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
                if nextIndex>lineLen then
-            if Strings.length(Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-                  typeDef].DisplayUnit)
-                                      > 0 then
-              Streams.error("No units detected for variable '" + name +
-                "' in file '" + fn + "'. Expected unis are '" +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-                  typeDef].DisplayUnit
-                                     + "'!\n");
+                 if Strings.length(Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+                  typeDef].DisplayUnit) > 0 then
+                   Streams.error("No units detected for variable '" + name +
+                      "' in file '" + fn + "'. Expected unis are '" +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+                      typeDef].DisplayUnit + "'!\n");
                  end if;
+             //    Streams.print(name + "\t " + String(inputValue) + " (no units)");
                else
                  str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-            if str <>Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+                 if str <>Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
                   typeDef].DisplayUnit then
-              Streams.error("Units '" + str + "' not expected for variable '"
+                    Streams.error("Units '" + str + "' not expected for variable '"
                  + name + "' in file '" + fn + "'. Expected unis are '" +
                   Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
                   typeDef].DisplayUnit
                                      + "'!\n");
                  end if;
+              //   Streams.print(name + "\t " + String(inputValue) + " " + str);
                end if;
-          value := inputValue*Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+               value := inputValue*Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
               typeDef].Scale
                            +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
               typeDef].Offset;
+             //  Streams.print("\t\t =" + String(value) + " " + Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+              //typeDef].Unit);
                found := true;
             // end if;  //Format "<variableName>=<value><unit>"
 
@@ -4308,6 +4482,51 @@ The Real output y is a constant signal:
        end if;
 
     end readReal;
+
+    redeclare function extends readReal_SI
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      String line;
+      Integer nextIndex;
+      Integer iline=1;
+      Boolean found = false;
+      Boolean endOfFile=false;
+
+    algorithm
+      fn:="io/input.txt";
+
+      if not Files.exist(fn) then
+         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
+      else
+
+      //Format "<variableName>\n<value> <unit>"
+      (line, endOfFile) :=Streams.readLine(fn, iline);
+      while not found and not endOfFile loop
+           if line == name then
+               // name found, get value of "name = value;"
+               (line, endOfFile) :=Streams.readLine(fn, iline+1);
+               nextIndex:=1;
+
+               (value,nextIndex) := Strings.scanReal(line, nextIndex);
+               found := true;
+
+             else
+             // wrong name, skip lines
+               iline := iline + 2;
+               // read next variable name
+               (line, endOfFile) :=Streams.readLine(fn, iline);
+
+             end if;
+         end while;
+
+         if not found then
+            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
+         end if;
+       end if;
+
+    end readReal_SI;
 
     redeclare function extends readBoolean
 
@@ -4342,6 +4561,27 @@ The Real output y is a constant signal:
                             fn);
 
     end writeReal;
+
+    redeclare function extends writeReal_SI
+      "Write the value to file using SI unit"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Integer typeDef "Variable type";
+
+    algorithm
+      fn:="io/output.txt";
+
+      if not Files.exist(fn) then
+         if not Files.exist("io") then
+             Files.createDirectory("io");
+         end if;
+      end if;
+
+       Streams.print(name + "\n" + String(value), fn);
+
+    end writeReal_SI;
 
     redeclare function extends writeBoolean
       import Modelica.Utilities.*;
@@ -4409,6 +4649,37 @@ The Real output y is a constant signal:
 
     end writeComparison;
 
+    redeclare function extends writeComparison_SI
+      "Compare and write the result and the value to file using SI units"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+
+    algorithm
+      fn:="io/comparison.txt";
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+
+    outputDefaultValue := defaultValue;
+    outputInitialValue := initialValue;
+    outputFinalValue := finalValue;
+
+    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
+      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
+       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
+      " : default=" + String(outputDefaultValue) + ", initial=" + String(outputInitialValue)
+       + ", final=" + String(outputFinalValue), fn);
+
+    end writeComparison_SI;
+
     redeclare function extends writeBooleanComparison
       "Compare and write the result and the value to file"
       import Modelica.Utilities.*;
@@ -4449,14 +4720,14 @@ The Real output y is a constant signal:
          end if;
        end for;
        if typeDef==0 then
-          Modelica.Utilities.Streams.error("Unit \"" + unitToFind + "\" not defined in FileUtilities.UnitDerivations.RealTypeRecord.\n");
+          Modelica.Utilities.Streams.print("Unit \"" + unitToFind + "\" not defined in FileUtilities.UnitDerivations.RealTypeRecord.\n");
        end if;
      end findUnit;
 
      record RealTypeRecord "The Real Type definition"
        parameter String Quantity="" "Quantity";
        parameter String Unit="1" "SI unit";
-       parameter String DisplayUnit="1" "Display unit";
+       parameter String DisplayUnit="" "Display unit";
 
        parameter Real Scale=1
           "Scale from display unit to SI unit such that x <d> = x*s+o <u>";
@@ -4479,7 +4750,7 @@ The Real output y is a constant signal:
             Quantity="Time",
             Unit="s",
             DisplayUnit="min",
-            Scale=1/60),RealTypeRecord(
+            Scale=60),RealTypeRecord(
             Quantity="Mass",
             Unit="kg",
             Min=0,
@@ -4488,12 +4759,21 @@ The Real output y is a constant signal:
             Quantity="MassFlowRate",
             Unit="kg/s",
             DisplayUnit="mg/min",
-            Scale=(1e-6)*60),RealTypeRecord(
+            Scale=(1e-6)/60),RealTypeRecord(
+            Quantity="MassFlowRate",
+            Unit="kg/s",
+            DisplayUnit="g/min",
+            Scale=(1e-3)/60),RealTypeRecord(
             Quantity="Density",
             Unit="kg/m3",
             Min=0,
             DisplayUnit="kg/l",
             Scale=1e3),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="mg/l",
+            Scale=1e-3),RealTypeRecord(
             Quantity="Length",
             Unit="m",
             DisplayUnit="cm",
@@ -4513,11 +4793,16 @@ The Real output y is a constant signal:
             Quantity="VolumeFlowRate",
             Unit="m3/s",
             DisplayUnit="ml/min",
-            Scale=(1e-6)*60),RealTypeRecord(
+            Scale=(1e-6)/60),RealTypeRecord(
             Quantity="Concentration",
             Unit="mol/m3",
             DisplayUnit="mmol/l",
             Scale=1,
+            Start=1),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="pmol/l",
+            Scale=1e-12/1e-3,
             Start=1),RealTypeRecord(
             Quantity="AmountOfSubstance",
             Unit="mol",
@@ -4540,11 +4825,11 @@ The Real output y is a constant signal:
             Quantity="Power",
             Unit="W",
             DisplayUnit="kcal/min",
-            Scale=4186.8*60),RealTypeRecord(
+            Scale=4186.8/60),RealTypeRecord(
             Quantity="ThermalConductance",
             Unit="W/K",
             DisplayUnit="kcal/(min.degC)",
-            Scale=4186.8*60),RealTypeRecord(
+            Scale=4186.8/60),RealTypeRecord(
             Quantity="SpecificHeatCapacity",
             Unit="J/(kg.K)",
             DisplayUnit="kcal/(degC.kg)",
@@ -4559,12 +4844,20 @@ The Real output y is a constant signal:
             Scale=1e-3),RealTypeRecord(
             Quantity="ElectricCharge",
             Unit="C",
-            DisplayUnit="mEq",
+            DisplayUnit="meq",
             Scale=(1e-3)*(9.64853399*10^4)),RealTypeRecord(
+            Quantity="VolumeDensityOfCharge",
+            Unit="C/m3",
+            DisplayUnit="meq/l",
+            Scale=(1e-3)*(9.64853399*10^4)/1e-3),RealTypeRecord(
+            Quantity="VolumeDensityOfCharge",
+            Unit="C/m3",
+            DisplayUnit="eq/l",
+            Scale=(9.64853399*10^4)/1e-3),RealTypeRecord(
             Quantity="ElectricCurrent",
             Unit="A",
-            DisplayUnit="mEq/min",
-            Scale=(1e-3)*(9.64853399*10^4)*60),RealTypeRecord(
+            DisplayUnit="meq/min",
+            Scale=(1e-3)*(9.64853399*10^4)/60),RealTypeRecord(
             Quantity="Fraction",
             Unit="1",
             DisplayUnit="%",
@@ -4576,7 +4869,7 @@ The Real output y is a constant signal:
             Quantity="DiffusionMembranePermeability",
             Unit="m3/s",
             DisplayUnit="ml/min",
-            Scale=(1e-3)*60),RealTypeRecord(
+            Scale=(1e-3)/60),RealTypeRecord(
             Quantity="HydraulicConductance",
             Unit="m3/(Pa.s)",
             DisplayUnit="ml/(mmHg.min)",
@@ -4594,9 +4887,9 @@ The Real output y is a constant signal:
             DisplayUnit="mmol/(l.mmHg)",
             Scale=(1e-3)/((1e-3)*(101325/760))),RealTypeRecord(
             Quantity="Osmolarity",
-            Unit="mol",
-            DisplayUnit="mOsm",
-            Scale=(1e-3))}
+            Unit="mol/m3",
+            DisplayUnit="mosm/l",
+            Scale=1)}
         "All defined Real types - units, displayUnits, conversions, nominals";
 
     end UnitDerivations;
