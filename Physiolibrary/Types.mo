@@ -1337,6 +1337,63 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end VolumeDensityOfChargeConst;
+
+  block VelocityConst "Constant signal of type Velocity"
+   parameter Physiolibrary.Types.Velocity k "Constant Velocity output value";
+        Physiolibrary.Types.RealIO.VelocityOutput y "Velocity constant"
+                                       annotation (Placement(transformation(
+            extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="velocity",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end VelocityConst;
+
+  block PowerConst "Constant signal of type Power"
+   parameter Types.Power k "Constant Power output value";
+        RealIO.PowerOutput y "Power constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="power",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end PowerConst;
+
   end Constants;
 
   package RealIO
@@ -3124,7 +3181,110 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html>
   <p>
-  Connector with one output signal of type Real.
+  Connector with one output signal of type MassConcentration.
+  </p>
+  </html>"));
+
+    connector VelocityInput =      input Velocity "input Velocity as connector"
+      annotation (defaultComponentName="velocity",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Velocity.
+    </p>
+    </html>"));
+    connector VelocityOutput =      output Velocity
+      "output Velocity as connector"
+      annotation (defaultComponentName="velocity",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Velocity.
+  </p>
+  </html>"));
+
+    connector PowerInput = input Power "input Power as connector"
+      annotation (defaultComponentName="power",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Power.
+    </p>
+    </html>"));
+    connector PowerOutput = output Power "output Power as connector"
+      annotation (defaultComponentName="power",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Power.
   </p>
   </html>"));
   end RealIO;
@@ -3242,6 +3402,7 @@ constructed by the signals connected to this bus.
   type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
 
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
+  type Velocity = Modelica.SIunits.Velocity(displayUnit="km/h", nominal=1);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
   type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
@@ -3259,6 +3420,7 @@ constructed by the signals connected to this bus.
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1, min=0);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
+  type Power = Modelica.SIunits.Power(displayUnit="kcal/min", nominal=4186.8/60);
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
   type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
   type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
@@ -3672,6 +3834,7 @@ The Real output y is a constant signal:
       block Density = Variable(redeclare type T=Physiolibrary.Types.Density, storeUnit="kg/l");
 
       block Height = Variable(redeclare type T=Physiolibrary.Types.Height, storeUnit="cm");
+      block Velocity = Variable(redeclare type T=Physiolibrary.Types.Velocity, storeUnit="km/h");
       block Acceleration = Variable(redeclare type T =
             Physiolibrary.Types.Acceleration, storeUnit="m/s");
 
@@ -3694,6 +3857,8 @@ The Real output y is a constant signal:
           Physiolibrary.Types.Temperature,                             k=310.15, storeUnit="degC");
       block HeatFlowRate = Variable(redeclare type T =
             Physiolibrary.Types.HeatFlowRate,storeUnit="kcal/min");
+      block Power = Variable(redeclare type T =
+            Physiolibrary.Types.Power,storeUnit="kcal/min");
       block ThermalConductance = Variable(redeclare type T =
             Physiolibrary.Types.ThermalConductance, storeUnit="kcal/(min.K)");
       block SpecificHeatCapacity = Variable(redeclare type T =
@@ -3713,7 +3878,7 @@ The Real output y is a constant signal:
 
       block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="");
 
-      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="1");
+      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="log10(mol/l)");
       block OsmoticPermeability = Variable(redeclare type T =
             Physiolibrary.Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
       block DiffusionPermeability =         Variable(redeclare type T =
@@ -3765,9 +3930,22 @@ The Real output y is a constant signal:
               textString="%varName")}));
      end Base;
 
-  block Acceleration "Constant signal of type Acceleration"
+  block Velocity "Constant signal of type Velocity"
 
     extends Base(storeUnit="m/s");
+   parameter Types.Velocity k=Utilities.readReal(varName, storeUnit)
+        "Constant Velocity output value";
+        RealIO.VelocityOutput y "Velocity input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="velocity");
+  end Velocity;
+
+  block Acceleration "Constant signal of type Acceleration"
+
+    extends Base(storeUnit="m/s2");
    parameter Types.Acceleration k=Utilities.readReal(varName, storeUnit)
         "Constant Acceleration output value";
         RealIO.AccelerationOutput y "Acceleration input parameter"
@@ -4217,6 +4395,18 @@ The Real output y is a constant signal:
     annotation (defaultComponentName="volumeDensityOfCharge");
   end VolumeDensityOfCharge;
 
+  block Power "Constant signal of type Power"
+
+    extends Base(storeUnit="kcal/min");
+   parameter Types.Power k=Utilities.readReal(varName, storeUnit)
+        "Constant Power output value";
+        RealIO.PowerOutput y "Power input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heatFlowRate");
+  end Power;
   end RealTypeInputParameters;
 
   partial block AbstractBoolean
@@ -4329,6 +4519,261 @@ The Real output y is a constant signal:
       input Boolean finalValue "Final variable value[in SI units]";
     //algorithm
     end writeBooleanComparison;
+
+    package UnitConversions "Conversions non-SI units at input/output"
+
+     function findUnit
+       input String unitToFind "display unit to find in RealTypeDef";
+       output Integer typeDef "index in RealTypeDef";
+     algorithm
+       typeDef:=0;
+       for i in 1:size(RealTypeDef,1) loop
+         if RealTypeDef[i].DisplayUnit == unitToFind then
+           typeDef:=i;
+           break;
+         end if;
+       end for;
+       if typeDef==0 then
+          Modelica.Utilities.Streams.print("Unit \"" + unitToFind + "\" not defined in Physiolibrary.Utilities.UnitConversions.RealTypeDef. Do not hesitate to contact me. marek@matfyz.cz\n");
+       end if;
+     end findUnit;
+
+     record RealTypeRecord "The Real Type definition"
+       parameter String Quantity="" "Quantity";
+       parameter String Unit="1" "SI unit";
+       parameter String DisplayUnit="" "Display unit";
+
+       parameter Real Scale=1
+          "Scale from display unit to SI unit such that x <d> = x*s+o <u>";
+       parameter Real Offset=0
+          "Offset from display unit to SI unit such that x <d> = x*s+o <u>";
+
+       parameter Real Min=-Modelica.Constants.inf "minimal value";
+       parameter Real Max=+Modelica.Constants.inf; // Inf denotes a large value
+       parameter Real Start = Offset; // Initial value
+       parameter Real Nominal = Scale; // Nominal value
+       parameter StateSelect StateSelection = StateSelect.default;
+     end RealTypeRecord;
+
+      constant RealTypeRecord RealTypeDef[:]={RealTypeRecord(),
+          RealTypeRecord(),RealTypeRecord(
+            Quantity="pH",
+            Unit="log10(mol/l)",
+            DisplayUnit="log10(mol/l)",
+            Scale=1),RealTypeRecord(
+            Quantity="Energy",
+            Unit="J",
+            DisplayUnit="kcal",
+            Scale=4186.8),RealTypeRecord(
+            Quantity="Time",
+            Unit="s",
+            DisplayUnit="min",
+            Scale=60),RealTypeRecord(
+            Quantity="Frequency",
+            Unit="1/s",
+            DisplayUnit="Hz",
+            Scale=1),RealTypeRecord(
+            Quantity="Frequency",
+            Unit="1/s",
+            DisplayUnit="1/min",
+            Scale=1/60),RealTypeRecord(
+            Quantity="Mass",
+            Unit="kg",
+            Min=0,
+            DisplayUnit="g",
+            Scale=1e-3),RealTypeRecord(
+            Quantity="Mass",
+            Unit="kg",
+            Min=0,
+            DisplayUnit="mg",
+            Scale=1e-6),RealTypeRecord(
+            Quantity="MassFlowRate",
+            Unit="kg/s",
+            DisplayUnit="mg/min",
+            Scale=(1e-6)/60),RealTypeRecord(
+            Quantity="MassFlowRate",
+            Unit="kg/s",
+            DisplayUnit="g/min",
+            Scale=(1e-3)/60),RealTypeRecord(
+            Quantity="Density",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="kg/l",
+            Scale=1e3),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="mg/l",
+            Scale=1e-3),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="mg/dl",
+            Scale=1e-6/1e-4),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="ng/l",
+            Scale=1e-9/1e-3),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="ng/dl",
+            Scale=1e-9/1e-4),RealTypeRecord(
+            Quantity="MassConcentration",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="ng/ml",
+            Scale=1e-9/1e-6),RealTypeRecord(
+            Quantity="Length",
+            Unit="m",
+            DisplayUnit="cm",
+            Scale=1e-2),RealTypeRecord(
+            Quantity="Acceleration",
+            Unit="m/s2",
+            DisplayUnit="m/s2",
+            Scale=1),RealTypeRecord(
+            Quantity="Pressure",
+            Unit="Pa",
+            DisplayUnit="mmHg",
+            Scale=101325/760),RealTypeRecord(
+            Quantity="Volume",
+            Unit="m3",
+            DisplayUnit="ml",
+            Scale=1e-6),RealTypeRecord(
+            Quantity="VolumeFlowRate",
+            Unit="m3/s",
+            DisplayUnit="ml/min",
+            Scale=(1e-6)/60),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="mmol/l",
+            Scale=1),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="pmol/l",
+            Scale=1e-12/1e-3),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="uU_Insulin/ml",
+            Scale=6.622e-9),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="U_EPO/l",
+            Scale=0.45e-9),RealTypeRecord(
+            Quantity="AmountOfSubstance",
+            Unit="mol",
+            DisplayUnit="mmol",
+            Scale=1e-3),RealTypeRecord(
+            Quantity="AmountOfSubstance",
+            Unit="mol",
+            DisplayUnit="osm",
+            Scale=1),RealTypeRecord(
+            Quantity="AmountOfSubstance",
+            Unit="mol",
+            DisplayUnit="mosm",
+            Scale=1e-3),RealTypeRecord(
+            Quantity="MolarFlowRate",
+            Unit="mol/s",
+            DisplayUnit="mmol/min",
+            Scale=(1e-3)/60),RealTypeRecord(
+            Quantity="MolarFlowRate",
+            Unit="mol/s",
+            DisplayUnit="ml_STP/min",
+            Scale=1/1362657.193569),RealTypeRecord(
+            Quantity="Energy",
+            Unit="J",
+            DisplayUnit="kcal",
+            Scale=4186.8),RealTypeRecord(
+            Quantity="ThermodynamicTemperature",
+            Unit="K",
+            DisplayUnit="degC",
+            Scale=1,
+            Offset=273.15,
+            Start=310.15),RealTypeRecord(
+            Quantity="Power",
+            Unit="W",
+            DisplayUnit="W",
+            Scale=1),RealTypeRecord(
+            Quantity="Power",
+            Unit="W",
+            DisplayUnit="kcal/min",
+            Scale=4186.8/60),RealTypeRecord(
+            Quantity="Power",
+            Unit="W",
+            DisplayUnit="cal/min",
+            Scale=4.1868/60),RealTypeRecord(
+            Quantity="ThermalConductance",
+            Unit="W/K",
+            DisplayUnit="kcal/(min.degC)",
+            Scale=4186.8/60),RealTypeRecord(
+            Quantity="SpecificHeatCapacity",
+            Unit="J/(kg.K)",
+            DisplayUnit="kcal/(degC.kg)",
+            Scale=4186.8),RealTypeRecord(
+            Quantity="SpecificEnergy",
+            Unit="J/kg",
+            DisplayUnit="kcal/kg",
+            Scale=4186.8),RealTypeRecord(
+            Quantity="ElectricPotential",
+            Unit="V",
+            DisplayUnit="mV",
+            Scale=1e-3),RealTypeRecord(
+            Quantity="ElectricCharge",
+            Unit="C",
+            DisplayUnit="meq",
+            Scale=(1e-3)*(9.64853399*10^4)),RealTypeRecord(
+            Quantity="VolumeDensityOfCharge",
+            Unit="C/m3",
+            DisplayUnit="meq/l",
+            Scale=(1e-3)*(9.64853399*10^4)/1e-3),RealTypeRecord(
+            Quantity="VolumeDensityOfCharge",
+            Unit="C/m3",
+            DisplayUnit="eq/l",
+            Scale=(9.64853399*10^4)/1e-3),RealTypeRecord(
+            Quantity="ElectricCurrent",
+            Unit="A",
+            DisplayUnit="meq/min",
+            Scale=(1e-3)*(9.64853399*10^4)/60),RealTypeRecord(
+            Quantity="Fraction",
+            Unit="1",
+            DisplayUnit="%",
+            Scale=1e-2),RealTypeRecord(
+            Quantity="OsmoticMembramePermeability",
+            Unit="m6/(mol.s)",
+            DisplayUnit="ml/(mOsmol.min)",
+            Scale=(1e-6)/((1e-3)*60)),RealTypeRecord(
+            Quantity="DiffusionMembranePermeability",
+            Unit="m3/s",
+            DisplayUnit="ml/min",
+            Scale=(1e-3)/60),RealTypeRecord(
+            Quantity="HydraulicConductance",
+            Unit="m3/(Pa.s)",
+            DisplayUnit="ml/(mmHg.min)",
+            Scale=(1e-6)/((101325/760)*60)),RealTypeRecord(
+            Quantity="HydraulicCompliance",
+            Unit="m3/Pa",
+            DisplayUnit="ml/mmHg",
+            Scale=(1e-6)/(101325/760)),RealTypeRecord(
+            Quantity="HydraulicInertance",
+            Unit="Pa.s2/m3",
+            DisplayUnit="mmHg.min2/ml",
+            Scale=((101325/760)*(60^2)/(1e-6))),RealTypeRecord(
+            Quantity="GasSolubility",
+            Unit="mol/(m3.Pa)",
+            DisplayUnit="mmol/(l.mmHg)",
+            Scale=(1e-3)/((1e-3)*(101325/760))),RealTypeRecord(
+            Quantity="Osmolarity",
+            Unit="mol/m3",
+            DisplayUnit="mosm/l",
+            Scale=1),RealTypeRecord(
+            Quantity="Osmolarity",
+            Unit="mol/m3",
+            DisplayUnit="osm/l",
+            Scale=1)}
+        "All defined Real types - units, displayUnits, conversions, nominals";
+
+    end UnitConversions;
   end Utilities;
 
   package ZeroUtilities "No input/output/test"
@@ -4400,7 +4845,7 @@ The Real output y is a constant signal:
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
       else
 
-      typeDef:=UnitDerivations.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
 
       //Format "<variableName>\n<value> <unit>"
       (line, endOfFile) :=Streams.readLine(fn, iline);
@@ -4438,28 +4883,26 @@ other wariant: //Format "<variableName>=<value><unit>"
 
                nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
                if nextIndex>lineLen then
-                 if Strings.length(Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+              if Strings.length(Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
                   typeDef].DisplayUnit) > 0 then
-                   Streams.error("No units detected for variable '" + name +
-                      "' in file '" + fn + "'. Expected unis are '" +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-                      typeDef].DisplayUnit + "'!\n");
+                Streams.error("No units detected for variable '" + name +
+                  "' in file '" + fn + "'. Expected unis are '" + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+                  typeDef].DisplayUnit + "'!\n");
                  end if;
              //    Streams.print(name + "\t " + String(inputValue) + " (no units)");
                else
                  str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-                 if str <>Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+              if str <> Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
                   typeDef].DisplayUnit then
-                    Streams.error("Units '" + str + "' not expected for variable '"
-                 + name + "' in file '" + fn + "'. Expected unis are '" +
-                  Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-                  typeDef].DisplayUnit
-                                     + "'!\n");
+                Streams.error("Units '" + str + "' not expected for variable '"
+                   + name + "' in file '" + fn + "'. Expected unis are '" +
+                  Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+                  typeDef].DisplayUnit + "'!\n");
                  end if;
               //   Streams.print(name + "\t " + String(inputValue) + " " + str);
                end if;
-               value := inputValue*Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-              typeDef].Scale
-                           +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+               value :=inputValue*Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+              typeDef].Scale + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
               typeDef].Offset;
              //  Streams.print("\t\t =" + String(value) + " " + Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
               //typeDef].Unit);
@@ -4550,15 +4993,12 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=UnitDerivations.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
 
-    Streams.print(name + "\n" + String(((value -Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].Offset)
-                      /Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].Scale))
-                       + " " +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].DisplayUnit,
-                            fn);
+      Streams.print(name + "\n" + String(((value - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].Scale)) + " " + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].DisplayUnit, fn);
 
     end writeReal;
 
@@ -4621,31 +5061,27 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=UnitDerivations.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
 
-    outputDefaultValue := ((defaultValue -Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].Offset)
-                      /Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+    outputDefaultValue :=((defaultValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
         typeDef].Scale);
-    outputInitialValue := ((initialValue -Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].Offset)
-                      /Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+    outputInitialValue :=((initialValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
         typeDef].Scale);
-    outputFinalValue := ((finalValue -Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].Offset)
-                      /Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
+    outputFinalValue :=((finalValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
         typeDef].Scale);
 
-    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
-      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
-       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
-      " : default=" + String(outputDefaultValue) + " " +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].DisplayUnit
-                           + ", initial=" + String(outputInitialValue) + " " +
-        Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[typeDef].DisplayUnit
-       + ", final=" + String(outputFinalValue) + " " +Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-        typeDef].DisplayUnit,
-                            fn);
+      Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
+         then String(abs((outputFinalValue - outputDefaultValue)/
+        outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
+        " ; " + name + " : default=" + String(outputDefaultValue) + " " +
+        Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[typeDef].DisplayUnit
+         + ", initial=" + String(outputInitialValue) + " " + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
+        Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[typeDef].DisplayUnit,
+        fn);
 
     end writeComparison;
 
@@ -4706,193 +5142,6 @@ other wariant: //Format "<variableName>=<value><unit>"
 
     end writeBooleanComparison;
 
-    package UnitDerivations
-
-     function findUnit
-       input String unitToFind "display unit to find in RealTypeDef";
-       output Integer typeDef "index in RealTypeDef";
-     algorithm
-       typeDef:=0;
-       for i in 1:size(RealTypeDef,1) loop
-         if RealTypeDef[i].DisplayUnit == unitToFind then
-           typeDef:=i;
-           break;
-         end if;
-       end for;
-       if typeDef==0 then
-          Modelica.Utilities.Streams.print("Unit \"" + unitToFind + "\" not defined in FileUtilities.UnitDerivations.RealTypeRecord.\n");
-       end if;
-     end findUnit;
-
-     record RealTypeRecord "The Real Type definition"
-       parameter String Quantity="" "Quantity";
-       parameter String Unit="1" "SI unit";
-       parameter String DisplayUnit="" "Display unit";
-
-       parameter Real Scale=1
-          "Scale from display unit to SI unit such that x <d> = x*s+o <u>";
-       parameter Real Offset=0
-          "Offset from display unit to SI unit such that x <d> = x*s+o <u>";
-
-       parameter Real Min=-Modelica.Constants.inf "minimal value";
-       parameter Real Max=+Modelica.Constants.inf; // Inf denotes a large value
-       parameter Real Start = Offset; // Initial value
-       parameter Real Nominal = Scale; // Nominal value
-       parameter StateSelect StateSelection = StateSelect.default;
-     end RealTypeRecord;
-
-      constant RealTypeRecord RealTypeDef[:]={RealTypeRecord(),
-          RealTypeRecord(),RealTypeRecord(
-            Quantity="Energy",
-            Unit="J",
-            DisplayUnit="kcal",
-            Scale=4186.8),RealTypeRecord(
-            Quantity="Time",
-            Unit="s",
-            DisplayUnit="min",
-            Scale=60),RealTypeRecord(
-            Quantity="Mass",
-            Unit="kg",
-            Min=0,
-            DisplayUnit="g",
-            Scale=1e-3),RealTypeRecord(
-            Quantity="MassFlowRate",
-            Unit="kg/s",
-            DisplayUnit="mg/min",
-            Scale=(1e-6)/60),RealTypeRecord(
-            Quantity="MassFlowRate",
-            Unit="kg/s",
-            DisplayUnit="g/min",
-            Scale=(1e-3)/60),RealTypeRecord(
-            Quantity="Density",
-            Unit="kg/m3",
-            Min=0,
-            DisplayUnit="kg/l",
-            Scale=1e3),RealTypeRecord(
-            Quantity="MassConcentration",
-            Unit="kg/m3",
-            Min=0,
-            DisplayUnit="mg/l",
-            Scale=1e-3),RealTypeRecord(
-            Quantity="Length",
-            Unit="m",
-            DisplayUnit="cm",
-            Scale=1e-2),RealTypeRecord(
-            Quantity="Acceleration",
-            Unit="m/s2",
-            DisplayUnit="m/s2",
-            Scale=1),RealTypeRecord(
-            Quantity="Pressure",
-            Unit="Pa",
-            DisplayUnit="mmHg",
-            Scale=101325/760),RealTypeRecord(
-            Quantity="Volume",
-            Unit="m3",
-            DisplayUnit="ml",
-            Scale=1e-6),RealTypeRecord(
-            Quantity="VolumeFlowRate",
-            Unit="m3/s",
-            DisplayUnit="ml/min",
-            Scale=(1e-6)/60),RealTypeRecord(
-            Quantity="Concentration",
-            Unit="mol/m3",
-            DisplayUnit="mmol/l",
-            Scale=1,
-            Start=1),RealTypeRecord(
-            Quantity="Concentration",
-            Unit="mol/m3",
-            DisplayUnit="pmol/l",
-            Scale=1e-12/1e-3,
-            Start=1),RealTypeRecord(
-            Quantity="AmountOfSubstance",
-            Unit="mol",
-            DisplayUnit="mmol",
-            Scale=1e-3),RealTypeRecord(
-            Quantity="MolarFlowRate",
-            Unit="mol/s",
-            DisplayUnit="mmol/min",
-            Scale=(1e-3)/60),RealTypeRecord(
-            Quantity="Energy",
-            Unit="J",
-            DisplayUnit="kcal",
-            Scale=4186.8),RealTypeRecord(
-            Quantity="ThermodynamicTemperature",
-            Unit="K",
-            DisplayUnit="degC",
-            Scale=1,
-            Offset=273.15,
-            Start=310.15),RealTypeRecord(
-            Quantity="Power",
-            Unit="W",
-            DisplayUnit="kcal/min",
-            Scale=4186.8/60),RealTypeRecord(
-            Quantity="ThermalConductance",
-            Unit="W/K",
-            DisplayUnit="kcal/(min.degC)",
-            Scale=4186.8/60),RealTypeRecord(
-            Quantity="SpecificHeatCapacity",
-            Unit="J/(kg.K)",
-            DisplayUnit="kcal/(degC.kg)",
-            Scale=4186.8),RealTypeRecord(
-            Quantity="SpecificEnergy",
-            Unit="J/kg",
-            DisplayUnit="kcal/kg",
-            Scale=4186.8),RealTypeRecord(
-            Quantity="ElectricPotential",
-            Unit="V",
-            DisplayUnit="mV",
-            Scale=1e-3),RealTypeRecord(
-            Quantity="ElectricCharge",
-            Unit="C",
-            DisplayUnit="meq",
-            Scale=(1e-3)*(9.64853399*10^4)),RealTypeRecord(
-            Quantity="VolumeDensityOfCharge",
-            Unit="C/m3",
-            DisplayUnit="meq/l",
-            Scale=(1e-3)*(9.64853399*10^4)/1e-3),RealTypeRecord(
-            Quantity="VolumeDensityOfCharge",
-            Unit="C/m3",
-            DisplayUnit="eq/l",
-            Scale=(9.64853399*10^4)/1e-3),RealTypeRecord(
-            Quantity="ElectricCurrent",
-            Unit="A",
-            DisplayUnit="meq/min",
-            Scale=(1e-3)*(9.64853399*10^4)/60),RealTypeRecord(
-            Quantity="Fraction",
-            Unit="1",
-            DisplayUnit="%",
-            Scale=1e-2),RealTypeRecord(
-            Quantity="OsmoticMembramePermeability",
-            Unit="m6/(mol.s)",
-            DisplayUnit="ml/(mOsmol.min)",
-            Scale=(1e-6)/((1e-3)*60)),RealTypeRecord(
-            Quantity="DiffusionMembranePermeability",
-            Unit="m3/s",
-            DisplayUnit="ml/min",
-            Scale=(1e-3)/60),RealTypeRecord(
-            Quantity="HydraulicConductance",
-            Unit="m3/(Pa.s)",
-            DisplayUnit="ml/(mmHg.min)",
-            Scale=(1e-6)/((101325/760)*60)),RealTypeRecord(
-            Quantity="HydraulicCompliance",
-            Unit="m3/Pa",
-            DisplayUnit="ml/mmHg",
-            Scale=(1e-6)/(101325/760)),RealTypeRecord(
-            Quantity="HydraulicInertance",
-            Unit="Pa.s2/m3",
-            DisplayUnit="mmHg.min2/ml",
-            Scale=((101325/760)*(60^2)/(1e-6))),RealTypeRecord(
-            Quantity="GasSolubility",
-            Unit="mol/(m3.Pa)",
-            DisplayUnit="mmol/(l.mmHg)",
-            Scale=(1e-3)/((1e-3)*(101325/760))),RealTypeRecord(
-            Quantity="Osmolarity",
-            Unit="mol/m3",
-            DisplayUnit="mosm/l",
-            Scale=1)}
-        "All defined Real types - units, displayUnits, conversions, nominals";
-
-    end UnitDerivations;
     annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
