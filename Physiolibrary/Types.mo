@@ -1394,6 +1394,33 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end PowerConst;
 
+  block PositionConst "Constant signal of type Position"
+   parameter Types.Position k "Constant Position output value";
+        RealIO.PositionOutput y "Position constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end PositionConst;
   end Constants;
 
   package RealIO
@@ -3287,6 +3314,57 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Power.
   </p>
   </html>"));
+
+    connector PositionInput = input Position "input Position as connector"
+      annotation (defaultComponentName="position",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Position.
+    </p>
+    </html>"));
+    connector PositionOutput = output Position "output Position as connector"
+      annotation (defaultComponentName="position",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Position.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -3402,6 +3480,7 @@ constructed by the signals connected to this bus.
   type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
 
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
+  type Position = Modelica.SIunits.Position(displayUnit="cm", nominal=1e-2);
   type Velocity = Modelica.SIunits.Velocity(displayUnit="km/h", nominal=1);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
 
@@ -3896,6 +3975,7 @@ The Real output y is a constant signal:
 
       block Osmolarity =    Variable(redeclare type T =
             Physiolibrary.Types.Osmolarity,storeUnit="mosm/l");
+      block Position=Variable(redeclare type T=Physiolibrary.Types.Position, storeUnit="cm");
   end RealTypes;
 
   package RealTypeInputParameters
@@ -4407,6 +4487,19 @@ The Real output y is a constant signal:
         y=k;
     annotation (defaultComponentName="heatFlowRate");
   end Power;
+
+  block Position "Constant signal of type Position"
+
+    extends Base(storeUnit="cm");
+   parameter Types.Position k=Utilities.readReal(varName, storeUnit)
+        "Constant Position output value";
+        RealIO.PositionOutput y "Position input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height");
+  end Position;
   end RealTypeInputParameters;
 
   partial block AbstractBoolean
@@ -4600,6 +4693,11 @@ The Real output y is a constant signal:
             Min=0,
             DisplayUnit="kg/l",
             Scale=1e3),RealTypeRecord(
+            Quantity="Density",
+            Unit="kg/m3",
+            Min=0,
+            DisplayUnit="g/l",
+            Scale=1),RealTypeRecord(
             Quantity="MassConcentration",
             Unit="kg/m3",
             Min=0,
@@ -4629,6 +4727,10 @@ The Real output y is a constant signal:
             Unit="m",
             DisplayUnit="cm",
             Scale=1e-2),RealTypeRecord(
+            Quantity="Velocity",
+            Unit="m/s",
+            DisplayUnit="MPH",
+            Scale=0.44704),RealTypeRecord(
             Quantity="Acceleration",
             Unit="m/s2",
             DisplayUnit="m/s2",
@@ -4645,6 +4747,10 @@ The Real output y is a constant signal:
             Unit="m3/s",
             DisplayUnit="ml/min",
             Scale=(1e-6)/60),RealTypeRecord(
+            Quantity="Concentration",
+            Unit="mol/m3",
+            DisplayUnit="mol/l",
+            Scale=1e-3),RealTypeRecord(
             Quantity="Concentration",
             Unit="mol/m3",
             DisplayUnit="mmol/l",
@@ -4938,7 +5044,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Boolean endOfFile=false;
 
     algorithm
-      fn:="io/input.txt";
+      fn:="io/input_SI.txt";
 
       if not Files.exist(fn) then
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
@@ -4972,6 +5078,7 @@ other wariant: //Format "<variableName>=<value><unit>"
     end readReal_SI;
 
     redeclare function extends readBoolean
+      import Modelica.Utilities.*;
 
     algorithm
       value:=(readReal(name,"")>0.005);
@@ -5011,7 +5118,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Integer typeDef "Variable type";
 
     algorithm
-      fn:="io/output.txt";
+      fn:="io/output_SI.txt";
 
       if not Files.exist(fn) then
          if not Files.exist("io") then
@@ -5096,7 +5203,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Real outputDefaultValue;
 
     algorithm
-      fn:="io/comparison.txt";
+      fn:="io/comparison_SI.txt";
 
       if not Files.exist(fn) then
          if not Files.exist("output") then
@@ -5192,7 +5299,7 @@ The Real output y is a constant signal:
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities;
 
         equation
           y = k;
@@ -5220,7 +5327,7 @@ The Real output y is a constant signal:
         block OutputFinal "Save boolean value to file"
          extends Physiolibrary.Types.AbstractBoolean;
 
-          replaceable package Utilities = Physiolibrary.Types.Utilities;
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities;
 
           Modelica.Blocks.Interfaces.BooleanInput
                                                 y
@@ -5254,10 +5361,10 @@ The Real output y is a constant signal:
         end OutputFinal;
 
         block OutputComparison "Save variable comparison to file"
-      import Physiolibrary;
+          import Physiolibrary;
           extends Physiolibrary.Types.AbstractBoolean(
                                                   k=Utilities.readBoolean(varName));
-          replaceable package Utilities = Physiolibrary.Types.Utilities
+          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.BooleanInput

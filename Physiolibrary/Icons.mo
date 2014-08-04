@@ -1178,4 +1178,10 @@ package Icons "Icons for physiological models"
             smooth=Smooth.None)}));
   end ConservationLaw;
   annotation (Documentation(revisions=""));
+  model Nephron
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/Nefron.png")}));
+  end Nephron;
 end Icons;
