@@ -4876,7 +4876,7 @@ The Real output y is a constant signal:
             Quantity="Osmolarity",
             Unit="mol/m3",
             DisplayUnit="osm/l",
-            Scale=1)}
+            Scale=1000)}
         "All defined Real types - units, displayUnits, conversions, nominals";
 
     end UnitConversions;

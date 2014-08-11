@@ -475,6 +475,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
              parameter Real[:,3] data = transpose({x,y,slope})
         "Array of interpolating points as {x,y,slope}";
 
+            parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+            parameter Real Yscale = 1 "conversion scale to SI unit of y values";
+
              Modelica.Blocks.Interfaces.RealInput u
                           annotation (Placement(transformation(extent={{-120,
                 -20},{-80,20}})));
@@ -483,12 +486,12 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                 {120,20}})));
 
     protected
-            parameter Real a[:,:] = SplineCoefficients( data[:, 1],data[:, 2],data[:, 3])
+            parameter Real a[:,:] = SplineCoefficients( data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
         "cubic polynom coefficients of curve segments between interpolating points";
 
         equation
           val = Spline(
-                data[:, 1],
+                data[:, 1]*Xscale,
                 a,
                 u);
 
@@ -560,17 +563,20 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
      parameter Real[:,3] data "Array of interpolating points as {x,y,slope}";
 
+     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+     parameter Real Yscale = 1 "conversion scale to SI unit of y values";
+
       Physiolibrary.Types.Fraction effect
         "Multiplication coeffecient for yBase to reach y";
 
     protected
         parameter Real a[:,:] = Interpolation.SplineCoefficients(
-                                                          data[:, 1],data[:, 2],data[:, 3])
+                                                          data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
         "Cubic polynom coefficients of curve segments between interpolating points";
 
     equation
       effect = Interpolation.Spline(
-                             data[:, 1],a,u);
+                             data[:, 1]*Xscale,a,u);
       y=effect*yBase;
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>

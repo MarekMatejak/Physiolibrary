@@ -422,7 +422,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The main element of osmotic phenomena is a semipermeable membrane, which generates the flow of penetrating substances together with water. The connector on both sides is composed of molar concentration of non-penetrating solutes (osmolarity), and from penetrating volumetric flow (osmotic flux). Flow through the membrane depends on a pressure gradient, where pressure on both sides is calculated from the osmotic and hydraulic component.</p>
-</html>"));
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={
+                                   Text(
+              extent={{-140,112},{140,150}},
+              textString="%name",
+              lineColor={0,0,255})}));
     end Membrane;
 
     model SolventFlux "Prescripted solvent flow"
@@ -454,6 +459,19 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end SolventFlux;
+
+    model PermeabilityLevelSwitch
+      "switch osmolarity to less permeable membranes"
+       extends Interfaces.OnePort;
+      Types.RealIO.OsmolarityInput additionalOsmolarity
+        "sulutes, that are permeable in q_in and not permeable in q_out"
+        annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={100,100})));
+    equation
+       q_out.o=q_in.o + additionalOsmolarity;
+    end PermeabilityLevelSwitch;
   end Components;
 
   package Sensors

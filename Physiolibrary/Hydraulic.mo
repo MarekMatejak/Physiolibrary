@@ -729,7 +729,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
      // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
 
-      Reabsorption.q = -min(0,FractReab*(Inflow.q-OutflowMin));
+      Reabsorption.q = -max(0,FractReab*(Inflow.q-OutflowMin));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),       graphics={Text(
               extent={{-100,130},{100,108}},

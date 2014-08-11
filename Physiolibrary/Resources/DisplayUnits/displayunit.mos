@@ -23,20 +23,20 @@ defineUnitConversion("W/K", "kcal/(min.K)", 60/4186.8 );  //conductance
 defineUnitConversion("W", "kcal/min", 60/4186.8 );               //flow
 
 //Pharmacological international units of human secreted substances
-//1 IU (Insulin) = 0.03846 mg = 6.622 pmol  (http://whqlibdoc.who.int/trs/WHO_TRS_760_(part1).pdf?ua=1)
-defineUnitConversion("mol", "U_Insulin", 1/6.622e-12 ); 
-defineUnitConversion("mol/m3", "U_Insulin/m3", 1/6.622e-12 );
-defineUnitConversion("mol/m3", "uU_Insulin/l", 1e3/6.622e-12 );
-defineUnitConversion("mol/m3", "uU_Insulin/ml", 1/6.622e-12 );
-//1 IU (Erythropoietin - EPO) = 15.3 mg = 0.45 pmol
-defineUnitConversion("mol", "U_EPO", 1/0.45e-12 );
-defineUnitConversion("mol/m3", "U_EPO/l", 1e-3/0.45e-12 );
-//1 IU (Arginin Vasopressin - ADH) = 2.5 ug = 2.305 pmol
-defineUnitConversion("mol", "U_ADH", 1/2.305e-12 );
-defineUnitConversion("mol/m3", "U_ADH/l", 1e-3/2.305e-12 );
-//1 GU (Goldblatt unit for Renin activity) = 1 ng AI/hr (ng of AngionensinI per hour) = 6.7 pg (active renin 48kDa) = 0.14 fmol  
-defineUnitConversion("mol", "GU_PRA", 1/0.14e-15 );
-defineUnitConversion("mol/m3", "GU_PRA/l", 1e-3/0.14e-15 );
+//1 IU (Insulin) = 38.46 ug = 6.622 nmol  (http://whqlibdoc.who.int/trs/WHO_TRS_760_(part1).pdf?ua=1) (5.808 kDa)
+defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 ); 
+defineUnitConversion("mol/m3", "U_Insulin/m3", 1/6.622e-9 );
+defineUnitConversion("mol/m3", "uU_Insulin/l", 1e3/6.622e-9 );
+defineUnitConversion("mol/m3", "uU_Insulin/ml", 1/6.622e-9 );
+//1 IU (Erythropoietin - EPO) = 15.3 ug = 0.45 nmol (34 kDa)
+defineUnitConversion("mol", "U_EPO", 1/0.45e-9 );
+defineUnitConversion("mol/m3", "U_EPO/l", 1e-3/0.45e-9 );
+//1 IU (Arginin Vasopressin - ADH) = 2.5 ug = 2.305 nmol (1.084 kDa)
+defineUnitConversion("mol", "U_ADH", 1/2.305e-9 );
+defineUnitConversion("mol/m3", "U_ADH/l", 1e-3/2.305e-9 );
+//1 GU (Goldblatt unit for Renin activity) = 1 ng AI/hr (ng of AngionensinI per hour) = 6.7 ng (active renin 48kDa) = 0.14 pmol  (0.0112 IU/GU, 48kDa)
+defineUnitConversion("mol", "GU_PRA", 1/0.14e-12 );
+defineUnitConversion("mol/m3", "GU_PRA/l", 1e-3/0.14e-12 );
 //1 IU (Renin) = 0.6 ug = 12.5 pmol   (Simon, D., et al. "Two-site direct immunoassay specific for active renin." Clinical chemistry 38.10 (1992): 1959-1962.)
 defineUnitConversion("mol", "U_Renin", 1/12.5e-12 );
 defineUnitConversion("mol/m3", "U_Renin", 1e-3/12.5e-12 );

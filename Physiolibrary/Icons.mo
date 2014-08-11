@@ -1177,11 +1177,20 @@ package Icons "Icons for physiological models"
             color={0,0,0},
             smooth=Smooth.None)}));
   end ConservationLaw;
-  annotation (Documentation(revisions=""));
+
   model Nephron
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
               {100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/Nefron.png")}));
   end Nephron;
+  annotation (Documentation(revisions=""));
+  model Torso
+    annotation (Icon(graphics={            Bitmap(extent={{-28,98},{28,58}},
+                        fileName="modelica://Physiolibrary/Resources/Icons/torzo1.png"),
+                                           Bitmap(extent={{-40,56},{40,-24}},
+                        fileName="modelica://Physiolibrary/Resources/Icons/torzo2.png"),
+                                           Bitmap(extent={{-40,-18},{40,-98}},
+                        fileName="modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
+  end Torso;
 end Icons;
