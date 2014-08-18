@@ -4750,7 +4750,7 @@ The Real output y is a constant signal:
             Quantity="Concentration",
             Unit="mol/m3",
             DisplayUnit="mol/l",
-            Scale=1e-3),RealTypeRecord(
+            Scale=1e+3),RealTypeRecord(
             Quantity="Concentration",
             Unit="mol/m3",
             DisplayUnit="mmol/l",
