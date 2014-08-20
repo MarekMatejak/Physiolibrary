@@ -2803,7 +2803,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
         Physiolibrary.Chemical.Components.Substance A[n](
           each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-          isDependent=true,
+          each isDependent=true,
           each solute_start=0.00033) "deprotonated acid groups"
           annotation (Placement(transformation(extent={{4,-16},{24,4}})));
         Physiolibrary.Chemical.Components.ChemicalReaction react[n](
@@ -3516,29 +3516,29 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
 <pre>The Chemical reaction
-
+
 Schema of chemical reaction:
 s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP]
-
+
 where
 S are substrates,
 s are stochiometric coefficients of substrates,
 P are products,
 p are stochiometric coefficients of products.
-
+
 In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
 <p><br><code></p><p><br>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
 <pre>The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
 <p><br><code></p><p><br>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
 <p><code>The backward rate is (kf/K)*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
-<pre>
+<pre>
 Temperature dependence is calculated by Van&apos;t Hoff equation using enthalpy change of reaction as parameter dH:
 <p><br><code></p><p><br>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
 <pre>where KBase is base equilibrium constant at base temperature TK and T_heatPort is current temperature.
 <p><br><code></p><p><br>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
 <pre><i><b>dS = k ln(&omega;)</b></i>
 <i>where k is Boltzmann constant.</i>
-
+
 The Gibbs energy of reaction can be calculate from the change of entropy dS at defined temperature by equation
 <p><br><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
 <pre>where T is temperature.
@@ -4321,7 +4321,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
   package Sources
     extends Modelica.Icons.SourcesPackage;
 
-    model UnlimitedSolutePump "Molar pump of solute"
+    model UnlimitedSolutePump "Molar pump of solute to system"
       extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_b
@@ -4529,6 +4529,39 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end UnlimitedGasStorage;
+
+    model UnlimitedSolutePumpOut "Molar pump of solute out of system"
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
+
+      Interfaces.ChemicalPort_a q_in "Inflow"
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+
+    equation
+      q_in.q = q;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-42},{100,40}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-48,20},{50,0},{-48,-21},{-48,20}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-82,-82},{90,-58}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end UnlimitedSolutePumpOut;
   end Sources;
 
   package Interfaces

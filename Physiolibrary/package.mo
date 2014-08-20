@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version v2.1.1)"
+package Physiolibrary "Physiological domains library (version v2.1.2)"
  extends Modelica.Icons.Package;
 
 
@@ -423,7 +423,7 @@ package Physiolibrary "Physiological domains library (version v2.1.1)"
 
 
   annotation (preferredView="info",
-version="2.1.1",
+version="2.1.2",
 versionBuild=1,
 versionDate="2014-05-02",
 dateModified = "2014-05-02 12:30:00Z",

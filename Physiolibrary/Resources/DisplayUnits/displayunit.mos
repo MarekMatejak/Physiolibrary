@@ -52,6 +52,7 @@ defineUnitConversion("mol/m3", "mmol/l", 1 );
 defineUnitConversion("mol/m3", "mmol/ml", 10^(-3) );
 defineUnitConversion("mol/s", "mol/min", 60 );
 defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
+defineUnitConversion("mol/s", "mmol/day", 60*10^3*60*24 );
 defineUnitConversion("m3/s", "ml/min", (10^6)*60 ); //diffusion permeability
 defineUnitConversion("m3/s", "(mmol/min)/(mmol/l)", (10^3)*60 ); //diffusion permeability
 

@@ -566,17 +566,20 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
      parameter Real Yscale = 1 "conversion scale to SI unit of y values";
 
+     parameter Boolean UsePositiveLog10 = false
+        "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
+
       Physiolibrary.Types.Fraction effect
         "Multiplication coeffecient for yBase to reach y";
 
     protected
         parameter Real a[:,:] = Interpolation.SplineCoefficients(
-                                                          data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
+                                                          data[:, 1],data[:, 2]*Yscale,data[:, 3]*Yscale)
         "Cubic polynom coefficients of curve segments between interpolating points";
 
     equation
-      effect = Interpolation.Spline(
-                             data[:, 1]*Xscale,a,u);
+      effect = if UsePositiveLog10 then Interpolation.Spline(data[:, 1],a,if u/Xscale <= 1 then 0 else log10(u/Xscale))
+     else Interpolation.Spline(data[:, 1],a,u/Xscale);
       y=effect*yBase;
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
