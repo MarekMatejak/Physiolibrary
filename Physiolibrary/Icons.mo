@@ -1184,7 +1184,7 @@ package Icons "Icons for physiological models"
               {100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
               fileName="modelica://Physiolibrary/Resources/Icons/Nefron.png")}));
   end Nephron;
-  annotation (Documentation(revisions=""));
+
   model Torso
     annotation (Icon(graphics={            Bitmap(extent={{-28,98},{28,58}},
                         fileName="modelica://Physiolibrary/Resources/Icons/torzo1.png"),
@@ -1193,4 +1193,5 @@ package Icons "Icons for physiological models"
                                            Bitmap(extent={{-40,-18},{40,-98}},
                         fileName="modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
   end Torso;
+  annotation (Documentation(revisions=""));
 end Icons;

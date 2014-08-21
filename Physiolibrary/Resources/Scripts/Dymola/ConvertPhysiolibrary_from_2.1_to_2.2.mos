@@ -1,0 +1,16 @@
+// Convert from Physiolibrary 2.0 to Physiolibrary 2.1
+
+// clear
+convertClear();
+
+convertClass("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","Physiolibrary.Chemical.Interfaces.ConditionalVolume")
+convertElement("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","NormalSolventVolume","NormalVolume");
+convertElement("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Substance","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.ChemicalReaction","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Degradation","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Speciation","solventVolume","solutionVolume");
+
+convertElement("Physiolibrary.Chemical.Components.Clearance","useSolventFlow","useSolutionFlowInput");
+convertElement("Physiolibrary.Chemical.Components.Clearance","solventFlow","solutionFlow");
+

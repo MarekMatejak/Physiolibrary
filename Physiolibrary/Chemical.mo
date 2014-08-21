@@ -3357,9 +3357,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
   package Components
     extends Modelica.Icons.Package;
-    model Substance "Substance accumulation in solvent"
+    model Substance "Substance accumulation in solution"
       extends Physiolibrary.Icons.Substance;
-      extends Chemical.Interfaces.ConditionalSolventVolume;
+      extends Interfaces.ConditionalVolume;
 
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
@@ -3383,7 +3383,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b            q_out(conc(start=solute_start/NormalSolventVolume))
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_b            q_out(conc(start=solute_start/NormalVolume))
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
 
@@ -3404,7 +3404,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the solvent volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external inputs. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
+<p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
 </html>"));
     end Substance;
 
@@ -3414,7 +3414,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Real KaT "Dissociation constant at current temperature";
       Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      extends Chemical.Interfaces.ConditionalSolventVolume;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalVolume;
 
       parameter Boolean useDissociationConstantInput = false
         "=true, if external dissociation ratio is used"
@@ -3471,6 +3471,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "Standard Enthalpy Change (negative=exothermic)"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
+      parameter Physiolibrary.Types.Fraction solventFraction=1
+        "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
+
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
     equation
@@ -3480,7 +3483,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
 
-      rr = kf*volume*(product((as.*substrates.conc).^s) - (1/KaT)*product((ap.*products.conc).^p));  //Elementary first-order rate kinetics - the main equation
+      rr = kf*volume*(product((as.*substrates.conc/solventFraction).^s) - (1/KaT)*product((ap.*products.conc/solventFraction).^p));  //Elementary first-order rate kinetics - the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -3602,7 +3605,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
       parameter Physiolibrary.Types.GasSolubility kH_T0
-        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.0105, aCO2=0.33, ..)"
+        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)"
                                                                                                             annotation ( HideResult=true);
       parameter Physiolibrary.Types.Temperature T0=298.15
         "Base temperature for kH_T0"
@@ -3611,13 +3614,16 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
+      parameter Physiolibrary.Types.Fraction solventFraction=1
+        "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
+
       Physiolibrary.Chemical.Interfaces.ChemicalPort_b
                                 q_out "Gaseous solution"
                              annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_a
-                                q_in "Dissolved in liquid"
+                                q_in "Dissolved in liquid solution"
                                 annotation (Placement(
             transformation(extent={{-10,-90},{10,-70}})));
     equation
@@ -3626,7 +3632,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
-      q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc); //negative because of outflow
+      q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc/solventFraction); //negative because of outflow
 
       lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
@@ -3634,16 +3640,18 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p><i>2009-2012</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p><h4><font color=\"#008000\">Henry's law of The solubility of a Gas in Liquid</font></h4></p>
+<h4><span style=\"color:#008000\">Henry's law of The solubility of a Gas in Liquid</span></h4>
 <p>Henry&apos;s law at equilibrium: The concentration of a gas in a liquid is proportional to the partial pressure of the gas.</p>
 <p>p=k*c</p>
 <p>where<b> p</b> is the partial pressure of the gas, <b>k</b> is a Henry&apos;s law constant and<b> c</b> is a small concentration of the gas in the liquid.</p>
 <p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
+<p><br><br>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution.</p>
+<p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701.</p>
 </html>"));
     end GasSolubility;
 
     model Degradation "Degradation of solute"
-      extends Interfaces.ConditionalSolventVolume;
+      extends Interfaces.ConditionalVolume;
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "Degraded solute outflow"
@@ -3740,34 +3748,24 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model Clearance "Clearance with or without solvent outflow"
 
+      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
+        "Clearance of solute if useSolutionFlowInput=false"
+        annotation (Dialog(enable=not useSolutionFlowInput));
+
+      parameter Real K(unit="1")=1
+        "Coefficient such that Clearance = K*solutionFlow";
+
+      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow(SolutionFlow=Clearance/K);
+
       Physiolibrary.Chemical.Interfaces.ChemicalPort_a
                                 q_in "solute outflow"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
 
-      parameter Boolean useSolventFlow = false
-        "=true, if clearence is expressed from outflow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
-        "Clearance of solute if useSolventFlow=false"
-        annotation (Dialog(enable=not useSolventFlow));
-
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=Clearance/K) = clearance/K if useSolventFlow
-        "solvent outflow"
-       annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      parameter Real K(unit="1")=1
-        "Coefficient such that Clearance = K*solventFlow if useSolventFlow=true"
-        annotation (Dialog(enable=useSolventFlow));
-
       Physiolibrary.Types.VolumeFlowRate clearance;
     equation
-      if not useSolventFlow then
-         clearance=Clearance;
-      end if;  //otherwise: clearance=K*solventFlow;
+
+      clearance = q*K;
 
       q_in.q = clearance*q_in.conc;
 
@@ -3930,7 +3928,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
                                                Simulation=Physiolibrary.Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunitTypes-1);
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume;
+      extends Physiolibrary.Chemical.Interfaces.ConditionalVolume;
 
       import Physiolibrary.Types.*;
 
@@ -4132,10 +4130,10 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
       Interfaces.ChemicalPort_a particlesInside[NumberOfParticles]
-        "inner side of membrane"
+        "inner side of membrane, solution"
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
       Interfaces.ChemicalPort_b particlesOutside[NumberOfParticles]
-        "outer side of membrane"
+        "outer side of membrane, solution"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
       Types.RealIO.DiffusionPermeabilityInput permeability[NumberOfParticles] = p if usePermeabilityInput
@@ -4155,6 +4153,11 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       parameter Physiolibrary.Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
         "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+
+      parameter Physiolibrary.Types.Fraction solventFractionInside=1
+        "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
+      parameter Physiolibrary.Types.Fraction solventFractionOutside=1
+        "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
 
     protected
        Real KAdjustment
@@ -4179,11 +4182,11 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
        //diffusion, penetration, particle movement:
        for i in 1:NumberOfParticles loop
          if Charges[i]==0 then //normal diffusion
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - kH[i]*particlesOutside[i].conc/solventFractionOutside);
          elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1+KAdjustment)*kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1+KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
          else //anion goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1-KAdjustment)*kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1-KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
          end if;
        end for;
 
@@ -4705,10 +4708,10 @@ on the model behaviour.
 </html>"));
     end ConditionalHeatPort;
 
-    partial model ConditionalSolventVolume
+    partial model ConditionalVolume
       "Chemical processes can be modeled with or without(normalized to 1 liter) variable solvent volume"
 
-      constant Physiolibrary.Types.Volume NormalSolventVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
+      constant Physiolibrary.Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
 
       parameter Boolean useNormalizedVolume = true
         "=true, if solvent volume is 1 liter"
@@ -4716,16 +4719,16 @@ on the model behaviour.
 
       Physiolibrary.Types.Volume volume "SolventVolume" annotation(HideResult=useNormalizedVolume);
 
-      Physiolibrary.Types.RealIO.VolumeInput solventVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
+      Physiolibrary.Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-40,40})));
     equation
       if useNormalizedVolume then
-        volume = NormalSolventVolume;
+        volume = NormalVolume;
       end if;
 
-    end ConditionalSolventVolume;
+    end ConditionalVolume;
 
     partial model ConditionalSolutionFlow
       "Input of solution volumetric flow vs. parametric solution volumetric flow"

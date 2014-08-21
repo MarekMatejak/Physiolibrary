@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Physiological domains library (version v2.1.2)"
+package Physiolibrary "Physiological domains library (version v2.2.0)"
  extends Modelica.Icons.Package;
 
 
@@ -422,8 +422,15 @@ package Physiolibrary "Physiological domains library (version v2.1.2)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
   annotation (preferredView="info",
-version="2.1.2",
+version="2.2.0",
 versionBuild=1,
 versionDate="2014-05-02",
 dateModified = "2014-05-02 12:30:00Z",
@@ -435,7 +442,8 @@ conversion(
   from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.1.mos"),
   from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.1.mos"),
   from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.1.mos"),
-  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos")),
+  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos"),
+  from(version="2.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.2.mos")),
   Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
