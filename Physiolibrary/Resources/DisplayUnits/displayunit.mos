@@ -15,7 +15,8 @@ defineUnitConversion("J", "kcal", 1/4186.8 );
 //defineUnitConversion("J", "kCal", 1/4186800 );
 defineUnitConversion("J/kg", "cal/g", 1/4186.8 );   //vaporization heat,..
 defineUnitConversion("J/kg", "kcal/g", 1e-3/4186.8 );   //vaporization heat,..
-defineUnitConversion("J/mol", "kJ/mol", 1e-3 );       //reaction enthalpy change
+defineUnitConversion("J/mol", "kJ/mol", 1e-3 );       //molar energy (reaction enthalpy change,..)
+defineUnitConversion("J/mol", "kcal/mol", 1/4186.8 );       //molar energy
 
 //Heat
 defineUnitConversion("J/(kg.K)", "kcal/(kg.K)", 1/4186.8 );   //capacity

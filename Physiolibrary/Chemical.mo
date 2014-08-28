@@ -717,6 +717,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
        extends Modelica.Icons.Example;
 
+        parameter MolarEnergy dHT=10000
+          "Enthalpy of heme oxygenation in T hemoglobin form";
+        parameter MolarEnergy dHR=20000
+          "Enthalpy of heme oxygenation in R hemoglobin form";
+        parameter MolarEnergy dHL=-1000
+          "Enthalpy of reaction T->R as hemoglobin tetramer structure change";
+
         parameter Fraction L = 7.0529*10^6
           "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
         parameter Fraction c = 0.00431555
@@ -728,57 +735,67 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         parameter Concentration KT=KR/c
           "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-        parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
+        parameter AmountOfSubstance totalAmountOfHemoglobin=1;
 
         Physiolibrary.Chemical.Components.ChemicalReaction
-                                                  quaternaryForm(K=L)
-          annotation (Placement(transformation(extent={{-4,-84},{16,-64}})));
+                                                  quaternaryForm(K=L,
+          TK=310.15,
+          dH=dHL)
+          annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
         Components.Speciation
-                           R0_in_R(NumberOfSubunitTypes=4)
-          annotation (Placement(transformation(extent={{-32,-76},{-52,-56}})));
+                           R0_in_R(NumberOfSubunits=4, useInternalHeatsInput=true)
+          annotation (Placement(transformation(extent={{-30,-68},{-50,-48}})));
         Components.Speciation
-                           T0_in_T(NumberOfSubunitTypes=4)
-          annotation (Placement(transformation(extent={{68,-74},{48,-54}})));
+                           T0_in_T(NumberOfSubunits=4, useInternalHeatsInput=true)
+          annotation (Placement(transformation(extent={{70,-66},{50,-46}})));
         Physiolibrary.Chemical.Components.Substance OxyRHm[4](
           each Simulation=SimulationType.SteadyState,
           each isDependent=true,
-          each solute_start=4e-19)
+          each solute_start=4e-19,
+          dH=-dHL/4 - dHR)
           "Oxygenated subunit in R structure of hemoglobin tetramer"
-          annotation (Placement(transformation(extent={{-98,-36},{-78,-16}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2)
-          annotation (Placement(transformation(extent={{-70,-36},{-50,-16}})));
+          annotation (Placement(transformation(extent={{-96,-18},{-76,2}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2,
+          TK=310.15,
+          dH=dHR)
+          annotation (Placement(transformation(extent={{-68,-18},{-48,2}})));
         Physiolibrary.Chemical.Components.Substance DeoxyRHm[4](each Simulation=
-              SimulationType.SteadyState, each solute_start=4e-11)
+              SimulationType.SteadyState,
+          each solute_start=4e-11,
+          dH=-dHL/4)
           "Deoxygenated subunit in R structure of hemoglobin tetramer"
-          annotation (Placement(transformation(extent={{-42,-36},{-22,-16}})));
+          annotation (Placement(transformation(extent={{-40,-18},{-20,2}})));
         Physiolibrary.Chemical.Components.Substance OxyTHm[4](
           each Simulation=SimulationType.SteadyState,
           isDependent={false,true,true,true},
+          dH=-dHT,
           each solute_start=1e-14)
           "Oxygenated subunit in T structure of hemoglobin tetramer"
-          annotation (Placement(transformation(extent={{14,-36},{34,-16}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2)
-          annotation (Placement(transformation(extent={{42,-36},{62,-16}})));
+          annotation (Placement(transformation(extent={{14,-18},{34,2}})));
+        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2,
+          dH=dHT,
+          TK=310.15)
+          annotation (Placement(transformation(extent={{42,-18},{62,2}})));
         Physiolibrary.Chemical.Components.Substance DeoxyTHm[4](
-                                                 each Simulation=SimulationType.SteadyState, each
-            solute_start=0.00025)
-          "Deoxygenated subunit in T structure of hemoglobin tetramer"
-          annotation (Placement(transformation(extent={{70,-36},{90,-16}})));
+                                                 each Simulation=SimulationType.SteadyState,
+          each solute_start=0.00025,
+          dH=0) "Deoxygenated subunit in T structure of hemoglobin tetramer"
+          annotation (Placement(transformation(extent={{70,-18},{90,2}})));
 
         Physiolibrary.Chemical.Components.Substance
                             oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
               *7.875647668393782383419689119171e-5)
-          annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
+          annotation (Placement(transformation(extent={{-2,6},{18,26}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
         Modelica.Blocks.Math.Add add[4] annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
               rotation=270,
-              origin={-66,-54})));
+              origin={-58,-36})));
         Modelica.Blocks.Math.Add add1[4] annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
               rotation=270,
-              origin={44,-54})));
+              origin={30,-48})));
         Sources.UnlimitedGasStorage oxygen_in_air(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
@@ -787,7 +804,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
-              origin={6,60})));
+              origin={8,68})));
         Components.GasSolubility
                               partialPressure1(          kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
                0.026029047188736,
@@ -795,181 +812,224 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           C=1700)                                                       annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
-              origin={6,32})));
+              origin={8,40})));
         SteadyStates.Components.MolarConservationLaw totalHb(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           Total(displayUnit="mol") = totalAmountOfHemoglobin,
           n=2)
-          annotation (Placement(transformation(extent={{70,-92},{90,-72}})));
+          annotation (Placement(transformation(extent={{72,-84},{92,-64}})));
         Modelica.Blocks.Math.Sum sum1(nin=8, k=(1/4)*ones(8))
                                              annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
               rotation=270,
-              origin={-74,-82})));
+              origin={-72,-74})));
         Modelica.Blocks.Math.Division sO2_ "hemoglobin oxygen saturation"
-          annotation (Placement(transformation(extent={{-64,-96},{-54,-86}})));
+          annotation (Placement(transformation(extent={{-62,-88},{-52,-78}})));
+        Modelica.Blocks.Math.Sum internalHeat(nin=2) "hemoglobin enthalpy heat"
+          annotation (Placement(transformation(
+              extent={{-4,-4},{4,4}},
+              rotation=0,
+              origin={8,-90})));
+        Modelica.Blocks.Math.Add add2[
+                                     4] annotation (Placement(transformation(
+              extent={{-5,-5},{5,5}},
+              rotation=270,
+              origin={-73,-37})));
+        Modelica.Blocks.Math.Add add3[4] annotation (Placement(transformation(
+              extent={{-5,-5},{5,5}},
+              rotation=270,
+              origin={47,-39})));
       equation
 
-        connect(R0_in_R.species, quaternaryForm.substrates[1])
+        connect(R0_in_R.specificForm, quaternaryForm.substrates[1])
                                                          annotation (Line(
-            points={{-52,-74},{-4,-74}},
+            points={{-50,-66},{-2,-66}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(quaternaryForm.products[1], T0_in_T.species)
+        connect(quaternaryForm.products[1], T0_in_T.specificForm)
                                                        annotation (Line(
-            points={{16,-74},{32,-74},{32,-72},{48,-72}},
+            points={{18,-66},{34,-66},{34,-64},{50,-64}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(OxyTHm.q_out, oxygenation_T.substrates[1])
                                                  annotation (Line(
-            points={{24,-26},{42,-26}},
+            points={{24,-8},{42,-8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_T.products[1], DeoxyTHm.q_out)
                                                annotation (Line(
-            points={{62,-26.5},{72,-26.5},{72,-26},{80,-26}},
+            points={{62,-8.5},{72,-8.5},{72,-8},{80,-8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
 
         connect(OxyTHm.solute, add1.u2) annotation (Line(
-            points={{24,-36},{24,-42},{41.6,-42},{41.6,-49.2}},
+            points={{24,-18},{24,-24},{27.6,-24},{27.6,-43.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-            points={{46.4,-49.2},{46.4,-42},{80,-42},{80,-36}},
+            points={{32.4,-43.2},{32.4,-24},{80,-24},{80,-18}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(partialPressure1.q_out, oxygen_in_air.q_out)
                                                   annotation (Line(
-            points={{6,42},{6,50}},
+            points={{8,50},{8,58}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(partialPressure1.q_in, oxygen_unbound.q_out) annotation (Line(
-            points={{6,24},{6,8}},
+            points={{8,32},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(clock.y, oxygen_in_air.partialPressure) annotation (Line(
-            points={{-19,84},{6,84},{6,70}},
+            points={{-19,84},{8,84},{8,78}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(add.y, R0_in_R.totalSubunitAmount) annotation (Line(
-            points={{-66,-58.4},{-66,-66},{-50,-66}},
+        connect(add.y, R0_in_R.amountOfSubunit) annotation (Line(
+            points={{-58,-40.4},{-58,-58},{-48,-58}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.solute, add.u2) annotation (Line(
-            points={{-88,-36},{-88,-44},{-68.4,-44},{-68.4,-49.2}},
+            points={{-86,-18},{-86,-24},{-60.4,-24},{-60.4,-31.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(DeoxyRHm.solute, add.u1) annotation (Line(
-            points={{-32,-36},{-32,-36},{-32,-44},{-63.6,-44},{-63.6,-50},{
-                -63.6,-49.2}},
+            points={{-30,-18},{-30,-18},{-30,-24},{-55.6,-24},{-55.6,-31.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.q_out, oxygenation_R.substrates[1]) annotation (Line(
-            points={{-88,-26},{-70,-26}},
+            points={{-86,-8},{-68,-8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(DeoxyRHm.q_out, R0_in_R.subunitSpecies) annotation (Line(
-            points={{-32,-26},{-42,-26},{-42,-56}},
+        connect(DeoxyRHm.q_out, R0_in_R.specificSubunitForm) annotation (Line(
+            points={{-30,-8},{-40,-8},{-40,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_R.products[1], DeoxyRHm.q_out) annotation (Line(
-            points={{-50,-26.5},{-42,-26.5},{-42,-26},{-32,-26}},
+            points={{-48,-8.5},{-40,-8.5},{-40,-8},{-30,-8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_R[1].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{-50,-25.5},{-36,-25.5},{-36,12},{6,12},{6,8}},
+            points={{-48,-7.5},{-34,-7.5},{-34,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_R[2].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{-50,-25.5},{-36,-25.5},{-36,12},{6,12},{6,8}},
+            points={{-48,-7.5},{-34,-7.5},{-34,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_R[3].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{-50,-25.5},{-36,-25.5},{-36,12},{6,12},{6,8}},
+            points={{-48,-7.5},{-34,-7.5},{-34,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_R[4].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{-50,-25.5},{-36,-25.5},{-36,12},{6,12},{6,8}},
+            points={{-48,-7.5},{-34,-7.5},{-34,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_T[1].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{62,-25.5},{78,-25.5},{78,8},{6,8}},
+            points={{62,-7.5},{78,-7.5},{78,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(oxygenation_T[2].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{62,-25.5},{78,-25.5},{78,8},{6,8}},
+            points={{62,-7.5},{78,-7.5},{78,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
        connect(oxygenation_T[3].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{62,-25.5},{78,-25.5},{78,8},{6,8}},
+            points={{62,-7.5},{78,-7.5},{78,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
             connect(oxygenation_T[4].products[2], oxygen_unbound.q_out) annotation (Line(
-            points={{62,-25.5},{78,-25.5},{78,8},{6,8}},
+            points={{62,-7.5},{78,-7.5},{78,16},{8,16}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(T0_in_T.subunitSpecies, DeoxyTHm.q_out)
+        connect(T0_in_T.specificSubunitForm, DeoxyTHm.q_out)
                                                      annotation (Line(
-            points={{58,-54},{84,-54},{84,-26},{80,-26}},
+            points={{60,-46},{84,-46},{84,-8},{80,-8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(add1.y, T0_in_T.totalSubunitAmount)
-                                                 annotation (Line(
-            points={{44,-58.4},{44,-64},{50,-64}},
+        connect(add1.y, T0_in_T.amountOfSubunit) annotation (Line(
+            points={{30,-52.4},{30,-56},{52,-56}},
             color={0,0,127},
             smooth=Smooth.Bezier));
-        connect(R0_in_R.totalSubsystemAmount, totalHb.fragment[1]) annotation (Line(
-            points={{-42,-74},{-42,-87},{70,-87}},
+        connect(R0_in_R.amount, totalHb.fragment[1]) annotation (Line(
+            points={{-40,-66},{-40,-79},{72,-79}},
             color={0,0,127},
             smooth=Smooth.Bezier));
-        connect(T0_in_T.totalSubsystemAmount, totalHb.fragment[2]) annotation (Line(
-            points={{58,-72},{58,-72},{58,-85},{70,-85}},
+        connect(T0_in_T.amount, totalHb.fragment[2]) annotation (Line(
+            points={{60,-64},{60,-64},{60,-77},{72,-77}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.solute, sum1.u[1:4]) annotation (Line(
-            points={{-88,-36},{-86,-36},{-86,-72},{-74,-72},{-74,-77.2},{-74.1,
-                -77.2}},
+            points={{-86,-18},{-86,-18},{-86,-62},{-72,-62},{-72,-69.2},{-72.1,-69.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
 
         connect(OxyTHm.solute, sum1.u[5:8]) annotation (Line(
-            points={{24,-36},{24,-70},{-73.3,-70},{-73.3,-77.2}},
+            points={{24,-18},{24,-60},{-71.3,-60},{-71.3,-69.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(sO2_.u1, sum1.y) annotation (Line(
-            points={{-65,-88},{-74,-88},{-74,-86.4}},
+            points={{-63,-80},{-72,-80},{-72,-78.4}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(totalHb.totalAmountOfSubstance, sO2_.u2) annotation (Line(
-            points={{90,-86},{96,-86},{96,-100},{-80,-100},{-80,-94},{-65,-94}},
+            points={{92,-78},{100,-78},{100,-100},{-76,-100},{-76,-86},{-63,-86}},
             color={0,0,127},
             smooth=Smooth.Bezier));
+        connect(R0_in_R.internalHeat, internalHeat.u[1]) annotation (Line(
+            points={{-34,-66},{-34,-90.4},{3.2,-90.4}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(T0_in_T.internalHeat, internalHeat.u[2]) annotation (Line(
+            points={{66,-64},{66,-74},{-24,-74},{-24,-89.6},{3.2,-89.6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add3.y, T0_in_T.subunitInternalHeat) annotation (Line(
+            points={{47,-44.5},{47,-50},{52,-50}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add2.y, R0_in_R.subunitInternalHeat) annotation (Line(
+            points={{-73,-42.5},{-73,-52},{-48,-52}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add3.u1, DeoxyTHm.internalHeat) annotation (Line(
+            points={{50,-33},{50,-30},{86,-30},{86,-18}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OxyTHm.internalHeat, add3.u2) annotation (Line(
+            points={{30,-18},{30,-30},{44,-30},{44,-33}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(OxyRHm.internalHeat, add2.u2) annotation (Line(
+            points={{-80,-18},{-80,-28},{-76,-28},{-76,-31}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(DeoxyRHm.internalHeat, add2.u1) annotation (Line(
+            points={{-24,-18},{-24,-28},{-70,-28},{-70,-31}},
+            color={0,0,127},
+            smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics={Ellipse(
-                extent={{2,-6},{100,-54}},
+                extent={{2,12},{100,-36}},
                 fillColor={255,181,181},
                 fillPattern=FillPattern.Solid,
                 pattern=LinePattern.None), Ellipse(
-                extent={{-104,-6},{-6,-54}},
+                extent={{-102,12},{-4,-36}},
                 fillColor={255,181,181},
                 fillPattern=FillPattern.Solid,
                 pattern=LinePattern.None)}),
@@ -999,8 +1059,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       model Hemoglobin_MKM_Specie "Part of model Hemoglobin_MKM_Adair"
 
       parameter Real[4] pKz;
-      parameter Real[4]     pKc;
-      parameter Real[4]         pKh;
+      parameter Real[4] pKc;
+      parameter Real[4] pKh;
+
+      parameter Real[4] dHz;
+      parameter Real[4] dHc;
+      parameter Real[4] dHh;
+
+      parameter Real[4] dH_Hbu_A_NH2;
+
       parameter Boolean isDependent=false;
 
       Physiolibrary.Chemical.Interfaces.ChemicalPort_a Hbtn
@@ -1028,16 +1095,22 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Physiolibrary.Chemical.Components.ChemicalReaction h2[4](
           each nS=1,
           each nP=2,
-          K=fill(10, 4) .^ (-pKh .+ 3))
+          K=fill(10, 4) .^ (-pKh .+ 3),
+          TK=310.15,
+          dH=dHh)
                 annotation (Placement(transformation(extent={{32,-2},{12,18}})));
       Physiolibrary.Chemical.Components.ChemicalReaction z1[4](each nP=2, K=fill(10, 4)
-               .^ (-pKz .+ 3))
+               .^ (-pKz .+ 3),
+          dH=dHz,
+          TK=310.15)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-22,44})));
       Physiolibrary.Chemical.Components.ChemicalReaction z2[4](each nP=2, K=fill(10, 4)
-               .^ (-pKz .+ 3))
+               .^ (-pKz .+ 3),
+          TK=310.15,
+          dH=dHz)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1045,7 +1118,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Physiolibrary.Chemical.Components.ChemicalReaction c1[4](
           each nS=2,
           each nP=2,
-          K=fill(10, 4) .^ (-pKc .+ 3))
+          K=fill(10, 4) .^ (-pKc .+ 3),
+          TK=310.15,
+          dH=dHc)
                 annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1053,7 +1128,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Physiolibrary.Chemical.Components.ChemicalReaction c2[4](
           each nS=2,
           each nP=2,
-          K=fill(10, 4) .^ (-pKc .+ 3))
+          K=fill(10, 4) .^ (-pKc .+ 3),
+          TK=310.15,
+          dH=dHc)
                 annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1061,19 +1138,30 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       Modelica.Blocks.Math.Sum total[4](each nin=6) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
-              origin={-64,60})));
+              origin={-64,62})));
         Physiolibrary.Chemical.Interfaces.ChemicalPort_a H "hydrogen ions"
           annotation (Placement(transformation(extent={{90,76},{110,96}})));
         Physiolibrary.Chemical.Interfaces.ChemicalPort_a CO2
           annotation (Placement(transformation(extent={{90,-70},{110,-50}})));
         Physiolibrary.Chemical.Components.Speciation Hb_tn(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            NumberOfSubunitTypes=4)
+            NumberOfSubunits=4,
+          useInternalHeatsInput=true)
           annotation (Placement(transformation(extent={{-54,-22},{-74,-2}})));
       Physiolibrary.Types.RealIO.AmountOfSubstanceOutput tHb_u annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-100,-78})));
+      Types.RealIO.EnergyOutput tHb_h "internal heat" annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={-100,-100})));
+      Modelica.Blocks.Math.Sum total1[
+                                     4](each nin=6) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={-64,32})));
       equation
       connect(Hbu_AH_NH3.q_out, z2.substrates[1]) annotation (Line(
           points={{64,80},{64,54}},
@@ -1121,27 +1209,27 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(Hbu_A_NH3.solute, total.u[1]) annotation (Line(
-          points={{-22,70},{-44,70},{-44,61.6667},{-52,61.6667}},
+          points={{-22,70},{-44,70},{-44,63.6667},{-52,63.6667}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NH3.solute, total.u[2]) annotation (Line(
-          points={{64,70},{-2,70},{-2,61},{-52,61}},
+          points={{64,70},{-2,70},{-2,63},{-52,63}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_A_NH2.solute, total.u[3]) annotation (Line(
-          points={{-22,-2},{-44,-2},{-44,60.3333},{-52,60.3333}},
+          points={{-22,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NH2.solute, total.u[4]) annotation (Line(
-          points={{64,-2},{-2,-2},{-2,59.6667},{-52,59.6667}},
+          points={{64,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_A_NHCOO.solute, total.u[5]) annotation (Line(
-          points={{-22,-84},{-44,-84},{-44,59},{-52,59}},
+          points={{-22,-84},{-44,-84},{-44,61},{-52,61}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NHCOO.solute, total.u[6]) annotation (Line(
-          points={{64,-84},{-2,-84},{-2,58.3333},{-52,58.3333}},
+          points={{64,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
           color={0,0,127},
           smooth=Smooth.None));
 
@@ -1151,13 +1239,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           thickness=1,
           smooth=Smooth.None));
 
-        connect(Hb_tn.species, Hbtn) annotation (Line(
+        connect(Hb_tn.specificForm, Hbtn) annotation (Line(
             points={{-74,-20},{-86,-20},{-86,0},{-98,0}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(total.y, Hb_tn.totalSubunitAmount) annotation (Line(
-            points={{-75,60},{-78,60},{-78,-12},{-72,-12}},
+        connect(total.y, Hb_tn.amountOfSubunit) annotation (Line(
+            points={{-75,62},{-78,62},{-78,-12},{-72,-12}},
             color={0,0,127},
             smooth=Smooth.None));
 
@@ -1204,18 +1292,52 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         end for;
-        connect(Hb_tn.subunitSpecies, Hbu_A_NH2.q_out) annotation (Line(
+        connect(Hb_tn.specificSubunitForm, Hbu_A_NH2.q_out) annotation (Line(
             points={{-64,-2},{-64,8},{-22,8}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(tHb_u, Hb_tn.totalSubsystemAmount) annotation (Line(
+        connect(tHb_u, Hb_tn.amount) annotation (Line(
             points={{-100,-78},{-64,-78},{-64,-20}},
             color={0,0,127},
             smooth=Smooth.None));
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                  {100,100}}),     graphics), Documentation(revisions="<html>
+        connect(Hb_tn.internalHeat, tHb_h) annotation (Line(
+            points={{-58,-20},{-58,-100},{-100,-100}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        connect(Hbu_A_NH3.internalHeat, total1.u[1]) annotation (Line(
+            points={{-16,70},{-44,70},{-44,33.6667},{-52,33.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH3.internalHeat, total1.u[2]) annotation (Line(
+            points={{70,70},{-2,70},{-2,33},{-52,33}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NH2.internalHeat, total1.u[3]) annotation (Line(
+            points={{-16,-2},{-44,-2},{-44,32.3333},{-52,32.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH2.internalHeat, total1.u[4]) annotation (Line(
+            points={{70,-2},{-2,-2},{-2,31.6667},{-52,31.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NHCOO.internalHeat, total1.u[5]) annotation (Line(
+            points={{-16,-84},{-44,-84},{-44,31},{-52,31}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NHCOO.internalHeat, total1.u[6]) annotation (Line(
+            points={{70,-84},{-2,-84},{-2,30.3333},{-52,30.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(total1.y, Hb_tn.subunitInternalHeat) annotation (Line(
+            points={{-75,32},{-76,32},{-76,-6},{-72,-6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}),
+                                   graphics), Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
@@ -1341,12 +1463,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               origin={-78,34})));
         Physiolibrary.Chemical.Components.GasSolubility partialPressure1(
             kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
-          T=310.15,
-          C=1700)
+          C=1700,
+          T=310.15)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=0,
               origin={-78,6})));
+        Modelica.Blocks.Math.Sum internalHeat(nin=5)
+          annotation (Placement(transformation(extent={{74,-10},{94,10}})));
       equation
         connect(oxygen_unbound.q_out, K2.products[1]) annotation (Line(
             points={{-78,-18},{-38,-18},{-38,42},{-16,42},{-16,38},{-16.5,38}},
@@ -1515,6 +1639,26 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{-78,59},{-78,44}},
             color={0,0,127},
             smooth=Smooth.None));
+        connect(Hb0.tHb_h, internalHeat.u[1]) annotation (Line(
+            points={{6,78},{6,76},{68,76},{68,-1.6},{72,-1.6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hb1.tHb_h, internalHeat.u[2]) annotation (Line(
+            points={{6,40},{6,36},{66,36},{66,-0.8},{72,-0.8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hb2.tHb_h, internalHeat.u[3]) annotation (Line(
+            points={{6,0},{2,0},{2,0},{72,0}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hb3.tHb_h, internalHeat.u[4]) annotation (Line(
+            points={{6,-44},{4,-44},{4,-46},{46,-46},{46,0.8},{72,0.8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hb4.tHb_h, internalHeat.u[5]) annotation (Line(
+            points={{6,-88},{4,-88},{4,-90},{44,-90},{44,2},{72,2},{72,1.6}},
+            color={0,0,127},
+            smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics),
           experiment(
@@ -1533,6 +1677,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
       end Hemoglobin_MKM_Adair;
+
 
       package Develop
         extends Modelica.Icons.UnderConstruction;
@@ -1553,7 +1698,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             "oxygen dissociation coefficient of hemoglobin subunit";
 
           Physiolibrary.Chemical.Components.Speciation Speciation(
-              NumberOfSubunitTypes=12)
+              NumberOfSubunits=12)
             annotation (Placement(transformation(extent={{60,-20},{40,0}})));
           Physiolibrary.Chemical.Components.Substance OxyHm[4](
             each solute_start=0,
@@ -1683,7 +1828,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(Speciation.species, sForm) annotation (Line(
+          connect(Speciation.specificForm, sForm) annotation (Line(
               points={{40,-18},{40,-44},{82,-44}},
               color={107,45,134},
               thickness=1,
@@ -1746,21 +1891,25 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-14,-14},{-14,-16},{-49.6,-16},{-49.6,-19.2}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(DeoxyHm.q_out, Speciation.subunitSpecies[1:4]) annotation (Line(
+          connect(DeoxyHm.q_out, Speciation.specificSubunitForm[1:4])
+            annotation (Line(
               points={{-24,-58},{-24,-52},{28,-52},{28,0},{50,0},{50,-0.416667}},
+
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(A.q_out, Speciation.subunitSpecies[5:8]) annotation (Line(
+          connect(A.q_out, Speciation.specificSubunitForm[5:8]) annotation (
+              Line(
               points={{-14,-4},{-14,0.25},{50,0.25}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(add.y, Speciation.totalSubunitAmount[1:4]) annotation (Line(
+          connect(add.y, Speciation.amountOfSubunit[1:4]) annotation (Line(
               points={{-58,-84.4},{-58,-86},{14,-86},{14,-10.8333},{42,-10.8333}},
+
               color={0,0,127},
               smooth=Smooth.None));
-          connect(add1.y, Speciation.totalSubunitAmount[5:8]) annotation (Line(
+          connect(add1.y, Speciation.amountOfSubunit[5:8]) annotation (Line(
               points={{-52,-28.4},{-52,-28},{12,-28},{12,-9.5},{42,-9.5}},
               color={0,0,127},
               smooth=Smooth.None));
@@ -1794,11 +1943,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(add2.y, Speciation.totalSubunitAmount[9:12]) annotation (Line(
+          connect(add2.y, Speciation.amountOfSubunit[9:12]) annotation (Line(
               points={{0,35.6},{0,32},{12,32},{12,-8.16667},{42,-8.16667}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(NH2.q_out, Speciation.subunitSpecies[9:12]) annotation (Line(
+          connect(NH2.q_out, Speciation.specificSubunitForm[9:12]) annotation (
+              Line(
               points={{0,62},{0,58},{28,58},{28,0.916667},{50,0.916667}},
               color={107,45,134},
               thickness=1,
@@ -1865,7 +2015,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{76,52},{76,44.8},{3.2,44.8}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(Speciation.totalSubsystemAmount, tAmount) annotation (Line(
+          connect(Speciation.amount, tAmount) annotation (Line(
               points={{50,-18},{50,-86}},
               color={0,0,127},
               smooth=Smooth.None));
@@ -2407,38 +2557,38 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           "Hemoglobin titration shift caused by full deoxygenation (Bohr protons binding)"
           extends Modelica.Icons.Example;
 
-          Develop.Hemoglobin_titration hemoglobin_titration
+          Hemoglobin_titration hemoglobin_titration
             annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
-          Develop.Hemoglobin_titration hemoglobin_titration1(CO2_gas(PartialPressure(
+          Hemoglobin_titration hemoglobin_titration1(CO2_gas(PartialPressure(
                   displayUnit="kPa") = 1470))
             annotation (Placement(transformation(extent={{-28,60},{-8,80}})));
-          Develop.Hemoglobin_titration hemoglobin_titration2(CO2_gas(PartialPressure(
+          Hemoglobin_titration hemoglobin_titration2(CO2_gas(PartialPressure(
                   displayUnit="kPa") = 4530))
             annotation (Placement(transformation(extent={{0,60},{20,80}})));
-          Develop.Hemoglobin_titration hemoglobin_titration3(CO2_gas(PartialPressure(
+          Hemoglobin_titration hemoglobin_titration3(CO2_gas(PartialPressure(
                   displayUnit="kPa") = 10670))
             annotation (Placement(transformation(extent={{30,60},{50,80}})));
-          Develop.Hemoglobin_titration hemoglobin_titration4(CO2_gas(PartialPressure(
+          Hemoglobin_titration hemoglobin_titration4(CO2_gas(PartialPressure(
                   displayUnit="kPa") = 26660))
             annotation (Placement(transformation(extent={{60,60},{80,80}})));
-          Develop.Hemoglobin_titration hemoglobin_titration5(oxygen_in_air(
+          Hemoglobin_titration hemoglobin_titration5(oxygen_in_air(
                 PartialPressure=19998.35811225))
             annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
-          Develop.Hemoglobin_titration hemoglobin_titration6(oxygen_in_air(
-                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
-                   1470))
+          Hemoglobin_titration hemoglobin_titration6(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 1470))
             annotation (Placement(transformation(extent={{-28,-26},{-8,-6}})));
-          Develop.Hemoglobin_titration hemoglobin_titration7(oxygen_in_air(
-                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
-                   4530))
+          Hemoglobin_titration hemoglobin_titration7(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 4530))
             annotation (Placement(transformation(extent={{0,-26},{20,-6}})));
-          Develop.Hemoglobin_titration hemoglobin_titration8(oxygen_in_air(
-                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
-                   10670))
+          Hemoglobin_titration hemoglobin_titration8(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 10670))
             annotation (Placement(transformation(extent={{30,-26},{50,-6}})));
-          Develop.Hemoglobin_titration hemoglobin_titration9(oxygen_in_air(
-                PartialPressure=19998.35811225), CO2_gas(PartialPressure(displayUnit="kPa")=
-                   26660))
+          Hemoglobin_titration hemoglobin_titration9(oxygen_in_air(
+                PartialPressure=19998.35811225), CO2_gas(PartialPressure(
+                  displayUnit="kPa") = 26660))
             annotation (Placement(transformation(extent={{60,-26},{80,-6}})));
           Modelica.Blocks.Math.Feedback dH
             annotation (Placement(transformation(extent={{-54,22},{-34,42}})));
@@ -3387,12 +3537,22 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
 
+      parameter Physiolibrary.Types.MolarEnergy dH=0 "Standard Enthalpy Change"
+        annotation ( HideResult=true, Dialog(tab="Energies"));
+
+      Physiolibrary.Types.RealIO.EnergyOutput internalHeat
+        "internal heat energy = enthalpy*amountOfSubstance" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
     equation
       q_out.conc = solute/volume;
 
       state = solute; // der(solute)=q_out.q
       change = q_out.q;
 
+      internalHeat = dH*solute;
                                                                                                         annotation (choicesAllMatching=true,
         Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
@@ -3405,7 +3565,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end Substance;
 
     model ChemicalReaction "Chemical Reaction"
@@ -3467,7 +3629,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       parameter Physiolibrary.Types.Temperature TK=298.15 "Base temperature"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
-      parameter Modelica.SIunits.MolarInternalEnergy dH=0
+      parameter Physiolibrary.Types.MolarEnergy dH=0
         "Standard Enthalpy Change (negative=exothermic)"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
@@ -3476,6 +3638,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
+    protected
+      parameter Physiolibrary.Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
+      parameter Physiolibrary.Types.Fraction fs=solventFraction^(sum(s));
+      parameter Physiolibrary.Types.Fraction fp=solventFraction^(sum(p));
+
     equation
       if not useDissociationConstantInput then
         KBase = K;
@@ -3483,7 +3650,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
 
-      rr = kf*volume*(product((as.*substrates.conc/solventFraction).^s) - (1/KaT)*product((ap.*products.conc/solventFraction).^p));  //Elementary first-order rate kinetics - the main equation
+      rr*fsp = kf*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -3927,51 +4094,87 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Physiolibrary.Icons.Speciation;
 
       extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                               Simulation=Physiolibrary.Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunitTypes-1);
+                                               Simulation=Physiolibrary.Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
       extends Physiolibrary.Chemical.Interfaces.ConditionalVolume;
 
       import Physiolibrary.Types.*;
 
-      parameter Integer NumberOfSubunitTypes=1
-        "Number of subunit types occuring in macromolecule";
+      parameter Integer NumberOfSubunits=1
+        "Number of independent subunits occuring in molecule";
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a species
-        "Defined macromolecule form"                                                        annotation (Placement(
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a specificForm
+        "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
             transformation(extent={{90,-90},{110,-70}})));
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a subunitSpecies[NumberOfSubunitTypes]
-        "Definid species of macromolecule subunit types (in NormalSolventVolume)"
+      Physiolibrary.Chemical.Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
+        "Specific form of subunits of specific molecule form in connector called spieces"
                                                                                                             annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
-
     protected
-      constant Real numberOfSubunit[NumberOfSubunitTypes] = ones(NumberOfSubunitTypes)
-        "Number of identical subunits instances in macromolecule. First should be non-zero.";
-
-    protected
-      Real fractions[NumberOfSubunitTypes];
+      Real fractions[NumberOfSubunits];
     public
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput totalSubunitAmount[NumberOfSubunitTypes]
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput amountOfSubunit[NumberOfSubunits]
+        "Total amount of the subunits in all forms"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=180,
             origin={80,0})));
-      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput totalSubsystemAmount
+      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput amount
+        "Total amount of macromolecules in this system"
        annotation (Placement(
             transformation(extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-80})));                                                             //(start=1e-8)
+      Physiolibrary.Types.RealIO.EnergyOutput internalHeat
+        "Relative internal heat of all chemical forms in this system"                                                                annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-60,-80}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-60,-80})));
+
+    //system internal heat
+      parameter Boolean useInternalHeatsInput = false
+        "=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
+
+      parameter Physiolibrary.Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
+        "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
+        annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
+
+      Physiolibrary.Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
+      annotation (Dialog(enable=false),
+         Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,60})));
+
+       Physiolibrary.Types.Energy internalHeatOfSubunit[NumberOfSubunits]
+        "Internal heat of subunits";
     equation
-      totalSubsystemAmount = totalSubunitAmount[1]/numberOfSubunit[1];
 
-      fractions = if
-                    (totalSubsystemAmount < Modelica.Constants.eps) then zeros(NumberOfSubunitTypes) else subunitSpecies.conc ./ (totalSubunitAmount/volume);
+      amount = amountOfSubunit[1];
 
-      species.conc = (totalSubsystemAmount/volume)*product(fractions.^numberOfSubunit);
+      fractions = if (amount < Modelica.Constants.eps) then zeros(NumberOfSubunits)
+                  else specificSubunitForm.conc ./ (amountOfSubunit/volume);
 
-      for i in 2:NumberOfSubunitTypes loop
-             normalizedState[i-1]*totalSubsystemAmount*numberOfSubunit[i] = totalSubunitAmount[i];
+      specificForm.conc = (amount/volume)*product(fractions); //chemical speciation
+
+      for i in 2:NumberOfSubunits loop
+                 normalizedState[i-1]*amount = amountOfSubunit[i];
       end for;
 
-      subunitSpecies.q = -species.q * numberOfSubunit;
+    //molar flow:
+      specificSubunitForm.q = -specificForm.q * ones(NumberOfSubunits);
+
+    //heat:
+       if not useInternalHeatsInput then
+        internalHeatOfSubunit = SubunitEnthalpies.*amountOfSubunit;
+      end if;
+      internalHeat=sum(internalHeatOfSubunit);
 
       annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",
         Documentation(revisions="<html>
@@ -3980,16 +4183,23 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>",     info="<html>
 <p>This block identify one specific chemical form (one chosen chemical species - called <i>specie</i>) of one macromolecule defined by forms of its subunits.</p>
 <p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
-<p>Connectors <b> subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the sununit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
-<p><br/>Initial total concentrations of subunits must must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
-<p>    </p>
-<p><br/>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
+<p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the sununit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
+<p><br>Initial total concentrations of subunits must must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
 <p>Where:</p>
 <p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
 <p>fF1 = F1/(F1+F2) is fraction of form F1 in subsystem of subunit,</p>
 <p>4 is number of subunits (<b>numberOfSubunit</b>).</p>
-<p><br/>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
-</html>"));
+<p><br>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
+<p><br><h4><span style=\"color:#008000\">Heat of chemical system.</span></h4></p>
+<p>Enthalpy of each subunit species can be presented as <b>subunitEnthalpies[:]</b>. Then the total enthalpy of the chemical system can be calculated by equation:</p>
+<p> <b> systemEnthalpy = sum(subunitEnthalpies[i] * totalSubunitAmount[i]) / totalSubsystemAmount</b></p>
+<p>And the stored heat as enthalpy is <b>systemEnthalpy*totalSubsystemAmount.</b></p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics));
     end Speciation;
 
     model Dilution "Adding/removing of the solvent to/from running solution"
