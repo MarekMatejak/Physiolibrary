@@ -1239,7 +1239,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
       import Physiolibrary.Types.*;
 
-      replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+      replaceable package Utilities = Physiolibrary.Types.FilesUtilities(directoryName=dirName)
                                                                       constrainedby
         Physiolibrary.Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
@@ -1252,25 +1252,35 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
-      Real state(start=state_start, stateSelect=StateSelect.prefer)
-        "This state must be connected in inherited class definition"
-        annotation (HideResult=true);
-
-      Real change "Dynamic change of state value per minute" annotation (HideResult=true);
-
       parameter Real state_start "State start or init value"
        annotation (HideResult=true,Dialog(enable=false,group="Initialization", tab="IO"));
 
-      parameter Boolean SAVE_RESULTS = false
-        "save and test final state values with original values"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+      Real state(start=if LOAD_STARTS then Utilities.readReal(stateName, storeUnit) else
+     state_start, stateSelect=StateSelect.prefer)
+        "This state must be connected in inherited class definition"
+        annotation (HideResult=true);
+      Real change "Dynamic change of state value per minute" annotation (HideResult=true);
+
+      constant String dirName = "io" "Directory name to save and load values"
+        annotation (HideResult=true, Dialog(group="Value I/O",tab="IO"));
 
       parameter String storeUnit="" "Unit in Utilities input/output function"
          annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
 
-      parameter String stateName="" "Name in Utilities input/output function"
+      parameter String stateName=getInstanceName()
+        "Name in Utilities input/output function"
          annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-                                    //getInstanceName()
+
+      parameter Boolean LOAD_STARTS = false "Load start value of state"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
+      parameter Boolean SAVE_RESULTS = false "Save final state values"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
+      parameter Boolean SAVE_COMPARISON = false
+        "Compare final state values with original values"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
     protected
       parameter Real defaultValue(fixed=false) "Default value of state.";
       parameter Real initialValue(fixed=false) "Initial value of state.";
@@ -1286,24 +1296,28 @@ package SteadyStates "Dynamic Simulation / Steady State"
       end if;
 
       initialValue = state; //in causality such as initialValue:=state
-      if SAVE_RESULTS then
+      if SAVE_COMPARISON then
         defaultValue = Utilities.readReal(stateName, storeUnit);
       else
         defaultValue = Modelica.Constants.N_A;
       end if;
     equation
 
-      when SAVE_RESULTS and terminal() then
-        Utilities.writeReal(
+      when terminal() then
+        if SAVE_RESULTS then
+          Utilities.writeReal(
             stateName,
             state,
             storeUnit);
-        Utilities.writeComparison(
+        end if;
+        if SAVE_COMPARISON then
+          Utilities.writeComparison(
             stateName,
             defaultValue,
             initialValue,
             state,
             storeUnit);
+        end if;
       end when;
 
       if Simulation <> SimulationType.SteadyState then
@@ -1343,18 +1357,23 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "Dynamic with Initialization or Steady State"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
+      constant String dirName = "io" "Directory name to save and load values"
+        annotation (HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
       parameter Boolean SAVE_RESULTS = false
         "save and test final state values with original values"
          annotation (Dialog(group="Value I/O",tab="IO"));
+      parameter Boolean SAVE_COMPARISON = false
+        "Compare final state values with original values"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
 
       parameter String storeUnit[n]=fill("",n)
         "Unit in Utilities input/output function"
          annotation (Dialog(group="Value I/O",tab="IO"));
 
-      parameter String stateName[n]=fill("",n)
+      parameter String stateName[n]=fill(getInstanceName(),n)
         "Name in Utilities input/output function"
          annotation (Dialog(group="Value I/O",tab="IO"));
-                                    //getInstanceName()
 
       parameter Boolean isDependent[n]= fill(false,n)
         "=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc."
@@ -1369,33 +1388,39 @@ package SteadyStates "Dynamic Simulation / Steady State"
       if Simulation == SimulationType.NormalInit then
         state[i] = state_start[i];
       elseif Simulation == SimulationType.ReadInit then
-          state[i] = Utilities.readReal(stateName[i], storeUnit[i]);
+          state[i] = Utilities.readReal(stateName[i] + "[" +String(i)+"]", storeUnit[i]);
       elseif Simulation == SimulationType.InitSteadyState and not isDependent[i] then
         der(state[i])=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
       end if;
 
       initialValue = state; //in causality such as initialValue:=state
-      if SAVE_RESULTS then
-        defaultValue[i] = Utilities.readReal(stateName[i], storeUnit[i]);
+      if SAVE_COMPARISON then
+        defaultValue[i] = Utilities.readReal(stateName[i]+ "[" +String(i)+"]", storeUnit[i]);
       else
         defaultValue[i] = Modelica.Constants.N_A;
       end if;
       end for;
     equation
 
-      when SAVE_RESULTS and terminal() then
-        for i in 1:n loop
-        Utilities.writeReal(
-            stateName[i],
-            state[i],
-            storeUnit[i]);
-        Utilities.writeComparison(
-            stateName[i],
-            defaultValue[i],
-            initialValue[i],
-            state[i],
-            storeUnit[i]);
-        end for;
+      when terminal() then
+        if SAVE_RESULTS then
+          for i in 1:n loop
+            Utilities.writeReal(
+              stateName[i]+ "[" +String(i)+"]",
+              state[i],
+              storeUnit[i]);
+          end for;
+        end if;
+        if SAVE_COMPARISON then
+          for i in 1:n loop
+            Utilities.writeComparison(
+              stateName[i]+ "[" +String(i)+"]",
+              defaultValue[i],
+              initialValue[i],
+              state[i],
+              storeUnit[i]);
+          end for;
+        end if;
       end when;
 
       if Simulation <> SimulationType.SteadyState then

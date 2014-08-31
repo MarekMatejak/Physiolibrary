@@ -4659,6 +4659,22 @@ The Real output y is a constant signal:
     extends Physiolibrary.Types.Utilities;
     extends Modelica.Icons.VariantsPackage;
 
+    constant String directoryName="io";
+
+    constant String inputFileName="input.txt"
+      "File to load values with (non-)SI units";
+    constant String outputFileName="output.txt"
+      "File to save values with (non-)SI units";
+    constant String comparisonFileName="comparison.txt"
+      "File to save comparison from loaded values and simulation results with (non-)SI units";
+
+    constant String inputSIFileName="input_SI.txt"
+      "File to load values in SI units";
+    constant String outputSIFileName="output_SI.txt"
+      "File to save values in SI units";
+    constant String comparisonSIFileName="comparison_SI.txt"
+      "File to save comparison in SI units from loaded values and simulation results";
+
     redeclare function extends readReal
       import Modelica.Utilities.*;
 
@@ -4674,7 +4690,7 @@ The Real output y is a constant signal:
       Real inputValue;
       Integer typeDef;
     algorithm
-      fn:="io/input.txt";
+      fn:=directoryName + "/" + inputFileName;
 
       if not Files.exist(fn) then
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
@@ -4773,7 +4789,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Boolean endOfFile=false;
 
     algorithm
-      fn:="io/input_SI.txt";
+      fn:=directoryName + "/" +inputSIFileName;
 
       if not Files.exist(fn) then
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
@@ -4821,11 +4837,11 @@ other wariant: //Format "<variableName>=<value><unit>"
       Integer typeDef "Variable type";
 
     algorithm
-      fn:="io/output.txt";
+      fn:=directoryName + "/" +outputFileName;
 
       if not Files.exist(fn) then
-         if not Files.exist("io") then
-             Files.createDirectory("io");
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
          end if;
       end if;
 
@@ -4847,11 +4863,11 @@ other wariant: //Format "<variableName>=<value><unit>"
       Integer typeDef "Variable type";
 
     algorithm
-      fn:="io/output_SI.txt";
+      fn:=directoryName + "/" +outputSIFileName;
 
       if not Files.exist(fn) then
-         if not Files.exist("io") then
-             Files.createDirectory("io");
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
          end if;
       end if;
 
@@ -4865,11 +4881,11 @@ other wariant: //Format "<variableName>=<value><unit>"
       String fn;
 
     algorithm
-      fn:="io/output.txt";
+      fn:=directoryName + "/" +outputFileName;
 
       if not Files.exist(fn) then
-         if not Files.exist("io") then
-             Files.createDirectory("io");
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
          end if;
       end if;
 
@@ -4889,7 +4905,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Integer typeDef "Variable output units";
 
     algorithm
-      fn:="io/comparison.txt";
+      fn:=directoryName + "/" +comparisonFileName;
 
       if not Files.exist(fn) then
          if not Files.exist("output") then
@@ -4932,7 +4948,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Real outputDefaultValue;
 
     algorithm
-      fn:="io/comparison_SI.txt";
+      fn:=directoryName + "/" +comparisonSIFileName;
 
       if not Files.exist(fn) then
          if not Files.exist("output") then
@@ -4962,7 +4978,7 @@ other wariant: //Format "<variableName>=<value><unit>"
       Real outputFinalValue;
       Real outputDefaultValue;
     algorithm
-      fn:="io/comparison.txt";
+      fn:=directoryName + "/" +comparisonFileName;
 
       if not Files.exist(fn) then
          if not Files.exist("output") then
