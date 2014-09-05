@@ -20,5 +20,7 @@ convertElement("Physiolibrary.Chemical.Components.Speciation","totalSubsystemAmo
 convertElement("Physiolibrary.Chemical.Components.Speciation","subunitSpecies","specificSubunitForm");
 convertElement("Physiolibrary.Chemical.Components.Speciation","species","specificForm");
 
+convertClass("Physiolibrary.Thermal.Components.HeatOutstream","Physiolibrary.Thermal.Sources.MassOutflow")
 
+convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
 

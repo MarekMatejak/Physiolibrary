@@ -98,12 +98,11 @@ package Thermal
         SpecificHeat=3851.856)      annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             origin={32,30})));
-      Physiolibrary.Thermal.Components.HeatOutstream
-                    urination
+      Physiolibrary.Thermal.Sources.MassOutflow urination
         annotation (Placement(transformation(extent={{-28,-60},{-48,-40}})));
-      Physiolibrary.Thermal.Components.HeatOutstream
-                    lungsVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
-          SpecificHeat(displayUnit="kcal/(kg.K)"),
+      Physiolibrary.Thermal.Sources.MassOutflow lungsVapor(
+        VaporizationHeat(displayUnit="kcal/g") = 2428344,
+        SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 4.6666666666667e-06)
         annotation (Placement(transformation(extent={{12,66},{32,86}})));
       Physiolibrary.Thermal.Components.HeatAccumulation
@@ -119,14 +118,14 @@ package Thermal
         SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             origin={-28,2})));
-      Physiolibrary.Thermal.Components.HeatOutstream
-                    insensibleVapor(VaporizationHeat(displayUnit="kcal/g") = 2428344,
-          SpecificHeat(displayUnit="kcal/(kg.K)"),
+      Physiolibrary.Thermal.Sources.MassOutflow insensibleVapor(
+        VaporizationHeat(displayUnit="kcal/g") = 2428344,
+        SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 6.5e-06)
         annotation (Placement(transformation(extent={{-48,32},{-28,52}})));
-      Physiolibrary.Thermal.Components.HeatOutstream
-                    sweating(VaporizationHeat(displayUnit="kcal/g") = 2428344,
-          SpecificHeat(displayUnit="kcal/(kg.K)"))
+      Physiolibrary.Thermal.Sources.MassOutflow sweating(VaporizationHeat(
+            displayUnit="kcal/g") = 2428344, SpecificHeat(displayUnit=
+              "kcal/(kg.K)"))
         annotation (Placement(transformation(extent={{-44,58},{-24,78}})));
       Modelica.Thermal.HeatTransfer.Components.ThermalConductor lumenVolume(G(
             displayUnit="kcal/(min.K)") = 1)
@@ -501,43 +500,6 @@ package Thermal
 </html>"));
     end Stream;
 
-    model HeatOutstream
-      "One-directional outflow of heated mass (with effect of vaporization)"
-      extends Interfaces.ConditionalMassFlow;
-
-      Interfaces.HeatPort_a
-                       q_in "flow circuit"     annotation (Placement(
-            transformation(extent={{-110,-10},{-90,10}})));
-      parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
-        "Used for whole outflow stream";                                            // or 2428344 for water vaporization
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
-        "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
-
-    equation
-    //  assert(liquidOutflow_>=-Modelica.Constants.eps,"HeatOutstream must have always one forward flow direction! Not 'liquidOutflow_<0'!");
-      q_in.Q_flow = q*(q_in.T*SpecificHeat + VaporizationHeat);
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
-                            graphics={
-            Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={191,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{20,-84},{320,-44}},
-              textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end HeatOutstream;
 
   end Components;
 
@@ -629,6 +591,84 @@ i.e., it defines a fixed temperature as a boundary condition.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end UnlimitedHeat;
+
+    model MassOutflow
+      "One-directional outflow of heated mass with enthalpy (vaporization heat)"
+      extends Interfaces.ConditionalMassFlow;
+
+      Interfaces.HeatPort_a
+                       q_in "flow circuit"     annotation (Placement(
+            transformation(extent={{-110,-10},{-90,10}})));
+      parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
+        "Used for whole outflow stream";                                            // or 2428344 for water vaporization
+      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
+        "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
+
+    equation
+    //  assert(liquidOutflow_>=-Modelica.Constants.eps,"HeatOutstream must have always one forward flow direction! Not 'liquidOutflow_<0'!");
+      q_in.Q_flow = q*(q_in.T*SpecificHeat + VaporizationHeat);
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+                            graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={191,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{20,-84},{320,-44}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end MassOutflow;
+
+    model MassInflow
+      "One-directional inflow of heated mass with enthalpy (heat of solvation)"
+      extends Interfaces.ConditionalMassFlow;
+      extends Interfaces.ConditionalTemperature;
+
+      Interfaces.HeatPort_b
+                       q_out "flow circuit"     annotation (Placement(
+            transformation(extent={{90,-10},{110,10}}), iconTransformation(
+              extent={{90,-10},{110,10}})));
+      parameter Physiolibrary.Types.SpecificEnergy dH=0
+        "Enthalpy of incomming substance (i.e. enthalpy of solvation)";                                            // or 2428344 for water vaporization
+      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
+        "Of inflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
+
+    equation
+    //  assert(liquidOutflow_>=-Modelica.Constants.eps,"HeatOutstream must have always one forward flow direction! Not 'liquidOutflow_<0'!");
+      q_out.Q_flow = - q*(temperature*SpecificHeat + dH);
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={191,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{20,-84},{320,-44}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end MassInflow;
   end Sources;
 
   package Interfaces
@@ -678,7 +718,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end HeatPort_b;
 
@@ -705,7 +745,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 
       parameter Physiolibrary.Types.MassFlowRate MassFlow=0
         "Mass flow if useMassFlowInput=false"
-        annotation (Dialog(enable=not useSolventFlowInput));
+        annotation (Dialog(enable=not useMassFlowInput));
 
       Physiolibrary.Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if useMassFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -719,6 +759,35 @@ i.e., it defines a fixed temperature as a boundary condition.
       end if;
 
     end ConditionalMassFlow;
+
+    partial model ConditionalTemperature
+      "Input of temperature vs. parametric temperature"
+
+      parameter Boolean useTemperatureInput = false
+        "=true, if temperature input is used instead of parameter T"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Physiolibrary.Types.Temperature T=0
+        "Temperature if useTemperatureInput=false"
+        annotation (Dialog(enable=not useTemperatureInput));
+
+      Physiolibrary.Types.RealIO.TemperatureInput t(start=T)=temperature if useTemperatureInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,70}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,70})));
+
+      Physiolibrary.Types.Temperature temperature "Current temperature";
+    equation
+      if not useTemperatureInput then
+        temperature = T;
+      end if;
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics));
+    end ConditionalTemperature;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
