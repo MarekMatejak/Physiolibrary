@@ -4609,7 +4609,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Physiolibrary.Chemical.Interfaces.OnePort;
       extends Physiolibrary.Icons.MolarFlowMeasure;
 
-     Physiolibrary.Types.RealIO.MolarFlowRateOutput actualFlow
+     Physiolibrary.Types.RealIO.MolarFlowRateOutput molarFlowRate
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
@@ -4617,7 +4617,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     equation
       q_in.conc = q_out.conc;
 
-      actualFlow = q_in.q;
+      molarFlowRate = q_in.q;
 
      annotation (
         Documentation(revisions="<html>
@@ -4632,15 +4632,14 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
                                 q_in "For measure only"
                                 annotation (Placement(
             transformation(extent={{-10,-30},{10,-10}})));
-      Physiolibrary.Types.RealIO.ConcentrationOutput actualConc
-        "Actual concentration"
-                             annotation (Placement(transformation(extent={{-20,-20},
+      Physiolibrary.Types.RealIO.ConcentrationOutput concentration
+        "Concentration"      annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
             origin={0,40})));
     equation
 
-      actualConc =         q_in.conc;
+      concentration =         q_in.conc;
 
       q_in.q = 0;
      annotation (
@@ -4656,21 +4655,27 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end ConcentrationMeasure;
 
-    model FlowConcentrationMeasure
-      "The outflow concentration from absorption (i.e. portal vein concentration)"
+    model IncrementalFlowConcentrationMeasure
+      "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
       extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
 
-     Physiolibrary.Types.RealIO.ConcentrationOutput Conc
+     Physiolibrary.Types.RealIO.ConcentrationOutput concentration
         "Concentration after absorption source"                           annotation (Placement(transformation(extent={{-12,-86},
                 {28,-46}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-62})));
 
+      Types.RealIO.MolarFlowRateInput addition annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,40})));
+      Interfaces.ChemicalPort_a q_in
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
-      Conc = q_in.q/q;
-      q_in.conc = q_out.conc;
+      concentration = q_in.conc + addition/q;
+      q_in.q=0;
+
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
                             graphics={Rectangle(
@@ -4686,7 +4691,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"),
         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}), graphics));
-    end FlowConcentrationMeasure;
+    end IncrementalFlowConcentrationMeasure;
   end Sensors;
 
   package Sources
@@ -5024,6 +5029,8 @@ Connector with one flow signal of type Real.
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
       q_in.q + q_out.q = 0;
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics));
     end OnePort;
 
     partial model ConditionalHeatPort

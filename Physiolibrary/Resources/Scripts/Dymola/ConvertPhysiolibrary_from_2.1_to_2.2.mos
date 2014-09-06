@@ -24,3 +24,15 @@ convertClass("Physiolibrary.Thermal.Components.HeatOutstream","Physiolibrary.The
 
 convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
 
+convertClass("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","Physiolibrary.Chemical.Sensors.IncrementalFlowConcentrationMeasure")
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","solventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","SolventFlow","solutionFlow");
+
+convertElement("Physiolibrary.Chemical.Sensors.MolarFlowMeasure","actualFlow","molarFlowRate");
+convertElement("Physiolibrary.Chemical.Sensors.ConcentrationMeasure","actualConc","concentration");
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","Conc","concentration");
+convertElement("Physiolibrary.Hydraulic.Sensors.FlowMeasure","actualFlow","volumeFlow");
+convertElement("Physiolibrary.Hydraulic.Sensors.PressureMeasure","actualPressure","pressure");
+convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
+
+

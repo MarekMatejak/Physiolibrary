@@ -480,7 +480,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       extends Interfaces.OnePort;
       extends Icons.FlowMeasure;
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
+      Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeFlowRate
         "Flux through membrane"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
@@ -488,7 +488,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     equation
       q_out.o = q_in.o;
 
-      actualFlow = q_in.q;
+      volumeFlowRate = q_in.q;
 
      annotation (
         Documentation(revisions="<html>
@@ -684,7 +684,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -717,7 +717,7 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
              fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

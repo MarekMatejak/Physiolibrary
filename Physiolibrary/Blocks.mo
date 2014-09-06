@@ -594,12 +594,16 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                 20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
+
+     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+
      parameter Real[:,3] data;
       Interpolation.Curve
                    curve(
       x=data[:, 1],
       y=data[:, 2],
-      slope=data[:, 3])
+      slope=data[:, 3],
+        Xscale=Xscale)
         annotation (Placement(transformation(extent={{-68,58},{-48,78}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -659,22 +663,28 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
-     parameter Physiolibrary.Types.Time HalfTime(displayUnit="min")=3462.468;
-                                                                 //40*60/Modelica.Math.log(2);
-     parameter Real initialValue = 1; //40;
+     parameter Physiolibrary.Types.Time HalfTime(displayUnit="min"); //=3462.468;
+
+     parameter Real initialValue = 1 "as u/Xscale";
+
+     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+     parameter Real Yscale = 1 "conversion scale to SI unit of y values";
+
      parameter Real[:,3] data;
       Interpolation.Curve
                    curve(
       x=data[:, 1],
       y=data[:, 2],
-      slope=data[:, 3])
+      slope=data[:, 3],
+        Xscale=Xscale,
+        Yscale=Yscale)
         annotation (Placement(transformation(extent={{-28,18},{-8,38}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-32})));
       Physiolibrary.Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
-            HalfTime), y_start=initialValue)
+            HalfTime), y_start=initialValue*Xscale)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -731,11 +741,15 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                   annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
+
+     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+
       Interpolation.Curve
                    curve(
       x=data[:, 1],
       y=data[:, 2],
-      slope=data[:, 3])
+      slope=data[:, 3],
+        Xscale=Xscale)
         annotation (Placement(transformation(extent={{-76,20},{-56,40}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -775,7 +789,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
-          points={{-14,17},{-14,14.25},{-14,14.25},{-14,11.5},{-14,6},{-14,6}},
+          points={{-14,17},{-14,6}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(integrator.y, feedback.u2) annotation (Line(

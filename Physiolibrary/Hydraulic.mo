@@ -285,16 +285,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           points={{-51,44},{-46,44},{-46,34}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(pressureMeasure.actualPressure, rightStarling.u) annotation (Line(
-          points={{-62,32},{-54,32}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
           points={{21,46},{26,46},{26,34}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(pressureMeasure1.actualPressure, leftStarling.u) annotation (Line(
-          points={{8,32},{18,32}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
@@ -308,6 +300,14 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           smooth=Smooth.None));
       connect(leftStarling.y, leftHeart.solutionFlow) annotation (Line(
           points={{26,28},{26,20}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure.pressure, rightStarling.u) annotation (Line(
+          points={{-62,32},{-54,32}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure1.pressure, leftStarling.u) annotation (Line(
+          points={{8,32},{18,32}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -838,7 +838,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       extends Interfaces.OnePort;
       extends Icons.FlowMeasure;
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput actualFlow
+      Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeFlow
         "Actual volume flow rate"
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
@@ -847,7 +847,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     equation
       q_out.pressure = q_in.pressure;
 
-      actualFlow = q_in.q;
+      volumeFlow = q_in.q;
 
      annotation (
         Documentation(revisions="<html>
@@ -862,12 +862,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Interfaces.HydraulicPort_a
                            q_in annotation (Placement(
             transformation(extent={{-60,-80},{-20,-40}})));
-      Physiolibrary.Types.RealIO.PressureOutput actualPressure
-        "Actual pressure"    annotation (Placement(transformation(extent={{40,-60},
+      Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
+                             annotation (Placement(transformation(extent={{40,-60},
                 {80,-20}})));
     equation
 
-      actualPressure = q_in.pressure;
+      pressure = q_in.pressure;
       q_in.q = 0;
      annotation (
         Documentation(revisions="<html>
@@ -1111,7 +1111,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}),
+              fillColor={0,0,0}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1145,7 +1145,7 @@ Connector with one flow signal of type Real.
               lineColor={0,0,0},
               smooth=Smooth.None,
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
+              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"
