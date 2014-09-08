@@ -28,9 +28,25 @@ Download and unzip.
 
 ## Current release
 
-Download [Physiolibrary 2.1.1 (2014-05-02)](../../archive/v2.1.1.zip)
+Download [Physiolibrary 2.2.0 (2014-09-06)](../../archive/v2.2.0.zip)
 
 #### Release notes
+
+*  [Version v2.2.0 (2014-09-06)](../../archive/v2.2.0.zip)
+ * New:
+  * international units for Insulin,EPO,ADH,Renin,TSH
+  * read/write of values in non-SI units from/to file
+  * outflow/inflow sources
+  * chemical internal heats
+  * passive fluxes through membranes
+ * Fix:
+  * collapsing ElasticVessel at negative sucking pressures
+  * concentrations are always per volume of whole solution
+  * determining of Dymola installation folder
+ * Rename:
+  * actualFlow, actualConc, .. in sensors
+  * FlowConcentrationMeasure to IncrementalFlowConcentrationMeasure
+  * thermal OutStream to MassOutflow
 
 *  [Version v2.1.1 (2014-05-02)](../../archive/v2.1.1.zip)
  * New compoment: HydraulicComponents.IdealValve for modeling aortic, pulmonary, triscupid and mitral valve

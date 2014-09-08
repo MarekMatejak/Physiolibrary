@@ -1,8 +1,9 @@
-// Convert from Physiolibrary 2.1.* to Physiolibrary 2.2.*
+// Convert from Physiolibrary 2.0 to Physiolibrary 2.2
 
 // clear
 convertClear();
 
+convertModifiers("Physiolibrary.Chemical.Components.GasSolubility",{"kH_T0"}  , {"kH_T0=1/%kH_T0%"}, true);
 convertElement("Physiolibrary.Chemical.Components.Substance","solventVolume","solutionVolume");
 convertElement("Physiolibrary.Chemical.Components.ChemicalReaction","solventVolume","solutionVolume");
 convertElement("Physiolibrary.Chemical.Components.Degradation","solventVolume","solutionVolume");
@@ -31,10 +32,14 @@ convertElement("Physiolibrary.Hydraulic.Sensors.FlowMeasure","actualFlow","volum
 convertElement("Physiolibrary.Hydraulic.Sensors.PressureMeasure","actualPressure","pressure");
 
 
+convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
+
+
 convertClass("Physiolibrary.Thermal.Components.HeatOutstream","Physiolibrary.Thermal.Sources.MassOutflow")
+
 convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
 
 
-convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
+convertClass("Physiolibrary.Types.Constants.HydraulicResistanceConst","Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst")
 
 

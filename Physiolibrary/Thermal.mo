@@ -500,7 +500,6 @@ package Thermal
 </html>"));
     end Stream;
 
-
   end Components;
 
   package Sources
@@ -785,8 +784,6 @@ i.e., it defines a fixed temperature as a boundary condition.
         temperature = T;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics));
     end ConditionalTemperature;
   end Interfaces;
   annotation (Documentation(revisions="<html>

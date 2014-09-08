@@ -227,6 +227,35 @@ package Physiolibrary "Physiological domains library (version v2.2.0)"
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
+  class Version_2_2_0 "Version 2.2.0 (Sep. 06, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">international units for Insulin,EPO,ADH,Renin,TSH</font></li>
+<li><font style=\"color: #333333; \">read/write of values in non-SI units</font></li>
+<li><font style=\"color: #333333; \">outflow/inflow sources</font></li>
+<li><font style=\"color: #333333; \">chemical internal heats</font></li>
+<li><font style=\"color: #333333; \">passive fluxes through membranes</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">collapsing ElasticVessel at negative sucking pressures</font></li>
+<li><font style=\"color: #333333; \">concentrations are always per volume of whole solution</font></li>
+<li><font style=\"color: #333333; \">determining of Dymola installation folder</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">actualFlow, actualConc, .. in sensors</font></li>
+<li><font style=\"color: #333333; \">FlowConcentrationMeasure to IncrementalFlowConcentrationMeasure</font></li>
+<li><font style=\"color: #333333; \">thermal OutStream to MassOutflow</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_2_0;
+
   class Version_2_1_1 "Version 2.1.1 (May. 02, 2014)"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -432,18 +461,19 @@ package Physiolibrary "Physiological domains library (version v2.2.0)"
   annotation (preferredView="info",
 version="2.2.0",
 versionBuild=1,
-versionDate="2014-05-02",
-dateModified = "2014-05-02 12:30:00Z",
+versionDate="2014-09-06",
+dateModified = "2014-09-06 17:30:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
-  from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.1.mos"),
-  from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.1.mos"),
-  from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.1.mos"),
-  from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.1.mos"),
-  from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.1.mos"),
-  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.1.mos"),
+  from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.2.mos"),
+  from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.2.mos"),
+  from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.2.mos"),
+  from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.2.mos"),
+  from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.2.mos"),
+  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.2.mos"),
   from(version="2.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.2.mos"),
+  from(version="2.1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.2.mos"),
   from(version="2.1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.2.mos"),
   from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.2.mos")),
   Documentation(revisions="<html>

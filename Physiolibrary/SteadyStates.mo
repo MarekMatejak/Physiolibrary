@@ -1225,9 +1225,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
               fillPattern=FillPattern.Solid,
               textString="Total(%Total)")}),
         Documentation(info="<html>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end ElementaryChargeConservationLaw;
   end Components;
 

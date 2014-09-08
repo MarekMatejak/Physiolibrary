@@ -3102,10 +3102,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type pH. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type pH.
+    </p>
     </html>"));
     connector pHOutput =           output pH "output pH as connector"
       annotation (defaultComponentName="pH",
@@ -3153,10 +3153,10 @@ package Types "Physiological units with nominals"
               extent={{-10,85},{-10,60}},
               lineColor={0,0,127},
               textString="%name")}),
-        Documentation(info="<html> 
-    <p> 
-    Connector with one input signal of type VolumeDensityOfCharge. 
-    </p> 
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type VolumeDensityOfCharge.
+    </p>
     </html>"));
     connector VolumeDensityOfChargeOutput =           output
         VolumeDensityOfCharge "output VolumeDensityOfCharge as connector"

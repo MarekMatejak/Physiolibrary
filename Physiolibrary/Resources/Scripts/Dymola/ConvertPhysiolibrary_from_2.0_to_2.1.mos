@@ -1,9 +1,0 @@
-// Convert from Physiolibrary 2.0 to Physiolibrary 2.1
-
-// clear
-convertClear();
-
-convertClass("Physiolibrary.Types.Constants.HydraulicResistanceConst","Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst")
-
-convertModifiers("Physiolibrary.Chemical.Components.GasSolubility",{"kH_T0"}  , {"kH_T0=1/%kH_T0%"}, true);
-

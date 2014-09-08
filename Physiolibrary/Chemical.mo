@@ -711,7 +711,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>",   revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),__Dymola_experimentSetupOutput);
+</html>"));
       end Allosteric_Hemoglobin_MWC;
 
       model Allosteric_Hemoglobin2_MWC
@@ -832,7 +832,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Modelica.Blocks.Math.Sum internalHeat(nin=2) "hemoglobin enthalpy heat"
           annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
-              rotation=0,
               origin={8,-90})));
         Modelica.Blocks.Math.Add add2[
                                      4] annotation (Placement(transformation(
@@ -1057,7 +1056,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p><br>In equilibrated model can be four chemical reactions removed and the results will be the same, but dynamics will change a lot. ;)</p>
 <p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
 <p><br>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
-</html>"),__Dymola_experimentSetupOutput);
+</html>"));
       end Allosteric_Hemoglobin2_MWC;
 
       model Hemoglobin_MKM_Specie "Part of model Hemoglobin_MKM_Adair"
@@ -1383,15 +1382,17 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{-75,32},{-76,32},{-76,-6},{-72,-6}},
             color={0,0,127},
             smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),
-                                   graphics), Documentation(revisions="<html>
+      annotation ( Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
+
+<p>Ref: Mateják Marek, Kulhánek Tomáa, Matouaek Stanislav. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 2014</p>
+
 <p>Parameters are chosen to fit following measurements:</p>
 <p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 <p>[2] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+
 </html>"));
       end Hemoglobin_MKM_Specie;
 
@@ -1575,7 +1576,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           T=310.15)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={-84,6})));
         Modelica.Blocks.Math.Sum internalHeat(nin=5)
           annotation (Placement(transformation(extent={{44,-62},{64,-42}})));
@@ -1593,7 +1593,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           C=2400)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={68,62})));
         Physiolibrary.Chemical.Components.Substance CO2_unbound(Simulation=
               Physiolibrary.Types.SimulationType.SteadyState, solute_start=
@@ -1815,14 +1814,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-          experiment(
+        annotation (          experiment(
             StopTime=15000,
             Tolerance=1e-014,
             __Dymola_Algorithm="Euler"),
-          __Dymola_experimentSetupOutput,
-          Documentation(info="<html>
+Documentation(info="<html>
+<p>Ref: Mateják Marek, Kulhánek Tomáa, Matouaek Stanislav. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 2014</p>
+
 <p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
 <p>Parameters are chosen to fit following measurements:</p>
 <p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
@@ -1831,7 +1829,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>", revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),Icon(coordinateSystem(extent={{-100,-100},{100,100}})));
+</html>"));
       end Hemoglobin_MKM_Adair;
 
       package Develop
@@ -1941,10 +1939,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Physiolibrary.Types.RealIO.AmountOfSubstanceOutput protonation annotation (
               Placement(transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={100,14}), iconTransformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={90,20})));
           Modelica.Blocks.Math.Sum add3(k=cat(
                 1,
@@ -2313,7 +2309,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Physiolibrary.Types.RealIO.FractionOutput          protonation annotation (
               Placement(transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={100,-40}),iconTransformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
@@ -2421,9 +2416,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{78.6,-80},{100,-80}},
               color={0,0,127},
               smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
-             Documentation(revisions="<html>
+          annotation (             Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",   info="<html>
@@ -2458,7 +2451,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={6,32})));
           Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
             q_out(conc(nominal=10^(-7.4 + 3))),
@@ -2528,14 +2520,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
-            experiment(
+          annotation (            experiment(
               StopTime=18000,
               Tolerance=1e-014,
               __Dymola_Algorithm="Euler"),
-            __Dymola_experimentSetupOutput,
-            Documentation(revisions="<html>
+Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",   info="<html>
@@ -2592,7 +2581,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={6,32})));
           Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
             q_out(conc(nominal=10^(-7.4 + 3))),
@@ -2696,11 +2684,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-20,-67},{-20,-66},{78,-66}},
               color={0,0,127},
               smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
-            experiment(StopTime=1.3),
-            __Dymola_experimentSetupOutput,
-            Documentation(revisions="<html>
+          annotation (            experiment(StopTime=1.3),
+Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",   info="<html>
@@ -2797,14 +2782,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={0,0,127},
               smooth=Smooth.None));
           annotation (
-            Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
             experiment(
               StopTime=1.1,
               Tolerance=1e-014,
               __Dymola_Algorithm="Euler"),
-            __Dymola_experimentSetupOutput,
-            Documentation(info="<html>
+Documentation(info="<html>
 <p>[1] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
 </html>"));
         end Hemoglobin_titration_shifts;
@@ -2822,7 +2804,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           solute_start=10^(-7 + 3))
                             annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={-8,12})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
@@ -2837,7 +2818,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           solute_start=10^(-7 + 3),
           isDependent=true)         annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={-8,-32})));
         Components.Substance H2O(
           q_out(conc(nominal=5.55e+4)),
@@ -2845,7 +2825,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           solute_start(displayUnit="mol") = 1/0.018,
           isDependent=true) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={-82,-12})));
         Components.ChemicalReaction waterDissociation(nP=2,
           s={2},
@@ -2856,10 +2835,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           n=3,
           Total(displayUnit="mol") = 1/0.018) "total water concentration"
           annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
-        Modelica.Blocks.Sources.Clock SID(offset=-1e-6, y(unit="mol"))
+        Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{52,74},{72,94}})));
-        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F,  y(unit="C"))
           "from elementary charge to electric charge, which is needed in system"
                                               annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -2919,10 +2898,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                  100}}), graphics),
-          __Dymola_experimentSetupOutput);
+</html>"),experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"));
       end WaterSelfIonization;
 
       model CarbonDioxideInWater "CO2 as alone acid-base buffer"
@@ -2946,7 +2922,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Simulation=Physiolibrary.Types.SimulationType.SteadyState,
           solute_start=10^(-7 + 3)) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={-8,12})));
         Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
                0.81805576878885)
@@ -2972,13 +2947,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           nS=1,
           dH(displayUnit="kJ/mol") = 14900)
           annotation (Placement(transformation(extent={{16,46},{36,66}})));
-        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F, y(unit="C"))
           "from elementary charge to to electric charge, which is needed in system"
                                               annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={80,-74})));
-        Modelica.Blocks.Sources.Clock SID(offset=-0.01, y(unit="mol"))
+        Modelica.Blocks.Sources.Clock SID(offset=-0.01)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{54,74},{74,94}})));
       equation
@@ -3060,11 +3035,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=0.02, __Dymola_Algorithm="Euler"),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                  {100,100}}),
-                          graphics),
-          __Dymola_experimentSetupOutput);
+</html>"),experiment(StopTime=0.02, __Dymola_Algorithm="Euler"));
       end CarbonDioxideInWater;
 
       model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
@@ -3077,7 +3048,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           isDependent=true) "hydrogen ions activity" annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={14,22})));
 
         Physiolibrary.SteadyStates.Components.MolarConservationLaw
@@ -3093,13 +3063,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           useTotalInput=true,
           Total=6425.92363734) "strong ion difference of solution"
           annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-        Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F,y(unit="C"))
           "from elementary charge to to electric charge, which is needed in system"
                                               annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={80,-74})));
-        Modelica.Blocks.Sources.Clock SID(offset=-0.0832, y(unit="mol"))
+        Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{54,76},{74,96}})));
 
@@ -3161,9 +3131,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             points={{69,-74},{56,-74},{56,-76}},
             color={0,0,127},
             smooth=Smooth.None));
-        annotation (                                      Diagram(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}},
-          experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+        annotation ( Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",       info="<html>
@@ -3174,8 +3142,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>"),experiment(
             StopTime=0.0235,
             __Dymola_fixedstepsize=5e-005,
-            __Dymola_Algorithm="Euler"),
-          __Dymola_experimentSetupOutput);
+            __Dymola_Algorithm="Euler"));
       end AlbuminTitration;
 
       model Phosphate
@@ -3187,7 +3154,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
           annotation (Placement(transformation(extent={{64,-20},{84,0}})));
 
-        Modelica.Blocks.Sources.Clock SID(offset=0, y(unit="mol"))
+        Modelica.Blocks.Sources.Clock SID(offset=0)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{44,74},{64,94}})));
 
@@ -3198,7 +3165,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           isDependent=true) "hydrogen ions activity" annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
-              rotation=0,
               origin={36,-12})));
 
         Physiolibrary.Chemical.Components.Substance H3PO4(
@@ -3240,7 +3206,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Charges={-1,-2,-3})
           annotation (Placement(transformation(extent={{48,-94},{68,-74}})));
 
-        Modelica.Blocks.Math.Gain toColoumn(k=Modelica.Constants.F)
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=Modelica.Constants.F,y(unit="C"))
           "from elementary charge to Coloumn" annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
@@ -3338,10 +3304,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=0.05),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),
-                          graphics));
+</html>"),experiment(StopTime=0.05));
       end Phosphate;
 
       class Develop
@@ -3355,7 +3318,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             isDependent=true) "hydrogen ions activity" annotation (Placement(
                 transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={38,40})));
 
           Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
@@ -3373,14 +3335,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             NumberOfParticles=m + n,
             Total=6425.92363734) "strong ion difference of solution"
             annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-          Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
+          Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F,y(unit="C"))
             "from elementary charge to to electric charge, which is needed in system"
                                                 annotation (Placement(transformation(
                 extent={{-8,-8},{8,8}},
                 rotation=180,
                 origin={78,-70})));
-          Modelica.Blocks.Sources.Clock SID_less_Cl(offset=-0.0832, y(unit=
-                  "mol"))
+          Modelica.Blocks.Sources.Clock SID_less_Cl(offset=-0.0832)
             "strong ions difference without chloride with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{68,-42},{88,-22}})));
 
@@ -3401,7 +3362,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
           Physiolibrary.Chemical.Components.Substance A[n](
             each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            isDependent=true,
+            each isDependent=true,
             each solute_start=0.00033) "deprotonated acid groups"
             annotation (Placement(transformation(extent={{-10,14},{10,34}})));
           Physiolibrary.Chemical.Components.ChemicalReaction react[n](
@@ -3532,9 +3493,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{86,42},{86,10},{54,10},{54,-64},{34,-64},{34,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
-          annotation (                                      Diagram(coordinateSystem(
-                  preserveAspectRatio=false, extent={{-100,-100},{100,100}},
-            experiment(StopTime=4)), graphics), Documentation(revisions="<html>
+          annotation ( Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",         info="<html>
@@ -3545,21 +3504,19 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </html>"),  experiment(
               StopTime=0.0235,
               __Dymola_fixedstepsize=5e-005,
-              __Dymola_Algorithm="Euler"),
-            __Dymola_experimentSetupOutput);
+              __Dymola_Algorithm="Euler"));
         end PlasmaAcidBase;
 
         model ErythrocyteAcidBase
-          parameter Boolean isDependent[3] = {false,false,false};
+          parameter Boolean isDependent[4] = {false,false,false,false};
 
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
             Simulation=Physiolibrary.Types.SimulationType.SteadyState,
             solute_start=10^(-7.4 + 3),
-            isDependent=true) "hydrogen ions activity" annotation (Placement(
+            isDependent=isDependent[4]) "hydrogen ions activity" annotation (Placement(
                 transformation(
                 extent={{-10,-10},{10,10}},
-                rotation=0,
                 origin={-12,36})));
           Components.ChemicalReaction HendersonHasselbalch(
             nP=2,
@@ -3579,22 +3536,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
               isDependent=isDependent[3]) "chloride anion"
             annotation (Placement(transformation(extent={{76,82},{96,102}})));
-          Modelica.Blocks.Math.Gain toColoumn(k=-Modelica.Constants.F)
-            "from elementary charge to to electric charge, which is needed in system"
-                                                annotation (Placement(transformation(
-                extent={{-8,-8},{8,8}},
-                rotation=180,
-                origin={68,-66})));
-          SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
-            useTotalInput=true,
-            NumberOfParticles=n + 3,
-            Charges=-cat(
-                1,
-                {1,1,2},
-                ones(n)),
-            Total=6425.92363734) "strong ion difference of solution"
-            annotation (Placement(transformation(extent={{36,-90},{56,-70}})));
         equation
           connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
               points={{-40,55.5},{-30,55.5},{-30,80},{-12,80}},
@@ -3627,12 +3568,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          connect(toColoumn.y,electroneutrality. total) annotation (Line(
-              points={{59.2,-66},{46,-66},{46,-72}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}),      graphics));
         end ErythrocyteAcidBase;
 
         model BloodAcidBase
@@ -3640,7 +3575,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             annotation (Placement(transformation(extent={{-34,-6},{-14,14}})));
           Develop.ErythrocyteAcidBase erythrocyteAcidBase
             annotation (Placement(transformation(extent={{56,-6},{76,14}})));
-          Components.Membrane membrane
+          Components.Membrane membrane(NumberOfParticles=3)
             annotation (Placement(transformation(extent={{14,2},{34,22}})));
         equation
           connect(plasmaAcidBase.substances, membrane.particlesInside)
@@ -3651,12 +3586,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               smooth=Smooth.None));
           connect(membrane.particlesOutside, erythrocyteAcidBase.substances)
             annotation (Line(
-              points={{34,12},{46,12},{46,12},{58,12}},
+              points={{34,12},{58,12}},
               color={107,45,134},
               thickness=1,
               smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
-                    {{-100,-100},{100,100}}), graphics));
         end BloodAcidBase;
       end Develop;
     end AcidBase;
@@ -3723,9 +3656,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end Substance;
 
     model ChemicalReaction "Chemical Reaction"
@@ -4353,11 +4284,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p>Enthalpy of each subunit species can be presented as <b>subunitEnthalpies[:]</b>. Then the total enthalpy of the chemical system can be calculated by equation:</p>
 <p> <b> systemEnthalpy = sum(subunitEnthalpies[i] * totalSubunitAmount[i]) / totalSubsystemAmount</b></p>
 <p>And the stored heat as enthalpy is <b>systemEnthalpy*totalSubsystemAmount.</b></p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics),
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
+</html>"));
     end Speciation;
 
     model Dilution "Adding/removing of the solvent to/from running solution"
@@ -4488,9 +4415,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
       parameter Integer NumberOfParticles = 1
         "Number of penetrating particle types";
-      parameter Integer Charges[NumberOfParticles] = {0}
+      parameter Integer Charges[NumberOfParticles] = zeros(NumberOfParticles)
         "Elementary charges of particles";
-      parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = {0}
+      parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
         "Permeabilities of particles through membrane chanel";
 
       parameter Boolean usePermeabilityInput = false
@@ -4562,8 +4489,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
        kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
        lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
 
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics), Documentation(info="<html>
+      annotation ( Documentation(info="<html>
 <p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
 <p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium. The permeabilities of particles are used only in dynamic simulation with non-zero fluxes. If zero-flow Donnan&apos;s equilibrium is reached, it is independent on the permeabilities. </p>
 <p>This class can be used for glomerular membrane, open(leak) channels (pores) of cellular (or any lipid bilayer) membrane, chloride schift, ...</p>
@@ -4688,9 +4614,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
               lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end IncrementalFlowConcentrationMeasure;
   end Sensors;
 
@@ -4934,9 +4858,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
               lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end UnlimitedSolutePumpOut;
   end Sources;
 
@@ -5029,8 +4951,6 @@ Connector with one flow signal of type Real.
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
       q_in.q + q_out.q = 0;
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics));
     end OnePort;
 
     partial model ConditionalHeatPort

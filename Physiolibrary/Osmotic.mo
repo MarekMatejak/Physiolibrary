@@ -145,11 +145,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       Hydraulic.Sensors.PressureMeasure pressureMeasure2
         annotation (Placement(transformation(extent={{62,-22},{42,-2}})));
     equation
-      connect(flowMeasure.actualFlow, choroid_plexus_hydraulic.solutionFlow)
-        annotation (Line(
-          points={{8,-2},{8,-18}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(CSF_hydraulic.q_in, pressureMeasure.q_in) annotation (Line(
           points={{-86,-22},{-86,68},{-84,68}},
           color={0,0,0},
@@ -182,11 +177,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pressureMeasure.actualPressure, arachnoid_villi.hydraulicPressureIn)
-        annotation (Line(
-          points={{-74,70},{-34,70},{-34,64}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(arachnoid_villi.q_out, flowMeasure1.q_in) annotation (Line(
           points={{-16,56},{-2,56}},
           color={127,127,0},
@@ -196,11 +186,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           points={{18,56},{32,56},{32,32},{36,32}},
           color={127,127,0},
           thickness=1,
-          smooth=Smooth.None));
-      connect(flowMeasure1.actualFlow, arachnoid_villi_hydraulic.solutionFlow)
-        annotation (Line(
-          points={{8,62},{8,82}},
-          color={0,0,127},
           smooth=Smooth.None));
       connect(conductor.q_out, choroidPlexusCapilaries.q_in) annotation (Line(
           points={{96,-10},{96,-22},{66,-22}},
@@ -233,11 +218,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pressureMeasure1.actualPressure, arachnoid_villi.hydraulicPressureOut)
-        annotation (Line(
-          points={{52,70},{-18,70},{-18,64}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(choroidPlexusCapilaries.q_in, pressureMeasure2.q_in) annotation (
           Line(
           points={{66,-22},{56,-22},{56,-18}},
@@ -254,14 +234,34 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pressureMeasure.actualPressure, choroid_plexus.hydraulicPressureOut)
-        annotation (Line(
-          points={{-74,70},{-42,70},{-42,20},{-34,20},{-34,12}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(pressureMeasure2.actualPressure, choroid_plexus.hydraulicPressureIn)
+      connect(pressureMeasure2.pressure, choroid_plexus.hydraulicPressureIn)
         annotation (Line(
           points={{46,-16},{28,-16},{28,20},{-18,20},{-18,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure1.pressure, arachnoid_villi.hydraulicPressureOut)
+        annotation (Line(
+          points={{52,70},{-18,70},{-18,64}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure.pressure, arachnoid_villi.hydraulicPressureIn)
+        annotation (Line(
+          points={{-74,70},{-34,70},{-34,64}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(pressureMeasure.pressure, choroid_plexus.hydraulicPressureOut)
+        annotation (Line(
+          points={{-74,70},{-52,70},{-52,28},{-34,28},{-34,12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(flowMeasure1.volumeFlowRate, arachnoid_villi_hydraulic.solutionFlow)
+        annotation (Line(
+          points={{8,62},{8,82}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(flowMeasure.volumeFlowRate, choroid_plexus_hydraulic.solutionFlow)
+        annotation (Line(
+          points={{8,-2},{8,-18}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

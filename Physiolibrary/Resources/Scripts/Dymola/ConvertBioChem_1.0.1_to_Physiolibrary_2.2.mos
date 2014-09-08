@@ -1,4 +1,4 @@
-// Convert from BioChem 1.0.1 to Physiolibrary 2.1
+// Convert from BioChem 1.0.1 to Physiolibrary 2.2
 
 // clear
 convertClear();
@@ -64,6 +64,7 @@ convertClass("BioChem.Substances.Substance","Physiolibrary.Chemical.Components.S
 convertElement("BioChem.Substances.Substance","n1","q_out")
 convertElement("BioChem.Substances.Substance","c.start","solute_start")
 convertModifiers("BioChem.Substances.Substance",{"c.start"},{"solute_start=%c.start%"}, true);
+convertElement("BioChem.Substances.Substance","solventVolume","solutionVolume");
 
 convertClass("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","Physiolibrary.Chemical.Components.ChemicalReaction")
 convertElement("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","k1","kf")

@@ -1,4 +1,4 @@
-// Convert from Physiolibrary 1.0 to Physiolibrary 2.1
+// Convert from Physiolibrary 1.1 to Physiolibrary 2.2
 
 // clear
 convertClear();
@@ -8,12 +8,17 @@ convertClear();
 
 convertClass("Physiolibrary.Chemical.Substance","Physiolibrary.Chemical.Components.Substance")
 convertModifiers("Physiolibrary.Chemical.Substance", fill("",0)  , {"useNormalizedVolume=false"}, true);
+convertElement("Physiolibrary.Chemical.Substance","solventVolume","solutionVolume");
 convertClass("Physiolibrary.Chemical.NormalizedSubstance","Physiolibrary.Chemical.Components.Substance")
+convertElement("Physiolibrary.Chemical.NormalizedSubstance","solventVolume","solutionVolume");
 convertClass("Physiolibrary.Chemical.ChemicalReaction","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("Physiolibrary.Chemical.ChemicalReaction","solventVolume","solutionVolume");
 convertClass("Physiolibrary.Chemical.ChemicalReaction2","Physiolibrary.Chemical.Components.ChemicalReaction")
 convertModifiers("Physiolibrary.Chemical.ChemicalReaction2", fill("",0)  , {"useHeatPort=true"}, true);
+convertElement("Physiolibrary.Chemical.ChemicalReaction2","solventVolume","solutionVolume");
 convertClass("Physiolibrary.Chemical.ChemicalReaction3","Physiolibrary.Chemical.Components.ChemicalReaction")
 convertModifiers("Physiolibrary.Chemical.ChemicalReaction3", fill("",0)  , {"useHeatPort=true","useDissociationConstantInput=true"}, true);
+convertElement("Physiolibrary.Chemical.ChemicalReaction3","solventVolume","solutionVolume");
 convertElement("Physiolibrary.Chemical.ChemicalReaction3","K","dissociationConstant")
 convertClass("Physiolibrary.Chemical.Diffusion","Physiolibrary.Chemical.Components.Diffusion")
 convertClass("Physiolibrary.Chemical.GasSolubility","Physiolibrary.Chemical.Components.GasSolubility")
@@ -22,34 +27,40 @@ convertClass("Physiolibrary.Chemical.GasSolubility2","Physiolibrary.Chemical.Com
 convertModifiers("Physiolibrary.Chemical.GasSolubility2", fill("",0)  , {"useHeatPort=true"}, true);
 convertModifiers("Physiolibrary.Chemical.GasSolubility2",{"kH_T0"}  , {"kH_T0=1/%kH_T0%","useHeatPort=true"}, true);
 convertClass("Physiolibrary.Chemical.Degradation","Physiolibrary.Chemical.Components.Degradation")
-convertModifiers("Physiolibrary.Chemical.Components.Degradation", fill("",0)  , {"useNormalizedVolume=false"}, true);
-convertElement("Physiolibrary.Chemical.Components.Degradation","volume","solventVolume")
+convertModifiers("Physiolibrary.Chemical.Degradation", fill("",0)  , {"useNormalizedVolume=false"}, true);
+convertElement("Physiolibrary.Chemical.Degradation","volume","solutionVolume")
 convertClass("Physiolibrary.Chemical.Clearance","Physiolibrary.Chemical.Components.Clearance")
+convertElement("Physiolibrary.Chemical.Clearance","useSolventFlow","useSolutionFlowInput");
+convertElement("Physiolibrary.Chemical.Clearance","solventFlow","solutionFlow");
 convertClass("Physiolibrary.Chemical.Clearance2","Physiolibrary.Chemical.Components.Clearance")
 convertModifiers("Physiolibrary.Chemical.Clearance2", fill("",0)  , {"useSolventFlow=true"}, true);
+convertElement("Physiolibrary.Chemical.Clearance2","useSolventFlow","useSolutionFlowInput");
+convertElement("Physiolibrary.Chemical.Clearance2","solventFlow","solutionFlow");
+
 convertClass("Physiolibrary.Chemical.MolarStream","Physiolibrary.Chemical.Components.Stream")
 convertModifiers("Physiolibrary.Chemical.MolarStream", fill("",0)  , {"useSolutionFlowInput=true"}, true);
 convertElement("Physiolibrary.Chemical.MolarStream","solventFlow","solutionFlow")
 convertClass("Physiolibrary.Chemical.SoluteFlowPump","Physiolibrary.Chemical.Components.SolutePump")
-convertModifiers("Physiolibrary.Chemical.Components.SoluteFlowPump", fill("",0)  , {"useSoluteFlowInput=true"}, true);
-convertClass("Physiolibrary.Chemical.Examples.Speciation.SubunitSpeciation","Physiolibrary.Chemical.Components.Speciation")
+convertModifiers("Physiolibrary.Chemical.SoluteFlowPump", fill("",0)  , {"useSoluteFlowInput=true"}, true);
 convertClass("Physiolibrary.Chemical.Dilution","Physiolibrary.Chemical.Components.Dilution")
-convertModifiers("Physiolibrary.Chemical.Components.Dilution", fill("",0)  , {"useDilutionInput=true"}, true);
-convertClass(  "Physiolibrary.Chemical.Reabsorbtion","Physiolibrary.Chemical.Components.Reabsorption")
-convertElement("Physiolibrary.Chemical.Reabsorbtion","ReabsorbedFract","baseReabsorption")
-convertElement("Physiolibrary.Chemical.Reabsorbtion","Effects","Effect")
-convertElement("Physiolibrary.Chemical.Reabsorbtion","Reabsorbtion","Reabsorption")
-convertClass(    "Physiolibrary.Chemical.Reabsorbtion2","Physiolibrary.Chemical.Components.Reabsorption")
-convertModifiers("Physiolibrary.Chemical.Reabsorbtion2", fill("",0) , {"useEffect=true","useBaseReabsorption=true","useMaxReabInput=true"}, true);
-convertElement(  "Physiolibrary.Chemical.Reabsorbtion2","Normal","baseReabsorption")
-convertElement("Physiolibrary.Chemical.Reabsorbtion2","Reabsorbtion","Reabsorption")
-convertClass("Physiolibrary.Chemical.FullReabsorbtion","Physiolibrary.Chemical.Components.Reabsorption")
-convertElement("Physiolibrary.Chemical.FullReabsorbtion","MaxReab","MaxReabsorption")
-convertElement("Physiolibrary.Chemical.FullReabsorbtion","Reabsorbtion","Reabsorption")
+convertModifiers("Physiolibrary.Chemical.Dilution", fill("",0)  , {"useDilutionInput=true"}, true);
+convertClass(  "Physiolibrary.Chemical.Reabsorption","Physiolibrary.Chemical.Components.Reabsorption")
+convertElement("Physiolibrary.Chemical.Reabsorption","ReabsorbedFract","baseReabsorption")
+convertElement("Physiolibrary.Chemical.Reabsorption","Effects","Effect")
+convertClass(    "Physiolibrary.Chemical.Reabsorption2","Physiolibrary.Chemical.Components.Reabsorption")
+convertModifiers("Physiolibrary.Chemical.Reabsorption2", fill("",0) , {"useEffect=true","useBaseReabsorption=true","useMaxReabInput=true"}, true);
+convertElement(  "Physiolibrary.Chemical.Reabsorption2","Normal","baseReabsorption")
+convertClass("Physiolibrary.Chemical.FullReabsorption","Physiolibrary.Chemical.Components.Reabsorption")
+convertElement("Physiolibrary.Chemical.FullReabsorption","MaxReab","MaxReabsorption")
 
 convertClass("Physiolibrary.Chemical.ConcentrationMeasure","Physiolibrary.Chemical.Sensors.ConcentrationMeasure")
-convertClass("Physiolibrary.Chemical.FlowConcentrationMeasure","Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure")
+convertElement("Physiolibrary.Chemical.ConcentrationMeasure","actualConc","concentration");
+convertClass("Physiolibrary.Chemical.FlowConcentrationMeasure","Physiolibrary.Chemical.Sensors.IncrementalFlowConcentrationMeasure")
+convertElement("Physiolibrary.Chemical.FlowConcentrationMeasure","solventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.FlowConcentrationMeasure","SolventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.FlowConcentrationMeasure","Conc","concentration");
 convertClass("Physiolibrary.Chemical.FlowMeasure","Physiolibrary.Chemical.Sensors.MolarFlowMeasure")
+convertElement("Physiolibrary.Chemical.FlowMeasure","actualFlow","molarFlowRate");
 
 
 convertClass("Physiolibrary.Chemical.MolarInflux","Physiolibrary.Chemical.Sources.UnlimitedSolutePump")
@@ -68,12 +79,12 @@ convertClass("Physiolibrary.Hydraulic.Resistor","Physiolibrary.Hydraulic.Compone
 convertElement("Physiolibrary.Hydraulic.Resistor","cond","Conductance")
 convertClass("Physiolibrary.Hydraulic.Resistor2","Physiolibrary.Hydraulic.Components.Conductor")
 convertModifiers("Physiolibrary.Hydraulic.Resistor2", fill("",0)  , {"useConductanceInput=true"}, true);
-convertClass("Physiolibrary.Hydraulic.ElacticBalloon","Physiolibrary.Hydraulic.Components.ElasticVessel")
-convertElement("Physiolibrary.Hydraulic.ElacticBalloon","zeroPressureVolume","ZeroPressureVolume")
-convertElement("Physiolibrary.Hydraulic.ElacticBalloon","compliance","Compliance")
-convertElement("Physiolibrary.Hydraulic.ElacticBalloon","externalPressure","ExternalPressure")
-convertClass("Physiolibrary.Hydraulic.ElacticBalloon2","Physiolibrary.Hydraulic.Components.ElasticVessel")
-convertModifiers("Physiolibrary.Hydraulic.ElacticBalloon2", fill("",0)  , {"useV0Input=true","useComplianceInput=true","useExternalPressureInput=true"}, true);
+convertClass("Physiolibrary.Hydraulic.ElasticBalloon","Physiolibrary.Hydraulic.Components.ElasticVessel")
+convertElement("Physiolibrary.Hydraulic.ElasticBalloon","zeroPressureVolume","ZeroPressureVolume")
+convertElement("Physiolibrary.Hydraulic.ElasticBalloon","compliance","Compliance")
+convertElement("Physiolibrary.Hydraulic.ElasticBalloon","externalPressure","ExternalPressure")
+convertClass("Physiolibrary.Hydraulic.ElasticBalloon2","Physiolibrary.Hydraulic.Components.ElasticVessel")
+convertModifiers("Physiolibrary.Hydraulic.ElasticBalloon2", fill("",0)  , {"useV0Input=true","useComplianceInput=true","useExternalPressureInput=true"}, true);
 convertClass("Physiolibrary.Hydraulic.Pump","Physiolibrary.Hydraulic.Components.Pump")
 convertModifiers("Physiolibrary.Hydraulic.Pump", fill("",0)  , {"useSolutionFlowInput=true"}, true);
 convertElement("Physiolibrary.Hydraulic.Pump","desiredFlow","solutionFlow")
@@ -86,16 +97,15 @@ convertClass("Physiolibrary.Hydraulic.HydrostaticWithPumpEffect","Physiolibrary.
 convertModifiers("Physiolibrary.Hydraulic.HydrostaticWithPumpEffect", fill("",0)  , {"useHeightInput=true","useExternalG=true","usePumpEffect=true"}, true);
 convertClass("Physiolibrary.Hydraulic.InternalElasticBalloon","Physiolibrary.Hydraulic.Components.ElasticMembrane")
 convertClass("Physiolibrary.Hydraulic.Inertia","Physiolibrary.Hydraulic.Components.Inertia")
-convertClass("Physiolibrary.Hydraulic.Reabsorbtion","Physiolibrary.Hydraulic.Components.Reabsorption")
-convertElement("Physiolibrary.Hydraulic.Reabsorbtion","Reabsorbtion","Reabsorption")
-convertClass("Physiolibrary.Hydraulic.Reabsorbtion2","Physiolibrary.Hydraulic.Components.Reabsorption")
-convertModifiers("Physiolibrary.Hydraulic.Reabsorbtion2", fill("",0)  , {"useExternalOutflowMin=true"}, true);
-convertElement("Physiolibrary.Hydraulic.Reabsorbtion2","OutflowMin","outflowMin")
-convertElement("Physiolibrary.Hydraulic.Reabsorbtion2","Reabsorbtion","Reabsorption")
-convertElement("Physiolibrary.Hydraulic.Reabsorbtion2","reabsorbtion","reabsorption")
+convertClass("Physiolibrary.Hydraulic.Reabsorption","Physiolibrary.Hydraulic.Components.Reabsorption")
+convertClass("Physiolibrary.Hydraulic.Reabsorption2","Physiolibrary.Hydraulic.Components.Reabsorption")
+convertModifiers("Physiolibrary.Hydraulic.Reabsorption2", fill("",0)  , {"useExternalOutflowMin=true"}, true);
+convertElement("Physiolibrary.Hydraulic.Reabsorption2","OutflowMin","outflowMin")
 
 convertClass("Physiolibrary.Hydraulic.FlowMeasure","Physiolibrary.Hydraulic.Sensors.FlowMeasure")
+convertElement("Physiolibrary.Hydraulic.FlowMeasure","actualFlow","volumeFlow");
 convertClass("Physiolibrary.Hydraulic.PressureMeasure","Physiolibrary.Hydraulic.Sensors.PressureMeasure")
+convertElement("Physiolibrary.Hydraulic.PressureMeasure","actualPressure","pressure");
 
 convertClass("Physiolibrary.Hydraulic.InputPump","Physiolibrary.Hydraulic.Sources.UnlimitedPump")
 convertModifiers("Physiolibrary.Hydraulic.InputPump", fill("",0)  , {"useSolutionFlowInput=true"}, true);
@@ -116,6 +126,8 @@ convertClass("Physiolibrary.Hydraulic.OnePort","Physiolibrary.Hydraulic.Interfac
 
 convertClass("Physiolibrary.Thermal.UnlimitedHeat","Physiolibrary.Thermal.Sources.UnlimitedHeat")
 convertElement("Physiolibrary.Thermal.UnlimitedHeat","Temperature","T")
+convertElement("Physiolibrary.Thermal.UnlimitedHeat","q_in","port");
+
 convertClass("Physiolibrary.Thermal.HeatInflux","Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow")
 convertElement("Physiolibrary.Thermal.HeatInflux","desiredFlow_","Q_flow")
 convertElement("Physiolibrary.Thermal.HeatInflux","q_out","port")
@@ -128,7 +140,7 @@ convertClass("Physiolibrary.Thermal.HeatStream","Physiolibrary.Thermal.Component
 convertModifiers("Physiolibrary.Thermal.HeatStream", fill("",0)  , {"useMassFlowInput=true"}, true);
 convertElement("Physiolibrary.Thermal.HeatStream","substanceFlow","massFlow")
 convertElement({"Physiolibrary.Thermal.HeatStream"},"specificHeat_","SpecificHeat")
-convertClass("Physiolibrary.Thermal.HeatOutstream","Physiolibrary.Thermal.Components.HeatOutstream")
+convertClass("Physiolibrary.Thermal.HeatOutstream","Physiolibrary.Thermal.Sources.MassOutflow")
 convertModifiers("Physiolibrary.Thermal.HeatOutstream", fill("",0)  , {"useMassFlowInput=true"}, true);
 convertElement("Physiolibrary.Thermal.HeatOutstream","liquidOutflow_","massFlow")
 convertElement({"Physiolibrary.Thermal.HeatOutStream"},"specificHeat_","SpecificHeat")
@@ -149,7 +161,6 @@ convertElement({"Physiolibrary.Thermal.HeatAccumulation"},"T_","T")
 convertElement({"Physiolibrary.Thermal.HeatAccumulation0"},"weight","Weight")
 
 convertClass("Physiolibrary.Thermal.HeatFlowConnector","Physiolibrary.Thermal.Interfaces.HeatPort")
-convertElement("Physiolibrary.Thermal.HeatFlowConnector","q","Q_flow")
 convertClass("Physiolibrary.Thermal.PositiveHeatFlow","Physiolibrary.Thermal.Interfaces.HeatPort_a")
 convertClass("Physiolibrary.Thermal.NegativeHeatFlow","Physiolibrary.Thermal.Interfaces.HeatPort_b")
 convertClass("Physiolibrary.Thermal.OnePort","Physiolibrary.Thermal.Interfaces.OnePort")
@@ -171,6 +182,8 @@ convertModifiers("Physiolibrary.Osmotic.SolventFlux", fill("",0)  , {"useSolutio
 convertElement("Physiolibrary.Osmotic.SolventFlux","desiredFlow","solutionFlow")
 
 convertClass("Physiolibrary.Osmotic.FlowMeasure","Physiolibrary.Osmotic.Sensors.FlowMeasure")
+convertElement("Physiolibrary.Osmotic.FlowMeasure","actualFlow","volumeFlowRate");
+
 
 convertClass("Physiolibrary.Osmotic.SolventInflux","Physiolibrary.Osmotic.Sources.SolventInflux")
 convertModifiers("Physiolibrary.Osmotic.Sources.SolventInflux", fill("",0)  , {"useSolutionFlowInput=true"}, true);
@@ -193,19 +206,8 @@ convertClass("Physiolibrary.States.State","Physiolibrary.SteadyStates.Interfaces
 convertClass("Physiolibrary.States.StateSystem","Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem")
 
 
-convertClass("Physiolibrary.States.Examples.SimpleAddaptation_NoInit","Physiolibrary.SteadyStates.Examples.SimpleAdaptation_NoInit")
-convertClass("Physiolibrary.States.Examples.SimpleAddaptation_InitSteadyState","Physiolibrary.SteadyStates.Examples.SimpleAdaptation_InitSteadyState")
-convertClass("Physiolibrary.States.Examples.SimpleAddaptation_InitialInput","Physiolibrary.SteadyStates.Examples.SimpleAdaptation_InitialInput")
-convertClass("Physiolibrary.States.Examples.SimpleAddaptation_Equilibrated","Physiolibrary.SteadyStates.Examples.SimpleAdaptation_Equilibrated")
-
-
 // Icons
 
-convertClass("Physiolibrary.Icons.Reabsorbtion","Physiolibrary.Icons.Reabsorption")
-convertClass("Physiolibrary.Icons.Reabsorbtion2","Physiolibrary.Icons.Reabsorption2")
-
-convertClass("Physiolibrary.Icons.MidleTorso","Physiolibrary.Icons.MiddleTorso")
-convertClass("Physiolibrary.Icons.Carbondioxyd","Physiolibrary.Icons.CarbonDioxide")
 
 convertClass("Physiolibrary.Icons.ConcentrationCompartment","Physiolibrary.Icons.Substance")
 convertClass("Physiolibrary.Icons.FractionalConcentration","Physiolibrary.Icons.Speciation")
@@ -219,14 +221,6 @@ convertElement("Physiolibrary.States.SimulationType","Equilibrated","SteadyState
 convertElement("Physiolibrary.States.SimulationType","InitialInput","ReadInit")
 
 convertClass("Physiolibrary.FileUtilities","Physiolibrary.Types.FileUtilities")
-convertClass("Physiolibrary.FileUtilities.readInputReal","Physiolibrary.Types.FileUtilities.readReal")
-convertClass("Physiolibrary.FileUtilities.readInputBoolean","Physiolibrary.Types.FileUtilities.readBoolean")
-convertClass("Physiolibrary.FileUtilities.writeComparation","Physiolibrary.Types.FileUtilities.writeComparison")
-convertClass("Physiolibrary.FileUtilities.writeBooleanComparation","Physiolibrary.Types.FileUtilities.writeBooleanComparison")
-convertClass("Physiolibrary.Types.Utilities.readInputReal","Physiolibrary.Types.Utilities.readReal")
-convertClass("Physiolibrary.Types.Utilities.readInputBoolean","Physiolibrary.Types.Utilities.readBoolean")
-convertClass("Physiolibrary.Types.Utilities.writeComparation","Physiolibrary.Types.Utilities.writeComparison")
-convertClass("Physiolibrary.Types.Utilities.writeBooleanComparation","Physiolibrary.Types.Utilities.writeBooleanComparison")
 
 
 // Blocks
@@ -237,7 +231,7 @@ convertModifiers("Physiolibrary.Blocks.Math.Pow2", fill("",0)  , {"useBaseInput=
 convertClass("Physiolibrary.Blocks.Math.MultiProduct","Modelica.Blocks.Math.MultiProduct")
 
 convertClass("Physiolibrary.Blocks.Curves","Physiolibrary.Blocks.Interpolation")
-convertClass("Physiolibrary.Blocks.Curves.SplineCoeficient","Physiolibrary.Blocks.Interpolation.SplineCoefficient")
+convertClass("Physiolibrary.Blocks.Curves.SplineCoefficient","Physiolibrary.Blocks.Interpolation.SplineCoefficient")
 
 convertClass("Physiolibrary.Blocks.Factors.Effect","Physiolibrary.Blocks.Factors.Normalization")
 convertClass("Physiolibrary.Blocks.Factors.Input2Effect","Physiolibrary.Blocks.Factors.Spline")

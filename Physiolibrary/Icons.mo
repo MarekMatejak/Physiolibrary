@@ -154,16 +154,14 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
               {100,100}}),        graphics={Bitmap(extent={{-96,100},{24,-100}},
-              fileName="modelica://Physiolibrary/Resources/Icons/srdceLeva.png")}), Diagram(
-          coordinateSystem(extent={{-100,-100},{100,100}})));
+              fileName="modelica://Physiolibrary/Resources/Icons/srdceLeva.png")}));
   end LeftHeart;
 
   model RightHeart
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
               {100,100}}),       graphics={Bitmap(extent={{-26,66},{92,-100}},
-              fileName="modelica://Physiolibrary/Resources/Icons/srdceprava.png")}), Diagram(
-          coordinateSystem(extent={{-100,-100},{100,100}})));
+              fileName="modelica://Physiolibrary/Resources/Icons/srdceprava.png")}));
   end RightHeart;
 
   model Liver
