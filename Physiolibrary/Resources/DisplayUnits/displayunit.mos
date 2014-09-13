@@ -38,6 +38,7 @@ defineUnitConversion("mol/m3", "U_ADH/l", 1e-3/2.305e-9 );
 //1 GU (Goldblatt unit for Renin activity) = 1 ng AI/hr (ng of AngionensinI per hour) = 6.7 ng (active renin 48kDa) = 0.14 pmol  (0.0112 IU/GU, 48kDa)
 defineUnitConversion("mol", "GU_PRA", 1/0.14e-12 );
 defineUnitConversion("mol/m3", "GU_PRA/l", 1e-3/0.14e-12 );
+defineUnitConversion("mol/s", "GU_PRA/min", 60/0.14e-12 );
 //1 IU (Renin) = 0.6 ug = 12.5 pmol   (Simon, D., et al. "Two-site direct immunoassay specific for active renin." Clinical chemistry 38.10 (1992): 1959-1962.)
 defineUnitConversion("mol", "U_Renin", 1/12.5e-12 );
 defineUnitConversion("mol/m3", "U_Renin/l", 1e-3/12.5e-12 );
@@ -149,6 +150,8 @@ defineUnitConversion("s", "h", 1/3600);
 defineUnitConversion("s", "d", 1/86400);
 defineUnitConversion("Hz", "1/s", 1);
 defineUnitConversion("Hz", "1/min", 60);
+defineUnitConversion("Hz", "1/h", 60*60);
+defineUnitConversion("Hz", "1/d", 60*60*24);
 
 // Angle
 defineUnitConversion("rad", "deg", 180/3.14159265358979323846);

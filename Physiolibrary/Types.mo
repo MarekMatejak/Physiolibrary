@@ -3630,6 +3630,8 @@ constructed by the signals connected to this bus.
                              //getInstanceName()
     parameter String storeUnit="" "Stored units"
     annotation (Dialog(group="Value I/O",tab="IO"));
+    parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
+      "Unit conversions";
   end AbstractReal;
 
   package RealTypes
@@ -4289,7 +4291,7 @@ The Real output y is a constant signal:
         end Parameter;
 
         block InputParameter "Generate constant signal from file"
-          extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit));
+          extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit, unitConversions));
 
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
             redeclare type Type = T)
@@ -4362,7 +4364,7 @@ The Real output y is a constant signal:
         end InputParameter_SI;
 
         block OutputFinal "Save variable to Output"
-      import Physiolibrary;
+          import Physiolibrary;
           extends Physiolibrary.Types.AbstractReal;
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
                                             redeclare type Type=T);
@@ -4377,7 +4379,8 @@ The Real output y is a constant signal:
             Utilities.writeReal(
               varName,
               y,
-              storeUnit);
+              storeUnit,
+              unitConversions);
           end when;
           annotation (
             Icon(coordinateSystem(
@@ -4441,9 +4444,9 @@ The Real output y is a constant signal:
         end OutputFinal_SI;
 
         block OutputComparison "Save variable comparison to file"
-      import Physiolibrary;
+          import Physiolibrary;
           extends Physiolibrary.Types.AbstractReal(
-                                                  k=Utilities.readReal(varName,storeUnit));
+                                                  k=Utilities.readReal(varName,storeUnit,unitConversions));
           replaceable package IO = Physiolibrary.Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Physiolibrary.Types.FilesUtilities
@@ -4466,7 +4469,8 @@ The Real output y is a constant signal:
             k,
             initialValue,
             y,
-            storeUnit);
+            storeUnit,
+            unitConversions);
           end when;
 
             annotation (
@@ -4696,7 +4700,7 @@ The Real output y is a constant signal:
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
       else
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
 
       //Format "<variableName>\n<value> <unit>"
       (line, endOfFile) :=Streams.readLine(fn, iline);
@@ -4734,29 +4738,22 @@ other wariant: //Format "<variableName>=<value><unit>"
 
                nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
                if nextIndex>lineLen then
-              if Strings.length(Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-                  typeDef].DisplayUnit) > 0 then
+              if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
                 Streams.error("No units detected for variable '" + name +
-                  "' in file '" + fn + "'. Expected unis are '" + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-                  typeDef].DisplayUnit + "'!\n");
+                  "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
                  end if;
              //    Streams.print(name + "\t " + String(inputValue) + " (no units)");
                else
                  str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-              if str <> Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-                  typeDef].DisplayUnit then
+              if str <> unitConversions[typeDef].DisplayUnit then
                 Streams.error("Units '" + str + "' not expected for variable '"
                    + name + "' in file '" + fn + "'. Expected unis are '" +
-                  Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-                  typeDef].DisplayUnit + "'!\n");
+                  unitConversions[typeDef].DisplayUnit + "'!\n");
                  end if;
               //   Streams.print(name + "\t " + String(inputValue) + " " + str);
                end if;
-               value :=inputValue*Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-              typeDef].Scale + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-              typeDef].Offset;
-             //  Streams.print("\t\t =" + String(value) + " " + Physiolibrary.Types.FilesUtilities.UnitDerivations.RealTypeDef[
-              //typeDef].Unit);
+               value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
+             //  Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
                found := true;
             // end if;  //Format "<variableName>=<value><unit>"
 
@@ -4845,12 +4842,10 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
 
-      Streams.print(name + "\n" + String(((value - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Scale)) + " " + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].DisplayUnit, fn);
+      Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
+      + " " + unitConversions[typeDef].DisplayUnit, fn);
 
     end writeReal;
 
@@ -4913,26 +4908,20 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit);
+      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
 
-    outputDefaultValue :=((defaultValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Scale);
-    outputInitialValue :=((initialValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Scale);
-    outputFinalValue :=((finalValue - Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Offset)/Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
-        typeDef].Scale);
+    outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputFinalValue :=((finalValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
 
       Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
          then String(abs((outputFinalValue - outputDefaultValue)/
         outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
         " ; " + name + " : default=" + String(outputDefaultValue) + " " +
-        Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[typeDef].DisplayUnit
-         + ", initial=" + String(outputInitialValue) + " " + Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[
+        unitConversions[typeDef].DisplayUnit
+         + ", initial=" + String(outputInitialValue) + " " + unitConversions[
         typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
-        Physiolibrary.Types.Utilities.UnitConversions.RealTypeDef[typeDef].DisplayUnit,
+        unitConversions[typeDef].DisplayUnit,
         fn);
 
     end writeComparison;
@@ -5161,6 +5150,8 @@ The Real output y is a constant signal:
 
       input String name "Name of parameter";
       input String storeUnit "Prefered units to store variable value";
+      input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
+        "Unit conversions";
 
       output Real value=0 "Actual value of parameter in SI units";
     //algorithm
@@ -5171,6 +5162,7 @@ The Real output y is a constant signal:
       extends Modelica.Icons.Function;
 
       input String name "Name of parameter";
+
       output Real value=0 "Actual value of parameter in SI units";
     //algorithm
     end readReal_SI;
@@ -5191,6 +5183,8 @@ The Real output y is a constant signal:
       input String name "Variable name";
       input Real value "Variable value";
       input String storeUnit "Prefered units to store variable value";
+      input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
+        "Unit conversions";
     //algorithm
     end writeReal;
 
@@ -5223,6 +5217,8 @@ The Real output y is a constant signal:
       input Real finalValue "Final variable value[in SI units]";
 
       input String storeUnit "Prefered units to store variable value";
+      input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
+        "Unit conversions";
     //algorithm
     end writeComparison;
 
@@ -5255,18 +5251,20 @@ The Real output y is a constant signal:
     package UnitConversions "Conversions non-SI units at input/output"
 
      function findUnit
-       input String unitToFind "display unit to find in RealTypeDef";
-       output Integer typeDef "index in RealTypeDef";
+       input String unitToFind "display unit to find in unitConversions";
+       input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
+          "Unit conversions";
+       output Integer typeDef "index in unitConversions";
      algorithm
        typeDef:=0;
-       for i in 1:size(RealTypeDef,1) loop
-         if RealTypeDef[i].DisplayUnit == unitToFind then
+       for i in 1:size(unitConversions,1) loop
+         if unitConversions[i].DisplayUnit == unitToFind then
            typeDef:=i;
            break;
          end if;
        end for;
        if typeDef==0 then
-          Modelica.Utilities.Streams.print("Unit \"" + unitToFind + "\" not defined in Physiolibrary.Utilities.UnitConversions.RealTypeDef. Do not hesitate to contact me. marek@matfyz.cz\n");
+          Modelica.Utilities.Streams.print("Unit \"" + unitToFind + "\" not defined. Do not hesitate to contact me. marek@matfyz.cz\n");
        end if;
      end findUnit;
 
