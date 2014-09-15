@@ -1191,5 +1191,37 @@ package Icons "Icons for physiological models"
                                            Bitmap(extent={{-40,-18},{40,-98}},
                         fileName="modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
   end Torso;
+
+  model PerfusionOD
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                    Bitmap(extent={{-160,100},{152,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/perfusion.png")}));
+  end PerfusionOD;
+
+  model PerfusionDO
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                    Bitmap(extent={{-160,100},{160,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/perfusion2.png")}));
+  end PerfusionDO;
+
+  model CollapsingVessel
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                    Bitmap(extent={{-100,100},{100,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/kolaps.png")}));
+  end CollapsingVessel;
+
+  model PeripheralCirculation
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                    Bitmap(extent={{-100,100},{100,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/krevniReciste.png")}));
+  end PeripheralCirculation;
   annotation (Documentation(revisions=""));
 end Icons;

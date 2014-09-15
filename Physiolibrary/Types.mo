@@ -5520,6 +5520,30 @@ The Real output y is a constant signal:
             Scale=4186.8)}
         "All defined Real types - units, displayUnits, conversions, nominals";
 
+       constant String[:] Prefix =    {"","m", "u", "n", "p"};
+       constant Real[:]   PrefixScale={1.0, 1e-3,1e-6,1e-9,1e-12};
+
+       constant String[:] SuffixSI= {"","/m3","/m3","/m3","/s"};
+       constant String[:] Suffix =  {"","/l", "/dl","/ml","/min"};
+       constant Real[:]   SuffixScale={1, 1e+3, 1e+4, 1e+6, 1/60};
+
+      function GenerateSubstanceUnits
+         input String nonSIunit "non-SI unit";
+         input Real scale "1 mol = 'scale' 'nonSIunit'";
+         output RealTypeRecord[size(Prefix,1)*size(Suffix,1)] units
+          "generated conversions for mili-, micro-, .. amount/concentration/flow";
+      protected
+       constant Integer np = size(Prefix,1);
+       constant Integer ns = size(Suffix,1);
+      algorithm
+        units:={
+            RealTypeRecord(
+              Unit="mol"+SuffixSI[integer(1+mod(i,ns))],
+              DisplayUnit=Prefix[integer(1+div(i,ns))] + nonSIunit + Suffix[integer(1+mod(i,ns))],
+              Scale=PrefixScale[integer(1+div(i,ns))]*scale*SuffixScale[integer(1+mod(i,ns))])
+            for i in 0:(np*ns-1)};
+      end GenerateSubstanceUnits;
+
     end UnitConversions;
   end Utilities;
 

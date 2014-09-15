@@ -5,14 +5,17 @@ package Blocks "Base Signal Blocks Library"
     extends Modelica.Icons.Package;
     model Integrator "Integrator with support of steady state calculation."
       extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
-                                         state_start=y_start);
+                                         state_start=y_start, state(nominal=NominalValue));
 
       parameter Real k=1 "Integrator gain";
 
       parameter Real y_start=0 "Initial or guess value of output (= state)"
         annotation (Dialog(group="Initialization"));
-      extends Modelica.Blocks.Interfaces.SISO;
+      extends Modelica.Blocks.Interfaces.SISO(u(nominal=NominalValue/k),y(nominal=NominalValue));
 
+      parameter Real NominalValue = 1
+        "Numerical scale. For some substances such as hormones, hydronium or hydroxide ions should be set."
+          annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
     equation
       state = y;  //der(y) = k*u
       change = k*u;
@@ -365,8 +368,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
    function Spline "Cubic spline interpolation function"
 
         input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
-        input Real[:,4] a
-        "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
+        input Real[:,4] a "cubic polynom coefficients of curve segments between interpolating points"; //parametry kubiky
         input Real xVal "input value of x to calculate y value"; //vstupni hodnota
 
         output Real yVal "y value at xVal";
@@ -462,18 +464,13 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 </html>"));
    end SplineCoefficients;
 
-        model Curve
-      "2D natural cubic interpolation spline defined with (x,y,slope) points"
+        model Curve "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
-             parameter Real x[:] = fill(Modelica.Constants.N_A,1)
-        "x coordinations of interpolating points";
-             parameter Real y[:] = fill(Modelica.Constants.N_A,1)
-        "y coordinations of interpolating points";
-             parameter Real slope[:] = fill(Modelica.Constants.N_A,1)
-        "slopes at interpolating points";
+             parameter Real x[:] = fill(Modelica.Constants.N_A,1) "x coordinations of interpolating points";
+             parameter Real y[:] = fill(Modelica.Constants.N_A,1) "y coordinations of interpolating points";
+             parameter Real slope[:] = fill(Modelica.Constants.N_A,1) "slopes at interpolating points";
 
-             parameter Real[:,3] data = transpose({x,y,slope})
-        "Array of interpolating points as {x,y,slope}";
+             parameter Real[:,3] data = transpose({x,y,slope}) "Array of interpolating points as {x,y,slope}";
 
             parameter Real Xscale = 1 "conversion scale to SI unit of x values";
             parameter Real Yscale = 1 "conversion scale to SI unit of y values";
@@ -525,8 +522,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
     model Normalization "effect = u/NormalValue"
      extends Icons.BaseFactorIcon;
 
-     parameter Real NormalValue=1
-        "Normal value of u, because y=(u/NormalValue)*yBase.";
+     parameter Real NormalValue=1 "Normal value of u, because y=(u/NormalValue)*yBase.";
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
@@ -566,11 +562,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
      parameter Real Yscale = 1 "conversion scale to SI unit of y values";
 
-     parameter Boolean UsePositiveLog10 = false
-        "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
+     parameter Boolean UsePositiveLog10 = false "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
 
-      Physiolibrary.Types.Fraction effect
-        "Multiplication coeffecient for yBase to reach y";
+      Physiolibrary.Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
 
     protected
         parameter Real a[:,:] = Interpolation.SplineCoefficients(
@@ -595,6 +589,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
 
+     parameter String stateName=getInstanceName() "Name in Utilities input/output function"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
 
      parameter Real[:,3] data;
@@ -610,7 +607,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             rotation=270,
             origin={0,-32})));
       Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
-            Modelica.Math.log(2)/HalfTime))
+            Modelica.Math.log(2)/HalfTime),
+        stateName=stateName)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -742,6 +740,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
 
+     parameter String stateName=getInstanceName() "Name in Utilities input/output function"
+         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
+
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
 
       Interpolation.Curve
@@ -756,7 +757,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             rotation=270,
             origin={0,-50})));
       Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
-            Modelica.Math.log(2)/HalfTime))
+            Modelica.Math.log(2)/HalfTime),
+        stateName=stateName)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
