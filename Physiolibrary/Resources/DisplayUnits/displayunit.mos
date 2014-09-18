@@ -24,15 +24,15 @@ defineUnitConversion("W/K", "kcal/(min.K)", 60/4186.8 );  //conductance
 defineUnitConversion("W", "kcal/min", 60/4186.8 );               //flow
 
 //Pharmacological international units of human secreted substances (http://www.who.int/bloodproducts/catalogue/Alph2014.pdf?ua=1)
-//1 IU (Insulin) = 38.46 ug = 6.622 nmol  (http://whqlibdoc.who.int/trs/WHO_TRS_760_(part1).pdf?ua=1) (5.808 kDa)
+//1 IU (Insulin) = 38.46 ug = 6.622 nmol  (5.808 kDa, WHO Expert Committee on Biological Standardisation (1987). 37th Report. WHO Tech Rep Ser No 760)
 defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 ); 
 defineUnitConversion("mol/m3", "U_Insulin/m3", 1/6.622e-9 );
 defineUnitConversion("mol/m3", "uU_Insulin/l", 1e3/6.622e-9 );
 defineUnitConversion("mol/m3", "uU_Insulin/ml", 1/6.622e-9 );
-//1 IU (Erythropoietin - EPO) = 15.3 ug = 0.45 nmol (34 kDa)
+//1 IU (EPO - Erythropoietin) = 15.3 ug = 0.45 nmol (34 kDa)
 defineUnitConversion("mol", "U_EPO", 1/0.45e-9 );
 defineUnitConversion("mol/m3", "U_EPO/l", 1e-3/0.45e-9 );
-//1 IU (Arginin Vasopressin - ADH) = 2.5 ug = 2.305 nmol (1.084 kDa)
+//1 IU (ADH - Antidiuretic hormone - Arginin Vasopressin) = 2.5 ug = 2.305 nmol (1.084 kDa)
 defineUnitConversion("mol", "U_ADH", 1/2.305e-9 );
 defineUnitConversion("mol/m3", "U_ADH/l", 1e-3/2.305e-9 );
 //1 GU (Goldblatt unit for Renin activity) = 1 ng AI/hr (ng of AngionensinI per hour) = 6.7 ng (active renin 48kDa) = 0.14 pmol  (0.0112 IU/GU, 48kDa)
@@ -46,6 +46,21 @@ defineUnitConversion("mol/m3", "U_Renin/l", 1e-3/12.5e-12 );
 defineUnitConversion("mol", "U_TSH", 1/6.21e-9 );
 defineUnitConversion("mol/m3", "U_TSH/l", 1e-3/6.21e-9 );
 defineUnitConversion("mol/m3", "uU_TSH/ml", 1e-6/6.21e-15 );
+//1 IU (LH - Luteinizing hormone - Lutropin - Lutrophin) = 0.156 ug = 5.2 pmol  (30kDa, (58ug-30.5ug)/177IU from NIBSC code: 10/286 )
+defineUnitConversion("mol", "U_LH", 1/5.2e-12 );
+defineUnitConversion("mol/m3", "U_LH/l", 1e-3/5.2e-12 );
+defineUnitConversion("mol/s", "U_LH/d", (60*60*24)/5.2e-12 );
+defineUnitConversion("mol/s", "l/(d.U_LH)", 5.2e-9/(60*60*24) );
+//1 IU (FSH) = 0.167 ug = 2.9 pmol (57kDa,  NIBSC)
+defineUnitConversion("mol", "U_FSH", 1/2.9e-12 );
+defineUnitConversion("mol/m3", "U_FSH/l", 1e-3/2.9e-12 );
+defineUnitConversion("mol/s", "U_FSH/d", (60*60*24)/2.9e-12 );
+defineUnitConversion("mol/s", "l/(d.U_FSH)", 2.9e-9/(60*60*24) );
+//1 IU (IhA) = 26.1 pg = 0.82 pmol (32kDa)
+defineUnitConversion("mol", "U_IhA", 1/0.82e-12 );
+defineUnitConversion("mol/m3", "U_IhA/l", 1e-3/0.82e-12 );
+defineUnitConversion("mol/s", "U_IhA/d", (60*60*24)/0.82e-12 );
+defineUnitConversion("mol/s", "l/(d.U_IhA)", 0.82e-9/(60*60*24) );
 
 
 //Number of molecules
