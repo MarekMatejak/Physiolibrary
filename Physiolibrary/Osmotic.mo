@@ -303,14 +303,14 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.Package;
     model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+      extends SteadyStates.Interfaces.SteadyState(
                                          state_start=volume_start, storeUnit=
           "mOsm/l");
 
       Interfaces.OsmoticPort_a
                           q_in "Flux to/from osmotic compartment" annotation (Placement(
             transformation(extent={{-10,-10},{10,10}})));
-      parameter Physiolibrary.Types.Volume volume_start = 0.001
+      parameter Types.Volume volume_start = 0.001
         "Initial volume of compartment"
          annotation (Dialog(group="Initialization"));
 
@@ -322,11 +322,10 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "Amount of impermeable substance if useImpermeableSolutesInput=false"
         annotation (Dialog(enable=not useImpermeableSolutesInput));
 
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput impermeableSolutes(start=ImpermeableSolutes)= is if useImpermeableSolutesInput
+      Types.RealIO.AmountOfSubstanceInput impermeableSolutes(start=ImpermeableSolutes)= is if useImpermeableSolutesInput
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
                 {-60,80}})));
-      Physiolibrary.Types.RealIO.VolumeOutput volume
-        "Actual volume of compartment"
+      Types.RealIO.VolumeOutput volume "Actual volume of compartment"
         annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
                -90)));
     protected
@@ -362,7 +361,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
      extends Interfaces.OnePort;
      extends Icons.Membrane; //Icons.Resistor;
 
-     parameter Physiolibrary.Types.OsmoticPermeability cond
+     parameter Types.OsmoticPermeability cond
         "Membrane permeability for solvent";
 
       parameter Boolean useHydraulicPressureInputs = false
@@ -480,8 +479,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       extends Interfaces.OnePort;
       extends Icons.FlowMeasure;
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeFlowRate
-        "Flux through membrane"
+      Types.RealIO.VolumeFlowRateOutput volumeFlowRate "Flux through membrane"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-60})));
@@ -565,13 +563,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     end SolventOutflux;
 
     model UnlimitedSolution "Prescribed osmolarity"
-      import Physiolibrary.Types.*;
 
       parameter Boolean useOsmolarityInput = false
         "=true, if fixed osmolarity at port is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Physiolibrary.Types.Osmolarity Osm = 0
+       parameter Types.Osmolarity Osm = 0
         "Fixed osmolarity at port if useOsmolarityInput=false"
         annotation (Dialog(enable=not useOsmolarityInput));
 
@@ -579,7 +576,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "=true, if there is no flow at port in steady state"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -587,14 +584,14 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
                 {110,10}})));
 
     protected
-      Physiolibrary.Types.Osmolarity o "Current osmolarity";
+      Types.Osmolarity o "Current osmolarity";
     public
       Types.RealIO.TemperatureInput osmolarity(start=Osmolarity)=o if
                                                                useOsmolarityInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     initial equation
-      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
         port.q = 0;
       end if;
 
@@ -605,7 +602,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
       port.o = o;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
           port.q = 0;
       end if;
 
@@ -654,9 +651,9 @@ i.e., it defines a fixed temperature as a boundary condition.
 
      connector OsmoticPort
       "Flux through semipermeable membrane by osmotic pressure gradient"
-      Physiolibrary.Types.Concentration o
+      Types.Concentration o
         "Osmolarity is the molar concentration of the impermeable solutes";
-      flow Physiolibrary.Types.VolumeFlowRate q
+      flow Types.VolumeFlowRate q
         "The flux of the permeable solvent (!not the impermeable solutes!)";
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -753,16 +750,16 @@ Connector with one flow signal of type Real.
         "=true, if solvent flow input is used instead of parameter SolventFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.VolumeFlowRate SolventFlow=0
+      parameter Types.VolumeFlowRate SolventFlow=0
         "Volumetric flow of solvent if useSolventFlowInput=false"
         annotation (Dialog(enable=not useSolventFlowInput));
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
+      Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
-      Physiolibrary.Types.VolumeFlowRate q "Current solvent flow";
+      Types.VolumeFlowRate q "Current solvent flow";
     equation
       if not useSolventFlowInput then
         q = SolventFlow;
@@ -773,7 +770,7 @@ Connector with one flow signal of type Real.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p>
 <p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p>

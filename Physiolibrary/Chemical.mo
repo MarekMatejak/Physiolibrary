@@ -9,16 +9,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
        extends Modelica.Icons.Example;
 
-       import Physiolibrary.Chemical.Components.*;
-
-      Substance         A(solute_start=0.9)
+      Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      ChemicalReaction          reaction(K=1,
+      Components.ChemicalReaction          reaction(K=1,
         useNormalizedVolume=true,
         useDissociationConstantInput=false,
         useHeatPort=false)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Substance         B(solute_start=0.1)
+      Components.Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-8},{62,12}})));
     equation
 
@@ -42,15 +40,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     model SimpleReaction2
        extends Modelica.Icons.Example;
 
-      import Physiolibrary.Chemical.Components.*;
-
-      Substance         A(solute_start=0.9)
+      Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
-      ChemicalReaction          reaction(K=1, nP=2)
+      Components.ChemicalReaction          reaction(K=1, nP=2)
         annotation (Placement(transformation(extent={{-6,-8},{14,12}})));
-      Substance         B(solute_start=0.1)
+      Components.Substance         B(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,-8},{56,12}})));
-      Substance         C(solute_start=0.1)
+      Components.Substance         C(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,16},{56,36}})));
     equation
 
@@ -79,7 +75,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     model ExothermicReaction
 
        extends Modelica.Icons.Example;
-      import Physiolibrary.Chemical;
 
       Components.Substance         A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
@@ -93,7 +88,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
       Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
         annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
-      Physiolibrary.Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
+      Thermal.Sources.UnlimitedHeat unlimitedHeat(T=310.15)
         annotation (Placement(transformation(extent={{74,-58},{54,-38}})));
     equation
 
@@ -127,31 +122,30 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     model MichaelisMenten "Basic enzyme kinetics"
       import Physiolibrary;
       extends Modelica.Icons.Example;
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+      extends SteadyStates.Interfaces.SteadyStateSystem(
                                                  Simulation=Types.SimulationType.SteadyState);
-       import Physiolibrary.Types.*;
 
-      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+      Chemical.Sources.UnlimitedSolutionStorage
                        P(Conc=0)
         annotation (Placement(transformation(extent={{92,-12},{72,8}})));
-      Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage
+      Chemical.Sources.UnlimitedSolutionStorage
                        S(Conc=0.1)
         annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
-         parameter AmountOfSubstance tE=0.01 "total amount of enzyme";
+         parameter Types.AmountOfSubstance tE=0.01 "total amount of enzyme";
          parameter Real k_cat(unit="1/s", displayUnit="1/min")= 1
         "forward rate of second reaction";
-         parameter Physiolibrary.Types.Concentration Km = 0.1
+         parameter Types.Concentration Km = 0.1
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
-          Physiolibrary.Chemical.Components.Substance
+          Chemical.Components.Substance
                               ES(                       solute_start=0,
-            Simulation=SimulationType.SteadyState)
+            Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-          Physiolibrary.Chemical.Components.Substance
+          Chemical.Components.Substance
                               E(                       solute_start=tE,
             isDependent=true,
-            Simulation=SimulationType.SteadyState)
+            Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,38},{10,58}})));
           Components.ChemicalReaction
                            chemicalReaction(nS=2,
@@ -210,74 +204,72 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
     package Hemoglobin "Hemoglobin blood gases binding"
       model Allosteric_Hemoglobin_MWC "Monod,Wyman,Changeux (1965)"
       extends Modelica.Icons.Example;
-        import Physiolibrary.Chemical.*;
-        import Physiolibrary.Types.*;
 
-      //extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+      //extends SteadyStates.Interfaces.SteadyStateSystem(
       //                                         Simulation=SimulationType.SteadyState);
 
-        parameter Temperature T=310.15 "Temperature";
+        parameter Types.Temperature T=310.15 "Temperature";
       //  parameter GasSolubility alpha =  Modelica.Constants.R*298.15 * 0.0105 * 1e-3
       //    "oxygen solubility in plasma";
                                          // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
-        parameter Fraction L = 7.0529*10^6
+        parameter Types.Fraction L = 7.0529*10^6
           "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-        parameter Fraction c = 0.00431555
+        parameter Types.Fraction c = 0.00431555
           "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-        parameter Concentration KR = 0.000671946
+        parameter Types.Concentration KR = 0.000671946
           "oxygen dissociation on relaxed(R) hemoglobin subunit";
                                                                     //*7.875647668393782383419689119171e-5
                                                                   //10.500001495896 7.8756465463794e-05
 
-        parameter Concentration KT=KR/c
+        parameter Types.Concentration KT=KR/c
           "oxygen dissociation on tensed(T) hemoglobin subunit";
 
       //  Fraction sO2 "hemoglobin oxygen saturation";
 
-        parameter AmountOfSubstance totalAmountOfHemoglobin=1;
+        parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
       //  AmountOfSubstance totalAmountOfRforms;
       //  AmountOfSubstance totalAmountOfTforms;
 
-        Components.Substance                       T0(stateName="T0",Simulation=SimulationType.SteadyState,
+        Components.Substance                       T0(stateName="T0",Simulation=Types.SimulationType.SteadyState,
           solute_start=1)
           annotation (Placement(transformation(extent={{32,78},{52,98}})));
 
-        Components.Substance                       T1(stateName="T1",Simulation=SimulationType.SteadyState,
+        Components.Substance                       T1(stateName="T1",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,36},{54,56}})));
 
-        Components.Substance                       R1(stateName="R1",Simulation=SimulationType.SteadyState,
+        Components.Substance                       R1(stateName="R1",Simulation=Types.SimulationType.SteadyState,
           solute_start=0,
           isDependent=true)
           annotation (Placement(transformation(extent={{-20,36},{0,56}})));
 
-        Components.Substance                       T2(stateName="T2",Simulation=SimulationType.SteadyState,
+        Components.Substance                       T2(stateName="T2",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,-10},{54,10}})));
 
-        Components.Substance                       R2(stateName="R2",Simulation=SimulationType.SteadyState,
+        Components.Substance                       R2(stateName="R2",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
 
-        Components.Substance                       T3(stateName="T3",Simulation=SimulationType.SteadyState,
+        Components.Substance                       T3(stateName="T3",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,-54},{54,-34}})));
 
-        Components.Substance                       R3(stateName="R3",Simulation=SimulationType.SteadyState,
+        Components.Substance                       R3(stateName="R3",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-54},{0,-34}})));
 
-        Components.Substance                       T4(stateName="T4",Simulation=SimulationType.SteadyState,
+        Components.Substance                       T4(stateName="T4",Simulation=Types.SimulationType.SteadyState,
           solute_start=0,
           isDependent=true)
           annotation (Placement(transformation(extent={{34,-92},{54,-72}})));
 
-        Components.Substance                       R4(stateName="R4",Simulation=SimulationType.SteadyState,
+        Components.Substance                       R4(stateName="R4",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-92},{0,-72}})));
 
-        Components.Substance                       R0(stateName="R0",Simulation=SimulationType.SteadyState,
+        Components.Substance                       R0(stateName="R0",Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,78},{0,98}})));
 
@@ -342,7 +334,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
         SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
           n=10, Total(displayUnit="mol") = 1,
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{72,-2},{92,18}})));
         Modelica.Blocks.Math.Sum oxygen_bound(k={1,1,2,2,3,3,4,4}, nin=8)
           annotation (Placement(transformation(extent={{72,-56},{82,-46}})));
@@ -351,11 +343,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Modelica.Blocks.Math.Sum tHb(nin=10, k=4*ones(10))
           annotation (Placement(transformation(extent={{72,-70},{82,-60}})));
         Components.Substance          oxygen_unbound(solute_start=0.000001*
-              7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState)
+              7.875647668393782383419689119171e-5, Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
-        Sources.UnlimitedGasStorage          O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Sources.UnlimitedGasStorage          O2_in_air(Simulation=Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
           T=310.15)   annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -717,33 +709,31 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       model Allosteric_Hemoglobin2_MWC
         "Monod,Wyman,Changeux (1965) - The same allosteric hemoglobin model as Allosteric_Hemoglobin_MWC implemented by Speciation blocks"
-        import Physiolibrary.Types.*;
 
        extends Modelica.Icons.Example;
 
-        parameter MolarEnergy dHT=10000
+        parameter Types.MolarEnergy dHT=10000
           "Enthalpy of heme oxygenation in T hemoglobin form";
-        parameter MolarEnergy dHR=20000
+        parameter Types.MolarEnergy dHR=20000
           "Enthalpy of heme oxygenation in R hemoglobin form";
-        parameter MolarEnergy dHL=-1000
+        parameter Types.MolarEnergy dHL=-1000
           "Enthalpy of reaction T->R as hemoglobin tetramer structure change";
 
-        parameter Fraction L = 7.0529*10^6
+        parameter Types.Fraction L = 7.0529*10^6
           "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-        parameter Fraction c = 0.00431555
+        parameter Types.Fraction c = 0.00431555
           "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-        parameter Concentration KR = 0.000671946
+        parameter Types.Concentration KR = 0.000671946
           "oxygen dissociation on relaxed(R) hemoglobin subunit";
                                                                     //*7.875647668393782383419689119171e-5
                                                                   //10.500001495896 7.8756465463794e-05
 
-        parameter Concentration KT=KR/c
+        parameter Types.Concentration KT=KR/c
           "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-        parameter AmountOfSubstance totalAmountOfHemoglobin=1;
+        parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
 
-        Physiolibrary.Chemical.Components.ChemicalReaction
-                                                  quaternaryForm(K=L,
+        Chemical.Components.ChemicalReaction      quaternaryForm(K=L,
           TK=310.15,
           dH=dHL)
           annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
@@ -753,43 +743,43 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Components.Speciation
                            T0_in_T(NumberOfSubunits=4, useInternalHeatsInput=true)
           annotation (Placement(transformation(extent={{70,-66},{50,-46}})));
-        Physiolibrary.Chemical.Components.Substance OxyRHm[4](
-          each Simulation=SimulationType.SteadyState,
+        Chemical.Components.Substance OxyRHm[4](
+          each Simulation=Types.SimulationType.SteadyState,
           each isDependent=true,
           each solute_start=4e-19,
           each dH=-dHL/4 - dHR)
           "Oxygenated subunit in R structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{-96,-18},{-76,2}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2,
+        Chemical.Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2,
           each TK=310.15,
           each dH=dHR)
           annotation (Placement(transformation(extent={{-68,-18},{-48,2}})));
-        Physiolibrary.Chemical.Components.Substance DeoxyRHm[4](each Simulation=
-              SimulationType.SteadyState,
+        Chemical.Components.Substance DeoxyRHm[4](each Simulation=
+              Types.SimulationType.SteadyState,
           each solute_start=4e-11,
           each dH=-dHL/4)
           "Deoxygenated subunit in R structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{-40,-18},{-20,2}})));
-        Physiolibrary.Chemical.Components.Substance OxyTHm[4](
-          each Simulation=SimulationType.SteadyState,
+        Chemical.Components.Substance OxyTHm[4](
+          each Simulation=Types.SimulationType.SteadyState,
           isDependent={false,true,true,true},
           each dH=-dHT,
           each solute_start=1e-14)
           "Oxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{14,-18},{34,2}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2,
+        Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2,
           each dH=dHT,
           each TK=310.15)
           annotation (Placement(transformation(extent={{42,-18},{62,2}})));
-        Physiolibrary.Chemical.Components.Substance DeoxyTHm[4](
-                                                 each Simulation=SimulationType.SteadyState,
+        Chemical.Components.Substance DeoxyTHm[4](
+                                                 each Simulation=Types.SimulationType.SteadyState,
           each solute_start=0.00025,
           each dH=0)
           "Deoxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{70,-18},{90,2}})));
 
-        Physiolibrary.Chemical.Components.Substance
-                            oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
+        Chemical.Components.Substance
+                            oxygen_unbound(Simulation=Types.SimulationType.SteadyState, solute_start=0.000001
               *7.875647668393782383419689119171e-5)
           annotation (Placement(transformation(extent={{-2,6},{18,26}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
@@ -803,7 +793,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               rotation=270,
               origin={30,-48})));
         Sources.UnlimitedGasStorage oxygen_in_air(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
           isIsolatedInSteadyState=false,
           T=310.15)                                annotation (
@@ -820,7 +810,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               origin={8,40})));
         SteadyStates.Components.MolarConservationLaw totalHb(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           Total(displayUnit="mol") = totalAmountOfHemoglobin,
           n=2)
           annotation (Placement(transformation(extent={{72,-84},{92,-64}})));
@@ -1077,38 +1067,38 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       parameter Real[4] pKh
           "Dissociation coefficient of reaction h (other Bohr protonation reactions of side chains)";
 
-      parameter Physiolibrary.Types.MolarEnergy[4] dH_HbuANH2
+      parameter Types.MolarEnergy[4] dH_HbuANH2
           "Standard enthalpy of deprotonated and decarboxylated hemoglobin subunit";
-      parameter Physiolibrary.Types.MolarEnergy[4] dHz
+      parameter Types.MolarEnergy[4] dHz
           "Enthalpy of reaction z (Val1 amino terminal protonation)";
-      parameter Physiolibrary.Types.MolarEnergy[4] dHc
+      parameter Types.MolarEnergy[4] dHc
           "Enthalpy of reaction c (Val1 amino terminal carbamination)";
-      parameter Physiolibrary.Types.MolarEnergy[4] dHh
+      parameter Types.MolarEnergy[4] dHh
           "Enthalpy of reaction h (other Bohr protonation reactions of side chains)";
 
       parameter Boolean isDependent=false
           "contains dependent equation (if solver is not smart enough)";
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a Hbtn
+      Chemical.Interfaces.ChemicalPort_a Hbtn
           annotation (Placement(transformation(extent={{-108,-10},{-88,10}})));
-          Physiolibrary.Chemical.Components.Substance Hbu_A_NH3[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Components.Substance Hbu_A_NH3[4](each Simulation=
+              Types.SimulationType.SteadyState,
           dH=dH_HbuANH2 - dHz,
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
           each SAVE_RESULTS=storeState,
           each solute_start=1e-06)
           annotation (Placement(transformation(extent={{-32,70},{-12,90}})));
-      Physiolibrary.Chemical.Components.Substance Hbu_AH_NH3[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Components.Substance Hbu_AH_NH3[4](each Simulation=
+              Types.SimulationType.SteadyState,
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
           each SAVE_RESULTS=storeState,
           each solute_start=1e-06,
           dH=dH_HbuANH2 - dHh - dHz)
           annotation (Placement(transformation(extent={{54,70},{74,90}})));
-      Physiolibrary.Chemical.Components.Substance Hbu_A_NH2[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Components.Substance Hbu_A_NH2[4](each Simulation=
+              Types.SimulationType.SteadyState,
           isDependent={isDependent,true,true,true},
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
@@ -1116,38 +1106,38 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           each solute_start=1e-06,
           dH=dH_HbuANH2)
           annotation (Placement(transformation(extent={{-32,-2},{-12,18}})));
-      Physiolibrary.Chemical.Components.Substance Hbu_AH_NH2[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Components.Substance Hbu_AH_NH2[4](each Simulation=
+              Types.SimulationType.SteadyState,
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
           each SAVE_RESULTS=storeState,
           each solute_start=1e-06,
           dH=dH_HbuANH2 - dHh)
           annotation (Placement(transformation(extent={{54,-2},{74,18}})));
-      Physiolibrary.Chemical.Components.Substance Hbu_A_NHCOO[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Components.Substance Hbu_A_NHCOO[4](each Simulation=
+              Types.SimulationType.SteadyState,
           dH=dH_HbuANH2 + dHc,
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
           each SAVE_RESULTS=storeState,
           each solute_start=1e-06)
           annotation (Placement(transformation(extent={{-32,-84},{-12,-64}})));
-      Physiolibrary.Chemical.Components.Substance Hbu_AH_NHCOO[4](each Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Components.Substance Hbu_AH_NHCOO[4](each Simulation=
+              Types.SimulationType.SteadyState,
           each dirName = dirName,
           each LOAD_STARTS=loadStarts,
           each SAVE_RESULTS=storeState,
           dH=dH_HbuANH2 + dHc,
           each solute_start=1e-06)
           annotation (Placement(transformation(extent={{54,-84},{74,-64}})));
-      Physiolibrary.Chemical.Components.ChemicalReaction h2[4](
+      Chemical.Components.ChemicalReaction h2[4](
           each nS=1,
           each nP=2,
           K=fill(10, 4) .^ (-pKh .+ 3),
           each TK=310.15,
           dH=dHh)
                 annotation (Placement(transformation(extent={{32,-2},{12,18}})));
-      Physiolibrary.Chemical.Components.ChemicalReaction z1[4](each nP=2, K=fill(10, 4)
+      Chemical.Components.ChemicalReaction z1[4](each nP=2, K=fill(10, 4)
                .^ (-pKz .+ 3),
           dH=dHz,
           each TK=310.15)
@@ -1155,7 +1145,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-22,44})));
-      Physiolibrary.Chemical.Components.ChemicalReaction z2[4](each nP=2, K=fill(10, 4)
+      Chemical.Components.ChemicalReaction z2[4](each nP=2, K=fill(10, 4)
                .^ (-pKz .+ 3),
           each TK=310.15,
           dH=dHz)
@@ -1163,7 +1153,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={64,44})));
-      Physiolibrary.Chemical.Components.ChemicalReaction c1[4](
+      Chemical.Components.ChemicalReaction c1[4](
           each nS=2,
           each nP=2,
           K=fill(10, 4) .^ (-pKc .+ 3),
@@ -1173,7 +1163,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-22,-34})));
-      Physiolibrary.Chemical.Components.ChemicalReaction c2[4](
+      Chemical.Components.ChemicalReaction c2[4](
           each nS=2,
           each nP=2,
           K=fill(10, 4) .^ (-pKc .+ 3),
@@ -1187,16 +1177,16 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-64,62})));
-        Physiolibrary.Chemical.Interfaces.ChemicalPort_a H(conc(nominal=10^(-7.2+3)))
+        Chemical.Interfaces.ChemicalPort_a H(conc(nominal=10^(-7.2+3)))
           "hydrogen ions"
           annotation (Placement(transformation(extent={{90,76},{110,96}})));
-        Physiolibrary.Chemical.Interfaces.ChemicalPort_a CO2
+        Chemical.Interfaces.ChemicalPort_a CO2
           annotation (Placement(transformation(extent={{90,-70},{110,-50}})));
-        Physiolibrary.Chemical.Components.Speciation Hb_tn(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Speciation Hb_tn(Simulation=Types.SimulationType.SteadyState,
             NumberOfSubunits=4,
           useInternalHeatsInput=true)
           annotation (Placement(transformation(extent={{-54,-22},{-74,-2}})));
-      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput tHb_u annotation (
+      Types.RealIO.AmountOfSubstanceOutput tHb_u annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
@@ -1409,35 +1399,35 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         parameter Boolean storeResults=false;
         parameter Boolean loadStarts=true;
 
-        Physiolibrary.Chemical.Components.ChemicalReaction K1(
+        Chemical.Components.ChemicalReaction K1(
           K=0.0121,
           nS=1,
           nP=2) annotation (Placement(transformation(
               extent={{10,-10},{-10,10}},
               rotation=270,
               origin={-44,68})));
-        Physiolibrary.Chemical.Components.ChemicalReaction K2(
+        Chemical.Components.ChemicalReaction K2(
           K=0.0117,
           nS=1,
           nP=2) annotation (Placement(transformation(
               extent={{10,-10},{-10,10}},
               rotation=270,
               origin={-46,28})));
-        Physiolibrary.Chemical.Components.ChemicalReaction K3(
+        Chemical.Components.ChemicalReaction K3(
           K=0.0871,
           nS=1,
           nP=2) annotation (Placement(transformation(
               extent={{10,-10},{-10,10}},
               rotation=270,
               origin={-48,-18})));
-        Physiolibrary.Chemical.Components.ChemicalReaction K4(
+        Chemical.Components.ChemicalReaction K4(
           K=0.000386,
           nS=1,
           nP=2) annotation (Placement(transformation(
               extent={{10,-10},{-10,10}},
               rotation=270,
               origin={-50,-60})));
-        Physiolibrary.Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb0(
+        Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb0(
           pKz=fill(pKzD, 4),
           pKc=fill(pKcD, 4),
           pKh=fill(pKhD, 4),
@@ -1449,7 +1439,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,78},{-4,98}})));
-        Physiolibrary.Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb1(
+        Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb1(
           pKz=cat(  1,
                     fill(pKzD, 3),
                     fill(pKzO, 1)),
@@ -1474,7 +1464,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,40},{-4,60}})));
-        Physiolibrary.Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb2(
+        Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb2(
           pKz=cat(  1,
                     fill(pKzD, 2),
                     fill(pKzO, 2)),
@@ -1499,7 +1489,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,0},{-4,20}})));
-        Physiolibrary.Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb3(
+        Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb3(
           pKz=cat(  1,
                     fill(pKzD, 1),
                     fill(pKzO, 3)),
@@ -1524,7 +1514,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,-44},{-4,-24}})));
-        Physiolibrary.Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb4(
+        Chemical.Examples.Hemoglobin.Hemoglobin_MKM_Specie Hb4(
           pKz=fill(pKzO, 4),
           pKc=fill(pKcO, 4),
           pKh=fill(pKhO, 4),
@@ -1535,36 +1525,35 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,-88},{-4,-68}})));
-        Physiolibrary.Chemical.Sources.UnlimitedGasStorage CO2(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Sources.UnlimitedGasStorage CO2(
+          Simulation=Types.SimulationType.SteadyState,
           isIsolatedInSteadyState=false,
           PartialPressure=0)
           annotation (Placement(transformation(extent={{96,72},{76,92}})));
-        Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
-                                         Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Sources.UnlimitedSolutionStorage pH(
+                                         Simulation=Types.SimulationType.SteadyState,
           isIsolatedInSteadyState=false,
           Conc(displayUnit="mol/l") = 10^(-7 + 3))
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={34,82})));
-        Physiolibrary.SteadyStates.Components.MolarConservationLaw totalHemoglobin(
+        SteadyStates.Components.MolarConservationLaw totalHemoglobin(
           n=5,
           Total(displayUnit="mol") = 1,
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{44,6},{64,26}})));
         Modelica.Blocks.Math.Sum sO2(nin=4, k={4/4,3/4,2/4,1/4})
           annotation (Placement(transformation(extent={{62,-30},{82,-10}})));
-        Physiolibrary.Chemical.Components.Substance oxygen_unbound(
-                                                            Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState, solute_start=1e-08)
+        Chemical.Components.Substance oxygen_unbound(       Simulation=
+              Types.SimulationType.SteadyState, solute_start=1e-08)
           annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-84,70})));
-        Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
+          Simulation=Types.SimulationType.SteadyState,
           isIsolatedInSteadyState=false,
           PartialPressure(displayUnit="Pa") = 10,
           usePartialPressureInput=true,
@@ -1572,7 +1561,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-84,34})));
-        Physiolibrary.Chemical.Components.GasSolubility partialPressure1(
+        Chemical.Components.GasSolubility partialPressure1(
             kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
           C=1700,
           T=310.15)
@@ -1589,15 +1578,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{52,-92},{60,-84}})));
         Modelica.Blocks.Math.Division derInternalHeat_per_derO2
           annotation (Placement(transformation(extent={{72,-92},{92,-72}})));
-        Physiolibrary.Chemical.Components.GasSolubility partialPressure2(
+        Chemical.Components.GasSolubility partialPressure2(
           T=310.15,
           kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.60734443440384,
           C=2400)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               origin={68,62})));
-        Physiolibrary.Chemical.Components.Substance CO2_unbound(Simulation=
-              Physiolibrary.Types.SimulationType.SteadyState, solute_start=
+        Chemical.Components.Substance CO2_unbound(Simulation=
+              Types.SimulationType.SteadyState, solute_start=
               0.0012)
           annotation (Placement(transformation(extent={{58,30},{78,50}})));
       equation
@@ -1839,33 +1828,32 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
         model QuaternaryForm
           "Model of hemoglobin space-structure form (can be parametrized as relaxed or tensed)"
-          import Physiolibrary.Types.*;
 
           parameter Boolean isDependent = false;
 
-          parameter Concentration KA = 10^(-6.89+3)
+          parameter Types.Concentration KA = 10^(-6.89+3)
             "dissociation coefficient for acid chains of subunit";
-          parameter Concentration Kz = 10^(-7.25+3)
+          parameter Types.Concentration Kz = 10^(-7.25+3)
             "valine 1 amino terminus dissociation coefficient of protonation to NH3+";
-          parameter Concentration Kc = 10^(-8.35+3)
+          parameter Types.Concentration Kc = 10^(-8.35+3)
             "valine 1 amino terminus dissociation coefficient of protonation to NH3+";
-          parameter Concentration KO2 = 0.000671946
+          parameter Types.Concentration KO2 = 0.000671946
             "oxygen dissociation coefficient of hemoglobin subunit";
 
-          Physiolibrary.Chemical.Components.Speciation Speciation(
+          Chemical.Components.Speciation Speciation(
               NumberOfSubunits=12)
             annotation (Placement(transformation(extent={{60,-20},{40,0}})));
-          Physiolibrary.Chemical.Components.Substance OxyHm[4](
+          Chemical.Components.Substance OxyHm[4](
             each solute_start=0,
-            each Simulation=SimulationType.SteadyState,
+            each Simulation=Types.SimulationType.SteadyState,
             isDependent={isDependent,true,true,true})
             "Oxygenated subunit of hemoglobin tetramer"
             annotation (Placement(transformation(extent={{-90,-68},{-70,-48}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction oxygenation1[4](each
+          Chemical.Components.ChemicalReaction oxygenation1[4](each
               nP=2, each K=KO2) annotation (Placement(transformation(extent={{-62,
                     -68},{-42,-48}})));
-          Physiolibrary.Chemical.Components.Substance DeoxyHm[4](each Simulation=
-                SimulationType.SteadyState,each  solute_start=1e-08)
+          Chemical.Components.Substance DeoxyHm[4](each Simulation=
+                Types.SimulationType.SteadyState,each  solute_start=1e-08)
             "Deoxygenated subunit of hemoglobin tetramer"
             annotation (Placement(transformation(extent={{-34,-68},{-14,-48}})));
 
@@ -1873,64 +1861,61 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={-58,-80})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a O2 annotation (Placement(
+          Chemical.Interfaces.ChemicalPort_a O2 annotation (Placement(
                 transformation(extent={{-26,-50},{-6,-30}}), iconTransformation(
                   extent={{-26,-50},{-6,-30}})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a sForm annotation (
+          Chemical.Interfaces.ChemicalPort_a sForm annotation (
               Placement(transformation(extent={{72,-54},{92,-34}}),
                 iconTransformation(extent={{68,-50},{88,-30}})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a H
-            "hydrogen ion (proton)" annotation (Placement(transformation(extent={{-32,
+          Chemical.Interfaces.ChemicalPort_a H "hydrogen ion (proton)"
+                                    annotation (Placement(transformation(extent={{-32,
                     18},{-12,38}}), iconTransformation(extent={{-32,18},{-12,38}})));
-          Physiolibrary.Chemical.Components.Substance A[4]( each                Simulation=
-                SimulationType.SteadyState,each  solute_start=1e-08)
+          Chemical.Components.Substance A[4]( each                Simulation=
+                Types.SimulationType.SteadyState,each  solute_start=1e-08)
             "residual acid chains of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-24,-14},{-4,6}})));
-          Physiolibrary.Chemical.Components.Substance HA[4](
+          Chemical.Components.Substance HA[4](
             each solute_start=0,
-            each Simulation=SimulationType.SteadyState,
+            each Simulation=Types.SimulationType.SteadyState,
             each isDependent=true)
             "residual acid chains of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-90,-14},{-70,6}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction protonation1[4](each nP=2,each  K=KA)
+          Chemical.Components.ChemicalReaction protonation1[4](each nP=2,each  K=KA)
             annotation (Placement(transformation(extent={{-62,-14},{-42,6}})));
           Modelica.Blocks.Math.Add add1[
                                        4] annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={-52,-24})));
-          Physiolibrary.Chemical.Components.Substance NH2[4](each                 Simulation=
-               SimulationType.SteadyState,each  solute_start=1e-08)
+          Chemical.Components.Substance NH2[4](each                 Simulation=
+               Types.SimulationType.SteadyState,each  solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-10,52},{10,72}})));
-          Physiolibrary.Chemical.Components.Substance NH3[
-                                                         4](
+          Chemical.Components.Substance NH3[             4](
             each solute_start=0,
-            each Simulation=SimulationType.SteadyState,
+            each Simulation=Types.SimulationType.SteadyState,
             each isDependent=true) "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-86,52},{-66,72}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction protonation2[4](
-                                                                            each nP=2, each K=Kz)
+          Chemical.Components.ChemicalReaction protonation2[4](             each nP=2, each K=Kz)
             annotation (Placement(transformation(extent={{-58,52},{-38,72}})));
           Modelica.Blocks.Math.Add3 add2[
                                        4] annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={0,40})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a CO2 annotation (
+          Chemical.Interfaces.ChemicalPort_a CO2 annotation (
               Placement(transformation(extent={{-6,76},{14,96}}),
                 iconTransformation(extent={{-6,76},{14,96}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction carboxylation[4](
+          Chemical.Components.ChemicalReaction carboxylation[4](
             each nP=2,
             each nS=2,
             each K=Kc)
             "Carboxylation of Valin1 amino terminus of hemogloni subunit"
             annotation (Placement(transformation(extent={{36,52},{56,72}})));
-          Physiolibrary.Chemical.Components.Substance NHCOO[4](each Simulation=
-                SimulationType.SteadyState, each solute_start=1e-08)
+          Chemical.Components.Substance NHCOO[4](each Simulation=Types.SimulationType.SteadyState, each solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{66,52},{86,72}})));
-          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput tAmount(start=1e-08)
+          Types.RealIO.AmountOfSubstanceOutput tAmount(start=1e-08)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
@@ -1938,7 +1923,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={40,-90})));
-          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput protonation annotation (
+          Types.RealIO.AmountOfSubstanceOutput protonation annotation (
               Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 origin={100,14}), iconTransformation(
@@ -1953,7 +1938,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             annotation (Placement(transformation(extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={-80,-86})));
-          Physiolibrary.Types.RealIO.AmountOfSubstanceOutput oxygenation
+          Types.RealIO.AmountOfSubstanceOutput oxygenation
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=270,
@@ -2250,66 +2235,63 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         end QuaternaryForm;
 
         model Hemoglobin2 "Hemoglobin model"
-          import Physiolibrary.Types.*;
-          import Physiolibrary;
 
-         extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                                  Simulation=SimulationType.SteadyState);
+         extends SteadyStates.Interfaces.SteadyStateSystem(
+                                                  Simulation=Types.SimulationType.SteadyState);
 
         //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
 
-          parameter Fraction L = 7.0529*10^6
+          parameter Types.Fraction L = 7.0529*10^6
             "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-          parameter Fraction Ln = 26884.8
+          parameter Types.Fraction Ln = 26884.8
             "quaternaly form ratio for specific stripped species of hemoglobin tetramer";
                                          //L*0.00381188                                                                     //"=L*(fnT/fnR)^4 for pH=7.2464 and CO2=0";
-          parameter Fraction c = 0.00431555
+          parameter Types.Fraction c = 0.00431555
             "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-          parameter Concentration KR = 0.000671946
+          parameter Types.Concentration KR = 0.000671946
             "oxygen dissociation on relaxed(R) hemoglobin subunit";
                                                                       //*7.875647668393782383419689119171e-5
                                                                     //10.500001495896 7.8756465463794e-05
 
-          parameter Concentration KT=KR/c
+          parameter Types.Concentration KT=KR/c
             "oxygen dissociation on tensed(T) hemoglobin subunit";
 
-          parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
+          parameter Types.AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
-          Physiolibrary.Chemical.Components.ChemicalReaction
-                                                    quaternaryForm(K=Ln)
+          Chemical.Components.ChemicalReaction      quaternaryForm(K=Ln)
             annotation (Placement(transformation(extent={{-16,26},{4,46}})));
 
-          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.QuaternaryForm R(
+          Chemical.Examples.Hemoglobin.Develop.QuaternaryForm R(
             KO2=KR,
             KA=10^(-6.89 + 3),
             Kz=10^(-7.25 + 3),
             Kc=10^(-8.35 + 3),
             isDependent=true)
             annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.QuaternaryForm T(
+          Chemical.Examples.Hemoglobin.Develop.QuaternaryForm T(
             KO2=KT,
             KA=10^(-7.52 + 3),
             Kz=10^(-7.73 + 3),
             Kc=10^(-7.54 + 3))
             annotation (Placement(transformation(extent={{32,30},{12,50}})));
-          Physiolibrary.SteadyStates.Components.MolarConservationLaw totalHb(
+          SteadyStates.Components.MolarConservationLaw totalHb(
             n=2,
             Total=totalAmountOfHemoglobin,
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+            Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={0,2})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a H "H+ (proton)"
+          Chemical.Interfaces.ChemicalPort_a H "H+ (proton)"
             annotation (Placement(transformation(extent={{6,66},{26,86}}),
                 iconTransformation(extent={{90,90},{110,110}})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+          Chemical.Interfaces.ChemicalPort_a
                                     CO2 "carbon dioxide"
                                         annotation (Placement(transformation(extent={{-22,54},
                     {-2,74}}),     iconTransformation(extent={{14,40},{34,60}})));
-          Physiolibrary.Chemical.Interfaces.ChemicalPort_a O2 "oxygen"
+          Chemical.Interfaces.ChemicalPort_a O2 "oxygen"
             annotation (Placement(transformation(extent={{-54,78},{-34,98}}),
                 iconTransformation(extent={{90,-10},{110,10}})));
-          Physiolibrary.Types.RealIO.FractionOutput          protonation annotation (
+          Types.RealIO.FractionOutput          protonation annotation (
               Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 origin={100,-40}),iconTransformation(
@@ -2325,7 +2307,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             annotation (Placement(transformation(extent={{42,-62},{54,-50}})));
           Modelica.Blocks.Math.Division division1
             annotation (Placement(transformation(extent={{66,-86},{78,-74}})));
-          Physiolibrary.Types.RealIO.FractionOutput sO2
+          Types.RealIO.FractionOutput sO2
             annotation (Placement(transformation(extent={{90,-90},{110,-70}})));
         equation
 
@@ -2428,19 +2410,19 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         end Hemoglobin2;
 
         model Hemoglobin_oxygenation "Hemoglobin oxygenation experiment"
+
           import Physiolibrary.Types.*;
-          import Physiolibrary;
 
          extends Modelica.Icons.Example;
 
-          Physiolibrary.Chemical.Components.Substance
+          Chemical.Components.Substance
                               oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
                 *7.875647668393782383419689119171e-5)
             annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
           Modelica.Blocks.Sources.Clock clock(offset=1e-06)
             annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
-          Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
+            Simulation=Types.SimulationType.SteadyState,
             usePartialPressureInput=true,
             T=310.15,
             isIsolatedInSteadyState=false)
@@ -2448,38 +2430,38 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={6,60})));
-          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(kH_T0(
+          Chemical.Components.GasSolubility partialPressure1(kH_T0(
                 displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
             T=310.15,
             C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 origin={6,32})));
-          Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
+          Chemical.Sources.UnlimitedSolutionStorage pH(
             q_out(conc(nominal=10^(-7.4 + 3))),
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             Conc=10^(-7.2464 + 3),
             isIsolatedInSteadyState=false)
                                    annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=180,
                 origin={62,-10})));
-          Physiolibrary.Chemical.Sources.UnlimitedGasStorage
+          Chemical.Sources.UnlimitedGasStorage
                                       CO2_gas(
-              Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              Simulation=Types.SimulationType.SteadyState,
               PartialPressure=5332.8954966)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={-34,56})));
-          Physiolibrary.Chemical.Components.GasSolubility
+          Chemical.Components.GasSolubility
                                    gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
                  0.81805576878885)
             annotation (Placement(transformation(extent={{-44,20},{-24,40}})));
-          Physiolibrary.Chemical.Components.Substance
-                               CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Components.Substance
+                               CO2_liquid(Simulation=Types.SimulationType.SteadyState,
               isDependent=true)
             annotation (Placement(transformation(extent={{-44,-4},{-24,16}})));
-          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.Hemoglobin2 hemoglobin
+          Chemical.Examples.Hemoglobin.Develop.Hemoglobin2 hemoglobin
             annotation (Placement(transformation(extent={{-26,-74},{-6,-54}})));
         equation
 
@@ -2536,12 +2518,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         end Hemoglobin_oxygenation;
 
         model Hemoglobin_titration "Hemoglobin titration experiment"
+
           import Physiolibrary.Types.*;
-          import Physiolibrary;
 
          extends Modelica.Icons.Example;
 
-         extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+         extends SteadyStates.Interfaces.SteadyStateSystem(
                                                   Simulation=SimulationType.SteadyState);
 
         //  parameter GasSolubility alpha =  0.0105 * 1e-3 "oxygen solubility in plasma";   // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
@@ -2563,14 +2545,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
           parameter AmountOfSubstance totalAmountOfHemoglobin=0.001;
 
-          Physiolibrary.Chemical.Components.Substance
+          Chemical.Components.Substance
                               oxygen_unbound(Simulation=SimulationType.SteadyState, solute_start=0.000001
                 *7.875647668393782383419689119171e-5)
             annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
           Modelica.Blocks.Sources.Clock clock(offset=6.7)
             annotation (Placement(transformation(extent={{30,34},{50,54}})));
-          Physiolibrary.Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Sources.UnlimitedGasStorage oxygen_in_air(
+            Simulation=Types.SimulationType.SteadyState,
             usePartialPressureInput=false,
             PartialPressure=0,
             T=310.15,
@@ -2579,45 +2561,45 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={6,60})));
-          Physiolibrary.Chemical.Components.GasSolubility partialPressure1(
+          Chemical.Components.GasSolubility partialPressure1(
               kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.024913516594933,
             T=310.15,
             C=1700)
             annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 origin={6,32})));
-          Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage pH(
+          Chemical.Sources.UnlimitedSolutionStorage pH(
             q_out(conc(nominal=10^(-7.4 + 3))),
             isIsolatedInSteadyState=false,
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             Conc=10^(-7.2464 + 3),
             useConcentrationInput=true) annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=180,
                 origin={62,-10})));
-          Physiolibrary.Chemical.Sources.UnlimitedGasStorage
+          Chemical.Sources.UnlimitedGasStorage
                                       CO2_gas(
-              Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+              Simulation=Types.SimulationType.SteadyState,
             usePartialPressureInput=false,
             PartialPressure=0)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={-34,56})));
-          Physiolibrary.Chemical.Components.GasSolubility
+          Chemical.Components.GasSolubility
                                    gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
                  0.81805576878885)
             annotation (Placement(transformation(extent={{-44,20},{-24,40}})));
-          Physiolibrary.Chemical.Components.Substance
-                               CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Components.Substance
+                               CO2_liquid(Simulation=Types.SimulationType.SteadyState,
               isDependent=true)
             annotation (Placement(transformation(extent={{-44,-4},{-24,16}})));
-          Physiolibrary.Chemical.Examples.Hemoglobin.Develop.Hemoglobin2
+          Chemical.Examples.Hemoglobin.Develop.Hemoglobin2
             deoxyhemoglobin
             annotation (Placement(transformation(extent={{-22,-68},{-2,-48}})));
-          Physiolibrary.Types.RealIO.FractionOutput protonation
+          Types.RealIO.FractionOutput protonation
             "allosteric-dependent protonation"
             annotation (Placement(transformation(extent={{68,-76},{88,-56}})));
-          Physiolibrary.Blocks.Math.Exponentiation pow annotation (Placement(
+          Blocks.Math.Exponentiation pow annotation (Placement(
                 transformation(
                 extent={{-4,-4},{4,4}},
                 rotation=270,
@@ -2804,13 +2786,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           extends Modelica.Icons.Example;
         Components.Substance H3O(
           q_out(conc(nominal=10^(-7 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7 + 3))
                             annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               origin={-8,12})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           NumberOfParticles=2,
           Total=0,
           Charges={1,-1},
@@ -2818,14 +2800,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
         Components.Substance OH(
           q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7 + 3),
           isDependent=true)         annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               origin={-8,-32})));
         Components.Substance H2O(
           q_out(conc(nominal=5.55e+4)),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start(displayUnit="mol") = 1/0.018,
           isDependent=true) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -2835,7 +2817,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           K=(1e-8)*((18e-6)^2))
           annotation (Placement(transformation(extent={{-56,-22},{-36,-2}})));
         SteadyStates.Components.MolarConservationLaw tH2O(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           n=3,
           Total(displayUnit="mol") = 1/0.018) "total water concentration"
           annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
@@ -2906,7 +2888,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       model CarbonDioxideInWater "CO2 as alone acid-base buffer"
           extends Modelica.Icons.Example;
-        Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+        Components.Substance HCO3(                  Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-18,46},{2,66}})));
         Components.ChemicalReaction HendersonHasselbalch(
           nP=2,
@@ -2915,32 +2897,32 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           dH(displayUnit="kJ/mol") = 7300)
           annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
         Sources.UnlimitedGasStorage CO2_gas(
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             PartialPressure=5332.8954966)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-80,82})));
         Components.Substance H3O(
           q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7 + 3)) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               origin={-8,12})));
         Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
                0.81805576878885)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-        Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Components.Substance CO2_liquid(Simulation=Types.SimulationType.SteadyState,
             isDependent=true)
           annotation (Placement(transformation(extent={{-90,22},{-70,42}})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           useTotalInput=true,
           NumberOfParticles=3,
           Charges={-1,-2,1},
           Total=2894.560197) "strong ion difference of solution"
           annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
         Components.Substance CO3(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           isDependent=true,
           solute_start=1e-08)
           annotation (Placement(transformation(extent={{54,46},{74,66}})));
@@ -3046,21 +3028,21 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
         Components.Substance H3O(
           q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7.4 + 3),
           isDependent=true) "hydrogen ions activity" annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               origin={14,22})));
 
-        Physiolibrary.SteadyStates.Components.MolarConservationLaw
+        SteadyStates.Components.MolarConservationLaw
           molarConservationLaw[n](
           each n=2,
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each Simulation=Types.SimulationType.SteadyState,
           each Total=0.00066)
           annotation (Placement(transformation(extent={{44,-6},{64,14}})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           NumberOfParticles=n,
           Charges=ones(n),
           useTotalInput=true,
@@ -3080,18 +3062,18 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
           "acid dissociation constants";
 
-        Physiolibrary.Chemical.Components.Substance A[n](
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Substance A[n](
+          each Simulation=Types.SimulationType.SteadyState,
           each isDependent=true,
           each solute_start=0.00033) "deprotonated acid groups"
           annotation (Placement(transformation(extent={{4,-16},{24,4}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+        Chemical.Components.ChemicalReaction react[n](
           each nP=2,
           K=fill(10.0, n) .^ (-pKAs .+ 3))
           annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
 
-        Physiolibrary.Chemical.Components.Substance HA[n](
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+        Chemical.Components.Substance HA[n](
+          each Simulation=Types.SimulationType.SteadyState, each
             solute_start=0.00033) "protonated acid groups"
           annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
 
@@ -3151,7 +3133,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       model Phosphate
           extends Modelica.Icons.Example;
 
-        parameter Physiolibrary.Types.Concentration totalPO4=0.00115
+        parameter Types.Concentration totalPO4=0.00115
           "Total phosphate concentration";
 
         Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
@@ -3161,48 +3143,48 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{44,74},{64,94}})));
 
-        Physiolibrary.Chemical.Components.Substance H(
+        Chemical.Components.Substance H(
           q_out(conc(nominal=10^(-7.4 + 3))),
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7.4 + 3),
           isDependent=true) "hydrogen ions activity" annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               origin={36,-12})));
 
-        Physiolibrary.Chemical.Components.Substance H3PO4(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Substance H3PO4(
+          Simulation=Types.SimulationType.SteadyState,
           isDependent=true,
           solute_start=1e-08)
           annotation (Placement(transformation(extent={{-98,-58},{-78,-38}})));
-        Physiolibrary.Chemical.Components.Substance H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Substance H2PO4(Simulation=Types.SimulationType.SteadyState,
             solute_start=0.0005)
           annotation (Placement(transformation(extent={{-44,-58},{-24,-38}})));
-        Physiolibrary.Chemical.Components.Substance HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Substance HPO4(Simulation=Types.SimulationType.SteadyState,
             solute_start=0.0006)
           annotation (Placement(transformation(extent={{16,-58},{36,-38}})));
-        Physiolibrary.Chemical.Components.Substance PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Chemical.Components.Substance PO4(Simulation=Types.SimulationType.SteadyState,
             solute_start=1e-08)
           annotation (Placement(transformation(extent={{72,-58},{92,-38}})));
 
-        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction(nP=2, K=10
+        Chemical.Components.ChemicalReaction chemicalReaction(nP=2, K=10
               ^(-1.915 + 3))
           annotation (Placement(transformation(extent={{-70,-58},{-50,-38}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction1(nP=2, K=10
+        Chemical.Components.ChemicalReaction chemicalReaction1(nP=2, K=10
               ^(-6.66 + 3))
           annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
-        Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction2(nP=2, K=10
+        Chemical.Components.ChemicalReaction chemicalReaction2(nP=2, K=10
               ^(-11.78 + 3))
           annotation (Placement(transformation(extent={{44,-58},{64,-38}})));
-        Physiolibrary.SteadyStates.Components.MolarConservationLaw tP04(
-          each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        SteadyStates.Components.MolarConservationLaw tP04(
+          each Simulation=Types.SimulationType.SteadyState,
           each n=4,
           each Total=totalPO4*1)
           annotation (Placement(transformation(extent={{-28,-90},{-8,-70}})));
 
-        Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw
+        SteadyStates.Components.ElementaryChargeConservationLaw
           electroneutrality(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
           Total(displayUnit="meq") = 3502.41783837,
           useTotalInput=true,
           NumberOfParticles=3,
@@ -3316,20 +3298,20 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             solute_start=10^(-7.4 + 3),
             isDependent=true) "hydrogen ions activity" annotation (Placement(
                 transformation(
                 extent={{-10,-10},{10,10}},
                 origin={38,40})));
 
-          Physiolibrary.SteadyStates.Components.MolarConservationLaw tAlb[n](
+          SteadyStates.Components.MolarConservationLaw tAlb[n](
             each n=2,
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            each Simulation=Types.SimulationType.SteadyState,
             each Total=0.00066)
             annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
           SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             useTotalInput=true,
             Charges=cat(
                 1,
@@ -3353,9 +3335,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
           parameter Boolean isDependent[3] = {false,false,false};
 
-          parameter Physiolibrary.Types.AmountOfSubstance totalPO4=0.00115
+          parameter Types.AmountOfSubstance totalPO4=0.00115
             "Total phosphate concentration";
-          parameter Physiolibrary.Types.AmountOfSubstance totalAlb=0.00066
+          parameter Types.AmountOfSubstance totalAlb=0.00066
             "Total albumin concentration";
 
           parameter Integer n=218
@@ -3363,45 +3345,45 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
             "acid dissociation constants";
 
-          Physiolibrary.Chemical.Components.Substance A[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Chemical.Components.Substance A[n](
+            each Simulation=Types.SimulationType.SteadyState,
             each isDependent=true,
             each solute_start=0.00033) "deprotonated acid groups"
             annotation (Placement(transformation(extent={{-10,14},{10,34}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction react[n](
+          Chemical.Components.ChemicalReaction react[n](
             each nP=2,
             K=fill(10.0, n) .^ (-pKAs .+ 3))
             annotation (Placement(transformation(extent={{-44,16},{-24,36}})));
 
-          Physiolibrary.Chemical.Components.Substance HA[n](
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState, each
+          Chemical.Components.Substance HA[n](
+            each Simulation=Types.SimulationType.SteadyState, each
               solute_start=0.00033) "protonated acid groups"
             annotation (Placement(transformation(extent={{-76,16},{-56,36}})));
 
-          Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance CO2_liquid(Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[1])
             annotation (Placement(transformation(extent={{-76,64},{-56,84}})));
-          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance HCO3(                  Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[2])
             annotation (Placement(transformation(extent={{42,70},{62,90}})));
           Interfaces.ChemicalPort_a substances[3]
             "{free dissolved CO2, bicarbonate, chloride}"
             annotation (Placement(transformation(extent={{-10,70},{10,90}})));
-          Components.Substance                        H2PO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance                        H2PO4(Simulation=Types.SimulationType.SteadyState,
               solute_start=0.0005)
             annotation (Placement(transformation(extent={{-62,-54},{-42,-34}})));
           Components.ChemicalReaction phosphateAcidification(nP=2, K=10^(-6.66 + 3))
             annotation (Placement(transformation(extent={{-32,-54},{-12,-34}})));
-          Components.Substance                        HPO4(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance                        HPO4(Simulation=Types.SimulationType.SteadyState,
             isDependent=true,
             solute_start=0.0006)
             annotation (Placement(transformation(extent={{-2,-54},{18,-34}})));
           SteadyStates.Components.MolarConservationLaw               tP04(
-            each Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            each Simulation=Types.SimulationType.SteadyState,
             each n=2,
             each Total=totalPO4)
             annotation (Placement(transformation(extent={{-28,-80},{-8,-60}})));
-          Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance Cl(Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[3]) "chloride anion"
             annotation (Placement(transformation(extent={{76,42},{96,62}})));
         equation
@@ -3515,7 +3497,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
           Components.Substance H3O(
             q_out(conc(nominal=10^(-7.4 + 3))),
-            Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+            Simulation=Types.SimulationType.SteadyState,
             solute_start=10^(-7.4 + 3),
             isDependent=isDependent[4]) "hydrogen ions activity" annotation (Placement(
                 transformation(
@@ -3527,16 +3509,16 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             K=10^(-6.103 + 3),
             nS=1)
             annotation (Placement(transformation(extent={{-60,46},{-40,66}})));
-          Components.Substance CO2_liquid(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance CO2_liquid(Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[1])
             annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-          Components.Substance HCO3(                  Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance HCO3(                  Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[2])
             annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
           Interfaces.ChemicalPort_a substances[3]
             "{free dissolved CO2, bicarbonate, chloride}"
             annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
-          Components.Substance Cl(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Components.Substance Cl(Simulation=Types.SimulationType.SteadyState,
               isDependent=isDependent[3]) "chloride anion"
             annotation (Placement(transformation(extent={{76,82},{96,102}})));
         equation
@@ -3601,39 +3583,37 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
   package Components
     extends Modelica.Icons.Package;
     model Substance "Substance accumulation in solution"
-      extends Physiolibrary.Icons.Substance;
+      extends Icons.Substance;
       extends Interfaces.ConditionalVolume;
 
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+      extends SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
       change(nominal=NominalSolute/60),
       state_start=solute_start,
       storeUnit="mmol");
 
-      parameter Physiolibrary.Types.AmountOfSubstance
-                                        solute_start(nominal=NominalSolute) = 1e-8
+      parameter Types.AmountOfSubstance solute_start(nominal=NominalSolute) = 1e-8
         "Initial solute amount in compartment"
          annotation ( HideResult=true, Dialog(group="Initialization"));
 
-      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput solute(nominal=
+      Types.RealIO.AmountOfSubstanceOutput solute(nominal=
           NominalSolute) "Current amount of solute"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-100})));
 
-      parameter Physiolibrary.Types.AmountOfSubstance
-                                        NominalSolute = 0.001
+      parameter Types.AmountOfSubstance NominalSolute = 0.001
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b            q_out(conc(start=solute_start/NormalVolume))
+      Chemical.Interfaces.ChemicalPort_b            q_out(conc(start=solute_start/NormalVolume))
         "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
 
-      parameter Physiolibrary.Types.MolarEnergy dH=0 "Standard Enthalpy Change"
+      parameter Types.MolarEnergy dH=0 "Standard Enthalpy Change"
         annotation ( HideResult=true, Dialog(tab="Energies"));
 
-      Physiolibrary.Types.RealIO.EnergyOutput internalHeat
+      Types.RealIO.EnergyOutput internalHeat
         "internal heat energy = enthalpy*amountOfSubstance" annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
@@ -3658,7 +3638,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>The main class from &ldquo;Physiolibrary.Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
+<p>The main class from &ldquo;Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
 </html>"));
     end Substance;
 
@@ -3666,9 +3646,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       import Physiolibrary;
 
       Real KaT "Dissociation constant at current temperature";
-      Physiolibrary.Types.MolarFlowRate rr "Reaction molar flow rate";
+      Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      extends Physiolibrary.Chemical.Interfaces.ConditionalVolume;
+      extends Chemical.Interfaces.ConditionalVolume;
 
       parameter Boolean useDissociationConstantInput = false
         "=true, if external dissociation ratio is used"
@@ -3680,15 +3660,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             rotation=270,
             origin={0,40})));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 products[nP] "Products"
                              annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 substrates[nS] "Substrates"
                                 annotation (Placement(
-            transformation(extent={{-110,-10},{-90,10}})));  /*s[nS]*/
+            transformation(extent={{-110,-10},{-90,10}})));
 
       parameter Real K = 1
         "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
@@ -3702,14 +3682,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       parameter Integer nP=1 "Number of products types"
         annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
 
-      parameter Physiolibrary.Types.StoichiometricNumber s[nS]=ones(nS)
+      parameter Types.StoichiometricNumber s[nS]=ones(nS)
         "Stoichiometric reaction coefficient for substrates"
         annotation (  HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
       parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
         "Activity coefficients of substrates"
         annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
 
-      parameter Physiolibrary.Types.StoichiometricNumber p[nP]=ones(nP)
+      parameter Types.StoichiometricNumber p[nP]=ones(nP)
         "Stoichiometric reaction coefficients for products"
         annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
        parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
@@ -3718,22 +3698,22 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
      extends Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Physiolibrary.Types.Temperature TK=298.15 "Base temperature"
+      parameter Types.Temperature TK=298.15 "Base temperature"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
-      parameter Physiolibrary.Types.MolarEnergy dH=0
+      parameter Types.MolarEnergy dH=0
         "Standard Enthalpy Change (negative=exothermic)"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
-      parameter Physiolibrary.Types.Fraction solventFraction=1
+      parameter Types.Fraction solventFraction=1
         "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
 
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
     protected
-      parameter Physiolibrary.Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
-      parameter Physiolibrary.Types.Fraction fs=solventFraction^(sum(s));
-      parameter Physiolibrary.Types.Fraction fp=solventFraction^(sum(p));
+      parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
+      parameter Types.Fraction fs=solventFraction^(sum(s));
+      parameter Types.Fraction fp=solventFraction^(sum(p));
 
     equation
       if not useDissociationConstantInput then
@@ -3811,8 +3791,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end ChemicalReaction;
 
     model Diffusion "Solute diffusion"
-      extends Physiolibrary.Icons.Diffusion;
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
+      extends Icons.Diffusion;
+      extends Chemical.Interfaces.OnePort;
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
@@ -3854,34 +3834,33 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     model GasSolubility "Henry's law of gas solubility in liquid."
        //q_in is dissolved in liquid and q_out is in gaseous solution"
 
-      extends Physiolibrary.Icons.GasSolubility;
-      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
+      extends Icons.GasSolubility;
+      extends Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Physiolibrary.Types.DiffusionPermeability solubilityRateCoef=10^8
+      parameter Types.DiffusionPermeability solubilityRateCoef=10^8
         "The rate constant of incoming gas to solution" annotation ( HideResult=true);
 
-      Physiolibrary.Types.GasSolubility kH
+      Types.GasSolubility kH
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
-      parameter Physiolibrary.Types.GasSolubility kH_T0
+      parameter Types.GasSolubility kH_T0
         "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)"
                                                                                                     annotation ( HideResult=true);
-      parameter Physiolibrary.Types.Temperature T0=298.15
-        "Base temperature for kH_T0"
+      parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
          annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Physiolibrary.Types.Temperature C(displayUnit="K")
+      parameter Types.Temperature C(displayUnit="K")
         "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
-      parameter Physiolibrary.Types.Fraction solventFraction=1
+      parameter Types.Fraction solventFraction=1
         "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 q_out "Gaseous solution"
                              annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 q_in "Dissolved in liquid solution"
                                 annotation (Placement(
             transformation(extent={{-10,-90},{10,-70}})));
@@ -3912,16 +3891,16 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     model Degradation "Degradation of solute"
       extends Interfaces.ConditionalVolume;
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 q_in "Degraded solute outflow"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
 
-      parameter Physiolibrary.Types.Time HalfTime
+      parameter Types.Time HalfTime
         "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
 
     protected
-      Physiolibrary.Types.VolumeFlowRate Clearance;
+      Types.VolumeFlowRate Clearance;
     equation
       Clearance = volume*Modelica.Math.log(2)/HalfTime;
       q_in.q = Clearance*q_in.conc;
@@ -4007,21 +3986,21 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model Clearance "Clearance with or without solvent outflow"
 
-      parameter Physiolibrary.Types.VolumeFlowRate Clearance=0
+      parameter Types.VolumeFlowRate Clearance=0
         "Clearance of solute if useSolutionFlowInput=false"
         annotation (Dialog(enable=not useSolutionFlowInput));
 
       parameter Real K(unit="1")=1
         "Coefficient such that Clearance = K*solutionFlow";
 
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow(SolutionFlow=Clearance/K);
+      extends Chemical.Interfaces.ConditionalSolutionFlow(SolutionFlow=Clearance/K);
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 q_in "solute outflow"
                                 annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
 
-      Physiolibrary.Types.VolumeFlowRate clearance;
+      Types.VolumeFlowRate clearance;
     equation
 
       clearance = q*K;
@@ -4073,8 +4052,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end Clearance;
 
     model Stream "Flow of whole solution"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Chemical.Interfaces.OnePort;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
       q_in.q = if
@@ -4149,8 +4128,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end Stream;
 
     model SolutePump "Prescribed solute flow"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
+      extends Chemical.Interfaces.OnePort;
+      extends Chemical.Interfaces.ConditionalSoluteFlow;
 
     equation
       q_in.q = q;
@@ -4183,39 +4162,37 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
-      extends Physiolibrary.Icons.Speciation;
+      extends Icons.Speciation;
 
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
-                                               Simulation=Physiolibrary.Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
-      extends Physiolibrary.Chemical.Interfaces.ConditionalVolume;
-
-      import Physiolibrary.Types.*;
+      extends SteadyStates.Interfaces.SteadyStateSystem(
+                                               Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
+      extends Chemical.Interfaces.ConditionalVolume;
 
       parameter Integer NumberOfSubunits=1
         "Number of independent subunits occuring in molecule";
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a specificForm
+      Chemical.Interfaces.ChemicalPort_a specificForm
         "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
             transformation(extent={{90,-90},{110,-70}})));
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
+      Chemical.Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
         "Specific form of subunits of specific molecule form in connector called spieces"
                                                                                                             annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
     protected
       Real fractions[NumberOfSubunits];
     public
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput amountOfSubunit[NumberOfSubunits]
+      Types.RealIO.AmountOfSubstanceInput amountOfSubunit[NumberOfSubunits]
         "Total amount of the subunits in all forms"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=180,
             origin={80,0})));
-      Physiolibrary.Types.RealIO.AmountOfSubstanceOutput amount
+      Types.RealIO.AmountOfSubstanceOutput amount
         "Total amount of macromolecules in this system"
        annotation (Placement(
             transformation(extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-80})));                                                             //(start=1e-8)
-      Physiolibrary.Types.RealIO.EnergyOutput internalHeat
+      Types.RealIO.EnergyOutput internalHeat
         "Relative internal heat of all chemical forms in this system"                                                                annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -4230,11 +4207,11 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
 
-      parameter Physiolibrary.Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
+      parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
         "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
         annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
 
-      Physiolibrary.Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
+      Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
       annotation (Dialog(enable=false),
          Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -4244,7 +4221,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
             rotation=180,
             origin={80,60})));
 
-       Physiolibrary.Types.Energy internalHeatOfSubunit[NumberOfSubunits]
+       Types.Energy internalHeatOfSubunit[NumberOfSubunits]
         "Internal heat of subunits";
     equation
 
@@ -4291,18 +4268,18 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end Speciation;
 
     model Dilution "Adding/removing of the solvent to/from running solution"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Physiolibrary.Icons.Dilution;
+      extends Chemical.Interfaces.OnePort;
+      extends Icons.Dilution;
 
       parameter Boolean useDilutionInput = false
         "=true, if dilition input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Fraction Dilution=1
+      parameter Types.Fraction Dilution=1
         "Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false"
         annotation (Dialog(enable=not useSolventFlow));
 
-      Physiolibrary.Types.RealIO.FractionInput dilution(start=Dilution)= d if useDilutionInput
+      Types.RealIO.FractionInput dilution(start=Dilution)= d if useDilutionInput
         "Fraction of final undilutes solution"
         annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
     protected
@@ -4329,7 +4306,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end Dilution;
 
     model Reabsorption "Reabsorption as input fraction"
-       extends Physiolibrary.Icons.Reabsorption;
+       extends Icons.Reabsorption;
 
       parameter Boolean useEffect = false
         "=true, if reabsorption fraction is BaseReabsorption^(1/Effect)"
@@ -4343,43 +4320,43 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=false, if BaseReabsorption=1"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
+      parameter Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
         "Maximal reabsorption molar flow if useMaxReabInput=false"
         annotation (Dialog(enable=not useMaxReabInput));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 Inflow "Tubular inflow"              annotation (Placement(
             transformation(extent={{-110,30},{-90,50}})));
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 Outflow "Tubular outflow"
         annotation (Placement(transformation(extent={{90,30},{110,50}})));
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 Reabsorption "Reabsorption from tubules"          annotation (Placement(
             transformation(extent={{-10,-110},{10,-90}})));
-      Physiolibrary.Types.RealIO.FractionInput baseReabsorption=baseReabFract if useBaseReabsorption
+      Types.RealIO.FractionInput baseReabsorption=baseReabFract if useBaseReabsorption
         "Base fraction of molar inflow for reabsorption flow"
                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
             origin={40,100})));
 
-      Physiolibrary.Types.RealIO.FractionInput Effect(displayUnit="1")=e if useEffect
+      Types.RealIO.FractionInput Effect(displayUnit="1")=e if useEffect
         "Effects<1 decrease reabsorption, effects>1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect)"
                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
             origin={0,100})));
-      Physiolibrary.Types.RealIO.MolarFlowRateInput               MaxReab=mr if useMaxReabInput
+      Types.RealIO.MolarFlowRateInput               MaxReab=mr if useMaxReabInput
         "Maximal allowed reabsorption molar flow rate"
                                    annotation (Placement(transformation(extent={{-100,
                 -80},{-60,-40}})));
-      Physiolibrary.Types.RealIO.FractionOutput               ReabFract=reabFract if useEffect
+      Types.RealIO.FractionOutput               ReabFract=reabFract if useEffect
         "Actual reabsorbed fraction from solute inflow rate"                                annotation (Placement(transformation(extent={{80,-100},
                 {120,-60}})));
 
-      Physiolibrary.Types.Fraction reabFract,baseReabFract,e;
-      Physiolibrary.Types.MolarFlowRate mr;
+      Types.Fraction reabFract,baseReabFract,e;
+      Types.MolarFlowRate mr;
     equation
       Inflow.conc = Outflow.conc;
       0 = Inflow.q + Outflow.q + Reabsorption.q;
@@ -4413,8 +4390,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model Membrane
       "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
-      extends Physiolibrary.Icons.Membrane;
-      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
+      extends Icons.Membrane;
+      extends Chemical.Interfaces.ConditionalHeatPort;
 
       parameter Integer NumberOfParticles = 1
         "Number of penetrating particle types";
@@ -4439,22 +4416,21 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
             rotation=270,
             origin={0,100})));
 
-      Physiolibrary.Types.GasSolubility kH[NumberOfParticles]
+      Types.GasSolubility kH[NumberOfParticles]
         "Concentration ratio at equilibrium";
 
-      parameter Physiolibrary.Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
+      parameter Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
         "Equilibrated concentration ratio at temperature T0 - can be estimated by Henry's law coefficient ratios (kH1/kH2)"
          annotation ( HideResult=true,Dialog(tab="Different solubilities"));
-      parameter Physiolibrary.Types.Temperature T0=298.15
-        "Base temperature for kH_T0"
+      parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
          annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Physiolibrary.Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
+      parameter Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
         "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
-      parameter Physiolibrary.Types.Fraction solventFractionInside=1
+      parameter Types.Fraction solventFractionInside=1
         "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
-      parameter Physiolibrary.Types.Fraction solventFractionOutside=1
+      parameter Types.Fraction solventFractionOutside=1
         "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
 
     protected
@@ -4535,10 +4511,10 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     extends Modelica.Icons.SensorsPackage;
 
     model MolarFlowMeasure "Measure of molar flow"
-      extends Physiolibrary.Chemical.Interfaces.OnePort;
-      extends Physiolibrary.Icons.MolarFlowMeasure;
+      extends Chemical.Interfaces.OnePort;
+      extends Icons.MolarFlowMeasure;
 
-     Physiolibrary.Types.RealIO.MolarFlowRateOutput molarFlowRate
+     Types.RealIO.MolarFlowRateOutput molarFlowRate
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
@@ -4557,12 +4533,12 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model ConcentrationMeasure "Measure of molar concentration"
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_a
+      Chemical.Interfaces.ChemicalPort_a
                                 q_in "For measure only"
                                 annotation (Placement(
             transformation(extent={{-10,-30},{10,-10}})));
-      Physiolibrary.Types.RealIO.ConcentrationOutput concentration
-        "Concentration"      annotation (Placement(transformation(extent={{-20,-20},
+      Types.RealIO.ConcentrationOutput concentration "Concentration"
+                             annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
             origin={0,40})));
@@ -4586,9 +4562,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model IncrementalFlowConcentrationMeasure
       "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
-     Physiolibrary.Types.RealIO.ConcentrationOutput concentration
+     Types.RealIO.ConcentrationOutput concentration
         "Concentration after absorption source"                           annotation (Placement(transformation(extent={{-12,-86},
                 {28,-46}}), iconTransformation(
             extent={{-20,-20},{20,20}},
@@ -4625,9 +4601,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     extends Modelica.Icons.SourcesPackage;
 
     model UnlimitedSolutePump "Molar pump of solute to system"
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
+      extends Chemical.Interfaces.ConditionalSoluteFlow;
 
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 q_out "Outflow"
                              annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
@@ -4659,8 +4635,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model UnlimitedSolutionStorage "Constant concentration source"
 
-      import Physiolibrary.Types.*;
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 q_out
         "constant concentration with any possible flow"
                                  annotation (Placement(
@@ -4670,7 +4645,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if fixed concentration is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Concentration Conc = 0
+       parameter Types.Concentration Conc = 0
         "Fixed concentration if useConcentrationInput=false"
         annotation (Dialog(enable=not useConcentrationInput));
 
@@ -4678,7 +4653,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if there is no flow at port in steady state"
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -4686,10 +4661,10 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     protected
-      Concentration c "Current concentration";
+      Types.Concentration c "Current concentration";
 
     initial equation
-      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
         q_out.q = 0;
       end if;
 
@@ -4700,7 +4675,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
       q_out.conc = c;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
         q_out.q = 0;
       end if;
 
@@ -4742,8 +4717,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model UnlimitedGasStorage "Constant ideal gas source"
       extends Interfaces.ConditionalHeatPort;
-      import Physiolibrary.Types.*;
-      Physiolibrary.Chemical.Interfaces.ChemicalPort_b
+      Chemical.Interfaces.ChemicalPort_b
                                 q_out
         "constant gas concentration with any possible flow"
                                  annotation (Placement(
@@ -4753,11 +4727,11 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if fixed partial pressure is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Pressure PartialPressure = 0
+       parameter Types.Pressure PartialPressure = 0
         "Fixed partial pressure if usePartialPressureInput=false"
         annotation (Dialog(enable=not usePartialPressureInput));
 
-      RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
+      Types.RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
         "Partial pressure of Gas = air pressure * gas fraction"
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
@@ -4765,15 +4739,15 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if there is no flow at port in steady state"
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
     protected
-      Pressure p "Current partial pressure";
+      Types.Pressure p "Current partial pressure";
 
     initial equation
-      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
         q_out.q = 0;
       end if;
 
@@ -4784,7 +4758,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
       q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
          q_out.q = 0;
       end if;
 
@@ -4834,7 +4808,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     end UnlimitedGasStorage;
 
     model UnlimitedSolutePumpOut "Molar pump of solute out of system"
-      extends Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow;
+      extends Chemical.Interfaces.ConditionalSoluteFlow;
 
       Interfaces.ChemicalPort_a q_in "Inflow"
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
@@ -4869,8 +4843,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     extends Modelica.Icons.InterfacesPackage;
 
     connector ChemicalPort "Concentration and Solute flow"
-      Physiolibrary.Types.Concentration conc "Solute concentration";
-      flow Physiolibrary.Types.MolarFlowRate q "Solute flow";
+      Types.Concentration conc "Solute concentration";
+      flow Types.MolarFlowRate q "Solute flow";
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -4961,17 +4935,16 @@ Connector with one flow signal of type Real.
 
       parameter Boolean useHeatPort = false "=true, if HeatPort is enabled"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="External inputs/outputs"));
-      parameter Physiolibrary.Types.Temperature T=310.15
+      parameter Types.Temperature T=310.15
         "Fixed device temperature if useHeatPort = false"
         annotation ( HideResult=true, Dialog(enable=not useHeatPort,tab="Temperature dependence"));
 
-      Physiolibrary.Thermal.Interfaces.HeatPort_a       heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
+      Thermal.Interfaces.HeatPort_a       heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
         annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
             iconTransformation(extent={{-10,-10},{10,10}})));
 
-      Physiolibrary.Types.Temperature T_heatPort "Temperature of HeatPort";
-      Physiolibrary.Types.HeatFlowRate lossHeat
-        "Loss heat leaving component via HeatPort";
+      Types.Temperature T_heatPort "Temperature of HeatPort";
+      Types.HeatFlowRate lossHeat "Loss heat leaving component via HeatPort";
     equation
       if not useHeatPort then
          T_heatPort = T;
@@ -5009,15 +4982,15 @@ on the model behaviour.
     partial model ConditionalVolume
       "Chemical processes can be modeled with or without(normalized to 1 liter) variable solvent volume"
 
-      constant Physiolibrary.Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
+      constant Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
 
       parameter Boolean useNormalizedVolume = true
         "=true, if solvent volume is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Physiolibrary.Types.Volume volume "SolventVolume" annotation(HideResult=useNormalizedVolume);
+      Types.Volume volume "SolventVolume" annotation(HideResult=useNormalizedVolume);
 
-      Physiolibrary.Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
+      Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-40,40})));
@@ -5035,16 +5008,16 @@ on the model behaviour.
         "=true, if solution flow input is used instead of parameter SolutionFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.VolumeFlowRate SolutionFlow=0
+      parameter Types.VolumeFlowRate SolutionFlow=0
         "Volumetric flow of solution if useSolutionFlowInput=false"
         annotation ( HideResult=not useSolutionFlowInput, Dialog(enable=not useSolutionFlowInput));
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
+      Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
 
-      Physiolibrary.Types.VolumeFlowRate q "Current solution flow";
+      Types.VolumeFlowRate q "Current solution flow";
     equation
       if not useSolutionFlowInput then
         q = SolutionFlow;
@@ -5059,16 +5032,16 @@ on the model behaviour.
         "=true, if solute flow input is used instead of parameter SoluteFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.MolarFlowRate SoluteFlow=0
+      parameter Types.MolarFlowRate SoluteFlow=0
         "Volumetric flow of solute if useSoluteFlowInput=false"
         annotation (HideResult=not useSoluteFlowInput, Dialog(enable=not useSoluteFlowInput));
 
-      Physiolibrary.Types.RealIO.MolarFlowRateInput soluteFlow(start=SoluteFlow)=q if   useSoluteFlowInput annotation (Placement(transformation(
+      Types.RealIO.MolarFlowRateInput soluteFlow(start=SoluteFlow)=q if   useSoluteFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={40,40})));
 
-      Physiolibrary.Types.MolarFlowRate q "Current solute flow";
+      Types.MolarFlowRate q "Current solute flow";
     equation
       if not useSoluteFlowInput then
         q = SoluteFlow;
@@ -5084,22 +5057,22 @@ on the model behaviour.
      parameter String shortName=getInstanceName()
         "Short physiological name of substance";
 
-     parameter Physiolibrary.Types.MolarMass mw "Molar weight in kg/mol or kDa";
-     parameter Physiolibrary.Types.MolarEnergy dH=0 "Enthalpy";
-     parameter Physiolibrary.Types.MolarEnergy dS=0 "Entropy";
+     parameter Types.MolarMass mw "Molar weight in kg/mol or kDa";
+     parameter Types.MolarEnergy dH=0 "Enthalpy";
+     parameter Types.MolarEnergy dS=0 "Entropy";
 
-     parameter Physiolibrary.Types.AmountOfSubstance molpIU=1
+     parameter Types.AmountOfSubstance molpIU=1
         "Pharmacological international unit conversion: mols per IU (or 1 if unknown)";
-     parameter Physiolibrary.Types.AmountOfSubstance molpGU=1
+     parameter Types.AmountOfSubstance molpGU=1
         "Goldblatt unit conversion: mols per GU (or 1 if unknown)";
 
      parameter String storeUnit="mmol/l"
         "Default substance unit in files or databaseses";
 
-     parameter Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord[:] unitConversions = cat(1,
-        Physiolibrary.Types.Utilities.UnitConversions.GenerateSubstanceUnits("g",1e-3/mw),
-        Physiolibrary.Types.Utilities.UnitConversions.GenerateSubstanceUnits("IU",molpIU),
-        Physiolibrary.Types.Utilities.UnitConversions.GenerateSubstanceUnits("GU",molpGU));
+     parameter Types.Utilities.UnitConversions.RealTypeRecord[:] unitConversions = cat(1,
+        Types.Utilities.UnitConversions.GenerateSubstanceUnits("g",1e-3/mw),
+        Types.Utilities.UnitConversions.GenerateSubstanceUnits("IU",molpIU),
+        Types.Utilities.UnitConversions.GenerateSubstanceUnits("GU",molpGU));
 
     end SubstanceDefinition;
   end Interfaces;
@@ -5107,9 +5080,9 @@ on the model behaviour.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p>
-<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Physiolibrary.Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p>
+<p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p>
 </html>"));
 end Chemical;

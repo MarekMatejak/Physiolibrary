@@ -158,7 +158,7 @@ package Types "Physiological units with nominals"
     model ParameterSet
     extends Modelica.Icons.Example;
 
-      package T=Physiolibrary.Types.RealTypes;
+      package T=Types.RealTypes;
 
       T.Pressure Bone_PO2(varName="Bone-Flow.PO2")
         "Partial oxygen pressure in bone blood venules."
@@ -212,20 +212,20 @@ package Types "Physiological units with nominals"
     model InputParameterSet
     extends ParameterSet( T(redeclare block Variable =
               RealExtension.InputParameter (                                       redeclare
-                package Utilities = Physiolibrary.Types.ZeroUtilities)));
+                package Utilities = Types.ZeroUtilities)));
 
     end InputParameterSet;
 
     model OutputFinalSet
     extends ParameterSet( T(redeclare block Variable =
             RealExtension.OutputFinal (
-              redeclare package Utilities = Physiolibrary.Types.ZeroUtilities)));
+              redeclare package Utilities = Types.ZeroUtilities)));
     end OutputFinalSet;
 
     model OutputComparisonSet
     extends ParameterSet( T(redeclare block Variable =
               RealExtension.OutputComparison (
-              redeclare package Utilities = Physiolibrary.Types.ZeroUtilities)));
+              redeclare package Utilities = Types.ZeroUtilities)));
     end OutputComparisonSet;
   end Examples;
 
@@ -717,7 +717,7 @@ package Types "Physiological units with nominals"
                     textString="Const")}),
         Documentation(info="<html>
 <p>Please use the reciprocal value of hydraulic elastance, wich is called hydraulic compliance for the compatibility with other blocks and models!</p>
-<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Physiolibrary.Blocks.Math.Reciprocal) before connecting to library components!</p>
+<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Blocks.Math.Reciprocal) before connecting to library components!</p>
 </html>"));
   end HydraulicElastanceConst;
 
@@ -814,7 +814,7 @@ package Types "Physiological units with nominals"
         Documentation(info="<html>
 <p>Please use the reciprocal value of hydraulic resistance, wich is called hydraulic conductance for the compatibility with other blocks and models!</p>
 <p>Because zero hydraulic conductance means zero volumetric flow, it is much better to use this reciprocal value of hydraulic resistance.</p>
-<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Physiolibrary.Blocks.Math.Reciprocal) before connecting to library components!</p>
+<p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Blocks.Math.Reciprocal) before connecting to library components!</p>
 </html>"));
   end HydraulicResistanceConst;
 
@@ -1280,8 +1280,8 @@ package Types "Physiological units with nominals"
   end DeprecatedUntypedConstant;
 
   block pHConst "Constant signal of type pH"
-   parameter Physiolibrary.Types.pH k "Constant pH output value";
-        Physiolibrary.Types.RealIO.pHOutput y "pH constant" annotation (Placement(
+   parameter Types.pH k "Constant pH output value";
+        Types.RealIO.pHOutput y "pH constant" annotation (Placement(
           transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={{40,
               -10},{60,10}})));
   equation
@@ -1309,9 +1309,9 @@ package Types "Physiological units with nominals"
 
   block VolumeDensityOfChargeConst
       "Constant signal of type VolumeDensityOfCharge"
-   parameter Physiolibrary.Types.VolumeDensityOfCharge k
+   parameter Types.VolumeDensityOfCharge k
         "Constant VolumeDensityOfCharge output value";
-        Physiolibrary.Types.RealIO.VolumeDensityOfChargeOutput y
+        Types.RealIO.VolumeDensityOfChargeOutput y
         "VolumeDensityOfCharge constant"
                                        annotation (Placement(transformation(
             extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,10}})));
@@ -1339,8 +1339,8 @@ package Types "Physiological units with nominals"
   end VolumeDensityOfChargeConst;
 
   block VelocityConst "Constant signal of type Velocity"
-   parameter Physiolibrary.Types.Velocity k "Constant Velocity output value";
-        Physiolibrary.Types.RealIO.VelocityOutput y "Velocity constant"
+   parameter Types.Velocity k "Constant Velocity output value";
+        Types.RealIO.VelocityOutput y "Velocity constant"
                                        annotation (Placement(transformation(
             extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,10}})));
   equation
@@ -3569,11 +3569,11 @@ constructed by the signals connected to this bus.
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0);
+  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0);
+  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0);
+  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
   type MassConcentration =
                  Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
-  type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0);
-  type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
 
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mosm/l", nominal=1);
 
@@ -3641,88 +3641,88 @@ constructed by the signals connected to this bus.
       replaceable block Variable = RealExtension.Parameter constrainedby
       AbstractReal;
 
-      block Energy = Variable(redeclare type T=Physiolibrary.Types.Energy, storeUnit="kcal");
-      block Time = Variable(redeclare type T=Physiolibrary.Types.Time, storeUnit="min");
-      block Frequency = Variable(redeclare type T=Physiolibrary.Types.Frequency, storeUnit="1/min");
+      block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
+      block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
+      block Frequency = Variable(redeclare type T=Types.Frequency, storeUnit="1/min");
 
-      block Mass = Variable(redeclare type T=Physiolibrary.Types.Mass, storeUnit="g");
+      block Mass = Variable(redeclare type T=Types.Mass, storeUnit="g");
       block MassFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MassFlowRate, storeUnit="g/min");
-      block Density = Variable(redeclare type T=Physiolibrary.Types.Density, storeUnit="kg/l");
+            Types.MassFlowRate, storeUnit="g/min");
+      block Density = Variable(redeclare type T=Types.Density, storeUnit="kg/l");
 
-      block Height = Variable(redeclare type T=Physiolibrary.Types.Height, storeUnit="cm");
-      block Velocity = Variable(redeclare type T=Physiolibrary.Types.Velocity, storeUnit="km/h");
+      block Height = Variable(redeclare type T=Types.Height, storeUnit="cm");
+      block Velocity = Variable(redeclare type T=Types.Velocity, storeUnit="km/h");
       block Acceleration = Variable(redeclare type T =
-            Physiolibrary.Types.Acceleration, storeUnit="m/s");
+            Types.Acceleration, storeUnit="m/s");
 
-      block Pressure = Variable(redeclare type T=Physiolibrary.Types.Pressure,storeUnit="mmHg");
-      block Volume = Variable(redeclare type T=Physiolibrary.Types.Volume,storeUnit="ml");
+      block Pressure = Variable(redeclare type T=Types.Pressure,storeUnit="mmHg");
+      block Volume = Variable(redeclare type T=Types.Volume,storeUnit="ml");
       block VolumeFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.VolumeFlowRate,storeUnit="ml/min");
+            Types.VolumeFlowRate,storeUnit="ml/min");
 
       block Concentration = Variable(redeclare type T =
-            Physiolibrary.Types.Concentration, storeUnit="mmol/l");
+            Types.Concentration, storeUnit="mmol/l");
       block MassConcentration = Variable (redeclare type T =
-            Physiolibrary.Types.MassConcentration, storeUnit="mg/l");
+            Types.MassConcentration, storeUnit="mg/l");
       block AmountOfSubstance = Variable(redeclare type T =
-            Physiolibrary.Types.AmountOfSubstance,storeUnit="mmol");
+            Types.AmountOfSubstance,storeUnit="mmol");
       block MolarFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.MolarFlowRate,storeUnit="mmol/min");
+            Types.MolarFlowRate,storeUnit="mmol/min");
 
-      block Heat = Variable(redeclare type T=Physiolibrary.Types.Heat,storeUnit="kcal");
+      block Heat = Variable(redeclare type T=Types.Heat,storeUnit="kcal");
       block Temperature = Variable(redeclare type T =
-          Physiolibrary.Types.Temperature,                             k=310.15, storeUnit="degC");
+          Types.Temperature,                             k=310.15, storeUnit="degC");
       block HeatFlowRate = Variable(redeclare type T =
-            Physiolibrary.Types.HeatFlowRate,storeUnit="kcal/min");
+            Types.HeatFlowRate,storeUnit="kcal/min");
       block Power = Variable(redeclare type T =
-            Physiolibrary.Types.Power,storeUnit="kcal/min");
+            Types.Power,storeUnit="kcal/min");
       block ThermalConductance = Variable(redeclare type T =
-            Physiolibrary.Types.ThermalConductance, storeUnit="kcal/(min.K)");
+            Types.ThermalConductance, storeUnit="kcal/(min.K)");
       block SpecificHeatCapacity = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
+            Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
       block SpecificEnergy = Variable(redeclare type T =
-            Physiolibrary.Types.SpecificEnergy,storeUnit="kcal/kg");
+            Types.SpecificEnergy,storeUnit="kcal/kg");
 
       block ElectricPotential = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricPotential,storeUnit="mV");
+            Types.ElectricPotential,storeUnit="mV");
       block ElectricCharge = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCharge,storeUnit="meq");
+            Types.ElectricCharge,storeUnit="meq");
       block VolumeDensityOfCharge =
                              Variable(redeclare type T =
-            Physiolibrary.Types.VolumeDensityOfCharge,storeUnit="meq/l");
+            Types.VolumeDensityOfCharge,storeUnit="meq/l");
       block ElectricCurrent = Variable(redeclare type T =
-            Physiolibrary.Types.ElectricCurrent,storeUnit="meq/min");
+            Types.ElectricCurrent,storeUnit="meq/min");
 
-      block Fraction = Variable(redeclare type T=Physiolibrary.Types.Fraction,storeUnit="");
+      block Fraction = Variable(redeclare type T=Types.Fraction,storeUnit="");
 
-      block pH =       Variable(redeclare type T=Physiolibrary.Types.pH,storeUnit="log10(mol/l)");
+      block pH =       Variable(redeclare type T=Types.pH,storeUnit="log10(mol/l)");
       block OsmoticPermeability = Variable(redeclare type T =
-            Physiolibrary.Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
+            Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
       block DiffusionPermeability =         Variable(redeclare type T =
-            Physiolibrary.Types.DiffusionPermeability,storeUnit="ml/min");
+            Types.DiffusionPermeability,storeUnit="ml/min");
 
       block HydraulicConductance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
+            Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
       block HydraulicCompliance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicCompliance,storeUnit="ml/mmHg");
+            Types.HydraulicCompliance,storeUnit="ml/mmHg");
       block HydraulicInertance = Variable(redeclare type T =
-            Physiolibrary.Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
+            Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
 
       block GasSolubility = Variable(redeclare type T =
-            Physiolibrary.Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
+            Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
 
       block Osmolarity =    Variable(redeclare type T =
-            Physiolibrary.Types.Osmolarity,storeUnit="mosm/l");
-      block Position=Variable(redeclare type T=Physiolibrary.Types.Position, storeUnit="cm");
+            Types.Osmolarity,storeUnit="mosm/l");
+      block Position=Variable(redeclare type T=Types.Position, storeUnit="cm");
       block MolarEnergy =
-                     Variable(redeclare type T=Physiolibrary.Types.MolarEnergy, storeUnit="kcal/mol");
+                     Variable(redeclare type T=Types.MolarEnergy, storeUnit="kcal/mol");
   end RealTypes;
 
   package RealTypeInputParameters
     extends Modelica.Icons.SourcesPackage;
 
-    replaceable package Utilities = Physiolibrary.Types.FilesUtilities constrainedby
-      Physiolibrary.Types.Utilities
+    replaceable package Utilities = Types.FilesUtilities constrainedby
+      Types.Utilities
                    annotation (Dialog(group="Functions to read or store",tab="Types"));
      block Base
        parameter String varName=
@@ -4260,7 +4260,7 @@ constructed by the signals connected to this bus.
         block Parameter "Generate constant signal in SI units from file"
           extends AbstractReal;
 
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          replaceable package IO = Types.RealExtension.IO (
             redeclare type Type = T) "Real type with units"
              annotation (Dialog(group="Packages",tab="Types"));
 
@@ -4293,11 +4293,11 @@ The Real output y is a constant signal:
         block InputParameter "Generate constant signal from file"
           extends AbstractReal(                   k = Utilities.readReal( varName, storeUnit, unitConversions));
 
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          replaceable package IO = Types.RealExtension.IO (
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-            constrainedby Physiolibrary.Types.Utilities
+          replaceable package Utilities = Types.FilesUtilities
+            constrainedby Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
@@ -4330,11 +4330,11 @@ The Real output y is a constant signal:
       "Generate constant signal in SI units from file"
           extends AbstractReal(                   k = Utilities.readReal_SI( varName));
 
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          replaceable package IO = Types.RealExtension.IO (
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-            constrainedby Physiolibrary.Types.Utilities
+          replaceable package Utilities = Types.FilesUtilities
+            constrainedby Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
@@ -4365,12 +4365,12 @@ The Real output y is a constant signal:
 
         block OutputFinal "Save variable to Output"
           import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal;
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          extends Types.AbstractReal;
+          replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities
                                                          constrainedby
-        Physiolibrary.Types.Utilities;
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -4406,12 +4406,12 @@ The Real output y is a constant signal:
 
         block OutputFinal_SI "Save variable to Output"
           import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal;
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          extends Types.AbstractReal;
+          replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities
                                                          constrainedby
-        Physiolibrary.Types.Utilities;
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -4445,13 +4445,12 @@ The Real output y is a constant signal:
 
         block OutputComparison "Save variable comparison to file"
           import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal(
-                                                  k=Utilities.readReal(varName,storeUnit,unitConversions));
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          extends Types.AbstractReal(             k=Utilities.readReal(varName,storeUnit,unitConversions));
+          replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities
                                                          constrainedby
-        Physiolibrary.Types.Utilities
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -4498,13 +4497,12 @@ The Real output y is a constant signal:
         block OutputComparison_SI
       "Save variable comparison to file using SI units during input and output"
           import Physiolibrary;
-          extends Physiolibrary.Types.AbstractReal(
-                                                  k=Utilities.readReal_SI(varName));
-          replaceable package IO = Physiolibrary.Types.RealExtension.IO (
+          extends Types.AbstractReal(             k=Utilities.readReal_SI(varName));
+          replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities
                                                          constrainedby
-        Physiolibrary.Types.Utilities
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -4617,7 +4615,7 @@ The Real output y is a constant signal:
 
   package ZeroUtilities "No input/output/test"
     import Physiolibrary;
-    extends Physiolibrary.Types.Utilities;
+    extends Types.Utilities;
     extends Modelica.Icons.VariantsPackage;
 
     redeclare function extends readReal
@@ -4660,7 +4658,7 @@ The Real output y is a constant signal:
 
   package FilesUtilities "File input/output/test"
     import Physiolibrary;
-    extends Physiolibrary.Types.Utilities;
+    extends Types.Utilities;
     extends Modelica.Icons.VariantsPackage;
 
     constant String directoryName="io";
@@ -4700,7 +4698,7 @@ The Real output y is a constant signal:
          Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
       else
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
 
       //Format "<variableName>\n<value> <unit>"
       (line, endOfFile) :=Streams.readLine(fn, iline);
@@ -4842,7 +4840,7 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
 
       Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
       + " " + unitConversions[typeDef].DisplayUnit, fn);
@@ -4908,7 +4906,7 @@ other wariant: //Format "<variableName>=<value><unit>"
          end if;
       end if;
 
-      typeDef:=Physiolibrary.Types.Utilities.UnitConversions.findUnit(storeUnit,unitConversions);
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
 
     outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
     outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
@@ -4986,7 +4984,7 @@ other wariant: //Format "<variableName>=<value><unit>"
     annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>",   info="<html>
 <p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
 <p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
@@ -4997,7 +4995,7 @@ other wariant: //Format "<variableName>=<value><unit>"
   package BooleanExtension
     extends Modelica.Icons.VariantsPackage;
         block Parameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean;
+          extends Types.AbstractBoolean;
 
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
@@ -5027,13 +5025,13 @@ The Real output y is a constant signal:
         end Parameter;
 
         block InputParameter "Read constant boolean signal"
-          extends Physiolibrary.Types.AbstractBoolean(k=
+          extends Types.AbstractBoolean(k=
             Utilities.readBoolean(varName));
 
           Modelica.Blocks.Interfaces.BooleanOutput y
         "Connector of Real output signal"
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities;
+          replaceable package Utilities = Types.FilesUtilities;
 
         equation
           y = k;
@@ -5059,9 +5057,9 @@ The Real output y is a constant signal:
         end InputParameter;
 
         block OutputFinal "Save boolean value to file"
-         extends Physiolibrary.Types.AbstractBoolean;
+         extends Types.AbstractBoolean;
 
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities;
+          replaceable package Utilities = Types.FilesUtilities;
 
           Modelica.Blocks.Interfaces.BooleanInput
                                                 y
@@ -5096,9 +5094,8 @@ The Real output y is a constant signal:
 
         block OutputComparison "Save variable comparison to file"
           import Physiolibrary;
-          extends Physiolibrary.Types.AbstractBoolean(
-                                                  k=Utilities.readBoolean(varName));
-          replaceable package Utilities = Physiolibrary.Types.FilesUtilities
+          extends Types.AbstractBoolean(          k=Utilities.readBoolean(varName));
+          replaceable package Utilities = Types.FilesUtilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.BooleanInput
@@ -5559,7 +5556,7 @@ The Real output y is a constant signal:
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &QUOT;physiological&QUOT; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
 </html>"));

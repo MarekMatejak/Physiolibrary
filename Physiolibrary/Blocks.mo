@@ -4,7 +4,7 @@ package Blocks "Base Signal Blocks Library"
   package Math "Modelica.Math extension"
     extends Modelica.Icons.Package;
     model Integrator "Integrator with support of steady state calculation."
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+      extends SteadyStates.Interfaces.SteadyState(
                                          state_start=y_start, state(nominal=NominalValue));
 
       parameter Real k=1 "Integrator gain";
@@ -527,7 +527,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
-      Physiolibrary.Types.Fraction effect;
+      Types.Fraction effect;
     equation
       effect = u/NormalValue;
       y=effect*yBase;
@@ -543,9 +543,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
     model DamagedFraction "effect = 1 - DamagedAreaFraction"
      extends Icons.BaseFactorIcon;
 
-     parameter Physiolibrary.Types.Fraction DamagedAreaFraction = 0;
+     parameter Types.Fraction DamagedAreaFraction = 0;
 
-      Physiolibrary.Types.Fraction effect;
+      Types.Fraction effect;
     equation
       effect = 1-DamagedAreaFraction;
       y=yBase*effect;
@@ -564,7 +564,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
      parameter Boolean UsePositiveLog10 = false "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
 
-      Physiolibrary.Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
+      Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
 
     protected
         parameter Real a[:,:] = Interpolation.SplineCoefficients(
@@ -586,7 +586,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
-     parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
+     parameter Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
 
      parameter String stateName=getInstanceName() "Name in Utilities input/output function"
@@ -606,7 +606,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-32})));
-      Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
+      Blocks.Math.Integrator integrator(y_start=1, k=(
             Modelica.Math.log(2)/HalfTime),
         stateName=stateName)
         annotation (Placement(transformation(
@@ -618,7 +618,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-26,44})));
-      Physiolibrary.Types.Fraction effect;
+      Types.Fraction effect;
     equation
       //der(effect) = (ln(2)/HalfTime)*(spline(data,u)-effect)
       effect = integrator.y;
@@ -661,7 +661,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
-     parameter Physiolibrary.Types.Time HalfTime(displayUnit="min"); //=3462.468;
+     parameter Types.Time HalfTime(displayUnit="min"); //=3462.468;
 
      parameter Real initialValue = 1 "as u/Xscale";
 
@@ -681,7 +681,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-32})));
-      Physiolibrary.Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
+      Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
             HalfTime), y_start=initialValue*Xscale)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -692,7 +692,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-50,80})));
-      Physiolibrary.Types.Fraction effect;
+      Types.Fraction effect;
     equation
       effect = curve.val;
       connect(yBase, product.u1) annotation (Line(
@@ -737,7 +737,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      extends Icons.BaseFactorIcon2;
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-     parameter Physiolibrary.Types.Time HalfTime(displayUnit="d");
+     parameter Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
 
      parameter String stateName=getInstanceName() "Name in Utilities input/output function"
@@ -756,7 +756,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={0,-50})));
-      Physiolibrary.Blocks.Math.Integrator integrator(y_start=1, k=(
+      Blocks.Math.Integrator integrator(y_start=1, k=(
             Modelica.Math.log(2)/HalfTime),
         stateName=stateName)
         annotation (Placement(transformation(
@@ -775,7 +775,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                                             Failed
                           annotation (Placement(transformation(extent={{-120,20},{-80,
                 60}})));
-       Physiolibrary.Types.Fraction effect;
+       Types.Fraction effect;
     equation
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
@@ -828,6 +828,6 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Blocks;

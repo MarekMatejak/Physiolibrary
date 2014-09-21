@@ -7,21 +7,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model SimpleReaction_in_Equilibrium
       extends Modelica.Icons.Example;
 
-      import Physiolibrary.Types.*;
-
       SteadyStates.Components.MolarConservationLaw
         amountOfSubstanceConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
-        Simulation=SimulationType.SteadyState)
+        Simulation=Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Chemical.Components.Substance A(Simulation=SimulationType.SteadyState,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.SteadyState,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
       Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
       Chemical.Components.Substance B(
-        Simulation=SimulationType.SteadyState,
+        Simulation=Types.SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-10},{62,10}})));
@@ -63,16 +61,16 @@ package SteadyStates "Dynamic Simulation / Steady State"
         amountOfSubstanceConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
-        Simulation=Physiolibrary.Types.SimulationType.NormalInit)
+        Simulation=Types.SimulationType.NormalInit)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Chemical.Components.Substance A(Simulation=Physiolibrary.Types.SimulationType.NormalInit,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.NormalInit,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
       Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
       Chemical.Components.Substance B(
         isDependent=true,
-        Simulation=Physiolibrary.Types.SimulationType.NormalInit,
+        Simulation=Types.SimulationType.NormalInit,
         solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-10},{62,10}})));
 
@@ -113,16 +111,16 @@ package SteadyStates "Dynamic Simulation / Steady State"
         amountOfSubstanceConservationLaw(
         n=2,
         Total(displayUnit="mol") = 1,
-        Simulation=Physiolibrary.Types.SimulationType.InitSteadyState)
+        Simulation=Types.SimulationType.InitSteadyState)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Chemical.Components.Substance A(Simulation=Physiolibrary.Types.SimulationType.InitSteadyState,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.InitSteadyState,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
       Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
       Chemical.Components.Substance B(
         isDependent=true,
-        Simulation=Physiolibrary.Types.SimulationType.InitSteadyState,
+        Simulation=Types.SimulationType.InitSteadyState,
         solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-10},{62,10}})));
 
@@ -156,6 +154,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model SimpleReaction2_in_Equilibrium
     extends Modelica.Icons.Example;
+
       import Physiolibrary.Types.*;
 
       Chemical.Components.Substance A(Simulation=SimulationType.SteadyState,
@@ -228,6 +227,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model O2_in_water
     extends Modelica.Icons.Example;
+
       import Physiolibrary.Types.*;
 
     public
@@ -251,7 +251,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         C=1700)
         annotation (Placement(transformation(extent={{-12,-28},{8,-8}})));
       Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
-          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          Simulation=Types.SimulationType.SteadyState,
         usePartialPressureInput=true,
         useHeatPort=true,
         T=295.15)
@@ -298,30 +298,30 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model Allosteric_Hemoglobin_MWC
     extends Modelica.Icons.Example;
-      import Physiolibrary.Chemical;
+
       import Physiolibrary.Types.*;
 
-    //extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem(
+    //extends SteadyStates.Interfaces.SteadyStateSystem(
     //                                         Simulation=SteadyStates.SimulationType.SteadyState);
     //=States.SimulationType.NoInit); for dynamic simulation
     protected
-      parameter Physiolibrary.Types.GasSolubility alpha =  0.0105 * 1e-3
+      parameter Types.GasSolubility alpha =  0.0105 * 1e-3
         "oxygen solubility in plasma"; // by Siggaard Andersen: 0.0105 (mmol/l)/kPa
-      parameter Physiolibrary.Types.Fraction L = 7.0529*10^6
+      parameter Types.Fraction L = 7.0529*10^6
         "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
-      parameter Physiolibrary.Types.Fraction c = 0.00431555
+      parameter Types.Fraction c = 0.00431555
         "=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit";
-      parameter Physiolibrary.Types.Concentration KR = 0.000671946
+      parameter Types.Concentration KR = 0.000671946
         "oxygen dissociation on relaxed(R) hemoglobin subunit";   //*7.875647668393782383419689119171e-5
                                                                 //10.500001495896 7.8756465463794e-05
 
-      parameter Physiolibrary.Types.Concentration KT=KR/c
+      parameter Types.Concentration KT=KR/c
         "oxygen dissociation on tensed(T) hemoglobin subunit";
-    //  Physiolibrary.Types.Fraction sO2 "hemoglobin oxygen saturation";
+    //  Types.Fraction sO2 "hemoglobin oxygen saturation";
 
-    //  parameter Physiolibrary.Types.AmountOfSubstance totalAmountOfHemoglobin=1;
-    //  Physiolibrary.Types.AmountOfSubstance totalAmountOfRforms;
-    //  Physiolibrary.Types.AmountOfSubstance totalAmountOfTforms;
+    //  parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
+    //  Types.AmountOfSubstance totalAmountOfRforms;
+    //  Types.AmountOfSubstance totalAmountOfTforms;
 
     public
       Chemical.Components.Substance T0(
@@ -448,10 +448,10 @@ package SteadyStates "Dynamic Simulation / Steady State"
         annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
       SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
         n=10, Total(displayUnit="mol") = 1,
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+        Simulation=Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{72,-2},{92,18}})));
 
-      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+      Chemical.Sources.UnlimitedGasStorage O2_in_air(Simulation=Types.SimulationType.SteadyState,
         T=295.15,
         usePartialPressureInput=true)
                     annotation (Placement(transformation(
@@ -819,8 +819,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model Allosteric_Hemoglobin2_MWC
       "Allosteric hemoglobin model implemented by Speciation blocks"
 
-     extends
-        Physiolibrary.Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
+     extends Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
 
     end Allosteric_Hemoglobin2_MWC;
 
@@ -828,14 +827,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
        //extends Modelica.Icons.Example;
        extends Hydraulic.Examples.CardiovascularSystem_GCG(
-        pulmonaryArteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        pulmonaryVeinsAndLeftAtrium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        rightAtrium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        arteries(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        veins(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        pulmonaryArteries(Simulation=Types.SimulationType.SteadyState),
+        pulmonaryVeinsAndLeftAtrium(Simulation=Types.SimulationType.SteadyState),
+        rightAtrium(Simulation=Types.SimulationType.SteadyState),
+        arteries(Simulation=Types.SimulationType.SteadyState),
+        veins(Simulation=Types.SimulationType.SteadyState,
             isDependent=true));
 
-       import Physiolibrary.Types.*;
+      import Physiolibrary.Types.*;
 
        Components.MassConservationLaw bloodVolume(
         n=5,
@@ -877,15 +876,15 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model ThermalBody_QHP_STeadyState
       extends Thermal.Examples.ThermalBody_QHP(
-        skin(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        skeletalMuscle(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        skin(Simulation=Types.SimulationType.SteadyState),
+        skeletalMuscle(Simulation=Types.SimulationType.SteadyState,
             isDependent=true),
-        core(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        GILumen(Simulation=Physiolibrary.Types.SimulationType.SteadyState));
+        core(Simulation=Types.SimulationType.SteadyState),
+        GILumen(Simulation=Types.SimulationType.SteadyState));
 
       Components.EnergyConservationLaw energyConservationLaw(
         n=4,
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Simulation=Types.SimulationType.SteadyState,
         useTotalInput=false,
         Total=-8373.6)
         annotation (Placement(transformation(extent={{70,-90},{90,-70}})));
@@ -917,20 +916,20 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model Cells_SteadyState
      extends Osmotic.Examples.Cell(
-        cells(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        cells(Simulation=Types.SimulationType.SteadyState,
             isDependent=true),
-        interstitium(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        interstitium1(Simulation=Physiolibrary.Types.SimulationType.SteadyState),
-        cells1(Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        interstitium(Simulation=Types.SimulationType.SteadyState),
+        interstitium1(Simulation=Types.SimulationType.SteadyState),
+        cells1(Simulation=Types.SimulationType.SteadyState,
             isDependent=true));
       Components.MassConservationLaw waterConservationLaw(
         n=2,
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Simulation=Types.SimulationType.SteadyState,
         Total(displayUnit="l") = 0.002)
         annotation (Placement(transformation(extent={{72,14},{92,34}})));
       Components.MassConservationLaw waterConservationLaw1(
         n=2,
-        Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+        Simulation=Types.SimulationType.SteadyState,
         Total(displayUnit="l") = 0.002)
         annotation (Placement(transformation(extent={{70,-92},{90,-72}})));
     equation
@@ -964,11 +963,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model EnergyConservationLaw "System Energy conservation law"
       extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
-      extends Physiolibrary.Icons.ConservationLaw;
+      extends Icons.ConservationLaw;
 
       parameter Integer n "Number of mass/energy fragments";
 
-      Physiolibrary.Types.RealIO.EnergyInput fragment[n] "Mass/Energy fragment"
+      Types.RealIO.EnergyInput fragment[n] "Mass/Energy fragment"
         annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
             iconTransformation(extent={{-120,-60},{-80,-20}})));
 
@@ -976,7 +975,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Energy Total = 1
+      parameter Types.Energy Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -985,7 +984,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
             rotation=270,
             origin={0,80})));
 
-      Physiolibrary.Types.Energy t "Current Mass/Energy";
+      Types.Energy t "Current Mass/Energy";
 
     equation
       if not useTotalInput then
@@ -1016,11 +1015,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model MassConservationLaw
       "System Mass (incompresible volume) conservation law"
       extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
-      extends Physiolibrary.Icons.ConservationLaw;
+      extends Icons.ConservationLaw;
 
       parameter Integer n "Number of mass/energy fragments";
 
-      Physiolibrary.Types.RealIO.VolumeInput fragment[n] "Mass/Energy fragment"
+      Types.RealIO.VolumeInput fragment[n] "Mass/Energy fragment"
         annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
             iconTransformation(extent={{-120,-60},{-80,-20}})));
 
@@ -1028,7 +1027,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Volume Total = 1
+      parameter Types.Volume Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1037,7 +1036,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
             rotation=270,
             origin={0,80})));
 
-      Physiolibrary.Types.Volume t "Current Mass/Energy";
+      Types.Volume t "Current Mass/Energy";
     equation
       if not useTotalInput then
         t=Total;
@@ -1067,12 +1066,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model MolarConservationLaw
       "System Amount of substance (=number of molecules) conservation law"
       extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
-      extends Physiolibrary.Icons.ConservationLaw;
+      extends Icons.ConservationLaw;
 
       parameter Integer n "Number of mass/energy fragments";
 
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput fragment[n]
-        "Mass/Energy fragment"
+      Types.RealIO.AmountOfSubstanceInput fragment[n] "Mass/Energy fragment"
         annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
             iconTransformation(extent={{-120,-60},{-80,-20}})));
 
@@ -1080,7 +1078,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.AmountOfSubstance Total = 1
+      parameter Types.AmountOfSubstance Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1089,7 +1087,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
             rotation=270,
             origin={0,80})));
 
-      Physiolibrary.Types.AmountOfSubstance t "Current Mass/Energy";
+      Types.AmountOfSubstance t "Current Mass/Energy";
       Types.RealIO.AmountOfSubstanceOutput totalAmountOfSubstance
         annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
     equation
@@ -1122,12 +1120,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model ElectricChargeConservationLaw
       "System amount of electric charge (=number of elementary charges) conservation law"
       extends Interfaces.SteadyStateSystem; //(Simulation=Types.SimulationType.SteadyState);
-      extends Physiolibrary.Icons.ConservationLaw;
+      extends Icons.ConservationLaw;
 
       parameter Integer n "Number of mass/energy fragments";
 
-      Physiolibrary.Types.RealIO.ElectricChargeInput fragment[n]
-        "Mass/Energy fragment"
+      Types.RealIO.ElectricChargeInput fragment[n] "Mass/Energy fragment"
         annotation (Placement(transformation(extent={{-120,-60},{-80,-20}}),
             iconTransformation(extent={{-120,-60},{-80,-20}})));
 
@@ -1135,7 +1132,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.ElectricCharge Total = 1
+      parameter Types.ElectricCharge Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
@@ -1144,7 +1141,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
             rotation=270,
             origin={0,80})));
 
-      Physiolibrary.Types.ElectricCharge t "Current Mass/Energy";
+      Types.ElectricCharge t "Current Mass/Energy";
     equation
       if not useTotalInput then
         t=Total;
@@ -1173,15 +1170,15 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     model ElementaryChargeConservationLaw
       "System amount of electric charge (=number of elementary charges) conservation law"
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem;
+      extends SteadyStates.Interfaces.SteadyStateSystem;
                                             //(Simulation=Types.SimulationType.SteadyState);
-      extends Physiolibrary.Icons.ConservationLaw;
+      extends Icons.ConservationLaw;
 
       parameter Integer NumberOfParticles=1 "Number of mass/energy fragments";
       parameter Integer Charges[NumberOfParticles] = {1}
         "Elementary charges of particles";
 
-      Physiolibrary.Types.RealIO.AmountOfSubstanceInput fragment[NumberOfParticles]
+      Types.RealIO.AmountOfSubstanceInput fragment[NumberOfParticles]
         "Mass/Energy fragment" annotation (Placement(transformation(extent={{-120,-60},
                 {-80,-20}}), iconTransformation(extent={{-120,-60},{-80,-20}})));
 
@@ -1189,17 +1186,17 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "=true, if total mass/energy is used as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.ElectricCharge Total = 1
+      parameter Types.ElectricCharge Total = 1
         "Total mass/energy if useTotalAsInput=false"
         annotation (Dialog(enable=not useTotalInput));
 
-      Physiolibrary.Types.RealIO.ElectricChargeInput total(start=Total)=t if
+      Types.RealIO.ElectricChargeInput total(start=Total)=t if
         useTotalInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,80})));
 
-      Physiolibrary.Types.ElectricCharge t "Current Mass/Energy";
+      Types.ElectricCharge t "Current Mass/Energy";
     equation
       if not useTotalInput then
         t=Total;
@@ -1235,14 +1232,13 @@ package SteadyStates "Dynamic Simulation / Steady State"
     partial model SteadyState
       "Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option."
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
-      import Physiolibrary.Types.*;
 
-      replaceable package Utilities = Physiolibrary.Types.FilesUtilities(directoryName=dirName)
+      replaceable package Utilities = Types.FilesUtilities(directoryName=dirName)
                                                                       constrainedby
-        Physiolibrary.Types.Utilities
+        Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -1285,11 +1281,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     initial equation
 
-      if Simulation == SimulationType.NormalInit then
+      if Simulation == Types.SimulationType.NormalInit then
         state = state_start;
-      elseif Simulation == SimulationType.ReadInit then
+      elseif Simulation == Types.SimulationType.ReadInit then
         state = Utilities.readReal(stateName, storeUnit);
-      elseif Simulation == SimulationType.InitSteadyState and not isDependent then
+      elseif Simulation == Types.SimulationType.InitSteadyState and not isDependent then
         der(state)=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
       end if;
 
@@ -1318,7 +1314,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         end if;
       end when;
 
-      if Simulation <> SimulationType.SteadyState then
+      if Simulation <> Types.SimulationType.SteadyState then
         der(state) = change;
       elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
          change = 0;
@@ -1333,11 +1329,9 @@ package SteadyStates "Dynamic Simulation / Steady State"
     partial model SteadyStates
       "Abstract class for any dynamic states calculation (for any derivations), which is driven by SimulationType option."
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
-      import Physiolibrary.Types.*;
 
-      replaceable package Utilities = Physiolibrary.Types.FilesUtilities
-                                                                      constrainedby
-        Physiolibrary.Types.Utilities
+      replaceable package Utilities = Types.FilesUtilities            constrainedby
+        Types.Utilities
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
       parameter Integer n "Number of states"
@@ -1351,7 +1345,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       parameter Real state_start[n] "State start or init value"
        annotation (Dialog(enable=false,group="Initialization", tab="IO"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -1383,11 +1377,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
     initial equation
       for i in 1:n loop
-      if Simulation == SimulationType.NormalInit then
+      if Simulation == Types.SimulationType.NormalInit then
         state[i] = state_start[i];
-      elseif Simulation == SimulationType.ReadInit then
+      elseif Simulation == Types.SimulationType.ReadInit then
           state[i] = Utilities.readReal(stateName[i] + "[" +String(i)+"]", storeUnit[i]);
-      elseif Simulation == SimulationType.InitSteadyState and not isDependent[i] then
+      elseif Simulation == Types.SimulationType.InitSteadyState and not isDependent[i] then
         der(state[i])=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
       end if;
 
@@ -1421,7 +1415,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         end if;
       end when;
 
-      if Simulation <> SimulationType.SteadyState then
+      if Simulation <> Types.SimulationType.SteadyState then
         der(state) = change;
       else
         for i in 1:n loop
@@ -1440,9 +1434,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     partial class SteadyStateSystem
       "Global abstract class, for additional global state equations"
 
-      import Physiolibrary.Types.*;
-
-      parameter SimulationType  Simulation(start=SimulationType.NormalInit)
+      parameter Types.SimulationType  Simulation(start=Types.SimulationType.NormalInit)
         "Dynamic with Initialization or Steady State"
         annotation (Dialog(group="Simulation type", tab="Simulation"));
 
@@ -1458,13 +1450,13 @@ package SteadyStates "Dynamic Simulation / Steady State"
         "In differential systems has the same meaning as the normalizedState. In steady state has no meaning.";
 
     initial equation
-      if (Simulation == SimulationType.SteadyState) or
-                                                     (Simulation == SimulationType.InitSteadyState) then
+      if (Simulation == Types.SimulationType.SteadyState) or
+                                                     (Simulation == Types.SimulationType.InitSteadyState) then
         state=ones(NumberOfDependentStates);
       end if;
     equation
 
-      if Simulation == SimulationType.SteadyState then
+      if Simulation == Types.SimulationType.SteadyState then
         normalizedState = ones(NumberOfDependentStates); //add additional global steady-state equations
         der(state)=zeros(NumberOfDependentStates);       //remove 'state' from system calculations
       else
@@ -1483,7 +1475,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>One of the main question in clinical medicine is how to stabilize the patient. In the fact of the oscillating heart, breathing, circadian rhythm or menstruation cycle the model could be designed as non-oscillating with variables such as period times, amplitudes, frequencies, mean values and other phase space variables. This type of model has better numerical stability for longer simulation time and even more it can be &QUOT;stabilized&QUOT;. This stabilization we called steady state. </p>
 <p>To be mathematically exact, we define an <i><b>steady state system</b></i> (SSS) as a non-differential system derived from a original differential system (DS) by using zero derivations and by adding <b>additional steady state equations</b> (ASSE). The number of the ASSE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASSE describes the system from the top view mostly such as the equations of mass conservation laws or the boundary equation of environment sources. To define a model as an SSS the user must switch each Simulation parameter in each block to value Types.SimulationType.SteadyState and must have correctly defined all necessary ASSE. This setting caused to ignoring any start values for any state and add zero derivation equations instead. Today does not exist Modelica environment, which could automatically find and remove generated dependent equations by this way. So the correct number of states must be marked as dependent (parameter isDependent) and the same number of ASSE must be inserted. Despite the fact, that model in this steady-state setting will be not locally balanced it should be globally balanced and without any dependent equation.</p>

@@ -82,48 +82,48 @@ package Thermal
     model ThermalBody_QHP
       import Physiolibrary;
       extends Modelica.Icons.Example;
-      Physiolibrary.Thermal.Components.HeatAccumulation
+      Thermal.Components.HeatAccumulation
                         core(SpecificHeat=3475.044, Weight=10.75)
         annotation (Placement(transformation(extent={{-12,-4},{8,16}})));
-      Physiolibrary.Thermal.Components.HeatAccumulation
+      Thermal.Components.HeatAccumulation
                         GILumen(Weight=1)
         annotation (Placement(transformation(extent={{40,-52},{60,-32}})));
-      Physiolibrary.Thermal.Components.HeatAccumulation
+      Thermal.Components.HeatAccumulation
                         skeletalMuscle(SpecificHeat=3475.044, Weight=7.05)
         annotation (Placement(transformation(extent={{36,42},{56,62}})));
-      Physiolibrary.Thermal.Components.IdealRadiator
+      Thermal.Components.IdealRadiator
                     muscleBloodFlow(
         MassFlow(displayUnit="g/min") = 0.0114,
         useMassFlowInput=false,
         SpecificHeat=3851.856)      annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             origin={32,30})));
-      Physiolibrary.Thermal.Sources.MassOutflow urination
+      Thermal.Sources.MassOutflow urination
         annotation (Placement(transformation(extent={{-28,-60},{-48,-40}})));
-      Physiolibrary.Thermal.Sources.MassOutflow lungsVapor(
+      Thermal.Sources.MassOutflow lungsVapor(
         VaporizationHeat(displayUnit="kcal/g") = 2428344,
         SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 4.6666666666667e-06)
         annotation (Placement(transformation(extent={{12,66},{32,86}})));
-      Physiolibrary.Thermal.Components.HeatAccumulation
+      Thermal.Components.HeatAccumulation
                         skin(
         relativeHeat_start=-8373.6,
         SpecificHeat=3475.044,
         Weight=0.56)
         annotation (Placement(transformation(extent={{-68,4},{-48,24}})));
-      Physiolibrary.Thermal.Components.IdealRadiator
+      Thermal.Components.IdealRadiator
                     skinBloodFlow(
         MassFlow(displayUnit="g/min") = 0.0028333333333333,
         useMassFlowInput=false,
         SpecificHeat=3851.856)    annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             origin={-28,2})));
-      Physiolibrary.Thermal.Sources.MassOutflow insensibleVapor(
+      Thermal.Sources.MassOutflow insensibleVapor(
         VaporizationHeat(displayUnit="kcal/g") = 2428344,
         SpecificHeat(displayUnit="kcal/(kg.K)"),
         MassFlow(displayUnit="g/min") = 6.5e-06)
         annotation (Placement(transformation(extent={{-48,32},{-28,52}})));
-      Physiolibrary.Thermal.Sources.MassOutflow sweating(VaporizationHeat(
+      Thermal.Sources.MassOutflow sweating(VaporizationHeat(
             displayUnit="kcal/g") = 2428344, SpecificHeat(displayUnit=
               "kcal/(kg.K)"))
         annotation (Placement(transformation(extent={{-44,58},{-24,78}})));
@@ -136,7 +136,7 @@ package Thermal
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-76,50})));
-      Physiolibrary.Thermal.Sources.UnlimitedHeat            ambient(T=295.15)
+      Thermal.Sources.UnlimitedHeat            ambient(T=295.15)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-76,84})));
@@ -158,7 +158,7 @@ package Thermal
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={78,-38})));
-      Physiolibrary.Thermal.Components.Stream
+      Thermal.Components.Stream
                  foodAbsorption(SpecificHeat=4186.8)
         annotation (Placement(transformation(extent={{44,-32},{24,-12}})));
     equation
@@ -312,13 +312,13 @@ package Thermal
       extends Interfaces.ConditionalMassFlow;
       extends Icons.Radiator;
 
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
+      parameter Types.SpecificHeatCapacity SpecificHeat=3851.856
         "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
 
-      Physiolibrary.Thermal.Interfaces.HeatPort_a
+      Thermal.Interfaces.HeatPort_a
                        q_in annotation (Placement(
             transformation(extent={{-110,10},{-90,30}})));
-      Physiolibrary.Thermal.Interfaces.HeatPort_b
+      Thermal.Interfaces.HeatPort_b
                        q_out annotation (Placement(
             transformation(extent={{-10,90},{10,110}})));
     equation
@@ -346,22 +346,22 @@ package Thermal
 
     model HeatAccumulation "Accumulating of heat to substance"
       extends Icons.HeatAccumulation;
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+      extends SteadyStates.Interfaces.SteadyState(
                                          state_start=relativeHeat_start, storeUnit=
           "kcal");
       Interfaces.HeatPort_a
                        q_in "Heat inflow/outflow connector"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
-      parameter Physiolibrary.Types.Heat relativeHeat_start = 0
+      parameter Types.Heat relativeHeat_start = 0
         "Heat start value = weight*(initialTemperature - 37degC)*specificHeat"
          annotation (Dialog(group="Initialization"));
 
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat= 4186.8
+      parameter Types.SpecificHeatCapacity SpecificHeat= 4186.8
         "Mass specific heat";
-      Physiolibrary.Types.Temperature T "Current temperature";
+      Types.Temperature T "Current temperature";
 
-      Physiolibrary.Types.RealIO.HeatOutput relativeHeat
+      Types.RealIO.HeatOutput relativeHeat
         "Current accumulated heat = weight*(T - 37degC)*specificHeat"
                                                                   annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -377,7 +377,7 @@ package Thermal
 
       parameter Types.Mass Weight=1 "Total mass weight if useMassInput=false"
         annotation (Dialog(enable=not useMassInput));
-      Physiolibrary.Types.RealIO.MassInput weight(start=Weight)=m if useMassInput
+      Types.RealIO.MassInput weight(start=Weight)=m if useMassInput
         "Weight of mass, where the heat are accumulated"                            annotation (Placement(transformation(extent={{-120,60},
                 {-80,100}})));
     protected
@@ -397,7 +397,7 @@ package Thermal
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>The &QUOT;HeatAccumulation&QUOT; library class models heat accumulation in Physiolibrary. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &QUOT;relativeHeat&QUOT;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
+<p>The &QUOT;HeatAccumulation&QUOT; library class models heat accumulation in  This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &QUOT;relativeHeat&QUOT;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
 </html>"),
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                 100}}),
@@ -420,7 +420,7 @@ package Thermal
         "Thermal conductance if useConductanceInput=false"
         annotation (Dialog(enable=not useConductanceInput));
 
-      Physiolibrary.Types.RealIO.ThermalConductanceInput conductance(start=Conductance)=c if useConductanceInput
+      Types.RealIO.ThermalConductanceInput conductance(start=Conductance)=c if useConductanceInput
                                                        annotation (Placement(
             transformation(extent={{-20,-20},{20,20}},
             rotation=270,
@@ -447,7 +447,7 @@ package Thermal
       extends Interfaces.OnePort;
       extends Interfaces.ConditionalMassFlow;
 
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat
+      parameter Types.SpecificHeatCapacity SpecificHeat
         "Of flow circuit medium";
 
     equation
@@ -506,13 +506,12 @@ package Thermal
     extends Modelica.Icons.SourcesPackage;
     model UnlimitedHeat "Prescribed temperature"
       //extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;
-      import Physiolibrary.Types.*;
 
       parameter Boolean useTemperatureInput = false
         "=true, if fixed temperature is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Temperature T = 0
+       parameter Types.Temperature T = 0
         "Fixed temperature at port if useTemperatureInput=false"
         annotation (Dialog(enable=not useTemperatureInput));
 
@@ -520,7 +519,7 @@ package Thermal
         "=true, if there is no flow at port in steady state"
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-      parameter SimulationType  Simulation=SimulationType.NormalInit
+      parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
@@ -528,13 +527,13 @@ package Thermal
                 {110,10}})));
 
     protected
-      Temperature t "Current temperature";
+      Types.Temperature t "Current temperature";
     public
       Types.RealIO.TemperatureInput temperature(start=T)= t if useTemperatureInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     initial equation
-      if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
         port.Q_flow = 0;
       end if;
 
@@ -545,7 +544,7 @@ package Thermal
 
       port.T = t;
 
-      if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
+      if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
           port.Q_flow = 0;
       end if;
 
@@ -585,7 +584,8 @@ This model defines a fixed temperature T at its port in Kelvin,
 i.e., it defines a fixed temperature as a boundary condition.
 </p>
 </HTML>
-", revisions="<html>
+",     revisions=
+             "<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -598,9 +598,9 @@ i.e., it defines a fixed temperature as a boundary condition.
       Interfaces.HeatPort_a
                        q_in "flow circuit"     annotation (Placement(
             transformation(extent={{-110,-10},{-90,10}})));
-      parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
+      parameter Types.SpecificEnergy VaporizationHeat=0
         "Used for whole outflow stream";                                            // or 2428344 for water vaporization
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
+      parameter Types.SpecificHeatCapacity SpecificHeat=4186.8
         "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
     equation
@@ -638,9 +638,9 @@ i.e., it defines a fixed temperature as a boundary condition.
                        q_out "flow circuit"     annotation (Placement(
             transformation(extent={{90,-10},{110,10}}), iconTransformation(
               extent={{90,-10},{110,10}})));
-      parameter Physiolibrary.Types.SpecificEnergy dH=0
+      parameter Types.SpecificEnergy dH=0
         "Enthalpy of incomming substance (i.e. enthalpy of solvation)";                                            // or 2428344 for water vaporization
-      parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
+      parameter Types.SpecificHeatCapacity SpecificHeat=4186.8
         "Of inflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
     equation
@@ -742,16 +742,16 @@ i.e., it defines a fixed temperature as a boundary condition.
         "=true, if mass flow input is used instead of parameter MassFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.MassFlowRate MassFlow=0
+      parameter Types.MassFlowRate MassFlow=0
         "Mass flow if useMassFlowInput=false"
         annotation (Dialog(enable=not useMassFlowInput));
 
-      Physiolibrary.Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if useMassFlowInput annotation (Placement(transformation(
+      Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if useMassFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-80,70})));
 
-      Physiolibrary.Types.MassFlowRate q "Current mass flow";
+      Types.MassFlowRate q "Current mass flow";
     equation
       if not useMassFlowInput then
         q = MassFlow;
@@ -766,11 +766,11 @@ i.e., it defines a fixed temperature as a boundary condition.
         "=true, if temperature input is used instead of parameter T"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Temperature T=0
+      parameter Types.Temperature T=0
         "Temperature if useTemperatureInput=false"
         annotation (Dialog(enable=not useTemperatureInput));
 
-      Physiolibrary.Types.RealIO.TemperatureInput t(start=T)=temperature if useTemperatureInput annotation (Placement(transformation(
+      Types.RealIO.TemperatureInput t(start=T)=temperature if useTemperatureInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-80,70}), iconTransformation(
@@ -778,7 +778,7 @@ i.e., it defines a fixed temperature as a boundary condition.
             rotation=270,
             origin={0,70})));
 
-      Physiolibrary.Types.Temperature temperature "Current temperature";
+      Types.Temperature temperature "Current temperature";
     equation
       if not useTemperatureInput then
         temperature = T;
@@ -789,9 +789,9 @@ i.e., it defines a fixed temperature as a boundary condition.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p>
-<p>In the Physiolibrary.Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Physiolibrary.Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p>
+<p>In the Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p>
 </html>"));
 end Thermal;

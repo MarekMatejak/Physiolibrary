@@ -125,8 +125,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
        extends Modelica.Icons.Example;
 
-       import Physiolibrary.Hydraulic;
-
       Components.ElasticVessel pulmonaryVeinsAndLeftAtrium(
         volume_start(displayUnit="l") = 0.0004,
         ZeroPressureVolume(displayUnit="l") = 0.0004,
@@ -162,7 +160,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Components.Pump
            rightHeart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-56,8},{-36,28}})));
-      Physiolibrary.Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+      Types.Constants.VolumeFlowRateConst RNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{-60,40},{-52,48}})));
       Sensors.PressureMeasure
                       pressureMeasure1
@@ -170,7 +168,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Components.Pump
            leftHeart(useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{16,6},{36,26}})));
-      Physiolibrary.Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
+      Types.Constants.VolumeFlowRateConst LNormalCO(k(displayUnit="l/min") = 8.3333333333333e-05)
         annotation (Placement(transformation(extent={{12,42},{20,50}})));
       Hydraulic.Components.Conductor
                kidney(Conductance(displayUnit="l/(mmHg.min)") = 1.4126159678427e-09)
@@ -189,11 +187,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         ZeroPressureVolume(displayUnit="l") = 0.0001,
         Compliance(displayUnit="l/mmHg") = 3.7503078792283e-08)
         annotation (Placement(transformation(extent={{-82,8},{-62,28}})));
-      Physiolibrary.Blocks.Factors.Spline       rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
+      Blocks.Factors.Spline       rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
             0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}}, Xscale=101325/760)
         "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
         annotation (Placement(transformation(extent={{-56,22},{-36,42}})));
-      Physiolibrary.Blocks.Factors.Spline       leftStarling(data={{-4,0,0},{-1,
+      Blocks.Factors.Spline       leftStarling(data={{-4,0,0},{-1,
             0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}}, Xscale=
             101325/760)
         "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
@@ -334,25 +332,25 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     extends Modelica.Icons.Package;
 
     model Conductor "Hydraulic resistor, where conductance=1/resistance"
-     extends Physiolibrary.Hydraulic.Interfaces.OnePort;
-     extends Physiolibrary.Icons.HydraulicResistor;
+     extends Hydraulic.Interfaces.OnePort;
+     extends Icons.HydraulicResistor;
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.HydraulicConductance Conductance=0
+      parameter Types.HydraulicConductance Conductance=0
         "Hydraulic conductance if useConductanceInput=false"
         annotation (Dialog(enable=not useConductanceInput));
 
-      Physiolibrary.Types.RealIO.HydraulicConductanceInput cond(start=Conductance)=c if useConductanceInput
+      Types.RealIO.HydraulicConductanceInput cond(start=Conductance)=c if useConductanceInput
                                                        annotation (Placement(
             transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60})));
 
     protected
-       Physiolibrary.Types.HydraulicConductance c;
+       Types.HydraulicConductance c;
     equation
       if not useConductanceInput then
         c=Conductance;
@@ -377,7 +375,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
-     extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+     extends SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
           "ml");
 
@@ -385,25 +383,23 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                            q_in
                             annotation (Placement(
             transformation(extent={{-14,-14},{14,14}})));
-      parameter Physiolibrary.Types.Volume volume_start = 1e-11
-        "Volume start value"
+      parameter Types.Volume volume_start = 1e-11 "Volume start value"
          annotation (Dialog(group="Initialization"));                                //default = 1e-5 ml
 
-      Physiolibrary.Types.Volume excessVolume
-        "Additional volume, that generate pressure";
+      Types.Volume excessVolume "Additional volume, that generate pressure";
 
        parameter Boolean useV0Input = false
         "=true, if zero-pressure-volume input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Physiolibrary.Types.Volume ZeroPressureVolume = 1e-11
+       parameter Types.Volume ZeroPressureVolume = 1e-11
         "Maximal volume, that does not generate pressure if useV0Input=false"
         annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
 
-        parameter Physiolibrary.Types.Volume CollapsingPressureVolume = 1e-12
+        parameter Types.Volume CollapsingPressureVolume = 1e-12
         "Maximal volume, which generate negative collapsing pressure"; //default = 1e-6 ml
 
-       Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume)= zpv if useV0Input
+       Types.RealIO.VolumeInput zeroPressureVolume(start=ZeroPressureVolume)= zpv if useV0Input
                                                         annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
@@ -412,11 +408,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Boolean useComplianceInput = false
         "=true, if compliance input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-      parameter Physiolibrary.Types.HydraulicCompliance Compliance = 1
+      parameter Types.HydraulicCompliance Compliance = 1
         "Compliance if useComplianceInput=false"
         annotation (Dialog(enable=not useComplianceInput));
 
-      Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) = c if useComplianceInput
+      Types.RealIO.HydraulicComplianceInput compliance(start=Compliance) = c if useComplianceInput
                                                             annotation (Placement(
             transformation(extent={{-20,-20},{20,20}},
             rotation=270,
@@ -425,26 +421,25 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Boolean useExternalPressureInput = false
         "=true, if external pressure input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-      parameter Physiolibrary.Types.Pressure ExternalPressure=0
+      parameter Types.Pressure ExternalPressure=0
         "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
         annotation (Dialog(enable=not useExternalPressureInput));
 
-      Physiolibrary.Types.RealIO.PressureInput externalPressure(start=ExternalPressure) = ep if useExternalPressureInput
+      Types.RealIO.PressureInput externalPressure(start=ExternalPressure) = ep if useExternalPressureInput
                                                        annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
             origin={80,80})));
 
-      Physiolibrary.Types.RealIO.VolumeOutput volume
-                                            annotation (Placement(transformation(
+      Types.RealIO.VolumeOutput volume      annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-100})));
 
     protected
-      Physiolibrary.Types.Volume zpv;
-      Physiolibrary.Types.HydraulicCompliance c;
-      Physiolibrary.Types.Pressure ep;
+      Types.Volume zpv;
+      Types.HydraulicCompliance c;
+      Types.Pressure ep;
 
     equation
       if not useV0Input then
@@ -492,7 +487,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end ElasticVessel;
 
     model Pump "Prescribed volumetric flow"
-      extends Physiolibrary.Hydraulic.Interfaces.OnePort;
+      extends Hydraulic.Interfaces.OnePort;
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
@@ -540,8 +535,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
-      extends Physiolibrary.Icons.HydrostaticGradient;
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
+      extends Icons.HydrostaticGradient;
+      Hydraulic.Interfaces.HydraulicPort_a
                            q_up "Top site"
                              annotation (extent=[-10, -110; 10, -90], Placement(
             transformation(extent={{66,26},{94,54}})));
@@ -554,11 +549,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Boolean useHeightInput = false "=true, if height input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.Height H=0
+      parameter Types.Height H=0
         "Height of hydrostatic column if useHeightInput=false"
         annotation (Dialog(enable=not useFlowInput));
 
-      Physiolibrary.Types.RealIO.HeightInput height(start=H)=h if useHeightInput
+      Types.RealIO.HeightInput height(start=H)=h if useHeightInput
         "Vertical distance between top and bottom connector"
                                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
@@ -576,7 +571,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
        //Blood density = 1060 kg/m3: Cutnell, John & Johnson, Kenneth. Physics, Fourth Edition. Wiley, 1998: 308.
 
-      Physiolibrary.Types.RealIO.AccelerationInput G(start=GravityAcceleration)=g if useExternalG
+      Types.RealIO.AccelerationInput G(start=GravityAcceleration)=g if useExternalG
         "Gravity acceleration"                                                                           annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
@@ -586,7 +581,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "=true, if musce pump effect is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Physiolibrary.Types.RealIO.FractionInput
+      Types.RealIO.FractionInput
                             pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
@@ -625,7 +620,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end HydrostaticColumn;
 
     model ElasticMembrane "Interaction between internal and external cavities"
-     extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+     extends SteadyStates.Interfaces.SteadyState(
                                         state_start=volume_start, storeUnit=
           "ml");
      extends Icons.InternalElasticBalloon;
@@ -636,15 +631,15 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                            q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
                 {54,14}})));
 
-     parameter Physiolibrary.Types.HydraulicCompliance Compliance "Compliance";
-     parameter Physiolibrary.Types.Volume zeroPressureVolume=0
+     parameter Types.HydraulicCompliance Compliance "Compliance";
+     parameter Types.Volume zeroPressureVolume=0
         "Maximal volume, that does not generate pressure";
-     parameter Physiolibrary.Types.Volume volume_start=0 "Volume start value"
+     parameter Types.Volume volume_start=0 "Volume start value"
          annotation (Dialog(group="Initialization"));
-     Physiolibrary.Types.Volume volume;
-     Physiolibrary.Types.Volume stressedVolume;
+     Types.Volume volume;
+     Types.Volume stressedVolume;
 
-     parameter Physiolibrary.Types.Volume NominalVolume=1e-6
+     parameter Types.Volume NominalVolume=1e-6
         "Scale numerical calculation from quadratic meter to miniliters.";
 
     equation
@@ -663,17 +658,17 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end ElasticMembrane;
 
     model Inertia "Inertia of the volumetric flow"
-      extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
+      extends SteadyStates.Interfaces.SteadyState(
                                          state_start=volumeFlow_start,
         storeUnit="ml/min");
       extends Interfaces.OnePort;
       extends Icons.Inertance;
 
-      parameter Physiolibrary.Types.VolumeFlowRate volumeFlow_start=0.3
+      parameter Types.VolumeFlowRate volumeFlow_start=0.3
         "Volumetric flow start value"
          annotation (Dialog(group="Initialization"));                                                          //5 l/min is normal volumetric flow in aorta
 
-      parameter Physiolibrary.Types.HydraulicInertance I "Inertance";
+      parameter Types.HydraulicInertance I "Inertance";
 
     equation
       state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
@@ -688,19 +683,19 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model Reabsorption "Divide inflow to outflow and reabsorption"
       import Physiolibrary;
-      extends Physiolibrary.Icons.Reabsorption;
+      extends Icons.Reabsorption;
 
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a
+      Hydraulic.Interfaces.HydraulicPort_a
                            Inflow                    annotation (Placement(
             transformation(extent={{-114,26},{-86,54}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
+      Hydraulic.Interfaces.HydraulicPort_b
                            Outflow
         annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b
+      Hydraulic.Interfaces.HydraulicPort_b
                            Reabsorption                annotation (Placement(
             transformation(extent={{-14,-114},{14,-86}})));
 
-      Physiolibrary.Types.RealIO.FractionInput FractReab
+      Types.RealIO.FractionInput FractReab
                                    annotation (Placement(transformation(extent={{-100,
                 -60},{-60,-20}})));
 
@@ -708,18 +703,18 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "=true, if minimal outflow is garanted"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Physiolibrary.Types.VolumeFlowRate OutflowMin = 0
+      parameter Types.VolumeFlowRate OutflowMin = 0
         "Minimal outflow if useExternalOutflowMin=false"
         annotation (Dialog(enable=not useExternalOutflowMin));
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
                                                            annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
             origin={40,80})));
 
     protected
-       Physiolibrary.Types.VolumeFlowRate om;
+       Types.VolumeFlowRate om;
     equation
       if not useExternalOutflowMin then
         om = OutflowMin;
@@ -762,13 +757,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       < 0: below knee point, diode locking
       > 0: above knee point, diode conducting */
 
-      parameter Physiolibrary.Types.HydraulicConductance _Gon(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-02
+      parameter Types.HydraulicConductance _Gon(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-02
         "Forward state-on conductance (open valve conductance)"
         annotation (Dialog(enable=not useLimitationInputs)); //= the same as resistance 1e-5 mmHg/(l/min)
-      parameter Physiolibrary.Types.HydraulicConductance _Goff(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-12
+      parameter Types.HydraulicConductance _Goff(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-12
         "Backward state-off conductance (closed valve conductance)"
         annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (l/min)/mmHg
-      parameter Physiolibrary.Types.Pressure Pknee(final min=0, start=0)
+      parameter Types.Pressure Pknee(final min=0, start=0)
         "Forward threshold pressure";
 
       parameter Boolean useLimitationInputs = false
@@ -789,9 +784,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             origin={60,100})));
 
     protected
-      Physiolibrary.Types.HydraulicConductance gon,goff;
-      constant Physiolibrary.Types.Pressure unitPressure=1;
-      constant Physiolibrary.Types.VolumeFlowRate unitFlow=1;
+      Types.HydraulicConductance gon,goff;
+      constant Types.Pressure unitPressure=1;
+      constant Types.VolumeFlowRate unitFlow=1;
 
     equation
       if not useLimitationInputs then
@@ -839,8 +834,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       extends Interfaces.OnePort;
       extends Icons.FlowMeasure;
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeFlow
-        "Actual volume flow rate"
+      Types.RealIO.VolumeFlowRateOutput volumeFlow "Actual volume flow rate"
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
@@ -863,7 +857,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Interfaces.HydraulicPort_a
                            q_in annotation (Placement(
             transformation(extent={{-60,-80},{-20,-40}})));
-      Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
+      Types.RealIO.PressureOutput pressure "Pressure"
                              annotation (Placement(transformation(extent={{40,-60},
                 {80,-20}})));
     equation
@@ -931,16 +925,17 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end UnlimitedPump;
 
       model UnlimitedVolume "Prescribed pressure at port"
-        import Physiolibrary.Types.*;
 
         parameter Boolean usePressureInput = false
         "=true, if pressure input is used"
           annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Pressure P=0 "Hydraulic pressure if usePressureInput=false"
+        parameter Types.Pressure P=0
+        "Hydraulic pressure if usePressureInput=false"
           annotation (Dialog(enable=not usePressureInput));
 
-        RealIO.PressureInput pressure(start=P)=p if usePressureInput "Pressure"
+        Types.RealIO.PressureInput pressure(start=P)=p if usePressureInput
+        "Pressure"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
         Interfaces.HydraulicPort_a
@@ -951,15 +946,15 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "=true, if there is no flow at port in steady state"
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
-       parameter Physiolibrary.Types.SimulationType  Simulation=SimulationType.NormalInit
+       parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
 
     protected
-        Pressure p;
+        Types.Pressure p;
 
       initial equation
-        if isIsolatedInSteadyState and (Simulation==SimulationType.InitSteadyState) then
+        if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
           y.q = 0;
         end if;
 
@@ -970,7 +965,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
         y.pressure = p;
 
-        if isIsolatedInSteadyState and (Simulation==SimulationType.SteadyState) then
+        if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
            y.q = 0;
         end if;
 
@@ -1062,8 +1057,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     extends Modelica.Icons.InterfacesPackage;
     connector HydraulicPort
       "Hydraulical connector with pressure and volumetric flow"
-      Physiolibrary.Types.Pressure pressure "Pressure";
-      flow Physiolibrary.Types.VolumeFlowRate q "Volume flow";
+      Types.Pressure pressure "Pressure";
+      flow Types.VolumeFlowRate q "Volume flow";
       annotation (Documentation(revisions="<html>
 <table>
 <tr>
@@ -1157,8 +1152,8 @@ Connector with one flow signal of type Real.
                              annotation (Placement(
             transformation(extent={{86,-14},{114,14}})));
 
-       Physiolibrary.Types.VolumeFlowRate volumeFlowRate "Volumetric flow";
-       Physiolibrary.Types.Pressure dp "Pressure gradient";
+       Types.VolumeFlowRate volumeFlowRate "Volumetric flow";
+       Types.Pressure dp "Pressure gradient";
     equation
       q_in.q + q_out.q = 0;
 
@@ -1169,7 +1164,7 @@ Connector with one flow signal of type Real.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">Physiolibrary.UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p>
 </html>"));
