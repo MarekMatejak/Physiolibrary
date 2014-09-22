@@ -37,4 +37,6 @@ convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
 
 convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
 
+convertClass("Physiolibrary.Blocks.Math.Exponentiation","Physiolibrary.Blocks.Math.Power")
+
 

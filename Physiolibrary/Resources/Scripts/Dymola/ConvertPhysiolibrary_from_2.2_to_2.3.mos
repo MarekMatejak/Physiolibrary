@@ -1,0 +1,8 @@
+// Convert from Physiolibrary 2.1.* to Physiolibrary 2.2.*
+
+// clear
+convertClear();
+
+convertClass("Physiolibrary.Blocks.Math.Exponentiation","Physiolibrary.Blocks.Math.Power")
+
+

@@ -151,7 +151,7 @@ This is discussed in the description of package
 </html>"));
         end Reciprocal;
 
-        block Exponentiation "b ^ u"
+        block Power "b ^ u"
 
           parameter Boolean useBaseInput = false
         "=true, if exponential base input is used instead of parameter Base"
@@ -190,7 +190,7 @@ This is discussed in the description of package
               extent={{-100,-40},{100,40}},
               lineColor={0,0,0},
                   textString="b^u")}));
-        end Exponentiation;
+        end Power;
 
     block Min "Pass through the smallest signal"
       extends Modelica.Blocks.Interfaces.MISO;
@@ -368,7 +368,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
    function Spline "Cubic spline interpolation function"
 
         input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
-        input Real[:,4] a "cubic polynom coefficients of curve segments between interpolating points"; //parametry kubiky
+        input Real[:,4] a
+        "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
         input Real xVal "input value of x to calculate y value"; //vstupni hodnota
 
         output Real yVal "y value at xVal";
@@ -464,13 +465,18 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 </html>"));
    end SplineCoefficients;
 
-        model Curve "2D natural cubic interpolation spline defined with (x,y,slope) points"
+        model Curve
+      "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
-             parameter Real x[:] = fill(Modelica.Constants.N_A,1) "x coordinations of interpolating points";
-             parameter Real y[:] = fill(Modelica.Constants.N_A,1) "y coordinations of interpolating points";
-             parameter Real slope[:] = fill(Modelica.Constants.N_A,1) "slopes at interpolating points";
+             parameter Real x[:] = fill(Modelica.Constants.N_A,1)
+        "x coordinations of interpolating points";
+             parameter Real y[:] = fill(Modelica.Constants.N_A,1)
+        "y coordinations of interpolating points";
+             parameter Real slope[:] = fill(Modelica.Constants.N_A,1)
+        "slopes at interpolating points";
 
-             parameter Real[:,3] data = transpose({x,y,slope}) "Array of interpolating points as {x,y,slope}";
+             parameter Real[:,3] data = transpose({x,y,slope})
+        "Array of interpolating points as {x,y,slope}";
 
             parameter Real Xscale = 1 "conversion scale to SI unit of x values";
             parameter Real Yscale = 1 "conversion scale to SI unit of y values";
@@ -522,7 +528,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
     model Normalization "effect = u/NormalValue"
      extends Icons.BaseFactorIcon;
 
-     parameter Real NormalValue=1 "Normal value of u, because y=(u/NormalValue)*yBase.";
+     parameter Real NormalValue=1
+        "Normal value of u, because y=(u/NormalValue)*yBase.";
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
@@ -562,7 +569,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
      parameter Real Yscale = 1 "conversion scale to SI unit of y values";
 
-     parameter Boolean UsePositiveLog10 = false "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
+     parameter Boolean UsePositiveLog10 = false
+        "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
 
       Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
 
@@ -589,7 +597,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
 
-     parameter String stateName=getInstanceName() "Name in Utilities input/output function"
+     parameter String stateName=getInstanceName()
+        "Name in Utilities input/output function"
          annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
 
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
@@ -740,7 +749,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
      parameter Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
 
-     parameter String stateName=getInstanceName() "Name in Utilities input/output function"
+     parameter String stateName=getInstanceName()
+        "Name in Utilities input/output function"
          annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
 
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
@@ -828,6 +838,6 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>"));
 end Blocks;

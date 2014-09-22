@@ -2599,8 +2599,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Types.RealIO.FractionOutput protonation
             "allosteric-dependent protonation"
             annotation (Placement(transformation(extent={{68,-76},{88,-56}})));
-          Blocks.Math.Exponentiation pow annotation (Placement(
-                transformation(
+          Blocks.Math.Power pow annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={92,38})));
@@ -2855,7 +2854,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(H3O.solute, tH2O.fragment[3]) annotation (Line(
-            points={{-8,2},{-8,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,-66.6667}},
+            points={{-8,2},{-8,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
+                -66.6667}},
             color={0,0,127},
             smooth=Smooth.None));
 
@@ -5080,7 +5080,7 @@ on the model behaviour.
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>", info="<html>
 <p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p>
 <p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p>

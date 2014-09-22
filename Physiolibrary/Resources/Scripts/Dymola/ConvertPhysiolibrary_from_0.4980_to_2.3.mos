@@ -333,7 +333,7 @@ convertClass("Physiolibrary.Blocks.Interfaces","Physiolibrary.Types.RealIO");
 
 convertClass("Physiolibrary.Blocks.Parts","Physiolibrary.Blocks.Math.Parts")
 convertClass("Physiolibrary.Blocks.Add","Physiolibrary.Blocks.Math.Add")
-convertClass("Physiolibrary.Blocks.Pow","Physiolibrary.Blocks.Math.Exponentiation")
+convertClass("Physiolibrary.Blocks.Pow","Physiolibrary.Blocks.Math.Power")
 convertClass("Physiolibrary.Blocks.Min","Physiolibrary.Blocks.Math.Min")
 convertClass("Physiolibrary.Blocks.Reciprocal","Physiolibrary.Blocks.Math.Reciprocal")
 convertClass("Physiolibrary.Blocks.MultiProduct","Modelica.Blocks.Math.MultiProduct")

@@ -174,8 +174,8 @@ convertClass("Physiolibrary.FileUtilities","Physiolibrary.Types.FileUtilities")
 
 
 
-convertClass("Physiolibrary.Blocks.Math.Pow","Physiolibrary.Blocks.Math.Exponentiation")
-convertClass("Physiolibrary.Blocks.Math.Pow2","Physiolibrary.Blocks.Math.Exponentiation")
+convertClass("Physiolibrary.Blocks.Math.Pow","Physiolibrary.Blocks.Math.Power")
+convertClass("Physiolibrary.Blocks.Math.Pow2","Physiolibrary.Blocks.Math.Power")
 convertModifiers("Physiolibrary.Blocks.Math.Pow2", fill("",0)  , {"useBaseInput=true"}, true);
 convertClass("Physiolibrary.Blocks.Math.MultiProduct","Modelica.Blocks.Math.MultiProduct")
 convertClass("Physiolibrary.Blocks.Curves","Physiolibrary.Blocks.Interpolation")

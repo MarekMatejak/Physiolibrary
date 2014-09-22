@@ -42,4 +42,6 @@ convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
 
 convertClass("Physiolibrary.Types.Constants.HydraulicResistanceConst","Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst")
 
+convertClass("Physiolibrary.Blocks.Math.Exponentiation","Physiolibrary.Blocks.Math.Power")
+
 
