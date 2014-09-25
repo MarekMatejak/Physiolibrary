@@ -3569,9 +3569,11 @@ constructed by the signals connected to this bus.
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0);
-  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0);
-  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min");
+  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby Real;
+  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby Real;
+  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
+  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
+    "chemical internal energy, chemical enthalpy, Gibb's energy ..";
   type MassConcentration =
                  Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
 
@@ -3585,8 +3587,6 @@ constructed by the signals connected to this bus.
   type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
   type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
     "vaporization, ..";
-  type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8)
-    "chemical internal energy, chemical enthalpy, Gibb's energy ..";
 
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
   type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=96.4853365);

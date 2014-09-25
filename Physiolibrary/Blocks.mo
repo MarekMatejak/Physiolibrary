@@ -589,6 +589,77 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 </html>"));
     end Spline;
 
+    model LagSpline "Adapt the input signal before interpolation"
+     extends Icons.BaseFactorIcon5;
+     Modelica.Blocks.Interfaces.RealInput u
+                  annotation (Placement(transformation(extent={{-100,-20},{-60,
+                20}})));
+     parameter Types.Time HalfTime(displayUnit="min"); //=3462.468;
+
+     parameter Real initialValue = 1 "as u/Xscale";
+
+     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+     parameter Real Yscale = 1 "conversion scale to SI unit of y values";
+
+     parameter Boolean UsePositiveLog10 = false
+        "x = if u_delayed/scaleX <=1 then 0 else log10(u_delayed/scaleX)";
+
+     parameter Real[:,3] data;
+      Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
+            HalfTime), y_start=initialValue*Xscale)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-38,38})));
+      Modelica.Blocks.Math.Feedback feedback annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-38,68})));
+      Types.Fraction effect;
+      Spline spline(
+        data=data,
+        Xscale=Xscale,
+        Yscale=Yscale,
+        UsePositiveLog10=UsePositiveLog10)
+        annotation (Placement(transformation(extent={{-10,-18},{10,2}})));
+    equation
+      effect = spline.effect;
+      connect(feedback.y, integrator.u) annotation (Line(
+          points={{-38,59},{-38,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(integrator.y, feedback.u2) annotation (Line(
+          points={{-38,27},{-38,16},{-62,16},{-62,68},{-46,68}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(feedback.u1, u) annotation (Line(
+          points={{-38,76},{-38,94},{-88,94},{-88,0},{-80,0}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(integrator.y, spline.u) annotation (Line(
+          points={{-38,27},{-38,-8},{-8,-8}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(yBase, spline.yBase) annotation (Line(
+          points={{0,20},{0,-6}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(spline.y, y) annotation (Line(
+          points={{0,-12},{0,-40}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation ( Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>If the input signal u is constant and it is different from starting delayed input d, the middle value between u and d will be reached after HalfTime.</p>
+<p>The mathematical background:</p>
+<p>d&apos;(t) = k*(u(t) - d(t))       =&GT;       The solution of d(t) in special case, if u(t) is constant at each time t:  d(t)=u+(d(0)-u)*e^(-k*t),  where the definition of HalfTime is  d(HalfTime) = d(0) + (d(0)-u)/2.</p>
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
+    end LagSpline;
+
     model SplineLag "Adapt the effect after interpolation"
      extends Icons.BaseFactorIcon3;
      Modelica.Blocks.Interfaces.RealInput u
@@ -665,82 +736,6 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 </html>"));
     end SplineLag;
 
-    model LagSpline "Adapt the input signal before interpolation"
-     extends Icons.BaseFactorIcon5;
-     Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-100,-20},{-60,
-                20}})));
-     parameter Types.Time HalfTime(displayUnit="min"); //=3462.468;
-
-     parameter Real initialValue = 1 "as u/Xscale";
-
-     parameter Real Xscale = 1 "conversion scale to SI unit of x values";
-     parameter Real Yscale = 1 "conversion scale to SI unit of y values";
-
-     parameter Real[:,3] data;
-      Interpolation.Curve
-                   curve(
-      x=data[:, 1],
-      y=data[:, 2],
-      slope=data[:, 3],
-        Xscale=Xscale,
-        Yscale=Yscale)
-        annotation (Placement(transformation(extent={{-28,18},{-8,38}})));
-      Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={0,-32})));
-      Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
-            HalfTime), y_start=initialValue*Xscale)
-        annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-50,50})));
-      Modelica.Blocks.Math.Feedback feedback annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-50,80})));
-      Types.Fraction effect;
-    equation
-      effect = curve.val;
-      connect(yBase, product.u1) annotation (Line(
-          points={{0,20},{0,30},{0,-20},{6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(product.y, y) annotation (Line(
-          points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-40}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(feedback.y, integrator.u) annotation (Line(
-          points={{-50,71},{-50,62}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(integrator.y, feedback.u2) annotation (Line(
-          points={{-50,39},{-50,28},{-74,28},{-74,80},{-58,80}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(feedback.u1, u) annotation (Line(
-          points={{-50,88},{-50,94},{-88,94},{-88,0},{-80,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(integrator.y, curve.u) annotation (Line(
-          points={{-50,39},{-50,28},{-28,28}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(curve.val, product.u2) annotation (Line(
-          points={{-8,28},{-6,28},{-6,-20}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation ( Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>", info="<html>
-<p>If the input signal u is constant and it is different from starting delayed input d, the middle value between u and d will be reached after HalfTime.</p>
-<p>The mathematical background:</p>
-<p>d&apos;(t) = k*(u(t) - d(t))       =&GT;       The solution of d(t) in special case, if u(t) is constant at each time t:  d(t)=u+(d(0)-u)*e^(-k*t),  where the definition of HalfTime is  d(HalfTime) = d(0) + (d(0)-u)/2.</p>
-</html>"));
-    end LagSpline;
 
     model SplineLagOrZero "LagSpline if not Failed"
      extends Icons.BaseFactorIcon2;
