@@ -1449,6 +1449,34 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
     end MolarEnergyConst;
+
+  block OneConst "1"
+
+        RealIO.FractionOutput     y "=1"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=1;
+    annotation (defaultComponentName="one",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+            textString="1")}));
+  end OneConst;
   end Constants;
 
   package RealIO
@@ -4296,7 +4324,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(inputFileName="input.txt")
             constrainedby Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
@@ -4304,6 +4332,13 @@ The Real output y is a constant signal:
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
+        /*  when initial() then
+    Modelica.Utilities.Streams.print(" ii " + varName + " = " + String(y) + " SI , store as " + storeUnit);
+  end when;
+  when terminal() then
+    Modelica.Utilities.Streams.print(" it " + varName + " = " + String(y) + " SI , store as " + storeUnit);
+  end when;
+*/
           y = k;
           annotation (
             Icon(coordinateSystem(
@@ -4333,7 +4368,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(inputSIFileName="input_SI.txt")
             constrainedby Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
@@ -4364,11 +4399,11 @@ The Real output y is a constant signal:
         end InputParameter_SI;
 
         block OutputFinal "Save variable to Output"
-          import Physiolibrary;
+        //  import Physiolibrary;
           extends Types.AbstractReal;
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(outputFileName="outputFinal.txt")
                                                          constrainedby
         Types.Utilities;
           IO.Input              y "Connector of Real input signal"
@@ -4376,6 +4411,7 @@ The Real output y is a constant signal:
 
         equation
           when terminal() then
+            //Modelica.Utilities.Streams.print(" < " + varName + " = " + String(y) + " SI , store as " + storeUnit);
             Utilities.writeReal(
               varName,
               y,
@@ -4405,11 +4441,11 @@ The Real output y is a constant signal:
         end OutputFinal;
 
         block OutputFinal_SI "Save variable to Output"
-          import Physiolibrary;
+        //  import Physiolibrary;
           extends Types.AbstractReal;
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputFinal_SI.txt")
                                                          constrainedby
         Types.Utilities;
           IO.Input              y "Connector of Real input signal"
@@ -4443,12 +4479,93 @@ The Real output y is a constant signal:
 </html>"));
         end OutputFinal_SI;
 
+        block OutputInitial "Save variable to Output"
+        //  import Physiolibrary;
+          extends Types.AbstractReal;
+          replaceable package IO = Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Types.FilesUtilities(outputFileName="outputInitial.txt")
+                                                         constrainedby
+        Types.Utilities;
+          IO.Input              y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+        equation
+          when initial() then
+            //Modelica.Utilities.Streams.print(" < " + varName + " = " + String(y) + " SI , store as " + storeUnit);
+            Utilities.writeReal(
+              varName,
+              y,
+              storeUnit,
+              unitConversions);
+          end when;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputInitial;
+
+        block OutputInitial_SI "Save variable to Output"
+         // import Physiolibrary;
+          extends Types.AbstractReal;
+          replaceable package IO = Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputInitial_SI.txt")
+                                                         constrainedby
+        Types.Utilities;
+          IO.Input              y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+        equation
+          when initial() then
+            Utilities.writeReal_SI(
+              varName,
+              y);
+          end when;
+          annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputInitial_SI;
+
         block OutputComparison "Save variable comparison to file"
-          import Physiolibrary;
+        //  import Physiolibrary;
           extends Types.AbstractReal(             k=Utilities.readReal(varName,storeUnit,unitConversions));
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison_SI.txt")
                                                          constrainedby
         Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
@@ -4496,11 +4613,11 @@ The Real output y is a constant signal:
 
         block OutputComparison_SI
       "Save variable comparison to file using SI units during input and output"
-          import Physiolibrary;
+        //  import Physiolibrary;
           extends Types.AbstractReal(             k=Utilities.readReal_SI(varName));
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Types.FilesUtilities
+          replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparison_SI.txt")
                                                          constrainedby
         Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
@@ -4543,6 +4660,107 @@ The Real output y is a constant signal:
 </p>
 </html>"));
         end OutputComparison_SI;
+
+        block OutputInitialComparison "Save variable comparison to file"
+        //  import Physiolibrary;
+          extends Types.AbstractReal(             k=Utilities.readReal(varName,storeUnit,unitConversions));
+          replaceable package IO = Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparisonInitial.txt")
+                                                         constrainedby
+        Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.RealInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter T initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when initial() then
+           Utilities.writeComparison(
+            varName,
+            k,
+            initialValue,
+            y,
+            storeUnit,
+            unitConversions);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputInitialComparison;
+
+        block OutputInitialComparison_SI
+      "Save variable comparison to file using SI units"
+         // import Physiolibrary;
+          extends Types.AbstractReal(             k=Utilities.readReal_SI(varName));
+          replaceable package IO = Types.RealExtension.IO (
+                                            redeclare type Type=T);
+          replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparisonInitial_SI.txt")
+                                                         constrainedby
+        Types.Utilities
+           annotation (Dialog(group="Functions to read or store",tab="Types"));
+
+          Modelica.Blocks.Interfaces.RealInput
+                                y "Connector of Real input signal"
+            annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
+
+    protected
+          parameter T initialValue(fixed=false);
+        initial equation
+          initialValue = y;
+        equation
+          when initial() then
+           Utilities.writeComparison_SI(
+            varName,
+            k,
+            initialValue,
+            y);
+          end when;
+
+            annotation (
+            Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={2,2},
+            initialScale=0.04), graphics={Rectangle(
+              extent={{-100,20},{100,-20}},
+              lineColor={0,0,255},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255}), Text(
+              extent={{-100,-10},{100,10}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              textString="%varName")}),
+        Documentation(info="<html>
+<p>
+The Real output y is a constant signal:
+</p>
+</html>"));
+        end OutputInitialComparison_SI;
 
     package IO
       extends Modelica.Icons.BasesPackage;
@@ -4736,33 +4954,32 @@ other wariant: //Format "<variableName>=<value><unit>"
 
                nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
                if nextIndex>lineLen then
-              if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
-                Streams.error("No units detected for variable '" + name +
-                  "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
-                 end if;
-             //    Streams.print(name + "\t " + String(inputValue) + " (no units)");
+                   if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
+                     Streams.error("No units detected for variable '" + name +
+                                    "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " (no units)");
                else
-                 str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-              if str <> unitConversions[typeDef].DisplayUnit then
-                Streams.error("Units '" + str + "' not expected for variable '"
-                   + name + "' in file '" + fn + "'. Expected unis are '" +
-                  unitConversions[typeDef].DisplayUnit + "'!\n");
-                 end if;
-              //   Streams.print(name + "\t " + String(inputValue) + " " + str);
+                   str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
+                   if str <> unitConversions[typeDef].DisplayUnit then
+                      Streams.error("Units '" + str + "' not expected for variable '"
+                       + name + "' in file '" + fn + "'. Expected unis are '" +
+                      unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " " + str);
                end if;
                value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
-             //  Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
+               //Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
                found := true;
-            // end if;  //Format "<variableName>=<value><unit>"
+               // end if;  //Format "<variableName>=<value><unit>"
 
-             //Format "<variableName>\n<value><unit>"
-             else
-             // wrong name, skip lines
+               //Format "<variableName>\n<value><unit>"
+           else
+               // wrong name, skip lines
                iline := iline + 2;
                // read next variable name
                (line, endOfFile) :=Streams.readLine(fn, iline);
-
-             end if;
+           end if;
          end while;
 
          if not found then
@@ -5514,7 +5731,15 @@ The Real output y is a constant signal:
             Quantity="MolarEnergy",
             Unit="J/mol",
             DisplayUnit="kcal/mol",
-            Scale=4186.8)}
+            Scale=4186.8),RealTypeRecord(
+            Quantity="Pharmacology Concentration",
+            Unit="1/m3",
+            DisplayUnit="iu/l",
+            Scale=1000),RealTypeRecord(
+            Quantity="Pharmacology Concentration",
+            Unit="1/m3",
+            DisplayUnit="uiu/ml",
+            Scale=1)}
         "All defined Real types - units, displayUnits, conversions, nominals";
 
        constant String[:] Prefix =    {"","m", "u", "n", "p"};

@@ -674,14 +674,10 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
 
+     parameter Boolean UsePositiveLog10 = false
+        "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
+
      parameter Real[:,3] data;
-      Interpolation.Curve
-                   curve(
-      x=data[:, 1],
-      y=data[:, 2],
-      slope=data[:, 3],
-        Xscale=Xscale)
-        annotation (Placement(transformation(extent={{-68,58},{-48,78}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -699,23 +695,22 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
             rotation=270,
             origin={-26,44})));
       Types.Fraction effect;
+      Spline spline(
+        data=data,
+        Xscale=Xscale,
+        UsePositiveLog10=UsePositiveLog10)
+        annotation (Placement(transformation(extent={{-36,56},{-16,76}})));
+      Types.Constants.FractionConst fraction(k(displayUnit="1") = 1)
+        annotation (Placement(transformation(extent={{-44,82},{-36,90}})));
     equation
       //der(effect) = (ln(2)/HalfTime)*(spline(data,u)-effect)
       effect = integrator.y;
-      connect(curve.u, u) annotation (Line(
-          points={{-68,68},{-83,68},{-83,0},{-80,0}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
           points={{0,20},{0,30},{0,-20},{6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, y) annotation (Line(
           points={{-2.02067e-015,-43},{-2.02067e-015,-55.5},{0,-55.5},{0,-40}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(curve.val, feedback.u1) annotation (Line(
-          points={{-48,68},{-26,68},{-26,52}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(feedback.y, integrator.u) annotation (Line(
@@ -730,12 +725,24 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           points={{-26,1},{-26,-8},{-6,-8},{-6,-20}},
           color={0,0,127},
           smooth=Smooth.None));
+      connect(feedback.u1, spline.y) annotation (Line(
+          points={{-26,52},{-26,62}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(u, spline.u) annotation (Line(
+          points={{-80,0},{-82,0},{-82,66},{-34,66}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(fraction.y, spline.yBase) annotation (Line(
+          points={{-35,86},{-26,86},{-26,68}},
+          color={0,0,127},
+          smooth=Smooth.None));
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end SplineLag;
-
 
     model SplineLagOrZero "LagSpline if not Failed"
      extends Icons.BaseFactorIcon2;

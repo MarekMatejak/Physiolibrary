@@ -1223,5 +1223,13 @@ package Icons "Icons for physiological models"
                     Bitmap(extent={{-100,100},{100,-100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/krevniReciste.png")}));
   end PeripheralCirculation;
+
+  model HeartVentricle
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={
+                    Bitmap(extent={{-100,100},{100,-100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/komoraSrdce.png")}));
+  end HeartVentricle;
   annotation (Documentation(revisions=""));
 end Icons;
