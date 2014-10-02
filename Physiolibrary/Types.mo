@@ -1479,6 +1479,43 @@ package Types "Physiological units with nominals"
   end OneConst;
   end Constants;
 
+  package ScaleConstants
+      extends Modelica.Icons.SourcesPackage;
+
+  block Power "Constant signal of type Power per Mass"
+   parameter Types.PowerPerMass k "Constant Power output value";
+        RealIO.PowerOutput y "Power constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    RealIO.MassInput mass annotation (Placement(transformation(extent={{-20,20},{20,
+              60}}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=270,
+          origin={0,40})));
+  equation
+        y=k*mass;
+    annotation (defaultComponentName="power",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end Power;
+  end ScaleConstants;
+
   package RealIO
     extends Modelica.Icons.Package;
 
@@ -3611,16 +3648,17 @@ constructed by the signals connected to this bus.
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1, min=0);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
   type Power = Modelica.SIunits.Power(displayUnit="kcal/min", nominal=4186.8/60);
+  type PowerPerMass = Real(final quantity="Power per Mass",final unit="W/kg",displayUnit="cal/(g.min)", nominal=4.1868/(0.001*60));
   type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
   type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
   type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
     "vaporization, ..";
 
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
-  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=96.4853365);
+  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=(9.64853399*10^4)/1000);
   type VolumeDensityOfCharge =
-                        Modelica.SIunits.VolumeDensityOfCharge(displayUnit="meq/l", nominal=0.0964853365);
-  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=1.60808894);
+                        Modelica.SIunits.VolumeDensityOfCharge(displayUnit="meq/l", nominal=(9.64853399*10^4));
+  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=(9.64853399*10^4/1000)/60);
 
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
@@ -4565,7 +4603,7 @@ The Real output y is a constant signal:
           extends Types.AbstractReal(             k=Utilities.readReal(varName,storeUnit,unitConversions));
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
-          replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison_SI.txt")
+          replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison.txt")
                                                          constrainedby
         Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));

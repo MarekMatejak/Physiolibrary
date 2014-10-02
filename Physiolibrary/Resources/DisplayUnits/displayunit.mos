@@ -22,6 +22,8 @@ defineUnitConversion("J/mol", "kcal/mol", 1/4186.8 );       //molar energy
 defineUnitConversion("J/(kg.K)", "kcal/(kg.K)", 1/4186.8 );   //capacity
 defineUnitConversion("W/K", "kcal/(min.K)", 60/4186.8 );  //conductance
 defineUnitConversion("W", "kcal/min", 60/4186.8 );               //flow
+defineUnitConversion("W", "cal/min", 60/4.1868 );               //flow
+defineUnitConversion("W/kg", "cal/(g.min)", 60/4186.8 );               //power per mass
 
 //Pharmacological international units of human secreted substances (http://www.who.int/bloodproducts/catalogue/Alph2014.pdf?ua=1)
 defineUnitConversion("1", "iu", 1 ); 
@@ -78,9 +80,12 @@ defineUnitConversion("mol", "mmol", 10^3 );
 defineUnitConversion("mol", "umol", 10^6 );
 defineUnitConversion("mol", "nmol", 10^9 );
 defineUnitConversion("mol", "pmol", 10^12 );
+defineUnitConversion("mol/m3", "mmol/ml", 10^(-3) );
 defineUnitConversion("mol/m3", "mol/l", 10^(-3) );
 defineUnitConversion("mol/m3", "mmol/l", 1 );
-defineUnitConversion("mol/m3", "mmol/ml", 10^(-3) );
+defineUnitConversion("mol/m3", "umol/l", 1e3 );
+defineUnitConversion("mol/m3", "nmol/l", 1e6 );
+defineUnitConversion("mol/m3", "pmol/l", 1e9 );
 defineUnitConversion("mol/s", "mol/min", 60 );
 defineUnitConversion("mol/s", "mmol/min", 60*10^3 );
 defineUnitConversion("mol/s", "umol/min", 60*10^6 );

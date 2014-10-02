@@ -64,11 +64,7 @@ This is discussed in the description of package
               extent={{-150,-150},{150,-110}},
               lineColor={0,0,0},
               textString="k=%k"),
-            Line(points={{-80,-80},{80,80}}, color={0,0,127}),
-            Text(
-              extent={{-150,106},{150,146}},
-              lineColor={0,0,0},
-              textString="%stateName")}),
+            Line(points={{-80,-80},{80,80}}, color={0,0,127})}),
         Diagram(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
