@@ -425,6 +425,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
         annotation (Dialog(enable=not useExternalPressureInput));
 
+      parameter Types.Pressure MinimalCollapsingPressure = -101325;
       Types.RealIO.PressureInput externalPressure(start=ExternalPressure) = ep if useExternalPressureInput
                                                        annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
@@ -440,6 +441,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Types.Volume zpv;
       Types.HydraulicCompliance c;
       Types.Pressure ep;
+      parameter Types.Pressure a=MinimalCollapsingPressure/log(Modelica.Constants.eps);
 
     equation
       if not useV0Input then
@@ -458,7 +460,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       then
       excessVolume/c + ep
      else
-      log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)));
+      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)));
       //then: normal physiological state
       //else: abnormal collapsing state
 
