@@ -794,7 +794,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         goff = _Goff;
       end if;
 
-      open = passableVariable > 0;
+      open = passableVariable > Modelica.Constants.eps;
 
       dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
       volumeFlowRate = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
