@@ -3737,7 +3737,7 @@ constructed by the signals connected to this bus.
 
       block Heat = Variable(redeclare type T=Types.Heat,storeUnit="kcal");
       block Temperature = Variable(redeclare type T =
-          Types.Temperature,                             k=310.15, storeUnit="degC");
+          Types.Temperature,  storeUnit="degC");
       block HeatFlowRate = Variable(redeclare type T =
             Types.HeatFlowRate,storeUnit="kcal/min");
       block Power = Variable(redeclare type T =
@@ -5680,6 +5680,11 @@ The Real output y is a constant signal:
             Unit="J",
             DisplayUnit="kcal",
             Scale=4186.8),RealTypeRecord(
+            Quantity="ThermodynamicTemperature",
+            Unit="K",
+            DisplayUnit="K",
+            Scale=1,
+            Start=310.15),RealTypeRecord(
             Quantity="ThermodynamicTemperature",
             Unit="K",
             DisplayUnit="degC",
