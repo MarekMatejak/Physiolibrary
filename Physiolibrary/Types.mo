@@ -155,78 +155,147 @@ package Types "Physiological units with nominals"
 </html>"));
     end Units;
 
-    model ParameterSet
-    extends Modelica.Icons.Example;
+    package IO_Bus
+      import Physiolibrary;
+      extends Physiolibrary.Types.IO_Bus;
 
-      package T=Types.RealTypes;
+      redeclare model extends Variables "Example of subsystem outputs"
 
-      T.Pressure Bone_PO2(varName="Bone-Flow.PO2")
-        "Partial oxygen pressure in bone blood venules."
-      annotation (Placement(transformation(extent={{-80,24},{2,106}})));
-      T.VolumeFlowRate BoneBloodFlow(varName="Bone-Flow.BloodFlow")
-        "Blood flow through bones"
-      annotation (Placement(transformation(extent={{-80,-10},{2,72}})));
-      T.MolarFlowRate BoneO2Need(varName="Bone-Metabolism.O2-Need")
-        "Current desired delivery flow of oxygen to bone metabolism"
-      annotation (Placement(transformation(extent={{-80,-50},{2,32}})));
-      T.Volume BoneLiquidVol(varName="Bone-Tissue.LiquidVol")
-        "The extravascular water in bones. "
-      annotation (Placement(transformation(extent={{-80,-92},{2,-10}})));
-      BusConnector busConnector annotation (Placement(transformation(extent={{52,-20},
-                {90,18}}), iconTransformation(extent={{-12,-18},{28,22}})));
-    equation
-      connect(Bone_PO2.y, busConnector.Bone_PO2) annotation (Line(
-          points={{6.1,65},{70.05,65},{70.05,-1},{71,-1}},
-          color={0,0,127},
-          smooth=Smooth.None), Text(
-          string="%second",
-          index=1,
-          extent={{6,3},{6,3}}));
-      connect(BoneBloodFlow.y, busConnector.Bone_BloodFlow)
-                                                       annotation (Line(
-          points={{6.1,31},{71.05,31},{71.05,-1},{71,-1}},
-          color={0,0,127},
-          smooth=Smooth.None), Text(
-          string="%second",
-          index=1,
-          extent={{6,3},{6,3}}));
-      connect(BoneO2Need.y, busConnector.Bone_O2Need)
-                                                    annotation (Line(
-          points={{6.1,-9},{71.05,-9},{71.05,-1},{71,-1}},
-          color={0,0,127},
-          smooth=Smooth.None), Text(
-          string="%second",
-          index=1,
-          extent={{6,3},{6,3}}));
-      connect(BoneLiquidVol.y, busConnector.Bone_LiquidVol)
-                                                       annotation (Line(
-          points={{6.1,-51},{71.05,-51},{71.05,-1},{71,-1}},
-          color={0,0,127},
-          smooth=Smooth.None), Text(
-          string="%second",
-          index=1,
-          extent={{6,3},{6,3}}));
-      annotation (experiment(StopTime=1));
-    end ParameterSet;
+        T.Pressure Bone_PO2(varName="Bone-Flow.PO2")
+          "Partial oxygen pressure in bone blood venules."
+        annotation (Placement(transformation(extent={{-80,24},{2,106}})));
+        T.VolumeFlowRate BoneBloodFlow(varName="Bone-Flow.BloodFlow")
+          "Blood flow through bones"
+        annotation (Placement(transformation(extent={{-80,-10},{2,72}})));
+        T.MolarFlowRate BoneO2Need(varName="Bone-Metabolism.O2-Need")
+          "Current desired delivery flow of oxygen to bone metabolism"
+        annotation (Placement(transformation(extent={{-80,-50},{2,32}})));
+        T.Volume BoneLiquidVol(varName="Bone-Tissue.LiquidVol")
+          "The extravascular water in bones. "
+        annotation (Placement(transformation(extent={{-80,-92},{2,-10}})));
 
-    model InputParameterSet
-    extends ParameterSet( T(redeclare block Variable =
-              RealExtension.InputParameter (                                       redeclare
-                package Utilities = Types.ZeroUtilities)));
+      equation
+        connect(Bone_PO2.y, busConnector.Bone_PO2) annotation (Line(
+            points={{6.1,65},{70.05,65},{70.05,-2},{90,-2}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneBloodFlow.y, busConnector.Bone_BloodFlow)
+                                                         annotation (Line(
+            points={{6.1,31},{71.05,31},{71.05,-2},{90,-2}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneO2Need.y, busConnector.Bone_O2Need)
+                                                      annotation (Line(
+            points={{6.1,-9},{71.05,-9},{71.05,-2},{90,-2}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneLiquidVol.y, busConnector.Bone_LiquidVol)
+                                                         annotation (Line(
+            points={{6.1,-51},{71.05,-51},{71.05,-2},{90,-2}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        annotation (experiment(StopTime=1));
+      end Variables;
 
-    end InputParameterSet;
+      model Test
+        import Physiolibrary;
+        extends Modelica.Icons.Example;
 
-    model OutputFinalSet
-    extends ParameterSet( T(redeclare block Variable =
-            RealExtension.OutputFinal (
-              redeclare package Utilities = Types.ZeroUtilities)));
-    end OutputFinalSet;
-
-    model OutputComparisonSet
-    extends ParameterSet( T(redeclare block Variable =
-              RealExtension.OutputComparison (
-              redeclare package Utilities = Types.ZeroUtilities)));
-    end OutputComparisonSet;
+        Physiolibrary.Types.BusConnector busConnector
+          annotation (Placement(transformation(extent={{-4,-2},{36,38}})));
+        Physiolibrary.Types.Examples.IO_Bus.OutputToFile outputToFile
+          annotation (Placement(transformation(extent={{70,46},{90,66}})));
+        Physiolibrary.Types.Constants.PressureConst
+                   Bone_PO2(k=5599.54027143)
+          "Partial oxygen pressure in bone blood venules."
+        annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
+        Physiolibrary.Types.Constants.VolumeFlowRateConst
+                         BoneBloodFlow(k=5.3333333333333e-06)
+          "Blood flow through bones"
+        annotation (Placement(transformation(extent={{-90,30},{-70,50}})));
+        Physiolibrary.Types.Constants.MolarFlowRateConst
+                        BoneO2Need(k(displayUnit="ml_STP/min") = 1.027404402668e-05)
+          "Current desired delivery flow of oxygen to bone metabolism"
+        annotation (Placement(transformation(extent={{-90,-34},{-70,-14}})));
+        Physiolibrary.Types.Constants.VolumeConst
+                 BoneLiquidVol(k=0.0027) "The extravascular water in bones. "
+        annotation (Placement(transformation(extent={{-90,-70},{-70,-50}})));
+        Physiolibrary.Types.Examples.IO_Bus.OutputToFile_SI outputToFile_SI
+          annotation (Placement(transformation(extent={{72,-26},{92,-6}})));
+      equation
+        connect(busConnector, outputToFile.busConnector) annotation (Line(
+            points={{16,18},{48,18},{48,56},{80,56}},
+            color={255,204,51},
+            thickness=0.5,
+            smooth=Smooth.None));
+        connect(Bone_PO2.y, busConnector.Bone_PO2) annotation (Line(
+            points={{-67.5,80},{-11.95,80},{-11.95,18},{16,18}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneBloodFlow.y, busConnector.Bone_BloodFlow)
+                                                         annotation (Line(
+            points={{-67.5,40},{-10.95,40},{-10.95,18},{16,18}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneO2Need.y, busConnector.Bone_O2Need)
+                                                      annotation (Line(
+            points={{-67.5,-24},{-10.95,-24},{-10.95,18},{16,18}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(BoneLiquidVol.y, busConnector.Bone_LiquidVol)
+                                                         annotation (Line(
+            points={{-67.5,-60},{-10.95,-60},{-10.95,18},{16,18}},
+            color={0,0,127},
+            smooth=Smooth.None), Text(
+            string="%second",
+            index=1,
+            extent={{6,3},{6,3}}));
+        connect(busConnector, outputToFile_SI.busConnector) annotation (Line(
+            points={{16,18},{48,18},{48,-16},{82,-16}},
+            color={255,204,51},
+            thickness=0.5,
+            smooth=Smooth.None), Text(
+            string="%first",
+            index=-1,
+            extent={{-6,3},{-6,3}}));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics));
+      end Test;
+      annotation (Documentation(info="<html>
+<p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
+<h4>Be surre, that the directory &QUOT;io&QUOT; is in working directory (File-&GT;Change Directory...)!</h4>
+<p>Implementation:</p>
+<p>Model should be divided into subsystems, which has <b>output</b> variables grouped to busConnector (variables, which are inputs to other subsystems). For each subsystem S: <b>all</b> these variables should be defined in <b>extended redeclared</b> class S.IO_Bus.Variables, where package S.IO_Bus is <b>extended</b> from Physiolibrary.Types.IO_Bus. </p>
+<p>Usage:</p>
+<p>For loading values in SI units of these variables from file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.InputFromFile_SI.</p>
+<p>For loading values in non-SI units of these variables from file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.InputFromFile.</p>
+<p>For storing values in SI units of these variables from file &QUOT;io/output_SI.txt&QUOT; use block S.IO_Bus.OutputToFile_SI.</p>
+<p>For storing values in non-SI units of these variables from file &QUOT;io/output.txt&QUOT; use block S.IO_Bus.OutputToFile.</p>
+<p>For comparison values in SI units of these variables with file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.OutputComparison_SI and result will be stored as &QUOT;io/comparison_SI.txt&QUOT;.</p>
+<p>For comparison values in non-SI units of these variables with file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.OutputComparison and result will be stored as &QUOT;io/comparison.txt&QUOT;.</p>
+</html>"));
+    end IO_Bus;
   end Examples;
 
   package Constants
@@ -3605,16 +3674,441 @@ Note, this connector is \"empty\". When using it, the actual content is
 constructed by the signals connected to this bus.
 </p>
 </html>"));
-    /*
-  annotation (
-    Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-          {100,100}}), graphics={Rectangle(
-        extent={{-20,2},{22,-2}},
-        lineColor={0,0,255},
-        lineThickness=0.5)}),
-    ));
-*/
+
     end BusConnector;
+
+  package IO_Bus "Subsystem outputs manipulation"
+    extends Modelica.Icons.VariantsPackage;
+
+    replaceable package PhysiolibTypesRealTypes = Physiolibrary.Types.RealTypes
+      "Redefine this package only if there are not possible to use Physiolibrary types for variables!";
+
+    replaceable model Variables "Subsystem output busConnector variables"
+      package T = PhysiolibTypesRealTypes;
+
+      replaceable block BooleanVariable =
+        Physiolibrary.Types.BooleanExtension.Parameter constrainedby
+        Physiolibrary.Types.AbstractBoolean;
+
+      BusConnector busConnector annotation (Placement(transformation(extent={{
+                80,-12},{100,8}}), iconTransformation(extent={{-10,-10},{10,10}})));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics={Rectangle(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,255},
+              fillColor={215,215,215},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-200,-100},{200,-140}},
+              lineColor={0,0,255},
+              fillColor={215,215,215},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}), Diagram(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics),
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+    end Variables;
+
+    model InputFromFile = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.InputParameter),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.InputParameter)
+      "Load values in non-SI units from file io/input.txt"                                                            annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    model OutputToFile = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.OutputFinal),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.OutputFinal)
+      "Store values in non-SI units to file io/output.txt"                                                         annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    model OutputComparison = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.OutputComparison),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.OutputComparison)
+      "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"
+                                                                                                          annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    model InputFromFile_SI = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.InputParameter_SI),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.InputParameter)
+      "Load values in SI units from file io/input_SI.txt"                                                            annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    model OutputToFile_SI = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.OutputFinal_SI),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.OutputFinal)
+      "Store values in SI units to file io/output_SI.txt"                                                         annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    model OutputComparison_SI = Variables(T(
+      redeclare block Variable =
+            Physiolibrary.Types.RealExtension.OutputComparison_SI),
+      redeclare block BooleanVariable =
+            Physiolibrary.Types.BooleanExtension.OutputComparison)
+      "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"
+                                                                                                          annotation (
+        Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>"));
+
+    annotation (Documentation(revisions="<html>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p>GPL 3.0</p></td>
+</tr>
+<tr>
+<td><p>By:</p></td>
+<td><p>Charles University, Prague</p></td>
+</tr>
+<tr>
+<td><p>Date of:</p></td>
+<td><p>2014</p></td>
+</tr>
+</table>
+<p>Copyright &copy; 2014 Marek Matejak</p>
+</html>",   info="<html>
+<p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
+<h4>Be surre, that the directory &QUOT;io&QUOT; is in working directory (File-&GT;Change Directory...)!</h4>
+<p>Implementation:</p>
+<p>Model should be divided into subsystems, which has <b>output</b> variables grouped to busConnector (variables, which are inputs to other subsystems). For each subsystem S: <b>all</b> these variables should be defined in <b>extended redeclared</b> class S.IO_Bus.Variables, where package S.IO_Bus is <b>extended</b> from Physiolibrary.Types.IO_Bus. </p>
+<p>Usage:</p>
+<p>For loading values in SI units of these variables from file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.InputFromFile_SI.</p>
+<p>For loading values in non-SI units of these variables from file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.InputFromFile.</p>
+<p>For storing values in SI units of these variables from file &QUOT;io/output_SI.txt&QUOT; use block S.IO_Bus.OutputToFile_SI.</p>
+<p>For storing values in non-SI units of these variables from file &QUOT;io/output.txt&QUOT; use block S.IO_Bus.OutputToFile.</p>
+<p>For comparison values in SI units of these variables with file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.OutputComparison_SI and result will be stored as &QUOT;io/comparison_SI.txt&QUOT;.</p>
+<p>For comparison values in non-SI units of these variables with file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.OutputComparison and result will be stored as &QUOT;io/comparison.txt&QUOT;.</p>
+</html>"));
+  end IO_Bus;
+
+  expandable connector TorsoBusConnector
+    "Upper, Middle or Lower Torso properties"
+    annotation (
+      Icon(coordinateSystem(
+          preserveAspectRatio=true,
+          extent={{-100,-100},{100,100}},
+          grid={2,2},
+          initialScale=0.2), graphics={
+          Rectangle(
+            extent={{-20,-8},{20,-12}},
+            lineColor={170,255,255},
+            lineThickness=0.5,
+            fillColor={170,255,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-80,40},{80,40},{100,20},{80,-50},{60,-60},{-60,-60},{-80,
+                -50},{-100,20},{-80,40}},
+            lineColor={0,0,0},
+            fillColor={170,255,255},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-65,15},{-55,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-5,15},{5,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{55,15},{65,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-35,-25},{-25,-35}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{25,-25},{35,-35}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+          preserveAspectRatio=true,
+          extent={{-100,-100},{100,100}},
+          grid={2,2},
+          initialScale=0.2), graphics={
+          Polygon(
+            points={{-40,25},{40,25},{50,15},{40,-20},{30,-25},{-30,-25},{-40,
+                -20},{-50,15},{-40,25}},
+            lineColor={0,0,0},
+            fillColor={170,255,255},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-32.5,7.5},{-27.5,12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-2.5,12.5},{2.5,7.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{27.5,12.5},{32.5,7.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-17.5,-7.5},{-12.5,-12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{12.5,-7.5},{17.5,-12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Text(
+            extent={{-150,70},{150,40}},
+            lineColor={0,0,0},
+            textString="%name")}),
+      Documentation(info="<html>
+<p>
+This icon is designed for a <b>signal bus</b> connector.
+</p>
+</html>"));
+
+  end TorsoBusConnector;
+
+  expandable connector TissueBusConnector "Tissue properties"
+    annotation (
+      Icon(coordinateSystem(
+          preserveAspectRatio=true,
+          extent={{-100,-100},{100,100}},
+          grid={2,2},
+          initialScale=0.2), graphics={
+          Rectangle(
+            extent={{-20,-8},{20,-12}},
+            lineColor={127,0,0},
+            lineThickness=0.5,
+            fillColor={127,0,0},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-80,40},{80,40},{100,20},{80,-50},{60,-60},{-60,-60},{-80,
+                -50},{-100,20},{-80,40}},
+            lineColor={0,0,0},
+            fillColor={127,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-65,15},{-55,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-5,15},{5,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{55,15},{65,5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-35,-25},{-25,-35}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{25,-25},{35,-35}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+          preserveAspectRatio=true,
+          extent={{-100,-100},{100,100}},
+          grid={2,2},
+          initialScale=0.2), graphics={
+          Polygon(
+            points={{-40,25},{40,25},{50,15},{40,-20},{30,-25},{-30,-25},{-40,
+                -20},{-50,15},{-40,25}},
+            lineColor={0,0,0},
+            fillColor={127,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-32.5,7.5},{-27.5,12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-2.5,12.5},{2.5,7.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{27.5,12.5},{32.5,7.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{-17.5,-7.5},{-12.5,-12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{12.5,-7.5},{17.5,-12.5}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Text(
+            extent={{-150,70},{150,40}},
+            lineColor={0,0,0},
+            textString="%name")}),
+      Documentation(info="<html>
+<p>
+This icon is designed for a <b>signal bus</b> connector.
+</p>
+</html>"));
+
+  end TissueBusConnector;
 
   type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
