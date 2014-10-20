@@ -3677,13 +3677,14 @@ constructed by the signals connected to this bus.
 
     end BusConnector;
 
-  package IO_Bus "Subsystem outputs manipulation"
+  partial package IO_Bus "Subsystem outputs manipulation"
     extends Modelica.Icons.VariantsPackage;
 
     replaceable package PhysiolibTypesRealTypes = Physiolibrary.Types.RealTypes
       "Redefine this package only if there are not possible to use Physiolibrary types for variables!";
 
-    replaceable model Variables "Subsystem output busConnector variables"
+    replaceable partial model Variables
+      "Subsystem output busConnector variables"
       package T = PhysiolibTypesRealTypes;
 
       replaceable block BooleanVariable =
@@ -4181,17 +4182,18 @@ This icon is designed for a <b>signal bus</b> connector.
      constrainedby Real "Real type with units"
      annotation (Dialog(group="Simple type",tab="Types"));
 
-    parameter T k(fixed=true) = 0 "Value"
-    annotation (Dialog(group="Parameters"));
-
     parameter String varName=
     "Stored name"
     annotation (Dialog(group="Value I/O",tab="IO"));
                              //getInstanceName()
     parameter String storeUnit="" "Stored units"
     annotation (Dialog(group="Value I/O",tab="IO"));
+
+    parameter T k(fixed=true) = 0 "Value"
+      annotation (Evaluate=true, HideResult=true, Dialog(group="Parameters"));
+
     parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
-      "Unit conversions";
+      "Unit conversions"  annotation(Evaluate=true, HideResult=true);
   end AbstractReal;
 
   package RealTypes
