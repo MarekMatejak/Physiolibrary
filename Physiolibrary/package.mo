@@ -410,7 +410,28 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
   annotation (__Dymola_DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
-<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\">
+<tr>
+<td valign=\"top\"><p>Chemical</p></td>
+<td valign=\"top\"><p>Library of chemical domain.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Hydraulic</p></td>
+<td valign=\"top\"><p>Library of hydraulic domain. For modeling of cardiovascular system.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Thermal</p></td>
+<td valign=\"top\"><p>Library of termoregulation support. As extension of Modelica.Thermal.HeatTransfer.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Osmotic</p></td>
+<td valign=\"top\"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p>Icons</p></td>
+<td valign=\"top\"><p>Icons</p></td>
+</tr>
+<tr>
 <td valign=\"top\"><p>Types </p></td>
 <td valign=\"top\"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
 </tr>
@@ -418,44 +439,9 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
 <td valign=\"top\"><p>Blocks</p></td>
 <td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
-<tr>
-<td valign=\"top\"><p>Chemical</p></td>
-<td valign=\"top\"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>Hydraulic</p></td>
-<td valign=\"top\"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>Thermal</p></td>
-<td valign=\"top\"><p>Library of termoregulation support.</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>Osmotic</p></td>
-<td valign=\"top\"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>Mixed</p></td>
-<td valign=\"top\"><p>Library to join domains above together.</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>Icons</p></td>
-<td valign=\"top\"><p>Icons</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><p>FileUtilities</p></td>
-<td valign=\"top\"><p>Read/write values from/to file. </p></td>
-</tr>
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",

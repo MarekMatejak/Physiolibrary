@@ -357,6 +357,100 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                   textString="Homotopy")}));
         end HomotopyStrongComponentBreaker;
 
+        block DegradationGain
+      "Output the degradation flow from HalfTime and the amount as the input signal"
+
+          parameter Types.Time HalfTime
+        "Half time to compute degradation from amount or mass";
+    public
+          Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}}, rotation=0)));
+          Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
+             Placement(transformation(extent={{100,-10},{120,10}}, rotation=0)));
+
+        equation
+          y = (Modelica.Math.log(2)/HalfTime)*u;
+          annotation (
+            Documentation(info="<html>
+<p>
+This block computes output <i>y</i> as
+<i>product</i> of gain <i>k</i> with the
+input <i>u</i>:
+</p>
+<pre>
+    y = k * u;
+</pre>
+
+</html>"),         Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}}), graphics={
+            Polygon(
+              points={{-100,-100},{-100,100},{100,0},{-100,-100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,140},{150,100}},
+              textString="%name",
+              lineColor={0,0,255})}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}}), graphics={Polygon(
+              points={{-100,-100},{-100,100},{100,0},{-100,-100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-76,38},{0,-34}},
+              textString="k",
+              lineColor={0,0,255})}));
+        end DegradationGain;
+
+        block FractionGain "Output the fraction of the input signal"
+
+          parameter Types.Fraction f
+        "Half time to compute degradation from amount or mass";
+    public
+          Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}}, rotation=0)));
+          Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
+             Placement(transformation(extent={{100,-10},{120,10}}, rotation=0)));
+
+        equation
+          y = f*u;
+          annotation (
+            Documentation(info="<html>
+<p>
+This block computes output <i>y</i> as
+<i>product</i> of gain <i>k</i> with the
+input <i>u</i>:
+</p>
+<pre>
+    y = k * u;
+</pre>
+
+</html>"),         Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}}), graphics={
+            Polygon(
+              points={{-100,-100},{-100,100},{100,0},{-100,-100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,140},{150,100}},
+              textString="%name",
+              lineColor={0,0,255})}),
+            Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}}), graphics={Polygon(
+              points={{-100,-100},{-100,100},{100,0},{-100,-100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-76,38},{0,-34}},
+              textString="k",
+              lineColor={0,0,255})}));
+        end FractionGain;
   end Math;
 
   package Interpolation "Empirical Dependence of Two Variables"
@@ -556,7 +650,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
     model Spline "effect = spline(data,u)"
      extends Icons.BaseFactorIcon4;
-     Modelica.Blocks.Interfaces.RealInput u
+     Modelica.Blocks.Interfaces.RealInput u(nominal=Xscale)
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
@@ -602,7 +696,8 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
      parameter Real[:,3] data;
       Blocks.Math.Integrator integrator(k=(Modelica.Math.log(2)/
-            HalfTime), y_start=initialValue*Xscale)
+            HalfTime), y_start=initialValue*Xscale,
+        NominalValue=Xscale)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
