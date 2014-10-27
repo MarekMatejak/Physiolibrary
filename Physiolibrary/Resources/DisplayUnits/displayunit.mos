@@ -150,6 +150,7 @@ defineUnitConversion("mol/m3", "mosm/ml", 10^(-3) );
 defineUnitConversion("mol/s", "mosm/min", (10^3)*60 );
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (10^6)*133.322387415*60 ); //osmotic permeability
 defineUnitConversion("m3/(Pa.s)", "ml/(kPa.min)", (10^9)*60 ); 
+defineUnitConversion("m3/(Pa.s)", "l/(kPa.d)", (10^6)*60*60*24 ); 
 
 //Gases
 defineUnitConversion("mol", "litre_STP",  22.71095322615 ); //STP: 100Pa, 0degC
@@ -243,6 +244,7 @@ defineUnitConversion("N/m2","bar",1/1e5);
 // Volume Flow Rate
 defineUnitConversion("m3/s", "l/min", 1e3*60);
 defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
+defineUnitConversion("m3/s", "l/day", 1e3*60*60*24);
 
 // Density
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);
