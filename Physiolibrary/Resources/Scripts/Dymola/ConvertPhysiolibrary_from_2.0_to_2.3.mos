@@ -1,4 +1,4 @@
-// Convert from Physiolibrary 2.0 to Physiolibrary 2.2
+// Convert from Physiolibrary 2.0 to Physiolibrary 2.3
 
 // clear
 convertClear();
@@ -33,7 +33,10 @@ convertElement("Physiolibrary.Hydraulic.Sensors.PressureMeasure","actualPressure
 
 
 convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
-
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","q_in","q_in[1]");
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","ImpermeableSolutes","ImpermeableSolutes[1]");
+convertModifiers("Physiolibrary.Osmotic.Components.OsmoticCell",{"ImpermeableSolutes"}  , {"ImpermeableSolutes={%ImpermeableSolutes%}"}, true);
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","impermeableSolutes","impermeableSolutes[1]");
 
 convertClass("Physiolibrary.Thermal.Components.HeatOutstream","Physiolibrary.Thermal.Sources.MassOutflow")
 

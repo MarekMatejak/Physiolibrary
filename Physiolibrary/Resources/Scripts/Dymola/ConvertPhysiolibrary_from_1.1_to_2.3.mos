@@ -1,4 +1,4 @@
-// Convert from Physiolibrary 1.1 to Physiolibrary 2.2
+// Convert from Physiolibrary 1.1 to Physiolibrary 2.3
 
 // clear
 convertClear();
@@ -170,6 +170,9 @@ convertClass("Physiolibrary.Thermal.OnePort","Physiolibrary.Thermal.Interfaces.O
 
 convertClass("Physiolibrary.Osmotic.OsmoticCell","Physiolibrary.Osmotic.Components.OsmoticCell")
 convertModifiers("Physiolibrary.Osmotic.OsmoticCell", fill("",0)  , {"useImpermeableSolutesInput=true"}, true);
+convertElement("Physiolibrary.Osmotic.OsmoticCell","q_in","q_in[1]");
+convertElement("Physiolibrary.Osmotic.OsmoticCell","impermeableSolutes","impermeableSolutes[1]");
+
 convertClass("Physiolibrary.Osmotic.Membrane","Physiolibrary.Osmotic.Components.Membrane")
 convertElement("Physiolibrary.Osmotic.Membrane","temperature","T")
 convertClass("Physiolibrary.Osmotic.Membrane2","Physiolibrary.Osmotic.Components.Membrane2")

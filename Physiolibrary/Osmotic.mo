@@ -1,6 +1,7 @@
 within Physiolibrary;
 package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
  extends Modelica.Icons.Package;
+
   package Examples
     "Examples that demonstrate usage of the Osmotic flow components"
   extends Modelica.Icons.ExamplesPackage;
@@ -8,45 +9,39 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     model Cell
     extends Modelica.Icons.Example;
 
-      Components.OsmoticCell
-                  cells(volume_start(displayUnit="l") = 0.001,
-          ImpermeableSolutes=0.285)
+      Physiolibrary.Osmotic.Components.OsmoticCell cells(volume_start(
+            displayUnit="l") = 0.001, ImpermeableSolutes={0.285})
         annotation (Placement(transformation(extent={{-44,36},{-24,56}})));
-      Components.OsmoticCell
-                  interstitium(volume_start(displayUnit="l") = 0.001,
-          ImpermeableSolutes=0.28)
+      Physiolibrary.Osmotic.Components.OsmoticCell interstitium(volume_start(
+            displayUnit="l") = 0.001, ImpermeableSolutes={0.28})
         annotation (Placement(transformation(extent={{34,36},{54,56}})));
-      Components.Membrane
-               membrane(cond=1.2501026264094e-10)
+      Physiolibrary.Osmotic.Components.Membrane membrane(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,36},{16,56}})));
-      Components.OsmoticCell
-                  cells1(volume_start(displayUnit="l") = 0.001,
-          ImpermeableSolutes=0.285)
+      Physiolibrary.Osmotic.Components.OsmoticCell cells1(volume_start(
+            displayUnit="l") = 0.001, ImpermeableSolutes={0.285})
         annotation (Placement(transformation(extent={{-44,-64},{-24,-44}})));
-      Components.OsmoticCell
-                  interstitium1(volume_start(displayUnit="l") = 0.001,
-          ImpermeableSolutes=0.29)
+      Physiolibrary.Osmotic.Components.OsmoticCell interstitium1(volume_start(
+            displayUnit="l") = 0.001, ImpermeableSolutes={0.29})
         annotation (Placement(transformation(extent={{34,-64},{54,-44}})));
-      Components.Membrane
-               membrane1(cond=1.2501026264094e-10)
+      Physiolibrary.Osmotic.Components.Membrane membrane1(cond=1.2501026264094e-10)
         annotation (Placement(transformation(extent={{-4,-64},{16,-44}})));
     equation
-      connect(cells.q_in, membrane.q_in) annotation (Line(
+      connect(cells.q_in[1], membrane.q_in) annotation (Line(
           points={{-34,46},{-4,46}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(membrane.q_out, interstitium.q_in) annotation (Line(
+      connect(membrane.q_out, interstitium.q_in[1]) annotation (Line(
           points={{16,46},{44,46}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(cells1.q_in, membrane1.q_in) annotation (Line(
+      connect(cells1.q_in[1], membrane1.q_in) annotation (Line(
           points={{-34,-54},{-4,-54}},
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(membrane1.q_out, interstitium1.q_in) annotation (Line(
+      connect(membrane1.q_out, interstitium1.q_in[1]) annotation (Line(
           points={{16,-54},{44,-54}},
           color={127,127,0},
           thickness=1,
@@ -77,72 +72,73 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     model CerebrospinalFluid
     extends Modelica.Icons.Example;
 
-      Components.OsmoticCell CSF_osmotic(volume_start(displayUnit="ml")=
-          0.00015, ImpermeableSolutes=0.286*0.15) "cerebro-spinal fluid"
+      Physiolibrary.Osmotic.Components.OsmoticCell CSF_osmotic(volume_start(
+            displayUnit="ml") = 0.00015, ImpermeableSolutes={(0.286*0.15)})
+        "cerebro-spinal fluid"
         annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
-      Components.Membrane choroid_plexus(useHydraulicPressureInputs=true, cond(
-            displayUnit="ml/(mmHg.day)") = 1.9966916949595e-12)
+      Physiolibrary.Osmotic.Components.Membrane choroid_plexus(
+          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)") = 1.9966916949595e-12)
         "choroid plexus"
         annotation (Placement(transformation(extent={{-16,-6},{-36,14}})));
-      Hydraulic.Components.ElasticVessel CSF_hydraulic(
+      Physiolibrary.Hydraulic.Components.ElasticVessel CSF_hydraulic(
         volume_start=0.00015,
         ZeroPressureVolume=0.000145,
         Compliance=2.250184727537e-09) "cerebro-spinal fluid"
         annotation (Placement(transformation(extent={{-96,-32},{-76,-12}})));
-      Hydraulic.Components.Pump choroid_plexus_hydraulic(useSolutionFlowInput=
-            true) annotation (Placement(transformation(
+      Physiolibrary.Hydraulic.Components.Pump choroid_plexus_hydraulic(
+          useSolutionFlowInput=true) annotation (Placement(transformation(
             extent={{-10,10},{10,-10}},
             rotation=180,
             origin={8,-22})));
-      Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
+      Physiolibrary.Osmotic.Sensors.FlowMeasure flowMeasure annotation (Placement(
+            transformation(
             extent={{-10,10},{10,-10}},
             rotation=180,
             origin={8,4})));
-      Hydraulic.Sensors.PressureMeasure pressureMeasure
+      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure
         annotation (Placement(transformation(extent={{-90,64},{-70,84}})));
-      Sources.UnlimitedSolution ECF_osmotic(Osm=285)
+      Physiolibrary.Osmotic.Sources.UnlimitedSolution ECF_osmotic(Osm=285)
         "extracellular (extracerebrospinal) fluid osmolarity" annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={46,32})));
-      Hydraulic.Sources.UnlimitedVolume veins(P=0) annotation (Placement(
-            transformation(
+      Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins(P=0) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={82,86})));
-      Components.Membrane arachnoid_villi(useHydraulicPressureInputs=true, cond(
-            displayUnit="ml/(mmHg.day)") = 1.1285648710641e-11)
+      Physiolibrary.Osmotic.Components.Membrane arachnoid_villi(
+          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)") = 1.1285648710641e-11)
         "choroid plexus"
         annotation (Placement(transformation(extent={{-36,46},{-16,66}})));
-      Hydraulic.Components.Pump arachnoid_villi_hydraulic(useSolutionFlowInput=
-            true)
+      Physiolibrary.Hydraulic.Components.Pump arachnoid_villi_hydraulic(
+          useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-2,96},{18,76}})));
-      Sensors.FlowMeasure flowMeasure1
+      Physiolibrary.Osmotic.Sensors.FlowMeasure flowMeasure1
         annotation (Placement(transformation(extent={{-2,66},{18,46}})));
-      Hydraulic.Sources.UnlimitedVolume arteries(P=12665.626804425) annotation (
-         Placement(transformation(
+      Physiolibrary.Hydraulic.Sources.UnlimitedVolume arteries(P=12665.626804425)
+        annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={80,26})));
-      Hydraulic.Components.Conductor conductor(Conductance(displayUnit=
-              "ml/(mmHg.min)") = 3.7503078792283e-11)
-                                                     annotation (Placement(
-            transformation(
+      Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.min)") = 3.7503078792283e-11) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={96,0})));
-      Hydraulic.Components.ElasticVessel choroidPlexusCapilaries(volume_start=
-            1.4e-05, Compliance=3.7503078792283e-09)
+      Physiolibrary.Hydraulic.Components.ElasticVessel choroidPlexusCapilaries(
+          volume_start=1.4e-05, Compliance=3.7503078792283e-09)
         annotation (Placement(transformation(extent={{56,-32},{76,-12}})));
-      Hydraulic.Components.Conductor conductor1(Conductance=8.750718384866e-11)
+      Physiolibrary.Hydraulic.Components.Conductor conductor1(Conductance=8.750718384866e-11)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={66,50})));
-      Hydraulic.Sensors.PressureMeasure pressureMeasure1
+      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure1
         annotation (Placement(transformation(extent={{68,64},{48,84}})));
-      Hydraulic.Sensors.PressureMeasure pressureMeasure2
+      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure2
         annotation (Placement(transformation(extent={{62,-22},{42,-2}})));
     equation
       connect(CSF_hydraulic.q_in, pressureMeasure.q_in) annotation (Line(
@@ -161,7 +157,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           color={127,127,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(CSF_osmotic.q_in, arachnoid_villi.q_in) annotation (Line(
+      connect(CSF_osmotic.q_in[1], arachnoid_villi.q_in) annotation (Line(
           points={{-66,4},{-66,56},{-36,56}},
           color={127,127,0},
           thickness=1,
@@ -224,7 +220,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(CSF_osmotic.q_in, choroid_plexus.q_out) annotation (Line(
+      connect(CSF_osmotic.q_in[1], choroid_plexus.q_out) annotation (Line(
           points={{-66,4},{-36,4}},
           color={127,127,0},
           thickness=1,
@@ -297,18 +293,24 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Ependymal cells actively secrete sodium into the lateral ventricles. This creates&nbsp;<a href=\"https://en.wikipedia.org/wiki/Osmotic_pressure\">osmotic pressure</a>&nbsp;and draws water into the CSF space. Chloride, with a negative charge, maintains&nbsp;<a href=\"https://en.wikipedia.org/w/index.php?title=Electroneutrality&action=edit&redlink=1\">electroneutrality</a>&nbsp;and moves with the positively-charged sodium. As a result, CSF contains a higher concentration of sodium and chloride than blood plasma, but less potassium, calcium and glucose and protein.&nbsp;</p>
 </html>"));
     end CerebrospinalFluid;
+    annotation (conversion(from(version="", script="ConvertFromExamples_.mos")));
   end Examples;
 
   package Components
     extends Modelica.Icons.Package;
+
     model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
       extends SteadyStates.Interfaces.SteadyState(
                                          state_start=volume_start, storeUnit=
           "mOsm/l");
 
+      parameter Integer NumberOfMembraneTypes=1
+        "Membrane type is determined by membrane permeabilities for substances.";
+
       Interfaces.OsmoticPort_a
-                          q_in "Flux to/from osmotic compartment" annotation (Placement(
+                          q_in[NumberOfMembraneTypes]
+        "Flux to/from osmotic compartment"                                               annotation (Placement(
             transformation(extent={{-10,-10},{10,10}})));
       parameter Types.Volume volume_start = 0.001
         "Initial volume of compartment"
@@ -318,18 +320,19 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "=true, if impermeable substance amount as an input"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.AmountOfSubstance ImpermeableSolutes=0
+      parameter Types.AmountOfSubstance ImpermeableSolutes[NumberOfMembraneTypes]=zeros(NumberOfMembraneTypes)
         "Amount of impermeable substance if useImpermeableSolutesInput=false"
         annotation (Dialog(enable=not useImpermeableSolutesInput));
 
-      Types.RealIO.AmountOfSubstanceInput impermeableSolutes(start=ImpermeableSolutes)= is if useImpermeableSolutesInput
+      Types.RealIO.AmountOfSubstanceInput impermeableSolutes[NumberOfMembraneTypes](start=ImpermeableSolutes)= is if useImpermeableSolutesInput
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
                 {-60,80}})));
       Types.RealIO.VolumeOutput volume "Actual volume of compartment"
         annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
                -90)));
     protected
-      Types.AmountOfSubstance is "Current amount of impermeable solutes";
+      Types.AmountOfSubstance is[NumberOfMembraneTypes]
+        "Current amount of impermeable solutes";
     equation
       if not useImpermeableSolutesInput then
         is=ImpermeableSolutes;
@@ -337,7 +340,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
       q_in.o = is / volume;
 
-      change = q_in.q;    //der(volume)=q_in.q
+      change = ones(NumberOfMembraneTypes) * q_in.q;    //der(volume)=q_in.q
       state = volume;
 
       //  assert(volume>=-Modelica.Constants.eps,"Collapsed cells by osmotic pressure are not supported!");
@@ -354,7 +357,9 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The liquid volume of the penetrating solution is accumulated in &QUOT;OsmoticCell&QUOT;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end OsmoticCell;
 
     model Membrane "Solvent diffusion through semipermeable membrane"
@@ -462,6 +467,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     model PermeabilityLevelSwitch
       "switch osmolarity to less permeable membranes"
        extends Interfaces.OnePort;
+       extends Modelica.Icons.ObsoleteModel;
       Types.RealIO.OsmolarityInput additionalOsmolarity
         "sulutes, that are permeable in q_in and not permeable in q_out"
         annotation (Placement(transformation(
@@ -613,10 +619,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               extent={{-150,150},{150,110}},
               textString="%name",
               lineColor={0,0,255}),
-            Text(
-              extent={{-150,-110},{150,-140}},
-              lineColor={0,0,0},
-              textString="T=%T"),
             Rectangle(
               extent={{-100,100},{100,-100}},
               lineColor={0,0,0},
@@ -635,7 +637,11 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               points={{50,-20},{50,20},{90,0},{50,-20}},
               lineColor={191,0,0},
               fillColor={191,0,0},
-              fillPattern=FillPattern.Solid)}),
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{140,-100},{-140,-160}},
+              lineColor={0,0,0},
+              textString="%Osm mosm/l")}),
         Documentation(info="<HTML>
 <p>
 This model defines a fixed temperature T at its port in Kelvin,

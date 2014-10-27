@@ -234,7 +234,6 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
 <ul>
 <li><font style=\"color: #333333; \">New:</font></li>
 <li><ul>
-<li><font style=\"color: #333333; \">international units for Insulin,EPO,ADH,Renin,TSH</font></li>
 <li><font style=\"color: #333333; \">read/write of values in non-SI units</font></li>
 <li><font style=\"color: #333333; \">outflow/inflow sources</font></li>
 <li><font style=\"color: #333333; \">chemical internal heats</font></li>

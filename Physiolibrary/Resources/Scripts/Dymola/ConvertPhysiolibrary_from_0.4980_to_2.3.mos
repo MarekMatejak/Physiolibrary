@@ -189,6 +189,9 @@ convertClass("Physiolibrary.Thermal.OnePort","Physiolibrary.Thermal.Interfaces.O
 
 convertClass("Physiolibrary.Osmotic.OsmoticCell","Physiolibrary.Osmotic.Components.OsmoticCell")
 convertModifiers("Physiolibrary.Osmotic.OsmoticCell", fill("",0)  , {"useImpermeableSolutesInput=true"}, true);
+convertElement("Physiolibrary.Osmotic.OsmoticCell","q_in","q_in[1]");
+convertElement("Physiolibrary.Osmotic.OsmoticCell","impermeableSolutes","impermeableSolutes[1]");
+
 convertClass("Physiolibrary.Osmotic.Resistor","Physiolibrary.Osmotic.Components.Membrane")
 convertModifiers("Physiolibrary.Osmotic.Resistor",{"cond"}  , {"cond=%cond%*(1e-6)/((133.322387415)*60)"}, true);
 
