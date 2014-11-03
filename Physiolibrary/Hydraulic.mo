@@ -12,44 +12,44 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         width=25,
         amplitude=3.3e-4,
         period=60/75)
-        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
-      Sources.UnlimitedPump heart1(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
-      Components.ElasticVessel
-                     arteries1(
+        annotation (Placement(transformation(extent={{-80,42},{-60,62}})));
+      Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,28},{-30,48}})));
+      Components.ElasticVessel arteries(
         volume_start(displayUnit="l") = 0.001,
         ZeroPressureVolume(displayUnit="l") = 0.00085,
         Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
-        annotation (Placement(transformation(extent={{-14,38},{6,58}})));
-      Components.Conductor resistance1(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
-        annotation (Placement(transformation(extent={{22,38},{42,58}})));
-      Sources.UnlimitedVolume veins1 annotation (Placement(transformation(
+        annotation (Placement(transformation(extent={{-14,28},{6,48}})));
+      Components.Conductor resistance(Conductance(displayUnit="l/(mmHg.min)")=
+             6.2755151845753e-09)
+        annotation (Placement(transformation(extent={{22,28},{42,48}})));
+      Sources.UnlimitedVolume veins annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={76,48})));
+            origin={76,38})));
     equation
-      connect(resistance1.q_out, veins1.y) annotation (Line(
-          points={{42,48},{66,48}},
+      connect(resistance.q_out, veins.y) annotation (Line(
+          points={{42,38},{66,38}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(arteries1.q_in, resistance1.q_in) annotation (Line(
-          points={{-4,48},{22,48}},
+      connect(arteries.q_in, resistance.q_in) annotation (Line(
+          points={{-4,38},{22,38}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(heart1.q_out, arteries1.q_in) annotation (Line(
-          points={{-30,48},{-4,48}},
+      connect(heart.q_out, arteries.q_in) annotation (Line(
+          points={{-30,38},{-4,38}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulse.y, heart1.solutionFlow) annotation (Line(
-          points={{-73,84},{-40,84},{-40,52}},
+      connect(pulse.y, heart.solutionFlow) annotation (Line(
+          points={{-59,52},{-40,52},{-40,42}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Text(
-              extent={{-34,74},{86,64}},
+              extent={{-40,94},{80,84}},
               lineColor={175,175,175},
               textString="Windkessel model driven by cardiac output")}),
           Documentation(revisions="<html>
@@ -435,7 +435,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Types.RealIO.VolumeOutput volume      annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-100})));
+            origin={0,-100}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
 
     protected
       Types.Volume zpv;
@@ -470,9 +473,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
      // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
 
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
-                100}}),     graphics={Text(
-              extent={{-240,-150},{238,-110}},
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={Text(
+              extent={{-318,-140},{160,-100}},
               textString="%name",
               lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2014</i></p>

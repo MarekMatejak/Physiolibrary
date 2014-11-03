@@ -978,10 +978,7 @@ package Icons "Icons for physiological models"
       annotation ( Icon(coordinateSystem(
             preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
           graphics={Bitmap(extent={{-100,100},{100,-100}}, fileName=
-                "modelica://Physiolibrary/Resources/Icons/Concentration.png"), Text(
-            extent={{-22,-102},{220,-136}},
-            lineColor={0,0,255},
-            textString="%name")}));
+                "modelica://Physiolibrary/Resources/Icons/Concentration.png")}));
   end Substance;
 
   class Speciation

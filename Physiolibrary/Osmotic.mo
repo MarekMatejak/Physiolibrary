@@ -329,7 +329,11 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
                 {-60,80}})));
       Types.RealIO.VolumeOutput volume "Actual volume of compartment"
         annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
-               -90)));
+               -90,
+            origin={160,-100}), iconTransformation(
+            extent={{-20,-120},{20,-80}},
+            rotation=-90,
+            origin={160,-100})));
     protected
       Types.AmountOfSubstance is[NumberOfMembraneTypes]
         "Current amount of impermeable solutes";
@@ -349,7 +353,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
                                                    graphics={
                                    Text(
-              extent={{-40,-138},{280,-100}},
+              extent={{-80,100},{240,140}},
               textString="%name",
               lineColor={0,0,255})}),
         Documentation(revisions="<html>

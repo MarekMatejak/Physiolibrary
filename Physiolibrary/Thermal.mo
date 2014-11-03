@@ -349,7 +349,7 @@ package Thermal
       extends SteadyStates.Interfaces.SteadyState(
                                          state_start=relativeHeat_start, storeUnit=
           "kcal");
-      Interfaces.HeatPort_a
+      Interfaces.HeatPort_b
                        q_in "Heat inflow/outflow connector"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
@@ -366,7 +366,10 @@ package Thermal
                                                                   annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-100})));                                            //nominal=1
+            origin={0,-100}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));                                           //nominal=1
      //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
 
       constant Types.Temperature NormalBodyTemperature = 310.15
@@ -399,11 +402,11 @@ package Thermal
 </html>", info="<html>
 <p>The &QUOT;HeatAccumulation&QUOT; library class models heat accumulation in Physiolibrary. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &QUOT;relativeHeat&QUOT;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
 </html>"),
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),
              graphics={
             Text(
-              extent={{-20,-140},{280,-100}},
+              extent={{-80,100},{220,140}},
               textString="%name",
               lineColor={0,0,255})}));
     end HeatAccumulation;

@@ -497,84 +497,84 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
         connect(R4.solute,hemoglobinConservationLaw. fragment[1])        annotation (
             Line(
-            points={{-10,-92},{-10,-98},{64,-98},{64,2.2},{72,2.2}},
+            points={{-4,-92},{-4,-98},{64,-98},{64,2.2},{72,2.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T4.solute,hemoglobinConservationLaw. fragment[2])        annotation (
             Line(
-            points={{44,-92},{44,-98},{64,-98},{64,2.6},{72,2.6}},
+            points={{50,-92},{50,-98},{64,-98},{64,2.6},{72,2.6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R3.solute,hemoglobinConservationLaw. fragment[3])        annotation (
             Line(
-            points={{-10,-54},{64,-54},{64,3},{72,3}},
+            points={{-4,-54},{64,-54},{64,3},{72,3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T3.solute,hemoglobinConservationLaw. fragment[4])        annotation (
             Line(
-            points={{44,-54},{64,-54},{64,3.4},{72,3.4}},
+            points={{50,-54},{64,-54},{64,3.4},{72,3.4}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R2.solute,hemoglobinConservationLaw. fragment[5])        annotation (
             Line(
-            points={{-10,-10},{64,-10},{64,3.8},{72,3.8}},
+            points={{-4,-10},{64,-10},{64,3.8},{72,3.8}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T2.solute,hemoglobinConservationLaw. fragment[6])        annotation (
             Line(
-            points={{44,-10},{64,-10},{64,4.2},{72,4.2}},
+            points={{50,-10},{64,-10},{64,4.2},{72,4.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R1.solute,hemoglobinConservationLaw. fragment[7])        annotation (
             Line(
-            points={{-10,36},{64,36},{64,4.6},{72,4.6}},
+            points={{-4,36},{64,36},{64,4.6},{72,4.6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T1.solute,hemoglobinConservationLaw. fragment[8])        annotation (
             Line(
-            points={{44,36},{64,36},{64,5},{72,5}},
+            points={{50,36},{64,36},{64,5},{72,5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R0.solute,hemoglobinConservationLaw. fragment[9])        annotation (
             Line(
-            points={{-10,78},{64,78},{64,5.4},{72,5.4}},
+            points={{-4,78},{64,78},{64,5.4},{72,5.4}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T0.solute,hemoglobinConservationLaw. fragment[10])        annotation (
            Line(
-            points={{42,78},{64,78},{64,5.8},{72,5.8}},
+            points={{48,78},{64,78},{64,5.8},{72,5.8}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R1.solute,oxygen_bound. u[1]) annotation (Line(
-            points={{-10,36},{64,36},{64,-51.875},{71,-51.875}},
+            points={{-4,36},{64,36},{64,-51.875},{71,-51.875}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T1.solute,oxygen_bound. u[2]) annotation (Line(
-            points={{44,36},{64,36},{64,-51.625},{71,-51.625}},
+            points={{50,36},{64,36},{64,-51.625},{71,-51.625}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R2.solute,oxygen_bound. u[3]) annotation (Line(
-            points={{-10,-10},{64,-10},{64,-51.375},{71,-51.375}},
+            points={{-4,-10},{64,-10},{64,-51.375},{71,-51.375}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T2.solute,oxygen_bound. u[4]) annotation (Line(
-            points={{44,-10},{64,-10},{64,-51.125},{71,-51.125}},
+            points={{50,-10},{64,-10},{64,-51.125},{71,-51.125}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R3.solute,oxygen_bound. u[5]) annotation (Line(
-            points={{-10,-54},{64,-54},{64,-50.875},{71,-50.875}},
+            points={{-4,-54},{64,-54},{64,-50.875},{71,-50.875}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T3.solute,oxygen_bound. u[6]) annotation (Line(
-            points={{44,-54},{64,-54},{64,-50.625},{71,-50.625}},
+            points={{50,-54},{64,-54},{64,-50.625},{71,-50.625}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R4.solute,oxygen_bound. u[7]) annotation (Line(
-            points={{-10,-92},{-10,-98},{64,-98},{64,-50.375},{71,-50.375}},
+            points={{-4,-92},{-4,-98},{64,-98},{64,-50.375},{71,-50.375}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T4.solute,oxygen_bound. u[8]) annotation (Line(
-            points={{44,-92},{44,-98},{64,-98},{64,-50.125},{71,-50.125}},
+            points={{50,-92},{50,-98},{64,-98},{64,-50.125},{71,-50.125}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(oxygen_bound.y,sO2_. u1) annotation (Line(
@@ -586,43 +586,43 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(R0.solute,tHb. u[1]) annotation (Line(
-            points={{-10,78},{64,78},{64,-65.9},{71,-65.9}},
+            points={{-4,78},{64,78},{64,-65.9},{71,-65.9}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T0.solute,tHb. u[2]) annotation (Line(
-            points={{42,78},{64,78},{64,-65.7},{71,-65.7}},
+            points={{48,78},{64,78},{64,-65.7},{71,-65.7}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R1.solute,tHb. u[3]) annotation (Line(
-            points={{-10,36},{64,36},{64,-65.5},{71,-65.5}},
+            points={{-4,36},{64,36},{64,-65.5},{71,-65.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T1.solute,tHb. u[4]) annotation (Line(
-            points={{44,36},{64,36},{64,-65.3},{71,-65.3}},
+            points={{50,36},{64,36},{64,-65.3},{71,-65.3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R2.solute,tHb. u[5]) annotation (Line(
-            points={{-10,-10},{64,-10},{64,-65.1},{71,-65.1}},
+            points={{-4,-10},{64,-10},{64,-65.1},{71,-65.1}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T2.solute,tHb. u[6]) annotation (Line(
-            points={{44,-10},{64,-10},{64,-64.9},{71,-64.9}},
+            points={{50,-10},{64,-10},{64,-64.9},{71,-64.9}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R3.solute,tHb. u[7]) annotation (Line(
-            points={{-10,-54},{64,-54},{64,-64.7},{71,-64.7}},
+            points={{-4,-54},{64,-54},{64,-64.7},{71,-64.7}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T3.solute,tHb. u[8]) annotation (Line(
-            points={{44,-54},{64,-54},{64,-64.5},{71,-64.5}},
+            points={{50,-54},{64,-54},{64,-64.5},{71,-64.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R4.solute,tHb. u[9]) annotation (Line(
-            points={{-10,-92},{-10,-98},{64,-98},{64,-64.3},{71,-64.3}},
+            points={{-4,-92},{-4,-98},{64,-98},{64,-64.3},{71,-64.3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T4.solute,tHb. u[10]) annotation (Line(
-            points={{44,-92},{44,-98},{64,-98},{64,-64.1},{71,-64.1}},
+            points={{50,-92},{50,-98},{64,-98},{64,-64.1},{71,-64.1}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(oxyR1.products[2],oxygen_unbound. q_out)
@@ -862,11 +862,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
 
         connect(OxyTHm.solute, add1.u2) annotation (Line(
-            points={{24,-18},{24,-24},{27.6,-24},{27.6,-43.2}},
+            points={{30,-18},{30,-24},{27.6,-24},{27.6,-43.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(add1.u1, DeoxyTHm.solute) annotation (Line(
-            points={{32.4,-43.2},{32.4,-24},{80,-24},{80,-18}},
+            points={{32.4,-43.2},{32.4,-24},{86,-24},{86,-18}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(partialPressure1.q_out, oxygen_in_air.q_out)
@@ -889,11 +889,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.solute, add.u2) annotation (Line(
-            points={{-86,-18},{-86,-24},{-60.4,-24},{-60.4,-31.2}},
+            points={{-80,-18},{-80,-24},{-60.4,-24},{-60.4,-31.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(DeoxyRHm.solute, add.u1) annotation (Line(
-            points={{-30,-18},{-30,-18},{-30,-24},{-55.6,-24},{-55.6,-31.2}},
+            points={{-24,-18},{-30,-18},{-30,-24},{-55.6,-24},{-55.6,-31.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.q_out, oxygenation_R.substrates[1]) annotation (Line(
@@ -970,12 +970,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(OxyRHm.solute, sum1.u[1:4]) annotation (Line(
-            points={{-86,-18},{-86,-18},{-86,-62},{-72,-62},{-72,-69.2},{-72.1,-69.2}},
+            points={{-80,-18},{-86,-18},{-86,-62},{-72,-62},{-72,-69.2},{-72.1,
+                -69.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
 
         connect(OxyTHm.solute, sum1.u[5:8]) annotation (Line(
-            points={{24,-18},{24,-60},{-71.3,-60},{-71.3,-69.2}},
+            points={{30,-18},{30,-60},{-71.3,-60},{-71.3,-69.2}},
             color={0,0,127},
             smooth=Smooth.Bezier));
         connect(sO2_.u1, sum1.y) annotation (Line(
@@ -1003,19 +1004,19 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(add3.u1, DeoxyTHm.internalHeat) annotation (Line(
-            points={{50,-33},{50,-30},{86,-30},{86,-18}},
+            points={{50,-33},{50,-30},{91.6,-30},{91.6,-12}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(OxyTHm.internalHeat, add3.u2) annotation (Line(
-            points={{30,-18},{30,-30},{44,-30},{44,-33}},
+            points={{35.6,-12},{35.6,-30},{44,-30},{44,-33}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(OxyRHm.internalHeat, add2.u2) annotation (Line(
-            points={{-80,-18},{-80,-28},{-76,-28},{-76,-31}},
+            points={{-74.4,-12},{-74.4,-28},{-76,-28},{-76,-31}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(DeoxyRHm.internalHeat, add2.u1) annotation (Line(
-            points={{-24,-18},{-24,-28},{-70,-28},{-70,-31}},
+            points={{-18.4,-12},{-18.4,-28},{-70,-28},{-70,-31}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1248,27 +1249,27 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           thickness=1,
           smooth=Smooth.None));
       connect(Hbu_A_NH3.solute, total.u[1]) annotation (Line(
-          points={{-22,70},{-44,70},{-44,63.6667},{-52,63.6667}},
+          points={{-16,70},{-44,70},{-44,63.6667},{-52,63.6667}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NH3.solute, total.u[2]) annotation (Line(
-          points={{64,70},{-2,70},{-2,63},{-52,63}},
+          points={{70,70},{-2,70},{-2,63},{-52,63}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_A_NH2.solute, total.u[3]) annotation (Line(
-          points={{-22,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
+          points={{-16,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NH2.solute, total.u[4]) annotation (Line(
-          points={{64,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
+          points={{70,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_A_NHCOO.solute, total.u[5]) annotation (Line(
-          points={{-22,-84},{-44,-84},{-44,61},{-52,61}},
+          points={{-16,-84},{-44,-84},{-44,61},{-52,61}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hbu_AH_NHCOO.solute, total.u[6]) annotation (Line(
-          points={{64,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
+          points={{70,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
           color={0,0,127},
           smooth=Smooth.None));
 
@@ -1347,27 +1348,27 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
 
         connect(Hbu_A_NH3.internalHeat, total1.u[1]) annotation (Line(
-            points={{-16,70},{-44,70},{-44,33.6667},{-52,33.6667}},
+            points={{-10.4,76},{-44,76},{-44,33.6667},{-52,33.6667}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hbu_AH_NH3.internalHeat, total1.u[2]) annotation (Line(
-            points={{70,70},{-2,70},{-2,33},{-52,33}},
+            points={{75.6,76},{-2,76},{-2,33},{-52,33}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hbu_A_NH2.internalHeat, total1.u[3]) annotation (Line(
-            points={{-16,-2},{-44,-2},{-44,32.3333},{-52,32.3333}},
+            points={{-10.4,4},{-44,4},{-44,32.3333},{-52,32.3333}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hbu_AH_NH2.internalHeat, total1.u[4]) annotation (Line(
-            points={{70,-2},{-2,-2},{-2,31.6667},{-52,31.6667}},
+            points={{75.6,4},{-2,4},{-2,31.6667},{-52,31.6667}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hbu_A_NHCOO.internalHeat, total1.u[5]) annotation (Line(
-            points={{-16,-84},{-44,-84},{-44,31},{-52,31}},
+            points={{-10.4,-78},{-44,-78},{-44,31},{-52,31}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hbu_AH_NHCOO.internalHeat, total1.u[6]) annotation (Line(
-            points={{70,-84},{-2,-84},{-2,30.3333},{-52,30.3333}},
+            points={{75.6,-78},{-2,-78},{-2,30.3333},{-52,30.3333}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(total1.y, Hb_tn.subunitInternalHeat) annotation (Line(
@@ -3600,7 +3601,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           NominalSolute) "Current amount of solute"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-100})));
+            origin={0,-100}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
 
       parameter Types.AmountOfSubstance NominalSolute = 0.001
         "Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller."
@@ -3618,7 +3622,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={60,-100})));
+            origin={60,-100}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=0,
+            origin={116,-40})));
     equation
       q_out.conc = solute/volume;
 
@@ -3630,8 +3637,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                                                                                                         annotation (choicesAllMatching=true,
         Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-            graphics={                                    Text(
-              extent={{-22,-102},{220,-136}},
+            graphics={Text(
+              extent={{-80,90},{280,130}},
               lineColor={0,0,255},
               textString="%name")}),
         Documentation(revisions="<html>
@@ -3768,23 +3775,24 @@ s are stochiometric coefficients of substrates,
 P are products,
 p are stochiometric coefficients of products.
 
-In equilibrium (at zero reaction flow) it fullfil, the dissociation constant K equation:
+In equilibrium (at zero reaction flow) is reached the dissociation constant K equation:
 <p><br><code></p><p><br>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
 <pre>The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
 <p><br><code></p><p><br>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
-<p><code>The backward rate is (kf/K)*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
+<p><code>The backward rate is (kf/K)*volume*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
 <pre>
 Temperature dependence is calculated by Van&apos;t Hoff equation using enthalpy change of reaction as parameter dH:
 <p><br><code></p><p><br>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
 <pre>where KBase is base equilibrium constant at base temperature TK and T_heatPort is current temperature.
-<p><br><code></p><p><br>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
+<p><code></p><p>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
 <pre><i><b>dS = k ln(&omega;)</b></i>
 <i>where k is Boltzmann constant.</i>
 
+
 The Gibbs energy of reaction can be calculate from the change of entropy dS at defined temperature by equation
-<p><br><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
+<p><br><code></p><p><br><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
 <pre>where T is temperature.
-<p><br><code>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
+<p><code></p><p>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
 <p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
 <pre>where R is gass constant and T is temperature.</pre>
 </html>"));
