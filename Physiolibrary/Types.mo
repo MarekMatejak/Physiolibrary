@@ -1546,6 +1546,63 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
             textString="1")}));
   end OneConst;
+
+    block PopulationChangeConst "Constant signal of type PopulationChange"
+      parameter Types.PopulationChange k
+        "Constant PopulationChange output value";
+        RealIO.PopulationChangeOutput y "PopulationChange constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="populationChange",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+    end PopulationChangeConst;
+
+    block PopulationConst "Constant signal of type Population"
+      parameter Types.Population k "Constant Population output value";
+        RealIO.PopulationOutput y "Population constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="population",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+    end PopulationConst;
   end Constants;
 
   package ScaleConstants
@@ -3580,6 +3637,113 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type MolarEnergy.
   </p>
   </html>"));
+     connector PopulationInput =  input Population
+      "input Population as connector"
+      annotation (defaultComponentName="population",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Population.
+    </p>
+    </html>"));
+    connector PopulationOutput =  output Population
+      "output Population as connector"
+      annotation (defaultComponentName="population",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Population.
+  </p>
+  </html>"));
+
+     connector PopulationChangeInput =
+                                  input PopulationChange
+      "input PopulationChange as connector"
+      annotation (defaultComponentName="populationChange",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type PopulationChange.
+    </p>
+    </html>"));
+    connector PopulationChangeOutput =
+                                  output PopulationChange
+      "output PopulationChange as connector"
+      annotation (defaultComponentName="populationChange",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type PopulationChange.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -3928,6 +4092,7 @@ constructed by the signals connected to this bus.
 
   expandable connector TorsoBusConnector
     "Upper, Middle or Lower Torso properties"
+
     annotation (
       Icon(coordinateSystem(
           preserveAspectRatio=true,
@@ -4020,6 +4185,7 @@ This icon is designed for a <b>signal bus</b> connector.
   end TorsoBusConnector;
 
   expandable connector TissueBusConnector "Tissue properties"
+
     annotation (
       Icon(coordinateSystem(
           preserveAspectRatio=true,
@@ -4175,6 +4341,11 @@ This icon is designed for a <b>signal bus</b> connector.
 
   type StoichiometricNumber = Integer (final quantity="StoichiometricNumber", min=1);
 
+  type Population = Real (final quantity="Popolation", final unit="1", displayUnit="1", min=0)
+    "Average number of population individuals";
+  type PopulationChange = Real (final quantity="PopolationChange", final unit="1/s", displayUnit="1/d")
+    "Average change of population individuals";
+
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
 
@@ -4278,6 +4449,11 @@ This icon is designed for a <b>signal bus</b> connector.
       block Position=Variable(redeclare type T=Types.Position, storeUnit="cm");
       block MolarEnergy =
                      Variable(redeclare type T=Types.MolarEnergy, storeUnit="kcal/mol");
+      block Population =    Variable(redeclare type T =
+            Types.Population,storeUnit="1");
+      block PopulationChange =
+                            Variable(redeclare type T =
+            Types.PopulationChange,storeUnit="1/d");
   end RealTypes;
 
   package RealTypeInputParameters
@@ -4815,6 +4991,32 @@ This icon is designed for a <b>signal bus</b> connector.
         y=k;
     annotation (defaultComponentName="molarEnergy");
     end MolarEnergy;
+
+    block Population "Constant signal of type Population"
+
+      extends Base(storeUnit="1");
+      parameter Types.Population k=Utilities.readReal(varName, storeUnit)
+        "Constant Population output value";
+        RealIO.PopulationOutput y "Population input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="molarEnergy");
+    end Population;
+
+    block PopulationChange "Constant signal of type PopulationChange"
+
+      extends Base(storeUnit="1/d");
+      parameter Types.PopulationChange k=Utilities.readReal(varName, storeUnit)
+        "Constant PopulationChange output value";
+        RealIO.PopulationChangeOutput y "PopulationChange input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="molarEnergy");
+    end PopulationChange;
   end RealTypeInputParameters;
 
   package RealExtension
@@ -6278,7 +6480,15 @@ The Real output y is a constant signal:
             Quantity="Pharmacology Concentration",
             Unit="1/m3",
             DisplayUnit="uiu/ml",
-            Scale=1)}
+            Scale=1),RealTypeRecord(
+            Quantity="PopulationChange",
+            Unit="1/s",
+            DisplayUnit="1/min",
+            Scale=1/60),RealTypeRecord(
+            Quantity="PopulationChange",
+            Unit="1/s",
+            DisplayUnit="1/d",
+            Scale=1/(60*60*24))}
         "All defined Real types - units, displayUnits, conversions, nominals";
 
        constant String[:] Prefix =    {"","m", "u", "n", "p"};
