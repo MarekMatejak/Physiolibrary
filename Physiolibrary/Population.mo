@@ -1,5 +1,6 @@
 ﻿within Physiolibrary;
 package Population
+  "Domain for populatiom models for cells, viruses, bacterias, tissues, organism etc."
   extends Modelica.Icons.Package;
   package Examples "Examples that demonstrate usage of the Population models"
      extends Modelica.Icons.ExamplesPackage;
@@ -117,7 +118,6 @@ package Population
       change = port_a.change;
     end Population;
 
-
     model Reproduction "As population change per one individual"
        extends Interfaces.ConditionalChangeCoef;
       Interfaces.PopulationPort_b port_b annotation (Placement(transformation(
@@ -170,7 +170,7 @@ package Population
               textString="%name")}));
     end Mortality;
 
-    model Migration "As population change per one individual"
+    model Stream "As population change per one individual"
       extends Interfaces.OnePort;
       extends Interfaces.ConditionalChangeCoef;
 
@@ -194,7 +194,7 @@ package Population
               origin={-8,-76},
               rotation=360,
               textString="%name")}));
-    end Migration;
+    end Stream;
 
     model Change
       extends Interfaces.OnePort;
@@ -253,7 +253,6 @@ package Population
               origin={-8,-78},
               rotation=360,
               textString="%name")}));
-
     end Growth;
 
     model Loss
