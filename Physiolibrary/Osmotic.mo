@@ -468,19 +468,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end SolventFlux;
 
-    model PermeabilityLevelSwitch
-      "switch osmolarity to less permeable membranes"
-       extends Interfaces.OnePort;
-       extends Modelica.Icons.ObsoleteModel;
-      Types.RealIO.OsmolarityInput additionalOsmolarity
-        "sulutes, that are permeable in q_in and not permeable in q_out"
-        annotation (Placement(transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={100,100})));
-    equation
-       q_out.o=q_in.o + additionalOsmolarity;
-    end PermeabilityLevelSwitch;
   end Components;
 
   package Sensors
