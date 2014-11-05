@@ -1230,4 +1230,10 @@ package Icons "Icons for physiological models"
                 "modelica://Physiolibrary/Resources/Icons/komoraSrdce.png")}));
   end HeartVentricle;
   annotation (Documentation(revisions=""));
+  class Population
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,100},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/Populace.png")}));
+  end Population;
 end Icons;

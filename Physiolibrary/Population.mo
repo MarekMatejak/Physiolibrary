@@ -9,73 +9,78 @@ package Population
       extends Modelica.Icons.Example;
 
       Components.Population predator(population_start=2)
-        annotation (Placement(transformation(extent={{-10,42},{10,62}})));
-      Components.Reproduction reproduction2(useChangeCoefInput=true)
+        annotation (Placement(transformation(extent={{-8,42},{12,62}})));
+      Components.Reproduction reproduction2(useChangePerMemberInput=true)
         annotation (Placement(transformation(extent={{-52,42},{-32,62}})));
-      Components.Mortality mortality2(PopulationChangeCoef=1)
+      Components.Mortality mortality2(LifeTime(displayUnit="s") = 1)
         annotation (Placement(transformation(extent={{34,42},{54,62}})));
-      Components.Reproduction reproduction1(PopulationChangeCoef=1)
+      Components.Reproduction reproduction1(LifeTime(displayUnit="s") = 1)
         annotation (Placement(transformation(extent={{-52,-76},{-32,-56}})));
-      Components.Mortality mortality1(useChangeCoefInput=true)
+      Components.Mortality mortality1(useChangePerMemberInput=true)
         annotation (Placement(transformation(extent={{36,-76},{56,-56}})));
       Components.Population prey(population_start=1)
         annotation (Placement(transformation(extent={{-8,-76},{12,-56}})));
-      Types.Constants.PopulationChangeConst preyMortality(k=1)
+      Types.Constants.PopulationChangePerMemberConst
+                                            preyMortality(LifeTime(displayUnit=
+              "s") = 1)
         annotation (Placement(transformation(extent={{32,-40},{40,-32}})));
       Blocks.Factors.Normalization predatorEffect
         annotation (Placement(transformation(extent={{56,-60},{36,-40}})));
-      Types.Constants.PopulationChangeConst predatorReproduction(k=1)
+      Types.Constants.PopulationChangePerMemberConst
+                                            predatorReproduction(LifeTime(
+            displayUnit="s") = 1)
         annotation (Placement(transformation(extent={{-56,80},{-48,88}})));
       Blocks.Factors.Normalization preyEffekt
         annotation (Placement(transformation(extent={{-52,60},{-32,80}})));
     equation
-      connect(mortality1.populationChangeCoef, predatorEffect.y) annotation (Line(
-          points={{46,-62},{46,-54}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(preyMortality.y, predatorEffect.yBase) annotation (Line(
           points={{41,-36},{46,-36},{46,-48}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(predator.population, predatorEffect.u) annotation (Line(
-          points={{6,42},{6,36},{62,36},{62,-50},{54,-50}},
+          points={{8,42},{8,36},{62,36},{62,-50},{54,-50}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(predatorReproduction.y, preyEffekt.yBase) annotation (Line(
           points={{-47,84},{-42,84},{-42,72}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(preyEffekt.y, reproduction2.populationChangeCoef) annotation (Line(
-          points={{-42,66},{-42,56}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(prey.population, preyEffekt.u) annotation (Line(
           points={{8,-76},{8,-84},{-62,-84},{-62,70},{-50,70}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(reproduction2.port_b, predator.port_a) annotation (Line(
-          points={{-32,52},{0,52}},
+      connect(reproduction2.port_b, predator.port) annotation (Line(
+          points={{-32,52},{2,52}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
-      connect(predator.port_a, mortality2.port_a) annotation (Line(
-          points={{0,52},{34.2,52}},
+      connect(predator.port, mortality2.port_a) annotation (Line(
+          points={{2,52},{34.2,52}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
-      connect(reproduction1.port_b, prey.port_a) annotation (Line(
+      connect(reproduction1.port_b, prey.port) annotation (Line(
           points={{-32,-66},{2,-66}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
-      connect(prey.port_a, mortality1.port_a) annotation (Line(
+      connect(prey.port, mortality1.port_a) annotation (Line(
           points={{2,-66},{36.2,-66}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
+      connect(preyEffekt.y, reproduction2.changePerMember) annotation (Line(
+          points={{-42,66},{-42,56}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(predatorEffect.y, mortality1.changePerMember) annotation (Line(
+          points={{46,-54},{46,-62}},
+          color={0,0,127},
+          smooth=Smooth.None));
       annotation (
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),
+                        graphics),
         experiment(StopTime=20),
         __Dymola_experimentSetupOutput(equdistant=false));
     end PredatorPrey;
@@ -84,7 +89,7 @@ package Population
   package Components
     extends Modelica.Icons.Package;
     model Population
-
+      extends Icons.Population;
       extends SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalPopulation),
       change(nominal=NominalPopulationChange),
@@ -102,7 +107,7 @@ package Population
         "Numerical scale. Default change is 1 individual per day, but for much faster or much slower chnages should be different."
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very fast or very slow changes"));
 
-      Interfaces.PopulationPort_a port_a(population(nominal=NominalPopulation),change(nominal=NominalPopulationChange)) annotation (Placement(transformation(
+      Interfaces.PopulationPort_b port(population(nominal=NominalPopulation),change(nominal=NominalPopulationChange)) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}}), iconTransformation(extent={{-10,-10},{10,
                 10}})));
 
@@ -112,19 +117,27 @@ package Population
             rotation=270,
             origin={60,-100})));
     equation
-      port_a.population = population;
+      port.population = population;
 
-      state = population; //der(population) = port_a.change;
-      change = port_a.change;
+      state = population; //der(population) = port.change;
+      change = port.change;
+      annotation (Icon(graphics={
+                      Text(
+              extent={{-112,100},{248,140}},
+              lineColor={0,0,255},
+              textString="%name")}), Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
     end Population;
 
     model Reproduction "As population change per one individual"
-       extends Interfaces.ConditionalChangeCoef;
+       extends Interfaces.ConditionalLifeTime;
       Interfaces.PopulationPort_b port_b annotation (Placement(transformation(
               extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,
                 10}})));
     equation
-      port_b.change = changeCoef * port_b.population;
+      port_b.change = - changePerPopulationMember * port_b.population;
       annotation (Icon(graphics={
             Rectangle(
               extent={{-100,-52},{100,48}},
@@ -145,12 +158,12 @@ package Population
     end Reproduction;
 
     model Mortality "As population change per one individual"
-       extends Interfaces.ConditionalChangeCoef;
+       extends Interfaces.ConditionalLifeTime;
       Interfaces.PopulationPort_a port_a annotation (Placement(transformation(
               extent={{-108,-10},{-88,10}}), iconTransformation(extent={{-108,-10},{
                 -88,10}})));
     equation
-      port_a.change = - changeCoef*port_a.population;
+      port_a.change = changePerPopulationMember*port_a.population;
       annotation (Icon(graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
@@ -172,10 +185,10 @@ package Population
 
     model Stream "As population change per one individual"
       extends Interfaces.OnePort;
-      extends Interfaces.ConditionalChangeCoef;
+      extends Interfaces.ConditionalLifeTime;
 
     equation
-      port_a.change = if (changeCoef>0) then changeCoef*port_a.population else changeCoef*port_b.population;
+      port_a.change = if (changePerPopulationMember>0) then changePerPopulationMember*port_a.population else changePerPopulationMember*port_b.population;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics={
             Rectangle(
@@ -233,7 +246,7 @@ package Population
               extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,
                 10}})));
     equation
-      port_b.change = change;
+      port_b.change = - change;
       annotation (Icon(graphics={
             Rectangle(
               extent={{-100,-52},{100,48}},
@@ -413,18 +426,18 @@ Connector with one flow signal of type Real.
             graphics));
     end ConditionalChange;
 
-    partial model ConditionalChangeCoef
-      "Input of population change per individual (per one population member) vs. parametric constant change per individual"
+    partial model ConditionalLifeTime
+      "Input of population change per one population member vs. parametric lifetime"
 
-      parameter Boolean useChangeCoefInput = false
-        "=true, if real input connector is used instead of parameter PopulationChangeCoef"
+      parameter Boolean useChangePerMemberInput = false
+        "=true, if real input connector is used instead of parameter LifeTime"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.PopulationChange PopulationChangeCoef=0
-        "Population change per individual if useChangeCoefInput=false"
-        annotation (HideResult=not useChangeInput, Dialog(enable=not useChangeInput));
+      parameter Types.Time LifeTime=1e-8
+        "Mean life time for population (=1.44*halftime) if useChangePerMember=false"
+        annotation (HideResult=not useChangePerMemberInput, Dialog(enable=not useChangePerMemberInput));
 
-      Types.RealIO.PopulationChangeInput populationChangeCoef(start=PopulationChangeCoef)=changeCoef if   useChangeCoefInput annotation (Placement(transformation(
+      Types.RealIO.PopulationChangePerMemberInput changePerMember(start=1/LifeTime)=changePerPopulationMember if useChangePerMemberInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,60}), iconTransformation(
@@ -432,17 +445,17 @@ Connector with one flow signal of type Real.
             rotation=270,
             origin={0,40})));
 
-      Types.PopulationChange changeCoef
+      Types.PopulationChangePerMember changePerPopulationMember
         "Current population change per individual";
     equation
-      if not useChangeCoefInput then
-        changeCoef = PopulationChangeCoef;
+      if not useChangePerMemberInput then
+        changePerPopulationMember = 1/LifeTime;
       end if;
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                 -100,-100},{100,100}}), graphics), Diagram(coordinateSystem(
               preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
             graphics));
-    end ConditionalChangeCoef;
+    end ConditionalLifeTime;
   end Interfaces;
 end Population;

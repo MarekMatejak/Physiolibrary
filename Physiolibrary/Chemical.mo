@@ -3845,8 +3845,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Icons.GasSolubility;
       extends Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Types.DiffusionPermeability solubilityRateCoef=10^8
-        "The rate constant of incoming gas to solution" annotation ( HideResult=true);
+      parameter Types.DiffusionPermeability solubilityRateCoef=0.001
+        "The rate constant of incoming gas to solution (default 1 liter per second)"
+                                                                                     annotation ( HideResult=true);
 
       Types.GasSolubility kH
         "Henry's law coefficient such as liquid-gas concentration ratio";

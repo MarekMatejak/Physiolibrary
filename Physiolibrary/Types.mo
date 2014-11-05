@@ -1547,6 +1547,34 @@ package Types "Physiological units with nominals"
             textString="1")}));
   end OneConst;
 
+    block PopulationConst "Constant signal of type Population"
+      parameter Types.Population k "Constant Population output value";
+        RealIO.PopulationOutput y "Population constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="population",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+    end PopulationConst;
+
     block PopulationChangeConst "Constant signal of type PopulationChange"
       parameter Types.PopulationChange k
         "Constant PopulationChange output value";
@@ -1576,14 +1604,17 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
     end PopulationChangeConst;
 
-    block PopulationConst "Constant signal of type Population"
-      parameter Types.Population k "Constant Population output value";
-        RealIO.PopulationOutput y "Population constant"
+    block PopulationChangePerMemberConst
+      "Constant signal of type PopulationChangePerMember"
+      parameter Types.Time LifeTime
+        "Mean lifetime as 1/PopulationChangePerMember output value";
+        RealIO.PopulationChangePerMemberOutput y
+        "PopulationChangePerMember constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
     equation
-        y=k;
-    annotation (defaultComponentName="population",
+        y=1/LifeTime;
+    annotation (defaultComponentName="populationChangePerMember",
                Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
           coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
               graphics={
@@ -1602,7 +1633,7 @@ package Types "Physiological units with nominals"
                 fillColor={236,236,236},
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
-    end PopulationConst;
+    end PopulationChangePerMemberConst;
   end Constants;
 
   package ScaleConstants
@@ -3744,6 +3775,61 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type PopulationChange.
   </p>
   </html>"));
+
+    connector PopulationChangePerMemberInput =
+                                  input PopulationChangePerMember
+      "input PopulationChangePerMember as connector"
+      annotation (defaultComponentName="populationChangePerMember",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type PopulationChangePerMember.
+    </p>
+    </html>"));
+    connector PopulationChangePerMemberOutput =
+                                  output PopulationChangePerMember
+      "output PopulationChangePerMember as connector"
+      annotation (defaultComponentName="populationChangePerMember",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type PopulationChangePerMember.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -4341,10 +4427,12 @@ This icon is designed for a <b>signal bus</b> connector.
 
   type StoichiometricNumber = Integer (final quantity="StoichiometricNumber", min=1);
 
-  type Population = Real (final quantity="Popolation", final unit="1", displayUnit="1", min=0)
+  type Population = Real (final quantity="Population", final unit="1", displayUnit="1", min=0)
     "Average number of population individuals";
-  type PopulationChange = Real (final quantity="PopolationChange", final unit="1/s", displayUnit="1/d")
+  type PopulationChange = Real (final quantity="PopulationChange", final unit="1/s", displayUnit="1/d")
     "Average change of population individuals";
+  type PopulationChangePerMember = Real (final quantity="PopulationChangePerMember", final unit="1/s", displayUnit="1/d")
+    "Average change per population individual";
 
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
@@ -4366,95 +4454,6 @@ This icon is designed for a <b>signal bus</b> connector.
     parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
       "Unit conversions"  annotation(Evaluate=true, HideResult=true);
   end AbstractReal;
-
-  package RealTypes
-    extends Modelica.Icons.BasesPackage;
-    import Physiolibrary;
-
-      replaceable block Variable = RealExtension.Parameter constrainedby
-      AbstractReal;
-
-      block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
-      block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
-      block Frequency = Variable(redeclare type T=Types.Frequency, storeUnit="1/min");
-
-      block Mass = Variable(redeclare type T=Types.Mass, storeUnit="g");
-      block MassFlowRate = Variable(redeclare type T =
-            Types.MassFlowRate, storeUnit="g/min");
-      block Density = Variable(redeclare type T=Types.Density, storeUnit="kg/l");
-
-      block Height = Variable(redeclare type T=Types.Height, storeUnit="cm");
-      block Velocity = Variable(redeclare type T=Types.Velocity, storeUnit="km/h");
-      block Acceleration = Variable(redeclare type T =
-            Types.Acceleration, storeUnit="m/s");
-
-      block Pressure = Variable(redeclare type T=Types.Pressure,storeUnit="mmHg");
-      block Volume = Variable(redeclare type T=Types.Volume,storeUnit="ml");
-      block VolumeFlowRate = Variable(redeclare type T =
-            Types.VolumeFlowRate,storeUnit="ml/min");
-
-      block Concentration = Variable(redeclare type T =
-            Types.Concentration, storeUnit="mmol/l");
-      block MassConcentration = Variable (redeclare type T =
-            Types.MassConcentration, storeUnit="mg/l");
-      block AmountOfSubstance = Variable(redeclare type T =
-            Types.AmountOfSubstance,storeUnit="mmol");
-      block MolarFlowRate = Variable(redeclare type T =
-            Types.MolarFlowRate,storeUnit="mmol/min");
-
-      block Heat = Variable(redeclare type T=Types.Heat,storeUnit="kcal");
-      block Temperature = Variable(redeclare type T =
-          Types.Temperature,  storeUnit="degC");
-      block HeatFlowRate = Variable(redeclare type T =
-            Types.HeatFlowRate,storeUnit="kcal/min");
-      block Power = Variable(redeclare type T =
-            Types.Power,storeUnit="kcal/min");
-      block ThermalConductance = Variable(redeclare type T =
-            Types.ThermalConductance, storeUnit="kcal/(min.K)");
-      block SpecificHeatCapacity = Variable(redeclare type T =
-            Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
-      block SpecificEnergy = Variable(redeclare type T =
-            Types.SpecificEnergy,storeUnit="kcal/kg");
-
-      block ElectricPotential = Variable(redeclare type T =
-            Types.ElectricPotential,storeUnit="mV");
-      block ElectricCharge = Variable(redeclare type T =
-            Types.ElectricCharge,storeUnit="meq");
-      block VolumeDensityOfCharge =
-                             Variable(redeclare type T =
-            Types.VolumeDensityOfCharge,storeUnit="meq/l");
-      block ElectricCurrent = Variable(redeclare type T =
-            Types.ElectricCurrent,storeUnit="meq/min");
-
-      block Fraction = Variable(redeclare type T=Types.Fraction,storeUnit="");
-
-      block pH =       Variable(redeclare type T=Types.pH,storeUnit="log10(mol/l)");
-      block OsmoticPermeability = Variable(redeclare type T =
-            Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
-      block DiffusionPermeability =         Variable(redeclare type T =
-            Types.DiffusionPermeability,storeUnit="ml/min");
-
-      block HydraulicConductance = Variable(redeclare type T =
-            Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
-      block HydraulicCompliance = Variable(redeclare type T =
-            Types.HydraulicCompliance,storeUnit="ml/mmHg");
-      block HydraulicInertance = Variable(redeclare type T =
-            Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
-
-      block GasSolubility = Variable(redeclare type T =
-            Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
-
-      block Osmolarity =    Variable(redeclare type T =
-            Types.Osmolarity,storeUnit="mosm/l");
-      block Position=Variable(redeclare type T=Types.Position, storeUnit="cm");
-      block MolarEnergy =
-                     Variable(redeclare type T=Types.MolarEnergy, storeUnit="kcal/mol");
-      block Population =    Variable(redeclare type T =
-            Types.Population,storeUnit="1");
-      block PopulationChange =
-                            Variable(redeclare type T =
-            Types.PopulationChange,storeUnit="1/d");
-  end RealTypes;
 
   package RealTypeInputParameters
     extends Modelica.Icons.SourcesPackage;
@@ -5002,7 +5001,7 @@ This icon is designed for a <b>signal bus</b> connector.
               extent={{40,-10},{60,10}})));
     equation
         y=k;
-    annotation (defaultComponentName="molarEnergy");
+    annotation (defaultComponentName="population");
     end Population;
 
     block PopulationChange "Constant signal of type PopulationChange"
@@ -5015,8 +5014,22 @@ This icon is designed for a <b>signal bus</b> connector.
               extent={{40,-10},{60,10}})));
     equation
         y=k;
-    annotation (defaultComponentName="molarEnergy");
+    annotation (defaultComponentName="populationChange");
     end PopulationChange;
+
+    block PopulationChangePerMember
+      "Constant signal of type PopulationChangePerMember"
+      extends Base(storeUnit="1/d");
+      parameter Types.PopulationChangePerMember k=Utilities.readReal(varName, storeUnit)
+        "Constant PopulationChangePerMember output value";
+        RealIO.PopulationChangePerMemberOutput y
+        "PopulationChangePerMember input parameter"                                 annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="populationChangePerMember");
+    end PopulationChangePerMember;
   end RealTypeInputParameters;
 
   package RealExtension
@@ -5556,6 +5569,98 @@ The Real output y is a constant signal:
     end IO;
   end RealExtension;
 
+  package RealTypes
+    extends Modelica.Icons.BasesPackage;
+    import Physiolibrary;
+
+      replaceable block Variable = RealExtension.Parameter constrainedby
+      AbstractReal;
+
+      block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
+      block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
+      block Frequency = Variable(redeclare type T=Types.Frequency, storeUnit="1/min");
+
+      block Mass = Variable(redeclare type T=Types.Mass, storeUnit="g");
+      block MassFlowRate = Variable(redeclare type T =
+            Types.MassFlowRate, storeUnit="g/min");
+      block Density = Variable(redeclare type T=Types.Density, storeUnit="kg/l");
+
+      block Height = Variable(redeclare type T=Types.Height, storeUnit="cm");
+      block Velocity = Variable(redeclare type T=Types.Velocity, storeUnit="km/h");
+      block Acceleration = Variable(redeclare type T =
+            Types.Acceleration, storeUnit="m/s");
+
+      block Pressure = Variable(redeclare type T=Types.Pressure,storeUnit="mmHg");
+      block Volume = Variable(redeclare type T=Types.Volume,storeUnit="ml");
+      block VolumeFlowRate = Variable(redeclare type T =
+            Types.VolumeFlowRate,storeUnit="ml/min");
+
+      block Concentration = Variable(redeclare type T =
+            Types.Concentration, storeUnit="mmol/l");
+      block MassConcentration = Variable (redeclare type T =
+            Types.MassConcentration, storeUnit="mg/l");
+      block AmountOfSubstance = Variable(redeclare type T =
+            Types.AmountOfSubstance,storeUnit="mmol");
+      block MolarFlowRate = Variable(redeclare type T =
+            Types.MolarFlowRate,storeUnit="mmol/min");
+
+      block Heat = Variable(redeclare type T=Types.Heat,storeUnit="kcal");
+      block Temperature = Variable(redeclare type T =
+          Types.Temperature,  storeUnit="degC");
+      block HeatFlowRate = Variable(redeclare type T =
+            Types.HeatFlowRate,storeUnit="kcal/min");
+      block Power = Variable(redeclare type T =
+            Types.Power,storeUnit="kcal/min");
+      block ThermalConductance = Variable(redeclare type T =
+            Types.ThermalConductance, storeUnit="kcal/(min.K)");
+      block SpecificHeatCapacity = Variable(redeclare type T =
+            Types.SpecificHeatCapacity,storeUnit="kcal/(kg.K)");
+      block SpecificEnergy = Variable(redeclare type T =
+            Types.SpecificEnergy,storeUnit="kcal/kg");
+
+      block ElectricPotential = Variable(redeclare type T =
+            Types.ElectricPotential,storeUnit="mV");
+      block ElectricCharge = Variable(redeclare type T =
+            Types.ElectricCharge,storeUnit="meq");
+      block VolumeDensityOfCharge =
+                             Variable(redeclare type T =
+            Types.VolumeDensityOfCharge,storeUnit="meq/l");
+      block ElectricCurrent = Variable(redeclare type T =
+            Types.ElectricCurrent,storeUnit="meq/min");
+
+      block Fraction = Variable(redeclare type T=Types.Fraction,storeUnit="");
+
+      block pH =       Variable(redeclare type T=Types.pH,storeUnit="log10(mol/l)");
+      block OsmoticPermeability = Variable(redeclare type T =
+            Types.OsmoticPermeability,storeUnit="ml/(mmHg.min)");
+      block DiffusionPermeability =         Variable(redeclare type T =
+            Types.DiffusionPermeability,storeUnit="ml/min");
+
+      block HydraulicConductance = Variable(redeclare type T =
+            Types.HydraulicConductance,storeUnit="ml/(mmHg.min)");
+      block HydraulicCompliance = Variable(redeclare type T =
+            Types.HydraulicCompliance,storeUnit="ml/mmHg");
+      block HydraulicInertance = Variable(redeclare type T =
+            Types.HydraulicInertance,storeUnit="mmHg.min2/ml");
+
+      block GasSolubility = Variable(redeclare type T =
+            Types.GasSolubility,storeUnit="(mmol/l)/kPa at 25degC");
+
+      block Osmolarity =    Variable(redeclare type T =
+            Types.Osmolarity,storeUnit="mosm/l");
+      block Position=Variable(redeclare type T=Types.Position, storeUnit="cm");
+      block MolarEnergy =
+                     Variable(redeclare type T=Types.MolarEnergy, storeUnit="kcal/mol");
+      block Population =    Variable(redeclare type T =
+            Types.Population,storeUnit="1");
+      block PopulationChange =
+                            Variable(redeclare type T =
+            Types.PopulationChange,storeUnit="1/d");
+      block PopulationChangePerMember =
+                            Variable(redeclare type T =
+            Types.PopulationChangePerMember,storeUnit="1/d");
+  end RealTypes;
+
   partial block AbstractBoolean
     "Abstract parameter or the value at defined time of the model - can be input or output parameter"
 
@@ -5566,49 +5671,6 @@ The Real output y is a constant signal:
       annotation (Dialog(group="Parameters"));
 
   end AbstractBoolean;
-
-  package ZeroUtilities "No input/output/test"
-    import Physiolibrary;
-    extends Types.Utilities;
-    extends Modelica.Icons.VariantsPackage;
-
-    redeclare function extends readReal
-    algorithm
-    end readReal;
-
-    redeclare function extends readReal_SI
-    algorithm
-    end readReal_SI;
-
-    redeclare function extends readBoolean
-    algorithm
-    end readBoolean;
-
-    redeclare function extends writeReal
-    algorithm
-    end writeReal;
-
-    redeclare function extends writeReal_SI
-    algorithm
-    end writeReal_SI;
-
-    redeclare function extends writeBoolean
-    algorithm
-    end writeBoolean;
-
-    redeclare function extends writeComparison
-    algorithm
-    end writeComparison;
-
-    redeclare function extends writeComparison_SI
-    algorithm
-    end writeComparison_SI;
-
-    redeclare function extends writeBooleanComparison
-    algorithm
-    end writeBooleanComparison;
-
-  end ZeroUtilities;
 
   package FilesUtilities "File input/output/test"
     import Physiolibrary;
@@ -6517,6 +6579,49 @@ The Real output y is a constant signal:
 
     end UnitConversions;
   end Utilities;
+
+  package ZeroUtilities "No input/output/test"
+    import Physiolibrary;
+    extends Types.Utilities;
+    extends Modelica.Icons.VariantsPackage;
+
+    redeclare function extends readReal
+    algorithm
+    end readReal;
+
+    redeclare function extends readReal_SI
+    algorithm
+    end readReal_SI;
+
+    redeclare function extends readBoolean
+    algorithm
+    end readBoolean;
+
+    redeclare function extends writeReal
+    algorithm
+    end writeReal;
+
+    redeclare function extends writeReal_SI
+    algorithm
+    end writeReal_SI;
+
+    redeclare function extends writeBoolean
+    algorithm
+    end writeBoolean;
+
+    redeclare function extends writeComparison
+    algorithm
+    end writeComparison;
+
+    redeclare function extends writeComparison_SI
+    algorithm
+    end writeComparison_SI;
+
+    redeclare function extends writeBooleanComparison
+    algorithm
+    end writeBooleanComparison;
+
+  end ZeroUtilities;
 
   type SimulationType = enumeration(
       NoInit "Use start values only as a guess of state values",
