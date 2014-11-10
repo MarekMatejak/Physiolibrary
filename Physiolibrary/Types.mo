@@ -3843,11 +3843,11 @@ package Types "Physiological units with nominals"
             initialScale=0.2), graphics={
             Rectangle(
               extent={{-20,2},{20,-2}},
-              lineColor={255,204,51},
+              lineColor={0,0,255},
               lineThickness=0.5),
             Polygon(
               points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{
-                  -80,-40},{-100,30},{-80,50}},
+                -80,-40},{-100,30},{-80,50}},
               lineColor={0,0,0},
               fillColor={0,0,255},
               fillPattern=FillPattern.Solid),
@@ -4186,39 +4186,37 @@ constructed by the signals connected to this bus.
           grid={2,2},
           initialScale=0.2), graphics={
           Rectangle(
-            extent={{-20,-8},{20,-12}},
-            lineColor={170,255,255},
-            lineThickness=0.5,
-            fillColor={170,255,255},
-            fillPattern=FillPattern.Solid),
+            extent={{-20,2},{20,-2}},
+            lineColor={129,194,194},
+            lineThickness=1),
           Polygon(
-            points={{-80,40},{80,40},{100,20},{80,-50},{60,-60},{-60,-60},{-80,
-                -50},{-100,20},{-80,40}},
+            points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
+                -40},{-100,30},{-80,50}},
             lineColor={0,0,0},
-            fillColor={170,255,255},
+            fillColor={115,172,172},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{-65,15},{-55,5}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
-          Ellipse(
-            extent={{-5,15},{5,5}},
+            extent={{-65,25},{-55,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{55,15},{65,5}},
+            extent={{-5,25},{5,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{-35,-25},{-25,-35}},
+            extent={{55,25},{65,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{25,-25},{35,-35}},
+            extent={{-35,-15},{-25,-25}},
+            lineColor={0,0,0},
+            fillColor={0,0,0},
+            fillPattern=FillPattern.Solid),
+          Ellipse(
+            extent={{25,-15},{35,-25}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid)}),
@@ -4279,39 +4277,37 @@ This icon is designed for a <b>signal bus</b> connector.
           grid={2,2},
           initialScale=0.2), graphics={
           Rectangle(
-            extent={{-20,-8},{20,-12}},
+            extent={{-20,2},{20,-2}},
             lineColor={127,0,0},
-            lineThickness=0.5,
-            fillColor={127,0,0},
-            fillPattern=FillPattern.Solid),
+            lineThickness=0.5),
           Polygon(
-            points={{-80,40},{80,40},{100,20},{80,-50},{60,-60},{-60,-60},{-80,
-                -50},{-100,20},{-80,40}},
+            points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
+                -40},{-100,30},{-80,50}},
             lineColor={0,0,0},
             fillColor={127,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{-65,15},{-55,5}},
+            extent={{-65,25},{-55,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{-5,15},{5,5}},
+            extent={{-5,25},{5,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{55,15},{65,5}},
+            extent={{55,25},{65,15}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{-35,-25},{-25,-35}},
+            extent={{-35,-15},{-25,-25}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid),
           Ellipse(
-            extent={{25,-25},{35,-35}},
+            extent={{25,-15},{35,-25}},
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid)}),
