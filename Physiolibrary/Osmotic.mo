@@ -369,8 +369,13 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
      extends Interfaces.OnePort;
      extends Icons.Membrane; //Icons.Resistor;
 
-     parameter Types.OsmoticPermeability cond
-        "Membrane permeability for solvent";
+     parameter Boolean useConductanceInput = false
+        "=true, if membrane permeability input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+     parameter Types.OsmoticPermeability cond=1e-12
+        "Membrane permeability for solvent if useConductanceInput = false"
+          annotation (Dialog(enable=not useConductanceInput));
 
       parameter Boolean useHydraulicPressureInputs = false
         "=true, if hydraulic pressure inputs is used"
@@ -410,9 +415,21 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
             rotation=90,
             origin={80,-80})));
 
+      Types.OsmoticPermeability perm;
+
     protected
       Types.Pressure pi,po;
       Types.Temperature ti,to;
+
+    public
+      Types.RealIO.OsmoticPermeabilityInput conduction=perm if useConductanceInput
+        annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80}),   iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
     equation
       if not useHydraulicPressureInputs then
         pi=HydraulicPressureIn;
@@ -422,19 +439,24 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         ti=T;
         to=T;
       end if;
+      if not useConductanceInput then
+        cond=perm;
+      end if;
 
       q_in.q = cond * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
       annotation (        Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
+<p><i>2009-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The main element of osmotic phenomena is a semipermeable membrane, which generates the flow of penetrating substances together with water. The connector on both sides is composed of molar concentration of non-penetrating solutes (osmolarity), and from penetrating volumetric flow (osmotic flux). Flow through the membrane depends on a pressure gradient, where pressure on both sides is calculated from the osmotic and hydraulic component.</p>
-</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics={
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}),      graphics={
                                    Text(
               extent={{-140,112},{140,150}},
               textString="%name",
-              lineColor={0,0,255})}));
+              lineColor={0,0,255})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end Membrane;
 
     model SolventFlux "Prescripted solvent flow"
@@ -471,13 +493,13 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
       import Physiolibrary;
       extends Icons.Reabsorption;
 
-      Physiolibrary.Osmotic.Interfaces.OsmoticPort_a
+      Interfaces.OsmoticPort_a
                            Inflow                    annotation (Placement(
             transformation(extent={{-114,26},{-86,54}})));
-      Physiolibrary.Osmotic.Interfaces.OsmoticPort_b
+      Interfaces.OsmoticPort_b
                            Outflow
         annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Physiolibrary.Osmotic.Interfaces.OsmoticPort_b
+      Interfaces.OsmoticPort_b
                            Reabsorption                annotation (Placement(
             transformation(extent={{-14,-114},{14,-86}})));
 
@@ -816,7 +838,8 @@ Connector with one flow signal of type Real.
         "Volumetric flow of solvent if useSolventFlowInput=false"
         annotation (Dialog(enable=not useSolventFlowInput));
 
-      Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
+      Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if
+        useSolventFlowInput                                                                    annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
