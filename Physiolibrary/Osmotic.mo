@@ -328,12 +328,11 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
                 {-60,80}})));
       Types.RealIO.VolumeOutput volume "Actual volume of compartment"
-        annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
-               -90,
-            origin={160,-100}), iconTransformation(
-            extent={{-20,-120},{20,-80}},
-            rotation=-90,
-            origin={160,-100})));
+        annotation (Placement(transformation(extent={{16,-64},{56,-24}}),
+            iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
     protected
       Types.AmountOfSubstance is[NumberOfMembraneTypes]
         "Current amount of impermeable solutes";
@@ -468,6 +467,72 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end SolventFlux;
 
+    model Reabsorption "Divide inflow to outflow and reabsorption"
+      import Physiolibrary;
+      extends Icons.Reabsorption;
+
+      Physiolibrary.Osmotic.Interfaces.OsmoticPort_a
+                           Inflow                    annotation (Placement(
+            transformation(extent={{-114,26},{-86,54}})));
+      Physiolibrary.Osmotic.Interfaces.OsmoticPort_b
+                           Outflow
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
+      Physiolibrary.Osmotic.Interfaces.OsmoticPort_b
+                           Reabsorption                annotation (Placement(
+            transformation(extent={{-14,-114},{14,-86}})));
+
+      Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
+
+      parameter Boolean useExternalOutflowMin = false
+        "=true, if minimal outflow is garanted"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.VolumeFlowRate OutflowMin = 0
+        "Minimal outflow if useExternalOutflowMin=false"
+        annotation (Dialog(enable=not useExternalOutflowMin));
+
+      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,80})));
+
+    protected
+       Types.VolumeFlowRate om;
+    equation
+      if not useExternalOutflowMin then
+        om = OutflowMin;
+      end if;
+
+      Inflow.o = Outflow.o;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+
+      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={Text(
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+</ul></p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end Reabsorption;
   end Components;
 
   package Sensors
