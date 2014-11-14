@@ -331,48 +331,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
   package Components
     extends Modelica.Icons.Package;
 
-    model Conductor "Hydraulic resistor, where conductance=1/resistance"
-     extends Hydraulic.Interfaces.OnePort;
-     extends Icons.HydraulicResistor;
-
-      parameter Boolean useConductanceInput = false
-        "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.HydraulicConductance Conductance=0
-        "Hydraulic conductance if useConductanceInput=false"
-        annotation (Dialog(enable=not useConductanceInput));
-
-      Types.RealIO.HydraulicConductanceInput cond(start=Conductance)=c if useConductanceInput
-                                                       annotation (Placement(
-            transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,60})));
-
-    protected
-       Types.HydraulicConductance c;
-    equation
-      if not useConductanceInput then
-        c=Conductance;
-      end if;
-
-      q_in.q = c * (q_in.pressure - q_out.pressure);
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}),
-                       graphics={Text(
-              extent={{-220,-40},{200,-80}},
-              lineColor={0,0,255},
-              fillColor={58,117,175},
-              fillPattern=FillPattern.Solid,
-              textString="%name")}),
-        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>", info="<html>
-<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
-</html>"));
-    end Conductor;
-
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
      extends SteadyStates.Interfaces.SteadyState(
@@ -491,52 +449,48 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end ElasticVessel;
 
-    model Pump "Prescribed volumetric flow"
-      extends Hydraulic.Interfaces.OnePort;
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
+    model Conductor "Hydraulic resistor, where conductance=1/resistance"
+     extends Hydraulic.Interfaces.OnePort;
+     extends Icons.HydraulicResistor;
 
+      parameter Boolean useConductanceInput = false
+        "=true, if external conductance value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.HydraulicConductance Conductance=0
+        "Hydraulic conductance if useConductanceInput=false"
+        annotation (Dialog(enable=not useConductanceInput));
+
+      Types.RealIO.HydraulicConductanceInput cond(start=Conductance)=c if useConductanceInput
+                                                       annotation (Placement(
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,60})));
+
+    protected
+       Types.HydraulicConductance c;
     equation
-      volumeFlowRate = q;
+      if not useConductanceInput then
+        c=Conductance;
+      end if;
 
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-40},{100,60}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-90},{150,-50}},
-              textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague, Czech Republic</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>january 2009</td>
-</tr>
-</table>
-</html>",     info="<html>
-<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
+      q_in.q = c * (q_in.pressure - q_out.pressure);
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}),
+                       graphics={Text(
+              extent={{-220,-40},{200,-80}},
+              lineColor={0,0,255},
+              fillColor={58,117,175},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}),
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
 </html>"));
-    end Pump;
+    end Conductor;
+
 
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
@@ -624,132 +578,54 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end HydrostaticColumn;
 
-    model ElasticMembrane "Interaction between internal and external cavities"
-     extends SteadyStates.Interfaces.SteadyState(
-                                        state_start=volume_start, storeUnit=
-          "ml");
-     extends Icons.InternalElasticBalloon;
-      Interfaces.HydraulicPort_a
-                           q_int "Internal space"
-        annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
-      Interfaces.HydraulicPort_b
-                           q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
-                {54,14}})));
-
-     parameter Types.HydraulicCompliance Compliance "Compliance";
-     parameter Types.Volume zeroPressureVolume=0
-        "Maximal volume, that does not generate pressure";
-     parameter Types.Volume volume_start=0 "Volume start value"
-         annotation (Dialog(group="Initialization"));
-     Types.Volume volume;
-     Types.Volume stressedVolume;
-
-     parameter Types.Volume NominalVolume=1e-6
-        "Scale numerical calculation from quadratic meter to miniliters.";
+    model Pump "Prescribed volumetric flow"
+      extends Hydraulic.Interfaces.OnePort;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
 
     equation
-      q_int.q + q_ext.q = 0;
-      q_int.pressure = (stressedVolume/Compliance) + q_ext.pressure;
-      stressedVolume = max(volume-zeroPressureVolume,0);
+      volumeFlowRate = q;
 
-      state = volume; // der(volume) =  q_int.q;
-      change = q_int.q;
-
-      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
-      annotation (        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end ElasticMembrane;
-
-    model Inertia "Inertia of the volumetric flow"
-      extends SteadyStates.Interfaces.SteadyState(
-                                         state_start=volumeFlow_start,
-        storeUnit="ml/min");
-      extends Interfaces.OnePort;
-      extends Icons.Inertance;
-
-      parameter Types.VolumeFlowRate volumeFlow_start=0.3
-        "Volumetric flow start value"
-         annotation (Dialog(group="Initialization"));                                                          //5 l/min is normal volumetric flow in aorta
-
-      parameter Types.HydraulicInertance I "Inertance";
-
-    equation
-      state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
-      change = (q_in.pressure - q_out.pressure)/I;
-      annotation (                Documentation(info="<html>
-<p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
-</html>", revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end Inertia;
-
-    model Reabsorption "Divide inflow to outflow and reabsorption"
-      import Physiolibrary;
-      extends Icons.Reabsorption;
-
-      Hydraulic.Interfaces.HydraulicPort_a
-                           Inflow                    annotation (Placement(
-            transformation(extent={{-114,26},{-86,54}})));
-      Hydraulic.Interfaces.HydraulicPort_b
-                           Outflow
-        annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Hydraulic.Interfaces.HydraulicPort_b
-                           Reabsorption                annotation (Placement(
-            transformation(extent={{-14,-114},{14,-86}})));
-
-      Types.RealIO.FractionInput FractReab
-                                   annotation (Placement(transformation(extent={{-100,
-                -60},{-60,-20}})));
-
-      parameter Boolean useExternalOutflowMin = false
-        "=true, if minimal outflow is garanted"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.VolumeFlowRate OutflowMin = 0
-        "Minimal outflow if useExternalOutflowMin=false"
-        annotation (Dialog(enable=not useExternalOutflowMin));
-
-      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
-                                                           annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=270,
-            origin={40,80})));
-
-    protected
-       Types.VolumeFlowRate om;
-    equation
-      if not useExternalOutflowMin then
-        om = OutflowMin;
-      end if;
-
-      Inflow.pressure = Outflow.pressure;
-      0 = Inflow.q + Outflow.q + Reabsorption.q;
-
-     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
-
-      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics={Text(
-              extent={{-100,130},{100,108}},
-              lineColor={0,0,255},
-              textString="%name")}),        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-40},{100,60}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-90},{150,-50}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague, Czech Republic</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>january 2009</td>
+</tr>
+</table>
 </html>",     info="<html>
-<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
-<p>If useOutflowMin=false then the next schema is used.</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
-</ul></p>
-<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
-</ul></p>
+<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
 </html>"));
-    end Reabsorption;
+    end Pump;
+
+
 
     model IdealValve
       extends Interfaces.OnePort;
@@ -830,6 +706,134 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p>Tomas Kulhanek, Charles University, Prague, Czech Republic </p>
 </html>"));
     end IdealValve;
+
+    model Inertia "Inertia of the volumetric flow"
+      extends SteadyStates.Interfaces.SteadyState(
+                                         state_start=volumeFlow_start,
+        storeUnit="ml/min");
+      extends Interfaces.OnePort;
+      extends Icons.Inertance;
+
+      parameter Types.VolumeFlowRate volumeFlow_start=0.3
+        "Volumetric flow start value"
+         annotation (Dialog(group="Initialization"));                                                          //5 l/min is normal volumetric flow in aorta
+
+      parameter Types.HydraulicInertance I "Inertance";
+
+    equation
+      state = q_in.q;      // I*der(q_in.q) = (q_in.pressure - q_out.pressure);
+      change = (q_in.pressure - q_out.pressure)/I;
+      annotation (                Documentation(info="<html>
+<p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
+</html>", revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end Inertia;
+
+    model ElasticMembrane "Interaction between internal and external cavities"
+     extends SteadyStates.Interfaces.SteadyState(
+                                        state_start=volume_start, storeUnit=
+          "ml");
+     extends Icons.InternalElasticBalloon;
+      Interfaces.HydraulicPort_a
+                           q_int "Internal space"
+        annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
+      Interfaces.HydraulicPort_b
+                           q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
+                {54,14}})));
+
+     parameter Types.HydraulicCompliance Compliance "Compliance";
+     parameter Types.Volume zeroPressureVolume=0
+        "Maximal volume, that does not generate pressure";
+     parameter Types.Volume volume_start=0 "Volume start value"
+         annotation (Dialog(group="Initialization"));
+     Types.Volume volume;
+     Types.Volume stressedVolume;
+
+     parameter Types.Volume NominalVolume=1e-6
+        "Scale numerical calculation from quadratic meter to miniliters.";
+
+    equation
+      q_int.q + q_ext.q = 0;
+      q_int.pressure = (stressedVolume/Compliance) + q_ext.pressure;
+      stressedVolume = max(volume-zeroPressureVolume,0);
+
+      state = volume; // der(volume) =  q_int.q;
+      change = q_int.q;
+
+      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
+      annotation (        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end ElasticMembrane;
+
+    model Reabsorption "Divide inflow to outflow and reabsorption"
+      import Physiolibrary;
+      extends Icons.Reabsorption;
+
+      Hydraulic.Interfaces.HydraulicPort_a
+                           Inflow                    annotation (Placement(
+            transformation(extent={{-114,26},{-86,54}})));
+      Hydraulic.Interfaces.HydraulicPort_b
+                           Outflow
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
+      Hydraulic.Interfaces.HydraulicPort_b
+                           Reabsorption                annotation (Placement(
+            transformation(extent={{-14,-114},{14,-86}})));
+
+      Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
+
+      parameter Boolean useExternalOutflowMin = false
+        "=true, if minimal outflow is garanted"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.VolumeFlowRate OutflowMin = 0
+        "Minimal outflow if useExternalOutflowMin=false"
+        annotation (Dialog(enable=not useExternalOutflowMin));
+
+      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,80})));
+
+    protected
+       Types.VolumeFlowRate om;
+    equation
+      if not useExternalOutflowMin then
+        om = OutflowMin;
+      end if;
+
+      Inflow.pressure = Outflow.pressure;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+
+      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={Text(
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+</ul></p>
+</html>"));
+    end Reabsorption;
+
 
   end Components;
 

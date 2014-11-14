@@ -373,7 +373,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "=true, if membrane permeability input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-     parameter Types.OsmoticPermeability cond=1e-12
+     parameter Types.OsmoticPermeability cond=1e-15
         "Membrane permeability for solvent if useConductanceInput = false"
           annotation (Dialog(enable=not useConductanceInput));
 
@@ -417,6 +417,8 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 
       Types.OsmoticPermeability perm;
 
+      Types.Pressure opi "osmotic pressure at q_in", opo
+        "osmotic pressure at q_out";
     protected
       Types.Pressure pi,po;
       Types.Temperature ti,to;
@@ -443,7 +445,10 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         cond=perm;
       end if;
 
-      q_in.q = cond * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+      q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+
+      opi = q_in.o*(Modelica.Constants.R*ti);
+      opo = q_out.o*(Modelica.Constants.R*to);
       annotation (        Documentation(revisions="<html>
 <p><i>2009-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -488,6 +493,77 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end SolventFlux;
+
+    model IdealFlowFiltration "Flow of whole solution"
+      extends Icons.FlowFiltration;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
+
+      Interfaces.OsmoticPort_a port_a
+        "Inflow ospomarity and positive filtrate flow rate"                               annotation (Placement(transformation(extent={{
+                -106,30},{-86,50}}), iconTransformation(extent={{-106,30},{-86,50}})));
+      Interfaces.OsmoticPort_b filtrate
+        "Outflow osmolarity and negative filtrate flow rate"                                 annotation (Placement(transformation(extent={{
+                -10,-112},{10,-92}}), iconTransformation(extent={{-10,-112},{10,-92}})));
+    equation
+      port_a.q+filtrate.q=0;
+
+      port_a.o*q = (q-port_a.q)*filtrate.o;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                            graphics={
+            Text(
+              extent={{-150,-20},{150,20}},
+              textString="%name",
+              lineColor={0,0,255},
+              origin={70,104},
+              rotation=180)}),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Bidirectional mass flow by concentration</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
+<td></td>
+<td><p align=\"center\"><h4>forward flow</h4></p></td>
+<td><p align=\"center\"><h4>backward flow</h4></p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>solutionFlow</h4></p></td>
+<td><p align=\"center\">&GT;=0</p></td>
+<td><p align=\"center\">&LT;=0</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_in.q</h4></p></td>
+<td><p align=\"center\">=solutionFlow*q_in.conc</p></td>
+<td><p align=\"center\">=-q_out.q</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_out.q</h4></p></td>
+<td><p align=\"center\">=-q_in.q</p></td>
+<td><p align=\"center\">=solutionFlow*q_out.conc</p></td>
+</tr>
+</table>
+<br/>
+</html>"));
+    end IdealFlowFiltration;
 
     model Reabsorption "Divide inflow to outflow and reabsorption"
       import Physiolibrary;
@@ -827,30 +903,6 @@ Connector with one flow signal of type Real.
 </html>"));
     end OnePort;
 
-    partial model ConditionalSolventFlow
-      "Input of solvent volumetric flow vs. parametric solvent volumetric flow"
-
-      parameter Boolean useSolventFlowInput = false
-        "=true, if solvent flow input is used instead of parameter SolventFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.VolumeFlowRate SolventFlow=0
-        "Volumetric flow of solvent if useSolventFlowInput=false"
-        annotation (Dialog(enable=not useSolventFlowInput));
-
-      Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if
-        useSolventFlowInput                                                                    annotation (Placement(transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      Types.VolumeFlowRate q "Current solvent flow";
-    equation
-      if not useSolventFlowInput then
-        q = SolventFlow;
-      end if;
-
-    end ConditionalSolventFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

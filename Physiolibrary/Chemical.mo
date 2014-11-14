@@ -1,8 +1,7 @@
 within Physiolibrary;
 package Chemical "Domain with Molar Concentration and Molar Flow"
  extends Modelica.Icons.Package;
-  package Examples
-    "Examples that demonstrate usage of the Pressure flow components"
+  package Examples "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
     model SimpleReaction
@@ -757,8 +756,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Chemical.Components.Substance DeoxyRHm[4](each Simulation=
               Types.SimulationType.SteadyState,
           each solute_start=4e-11,
-          each dH=-dHL/4)
-          "Deoxygenated subunit in R structure of hemoglobin tetramer"
+          each dH=-dHL/4) "Deoxygenated subunit in R structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{-40,-18},{-20,2}})));
         Chemical.Components.Substance OxyTHm[4](
           each Simulation=Types.SimulationType.SteadyState,
@@ -774,8 +772,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Chemical.Components.Substance DeoxyTHm[4](
                                                  each Simulation=Types.SimulationType.SteadyState,
           each solute_start=0.00025,
-          each dH=0)
-          "Deoxygenated subunit in T structure of hemoglobin tetramer"
+          each dH=0) "Deoxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{70,-18},{90,2}})));
 
         Chemical.Components.Substance
@@ -1056,8 +1053,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       parameter Boolean loadStarts
           "Start values of state variables from data file (to help with initialization)";
-      parameter Boolean storeState
-          "Save state variables at the end of simulation";
+      parameter Boolean storeState "Save state variables at the end of simulation";
       constant String dirName = Modelica.Utilities.Files.loadResource("modelica://Physiolibrary/Resources/Data/Hemoglobin_MKM")
           "Directory to load start gues values and store final simulation values";
 
@@ -1878,8 +1874,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Chemical.Components.Substance HA[4](
             each solute_start=0,
             each Simulation=Types.SimulationType.SteadyState,
-            each isDependent=true)
-            "residual acid chains of hemoglobin subunits "
+            each isDependent=true) "residual acid chains of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-90,-14},{-70,6}})));
           Chemical.Components.ChemicalReaction protonation1[4](each nP=2,each  K=KA)
             annotation (Placement(transformation(extent={{-62,-14},{-42,6}})));
@@ -1910,8 +1905,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Chemical.Components.ChemicalReaction carboxylation[4](
             each nP=2,
             each nS=2,
-            each K=Kc)
-            "Carboxylation of Valin1 amino terminus of hemogloni subunit"
+            each K=Kc) "Carboxylation of Valin1 amino terminus of hemogloni subunit"
             annotation (Placement(transformation(extent={{36,52},{56,72}})));
           Chemical.Components.Substance NHCOO[4](each Simulation=Types.SimulationType.SteadyState, each solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
@@ -2597,8 +2591,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           Chemical.Examples.Hemoglobin.Develop.Hemoglobin2
             deoxyhemoglobin
             annotation (Placement(transformation(extent={{-22,-68},{-2,-48}})));
-          Types.RealIO.FractionOutput protonation
-            "allosteric-dependent protonation"
+          Types.RealIO.FractionOutput protonation "allosteric-dependent protonation"
             annotation (Placement(transformation(extent={{68,-76},{88,-56}})));
           Blocks.Math.Power pow annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
@@ -3134,8 +3127,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       model Phosphate
           extends Modelica.Icons.Example;
 
-        parameter Types.Concentration totalPO4=0.00115
-          "Total phosphate concentration";
+        parameter Types.Concentration totalPO4=0.00115 "Total phosphate concentration";
 
         Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
           annotation (Placement(transformation(extent={{64,-20},{84,0}})));
@@ -3341,8 +3333,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           parameter Types.AmountOfSubstance totalAlb=0.00066
             "Total albumin concentration";
 
-          parameter Integer n=218
-            "Number of weak acid group in albumin molecule";
+          parameter Integer n=218 "Number of weak acid group in albumin molecule";
           parameter Real pKAs[n]=cat(1,{8.5},fill(4.0,98),fill(11.7,18),fill(12.5,24),fill(5.8,2),fill(6.0,2),{7.6,7.8,7.8,8,8},fill(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1})
             "acid dissociation constants";
 
@@ -3661,8 +3652,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "=true, if external dissociation ratio is used"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
+      parameter Boolean useForwardRateInput = false
+        "=true, if external forward rate is used"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
       Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
-        "Dissociation constant [SI-unit]" annotation (Placement(transformation(
+        "Dissociation coefficient [SI-unit]"
+                                          annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
@@ -3682,7 +3678,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation ( HideResult=true, Dialog(enable=not useDissociationConstantInput));
 
       parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
-        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
+        annotation ( HideResult=true, Dialog(enable=not useForwardRateInput));
+      //  annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
       parameter Integer nS=1 "Number of substrates types"
         annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
@@ -3717,19 +3714,31 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
+      Real forwardRate;
     protected
       parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
       parameter Types.Fraction fs=solventFraction^(sum(s));
       parameter Types.Fraction fp=solventFraction^(sum(p));
 
+    public
+      Modelica.Blocks.Interfaces.RealInput forwardRateCoefficient(start=kf)=forwardRate if
+                                                                                    useForwardRateInput
+        "Reaction forward rate coefficient [SI-unit]" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={40,40})));
     equation
       if not useDissociationConstantInput then
         KBase = K;
       end if;
+      if not useForwardRateInput then
+        forwardRate = kf;
+      end if;
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
 
-      rr*fsp = kf*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
+      rr*fsp = forwardRate*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -3795,7 +3804,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p><code></p><p>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
 <p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
 <pre>where R is gass constant and T is temperature.</pre>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end ChemicalReaction;
 
     model Diffusion "Solute diffusion"
@@ -3999,8 +4010,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "Clearance of solute if useSolutionFlowInput=false"
         annotation (Dialog(enable=not useSolutionFlowInput));
 
-      parameter Real K(unit="1")=1
-        "Coefficient such that Clearance = K*solutionFlow";
+      parameter Real K(unit="1")=1 "Coefficient such that Clearance = K*solutionFlow";
 
       extends Chemical.Interfaces.ConditionalSolutionFlow(SolutionFlow=Clearance/K);
 
@@ -4280,8 +4290,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Chemical.Interfaces.OnePort;
       extends Icons.Dilution;
 
-      parameter Boolean useDilutionInput = false
-        "=true, if dilition input is used"
+      parameter Boolean useDilutionInput = false "=true, if dilition input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Fraction Dilution=1
@@ -4325,8 +4334,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "=true, if external maximum of reabsorption molar flow is used"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Boolean useBaseReabsorption = false
-        "=false, if BaseReabsorption=1"
+      parameter Boolean useBaseReabsorption = false "=false, if BaseReabsorption=1"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
@@ -4402,8 +4410,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Icons.Membrane;
       extends Chemical.Interfaces.ConditionalHeatPort;
 
-      parameter Integer NumberOfParticles = 1
-        "Number of penetrating particle types";
+      parameter Integer NumberOfParticles = 1 "Number of penetrating particle types";
       parameter Integer Charges[NumberOfParticles] = zeros(NumberOfParticles)
         "Elementary charges of particles";
       parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
@@ -4425,8 +4432,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
             rotation=270,
             origin={0,100})));
 
-      Types.GasSolubility kH[NumberOfParticles]
-        "Concentration ratio at equilibrium";
+      Types.GasSolubility kH[NumberOfParticles] "Concentration ratio at equilibrium";
 
       parameter Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
         "Equilibrated concentration ratio at temperature T0 - can be estimated by Henry's law coefficient ratios (kH1/kH2)"
@@ -4443,8 +4449,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
 
     protected
-       Real KAdjustment
-        "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
+       Real KAdjustment "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
        Types.DiffusionPermeability p[NumberOfParticles];
 
     equation
@@ -4645,8 +4650,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
     model UnlimitedSolutionStorage "Constant concentration source"
 
       Chemical.Interfaces.ChemicalPort_b
-                                q_out
-        "constant concentration with any possible flow"
+                                q_out "constant concentration with any possible flow"
                                  annotation (Placement(
             transformation(extent={{90,-10},{110,10}})));
 
@@ -4860,8 +4864,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end ChemicalPort;
 
-    connector ChemicalPort_a
-      "Concentration and expected positive Solute inflow"
+    connector ChemicalPort_a "Concentration and expected positive Solute inflow"
       extends ChemicalPort;
 
     annotation (
@@ -4894,8 +4897,7 @@ Connector with one flow signal of type Real.
 
     end ChemicalPort_a;
 
-    connector ChemicalPort_b
-      "Concentration and expected negative Solute outflow"
+    connector ChemicalPort_b "Concentration and expected negative Solute outflow"
       extends ChemicalPort;
 
     annotation (
@@ -5024,7 +5026,10 @@ on the model behaviour.
       Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,40})));
+            origin={0,40}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,70})));
 
       Types.VolumeFlowRate q "Current solution flow";
     equation
@@ -5032,6 +5037,8 @@ on the model behaviour.
         q = SolutionFlow;
       end if;
 
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow
