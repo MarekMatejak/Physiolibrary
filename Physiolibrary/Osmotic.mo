@@ -293,7 +293,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Ependymal cells actively secrete sodium into the lateral ventricles. This creates&nbsp;<a href=\"https://en.wikipedia.org/wiki/Osmotic_pressure\">osmotic pressure</a>&nbsp;and draws water into the CSF space. Chloride, with a negative charge, maintains&nbsp;<a href=\"https://en.wikipedia.org/w/index.php?title=Electroneutrality&action=edit&redlink=1\">electroneutrality</a>&nbsp;and moves with the positively-charged sodium. As a result, CSF contains a higher concentration of sodium and chloride than blood plasma, but less potassium, calcium and glucose and protein.&nbsp;</p>
 </html>"));
     end CerebrospinalFluid;
-    annotation (conversion(from(version="", script="ConvertFromExamples_.mos")));
+
   end Examples;
 
   package Components
@@ -695,7 +695,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
      extends Chemical.Interfaces.ConditionalSolutionFlow;
       Interfaces.OsmoticPort_a
                           q_in
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation ( Placement(
             transformation(extent={{-70,-10},{-50,10}})));
     equation
       q_in.q = q;

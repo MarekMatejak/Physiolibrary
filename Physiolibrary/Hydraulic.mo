@@ -491,18 +491,17 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end Conductor;
 
-
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
       extends Icons.HydrostaticGradient;
       Hydraulic.Interfaces.HydraulicPort_a
                            q_up "Top site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation (Placement(
             transformation(extent={{66,26},{94,54}})));
 
       Interfaces.HydraulicPort_a
                            q_down "Bottom site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation (Placement(
             transformation(extent={{66,-74},{94,-46}})));
 
       parameter Boolean useHeightInput = false "=true, if height input is used"
@@ -624,8 +623,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
 </html>"));
     end Pump;
-
-
 
     model IdealValve
       extends Interfaces.OnePort;
@@ -833,7 +830,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </ul></p>
 </html>"));
     end Reabsorption;
-
 
   end Components;
 
