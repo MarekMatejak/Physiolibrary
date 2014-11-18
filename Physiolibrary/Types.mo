@@ -68,7 +68,8 @@ package Types "Physiological units with nominals"
 </html>"));
   end UsersGuide;
 
-  package Examples "Examples that demonstrate usage of the Pressure flow components"
+  package Examples
+    "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
     model Units
     extends Modelica.Icons.Example;
@@ -329,7 +330,8 @@ package Types "Physiological units with nominals"
   end AccelerationConst;
 
   block AmountOfSubstanceConst "Constant signal of type AmountOfSubstance"
-   parameter Types.AmountOfSubstance k "Constant AmountOfSubstance output value";
+   parameter Types.AmountOfSubstance k
+        "Constant AmountOfSubstance output value";
         RealIO.AmountOfSubstanceOutput y "AmountOfSubstance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -412,7 +414,8 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end DensityConst;
 
-  block DiffusionPermeabilityConst "Constant signal of type DiffusionPermeability"
+  block DiffusionPermeabilityConst
+      "Constant signal of type DiffusionPermeability"
    parameter Types.DiffusionPermeability k
         "Constant DiffusionPermeability output value";
         RealIO.DiffusionPermeabilityOutput y "DiffusionPermeability constant"
@@ -498,7 +501,8 @@ package Types "Physiological units with nominals"
   end ElectricCurrentConst;
 
   block ElectricPotentialConst "Constant signal of type ElectricPotential"
-   parameter Types.ElectricPotential k "Constant ElectricPotential output value";
+   parameter Types.ElectricPotential k
+        "Constant ElectricPotential output value";
         RealIO.ElectricPotentialOutput y "ElectricPotential constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -722,7 +726,8 @@ package Types "Physiological units with nominals"
   end HeatFlowRateConst;
 
   block HydraulicComplianceConst "Constant signal of type HydraulicCompliance"
-   parameter Types.HydraulicCompliance k "Constant HydraulicCompliance output value";
+   parameter Types.HydraulicCompliance k
+        "Constant HydraulicCompliance output value";
         RealIO.HydraulicComplianceOutput y "HydraulicCompliance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -749,7 +754,8 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicComplianceConst;
 
-  block HydraulicElastanceConst "Obsolete, please use HydraulicCompliance instead!"
+  block HydraulicElastanceConst
+      "Obsolete, please use HydraulicCompliance instead!"
     extends Modelica.Icons.ObsoleteModel;
    parameter Types.HydraulicElastance k "Hydraulic elastance";
         Modelica.Blocks.Interfaces.RealOutput
@@ -814,8 +820,10 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicElastanceToComplianceConst;
 
-  block HydraulicConductanceConst "Constant signal of type HydraulicConductance"
-   parameter Types.HydraulicConductance k "Constant HydraulicConductance output value";
+  block HydraulicConductanceConst
+      "Constant signal of type HydraulicConductance"
+   parameter Types.HydraulicConductance k
+        "Constant HydraulicConductance output value";
         RealIO.HydraulicConductanceOutput y "HydraulicConductance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -842,7 +850,8 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end HydraulicConductanceConst;
 
-  block HydraulicResistanceConst "Obsolete, please use HydraulicConductance instead!"
+  block HydraulicResistanceConst
+      "Obsolete, please use HydraulicConductance instead!"
 
    parameter Types.HydraulicResistance k "Hydraulic resistance";
         Modelica.Blocks.Interfaces.RealOutput
@@ -909,7 +918,8 @@ package Types "Physiological units with nominals"
   end HydraulicResistanceToConductanceConst;
 
   block HydraulicInertanceConst "Constant signal of type HydraulicInertance"
-   parameter Types.HydraulicInertance k "Constant HydraulicInertance output value";
+   parameter Types.HydraulicInertance k
+        "Constant HydraulicInertance output value";
         RealIO.HydraulicInertanceOutput y "HydraulicInertance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -1049,7 +1059,8 @@ package Types "Physiological units with nominals"
   end OsmolarityConst;
 
   block OsmoticPermeabilityConst "Constant signal of type OsmoticPermeability"
-   parameter Types.OsmoticPermeability k "Constant OsmoticPermeability output value";
+   parameter Types.OsmoticPermeability k
+        "Constant OsmoticPermeability output value";
         RealIO.OsmoticPermeabilityOutput y "OsmoticPermeability constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -1132,8 +1143,10 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end SpecificEnergyConst;
 
-  block SpecificHeatCapacityConst "Constant signal of type SpecificHeatCapacity"
-   parameter Types.SpecificHeatCapacity k "Constant SpecificHeatCapacity output value";
+  block SpecificHeatCapacityConst
+      "Constant signal of type SpecificHeatCapacity"
+   parameter Types.SpecificHeatCapacity k
+        "Constant SpecificHeatCapacity output value";
         RealIO.SpecificHeatCapacityOutput y "SpecificHeatCapacity constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -1189,7 +1202,8 @@ package Types "Physiological units with nominals"
   end TemperatureConst;
 
   block ThermalConductanceConst "Constant signal of type ThermalConductance"
-   parameter Types.ThermalConductance k "Constant ThermalConductance output value";
+   parameter Types.ThermalConductance k
+        "Constant ThermalConductance output value";
         RealIO.ThermalConductanceOutput y "ThermalConductance constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -1362,10 +1376,12 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end pHConst;
 
-  block VolumeDensityOfChargeConst "Constant signal of type VolumeDensityOfCharge"
+  block VolumeDensityOfChargeConst
+      "Constant signal of type VolumeDensityOfCharge"
    parameter Types.VolumeDensityOfCharge k
         "Constant VolumeDensityOfCharge output value";
-        Types.RealIO.VolumeDensityOfChargeOutput y "VolumeDensityOfCharge constant"
+        Types.RealIO.VolumeDensityOfChargeOutput y
+        "VolumeDensityOfCharge constant"
                                        annotation (Placement(transformation(
             extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,10}})));
   equation
@@ -1560,7 +1576,8 @@ package Types "Physiological units with nominals"
     end PopulationConst;
 
     block PopulationChangeConst "Constant signal of type PopulationChange"
-      parameter Types.PopulationChange k "Constant PopulationChange output value";
+      parameter Types.PopulationChange k
+        "Constant PopulationChange output value";
         RealIO.PopulationChangeOutput y "PopulationChange constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
@@ -1591,7 +1608,8 @@ package Types "Physiological units with nominals"
       "Constant signal of type PopulationChangePerMember"
       parameter Types.Time LifeTime
         "Mean lifetime as 1/PopulationChangePerMember output value";
-        RealIO.PopulationChangePerMemberOutput y "PopulationChangePerMember constant"
+        RealIO.PopulationChangePerMemberOutput y
+        "PopulationChangePerMember constant"
       annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                   iconTransformation(extent={{40,-10},{60,10}})));
     equation
@@ -1658,7 +1676,8 @@ package Types "Physiological units with nominals"
   package RealIO
     extends Modelica.Icons.Package;
 
-    connector AccelerationInput = input Acceleration "input Acceleration as connector"
+    connector AccelerationInput = input Acceleration
+      "input Acceleration as connector"
       annotation (defaultComponentName="acceleration",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -2071,7 +2090,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-    connector HeatFlowRateInput = input HeatFlowRate "input HeatFlowRate as connector"
+    connector HeatFlowRateInput = input HeatFlowRate
+      "input HeatFlowRate as connector"
       annotation (defaultComponentName="heatflowrate",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -2224,7 +2244,8 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector MassFlowRateInput = input MassFlowRate "input MassFlowRate as connector"
+    connector MassFlowRateInput = input MassFlowRate
+      "input MassFlowRate as connector"
       annotation (defaultComponentName="massflowrate",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -2329,7 +2350,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
-    connector OsmolarityInput = input Osmolarity "input Concentration as connector"
+    connector OsmolarityInput = input Osmolarity
+      "input Concentration as connector"
       annotation (defaultComponentName="osmolarity",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -2353,7 +2375,8 @@ package Types "Physiological units with nominals"
     Connector with one input signal of type Concentration.
     </p>
     </html>"));
-    connector OsmolarityOutput = output Osmolarity "output Concentration as connector"
+    connector OsmolarityOutput = output Osmolarity
+      "output Concentration as connector"
       annotation (defaultComponentName="osmolarity",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -2537,7 +2560,8 @@ package Types "Physiological units with nominals"
   </p>
   </html>"));
 
-    connector TemperatureInput = input Temperature "input Temperature as connector"
+    connector TemperatureInput = input Temperature
+      "input Temperature as connector"
       annotation (defaultComponentName="temperature",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -2562,7 +2586,8 @@ package Types "Physiological units with nominals"
     </p>
     </html>"));
 
-    connector TemperatureOutput = output Temperature "output Temperature as connector"
+    connector TemperatureOutput = output Temperature
+      "output Temperature as connector"
       annotation (defaultComponentName="temperature",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -2824,7 +2849,8 @@ package Types "Physiological units with nominals"
     </p>
     </html>"));
 
-    connector FrequencyOutput = output Frequency "output Frequency as connector"
+    connector FrequencyOutput = output Frequency
+      "output Frequency as connector"
       annotation (defaultComponentName="frequency",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -3171,7 +3197,8 @@ package Types "Physiological units with nominals"
   </html>"));
 
     connector SpecificEnergyInput =
-                            input SpecificEnergy "input SpecificEnergy as connector"
+                            input SpecificEnergy
+      "input SpecificEnergy as connector"
       annotation (defaultComponentName="specificEnergy",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -3328,8 +3355,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type pH.
   </p>
   </html>"));
-    connector VolumeDensityOfChargeInput =           input VolumeDensityOfCharge
-      "input VolumeDensityOfCharge as connector"
+    connector VolumeDensityOfChargeInput =           input
+        VolumeDensityOfCharge "input VolumeDensityOfCharge as connector"
       annotation (defaultComponentName="volumeDensityOfCharge",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -3353,8 +3380,8 @@ package Types "Physiological units with nominals"
     Connector with one input signal of type VolumeDensityOfCharge.
     </p>
     </html>"));
-    connector VolumeDensityOfChargeOutput =           output VolumeDensityOfCharge
-      "output VolumeDensityOfCharge as connector"
+    connector VolumeDensityOfChargeOutput =           output
+        VolumeDensityOfCharge "output VolumeDensityOfCharge as connector"
       annotation (defaultComponentName="volumeDensityOfCharge",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -3459,7 +3486,8 @@ package Types "Physiological units with nominals"
     Connector with one input signal of type Velocity.
     </p>
     </html>"));
-    connector VelocityOutput =      output Velocity "output Velocity as connector"
+    connector VelocityOutput =      output Velocity
+      "output Velocity as connector"
       annotation (defaultComponentName="velocity",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -3587,7 +3615,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Position.
   </p>
   </html>"));
-     connector MolarEnergyInput = input MolarEnergy "input MolarEnergy as connector"
+     connector MolarEnergyInput = input MolarEnergy
+      "input MolarEnergy as connector"
       annotation (defaultComponentName="molarEnergy",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -3612,7 +3641,8 @@ package Types "Physiological units with nominals"
     </p>
     </html>"));
 
-    connector MolarEnergyOutput = output MolarEnergy "output MolarEnergy as connector"
+    connector MolarEnergyOutput = output MolarEnergy
+      "output MolarEnergy as connector"
       annotation (defaultComponentName="molarEnergy",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -3638,7 +3668,8 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type MolarEnergy.
   </p>
   </html>"));
-     connector PopulationInput =  input Population "input Population as connector"
+     connector PopulationInput =  input Population
+      "input Population as connector"
       annotation (defaultComponentName="population",
       Icon(graphics={Polygon(
               points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -3662,7 +3693,8 @@ package Types "Physiological units with nominals"
     Connector with one input signal of type Population.
     </p>
     </html>"));
-    connector PopulationOutput =  output Population "output Population as connector"
+    connector PopulationOutput =  output Population
+      "output Population as connector"
       annotation (defaultComponentName="population",
       Icon(coordinateSystem(
             preserveAspectRatio=true,
@@ -3886,8 +3918,8 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html>
 <p>
-This connector defines the \"expandable connector\" ControlBus that
-is used as bus in the HuMod model.
+This connector defines the \"expandable connector\" that
+is used as bus in the Physiomodel (www.physiomodel.org).
 Note, this connector is \"empty\". When using it, the actual content is
 constructed by the signals connected to this bus.
 </p>
@@ -3901,7 +3933,8 @@ constructed by the signals connected to this bus.
     replaceable package PhysiolibTypesRealTypes = Physiolibrary.Types.RealTypes
       "Redefine this package only if there are not possible to use Physiolibrary types for variables!";
 
-    replaceable partial model Variables "Subsystem output busConnector variables"
+    replaceable partial model Variables
+      "Subsystem output busConnector variables"
       package T = PhysiolibTypesRealTypes;
 
       replaceable block BooleanVariable =
@@ -4143,7 +4176,8 @@ constructed by the signals connected to this bus.
 </html>"));
   end IO_Bus;
 
-  expandable connector TorsoBusConnector "Upper, Middle or Lower Torso properties"
+  expandable connector TorsoBusConnector
+    "Upper, Middle or Lower Torso properties"
 
     annotation (
       Icon(coordinateSystem(
@@ -4420,7 +4454,8 @@ This icon is designed for a <b>signal bus</b> connector.
   package RealTypeInputParameters
     extends Modelica.Icons.SourcesPackage;
 
-    replaceable package Utilities = Types.FilesUtilities constrainedby Types.Utilities
+    replaceable package Utilities = Types.FilesUtilities constrainedby
+      Types.Utilities
                    annotation (Dialog(group="Functions to read or store",tab="Types"));
      block Base
        parameter String varName=
@@ -4532,8 +4567,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="ml/min");
    parameter Types.DiffusionPermeability k=Utilities.readReal(varName,
           storeUnit) "Constant DiffusionPermeability output value";
-        RealIO.DiffusionPermeabilityOutput y "DiffusionPermeability input parameter"
-                                                annotation (Placement(
+        RealIO.DiffusionPermeabilityOutput y
+        "DiffusionPermeability input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -4677,8 +4712,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="ml/mmHg");
    parameter Types.HydraulicCompliance k=Utilities.readReal(varName, storeUnit)
         "Constant HydraulicCompliance output value";
-        RealIO.HydraulicComplianceOutput y "HydraulicCompliance input parameter"
-                                              annotation (Placement(
+        RealIO.HydraulicComplianceOutput y
+        "HydraulicCompliance input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -4691,8 +4726,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="ml/(mmHg.min)");
    parameter Types.HydraulicConductance k=Utilities.readReal(varName,
           storeUnit) "Constant HydraulicConductance output value";
-        RealIO.HydraulicConductanceOutput y "HydraulicConductance input parameter"
-                                               annotation (Placement(
+        RealIO.HydraulicConductanceOutput y
+        "HydraulicConductance input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -4771,8 +4806,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="ml/(mmHg.min)");
    parameter Types.OsmoticPermeability k=Utilities.readReal(varName, storeUnit)
         "Constant OsmoticPermeability output value";
-        RealIO.OsmoticPermeabilityOutput y "OsmoticPermeability input parameter"
-                                              annotation (Placement(
+        RealIO.OsmoticPermeabilityOutput y
+        "OsmoticPermeability input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -4811,8 +4846,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="kcal/(kg.K)");
    parameter Types.SpecificHeatCapacity k=Utilities.readReal(varName,
           storeUnit) "Constant SpecificHeatCapacity output value";
-        RealIO.SpecificHeatCapacityOutput y "SpecificHeatCapacity input parameter"
-                                               annotation (Placement(
+        RealIO.SpecificHeatCapacityOutput y
+        "SpecificHeatCapacity input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -4904,8 +4939,8 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Base(storeUnit="meq/l");
    parameter Types.VolumeDensityOfCharge k=Utilities.readReal(varName,
           storeUnit) "Constant VolumeDensityOfCharge output value";
-        RealIO.VolumeDensityOfChargeOutput y "VolumeDensityOfCharge input parameter"
-                                                annotation (Placement(
+        RealIO.VolumeDensityOfChargeOutput y
+        "VolumeDensityOfCharge input parameter" annotation (Placement(
             transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
                 {40,-10},{60,10}})));
   equation
@@ -5071,7 +5106,8 @@ The Real output y is a constant signal:
 </html>"));
         end InputParameter;
 
-        block InputParameter_SI "Generate constant signal in SI units from file"
+        block InputParameter_SI
+      "Generate constant signal in SI units from file"
           extends AbstractReal(                   k = Utilities.readReal_SI( varName));
 
           replaceable package IO = Types.RealExtension.IO (
@@ -5113,7 +5149,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputFinal.txt")
-                                                         constrainedby Types.Utilities;
+                                                         constrainedby
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5154,7 +5191,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputFinal_SI.txt")
-                                                         constrainedby Types.Utilities;
+                                                         constrainedby
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5192,7 +5230,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputInitial.txt")
-                                                         constrainedby Types.Utilities;
+                                                         constrainedby
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5233,7 +5272,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputInitial_SI.txt")
-                                                         constrainedby Types.Utilities;
+                                                         constrainedby
+        Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5271,7 +5311,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison.txt")
-                                                         constrainedby Types.Utilities
+                                                         constrainedby
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5322,7 +5363,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparison_SI.txt")
-                                                         constrainedby Types.Utilities
+                                                         constrainedby
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5370,7 +5412,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparisonInitial.txt")
-                                                         constrainedby Types.Utilities
+                                                         constrainedby
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5421,7 +5464,8 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparisonInitial_SI.txt")
-                                                         constrainedby Types.Utilities
+                                                         constrainedby
+        Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5525,7 +5569,8 @@ The Real output y is a constant signal:
     extends Modelica.Icons.BasesPackage;
     import Physiolibrary;
 
-      replaceable block Variable = RealExtension.Parameter constrainedby AbstractReal;
+      replaceable block Variable = RealExtension.Parameter constrainedby
+      AbstractReal;
 
       block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
       block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
@@ -5637,8 +5682,10 @@ The Real output y is a constant signal:
     constant String comparisonFileName="comparison.txt"
       "File to save comparison from loaded values and simulation results with (non-)SI units";
 
-    constant String inputSIFileName="input_SI.txt" "File to load values in SI units";
-    constant String outputSIFileName="output_SI.txt" "File to save values in SI units";
+    constant String inputSIFileName="input_SI.txt"
+      "File to load values in SI units";
+    constant String outputSIFileName="output_SI.txt"
+      "File to save values in SI units";
     constant String comparisonSIFileName="comparison_SI.txt"
       "File to save comparison in SI units from loaded values and simulation results";
 
@@ -5811,7 +5858,8 @@ other wariant: //Format "<variableName>=<value><unit>"
 
     end writeReal;
 
-    redeclare function extends writeReal_SI "Write the value to file using SI unit"
+    redeclare function extends writeReal_SI
+      "Write the value to file using SI unit"
       import Modelica.Utilities.*;
 
     protected
@@ -5960,7 +6008,8 @@ other wariant: //Format "<variableName>=<value><unit>"
         block Parameter "Read constant boolean signal"
           extends Types.AbstractBoolean;
 
-          Modelica.Blocks.Interfaces.BooleanOutput y "Connector of Real output signal"
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
@@ -5990,7 +6039,8 @@ The Real output y is a constant signal:
           extends Types.AbstractBoolean(k=
             Utilities.readBoolean(varName));
 
-          Modelica.Blocks.Interfaces.BooleanOutput y "Connector of Real output signal"
+          Modelica.Blocks.Interfaces.BooleanOutput y
+        "Connector of Real output signal"
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
           replaceable package Utilities = Types.FilesUtilities;
 
@@ -6023,7 +6073,8 @@ The Real output y is a constant signal:
           replaceable package Utilities = Types.FilesUtilities;
 
           Modelica.Blocks.Interfaces.BooleanInput
-                                                y "Connector of Real output signal"
+                                                y
+        "Connector of Real output signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-100,-10},{-80,10}})));
 
         equation
@@ -6145,7 +6196,8 @@ The Real output y is a constant signal:
     //algorithm
     end writeReal;
 
-    replaceable function writeReal_SI "Write the real value using SI unit to file"
+    replaceable function writeReal_SI
+      "Write the real value using SI unit to file"
       extends Modelica.Icons.Function;
 
       input String name "Variable name";
@@ -6167,7 +6219,8 @@ The Real output y is a constant signal:
       extends Modelica.Icons.Function;
 
       input String name "Variable name";
-      input Real defaultValue "Original value[in SIunits] to compare with final value";
+      input Real defaultValue
+        "Original value[in SIunits] to compare with final value";
       input Real initialValue "Initial variable value[in SI units]";
       input Real finalValue "Final variable value[in SI units]";
 
@@ -6183,7 +6236,8 @@ The Real output y is a constant signal:
       extends Modelica.Icons.Function;
 
       input String name "Variable name";
-      input Real defaultValue "Original value[in SIunits] to compare with final value";
+      input Real defaultValue
+        "Original value[in SIunits] to compare with final value";
       input Real initialValue "Initial variable value[in SI units]";
       input Real finalValue "Final variable value[in SI units]";
 
@@ -6569,8 +6623,8 @@ The Real output y is a constant signal:
       NoInit "Use start values only as a guess of state values",
       NormalInit "Initialization by start values",
       ReadInit "Initialization by function Utilities.readReal('state name')",
-      InitSteadyState "Initialization in Steady State (initial derivations are zeros)",
-
+      InitSteadyState
+        "Initialization in Steady State (initial derivations are zeros)",
       SteadyState "Steady State = Derivations are zeros during simulation")
     "Initialization or Steady state options (to determine model type before simulating)"
       annotation (Evaluate=true);
