@@ -974,6 +974,35 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end MassConst;
 
+  block MassConcentrationConst "Constant signal of type MassConcentration"
+   parameter Types.MassConcentration k
+        "Constant MassConcentration output value";
+        RealIO.MassConcentrationOutput y "MassConcentration constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="massConcentration",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end MassConcentrationConst;
+
   block MassFlowRateConst "Constant signal of type MassFlowRate"
    parameter Types.MassFlowRate k "Constant MassFlowRate output value";
         RealIO.MassFlowRateOutput y "MassFlowRate constant"
