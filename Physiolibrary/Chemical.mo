@@ -3634,7 +3634,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       internalHeat = dH*solute;
 
-                                                                                                        annotation (choicesAllMatching=true,
+                                                                                                        annotation (
         Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
             graphics={Text(
@@ -3661,8 +3661,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         "=true, if external dissociation ratio is used"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
+      parameter Boolean useForwardRateInput = false
+        "=true, if external forward rate is used"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
       Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
-        "Dissociation constant [SI-unit]" annotation (Placement(transformation(
+        "Dissociation coefficient [SI-unit]"
+                                          annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40})));
@@ -3682,7 +3687,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation ( HideResult=true, Dialog(enable=not useDissociationConstantInput));
 
       parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
-        annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
+        annotation ( HideResult=true, Dialog(enable=not useForwardRateInput));
+      //  annotation (Dialog(group="Parameters")); //forward K*(10^rateLevel) at temperature TK
 
       parameter Integer nS=1 "Number of substrates types"
         annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
@@ -3717,19 +3723,31 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
+      Real forwardRate;
     protected
       parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
       parameter Types.Fraction fs=solventFraction^(sum(s));
       parameter Types.Fraction fp=solventFraction^(sum(p));
 
+    public
+      Modelica.Blocks.Interfaces.RealInput forwardRateCoefficient(start=kf)=forwardRate if
+                                                                                    useForwardRateInput
+        "Reaction forward rate coefficient [SI-unit]" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={40,40})));
     equation
       if not useDissociationConstantInput then
         KBase = K;
       end if;
+      if not useForwardRateInput then
+        forwardRate = kf;
+      end if;
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
 
-      rr*fsp = kf*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
+      rr*fsp = forwardRate*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -3795,7 +3813,9 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p><code></p><p>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
 <p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
 <pre>where R is gass constant and T is temperature.</pre>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end ChemicalReaction;
 
     model Diffusion "Solute diffusion"
@@ -5024,7 +5044,10 @@ on the model behaviour.
       Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,40})));
+            origin={0,40}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,70})));
 
       Types.VolumeFlowRate q "Current solution flow";
     equation
@@ -5032,6 +5055,8 @@ on the model behaviour.
         q = SolutionFlow;
       end if;
 
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow

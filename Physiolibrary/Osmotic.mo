@@ -293,7 +293,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Ependymal cells actively secrete sodium into the lateral ventricles. This creates&nbsp;<a href=\"https://en.wikipedia.org/wiki/Osmotic_pressure\">osmotic pressure</a>&nbsp;and draws water into the CSF space. Chloride, with a negative charge, maintains&nbsp;<a href=\"https://en.wikipedia.org/w/index.php?title=Electroneutrality&action=edit&redlink=1\">electroneutrality</a>&nbsp;and moves with the positively-charged sodium. As a result, CSF contains a higher concentration of sodium and chloride than blood plasma, but less potassium, calcium and glucose and protein.&nbsp;</p>
 </html>"));
     end CerebrospinalFluid;
-    annotation (conversion(from(version="", script="ConvertFromExamples_.mos")));
+
   end Examples;
 
   package Components
@@ -328,12 +328,11 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "Amount of impermeable solutes in compartment"                                                                                    annotation (Placement(transformation(extent={{-100,40},
                 {-60,80}})));
       Types.RealIO.VolumeOutput volume "Actual volume of compartment"
-        annotation (Placement(transformation(extent={{-20,-120},{20,-80}}, rotation=
-               -90,
-            origin={160,-100}), iconTransformation(
-            extent={{-20,-120},{20,-80}},
-            rotation=-90,
-            origin={160,-100})));
+        annotation (Placement(transformation(extent={{16,-64},{56,-24}}),
+            iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
     protected
       Types.AmountOfSubstance is[NumberOfMembraneTypes]
         "Current amount of impermeable solutes";
@@ -370,8 +369,13 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
      extends Interfaces.OnePort;
      extends Icons.Membrane; //Icons.Resistor;
 
-     parameter Types.OsmoticPermeability cond
-        "Membrane permeability for solvent";
+     parameter Boolean useConductanceInput = false
+        "=true, if membrane permeability input is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+     parameter Types.OsmoticPermeability cond=1e-15
+        "Membrane permeability for solvent if useConductanceInput = false"
+          annotation (Dialog(enable=not useConductanceInput));
 
       parameter Boolean useHydraulicPressureInputs = false
         "=true, if hydraulic pressure inputs is used"
@@ -411,9 +415,23 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
             rotation=90,
             origin={80,-80})));
 
+      Types.OsmoticPermeability perm;
+
+      Types.Pressure opi "osmotic pressure at q_in", opo
+        "osmotic pressure at q_out";
     protected
       Types.Pressure pi,po;
       Types.Temperature ti,to;
+
+    public
+      Types.RealIO.OsmoticPermeabilityInput conduction=perm if useConductanceInput
+        annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80}),   iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
     equation
       if not useHydraulicPressureInputs then
         pi=HydraulicPressureIn;
@@ -423,19 +441,27 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         ti=T;
         to=T;
       end if;
+      if not useConductanceInput then
+        cond=perm;
+      end if;
 
-      q_in.q = cond * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+      q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+
+      opi = q_in.o*(Modelica.Constants.R*ti);
+      opo = q_out.o*(Modelica.Constants.R*to);
       annotation (        Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
+<p><i>2009-2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The main element of osmotic phenomena is a semipermeable membrane, which generates the flow of penetrating substances together with water. The connector on both sides is composed of molar concentration of non-penetrating solutes (osmolarity), and from penetrating volumetric flow (osmotic flux). Flow through the membrane depends on a pressure gradient, where pressure on both sides is calculated from the osmotic and hydraulic component.</p>
-</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics={
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}),      graphics={
                                    Text(
               extent={{-140,112},{140,150}},
               textString="%name",
-              lineColor={0,0,255})}));
+              lineColor={0,0,255})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end Membrane;
 
     model SolventFlux "Prescripted solvent flow"
@@ -468,6 +494,143 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end SolventFlux;
 
+    model IdealFlowFiltration "Flow of whole solution"
+      extends Icons.FlowFiltration;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;
+
+      Interfaces.OsmoticPort_a port_a
+        "Inflow ospomarity and positive filtrate flow rate"                               annotation (Placement(transformation(extent={{
+                -106,30},{-86,50}}), iconTransformation(extent={{-106,30},{-86,50}})));
+      Interfaces.OsmoticPort_b filtrate
+        "Outflow osmolarity and negative filtrate flow rate"                                 annotation (Placement(transformation(extent={{
+                -10,-112},{10,-92}}), iconTransformation(extent={{-10,-112},{10,-92}})));
+    equation
+      port_a.q+filtrate.q=0;
+
+      port_a.o*q = (q-port_a.q)*filtrate.o;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+                            graphics={
+            Text(
+              extent={{-150,-20},{150,20}},
+              textString="%name",
+              lineColor={0,0,255},
+              origin={70,104},
+              rotation=180)}),
+        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Bidirectional mass flow by concentration</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
+<td></td>
+<td><p align=\"center\"><h4>forward flow</h4></p></td>
+<td><p align=\"center\"><h4>backward flow</h4></p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>solutionFlow</h4></p></td>
+<td><p align=\"center\">&GT;=0</p></td>
+<td><p align=\"center\">&LT;=0</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_in.q</h4></p></td>
+<td><p align=\"center\">=solutionFlow*q_in.conc</p></td>
+<td><p align=\"center\">=-q_out.q</p></td>
+</tr>
+<tr>
+<td><p align=\"center\"><h4>q_out.q</h4></p></td>
+<td><p align=\"center\">=-q_in.q</p></td>
+<td><p align=\"center\">=solutionFlow*q_out.conc</p></td>
+</tr>
+</table>
+<br/>
+</html>"));
+    end IdealFlowFiltration;
+
+    model Reabsorption "Divide inflow to outflow and reabsorption"
+      import Physiolibrary;
+      extends Icons.Reabsorption;
+
+      Interfaces.OsmoticPort_a
+                           Inflow                    annotation (Placement(
+            transformation(extent={{-114,26},{-86,54}})));
+      Interfaces.OsmoticPort_b
+                           Outflow
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
+      Interfaces.OsmoticPort_b
+                           Reabsorption                annotation (Placement(
+            transformation(extent={{-14,-114},{14,-86}})));
+
+      Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
+
+      parameter Boolean useExternalOutflowMin = false
+        "=true, if minimal outflow is garanted"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.VolumeFlowRate OutflowMin = 0
+        "Minimal outflow if useExternalOutflowMin=false"
+        annotation (Dialog(enable=not useExternalOutflowMin));
+
+      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,80})));
+
+    protected
+       Types.VolumeFlowRate om;
+    equation
+      if not useExternalOutflowMin then
+        om = OutflowMin;
+      end if;
+
+      Inflow.o = Outflow.o;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+
+      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={Text(
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+</ul></p>
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
+    end Reabsorption;
   end Components;
 
   package Sensors
@@ -532,7 +695,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
      extends Chemical.Interfaces.ConditionalSolutionFlow;
       Interfaces.OsmoticPort_a
                           q_in
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation ( Placement(
             transformation(extent={{-70,-10},{-50,10}})));
     equation
       q_in.q = q;
@@ -740,29 +903,6 @@ Connector with one flow signal of type Real.
 </html>"));
     end OnePort;
 
-    partial model ConditionalSolventFlow
-      "Input of solvent volumetric flow vs. parametric solvent volumetric flow"
-
-      parameter Boolean useSolventFlowInput = false
-        "=true, if solvent flow input is used instead of parameter SolventFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.VolumeFlowRate SolventFlow=0
-        "Volumetric flow of solvent if useSolventFlowInput=false"
-        annotation (Dialog(enable=not useSolventFlowInput));
-
-      Types.RealIO.VolumeFlowRateInput solventFlow(start=SolventFlow)=q if useSolventFlowInput annotation (Placement(transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-
-      Types.VolumeFlowRate q "Current solvent flow";
-    equation
-      if not useSolventFlowInput then
-        q = SolventFlow;
-      end if;
-
-    end ConditionalSolventFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

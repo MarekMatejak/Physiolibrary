@@ -525,11 +525,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       extends Icons.HydrostaticGradient;
       Hydraulic.Interfaces.HydraulicPort_a
                            q_up "Top site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation (Placement(
             transformation(extent={{66,26},{94,54}})));
       Interfaces.HydraulicPort_a
                            q_down "Bottom site"
-                             annotation (extent=[-10, -110; 10, -90], Placement(
+                             annotation (Placement(
             transformation(extent={{66,-74},{94,-46}})));
       parameter Boolean useHeightInput = false "=true, if height input is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
