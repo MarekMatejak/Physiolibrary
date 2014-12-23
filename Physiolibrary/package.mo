@@ -17,23 +17,27 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
 </tr>
 <tr>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Chemical.png\"/></p></td>
-<td valign=\"middle\"><a href=\"modelica://Physiolibrary.Chemical\">Chemical</a><p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p><p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Chemical\">Chemical</a></p><p>In physiology books, chapters about chemical substances are organized by their types. The main reason for this is that each substance in the human body is regulated in a different way. For example the regulation of sodium is different from the regulation of potassium, and from the regulation of glucose, and so on. This view leads to the idea of having separate models of each substance. The origin of different flows and regulations is the (cellular) membrane. Water and solutions can cross it in different directions at the same time. Crossings occur for different reasons: water is driven mostly by osmotic gradients, electrolytes are driven by charge to reach Donnan&apos;s equilibrium, and some solutes can even be actively transported against their concentration or electrical gradients. And all this is specifically driven from the higher levels by neural and hormonal responses.&nbsp; </p><p>In Physiolibrary flows and fluxes of solutes are supported mostly by the Chemical package. All parts inside this Chemical package use the connector ChemicalPort, which defines the molar concentration and molar flow/flux rate of one solute. This is the supporting infrastructure for modeling membrane diffusion, accumulations of substances, reversal chemical reactions, Henry&apos;s law of gas solubility, dilution with additional solvent flow, membrane reabsorption, chemical degradation and physiological clearance. </p></td>
 </tr>
 <tr>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Hydraulic.png\"/></p></td>
-<td valign=\"middle\"><a href=\"modelica://Physiolibrary.Hydraulic\">Hydraulic</a><p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Hydraulic\">Hydraulic</a></p><p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p></td>
 </tr>
 <tr>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Thermal.png\"/></p></td>
-<td valign=\"middle\"><a href=\"modelica://Physiolibrary.Thermal\">Thermal</a><p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p><p>In the Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Thermal\">Thermal</a></p><p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p><p>In the Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p></td>
 </tr>
 <tr>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Osmotic.png\"/></p></td>
-<td valign=\"middle\"><a href=\"modelica://Physiolibrary.Osmotic\">Osmotic</a><p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p><p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Osmotic\">Osmotic</a></p><p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p><p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Population.png\"/></p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Population\">Population</a></p><p>Population models are based on increasing and decreasing of average number of population members. The number of population member is a nonflow variable in connectors and flow variable is the change of population members. The growth or differentiation of cells can be modeled as stream from one population component to another, where each population component could be defined by selected age, type, function or wathever..</p><p>Even the domain is integer, all is modeled by real numbers. </p></td>
 </tr>
 <tr>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/SteadyState.png\"/></p></td>
-<td valign=\"middle\"><a href=\"modelica://Physiolibrary.SteadyStates\">SteadyStates</a><p>One of the main question in clinical medicine is how to stabilize the patient. In the fact of the oscillating heart, breathing, circadian rhythm or menstruation cycle the model could be designed as non-oscillating with variables such as period times, amplitudes, frequencies, mean values and other phase space variables. This type of model has better numerical stability for longer simulation time and even more it can be &QUOT;stabilized&QUOT;. This stabilization we called steady state. </p><p>To be mathematically exact, we define an <i><b>steady state system</b></i> (SSS) as a non-differential system derived from a original differential system (DS) by using zero derivations and by adding <b>additional steady state equations</b> (ASSE). The number of the ASSE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASSE describes the system from the top view mostly such as the equations of mass conservation laws or the boundary equation of environment sources. To define a model as an SSS the user must switch each Simulation parameter in each block to value Types.SimulationType.SteadyState and must have correctly defined all necessary ASSE. This setting caused to ignoring any start values for any state and add zero derivation equations instead. Today does not exist Modelica environment, which could automatically find and remove generated dependent equations by this way. So the correct number of states must be marked as dependent (parameter isDependent) and the same number of ASSE must be inserted. Despite the fact, that model in this steady-state setting will be not locally balanced it should be globally balanced and without any dependent equation.</p><p>Adding of one ASSE is possible by inserting and connecting of the energy or mass conservation law block from package SteadyState.Components. Other possibilities is in blocks of environment&nbsp; sources, where the setting of parameter isIsolatedInSteadyState&nbsp; add the equation of the zero mass/volume/energy flow from or to environment. </p><p>The model in steady state often changes to one big nonlinear strong component, but without solver stiff or convergence problems. Especially in quick chemical reaction kinetics is not necessary to have very rapid molar fluxes, when it always reach equilibrium. This design also approve to create steady stated parts in dynamical model without huge rebuilding. It also&nbsp; brings other benefits. To see these possibilities, one have to realize that conservation laws could be invariances in a dynamical simulation. This is really useful for debugging. </p><p>It is always a big challenge to nicely solve initial values of differential system. However, it should be possible to solve the SSS in initial phase. And this is the idea behind the Types.SimulationTypes.InitSteadyState option for models already extended with ASSE to support SSS. </p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.SteadyStates\">SteadyStates</a></p><p>One of the main question in clinical medicine is how to stabilize the patient. In the fact of the oscillating heart, breathing, circadian rhythm or menstruation cycle the model could be designed as non-oscillating with variables such as period times, amplitudes, frequencies, mean values and other phase space variables. This type of model has better numerical stability for longer simulation time and even more it can be &QUOT;stabilized&QUOT;. This stabilization we called steady state. </p><p>To be mathematically exact, we define an <i><b>steady state system</b></i> (SSS) as a non-differential system derived from a original differential system (DS) by using zero derivations and by adding <b>additional steady state equations</b> (ASSE). The number of the ASSE must be the same as the number of algebraically dependent equations in the non-differential system derived from DS by setting zero derivations. The ASSE describes the system from the top view mostly such as the equations of mass conservation laws or the boundary equation of environment sources. To define a model as an SSS the user must switch each Simulation parameter in each block to value Types.SimulationType.SteadyState and must have correctly defined all necessary ASSE. This setting caused to ignoring any start values for any state and add zero derivation equations instead. Today does not exist Modelica environment, which could automatically find and remove generated dependent equations by this way. So the correct number of states must be marked as dependent (parameter isDependent) and the same number of ASSE must be inserted. Despite the fact, that model in this steady-state setting will be not locally balanced it should be globally balanced and without any dependent equation.</p><p>Adding of one ASSE is possible by inserting and connecting of the energy or mass conservation law block from package SteadyState.Components. Other possibilities is in blocks of environment&nbsp; sources, where the setting of parameter isIsolatedInSteadyState&nbsp; add the equation of the zero mass/volume/energy flow from or to environment. </p><p>The model in steady state often changes to one big nonlinear strong component, but without solver stiff or convergence problems. Especially in quick chemical reaction kinetics is not necessary to have very rapid molar fluxes, when it always reach equilibrium. This design also approve to create steady stated parts in dynamical model without huge rebuilding. It also&nbsp; brings other benefits. To see these possibilities, one have to realize that conservation laws could be invariances in a dynamical simulation. This is really useful for debugging. </p><p>It is always a big challenge to nicely solve initial values of differential system. However, it should be possible to solve the SSS in initial phase. And this is the idea behind the Types.SimulationTypes.InitSteadyState option for models already extended with ASSE to support SSS. </p></td>
 </tr>
 </table>
 </html>"));
@@ -45,55 +49,63 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
    annotation (Documentation(info="<html>
 <p>The Physiolibrary defines the most important <b>elementary connectors</b> in various domains. If any possible, a user should utilize these connectors in order that components from the Physiolibrary and from other libraries can be combined without problems. The following elementary connectors are defined (the meaning of potential, flow, and stream variables is explained in section &QUOT;Connector Equations&QUOT; below): </p>
 <table cellspacing=\"0\" cellpadding=\"1\" border=\"1\"><tr>
-<td valign=\"top\"><p><h4>domain</h4></p></td>
-<td valign=\"top\"><p><h4>potential</h4></p><p>variables</p></td>
-<td valign=\"top\"><p><h4>flow</h4></p><p>variables</p></td>
-<td valign=\"top\"><p><h4>stream</h4></p><p>variables</p></td>
-<td valign=\"top\"><p><h4>connector definition</h4></p></td>
-<td valign=\"top\"><p><h4>icons</h4></p></td>
+<td valign=\"top\"><h4>domain</h4></td>
+<td valign=\"top\"><h4>potential</h4><p>variables</p></td>
+<td valign=\"top\"><h4>flow</h4><p>variables</p></td>
+<td valign=\"top\"><h4>stream</h4><p>variables</p></td>
+<td valign=\"top\"><h4>connector definition</h4></td>
+<td valign=\"top\"><h4>icons</h4></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><h4>chemical</h4></p></td>
+<td valign=\"top\"><h4>chemical</h4></td>
 <td valign=\"top\"><p>molar concentration</p></td>
 <td valign=\"top\"><p>molar flow</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><br/><a href=\"Chemical.Interfaces\">Chemical.Interfaces</a> </p><p>ChemicalPort, ChemicalPort_a, ChemicalPort_b</p></td>
+<td valign=\"top\"><p><br><br><br><a href=\"Chemical.Interfaces\">Chemical.Interfaces</a> </p><p>ChemicalPort, ChemicalPort_a, ChemicalPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ChemicalPorts.png\"/></p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><h4>hydraulic</h4></p></td>
+<td valign=\"top\"><h4>hydraulic</h4></td>
 <td valign=\"top\"><p>pressure</p></td>
 <td valign=\"top\"><p>volumetric flow</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><br/><a href=\"Hydraulic.Interfaces\">Hydraulic.Interfaces</a> </p><p>HydraulicPort, HydraulicPort_a, HydraulicPort_b</p></td>
+<td valign=\"top\"><p><br><br><br><a href=\"Hydraulic.Interfaces\">Hydraulic.Interfaces</a> </p><p>HydraulicPort, HydraulicPort_a, HydraulicPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicPorts.png\"/></p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><h4>osmotic</h4></p></td>
+<td valign=\"top\"><h4>osmotic</h4></td>
 <td valign=\"top\"><p>osmolarity</p></td>
 <td valign=\"top\"><p>permeable liquid volumetric flow </p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><br/><a href=\"Osmotic.Interfaces\">Osmotic.Interfaces</a> </p><p>OsmoticPort, OsmoticPort_a, OsmoticPort_b</p></td>
+<td valign=\"top\"><p><br><br><br><a href=\"Osmotic.Interfaces\">Osmotic.Interfaces</a> </p><p>OsmoticPort, OsmoticPort_a, OsmoticPort_b</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/OsmoticPorts.png\"/></p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><h4>thermal</h4></p></td>
+<td valign=\"top\"><h4>thermal</h4></td>
 <td valign=\"top\"><p>temperature</p></td>
 <td valign=\"top\"><p>heat flow rate</p></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><br/><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Thermal.Interfaces\">Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
-<td valign=\"top\"><p><br/><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ThermalPorts.png\"/></p></td>
+<td valign=\"top\"><p><br><br><br><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Thermal.Interfaces\">Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
+<td valign=\"top\"><p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ThermalPorts.png\"/></p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p><h4>block</h4></p><p>diagram</p></td>
+<td valign=\"top\"><h4>population</h4></td>
+<td valign=\"top\"><p>the number</p><p>of population members</p></td>
+<td valign=\"top\"><p>change </p><p>of the number of population members</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><br><br><br><a href=\"Population.Interfaces\">Population.Interfaces</a> </p><p>PopulationPort, PopulationPort_a, PopulationPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/PopulationPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><h4>block</h4><p>diagram</p></td>
 <td valign=\"top\"><p>Real unit-typed variables</p></td>
 <td valign=\"top\"></td>
 <td valign=\"top\"></td>
-<td valign=\"top\"><p><br/><br/><a href=\"Types.RealIO\">Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
+<td valign=\"top\"><p><br><br><br><br><br><br><a href=\"Types.RealIO\">Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
 <td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Signals.png\"/></p></td>
 </tr>
 </table>
-<p><br/><br/><br/>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
+<p><br><br><br><br><br>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
 </html>"));
   end Connectors;
 
@@ -409,33 +421,36 @@ package Physiolibrary "Physiological domains library (version 2.3.0-beta)"
   annotation (__Dymola_DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
-<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\">
-<tr>
-<td valign=\"top\"><p>Chemical</p></td>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Chemical\">Chemical</a></p></td>
 <td valign=\"top\"><p>Library of chemical domain.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Hydraulic</p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Hydraulic\">Hydraulic</a></p></td>
 <td valign=\"top\"><p>Library of hydraulic domain. For modeling of cardiovascular system.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Thermal</p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Thermal\">Thermal</a></p></td>
 <td valign=\"top\"><p>Library of termoregulation support. As extension of Modelica.Thermal.HeatTransfer.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Osmotic</p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Osmotic\">Osmotic</a></p></td>
 <td valign=\"top\"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Icons</p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Population\">Population</a></p></td>
+<td valign=\"top\"><p>Library for population models such as predator-prey or cells population.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Icons\">Icons</a></p></td>
 <td valign=\"top\"><p>Icons</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Types </p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Types\">Types</a></p></td>
 <td valign=\"top\"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><p>Blocks</p></td>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Blocks\">Blocks</a></p></td>
 <td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
 </table>
