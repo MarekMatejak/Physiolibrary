@@ -411,7 +411,6 @@ package Thermal
 </html>"));
     end IdealRadiator;
 
-
     model Conductor "Heat resistor"
      extends Interfaces.OnePort;
      extends Icons.Resistor;
