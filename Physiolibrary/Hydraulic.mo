@@ -303,7 +303,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         experiment(StopTime=5));
     end Windkessel_4element;
 
-
     model CardiovascularSystem_GCG
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
        extends Modelica.Icons.Example;
@@ -1302,7 +1301,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       then
       excessVolume/c + ep
      else
-      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)));
+      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume))) + ep;
       //then: normal physiological state
       //else: abnormal collapsing state
       state = volume; // der(volume) =  q_in.q;
