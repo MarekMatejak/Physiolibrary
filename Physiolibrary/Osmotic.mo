@@ -252,12 +252,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           smooth=Smooth.None));
       connect(flowMeasure1.volumeFlowRate, arachnoid_villi_hydraulic.solutionFlow)
         annotation (Line(
-          points={{8,62},{8,82}},
+          points={{8,62},{8,79}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(flowMeasure.volumeFlowRate, choroid_plexus_hydraulic.solutionFlow)
         annotation (Line(
-          points={{8,-2},{8,-18}},
+          points={{8,-2},{8,-15}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -494,20 +494,82 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 </html>"));
     end SolventFlux;
 
-    model IdealFlowFiltration "Flow of whole solution"
+    model IdealOverflowFiltration
+      "Semipermeable membrane filtration (e.g. flux through capillary membrane) of overflowing solution (e.g. blood microcirculation)"
       extends Icons.FlowFiltration;
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Chemical.Interfaces.ConditionalSolutionFlow;// "E.g. volumetric inflow to capilary net";
 
       Interfaces.OsmoticPort_a port_a
-        "Inflow ospomarity and positive filtrate flow rate"                               annotation (Placement(transformation(extent={{
+        "Inflowing ospomarity and positive filtrate flow rate (e.g. blood osmolarity and flux through capillary membrane from blood to interstitium)"
+                                                                                                            annotation (Placement(transformation(extent={{
                 -106,30},{-86,50}}), iconTransformation(extent={{-106,30},{-86,50}})));
       Interfaces.OsmoticPort_b filtrate
-        "Outflow osmolarity and negative filtrate flow rate"                                 annotation (Placement(transformation(extent={{
+        "Outer osmolarity and negative filtrate flow rate (e.g. interstitium osmolarity and flux through capillary membrane from interstitium to blood)"
+                                                                                                            annotation (Placement(transformation(extent={{
                 -10,-112},{10,-92}}), iconTransformation(extent={{-10,-112},{10,-92}})));
-    equation
-      port_a.q+filtrate.q=0;
 
-      port_a.o*q = (q-port_a.q)*filtrate.o;
+       parameter Boolean useHydraulicPressureInputs = false
+        "=true, if hydraulic pressure inputs is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Pressure HydraulicPressureIn=0
+        "Hydraulic pressure inside of leaving overflow (e.g. blood pressure after capillary net) if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+      parameter Types.Pressure HydraulicPressureOut=0
+        "Hydraulic pressure outside (e.g. interstitium hydraulic pressure) if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+
+      Types.RealIO.PressureInput hydraulicPressureIn(start=HydraulicPressureIn)=pi if useHydraulicPressureInputs annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,80})));
+      Types.RealIO.PressureInput hydraulicPressureOut(start=HydraulicPressureOut)=po if useHydraulicPressureInputs annotation (Placement(
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={80,80}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={100,-80})));
+
+      parameter Boolean useTemperatureInputs = false
+        "=true, if temperature on both sides is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Temperature T=310.15
+        "Temperature on both membrane sides if  useTemperatureInputs=false"
+        annotation (Dialog(enable=not  useTemperatureInputs));
+
+      Types.RealIO.TemperatureInput temperature(start=T)=t if useTemperatureInputs annotation (Placement(
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=90,
+            origin={-80,-80}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={100,0})));
+
+    protected
+      Types.Pressure pi,po;
+      Types.Temperature t;
+
+      Types.Osmolarity osmolarityO;
+
+    equation
+     if not useHydraulicPressureInputs then
+        pi=HydraulicPressureIn;
+        po=HydraulicPressureOut;
+      end if;
+      if not useTemperatureInputs then
+        t=T;
+      end if;
+
+      port_a.q+filtrate.q=0; //flux through membrane
+
+      pi - osmolarityO*Modelica.Constants.R*T = po - filtrate.o*Modelica.Constants.R*T; // venous and interstitium pressure is equilibrated
+
+      port_a.o*q = osmolarityO*(q-port_a.q); //definition of venous osmolarity
+
+    //  port_a.o*q = (q-port_a.q)*filtrate.o; //equilibration without hydraulic part
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
@@ -563,7 +625,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 </table>
 <br/>
 </html>"));
-    end IdealFlowFiltration;
+    end IdealOverflowFiltration;
 
     model Reabsorption "Divide inflow to outflow and reabsorption"
       import Physiolibrary;

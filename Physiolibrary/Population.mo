@@ -15,17 +15,17 @@ package Population
       Components.Mortality mortality2(LifeTime(displayUnit="s") = 1)
         annotation (Placement(transformation(extent={{34,42},{54,62}})));
       Components.Reproduction reproduction1(LifeTime(displayUnit="s") = 1)
-        annotation (Placement(transformation(extent={{-52,-76},{-32,-56}})));
+        annotation (Placement(transformation(extent={{-56,-40},{-36,-20}})));
       Components.Mortality mortality1(useChangePerMemberInput=true)
-        annotation (Placement(transformation(extent={{36,-76},{56,-56}})));
+        annotation (Placement(transformation(extent={{32,-40},{52,-20}})));
       Components.Population prey(population_start=1)
-        annotation (Placement(transformation(extent={{-8,-76},{12,-56}})));
+        annotation (Placement(transformation(extent={{-12,-40},{8,-20}})));
       Types.Constants.PopulationChangePerMemberConst
                                             preyMortality(LifeTime(displayUnit=
               "s") = 1)
-        annotation (Placement(transformation(extent={{32,-40},{40,-32}})));
+        annotation (Placement(transformation(extent={{28,-4},{36,4}})));
       Blocks.Factors.Normalization predatorEffect
-        annotation (Placement(transformation(extent={{56,-60},{36,-40}})));
+        annotation (Placement(transformation(extent={{52,-24},{32,-4}})));
       Types.Constants.PopulationChangePerMemberConst
                                             predatorReproduction(LifeTime(
             displayUnit="s") = 1)
@@ -34,11 +34,11 @@ package Population
         annotation (Placement(transformation(extent={{-52,60},{-32,80}})));
     equation
       connect(preyMortality.y, predatorEffect.yBase) annotation (Line(
-          points={{41,-36},{46,-36},{46,-48}},
+          points={{37,0},{42,0},{42,-12}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(predator.population, predatorEffect.u) annotation (Line(
-          points={{8,42},{8,36},{62,36},{62,-50},{54,-50}},
+          points={{8,42},{8,20},{56,20},{56,-14},{50,-14}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(predatorReproduction.y, preyEffekt.yBase) annotation (Line(
@@ -46,7 +46,7 @@ package Population
           color={0,0,127},
           smooth=Smooth.None));
       connect(prey.population, preyEffekt.u) annotation (Line(
-          points={{8,-76},{8,-84},{-62,-84},{-62,70},{-50,70}},
+          points={{4,-40},{4,-48},{-66,-48},{-66,70},{-50,70}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(reproduction2.port_b, predator.port) annotation (Line(
@@ -60,12 +60,12 @@ package Population
           thickness=1,
           smooth=Smooth.None));
       connect(reproduction1.port_b, prey.port) annotation (Line(
-          points={{-32,-66},{2,-66}},
+          points={{-36,-30},{-2,-30}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
       connect(prey.port, mortality1.port_a) annotation (Line(
-          points={{2,-66},{36.2,-66}},
+          points={{-2,-30},{32.2,-30}},
           color={0,127,127},
           thickness=1,
           smooth=Smooth.None));
@@ -74,7 +74,7 @@ package Population
           color={0,0,127},
           smooth=Smooth.None));
       connect(predatorEffect.y, mortality1.changePerMember) annotation (Line(
-          points={{46,-54},{46,-62}},
+          points={{42,-18},{42,-26}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (
@@ -147,7 +147,7 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,23},{80,-2},{-80,-27},{-80,23}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
@@ -173,7 +173,7 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
@@ -199,7 +199,7 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               rotation=360),
             Text(
               extent={{-150,-20},{150,20}},
@@ -225,8 +225,8 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={0,127,127},
+              fillColor={0,127,127},
               fillPattern=FillPattern.Solid,
               rotation=360),
             Text(
@@ -256,10 +256,11 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,23},{80,-2},{-80,-27},{-80,23}},
-              lineColor={0,0,127},
               rotation=360,
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid),
+              fillColor={0,127,127},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,127,127}),
             Text(
               extent={{-150,-20},{150,20}},
               lineColor={0,0,255},
@@ -287,9 +288,9 @@ package Population
               rotation=360),
             Polygon(
               points={{-80,23},{80,-2},{-80,-27},{-80,23}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               rotation=360,
-              fillColor={0,0,127},
+              fillColor={0,127,127},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-20},{150,20}},

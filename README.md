@@ -23,8 +23,14 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 ![screenshot](screenshot.png)
 
 ## Installation
-Download and unzip.
-* install to Dymola: please call "Physiolibrary\Resources\Install\Dymola\install.bat"
+* Download and unzip.
+* to install to Dymola in Windows platform: please call "Physiolibrary\Resources\Install\Dymola\install.bat"
+* to install manually copy the Physiolibrary/Resources/DisplayUnits/displayUnits.mos over [dymola_install_dir]/insert/displayUnits.mos
+
+* Open the Physiolibrary/package.mo, it uses Modelica Library 3.2.1
+* Optionally, if the Modelica Library 3.2.1 was not opened automatically
+ 
+* Tested in Dymola 2014FD01,2015 and OpenModelica 1.9.1
 
 ## Current release
 

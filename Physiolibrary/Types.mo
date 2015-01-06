@@ -216,7 +216,7 @@ package Types "Physiological units with nominals"
         Physiolibrary.Types.BusConnector busConnector
           annotation (Placement(transformation(extent={{-4,-2},{36,38}})));
         Physiolibrary.Types.Examples.IO_Bus.OutputToFile outputToFile
-          annotation (Placement(transformation(extent={{70,46},{90,66}})));
+          annotation (Placement(transformation(extent={{70,48},{90,68}})));
         Physiolibrary.Types.Constants.PressureConst
                    Bone_PO2(k=5599.54027143)
           "Partial oxygen pressure in bone blood venules."
@@ -236,7 +236,7 @@ package Types "Physiological units with nominals"
           annotation (Placement(transformation(extent={{72,-26},{92,-6}})));
       equation
         connect(busConnector, outputToFile.busConnector) annotation (Line(
-            points={{16,18},{48,18},{48,56},{80,56}},
+            points={{16,18},{48,18},{48,58},{80,58}},
             color={255,204,51},
             thickness=0.5,
             smooth=Smooth.None));

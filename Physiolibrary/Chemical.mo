@@ -3818,47 +3818,6 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
                 100}}), graphics));
     end ChemicalReaction;
 
-    model Diffusion "Solute diffusion"
-      extends Icons.Diffusion;
-      extends Chemical.Interfaces.OnePort;
-
-      parameter Boolean useConductanceInput = false
-        "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.DiffusionPermeability Conductance=0
-        "Diffusion conductance if useConductanceInput=false"
-        annotation (Dialog(enable=not useConductanceInput));
-
-    protected
-      Types.DiffusionPermeability c;
-    public
-      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-    equation
-      if not useConductanceInput then
-        c=Conductance;
-      end if;
-
-       q_in.q = c * (q_in.conc - q_out.conc);
-
-       annotation (                 Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the Fick&apos;s laws of diffusion: </a></p>
-<p>J= -D*(dPhi)/dx</p>
-<p>where</p>
-<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
-<p>D is diffusion constant [m2/s]. </p>
-<p>dPhi is concentration gradient [mol/m3].</p>
-<p>dx is length of diffusion [m].</p>
-<p><br>The solution on both sides must have the same properties (for example solubilities, chemical activities, osmolarities,...)!</p>
-</html>"));
-    end Diffusion;
-
     model GasSolubility "Henry's law of gas solubility in liquid."
        //q_in is dissolved in liquid and q_out is in gaseous solution"
 
@@ -3909,13 +3868,280 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>", info="<html>
 <h4><span style=\"color:#008000\">Henry's law of The solubility of a Gas in Liquid</span></h4>
 <p>Henry&apos;s law at equilibrium: The concentration of a gas in a liquid is proportional to the partial pressure of the gas.</p>
-<p>p=k*c</p>
+<p>c=k*p</p>
 <p>where<b> p</b> is the partial pressure of the gas, <b>k</b> is a Henry&apos;s law constant and<b> c</b> is a small concentration of the gas in the liquid.</p>
 <p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
 <p><br><br>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution.</p>
 <p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701.</p>
 </html>"));
     end GasSolubility;
+
+    model Diffusion "Solute diffusion"
+      extends Icons.Diffusion;
+      extends Chemical.Interfaces.OnePort;
+
+      parameter Boolean useConductanceInput = false
+        "=true, if external conductance value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.DiffusionPermeability Conductance=0
+        "Diffusion conductance if useConductanceInput=false"
+        annotation (Dialog(enable=not useConductanceInput));
+
+    protected
+      Types.DiffusionPermeability c;
+    public
+      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+    equation
+      if not useConductanceInput then
+        c=Conductance;
+      end if;
+
+       q_in.q = c * (q_in.conc - q_out.conc);
+
+       annotation (                 Documentation(revisions="<html>
+<p><i>2009-2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the Fick&apos;s laws of diffusion: </a></p>
+<p>J= -D*(dPhi)/dx</p>
+<p>where</p>
+<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
+<p>D is diffusion constant [m2/s]. </p>
+<p>dPhi is concentration gradient [mol/m3].</p>
+<p>dx is length of diffusion [m].</p>
+<p><br>The solution on both sides must have the same properties (for example solubilities, chemical activities, osmolarities,...)!</p>
+</html>"));
+    end Diffusion;
+
+    model Membrane
+      "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
+      extends Icons.Membrane;
+      extends Chemical.Interfaces.ConditionalHeatPort;
+
+      parameter Integer NumberOfParticles = 1
+        "Number of penetrating particle types";
+      parameter Integer Charges[NumberOfParticles] = zeros(NumberOfParticles)
+        "Elementary charges of particles";
+      parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
+        "Permeabilities of particles through membrane chanel";
+
+      parameter Boolean usePermeabilityInput = false
+        "=true, if external permeability value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      Interfaces.ChemicalPort_a particlesInside[NumberOfParticles]
+        "inner side of membrane, solution"
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      Interfaces.ChemicalPort_b particlesOutside[NumberOfParticles]
+        "outer side of membrane, solution"
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+
+      Types.RealIO.DiffusionPermeabilityInput permeability[NumberOfParticles] = p if usePermeabilityInput
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,100})));
+
+      Types.GasSolubility kH[NumberOfParticles]
+        "Concentration ratio at equilibrium";
+
+      parameter Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
+        "Equilibrated concentration ratio at temperature T0 - can be estimated by Henry's law coefficient ratios (kH1/kH2)"
+         annotation ( HideResult=true,Dialog(tab="Different solubilities"));
+      parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
+         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+      parameter Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
+        "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
+        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+
+      parameter Types.Fraction solventFractionInside=1
+        "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
+      parameter Types.Fraction solventFractionOutside=1
+        "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
+
+    protected
+       Real KAdjustment
+        "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
+       Types.DiffusionPermeability p[NumberOfParticles];
+
+    equation
+      if not usePermeabilityInput then
+        p=Permeabilities;
+      end if;
+
+       //no accumulation of particles:
+       particlesInside.q + particlesOutside.q = zeros(NumberOfParticles); //nothing lost inside
+
+       //electroneutrality:
+       if abs(Charges.*Charges*p)<=Modelica.Constants.eps then
+         KAdjustment=0; //no penetrating electrolytes => KAdjustment and electroneutrality of flux is not needed
+       else
+         Charges*particlesInside.q = 0; //electroneutrality of flux through membrane
+       end if;
+
+       //diffusion, penetration, particle movement:
+       for i in 1:NumberOfParticles loop
+         if Charges[i]==0 then //normal diffusion
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - kH[i]*particlesOutside[i].conc/solventFractionOutside);
+         elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1+KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
+         else //anion goes to Donnan's equilibrium
+           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1-KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
+         end if;
+       end for;
+
+       //different solubilities:
+       kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
+       lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
+
+      annotation ( Documentation(info="<html>
+<p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
+<p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium. The permeabilities of particles are used only in dynamic simulation with non-zero fluxes. If zero-flow Donnan&apos;s equilibrium is reached, it is independent on the permeabilities. </p>
+<p>This class can be used for glomerular membrane, open(leak) channels (pores) of cellular (or any lipid bilayer) membrane, chloride schift, ...</p>
+<p><br>The membrane permeabilities depends on <code>(D/membrameThicknes)*membraneArea</code>, where D is Fick&apos;s diffusion coefficient.<code> </code></p>
+<p>................................</p>
+<h4><span style=\"color:#008000\">Filtration example of tree particles</span></h4>
+<p>ALP .. small penetrating anion</p>
+<p>P .. nonpenetrating protein with negative charge</p>
+<p>C .. small penetrating cation</p>
+<p>In outer side of membrane are not protein P (it leaves inside). </p>
+<p>In equilibrium 4 concentration are unknown:</p>
+<p>ALP_in, ALP_out, C_in, C_out.</p>
+<p>Closed system equilibrium equations:</p>
+<p>tALP = ALP_in + ALP_out ... total amount of ALP </p>
+<p>tC = C_in + C_out ... total amount of C</p>
+<p>P + ALP_in = C_in ... electroneutrality inside</p>
+<p>ALP_out = C_out ... electroneutrality outside</p>
+<p>----------------------------------------------------</p>
+<p>It is possible to write these equations also in form of KAdjustment, which connect also more than tree type of particles with Donnan&apos;s equilibrium equations:</p>
+<p>ALP_in/ALP_out = (1-KAdjustment) </p>
+<p>C_in/C_out = (1+KAdjustment) </p>
+<p>where KAdjustment = P/(2*C_in-P) and C_out=ALP_out=(2*C_in-P)/2, because ALP_in/ALP_out = (C_in - P)/C_out = (2C_in-2P)/(2C_in-P) = 1 - P/(2C_in-P) = 1-KAdjustment and C_in/C_out = (2C_in)/(2C_in-P) = 1 + P/(2C_in-P) = 1+KAdjustment .</p>
+<p><br><h4><span style=\"color:#008000\">Problem with different solubilities/Henry constants/ (kH1, kH2)</span></h4></p>
+<p>Equilibrated is chemical potential, not concentrations (c1,c2)!</p>
+<p>Equality of chemical potential is approximated by equality of partial pressure (p1,p2): </p>
+<p>p1=kH1*c1 </p>
+<p>p2=kH2*c2</p>
+<p><br>c2 = (kH1/kH2) * c1</p>
+<p>Henry constant between both side can be defined as<b> kH_T0 = kH1/kH2</b> at temperature T0, where kH1 is Henry constant in first side of membrane and kH2 is Henry constant in second side of membrane.</p>
+<h4><span style=\"color:#008000\">Temperature dependence of Henry constants by Van't Hoff</span></h4>
+<p><code>kH1&nbsp;=&nbsp;kH1_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C1*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p><code>kH2&nbsp;=&nbsp;kH2_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C2*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p>kH1/kH2 = <code>kH_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C *&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
+<p>Specific&nbsp;constant&nbsp;for&nbsp;Van&apos;t&nbsp;Hoff&apos;s&nbsp;change&nbsp;of&nbsp;kH_T0 can be defined as<b> C = C1-C2</b>, where C1 is specific constant in first side of membrane and C2 is specific constant in second side of membrane.</p>
+</html>"));
+    end Membrane;
+
+
+    model Speciation
+      "Chemical species definition by independent binding sides of macromolecule"
+      extends Icons.Speciation;
+
+      extends SteadyStates.Interfaces.SteadyStateSystem(
+                                               Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
+      extends Chemical.Interfaces.ConditionalVolume;
+
+      parameter Integer NumberOfSubunits=1
+        "Number of independent subunits occuring in molecule";
+
+      Chemical.Interfaces.ChemicalPort_a specificForm
+        "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
+            transformation(extent={{90,-90},{110,-70}})));
+      Chemical.Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
+        "Specific form of subunits of specific molecule form in connector called spieces"
+                                                                                                            annotation (Placement(
+            transformation(extent={{-10,90},{10,110}})));
+    protected
+      Real fractions[NumberOfSubunits];
+    public
+      Types.RealIO.AmountOfSubstanceInput amountOfSubunit[NumberOfSubunits]
+        "Total amount of the subunits in all forms"
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,0})));
+      Types.RealIO.AmountOfSubstanceOutput amount
+        "Total amount of macromolecules in this system"
+       annotation (Placement(
+            transformation(extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={0,-80})));                                                             //(start=1e-8)
+      Types.RealIO.EnergyOutput internalHeat
+        "Relative internal heat of all chemical forms in this system"                                                                annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-60,-80}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-60,-80})));
+
+    //system internal heat
+      parameter Boolean useInternalHeatsInput = false
+        "=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
+
+      parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
+        "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
+        annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
+
+      Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
+      annotation (Dialog(enable=false),
+         Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={80,60})));
+
+       Types.Energy internalHeatOfSubunit[NumberOfSubunits]
+        "Internal heat of subunits";
+    equation
+
+      amount = amountOfSubunit[1];
+
+      fractions = if (amount < Modelica.Constants.eps) then zeros(NumberOfSubunits)
+                  else specificSubunitForm.conc ./ (amountOfSubunit/volume);
+
+      specificForm.conc = (amount/volume)*product(fractions); //chemical speciation
+
+      for i in 2:NumberOfSubunits loop
+                 normalizedState[i-1]*amount = amountOfSubunit[i];
+      end for;
+
+    //molar flow:
+      specificSubunitForm.q = -specificForm.q * ones(NumberOfSubunits);
+
+    //heat:
+       if not useInternalHeatsInput then
+        internalHeatOfSubunit = SubunitEnthalpies.*amountOfSubunit;
+      end if;
+      internalHeat=sum(internalHeatOfSubunit);
+
+      annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",
+        Documentation(revisions="<html>
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p>This block identifies one specific chemical form of one macromolecule defined by forms of its subunits  (one chosen chemical species - called <i>specie</i>).</p>
+<p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
+<p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the subnunit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
+<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
+<p>Where:</p>
+<p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
+<p>fF1 = F1/(F1+F2) is fraction of form F1 in subsystem of subunit,</p>
+<p>4 is number of subunits (<b>numberOfSubunit</b>).</p>
+<p><br>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
+<h4><span style=\"color:#008000\">Heat of chemical system.</span></h4>
+<p>Enthalpy of each subunit species can be presented as <b>subunitEnthalpies[:]</b>. Then the total enthalpy of the chemical system can be calculated by equation:</p>
+<h4>systemEnthalpy = sum(subunitEnthalpies[i] * totalSubunitAmount[i]) / totalSubsystemAmount</h4>
+<p>And the stored heat as enthalpy is <b>systemEnthalpy*totalSubsystemAmount.</b></p>
+</html>"));
+    end Speciation;
 
     model Degradation "Degradation of solute"
       extends Interfaces.ConditionalVolume;
@@ -4189,112 +4415,6 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end SolutePump;
 
-    model Speciation
-      "Chemical species definition by independent binding sides of macromolecule"
-      extends Icons.Speciation;
-
-      extends SteadyStates.Interfaces.SteadyStateSystem(
-                                               Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
-      extends Chemical.Interfaces.ConditionalVolume;
-
-      parameter Integer NumberOfSubunits=1
-        "Number of independent subunits occuring in molecule";
-
-      Chemical.Interfaces.ChemicalPort_a specificForm
-        "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
-            transformation(extent={{90,-90},{110,-70}})));
-      Chemical.Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
-        "Specific form of subunits of specific molecule form in connector called spieces"
-                                                                                                            annotation (Placement(
-            transformation(extent={{-10,90},{10,110}})));
-    protected
-      Real fractions[NumberOfSubunits];
-    public
-      Types.RealIO.AmountOfSubstanceInput amountOfSubunit[NumberOfSubunits]
-        "Total amount of the subunits in all forms"
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=180,
-            origin={80,0})));
-      Types.RealIO.AmountOfSubstanceOutput amount
-        "Total amount of macromolecules in this system"
-       annotation (Placement(
-            transformation(extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={0,-80})));                                                             //(start=1e-8)
-      Types.RealIO.EnergyOutput internalHeat
-        "Relative internal heat of all chemical forms in this system"                                                                annotation (
-          Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-60,-80}), iconTransformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-60,-80})));
-
-    //system internal heat
-      parameter Boolean useInternalHeatsInput = false
-        "=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
-
-      parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
-        "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
-        annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
-
-      Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
-      annotation (Dialog(enable=false),
-         Placement(transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=180,
-            origin={80,60}), iconTransformation(
-            extent={{-20,-20},{20,20}},
-            rotation=180,
-            origin={80,60})));
-
-       Types.Energy internalHeatOfSubunit[NumberOfSubunits]
-        "Internal heat of subunits";
-    equation
-
-      amount = amountOfSubunit[1];
-
-      fractions = if (amount < Modelica.Constants.eps) then zeros(NumberOfSubunits)
-                  else specificSubunitForm.conc ./ (amountOfSubunit/volume);
-
-      specificForm.conc = (amount/volume)*product(fractions); //chemical speciation
-
-      for i in 2:NumberOfSubunits loop
-                 normalizedState[i-1]*amount = amountOfSubunit[i];
-      end for;
-
-    //molar flow:
-      specificSubunitForm.q = -specificForm.q * ones(NumberOfSubunits);
-
-    //heat:
-       if not useInternalHeatsInput then
-        internalHeatOfSubunit = SubunitEnthalpies.*amountOfSubunit;
-      end if;
-      internalHeat=sum(internalHeatOfSubunit);
-
-      annotation (defaultComponentName="macromoleculeSpecie_in_macromoleculeGroup",
-        Documentation(revisions="<html>
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p>This block identifies one specific chemical form of one macromolecule defined by forms of its subunits  (one chosen chemical species - called <i>specie</i>).</p>
-<p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
-<p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the subnunit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
-<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
-<p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
-<p>Where:</p>
-<p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
-<p>fF1 = F1/(F1+F2) is fraction of form F1 in subsystem of subunit,</p>
-<p>4 is number of subunits (<b>numberOfSubunit</b>).</p>
-<p><br>This block can be connected to chemical reactions such as it was the chosen species with subsystem behind. It is recommended to use this block only as an equilibrated subsystem.</p>
-<h4><span style=\"color:#008000\">Heat of chemical system.</span></h4>
-<p>Enthalpy of each subunit species can be presented as <b>subunitEnthalpies[:]</b>. Then the total enthalpy of the chemical system can be calculated by equation:</p>
-<h4>systemEnthalpy = sum(subunitEnthalpies[i] * totalSubunitAmount[i]) / totalSubsystemAmount</h4>
-<p>And the stored heat as enthalpy is <b>systemEnthalpy*totalSubsystemAmount.</b></p>
-</html>"));
-    end Speciation;
 
     model Dilution "Adding/removing of the solvent to/from running solution"
       extends Chemical.Interfaces.OnePort;
@@ -4417,123 +4537,6 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end Reabsorption;
 
-    model Membrane
-      "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
-      extends Icons.Membrane;
-      extends Chemical.Interfaces.ConditionalHeatPort;
-
-      parameter Integer NumberOfParticles = 1
-        "Number of penetrating particle types";
-      parameter Integer Charges[NumberOfParticles] = zeros(NumberOfParticles)
-        "Elementary charges of particles";
-      parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
-        "Permeabilities of particles through membrane chanel";
-
-      parameter Boolean usePermeabilityInput = false
-        "=true, if external permeability value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      Interfaces.ChemicalPort_a particlesInside[NumberOfParticles]
-        "inner side of membrane, solution"
-        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-      Interfaces.ChemicalPort_b particlesOutside[NumberOfParticles]
-        "outer side of membrane, solution"
-        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-
-      Types.RealIO.DiffusionPermeabilityInput permeability[NumberOfParticles] = p if usePermeabilityInput
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,100})));
-
-      Types.GasSolubility kH[NumberOfParticles]
-        "Concentration ratio at equilibrium";
-
-      parameter Types.GasSolubility kH_T0[NumberOfParticles] = ones( NumberOfParticles)
-        "Equilibrated concentration ratio at temperature T0 - can be estimated by Henry's law coefficient ratios (kH1/kH2)"
-         annotation ( HideResult=true,Dialog(tab="Different solubilities"));
-      parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
-         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Types.Temperature C[NumberOfParticles](displayUnit="K") = zeros(NumberOfParticles)
-        "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
-        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-
-      parameter Types.Fraction solventFractionInside=1
-        "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
-      parameter Types.Fraction solventFractionOutside=1
-        "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
-
-    protected
-       Real KAdjustment
-        "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
-       Types.DiffusionPermeability p[NumberOfParticles];
-
-    equation
-      if not usePermeabilityInput then
-        p=Permeabilities;
-      end if;
-
-       //no accumulation of particles:
-       particlesInside.q + particlesOutside.q = zeros(NumberOfParticles); //nothing lost inside
-
-       //electroneutrality:
-       if abs(Charges.*Charges*p)<=Modelica.Constants.eps then
-         KAdjustment=0; //no penetrating electrolytes => KAdjustment and electroneutrality of flux is not needed
-       else
-         Charges*particlesInside.q = 0; //electroneutrality of flux through membrane
-       end if;
-
-       //diffusion, penetration, particle movement:
-       for i in 1:NumberOfParticles loop
-         if Charges[i]==0 then //normal diffusion
-           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - kH[i]*particlesOutside[i].conc/solventFractionOutside);
-         elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1+KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
-         else //anion goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1-KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
-         end if;
-       end for;
-
-       //different solubilities:
-       kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
-       lossHeat = Modelica.Constants.R* C*particlesOutside.q; //negative = heat are comsumed when change from liquid to gas
-
-      annotation ( Documentation(info="<html>
-<p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
-<p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium. The permeabilities of particles are used only in dynamic simulation with non-zero fluxes. If zero-flow Donnan&apos;s equilibrium is reached, it is independent on the permeabilities. </p>
-<p>This class can be used for glomerular membrane, open(leak) channels (pores) of cellular (or any lipid bilayer) membrane, chloride schift, ...</p>
-<p><br>The membrane permeabilities depends on <code>(D/membrameThicknes)*membraneArea</code>, where D is Fick&apos;s diffusion coefficient.<code> </code></p>
-<p>................................</p>
-<h4><span style=\"color:#008000\">Filtration example of tree particles</span></h4>
-<p>ALP .. small penetrating anion</p>
-<p>P .. nonpenetrating protein with negative charge</p>
-<p>C .. small penetrating cation</p>
-<p>In outer side of membrane are not protein P (it leaves inside). </p>
-<p>In equilibrium 4 concentration are unknown:</p>
-<p>ALP_in, ALP_out, C_in, C_out.</p>
-<p>Closed system equilibrium equations:</p>
-<p>tALP = ALP_in + ALP_out ... total amount of ALP </p>
-<p>tC = C_in + C_out ... total amount of C</p>
-<p>P + ALP_in = C_in ... electroneutrality inside</p>
-<p>ALP_out = C_out ... electroneutrality outside</p>
-<p>----------------------------------------------------</p>
-<p>It is possible to write these equations also in form of KAdjustment, which connect also more than tree type of particles with Donnan&apos;s equilibrium equations:</p>
-<p>ALP_in/ALP_out = (1-KAdjustment) </p>
-<p>C_in/C_out = (1+KAdjustment) </p>
-<p>where KAdjustment = P/(2*C_in-P) and C_out=ALP_out=(2*C_in-P)/2, because ALP_in/ALP_out = (C_in - P)/C_out = (2C_in-2P)/(2C_in-P) = 1 - P/(2C_in-P) = 1-KAdjustment and C_in/C_out = (2C_in)/(2C_in-P) = 1 + P/(2C_in-P) = 1+KAdjustment .</p>
-<p><br><h4><span style=\"color:#008000\">Problem with different solubilities/Henry constants/ (kH1, kH2)</span></h4></p>
-<p>Equilibrated is chemical potential, not concentrations (c1,c2)!</p>
-<p>Equality of chemical potential is approximated by equality of partial pressure (p1,p2): </p>
-<p>p1=kH1*c1 </p>
-<p>p2=kH2*c2</p>
-<p><br>c2 = (kH1/kH2) * c1</p>
-<p>Henry constant between both side can be defined as<b> kH_T0 = kH1/kH2</b> at temperature T0, where kH1 is Henry constant in first side of membrane and kH2 is Henry constant in second side of membrane.</p>
-<h4><span style=\"color:#008000\">Temperature dependence of Henry constants by Van't Hoff</span></h4>
-<p><code>kH1&nbsp;=&nbsp;kH1_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C1*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
-<p><code>kH2&nbsp;=&nbsp;kH2_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C2*&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
-<p>kH1/kH2 = <code>kH_T0&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(C *&nbsp;(1/T&nbsp;-&nbsp;1/T0))</code></p>
-<p>Specific&nbsp;constant&nbsp;for&nbsp;Van&apos;t&nbsp;Hoff&apos;s&nbsp;change&nbsp;of&nbsp;kH_T0 can be defined as<b> C = C1-C2</b>, where C1 is specific constant in first side of membrane and C2 is specific constant in second side of membrane.</p>
-</html>"));
-    end Membrane;
   end Components;
 
   package Sensors
@@ -5009,15 +5012,15 @@ on the model behaviour.
     end ConditionalHeatPort;
 
     partial model ConditionalVolume
-      "Chemical processes can be modeled with or without(normalized to 1 liter) variable solvent volume"
+      "Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume"
 
       constant Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
 
       parameter Boolean useNormalizedVolume = true
-        "=true, if solvent volume is 1 liter"
+        "=true, if solution volume is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Types.Volume volume "SolventVolume" annotation(HideResult=useNormalizedVolume);
+      Types.Volume volume "Solution volume" annotation(HideResult=useNormalizedVolume);
 
       Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
