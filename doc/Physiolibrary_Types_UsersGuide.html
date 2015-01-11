@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Types.UsersGuide</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;User&#39;s Guide&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE UsersGuide<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Types.UsersGuideI.png" alt="Physiolibrary.Types.UsersGuide" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Types.UsersGuide"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.UsersGuide</h2>
+<p>
+</p>
+
+<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href="http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
+<p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
+<table cellspacing="0" cellpadding="2" border="1"><tr>
+<td valign="top"><p>Types </p></td>
+<td valign="top"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Blocks</p></td>
+<td valign="top"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Chemical</p></td>
+<td valign="top"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Hydraulic</p></td>
+<td valign="top"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Thermal</p></td>
+<td valign="top"><p>Library of termoregulation support.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Osmotic</p></td>
+<td valign="top"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Mixed</p></td>
+<td valign="top"><p>Library to join domains above together.</p></td>
+</tr>
+<tr>
+<td valign="top"><p>Icons</p></td>
+<td valign="top"><p>Icons</p></td>
+</tr>
+<tr>
+<td valign="top"><p>FileUtilities</p></td>
+<td valign="top"><p>Read/write values from/to file. </p></td>
+</tr>
+</table>
+
+<p>Extends from Modelica.Icons.Information (Icon for general information packages).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.UsersGuide.NewTypeS.png" alt="Physiolibrary.Types.UsersGuide.NewType" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_UsersGuide.html#Physiolibrary.Types.UsersGuide.NewType"
+>NewType</a>
+</td>
+<td>Adding new type</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE NewType<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Types.UsersGuideI.png" alt="Physiolibrary.Types.UsersGuide.NewType" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Types.UsersGuide.NewType"></a><a href="Physiolibrary_Types_UsersGuide.html#Physiolibrary.Types.UsersGuide"
+>Physiolibrary.Types.UsersGuide</a>.NewType</h2>
+<p>
+<br><img src="Physiolibrary.Types.UsersGuideD.png" alt="Physiolibrary.Types.UsersGuide.NewType">
+</p>
+
+<p>Definition of new type (&QUOT;QuantityX&QUOT;) in Physiolibrary:</p>
+<ul>
+<li>Define base type Types.QuantityX with SI units in &QUOT;final unit&QUOT;, default display units and nominal (e.g. value of one display unit at SI units). </li>
+</ul>
+<p>Optional: </p>
+<ul>
+<li>Define typed input and output connectors for QuantityX: Types.RealIO.QuantityXInput and Types.RealIO.QuantityXOutput. </li>
+<li>Define typed constant for QuantityX: Types.Constants.QuantityXConst </li>
+<li>Define typed RealInputParameter for QuantityX: Types.RealInputParameters.QuantityX </li>
+<li>Define typed replaceable variable RealTypes for QuantityX: Types.RealTypes.QuantityX </li>
+</ul>
+
+<p>Extends from Modelica.Icons.Information (Icon for general information packages).</p>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:18 2014.
+</address>
+</body>
+</html>

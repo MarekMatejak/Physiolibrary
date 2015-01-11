@@ -1,0 +1,692 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Types.BusConnector</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Empty control bus that is adapted to the signals connected to it&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BusConnector<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Types.BusConnectorI.png" alt="Physiolibrary.Types.BusConnector" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Types.BusConnector"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.BusConnector</h2>
+<p>
+<b>Empty control bus that is adapted to the signals connected to it</b>
+<br>
+<br><img src="Physiolibrary.Types.BusConnectorD.png" alt="Physiolibrary.Types.BusConnector">
+</p>
+<h3>Information</h3>
+
+<p>
+This connector defines the "expandable connector" ControlBus that
+is used as bus in the HuMod model.
+Note, this connector is "empty". When using it, the actual content is
+constructed by the signals connected to this bus.
+</p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">expandable connector</span> BusConnector <span style="color: #006400">
+  &quot;Empty control bus that is adapted to the signals connected to it&quot;</span>
+
+
+<span style="color: blue">end </span>BusConnector;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Types<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Types"></a><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>.Types</h2>
+<p>
+<b>Physiological units with nominals</b><br>
+</p>
+<h3>Information</h3>
+
+<p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &QUOT;physiological&QUOT; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
+
+<p>Extends from <a href="Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.UsersGuideS.png" alt="Physiolibrary.Types.UsersGuide" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_UsersGuide.html#Physiolibrary.Types.UsersGuide"
+>UsersGuide</a>
+</td>
+<td>User&#39;s Guide</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.ExamplesS.png" alt="Physiolibrary.Types.Examples" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_Examples.html#Physiolibrary.Types.Examples"
+>Examples</a>
+</td>
+<td>Examples that demonstrate usage of the Pressure flow components</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.ConstantsS.png" alt="Physiolibrary.Types.Constants" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants"
+>Constants</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.ConstantsS.png" alt="Physiolibrary.Types.ScaleConstants" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_ScaleConstants.html#Physiolibrary.Types.ScaleConstants"
+>ScaleConstants</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.RealIOS.png" alt="Physiolibrary.Types.RealIO" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO"
+>RealIO</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.BusConnectorS.png" alt="Physiolibrary.Types.BusConnector" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a>
+</td>
+<td>Empty control bus that is adapted to the signals connected to it</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.IO_BusS.png" alt="Physiolibrary.Types.IO_Bus" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus"
+>IO_Bus</a>
+</td>
+<td>Subsystem outputs manipulation</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.TorsoBusConnectorS.png" alt="Physiolibrary.Types.TorsoBusConnector" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types.html#Physiolibrary.Types.TorsoBusConnector"
+>TorsoBusConnector</a>
+</td>
+<td>Upper, Middle or Lower Torso properties</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.TissueBusConnectorS.png" alt="Physiolibrary.Types.TissueBusConnector" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types.html#Physiolibrary.Types.TissueBusConnector"
+>TissueBusConnector</a>
+</td>
+<td>Tissue properties</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
+>Energy</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Frequency"
+>Frequency</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Mass</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Density"
+>Density</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarMass"
+>MolarMass</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Height"
+>Height</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Position"
+>Position</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Velocity"
+>Velocity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Acceleration"
+>Acceleration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
+>Volume</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>MolarEnergy</a>
+</td>
+<td>chemical internal energy, chemical enthalpy, Gibb&#39;s energy ..</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassConcentration"
+>MassConcentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Osmolarity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Heat"
+>Heat</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HeatFlowRate"
+>HeatFlowRate</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Power"
+>Power</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PowerPerMass"
+>PowerPerMass</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>ThermalConductance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>SpecificEnergy</a>
+</td>
+<td>vaporization, ..</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricPotential"
+>ElectricPotential</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
+>ElectricCharge</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeDensityOfCharge"
+>VolumeDensityOfCharge</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCurrent"
+>ElectricCurrent</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.pH"
+>pH</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>OsmoticPermeability</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>DiffusionPermeability</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicConductance"
+>HydraulicConductance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicResistance"
+>HydraulicResistance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicCompliance"
+>HydraulicCompliance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>HydraulicElastance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicInertance"
+>HydraulicInertance</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>GasSolubility</a>
+</td>
+<td>Gas solubility in liquid</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.StoichiometricNumber"
+>StoichiometricNumber</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
+>Population</a>
+</td>
+<td>Average number of population individuals</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
+>PopulationChange</a>
+</td>
+<td>Average change of population individuals</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChangePerMember"
+>PopulationChangePerMember</a>
+</td>
+<td>Average change per population individual</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>AbstractReal</a>
+</td>
+<td>Abstract parameter or the value at defined time (final) of the model - can be input or output parameter</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.RealTd93ac14c28278febetersS.png" alt="Physiolibrary.Types.RealTypeInputParameters" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_RealTypeInputParameters.html#Physiolibrary.Types.RealTypeInputParameters"
+>RealTypeInputParameters</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.RealExtensionS.png" alt="Physiolibrary.Types.RealExtension" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension"
+>RealExtension</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.RealTypesS.png" alt="Physiolibrary.Types.RealTypes" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_RealTypes.html#Physiolibrary.Types.RealTypes"
+>RealTypes</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractBoolean"
+>AbstractBoolean</a>
+</td>
+<td>Abstract parameter or the value at defined time of the model - can be input or output parameter</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.FilesUtilitiesS.png" alt="Physiolibrary.Types.FilesUtilities" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>FilesUtilities</a>
+</td>
+<td>File input/output/test</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.FilesUtilitiesS.png" alt="Physiolibrary.Types.BooleanExtension" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension"
+>BooleanExtension</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.UtilitiesS.png" alt="Physiolibrary.Types.Utilities" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_Utilities.html#Physiolibrary.Types.Utilities"
+>Utilities</a>
+</td>
+<td>Value input/output/test support</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Types.ZeroUtilitiesS.png" alt="Physiolibrary.Types.ZeroUtilities" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types_ZeroUtilities.html#Physiolibrary.Types.ZeroUtilities"
+>ZeroUtilities</a>
+</td>
+<td>No input/output/test</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a>
+</td>
+<td>Initialization or Steady state options (to determine model type before simulating)</td>
+</tr>
+</table>
+<h3>Revisions</h3>
+
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide.ModelicaLicense2"
+>UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href="http://www.modelica.org/licenses/ModelicaLicense2">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+
+<h3>Types and constants</h3>
+<a name="Physiolibrary.Types.Energy"></a><pre>  <span style="color: blue">type</span> Energy = <a href="Modelica_SIunits.html#Modelica.SIunits.Energy"
+>Modelica.SIunits.Energy</a>(displayUnit=&quot;kcal&quot;, nominal=4186.8);</pre>
+<a name="Physiolibrary.Types.Time"></a><pre>  <span style="color: blue">type</span> Time = <a href="Modelica_SIunits.html#Modelica.SIunits.Time"
+>Modelica.SIunits.Time</a>(displayUnit=&quot;min&quot;, nominal=60);</pre>
+<a name="Physiolibrary.Types.Frequency"></a><pre>  <span style="color: blue">type</span> Frequency = <a href="Modelica_SIunits.html#Modelica.SIunits.Frequency"
+>Modelica.SIunits.Frequency</a>(displayUnit=&quot;1/min&quot;);</pre>
+<a name="Physiolibrary.Types.Mass"></a><pre>  <span style="color: blue">type</span> Mass = <a href="Modelica_SIunits.html#Modelica.SIunits.Mass"
+>Modelica.SIunits.Mass</a>(displayUnit=&quot;g&quot;, nominal=1e-3, min=0);</pre>
+<a name="Physiolibrary.Types.MassFlowRate"></a><pre>  <span style="color: blue">type</span> MassFlowRate = <a href="Modelica_SIunits.html#Modelica.SIunits.MassFlowRate"
+>Modelica.SIunits.MassFlowRate</a>(displayUnit=&quot;mg/min&quot;, nominal=(1e-6)/60);</pre>
+<a name="Physiolibrary.Types.Density"></a><pre>  <span style="color: blue">type</span> Density = <a href="Modelica_SIunits.html#Modelica.SIunits.Density"
+>Modelica.SIunits.Density</a>(displayUnit=&quot;kg/l&quot;, nominal=1e3);</pre>
+<a name="Physiolibrary.Types.MolarMass"></a><pre>  <span style="color: blue">type</span> MolarMass = <a href="Modelica_SIunits.html#Modelica.SIunits.MolarMass"
+>Modelica.SIunits.MolarMass</a>(displayUnit=&quot;kDa&quot;, nominal=1);</pre>
+<a name="Physiolibrary.Types.Height"></a><pre>  <span style="color: blue">type</span> Height = <a href="Modelica_SIunits.html#Modelica.SIunits.Height"
+>Modelica.SIunits.Height</a>(displayUnit=&quot;cm&quot;, nominal=1e-2);</pre>
+<a name="Physiolibrary.Types.Position"></a><pre>  <span style="color: blue">type</span> Position = <a href="Modelica_SIunits.html#Modelica.SIunits.Position"
+>Modelica.SIunits.Position</a>(displayUnit=&quot;cm&quot;, nominal=1e-2);</pre>
+<a name="Physiolibrary.Types.Velocity"></a><pre>  <span style="color: blue">type</span> Velocity = <a href="Modelica_SIunits.html#Modelica.SIunits.Velocity"
+>Modelica.SIunits.Velocity</a>(displayUnit=&quot;km/h&quot;, nominal=1);</pre>
+<a name="Physiolibrary.Types.Acceleration"></a><pre>  <span style="color: blue">type</span> Acceleration = <a href="Modelica_SIunits.html#Modelica.SIunits.Acceleration"
+>Modelica.SIunits.Acceleration</a>(displayUnit=&quot;m/s2&quot;, nominal=1);</pre>
+<a name="Physiolibrary.Types.Pressure"></a><pre>  <span style="color: blue">type</span> Pressure =  <a href="Modelica_SIunits.html#Modelica.SIunits.Pressure"
+>Modelica.SIunits.Pressure</a>(displayUnit=&quot;mmHg&quot;, nominal=133.322387415);</pre>
+<a name="Physiolibrary.Types.Volume"></a><pre>  <span style="color: blue">type</span> Volume =  <a href="Modelica_SIunits.html#Modelica.SIunits.Volume"
+>Modelica.SIunits.Volume</a>(displayUnit=&quot;ml&quot;, nominal=1e-6, min=0);</pre>
+<a name="Physiolibrary.Types.VolumeFlowRate"></a><pre>  <span style="color: blue">type</span> VolumeFlowRate = <a href="Modelica_SIunits.html#Modelica.SIunits.VolumeFlowRate"
+>Modelica.SIunits.VolumeFlowRate</a>(displayUnit=&quot;ml/min&quot;, nominal=(1e-6)/60);</pre>
+<a name="Physiolibrary.Types.Concentration"></a><pre>  <span style="color: blue">replaceable </span><span style="color: blue">type</span> Concentration = <a href="Modelica_SIunits.html#Modelica.SIunits.Concentration"
+>Modelica.SIunits.Concentration</a> (displayUnit=&quot;mmol/l&quot;, min=0) <span style="color: blue">constrainedby </span>Real;</pre>
+<a name="Physiolibrary.Types.AmountOfSubstance"></a><pre>  <span style="color: blue">replaceable </span><span style="color: blue">type</span> AmountOfSubstance = <a href="Modelica_SIunits.html#Modelica.SIunits.AmountOfSubstance"
+>Modelica.SIunits.AmountOfSubstance</a> (displayUnit=&quot;mmol&quot;, min=0) <span style="color: blue">constrainedby </span>Real;</pre>
+<a name="Physiolibrary.Types.MolarFlowRate"></a><pre>  <span style="color: blue">replaceable </span><span style="color: blue">type</span> MolarFlowRate = <a href="Modelica_SIunits.html#Modelica.SIunits.MolarFlowRate"
+>Modelica.SIunits.MolarFlowRate</a>(displayUnit=&quot;mmol/min&quot;) <span style="color: blue">constrainedby </span>Real;</pre>
+<a name="Physiolibrary.Types.MolarEnergy"></a><pre>  <span style="color: blue">replaceable </span><span style="color: blue">type</span> MolarEnergy = <a href="Modelica_SIunits.html#Modelica.SIunits.MolarEnergy"
+>Modelica.SIunits.MolarEnergy</a>(displayUnit=&quot;kcal/mol&quot;, nominal=4186.8) <span style="color: blue">constrainedby </span>Real <span style="color: #006400">
+  &quot;chemical internal energy, chemical enthalpy, Gibb&#39;s energy ..&quot;</span>;</pre>
+<a name="Physiolibrary.Types.MassConcentration"></a><pre>  <span style="color: blue">type</span> MassConcentration =
+                 <a href="Modelica_SIunits.html#Modelica.SIunits.MassConcentration"
+>Modelica.SIunits.MassConcentration</a>(displayUnit=&quot;mg/l&quot;, nominal=1e-3, min=0);</pre>
+<a name="Physiolibrary.Types.Osmolarity"></a><pre>  <span style="color: blue">type</span> Osmolarity = <a href="Modelica_SIunits.html#Modelica.SIunits.Concentration"
+>Modelica.SIunits.Concentration</a> (displayUnit=&quot;mosm/l&quot;, nominal=1);</pre>
+<a name="Physiolibrary.Types.Heat"></a><pre>  <span style="color: blue">type</span> Heat = <a href="Modelica_SIunits.html#Modelica.SIunits.Heat"
+>Modelica.SIunits.Heat</a>(displayUnit=&quot;kcal&quot;, nominal=4186800);</pre>
+<a name="Physiolibrary.Types.Temperature"></a><pre>  <span style="color: blue">type</span> Temperature = <a href="Modelica_SIunits.html#Modelica.SIunits.Temperature"
+>Modelica.SIunits.Temperature</a>(displayUnit=&quot;degC&quot;, nominal=1, min=0);</pre>
+<a name="Physiolibrary.Types.HeatFlowRate"></a><pre>  <span style="color: blue">type</span> HeatFlowRate = <a href="Modelica_SIunits.html#Modelica.SIunits.HeatFlowRate"
+>Modelica.SIunits.HeatFlowRate</a>(displayUnit=&quot;kcal/min&quot;, nominal=4186.8/60);</pre>
+<a name="Physiolibrary.Types.Power"></a><pre>  <span style="color: blue">type</span> Power = <a href="Modelica_SIunits.html#Modelica.SIunits.Power"
+>Modelica.SIunits.Power</a>(displayUnit=&quot;kcal/min&quot;, nominal=4186.8/60);</pre>
+<a name="Physiolibrary.Types.PowerPerMass"></a><pre>  <span style="color: blue">type</span> PowerPerMass = Real(<span style="color: blue">final </span>quantity=&quot;Power per Mass&quot;,<span style="color: blue">final </span>unit=&quot;W/kg&quot;,displayUnit=&quot;cal/(g.min)&quot;, nominal=4.1868/(0.001*60));</pre>
+<a name="Physiolibrary.Types.ThermalConductance"></a><pre>  <span style="color: blue">type</span> ThermalConductance = <a href="Modelica_SIunits.html#Modelica.SIunits.ThermalConductance"
+>Modelica.SIunits.ThermalConductance</a>(displayUnit=&quot;kcal/(min.K)&quot;, nominal=4186.8/60);</pre>
+<a name="Physiolibrary.Types.SpecificHeatCapacity"></a><pre>  <span style="color: blue">type</span> SpecificHeatCapacity = <a href="Modelica_SIunits.html#Modelica.SIunits.SpecificHeatCapacity"
+>Modelica.SIunits.SpecificHeatCapacity</a>(displayUnit=&quot;kcal/(kg.K)&quot;, nominal=4186.8);</pre>
+<a name="Physiolibrary.Types.SpecificEnergy"></a><pre>  <span style="color: blue">type</span> SpecificEnergy = <a href="Modelica_SIunits.html#Modelica.SIunits.SpecificEnergy"
+>Modelica.SIunits.SpecificEnergy</a>(displayUnit=&quot;kcal/kg&quot;, nominal=4186.8) <span style="color: #006400">
+  &quot;vaporization, ..&quot;</span>;</pre>
+<a name="Physiolibrary.Types.ElectricPotential"></a><pre>  <span style="color: blue">type</span> ElectricPotential = <a href="Modelica_SIunits.html#Modelica.SIunits.ElectricPotential"
+>Modelica.SIunits.ElectricPotential</a>(displayUnit=&quot;mV&quot;, nominal=1e-3);</pre>
+<a name="Physiolibrary.Types.ElectricCharge"></a><pre>  <span style="color: blue">type</span> ElectricCharge = <a href="Modelica_SIunits.html#Modelica.SIunits.ElectricCharge"
+>Modelica.SIunits.ElectricCharge</a>(displayUnit=&quot;meq&quot;, nominal=(9.64853399*10^4)/1000);</pre>
+<a name="Physiolibrary.Types.VolumeDensityOfCharge"></a><pre>  <span style="color: blue">type</span> VolumeDensityOfCharge =
+                        <a href="Modelica_SIunits.html#Modelica.SIunits.VolumeDensityOfCharge"
+>Modelica.SIunits.VolumeDensityOfCharge</a>(displayUnit=&quot;meq/l&quot;, nominal=(9.64853399*10^4));</pre>
+<a name="Physiolibrary.Types.ElectricCurrent"></a><pre>  <span style="color: blue">type</span> ElectricCurrent = <a href="Modelica_SIunits.html#Modelica.SIunits.ElectricCurrent"
+>Modelica.SIunits.ElectricCurrent</a>(displayUnit=&quot;meq/min&quot;, nominal=(9.64853399*10^4/1000)/60);</pre>
+<a name="Physiolibrary.Types.Fraction"></a><pre>  <span style="color: blue">type</span> Fraction = Real(<span style="color: blue">final </span>quantity=&quot;Fraction&quot;,<span style="color: blue">final </span>unit=&quot;1&quot;, displayUnit=&quot;%&quot;, nominal=1e-2);</pre>
+<a name="Physiolibrary.Types.pH"></a><pre>  <span style="color: blue">type</span> pH =       Real(<span style="color: blue">final </span>quantity=&quot;pH&quot;,<span style="color: blue">final </span>unit=&quot;1&quot;,<span style="color: blue">final </span>displayUnit=&quot;1&quot;, nominal=7, min=0, max=14);</pre>
+<a name="Physiolibrary.Types.OsmoticPermeability"></a><pre>  <span style="color: blue">type</span> OsmoticPermeability = Real(<span style="color: blue">final </span>quantity=&quot;OsmoticPermeability&quot;,<span style="color: blue">final </span>unit=&quot;m3/(Pa.s)&quot;, displayUnit=&quot;ml/(mmHg.min)&quot;, nominal=(1e-6)/((133.322387415)*60), min=0);</pre>
+<a name="Physiolibrary.Types.DiffusionPermeability"></a><pre>  <span style="color: blue">type</span> DiffusionPermeability = Real(<span style="color: blue">final </span>quantity=&quot;DiffusionPermeability&quot;, <span style="color: blue">final </span>unit=&quot;m3/s&quot;, displayUnit=&quot;ml/min&quot;, nominal=(1e-6)/60, min=0);</pre>
+<a name="Physiolibrary.Types.HydraulicConductance"></a><pre>  <span style="color: blue">type</span> HydraulicConductance = Real(<span style="color: blue">final </span>quantity=&quot;HydraulicConductance&quot;,<span style="color: blue">final </span>unit=&quot;m3/(Pa.s)&quot;, displayUnit=&quot;ml/(mmHg.min)&quot;, nominal=(1e-6)/((133.322387415)*60), min=0);</pre>
+<a name="Physiolibrary.Types.HydraulicResistance"></a><pre>  <span style="color: blue">type</span> HydraulicResistance = Real(<span style="color: blue">final </span>quantity=&quot;HydraulicConductance&quot;,<span style="color: blue">final </span>unit=&quot;(Pa.s)/m3&quot;, displayUnit=&quot;(mmHg.min)/ml&quot;, nominal=(1e+6)*(133.322387415)*60, min=0);</pre>
+<a name="Physiolibrary.Types.HydraulicCompliance"></a><pre>  <span style="color: blue">type</span> HydraulicCompliance =  Real(<span style="color: blue">final </span>quantity=&quot;HydraulicCompliance&quot;,<span style="color: blue">final </span>unit=&quot;m3/Pa&quot;, displayUnit=&quot;ml/mmHg&quot;, nominal=(1e-6)/(133.322387415));</pre>
+<a name="Physiolibrary.Types.HydraulicElastance"></a><pre>  <span style="color: blue">type</span> HydraulicElastance = Real(<span style="color: blue">final </span>quantity=&quot;HydraulicElastance&quot;,<span style="color: blue">final </span>unit=&quot;Pa/m3&quot;, displayUnit=&quot;mmHg/ml&quot;, nominal=(133.322387415)/(1e-6));</pre>
+<a name="Physiolibrary.Types.HydraulicInertance"></a><pre>  <span style="color: blue">type</span> HydraulicInertance =  Real(<span style="color: blue">final </span>quantity=&quot;HydraulicInertance&quot;,<span style="color: blue">final </span>unit=&quot;Pa.s2/m3&quot;, displayUnit=&quot;mmHg.min2/ml&quot;, nominal=((133.322387415)*(60^2)/(1e-6)));</pre>
+<a name="Physiolibrary.Types.GasSolubility"></a><pre>  <span style="color: blue">type</span> GasSolubility = Real(<span style="color: blue">final </span>quantity=&quot;GasSolubility&quot;, <span style="color: blue">final </span>unit=&quot;(mol/m3)/(mol/m3)&quot;, displayUnit=&quot;(mmol/l)/kPa at 25degC&quot;, nominal=1e-2, min=0) <span style="color: #006400">
+  &quot;Gas solubility in liquid&quot;</span>;</pre>
+<a name="Physiolibrary.Types.StoichiometricNumber"></a><pre>  <span style="color: blue">type</span> StoichiometricNumber = <a href="Modelica_SIunits.html#Modelica.SIunits.StoichiometricNumber"
+>Modelica.SIunits.StoichiometricNumber</a>;</pre>
+<a name="Physiolibrary.Types.Population"></a><pre>  <span style="color: blue">type</span> Population = Real (<span style="color: blue">final </span>quantity=&quot;Population&quot;, <span style="color: blue">final </span>unit=&quot;1&quot;, displayUnit=&quot;1&quot;, min=0) <span style="color: #006400">
+  &quot;Average number of population individuals&quot;</span>;</pre>
+<a name="Physiolibrary.Types.PopulationChange"></a><pre>  <span style="color: blue">type</span> PopulationChange = Real (<span style="color: blue">final </span>quantity=&quot;PopulationChange&quot;, <span style="color: blue">final </span>unit=&quot;1/s&quot;, displayUnit=&quot;1/d&quot;) <span style="color: #006400">
+  &quot;Average change of population individuals&quot;</span>;</pre>
+<a name="Physiolibrary.Types.PopulationChangePerMember"></a><pre>  <span style="color: blue">type</span> PopulationChangePerMember = Real (<span style="color: blue">final </span>quantity=&quot;PopulationChangePerMember&quot;, <span style="color: blue">final </span>unit=&quot;1/s&quot;, displayUnit=&quot;1/d&quot;) <span style="color: #006400">
+  &quot;Average change per population individual&quot;</span>;</pre>
+<a name="Physiolibrary.Types.SimulationType"></a><pre>  <span style="color: blue">type</span> SimulationType = <span style="color: blue">enumeration</span>(
+    NoInit <span style="color: #006400">&quot;Use start values only as a guess of state values&quot;</span>,
+    NormalInit <span style="color: #006400">&quot;Initialization by start values&quot;</span>,
+    ReadInit <span style="color: #006400">&quot;Initialization by function Utilities.readReal(&#39;state name&#39;)&quot;</span>,
+    InitSteadyState <span style="color: #006400">
+      &quot;Initialization in Steady State (initial derivations are zeros)&quot;</span>,
+    SteadyState <span style="color: #006400">&quot;Steady State = Derivations are zeros during simulation&quot;</span>) <span style="color: #006400">
+  &quot;Initialization or Steady state options (to determine model type before simulating)&quot;</span>;</pre>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE TorsoBusConnector<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Types.TorsoBusConnectorI.png" alt="Physiolibrary.Types.TorsoBusConnector" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Types.TorsoBusConnector"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.TorsoBusConnector</h2>
+<p>
+<b>Upper, Middle or Lower Torso properties</b>
+<br>
+<br><img src="Physiolibrary.Types.TorsoBusConnectorD.png" alt="Physiolibrary.Types.TorsoBusConnector">
+</p>
+<h3>Information</h3>
+
+<p>
+This icon is designed for a <b>signal bus</b> connector.
+</p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">expandable connector</span> TorsoBusConnector <span style="color: #006400">
+  &quot;Upper, Middle or Lower Torso properties&quot;</span>
+
+
+<span style="color: blue">end </span>TorsoBusConnector;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE TissueBusConnector<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Types.TissueBusConnectorI.png" alt="Physiolibrary.Types.TissueBusConnector" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Types.TissueBusConnector"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.TissueBusConnector</h2>
+<p>
+<b>Tissue properties</b>
+<br>
+<br><img src="Physiolibrary.Types.TissueBusConnectorD.png" alt="Physiolibrary.Types.TissueBusConnector">
+</p>
+<h3>Information</h3>
+
+<p>
+This icon is designed for a <b>signal bus</b> connector.
+</p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">expandable connector</span> TissueBusConnector <span style="color: #006400">&quot;Tissue properties&quot;</span>
+
+
+<span style="color: blue">end </span>TissueBusConnector;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE AbstractReal<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Types.AbstractReal"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.AbstractReal</h2>
+<p>
+<b>Abstract parameter or the value at defined time (final) of the model - can be input or output parameter</b>
+</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>0</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real type with units</td></tr>
+</table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">block</span> AbstractReal <span style="color: #006400">
+  &quot;Abstract parameter or the value at defined time (final) of the model - can be input or output parameter&quot;</span>
+
+  <span style="color: blue">replaceable </span><span style="color: blue">type</span> T=Real
+   <span style="color: blue">constrainedby </span>Real <span style="color: #006400">&quot;Real type with units&quot;</span>;
+
+  <span style="color: blue">parameter </span>String varName=
+  &quot;Stored name&quot;;
+  <span style="color: #006400">                         //getInstanceName()</span>
+  <span style="color: blue">parameter </span>String storeUnit=&quot;&quot; <span style="color: #006400">&quot;Stored units&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a> k(fixed=true) = 0 <span style="color: #006400">&quot;Value&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>Utilities.UnitConversions.RealTypeRecord</a>[:] unitConversions = Utilities.UnitConversions.RealTypeDef <span style="color: #006400">
+    &quot;Unit conversions&quot;</span>;
+<span style="color: blue">end </span>AbstractReal;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE AbstractBoolean<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Types.AbstractBoolean"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.AbstractBoolean</h2>
+<p>
+<b>Abstract parameter or the value at defined time of the model - can be input or output parameter</b>
+</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>k</td><td>false</td><td>Value</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>Name of stored variable</td></tr>
+</table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">block</span> AbstractBoolean <span style="color: #006400">
+  &quot;Abstract parameter or the value at defined time of the model - can be input or output parameter&quot;</span>
+
+  <span style="color: blue">parameter </span>String varName=&quot;&quot; <span style="color: #006400">&quot;Name of stored variable&quot;</span>;
+  <span style="color: #006400">                            //getInstanceName()</span>
+   <span style="color: blue">parameter </span>Boolean k(fixed=true)=false <span style="color: #006400">&quot;Value&quot;</span>;
+
+<span style="color: blue">end </span>AbstractBoolean;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:05 2014.
+</address>
+</body>
+</html>

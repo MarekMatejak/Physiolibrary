@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.SteadyStates.Interfaces.SteadyState</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SteadyState<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.SteadyStates.Interfaces.SteadyState"></a><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces"
+>Physiolibrary.SteadyStates.Interfaces</a>.SteadyState</h2>
+<p>
+<b>Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.</b>
+</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (direct...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td>Real</td><td>state_start</td><td>&nbsp;</td><td>State start or init value</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Unit in Utilities input/output function</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
+<tr><td>Boolean</td><td>LOAD_STARTS</td><td>false</td><td>Load start value of state</td></tr>
+<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>Save final state values</td></tr>
+<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr><td>Boolean</td><td>isDependent</td><td>false</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> SteadyState <span style="color: #006400">
+  &quot;Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.&quot;</span>
+  <span style="color: #006400">//allow to switch between dynamic mode &#39;der(y)=x&#39; and steady-state mode &#39;der(y)=0&#39;</span>
+
+  <span style="color: blue">replaceable </span><span style="color: blue">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(directoryName=dirName)
+                                                                  <span style="color: blue">constrainedby </span>
+    Types.Utilities;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400">
+    &quot;Dynamic with Initialization or Steady State&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean isDependent = false <span style="color: #006400">
+    &quot;=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.&quot;</span>;
+
+  <span style="color: blue">parameter </span>Real state_start <span style="color: #006400">&quot;State start or init value&quot;</span>;
+
+  Real state(start=<span style="color: blue">if </span>LOAD_STARTS<span style="color: blue"> then </span><span style="color: red">Utilities.readReal</span>(stateName, storeUnit)<span style="color: blue"> else </span>
+ state_start, stateSelect=StateSelect.prefer) <span style="color: #006400">
+    &quot;This state must be connected in inherited class definition&quot;</span>;
+  Real change <span style="color: #006400">&quot;Dynamic change of state value per minute&quot;</span>;
+
+  <span style="color: blue">constant </span>String dirName = &quot;io&quot; <span style="color: #006400">&quot;Directory name to save and load values&quot;</span>;
+
+  <span style="color: blue">parameter </span>String storeUnit=&quot;&quot; <span style="color: #006400">&quot;Unit in Utilities input/output function&quot;</span>;
+
+  <span style="color: blue">parameter </span>String stateName=<span style="color: red">getInstanceName</span>() <span style="color: #006400">
+    &quot;Name in Utilities input/output function&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean LOAD_STARTS = false <span style="color: #006400">&quot;Load start value of state&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean SAVE_RESULTS = false <span style="color: #006400">&quot;Save final state values&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean SAVE_COMPARISON = false <span style="color: #006400">
+    &quot;Compare final state values with original values&quot;</span>;
+
+<span style="color: blue">protected </span>
+  <span style="color: blue">parameter </span>Real defaultValue(fixed=false) <span style="color: #006400">&quot;Default value of state.&quot;</span>;
+  <span style="color: blue">parameter </span>Real initialValue(fixed=false) <span style="color: #006400">&quot;Initial value of state.&quot;</span>;
+
+<span style="color: blue">initial </span><span style="color: blue">equation </span>
+
+  <span style="color: blue">if </span>Simulation == Types.SimulationType.NormalInit<span style="color: blue"> then</span>
+    state = state_start;
+  <span style="color: blue">elseif </span>Simulation == Types.SimulationType.ReadInit<span style="color: blue"> then</span>
+    state =<span style="color: red"> Utilities.readReal</span>(stateName, storeUnit);
+  <span style="color: blue">elseif </span>Simulation == Types.SimulationType.InitSteadyState<span style="color: blue"> and </span><span style="color: blue">not </span>isDependent<span style="color: blue"> then</span>
+    <span style="color: red">der</span>(state)=0;<span style="color: #006400">  //here it have the same meaning as &quot;change = 0&quot;, because of equation &quot;der(state) = change&quot;</span>
+  <span style="color: blue">end if</span>;
+
+  initialValue = state;<span style="color: #006400"> //in causality such as initialValue:=state</span>
+  <span style="color: blue">if </span>SAVE_COMPARISON<span style="color: blue"> then</span>
+    defaultValue =<span style="color: red"> Utilities.readReal</span>(stateName, storeUnit);
+  <span style="color: blue">else</span>
+    defaultValue = Modelica.Constants.N_A;
+  <span style="color: blue">end if</span>;
+<span style="color: blue">equation </span>
+
+  <span style="color: blue">when </span><span style="color: red">terminal</span>()<span style="color: blue"> then</span>
+    <span style="color: blue">if </span>SAVE_RESULTS<span style="color: blue"> then</span>
+      <span style="color: red">Utilities.writeReal</span>(
+        stateName,
+        state,
+        storeUnit);
+    <span style="color: blue">end if</span>;
+    <span style="color: blue">if </span>SAVE_COMPARISON<span style="color: blue"> then</span>
+      <span style="color: red">Utilities.writeComparison</span>(
+        stateName,
+        defaultValue,
+        initialValue,
+        state,
+        storeUnit);
+    <span style="color: blue">end if</span>;
+  <span style="color: blue">end when</span>;
+
+  <span style="color: blue">if </span>Simulation &lt;&gt; Types.SimulationType.SteadyState<span style="color: blue"> then</span>
+    <span style="color: red">der</span>(state) = change;
+  <span style="color: blue">elseif </span><span style="color: blue">not </span>isDependent<span style="color: blue"> then</span><span style="color: #006400">   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/</span>
+     change = 0;
+  <span style="color: blue">end if</span>;
+
+<span style="color: blue">end </span>SteadyState;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Interfaces<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.SteadyStates.Interfaces"></a><a href="Physiolibrary_SteadyStates.html#Physiolibrary.SteadyStates"
+>Physiolibrary.SteadyStates</a>.Interfaces</h2>
+<p>
+</p>
+<h3>Information</h3>
+<p>Extends from Modelica.Icons.InterfacesPackage (Icon for packages containing interfaces).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyState</a>
+</td>
+<td>Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStates"
+>SteadyStates</a>
+</td>
+<td>Abstract class for any dynamic states calculation (for any derivations), which is driven by SimulationType option.</td>
+</tr>
+<tr>
+<td><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
+>SteadyStateSystem</a>
+</td>
+<td>Global abstract class, for additional global state equations</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SteadyStates<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.SteadyStates.Interfaces.SteadyStates"></a><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces"
+>Physiolibrary.SteadyStates.Interfaces</a>.SteadyStates</h2>
+<p>
+<b>Abstract class for any dynamic states calculation (for any derivations), which is driven by SimulationType option.</b>
+</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Integer</td><td>n</td><td>&nbsp;</td><td>Number of states</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td>Real</td><td>state_start[n]</td><td>&nbsp;</td><td>State start or init value</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>save and test final state values with original values</td></tr>
+<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
+<tr><td>String</td><td>storeUnit[n]</td><td>fill(&quot;&quot;, n)</td><td>Unit in Utilities input/output function</td></tr>
+<tr><td>String</td><td>stateName[n]</td><td>fill(getInstanceName(), n)</td><td>Name in Utilities input/output function</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr><td>Boolean</td><td>isDependent[n]</td><td>fill(false, n)</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> SteadyStates <span style="color: #006400">
+  &quot;Abstract class for any dynamic states calculation (for any derivations), which is driven by SimulationType option.&quot;</span>
+  <span style="color: #006400">//allow to switch between dynamic mode &#39;der(y)=x&#39; and steady-state mode &#39;der(y)=0&#39;</span>
+
+  <span style="color: blue">replaceable </span><span style="color: blue">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>            <span style="color: blue">constrainedby </span>
+    Types.Utilities;
+
+  <span style="color: blue">parameter </span>Integer n <span style="color: #006400">&quot;Number of states&quot;</span>;
+
+  Real state[n](start=state_start, stateSelect=StateSelect.prefer) <span style="color: #006400">
+    &quot;This state must be connected in inherited class definition&quot;</span>;
+
+  Real change[n] <span style="color: #006400">&quot;Dynamic change of state value per minute&quot;</span>;
+
+  <span style="color: blue">parameter </span>Real state_start[n] <span style="color: #006400">&quot;State start or init value&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400">
+    &quot;Dynamic with Initialization or Steady State&quot;</span>;
+
+  <span style="color: blue">constant </span>String dirName = &quot;io&quot; <span style="color: #006400">&quot;Directory name to save and load values&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean SAVE_RESULTS = false <span style="color: #006400">
+    &quot;save and test final state values with original values&quot;</span>;
+  <span style="color: blue">parameter </span>Boolean SAVE_COMPARISON = false <span style="color: #006400">
+    &quot;Compare final state values with original values&quot;</span>;
+
+  <span style="color: blue">parameter </span>String storeUnit[n]=<span style="color: red">fill</span>(&quot;&quot;,n) <span style="color: #006400">
+    &quot;Unit in Utilities input/output function&quot;</span>;
+
+  <span style="color: blue">parameter </span>String stateName[n]=<span style="color: red">fill</span>(<span style="color: red">getInstanceName</span>(),n) <span style="color: #006400">
+    &quot;Name in Utilities input/output function&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean isDependent[n]=<span style="color: red"> fill</span>(false,n) <span style="color: #006400">
+    &quot;=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.&quot;</span>;
+
+<span style="color: blue">protected </span>
+  <span style="color: blue">parameter </span>Real defaultValue[n](fixed=false) <span style="color: #006400">&quot;Default value of state.&quot;</span>;
+  <span style="color: blue">parameter </span>Real initialValue[n](fixed=false) <span style="color: #006400">&quot;Initial value of state.&quot;</span>;
+
+<span style="color: blue">initial </span><span style="color: blue">equation </span>
+  <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
+  <span style="color: blue">if </span>Simulation == Types.SimulationType.NormalInit<span style="color: blue"> then</span>
+    state[i] = state_start[i];
+  <span style="color: blue">elseif </span>Simulation == Types.SimulationType.ReadInit<span style="color: blue"> then</span>
+      state[i] =<span style="color: red"> Utilities.readReal</span>(stateName[i] + &quot;[&quot; +<span style="color: red">String</span>(i)+&quot;]&quot;, storeUnit[i]);
+  <span style="color: blue">elseif </span>Simulation == Types.SimulationType.InitSteadyState<span style="color: blue"> and </span><span style="color: blue">not </span>isDependent[i]<span style="color: blue"> then</span>
+    <span style="color: red">der</span>(state[i])=0;<span style="color: #006400">  //here it have the same meaning as &quot;change = 0&quot;, because of equation &quot;der(state) = change&quot;</span>
+  <span style="color: blue">end if</span>;
+
+  initialValue = state;<span style="color: #006400"> //in causality such as initialValue:=state</span>
+  <span style="color: blue">if </span>SAVE_COMPARISON<span style="color: blue"> then</span>
+    defaultValue[i] =<span style="color: red"> Utilities.readReal</span>(stateName[i]+ &quot;[&quot; +<span style="color: red">String</span>(i)+&quot;]&quot;, storeUnit[i]);
+  <span style="color: blue">else</span>
+    defaultValue[i] = Modelica.Constants.N_A;
+  <span style="color: blue">end if</span>;
+  <span style="color: blue">end for</span>;
+<span style="color: blue">equation </span>
+
+  <span style="color: blue">when </span><span style="color: red">terminal</span>()<span style="color: blue"> then</span>
+    <span style="color: blue">if </span>SAVE_RESULTS<span style="color: blue"> then</span>
+      <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
+        <span style="color: red">Utilities.writeReal</span>(
+          stateName[i]+ &quot;[&quot; +<span style="color: red">String</span>(i)+&quot;]&quot;,
+          state[i],
+          storeUnit[i]);
+      <span style="color: blue">end for</span>;
+    <span style="color: blue">end if</span>;
+    <span style="color: blue">if </span>SAVE_COMPARISON<span style="color: blue"> then</span>
+      <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
+        <span style="color: red">Utilities.writeComparison</span>(
+          stateName[i]+ &quot;[&quot; +<span style="color: red">String</span>(i)+&quot;]&quot;,
+          defaultValue[i],
+          initialValue[i],
+          state[i],
+          storeUnit[i]);
+      <span style="color: blue">end for</span>;
+    <span style="color: blue">end if</span>;
+  <span style="color: blue">end when</span>;
+
+  <span style="color: blue">if </span>Simulation &lt;&gt; Types.SimulationType.SteadyState<span style="color: blue"> then</span>
+    <span style="color: red">der</span>(state) = change;
+  <span style="color: blue">else</span>
+    <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
+      <span style="color: blue">if </span><span style="color: blue">not </span>isDependent[n]<span style="color: blue"> then</span><span style="color: #006400">   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/</span>
+        change[i] = 0;
+      <span style="color: blue">end if</span>;
+    <span style="color: blue">end for</span>;
+  <span style="color: blue">end if</span>;
+
+<span style="color: blue">end </span>SteadyStates;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SteadyStateSystem<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"></a><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces"
+>Physiolibrary.SteadyStates.Interfaces</a>.SteadyStateSystem</h2>
+<p>
+<b>Global abstract class, for additional global state equations</b>
+</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
+<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2013-2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">class</span> SteadyStateSystem <span style="color: #006400">
+  &quot;Global abstract class, for additional global state equations&quot;</span>
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation(start=Types.SimulationType.NormalInit) <span style="color: #006400">
+    &quot;Dynamic with Initialization or Steady State&quot;</span>;
+
+  <span style="color: blue">parameter </span>Integer NumberOfDependentStates=1 <span style="color: #006400">
+    &quot;Number of additional steady state equation of the system&quot;</span>;
+
+  Real normalizedState[NumberOfDependentStates] <span style="color: #006400">
+    &quot;Normalized independent masses of the system/Normalized independent energies of the system/... This variables must always equals to ones.&quot;</span>;
+
+<span style="color: blue">protected </span>
+  Real state[NumberOfDependentStates](<span style="color: blue">each </span>start=1) <span style="color: #006400">
+    &quot;In differential systems has the same meaning as the normalizedState. In steady state has no meaning.&quot;</span>;
+
+<span style="color: blue">initial </span><span style="color: blue">equation </span>
+  <span style="color: blue">if </span>(Simulation == Types.SimulationType.SteadyState)<span style="color: blue"> or </span>
+                                                 (Simulation == Types.SimulationType.InitSteadyState)<span style="color: blue"> then</span>
+    state=<span style="color: red">ones</span>(NumberOfDependentStates);
+  <span style="color: blue">end if</span>;
+<span style="color: blue">equation </span>
+
+  <span style="color: blue">if </span>Simulation == Types.SimulationType.SteadyState<span style="color: blue"> then</span>
+    normalizedState =<span style="color: red"> ones</span>(NumberOfDependentStates);<span style="color: #006400"> //add additional global steady-state equations</span>
+    <span style="color: red">der</span>(state)=<span style="color: red">zeros</span>(NumberOfDependentStates);<span style="color: #006400">       //remove &#39;state&#39; from system calculations</span>
+  <span style="color: blue">else</span>
+    normalizedState = state;<span style="color: #006400"> //nothing special, just definition of &#39;state&#39; variable</span>
+
+    <span style="color: #006400">//Correct definition of normalizedState should fulfill the equation &#39;normalizedState=ones(NumberOfDependentStates)&#39; during simulation.</span>
+    <span style="color: #006400">//The difference from vector &#39;ones(NumberOfDependentStates)&#39; could be used as the solver calculation error vector.</span>
+  <span style="color: blue">end if</span>;
+
+<span style="color: blue">end </span>SteadyStateSystem;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:25 2014.
+</address>
+</body>
+</html>

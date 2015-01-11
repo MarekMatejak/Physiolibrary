@@ -1,0 +1,566 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Osmotic.Components</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Components<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Osmotic.Components"></a><a href="Physiolibrary_Osmotic.html#Physiolibrary.Osmotic"
+>Physiolibrary.Osmotic</a>.Components</h2>
+<p>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Comcdf2d55761aab713cCellS.png" alt="Physiolibrary.Osmotic.Components.OsmoticCell" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components.OsmoticCell"
+>OsmoticCell</a>
+</td>
+<td>Solvent container</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Comc2a5ea22dd2d42c5braneS.png" alt="Physiolibrary.Osmotic.Components.Membrane" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components.Membrane"
+>Membrane</a>
+</td>
+<td>Solvent diffusion through semipermeable membrane</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Comc291d6bb2eab91ebtFluxS.png" alt="Physiolibrary.Osmotic.Components.SolventFlux" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components.SolventFlux"
+>SolventFlux</a>
+</td>
+<td>Prescripted solvent flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Com02866f02b4398b4cationS.png" alt="Physiolibrary.Osmotic.Components.IdealFlowFiltration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components.IdealFlowFiltration"
+>IdealFlowFiltration</a>
+</td>
+<td>Flow of whole solution</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Com0581c6dd9ab7fb59ptionS.png" alt="Physiolibrary.Osmotic.Components.Reabsorption" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components.Reabsorption"
+>Reabsorption</a>
+</td>
+<td>Divide inflow to outflow and reabsorption</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE OsmoticCell<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Comcdf2d55761aab713cCellI.png" alt="Physiolibrary.Osmotic.Components.OsmoticCell" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Components.OsmoticCell"></a><a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components"
+>Physiolibrary.Osmotic.Components</a>.OsmoticCell</h2>
+<p>
+<b>Solvent container</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Comcdf2d55761aab713cCellD.png" alt="Physiolibrary.Osmotic.Components.OsmoticCell">
+</p>
+<h3>Information</h3>
+
+<p>The liquid volume of the penetrating solution is accumulated in &QUOT;OsmoticCell&QUOT;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
+
+<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.OsmoticCell"
+>Icons.OsmoticCell</a>, <a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyStates.Interfaces.SteadyState</a> (Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Integer</td><td>NumberOfMembraneTypes</td><td>1</td><td>Membrane type is determined by membrane permeabilities for substances.</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a></td><td>ImpermeableSolutes[NumberOfMembraneTypes]</td><td>zeros(NumberOfMembraneTypes)</td><td>Amount of impermeable substance if useImpermeableSolutesInput=false [mol]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
+>Volume</a></td><td>volume_start</td><td>0.001</td><td>Initial volume of compartment [m3]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useImpermeableSolutesInput</td><td>false</td><td>=true, if impermeable substance amount as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (direct...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td>Real</td><td>state_start</td><td>volume_start</td><td>State start or init value</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;mOsm/l&quot;</td><td>Unit in Utilities input/output function</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
+<tr><td>Boolean</td><td>LOAD_STARTS</td><td>false</td><td>Load start value of state</td></tr>
+<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>Save final state values</td></tr>
+<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr><td>Boolean</td><td>isDependent</td><td>false</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>q_in[NumberOfMembraneTypes]</td><td>Flux to/from osmotic compartment</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
+>AmountOfSubstanceInput</a></td><td>impermeableSolutes[NumberOfMembraneTypes]</td><td>Amount of impermeable solutes in compartment [mol]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeOutput"
+>VolumeOutput</a></td><td>volume</td><td>Actual volume of compartment [m3]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> OsmoticCell <span style="color: #006400">&quot;Solvent container&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.OsmoticCell"
+>Icons.OsmoticCell</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyStates.Interfaces.SteadyState</a>(
+                                     state_start=volume_start, storeUnit=
+      &quot;mOsm/l&quot;);
+
+  <span style="color: blue">parameter </span>Integer NumberOfMembraneTypes=1 <span style="color: #006400">
+    &quot;Membrane type is determined by membrane permeabilities for substances.&quot;</span>;
+
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>Interfaces.OsmoticPort_a</a>
+                      q_in[NumberOfMembraneTypes] <span style="color: #006400">
+    &quot;Flux to/from osmotic compartment&quot;</span>;
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
+>Types.Volume</a> volume_start = 0.001 <span style="color: #006400">&quot;Initial volume of compartment&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean useImpermeableSolutesInput = false <span style="color: #006400">
+    &quot;=true, if impermeable substance amount as an input&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> ImpermeableSolutes[NumberOfMembraneTypes]=<span style="color: red">zeros</span>(NumberOfMembraneTypes) <span style="color: #006400">
+    &quot;Amount of impermeable substance if useImpermeableSolutesInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
+>Types.RealIO.AmountOfSubstanceInput</a> impermeableSolutes[NumberOfMembraneTypes](start=ImpermeableSolutes)= is <span style="color: blue">if </span>useImpermeableSolutesInput <span style="color: #006400">
+    &quot;Amount of impermeable solutes in compartment&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeOutput"
+>Types.RealIO.VolumeOutput</a> volume <span style="color: #006400">&quot;Actual volume of compartment&quot;</span>;
+<span style="color: blue">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> is[NumberOfMembraneTypes] <span style="color: #006400">
+    &quot;Current amount of impermeable solutes&quot;</span>;
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useImpermeableSolutesInput<span style="color: blue"> then</span>
+    is=ImpermeableSolutes;
+  <span style="color: blue">end if</span>;
+
+  q_in.o = is / volume;
+
+  change =<span style="color: red"> ones</span>(NumberOfMembraneTypes) * q_in.q;<span style="color: #006400">    //der(volume)=q_in.q</span>
+  state = volume;
+
+  <span style="color: #006400">//  assert(volume&gt;=-Modelica.Constants.eps,&quot;Collapsed cells by osmotic pressure are not supported!&quot;);</span>
+
+<span style="color: blue">end </span>OsmoticCell;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Membrane<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Comc2a5ea22dd2d42c5braneI.png" alt="Physiolibrary.Osmotic.Components.Membrane" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Components.Membrane"></a><a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components"
+>Physiolibrary.Osmotic.Components</a>.Membrane</h2>
+<p>
+<b>Solvent diffusion through semipermeable membrane</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Comc2a5ea22dd2d42c5braneD.png" alt="Physiolibrary.Osmotic.Components.Membrane">
+</p>
+<h3>Information</h3>
+
+<p>The main element of osmotic phenomena is a semipermeable membrane, which generates the flow of penetrating substances together with water. The connector on both sides is composed of molar concentration of non-penetrating solutes (osmolarity), and from penetrating volumetric flow (osmotic flux). Flow through the membrane depends on a pressure gradient, where pressure on both sides is calculated from the osmotic and hydraulic component.</p>
+
+<p>Extends from <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
+>Interfaces.OnePort</a> (Osmotic one port), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Membrane"
+>Icons.Membrane</a>.</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>OsmoticPermeability</a></td><td>cond</td><td>1e-15</td><td>Membrane permeability for solvent if useConductanceInput = false [m3/(Pa.s)]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>HydraulicPressureIn</td><td>0</td><td>Hydraulic pressure inside if useHydraulicPressureInputs=false [Pa]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>HydraulicPressureOut</td><td>0</td><td>Hydraulic pressure outside if useHydraulicPressureInputs=false [Pa]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>310.15</td><td>Temperature on both membrane sides if  useTemperatureInputs=false [K]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useConductanceInput</td><td>false</td><td>=true, if membrane permeability input is used</td></tr>
+<tr><td>Boolean</td><td>useHydraulicPressureInputs</td><td>false</td><td>=true, if hydraulic pressure inputs is used</td></tr>
+<tr><td>Boolean</td><td>useTemperatureInputs</td><td>false</td><td>=true, if temperature on both sides is used</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>q_in</td><td>Forward flux through membrane</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>q_out</td><td>Backward flux through membrane</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>PressureInput</a></td><td>hydraulicPressureIn</td><td>[Pa]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>PressureInput</a></td><td>hydraulicPressureOut</td><td>[Pa]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>TemperatureInput</a></td><td>temperatureIn</td><td>[K]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>TemperatureInput</a></td><td>temperatureOut</td><td>[K]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmoticPermeabilityInput"
+>OsmoticPermeabilityInput</a></td><td>conduction</td><td>[m3/(Pa.s)]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> Membrane <span style="color: #006400">&quot;Solvent diffusion through semipermeable membrane&quot;</span>
+ <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+ <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Membrane"
+>Icons.Membrane</a>;<span style="color: #006400"> //Icons.Resistor;</span>
+
+ <span style="color: blue">parameter </span>Boolean useConductanceInput = false <span style="color: #006400">
+    &quot;=true, if membrane permeability input is used&quot;</span>;
+
+ <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>Types.OsmoticPermeability</a> cond=1e-15 <span style="color: #006400">
+    &quot;Membrane permeability for solvent if useConductanceInput = false&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean useHydraulicPressureInputs = false <span style="color: #006400">
+    &quot;=true, if hydraulic pressure inputs is used&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> HydraulicPressureIn=0 <span style="color: #006400">
+    &quot;Hydraulic pressure inside if useHydraulicPressureInputs=false&quot;</span>;
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> HydraulicPressureOut=0 <span style="color: #006400">
+    &quot;Hydraulic pressure outside if useHydraulicPressureInputs=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>Types.RealIO.PressureInput</a> hydraulicPressureIn(start=HydraulicPressureIn)=pi <span style="color: blue">if </span>useHydraulicPressureInputs;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>Types.RealIO.PressureInput</a> hydraulicPressureOut(start=HydraulicPressureOut)=po <span style="color: blue">if </span>useHydraulicPressureInputs;
+
+  <span style="color: blue">parameter </span>Boolean useTemperatureInputs = false <span style="color: #006400">
+    &quot;=true, if temperature on both sides is used&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> T=310.15 <span style="color: #006400">
+    &quot;Temperature on both membrane sides if  useTemperatureInputs=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>Types.RealIO.TemperatureInput</a> temperatureIn(start=T)=ti <span style="color: blue">if </span>useTemperatureInputs;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>Types.RealIO.TemperatureInput</a> temperatureOut(start=T)=to <span style="color: blue">if </span>useTemperatureInputs;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>Types.OsmoticPermeability</a> perm;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> opi <span style="color: #006400">&quot;osmotic pressure at q_in&quot;</span>, opo <span style="color: #006400">
+    &quot;osmotic pressure at q_out&quot;</span>;
+<span style="color: blue">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> pi,po;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> ti,to;
+
+<span style="color: blue">public </span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmoticPermeabilityInput"
+>Types.RealIO.OsmoticPermeabilityInput</a> conduction=perm <span style="color: blue">if </span>useConductanceInput;
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useHydraulicPressureInputs<span style="color: blue"> then</span>
+    pi=HydraulicPressureIn;
+    po=HydraulicPressureOut;
+  <span style="color: blue">end if</span>;
+  <span style="color: blue">if </span><span style="color: blue">not </span>useTemperatureInputs<span style="color: blue"> then</span>
+    ti=T;
+    to=T;
+  <span style="color: blue">end if</span>;
+  <span style="color: blue">if </span><span style="color: blue">not </span>useConductanceInput<span style="color: blue"> then</span>
+    cond=perm;
+  <span style="color: blue">end if</span>;
+
+  q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+
+  opi = q_in.o*(Modelica.Constants.R*ti);
+  opo = q_out.o*(Modelica.Constants.R*to);
+<span style="color: blue">end </span>Membrane;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SolventFlux<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Comc291d6bb2eab91ebtFluxI.png" alt="Physiolibrary.Osmotic.Components.SolventFlux" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Components.SolventFlux"></a><a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components"
+>Physiolibrary.Osmotic.Components</a>.SolventFlux</h2>
+<p>
+<b>Prescripted solvent flow</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Comc291d6bb2eab91ebtFluxD.png" alt="Physiolibrary.Osmotic.Components.SolventFlux">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
+>Interfaces.OnePort</a> (Osmotic one port), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>q_in</td><td>Forward flux through membrane</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>q_out</td><td>Backward flux through membrane</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> SolventFlux <span style="color: #006400">&quot;Prescripted solvent flow&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a>;
+
+<span style="color: blue">equation </span>
+  q_in.q = q;
+
+<span style="color: blue">end </span>SolventFlux;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE IdealFlowFiltration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Com02866f02b4398b4cationI.png" alt="Physiolibrary.Osmotic.Components.IdealFlowFiltration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Components.IdealFlowFiltration"></a><a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components"
+>Physiolibrary.Osmotic.Components</a>.IdealFlowFiltration</h2>
+<p>
+<b>Flow of whole solution</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Com02866f02b4398b4cationD.png" alt="Physiolibrary.Osmotic.Components.IdealFlowFiltration">
+</p>
+<h3>Information</h3>
+
+<p><h4><font color="#008000">Bidirectional mass flow by concentration</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing="2" cellpadding="0" border="0.1"><tr>
+<td></td>
+<td><p align="center"><h4>forward flow</h4></p></td>
+<td><p align="center"><h4>backward flow</h4></p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>solutionFlow</h4></p></td>
+<td><p align="center">&GT;=0</p></td>
+<td><p align="center">&LT;=0</p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>q_in.q</h4></p></td>
+<td><p align="center">=solutionFlow*q_in.conc</p></td>
+<td><p align="center">=-q_out.q</p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>q_out.q</h4></p></td>
+<td><p align="center">=-q_in.q</p></td>
+<td><p align="center">=solutionFlow*q_out.conc</p></td>
+</tr>
+</table>
+<br/>
+
+<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowFiltration"
+>Icons.FlowFiltration</a>, <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>port_a</td><td>Inflow ospomarity and positive filtrate flow rate</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>filtrate</td><td>Outflow osmolarity and negative filtrate flow rate</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>2009</td>
+</tr>
+</table>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> IdealFlowFiltration <span style="color: #006400">&quot;Flow of whole solution&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowFiltration"
+>Icons.FlowFiltration</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a>;
+
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>Interfaces.OsmoticPort_a</a> port_a <span style="color: #006400">
+    &quot;Inflow ospomarity and positive filtrate flow rate&quot;</span>;
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>Interfaces.OsmoticPort_b</a> filtrate <span style="color: #006400">
+    &quot;Outflow osmolarity and negative filtrate flow rate&quot;</span>;
+<span style="color: blue">equation </span>
+  port_a.q+filtrate.q=0;
+
+  port_a.o*q = (q-port_a.q)*filtrate.o;
+
+<span style="color: blue">end </span>IdealFlowFiltration;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Reabsorption<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Com0581c6dd9ab7fb59ptionI.png" alt="Physiolibrary.Osmotic.Components.Reabsorption" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Components.Reabsorption"></a><a href="Physiolibrary_Osmotic_Components.html#Physiolibrary.Osmotic.Components"
+>Physiolibrary.Osmotic.Components</a>.Reabsorption</h2>
+<p>
+<b>Divide inflow to outflow and reabsorption</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Com0581c6dd9ab7fb59ptionD.png" alt="Physiolibrary.Osmotic.Components.Reabsorption">
+</p>
+<h3>Information</h3>
+
+<p><h4><font color="#008000">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src="file:///C:/Program%20Files%20(x86)/Dymola%202014%20FD01/Modelica/Library/Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src="file:///C:/Program%20Files%20(x86)/Dymola%202014%20FD01/Modelica/Library/Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png"/></li>
+</ul></p>
+
+<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Reabsorption"
+>Icons.Reabsorption</a>.</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>OutflowMin</td><td>0</td><td>Minimal outflow if useExternalOutflowMin=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useExternalOutflowMin</td><td>false</td><td>=true, if minimal outflow is garanted</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>Inflow</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>Outflow</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>Reabsorption</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>FractionInput</a></td><td>FractReab</td><td>[1]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>outflowMin</td><td>[m3/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> Reabsorption <span style="color: #006400">&quot;Divide inflow to outflow and reabsorption&quot;</span>
+  <span style="color: blue">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Reabsorption"
+>Icons.Reabsorption</a>;
+
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>Interfaces.OsmoticPort_a</a>
+                       Inflow;
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>Interfaces.OsmoticPort_b</a>
+                       Outflow;
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>Interfaces.OsmoticPort_b</a>
+                       Reabsorption;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>Types.RealIO.FractionInput</a> FractReab;
+
+  <span style="color: blue">parameter </span>Boolean useExternalOutflowMin = false <span style="color: #006400">
+    &quot;=true, if minimal outflow is garanted&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> OutflowMin = 0 <span style="color: #006400">
+    &quot;Minimal outflow if useExternalOutflowMin=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>Types.RealIO.VolumeFlowRateInput</a> outflowMin(start=OutflowMin) = om <span style="color: blue">if </span>useExternalOutflowMin;
+
+<span style="color: blue">protected </span>
+   <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> om;
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useExternalOutflowMin<span style="color: blue"> then</span>
+    om = OutflowMin;
+  <span style="color: blue">end if</span>;
+
+  Inflow.o = Outflow.o;
+  0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+ <span style="color: #006400">// assert(Inflow.q&gt;=-Modelica.Constants.eps,&quot;Only one directional flow is supported!&quot;);</span>
+
+  Reabsorption.q = -<span style="color: red">max</span>(0,FractReab*(Inflow.q-om));
+<span style="color: blue">end </span>Reabsorption;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:52 2014.
+</address>
+</body>
+</html>

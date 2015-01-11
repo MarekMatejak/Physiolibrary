@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Population.Examples</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Examples that demonstrate usage of the Population models&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Examples<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Population.Examples"></a><a href="Physiolibrary_Population.html#Physiolibrary.Population"
+>Physiolibrary.Population</a>.Examples</h2>
+<p>
+<b>Examples that demonstrate usage of the Population models</b><br>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
+>Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyS.png" alt="Physiolibrary.Population.Examples.PredatorPrey" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Population_Examples.html#Physiolibrary.Population.Examples.PredatorPrey"
+>PredatorPrey</a>
+</td>
+<td>Lotka–Volterra equations</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE PredatorPrey<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyI.png" alt="Physiolibrary.Population.Examples.PredatorPrey" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Population.Examples.PredatorPrey"></a><a href="Physiolibrary_Population_Examples.html#Physiolibrary.Population.Examples"
+>Physiolibrary.Population.Examples</a>.PredatorPrey</h2>
+<p>
+<b>Lotka–Volterra equations</b>
+<br>
+<br><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyD.png" alt="Physiolibrary.Population.Examples.PredatorPrey">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> PredatorPrey <span style="color: #006400">&quot;Lotka–Volterra equations&quot;</span>
+  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
+>Components.Population</a> predator(population_start=2);
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
+>Components.Reproduction</a> reproduction2(useChangePerMemberInput=true);
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
+>Components.Mortality</a> mortality2(LifeTime(displayUnit=&quot;s&quot;) = 1);
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
+>Components.Reproduction</a> reproduction1(LifeTime(displayUnit=&quot;s&quot;) = 1);
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
+>Components.Mortality</a> mortality1(useChangePerMemberInput=true);
+  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
+>Components.Population</a> prey(population_start=1);
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
+>Types.Constants.PopulationChangePerMemberConst</a>
+                                        preyMortality(LifeTime(displayUnit=
+          &quot;s&quot;) = 1);
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
+>Blocks.Factors.Normalization</a> predatorEffect;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
+>Types.Constants.PopulationChangePerMemberConst</a>
+                                        predatorReproduction(LifeTime(
+        displayUnit=&quot;s&quot;) = 1);
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
+>Blocks.Factors.Normalization</a> preyEffekt;
+<span style="color: blue">equation </span>
+  <span style="color: red">connect</span>(preyMortality.y, predatorEffect.yBase);
+  <span style="color: red">connect</span>(predator.population, predatorEffect.u);
+  <span style="color: red">connect</span>(predatorReproduction.y, preyEffekt.yBase);
+  <span style="color: red">connect</span>(prey.population, preyEffekt.u);
+  <span style="color: red">connect</span>(reproduction2.port_b, predator.port);
+  <span style="color: red">connect</span>(predator.port, mortality2.port_a);
+  <span style="color: red">connect</span>(reproduction1.port_b, prey.port);
+  <span style="color: red">connect</span>(prey.port, mortality1.port_a);
+  <span style="color: red">connect</span>(preyEffekt.y, reproduction2.changePerMember);
+  <span style="color: red">connect</span>(predatorEffect.y, mortality1.changePerMember);
+<span style="color: blue">end </span>PredatorPrey;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:55 2014.
+</address>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Osmotic.Interfaces</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Interfaces<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Osmotic.Interfaces"></a><a href="Physiolibrary_Osmotic.html#Physiolibrary.Osmotic"
+>Physiolibrary.Osmotic</a>.Interfaces</h2>
+<p>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_InterfacesPackage.html#Modelica.Icons.InterfacesPackage"
+>Modelica.Icons.InterfacesPackage</a> (Icon for packages containing interfaces).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Intc34478aab60b2bb5cPortS.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort"
+>OsmoticPort</a>
+</td>
+<td>Flux through semipermeable membrane by osmotic pressure gradient</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Intc8fcecf82caeddd9ort_aS.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_a" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a>
+</td>
+<td>Influx</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Intc8fcecf92caedddaort_bS.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_b" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a>
+</td>
+<td>Outflux</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Interfaces.OnePortS.png" alt="Physiolibrary.Osmotic.Interfaces.OnePort" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
+>OnePort</a>
+</td>
+<td>Osmotic one port</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE OsmoticPort<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Osmotic.Interfaces.OsmoticPort"></a><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces"
+>Physiolibrary.Osmotic.Interfaces</a>.OsmoticPort</h2>
+<p>
+<b>Flux through semipermeable membrane by osmotic pressure gradient</b>
+</p>
+<h3>Contents</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Contents">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>o</td><td>Osmolarity is the molar concentration of the impermeable solutes [mol/m3]</td></tr>
+<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>q</td><td>The flux of the permeable solvent (!not the impermeable solutes!) [m3/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">connector</span> OsmoticPort <span style="color: #006400">
+  &quot;Flux through semipermeable membrane by osmotic pressure gradient&quot;</span>
+ <a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Types.Concentration</a> o <span style="color: #006400">
+    &quot;Osmolarity is the molar concentration of the impermeable solutes&quot;</span>;
+ <span style="color: blue">flow </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> q <span style="color: #006400">
+    &quot;The flux of the permeable solvent (!not the impermeable solutes!)&quot;</span>;
+<span style="color: blue">end </span>OsmoticPort;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE OsmoticPort_a<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Intc8fcecf82caeddd9ort_aI.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_a" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"></a><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces"
+>Physiolibrary.Osmotic.Interfaces</a>.OsmoticPort_a</h2>
+<p>
+<b>Influx</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Intc8fcecf82caeddd9ort_aD.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_a">
+</p>
+<h3>Information</h3>
+
+<p>
+Connector with one flow signal of type Real.
+</p>
+
+<p>Extends from <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort"
+>OsmoticPort</a> (Flux through semipermeable membrane by osmotic pressure gradient).</p>
+<h3>Contents</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Contents">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>o</td><td>Osmolarity is the molar concentration of the impermeable solutes [mol/m3]</td></tr>
+<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>q</td><td>The flux of the permeable solvent (!not the impermeable solutes!) [m3/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">connector</span> OsmoticPort_a <span style="color: #006400">&quot;Influx&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort"
+>OsmoticPort</a>;
+
+
+<span style="color: blue">end </span>OsmoticPort_a;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE OsmoticPort_b<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Intc8fcecf92caedddaort_bI.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_b" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"></a><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces"
+>Physiolibrary.Osmotic.Interfaces</a>.OsmoticPort_b</h2>
+<p>
+<b>Outflux</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Intc8fcecf92caedddaort_bD.png" alt="Physiolibrary.Osmotic.Interfaces.OsmoticPort_b">
+</p>
+<h3>Information</h3>
+
+<p>
+Connector with one flow signal of type Real.
+</p>
+
+<p>Extends from <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort"
+>OsmoticPort</a> (Flux through semipermeable membrane by osmotic pressure gradient).</p>
+<h3>Contents</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Contents">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>o</td><td>Osmolarity is the molar concentration of the impermeable solutes [mol/m3]</td></tr>
+<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>q</td><td>The flux of the permeable solvent (!not the impermeable solutes!) [m3/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">connector</span> OsmoticPort_b <span style="color: #006400">&quot;Outflux&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort"
+>OsmoticPort</a>;
+
+
+<span style="color: blue">end </span>OsmoticPort_b;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE OnePort<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Interfaces.OnePortI.png" alt="Physiolibrary.Osmotic.Interfaces.OnePort" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Interfaces.OnePort"></a><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces"
+>Physiolibrary.Osmotic.Interfaces</a>.OnePort</h2>
+<p>
+<b>Osmotic one port</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Interfaces.OnePortD.png" alt="Physiolibrary.Osmotic.Interfaces.OnePort">
+</p>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>q_in</td><td>Forward flux through membrane</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>q_out</td><td>Backward flux through membrane</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> OnePort <span style="color: #006400">&quot;Osmotic one port&quot;</span>
+
+ <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a>       q_in <span style="color: #006400">&quot;Forward flux through membrane&quot;</span>;
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a>       q_out <span style="color: #006400">&quot;Backward flux through membrane&quot;</span>;
+<span style="color: blue">equation </span>
+  q_in.q + q_out.q = 0;
+<span style="color: blue">end </span>OnePort;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:53 2014.
+</address>
+</body>
+</html>

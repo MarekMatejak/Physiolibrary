@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary 2.3.0</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Physiological domains library (version 2.3.0-beta)&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Physiolibrary<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary"></a>Physiolibrary 2.3.0</h2>
+<p>
+<b>Modelica library for Physiology</b><br>
+</p>
+<h3>Information</h3>
+
+<ul>
+<li>Web pages: <a href="http://www.physiolibrary.org">www.physiolibrary.org</a></li>
+<li><a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide.Overview"
+>Overview</a></li>
+<li><a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide.Connectors"
+>Connectors</a></li>
+<li><a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide.Contact"
+>Contact</a></li>
+</ul>
+
+<p><br/>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation, where it was called HumMod.Library. As the successors of Guyton&apos;s Medical Physiology School write, the original HumMod model is &ldquo;The best, most complete, mathematical model of human physiology ever created&rdquo;.</p>
+<p>We are also developing many types of smaller physiological models for use in medical education, so it was essential to separate this library from our HumMod Modelica implementation. This separation improves the quality of the next HumMod release and provides a useful Modelica library to modelers in this bioscience.</p>
+<p>The library contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological processes. For example from only two type of blocks (Chemical.ChemicalReaction and Chemical.Substance) it is possible to compose the allosteric transitions or the Michaelis-Menten equation.</p>
+<p><br/>Physiology is a very progressive discipline, that examines how the living body works. And it is no surprise that all processes in the human body are driven by physical laws of nature. The great challenge is to marry old empirical experiments with the &ldquo;new&rdquo; physical principles. Many teams and projects in the word deal with this formalization of physiology, for example: Physiome, SBML, EuroPhysiome, VPH, CellML etc. It is our hope that this library helps this unflagging effort of physiologists to exactly describe the processes.</p>
+
+<p>Extends from <a href="Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.UsersGuideS.png" alt="Physiolibrary.UsersGuide" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide"
+>UsersGuide</a>
+</td>
+<td>User&#39;s Guide</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Chemical" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical.html#Physiolibrary.Chemical"
+>Chemical</a>
+</td>
+<td>Domain with Molar Concentration and Molar Flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Hydraulic" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Hydraulic.html#Physiolibrary.Hydraulic"
+>Hydraulic</a>
+</td>
+<td>Domain with Pressure and Volumetric Flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Thermal" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Thermal.html#Physiolibrary.Thermal"
+>Thermal</a>
+</td>
+<td>Domain with Temperature and Heat Flow - extension of Modelica.Thermal.HeatTransfer</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Osmotic" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic.html#Physiolibrary.Osmotic"
+>Osmotic</a>
+</td>
+<td>Domain with Osmorarity and Solvent Volumetric Flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Population" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Population.html#Physiolibrary.Population"
+>Population</a>
+</td>
+<td>Domain for populatiom models for cells, viruses, bacterias, tissues, organism etc.</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.SteadyStates" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_SteadyStates.html#Physiolibrary.SteadyStates"
+>SteadyStates</a>
+</td>
+<td>Dynamic Simulation / Steady State</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Icons" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Icons.html#Physiolibrary.Icons"
+>Icons</a>
+</td>
+<td>Icons for physiological models</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Types" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Types</a>
+</td>
+<td>Physiological units with nominals</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.ChemicalS.png" alt="Physiolibrary.Blocks" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks.html#Physiolibrary.Blocks"
+>Blocks</a>
+</td>
+<td>Base Signal Blocks Library</td>
+</tr>
+</table>
+<h3>Revisions</h3>
+
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide.ModelicaLicense2"
+>UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href="http://www.modelica.org/licenses/ModelicaLicense2">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:47 2014.
+</address>
+</body>
+</html>

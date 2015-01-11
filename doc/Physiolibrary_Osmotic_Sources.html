@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Osmotic.Sources</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Sources<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Osmotic.Sources"></a><a href="Physiolibrary_Osmotic.html#Physiolibrary.Osmotic"
+>Physiolibrary.Osmotic</a>.Sources</h2>
+<p>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_SourcesPackage.html#Modelica.Icons.SourcesPackage"
+>Modelica.Icons.SourcesPackage</a> (Icon for packages containing sources).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Soub02f13285dbc01b3nfluxS.png" alt="Physiolibrary.Osmotic.Sources.SolventInflux" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources.SolventInflux"
+>SolventInflux</a>
+</td>
+<td>Prescribed solvent inflow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Sou39d44f1d70a553b2tfluxS.png" alt="Physiolibrary.Osmotic.Sources.SolventOutflux" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources.SolventOutflux"
+>SolventOutflux</a>
+</td>
+<td>Prescribed solvent outflow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Osmotic.Souf759ef976a5dd1d8utionS.png" alt="Physiolibrary.Osmotic.Sources.UnlimitedSolution" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources.UnlimitedSolution"
+>UnlimitedSolution</a>
+</td>
+<td>Prescribed osmolarity</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SolventInflux<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Soub02f13285dbc01b3nfluxI.png" alt="Physiolibrary.Osmotic.Sources.SolventInflux" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Sources.SolventInflux"></a><a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources"
+>Physiolibrary.Osmotic.Sources</a>.SolventInflux</h2>
+<p>
+<b>Prescribed solvent inflow</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Soub02f13285dbc01b3nfluxD.png" alt="Physiolibrary.Osmotic.Sources.SolventInflux">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> SolventInflux <span style="color: #006400">&quot;Prescribed solvent inflow&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a>;
+
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>Interfaces.OsmoticPort_b</a>
+                      q_out;
+
+<span style="color: blue">equation </span>
+  q_out.q = - q;
+
+<span style="color: blue">end </span>SolventInflux;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SolventOutflux<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Sou39d44f1d70a553b2tfluxI.png" alt="Physiolibrary.Osmotic.Sources.SolventOutflux" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Sources.SolventOutflux"></a><a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources"
+>Physiolibrary.Osmotic.Sources</a>.SolventOutflux</h2>
+<p>
+<b>Prescribed solvent outflow</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Sou39d44f1d70a553b2tfluxD.png" alt="Physiolibrary.Osmotic.Sources.SolventOutflux">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>OsmoticPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> SolventOutflux <span style="color: #006400">&quot;Prescribed solvent outflow&quot;</span>
+ <span style="color: blue">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
+>Chemical.Interfaces.ConditionalSolutionFlow</a>;
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
+>Interfaces.OsmoticPort_a</a>
+                      q_in;
+<span style="color: blue">equation </span>
+  q_in.q = q;
+
+<span style="color: blue">end </span>SolventOutflux;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE UnlimitedSolution<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Osmotic.Souf759ef976a5dd1d8utionI.png" alt="Physiolibrary.Osmotic.Sources.UnlimitedSolution" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Osmotic.Sources.UnlimitedSolution"></a><a href="Physiolibrary_Osmotic_Sources.html#Physiolibrary.Osmotic.Sources"
+>Physiolibrary.Osmotic.Sources</a>.UnlimitedSolution</h2>
+<p>
+<b>Prescribed osmolarity</b>
+<br>
+<br><img src="Physiolibrary.Osmotic.Souf759ef976a5dd1d8utionD.png" alt="Physiolibrary.Osmotic.Sources.UnlimitedSolution">
+</p>
+<h3>Information</h3>
+
+<p>
+This model defines a fixed temperature T at its port in Kelvin,
+i.e., it defines a fixed temperature as a boundary condition.
+</p>
+<pre>
+</pre>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Osmolarity</a></td><td>Osm</td><td>0</td><td>Fixed osmolarity at port if useOsmolarityInput=false [mol/m3]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useOsmolarityInput</td><td>false</td><td>=true, if fixed osmolarity at port is from input instead of parameter</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Boolean</td><td>isIsolatedInSteadyState</td><td>true</td><td>=true, if there is no flow at port in steady state</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>OsmoticPort_b</a></td><td>port</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>TemperatureInput</a></td><td>osmolarity</td><td>[K]</td></tr>
+</table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> UnlimitedSolution <span style="color: #006400">&quot;Prescribed osmolarity&quot;</span>
+
+  <span style="color: blue">parameter </span>Boolean useOsmolarityInput = false <span style="color: #006400">
+    &quot;=true, if fixed osmolarity at port is from input instead of parameter&quot;</span>;
+
+   <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Types.Osmolarity</a> Osm = 0 <span style="color: #006400">
+    &quot;Fixed osmolarity at port if useOsmolarityInput=false&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean isIsolatedInSteadyState = true <span style="color: #006400">
+    &quot;=true, if there is no flow at port in steady state&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400">
+    &quot;If in equilibrium, then zero-flow equation is added.&quot;</span>;
+
+  <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
+>Interfaces.OsmoticPort_b</a>    port;
+
+<span style="color: blue">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Types.Osmolarity</a> o <span style="color: #006400">&quot;Current osmolarity&quot;</span>;
+<span style="color: blue">public </span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>Types.RealIO.TemperatureInput</a> osmolarity(start=Osmolarity)=o <span style="color: blue">if </span>
+                                                           useOsmolarityInput;
+
+<span style="color: blue">initial </span><span style="color: blue">equation </span>
+  <span style="color: blue">if </span>isIsolatedInSteadyState<span style="color: blue"> and </span>(Simulation==Types.SimulationType.InitSteadyState)<span style="color: blue"> then</span>
+    port.q = 0;
+  <span style="color: blue">end if</span>;
+
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useOsmolarityInput<span style="color: blue"> then</span>
+    o=Osm;
+  <span style="color: blue">end if</span>;
+
+  port.o = o;
+
+  <span style="color: blue">if </span>isIsolatedInSteadyState<span style="color: blue"> and </span>(Simulation==Types.SimulationType.SteadyState)<span style="color: blue"> then</span>
+      port.q = 0;
+  <span style="color: blue">end if</span>;
+
+<span style="color: blue">end </span>UnlimitedSolution;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:53 2014.
+</address>
+</body>
+</html>

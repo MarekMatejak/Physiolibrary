@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Thermal.Components</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Components<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Thermal.Components"></a><a href="Physiolibrary_Thermal.html#Physiolibrary.Thermal"
+>Physiolibrary.Thermal</a>.Components</h2>
+<p>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Thermal.Com3afcdd3f27b06857ationS.png" alt="Physiolibrary.Thermal.Components.HeatAccumulation" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>HeatAccumulation</a>
+</td>
+<td>Accumulating of heat to substance</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Thermal.Comb3db9075316aa5ediatorS.png" alt="Physiolibrary.Thermal.Components.IdealRadiator" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>IdealRadiator</a>
+</td>
+<td>Closed circiut radiator, where outflowed = ambient temperature</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Thermal.Combf3baf5d741f2c34uctorS.png" alt="Physiolibrary.Thermal.Components.Conductor" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.Conductor"
+>Conductor</a>
+</td>
+<td>Heat resistor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Thermal.Components.StreamS.png" alt="Physiolibrary.Thermal.Components.Stream" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.Stream"
+>Stream</a>
+</td>
+<td>Flow of whole heated mass</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE HeatAccumulation<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Thermal.Com3afcdd3f27b06857ationI.png" alt="Physiolibrary.Thermal.Components.HeatAccumulation" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Thermal.Components.HeatAccumulation"></a><a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components"
+>Physiolibrary.Thermal.Components</a>.HeatAccumulation</h2>
+<p>
+<b>Accumulating of heat to substance</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Com3afcdd3f27b06857ationD.png" alt="Physiolibrary.Thermal.Components.HeatAccumulation">
+</p>
+<h3>Information</h3>
+
+<p>The &QUOT;HeatAccumulation&QUOT; library class models heat accumulation in Physiolibrary. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &QUOT;relativeHeat&QUOT;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
+
+<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.HeatAccumulation"
+>Icons.HeatAccumulation</a>, <a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyStates.Interfaces.SteadyState</a> (Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>SpecificHeat</td><td>4186.8</td><td>Mass specific heat [J/(kg.K)]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Mass</a></td><td>Weight</td><td>1</td><td>Total mass weight if useMassInput=false [kg]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Heat"
+>Heat</a></td><td>relativeHeat_start</td><td>0</td><td>Heat start value = weight*(initialTemperature - 37degC)*specificHeat [J]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useMassInput</td><td>false</td><td>=true, if mass input is used</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (direct...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td>Real</td><td>state_start</td><td>relativeHeat_start</td><td>State start or init value</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;kcal&quot;</td><td>Unit in Utilities input/output function</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
+<tr><td>Boolean</td><td>LOAD_STARTS</td><td>false</td><td>Load start value of state</td></tr>
+<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>Save final state values</td></tr>
+<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr><td>Boolean</td><td>isDependent</td><td>false</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>q_in</td><td>Heat inflow/outflow connector</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatOutput"
+>HeatOutput</a></td><td>relativeHeat</td><td>Current accumulated heat = weight*(T - 37degC)*specificHeat [J]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassInput"
+>MassInput</a></td><td>weight</td><td>Weight of mass, where the heat are accumulated [kg]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> HeatAccumulation <span style="color: #006400">&quot;Accumulating of heat to substance&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.HeatAccumulation"
+>Icons.HeatAccumulation</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyStates.Interfaces.SteadyState</a>(
+                                     state_start=relativeHeat_start, storeUnit=
+      &quot;kcal&quot;);
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>Interfaces.HeatPort_b</a>
+                   q_in <span style="color: #006400">&quot;Heat inflow/outflow connector&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Heat"
+>Types.Heat</a> relativeHeat_start = 0 <span style="color: #006400">
+    &quot;Heat start value = weight*(initialTemperature - 37degC)*specificHeat&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> SpecificHeat= 4186.8 <span style="color: #006400">
+    &quot;Mass specific heat&quot;</span>;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> T <span style="color: #006400">&quot;Current temperature&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatOutput"
+>Types.RealIO.HeatOutput</a> relativeHeat <span style="color: #006400">
+    &quot;Current accumulated heat = weight*(T - 37degC)*specificHeat&quot;</span>;<span style="color: #006400">     //nominal=1</span>
+ <span style="color: #006400">//absoluteHeat =  weight*310.15*specificHeat + relativeHeat</span>
+
+  <span style="color: blue">constant </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> NormalBodyTemperature = 310.15 <span style="color: #006400">
+    &quot;Shift of absolute zero temperature to normal body values&quot;</span>;
+
+  <span style="color: blue">parameter </span>Boolean useMassInput = false <span style="color: #006400">&quot;=true, if mass input is used&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Types.Mass</a> Weight=1 <span style="color: #006400">&quot;Total mass weight if useMassInput=false&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassInput"
+>Types.RealIO.MassInput</a> weight(start=Weight)=m <span style="color: blue">if </span>useMassInput <span style="color: #006400">
+    &quot;Weight of mass, where the heat are accumulated&quot;</span>;
+<span style="color: blue">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Types.Mass</a> m;
+
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useMassInput<span style="color: blue"> then</span>
+    m=Weight;
+  <span style="color: blue">end if</span>;
+
+  q_in.T=NormalBodyTemperature + relativeHeat/(m*SpecificHeat);
+  T = q_in.T;
+
+  state = relativeHeat;<span style="color: #006400">  // der(relativeHeat)=q_in.q</span>
+  change = q_in.Q_flow;
+<span style="color: blue">end </span>HeatAccumulation;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE IdealRadiator<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Thermal.Comb3db9075316aa5ediatorI.png" alt="Physiolibrary.Thermal.Components.IdealRadiator" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Thermal.Components.IdealRadiator"></a><a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components"
+>Physiolibrary.Thermal.Components</a>.IdealRadiator</h2>
+<p>
+<b>Closed circiut radiator, where outflowed = ambient temperature</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Comb3db9075316aa5ediatorD.png" alt="Physiolibrary.Thermal.Components.IdealRadiator">
+</p>
+<h3>Information</h3>
+
+<p>This class has two thermal connectors &ndash; one for liquid inside the radiator and another for the material around the radiator. Note that there is no liquid flow inside these connectors. The liquid flow can be described by a parameter or input to the instance. Together with the liquid specific heat, this flow determines the amount of heat flux from the liquid to a surrounding environment of different temperature. The calculation fulfills the ideal condition of microcirculation, where the outflowing blood has the same temperature as a tissue. This is really useful for modeling body thermal transfers, because the transfer of heat with blood flow is more significant than the typical rate of conduction through solid mass.&nbsp;</p>
+<p><br>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
+<p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
+<p>The environment temperature is the same as radiator output temperature q_out.T. </p>
+<p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
+
+<p>Extends from <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a> (Input of mass flow vs. parametric mass flow), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Radiator"
+>Icons.Radiator</a>.</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a></td><td>MassFlow</td><td>0</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>SpecificHeat</td><td>3851.856</td><td>Specific heat of flow circuit medium [J/(kg.K)]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useMassFlowInput</td><td>false</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateInput"
+>MassFlowRateInput</a></td><td>massFlow</td><td>[kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> IdealRadiator <span style="color: #006400">
+  &quot;Closed circiut radiator, where outflowed = ambient temperature&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Radiator"
+>Icons.Radiator</a>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> SpecificHeat=3851.856 <span style="color: #006400">
+    &quot;Specific heat of flow circuit medium&quot;</span>;<span style="color: #006400">  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)</span>
+
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>Thermal.Interfaces.HeatPort_a</a>
+                   q_in;
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>Thermal.Interfaces.HeatPort_b</a>
+                   q_out;
+<span style="color: blue">equation </span>
+  q_in.Q_flow + q_out.Q_flow = 0;
+<span style="color: #006400">//  assert(substanceFlow&gt;=-Modelica.Constants.eps,&quot;In IdealRadiator must be always the forward flow direction! Not &#39;substanceFlow&lt;0&#39;!&quot;);</span>
+  q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
+
+<span style="color: blue">end </span>IdealRadiator;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Conductor<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Thermal.Combf3baf5d741f2c34uctorI.png" alt="Physiolibrary.Thermal.Components.Conductor" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Thermal.Components.Conductor"></a><a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components"
+>Physiolibrary.Thermal.Components</a>.Conductor</h2>
+<p>
+<b>Heat resistor</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Combf3baf5d741f2c34uctorD.png" alt="Physiolibrary.Thermal.Components.Conductor">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.OnePort"
+>Interfaces.OnePort</a> (Heat OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Resistor"
+>Icons.Resistor</a>.</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>ThermalConductance</a></td><td>Conductance</td><td>0</td><td>Thermal conductance if useConductanceInput=false [W/K]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useConductanceInput</td><td>false</td><td>=true, if external conductance value is used</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ThermalConductanceInput"
+>ThermalConductanceInput</a></td><td>conductance</td><td>[W/K]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> Conductor <span style="color: #006400">&quot;Heat resistor&quot;</span>
+ <span style="color: blue">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+ <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Resistor"
+>Icons.Resistor</a>;
+
+  <span style="color: blue">parameter </span>Boolean useConductanceInput = false <span style="color: #006400">
+    &quot;=true, if external conductance value is used&quot;</span>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>Types.ThermalConductance</a> Conductance=0 <span style="color: #006400">
+    &quot;Thermal conductance if useConductanceInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ThermalConductanceInput"
+>Types.RealIO.ThermalConductanceInput</a> conductance(start=Conductance)=c <span style="color: blue">if </span>useConductanceInput;
+
+<span style="color: blue">protected </span>
+   <a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>Types.ThermalConductance</a> c;
+<span style="color: blue">equation </span>
+  <span style="color: blue">if </span><span style="color: blue">not </span>useConductanceInput<span style="color: blue"> then</span>
+    c=Conductance;
+  <span style="color: blue">end if</span>;
+
+  q_in.Q_flow = c * (q_in.T - q_out.T);
+<span style="color: blue">end </span>Conductor;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Stream<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Thermal.Components.StreamI.png" alt="Physiolibrary.Thermal.Components.Stream" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Thermal.Components.Stream"></a><a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components"
+>Physiolibrary.Thermal.Components</a>.Stream</h2>
+<p>
+<b>Flow of whole heated mass</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Components.StreamD.png" alt="Physiolibrary.Thermal.Components.Stream">
+</p>
+<h3>Information</h3>
+
+<p><h4><font color="#008000">Bidirectional heated mass flow by temperature</font></h4></p>
+<p>Possible field values: </p>
+<table cellspacing="2" cellpadding="0" border="0.1"><tr>
+<td></td>
+<td><p align="center"><h4>forward flow</h4></p></td>
+<td><p align="center"><h4>backward flow</h4></p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>massFlow</h4></p></td>
+<td><p align="center">&GT;=0</p></td>
+<td><p align="center">&LT;=0</p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>q_in.q</h4></p></td>
+<td><p align="center">=massFlow*q_in.T*SpecificHeat</p></td>
+<td><p align="center">=-q_out.q</p></td>
+</tr>
+<tr>
+<td><p align="center"><h4>q_out.q</h4></p></td>
+<td><p align="center">=-q_in.q</p></td>
+<td><p align="center">=massFlow*q_out.T*SpecificHeat</p></td>
+</tr>
+</table>
+<br/>
+
+<p>Extends from <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.OnePort"
+>Interfaces.OnePort</a> (Heat OnePort), <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a> (Input of mass flow vs. parametric mass flow).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a></td><td>MassFlow</td><td>0</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>SpecificHeat</td><td>&nbsp;</td><td>Of flow circuit medium [J/(kg.K)]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useMassFlowInput</td><td>false</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateInput"
+>MassFlowRateInput</a></td><td>massFlow</td><td>[kg/s]</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> Stream <span style="color: #006400">&quot;Flow of whole heated mass&quot;</span>
+  <span style="color: blue">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a>;
+
+  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> SpecificHeat <span style="color: #006400">&quot;Of flow circuit medium&quot;</span>;
+
+<span style="color: blue">equation </span>
+  q_in.Q_flow = <span style="color: blue">if </span>(q&gt;0)<span style="color: blue"> then </span>q*q_in.T*SpecificHeat<span style="color: blue"> else </span>q*q_out.T*SpecificHeat;
+
+<span style="color: blue">end </span>Stream;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:49 2014.
+</address>
+</body>
+</html>

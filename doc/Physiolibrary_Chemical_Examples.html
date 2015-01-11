@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Chemical.Examples</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Examples that demonstrate usage of the Pressure flow components&quot;">
+<style type="text/css">
+*       { font-size: 10pt; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
+h4      { font-size: 10pt; font-weight: bold; color: green; }
+h3      { font-size: 11pt; font-weight: bold; color: green; }
+h2      { font-size: 13pt; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { border: 1px solid #808080; vertical-align: top; }
+th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
+table   { border: 1px solid #808080; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Examples<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Chemical.Examples"></a><a href="Physiolibrary_Chemical.html#Physiolibrary.Chemical"
+>Physiolibrary.Chemical</a>.Examples</h2>
+<p>
+<b>Examples that demonstrate usage of the Pressure flow components</b><br>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
+>Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
+<h3>Package Content</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionS.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples.SimpleReaction"
+>SimpleReaction</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionS.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples.SimpleReaction2"
+>SimpleReaction2</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionS.png" alt="Physiolibrary.Chemical.Examples.ExothermicReaction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples.ExothermicReaction"
+>ExothermicReaction</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionS.png" alt="Physiolibrary.Chemical.Examples.MichaelisMenten" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples.MichaelisMenten"
+>MichaelisMenten</a>
+</td>
+<td>Basic enzyme kinetics</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exc8e42ac0b4e010fclobinS.png" alt="Physiolibrary.Chemical.Examples.Hemoglobin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples_Hemoglobin.html#Physiolibrary.Chemical.Examples.Hemoglobin"
+>Hemoglobin</a>
+</td>
+<td>Hemoglobin blood gases binding</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Chemical.Exc8e42ac0b4e010fclobinS.png" alt="Physiolibrary.Chemical.Examples.AcidBase" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase"
+>AcidBase</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SimpleReaction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionI.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Chemical.Examples.SimpleReaction"></a><a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples"
+>Physiolibrary.Chemical.Examples</a>.SimpleReaction</h2>
+<p>
+<br><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionD.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> SimpleReaction
+
+   <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         A(solute_start=0.9);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
+>Components.ChemicalReaction</a>          reaction(K=1,
+    useNormalizedVolume=true,
+    useDissociationConstantInput=false,
+    useHeatPort=false);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         B(solute_start=0.1);
+<span style="color: blue">equation </span>
+
+  <span style="color: red">connect</span>(B.q_out, reaction.products[1]);
+  <span style="color: red">connect</span>(A.q_out, reaction.substrates[1]);
+<span style="color: blue">end </span>SimpleReaction;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SimpleReaction2<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionI.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction2" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Chemical.Examples.SimpleReaction2"></a><a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples"
+>Physiolibrary.Chemical.Examples</a>.SimpleReaction2</h2>
+<p>
+<br><img src="Physiolibrary.Chemical.Ex3455d5a7ebb1c231tion2D.png" alt="Physiolibrary.Chemical.Examples.SimpleReaction2">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> SimpleReaction2
+   <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         A(solute_start=0.9);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
+>Components.ChemicalReaction</a>          reaction(K=1, nP=2);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         B(solute_start=0.1);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         C(solute_start=0.1);
+<span style="color: blue">equation </span>
+
+  <span style="color: red">connect</span>(A.q_out, reaction.substrates[1]);
+  <span style="color: red">connect</span>(reaction.products[1], B.q_out);
+  <span style="color: red">connect</span>(reaction.products[2], C.q_out);
+<span style="color: blue">end </span>SimpleReaction2;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ExothermicReaction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionI.png" alt="Physiolibrary.Chemical.Examples.ExothermicReaction" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Chemical.Examples.ExothermicReaction"></a><a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples"
+>Physiolibrary.Chemical.Examples</a>.ExothermicReaction</h2>
+<p>
+<br><img src="Physiolibrary.Chemical.Ex1d72c3b39b1a4c6dctionD.png" alt="Physiolibrary.Chemical.Examples.ExothermicReaction">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> ExothermicReaction
+
+   <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         A(solute_start=0.9);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
+>Components.ChemicalReaction</a>
+                            reaction(K=1,
+    useHeatPort=true,
+    dH=-1000,
+    kf=1);
+  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Components.Substance</a>         B(solute_start=0.1);
+  <a href="Modelica_Thermal_HeatTransfer_Sensors.html#Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor"
+>Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor</a> heatFlowSensor;
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Thermal.Sources.UnlimitedHeat</a> unlimitedHeat(T=310.15);
+<span style="color: blue">equation </span>
+
+  <span style="color: red">connect</span>(B.q_out, reaction.products[1]);
+  <span style="color: red">connect</span>(A.q_out, reaction.substrates[1]);
+  <span style="color: red">connect</span>(reaction.heatPort, heatFlowSensor.port_a);
+  <span style="color: red">connect</span>(unlimitedHeat.port, heatFlowSensor.port_b);
+<span style="color: blue">end </span>ExothermicReaction;
+</div>
+<br clear="all" style="page-break-before: always">
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MichaelisMenten<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Chemical.Exd75c80a71f5d8e50ctionI.png" alt="Physiolibrary.Chemical.Examples.MichaelisMenten" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Chemical.Examples.MichaelisMenten"></a><a href="Physiolibrary_Chemical_Examples.html#Physiolibrary.Chemical.Examples"
+>Physiolibrary.Chemical.Examples</a>.MichaelisMenten</h2>
+<p>
+<b>Basic enzyme kinetics</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Exd5f27948da9616e9entenD.png" alt="Physiolibrary.Chemical.Examples.MichaelisMenten">
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples), <a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
+>SteadyStates.Interfaces.SteadyStateSystem</a> (Global abstract class, for additional global state equations).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a></td><td>tE</td><td>0.01</td><td>total amount of enzyme [mol]</td></tr>
+<tr><td>Real</td><td>k_cat</td><td>1</td><td>forward rate of second reaction [1/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>Km</td><td>0.1</td><td>Michaelis constant = substrate concentration at rate of half Vmax [mol/m3]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.SteadyS...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
+<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+</table>
+<h3>Revisions</h3>
+
+<p><i>2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue">model</span> MichaelisMenten <span style="color: #006400">&quot;Basic enzyme kinetics&quot;</span>
+  <span style="color: blue">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
+>SteadyStates.Interfaces.SteadyStateSystem</a>(
+                                             Simulation=Types.SimulationType.SteadyState);
+
+  <a href="Physiolibrary_Chemical_Sources.html#Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage"
+>Chemical.Sources.UnlimitedSolutionStorage</a>
+                   P(Conc=0);
+  <a href="Physiolibrary_Chemical_Sources.html#Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage"
+>Chemical.Sources.UnlimitedSolutionStorage</a>
+                   S(Conc=0.1);
+
+     <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> tE=0.01 <span style="color: #006400">&quot;total amount of enzyme&quot;</span>;
+     <span style="color: blue">parameter </span>Real k_cat(unit=&quot;1/s&quot;, displayUnit=&quot;1/min&quot;)= 1 <span style="color: #006400">
+    &quot;forward rate of second reaction&quot;</span>;
+     <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Types.Concentration</a> Km = 0.1 <span style="color: #006400">
+    &quot;Michaelis constant = substrate concentration at rate of half Vmax&quot;</span>;
+
+      <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Chemical.Components.Substance</a>
+                          ES(                       solute_start=0,
+        Simulation=Types.SimulationType.SteadyState);
+      <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
+>Chemical.Components.Substance</a>
+                          E(                       solute_start=tE,
+        isDependent=true,
+        Simulation=Types.SimulationType.SteadyState);
+      <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
+>Components.ChemicalReaction</a>
+                       chemicalReaction(nS=2,
+        K=2/Km,
+        kf=2*k_cat/Km);
+      <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
+>Components.ChemicalReaction</a>
+                       chemicalReaction1(nP=2,
+        K=Modelica.Constants.inf,
+        kf=k_cat);
+
+  <span style="color: #006400">   // Real v(unit=&quot;mol/s&quot;, displayUnit=&quot;mmol/min&quot;) &quot;test of MM equation&quot;;</span>
+<span style="color: blue">equation </span>
+      normalizedState[1]*tE = E.solute + ES.solute;
+
+  <span style="color: #006400">   //Michaelis-Menton: v=((E.q_out.conc + ES.q_out.conc)*k_cat)*S.concentration/(Km+S.concentration);</span>
+
+  <span style="color: red">connect</span>(S.q_out, chemicalReaction.substrates[1]);
+  <span style="color: red">connect</span>(chemicalReaction1.products[1], P.q_out);
+  <span style="color: red">connect</span>(E.q_out, chemicalReaction.substrates[2]);
+  <span style="color: red">connect</span>(E.q_out, chemicalReaction1.products[2]);
+  <span style="color: red">connect</span>(chemicalReaction.products[1], ES.q_out);
+  <span style="color: red">connect</span>(ES.q_out, chemicalReaction1.substrates[1]);
+<span style="color: blue">end </span>MichaelisMenten;
+</div>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:57 2014.
+</address>
+</body>
+</html>
