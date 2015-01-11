@@ -25,8 +25,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons_InterfacesPackage.html#Modelica.Icons.InterfacesPackage"
->Modelica.Icons.InterfacesPackage</a> (Icon for packages containing interfaces).</p>
+<p>Extends from Modelica.Icons.InterfacesPackage (Icon for packages containing interfaces).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -70,7 +69,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Input of population change per one population member vs. parametric lifetime</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationPort<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -81,28 +79,10 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </p>
 <h3>Contents</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Contents">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
->Population</a></td><td>population</td><td>Average number of population individuals [1]</td></tr>
-<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>population</td><td>Average number of population individuals [1]</td></tr>
+<tr><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">connector</span> PopulationPort <span style="color: #006400">
-  &quot;Average number of population members and their change&quot;</span>
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
->Types.Population</a> population <span style="color: #006400">&quot;Average number of population individuals&quot;</span>;
-  <span style="color: blue">flow </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->Types.PopulationChange</a> change <span style="color: #006400">
-    &quot;Average population change = change of population individuals&quot;</span>;
-<span style="color: blue">end </span>PopulationPort;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationPort_a<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -111,8 +91,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Population.Interfaces</a>.PopulationPort_a</h2>
 <p>
 <b>Increase (or decrease) of population</b>
-<br>
-<br><img src="Physiolibrary.Population.a59ae5567fffce9aort_aD.png" alt="Physiolibrary.Population.Interfaces.PopulationPort_a">
 </p>
 <h3>Information</h3>
 
@@ -124,26 +102,10 @@ Connector with one flow signal of type Real.
 >PopulationPort</a> (Average number of population members and their change).</p>
 <h3>Contents</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Contents">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
->Population</a></td><td>population</td><td>Average number of population individuals [1]</td></tr>
-<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>population</td><td>Average number of population individuals [1]</td></tr>
+<tr><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">connector</span> PopulationPort_a <span style="color: #006400">&quot;Increase (or decrease) of population&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort"
->PopulationPort</a>;
-
-
-<span style="color: blue">end </span>PopulationPort_a;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationPort_b<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -152,8 +114,6 @@ Connector with one flow signal of type Real.
 >Physiolibrary.Population.Interfaces</a>.PopulationPort_b</h2>
 <p>
 <b>Decrease (or increase) of population</b>
-<br>
-<br><img src="Physiolibrary.Population.a59ae5577fffce99ort_bD.png" alt="Physiolibrary.Population.Interfaces.PopulationPort_b">
 </p>
 <h3>Information</h3>
 
@@ -165,26 +125,10 @@ Connector with one flow signal of type Real.
 >PopulationPort</a> (Average number of population members and their change).</p>
 <h3>Contents</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Contents">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
->Population</a></td><td>population</td><td>Average number of population individuals [1]</td></tr>
-<tr><td>flow <a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>population</td><td>Average number of population individuals [1]</td></tr>
+<tr><td>change</td><td>Average population change = change of population individuals [1/s]</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">connector</span> PopulationPort_b <span style="color: #006400">&quot;Decrease (or increase) of population&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort"
->PopulationPort</a>;
-
-
-<span style="color: blue">end </span>PopulationPort_b;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OnePort<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -193,30 +137,13 @@ Connector with one flow signal of type Real.
 >Physiolibrary.Population.Interfaces</a>.OnePort</h2>
 <p>
 <b>Partial change of population beween two ports without its accumulation</b>
-<br>
-<br><img src="Physiolibrary.Population.662fb2e1370047dcePortD.png" alt="Physiolibrary.Population.Interfaces.OnePort">
 </p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_b"
->PopulationPort_b</a></td><td>port_b</td><td>&nbsp;</td></tr>
-<tr><td><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_a"
->PopulationPort_a</a></td><td>port_a</td><td>&nbsp;</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port_b</td><td>&nbsp;</td></tr>
+<tr><td>port_a</td><td>&nbsp;</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> OnePort <span style="color: #006400">
-  &quot;Partial change of population beween two ports without its accumulation&quot;</span>
-
-  <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_b"
->PopulationPort_b</a> port_b;
-  <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_a"
->PopulationPort_a</a> port_a;
-<span style="color: blue">equation </span>
-  port_a.change + port_b.change = 0;
-<span style="color: blue">end </span>OnePort;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ConditionalChange<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -225,47 +152,19 @@ Connector with one flow signal of type Real.
 >Physiolibrary.Population.Interfaces</a>.ConditionalChange</h2>
 <p>
 <b>Input of population change vs. parametric constant change</b>
-<br>
-<br><img src="Physiolibrary.Population.0a0071b8fcb4533fhangeD.png" alt="Physiolibrary.Population.Interfaces.ConditionalChange">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>PopulationChange</td><td>0</td><td>Population change if useChangeInput=false [1/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useChangeInput</td><td>false</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>PopulationChange</td><td>Population change if useChangeInput=false [1/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useChangeInput</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeInput"
->PopulationChangeInput</a></td><td>populationChange</td><td>[1/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>populationChange</td><td>[1/s]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> ConditionalChange <span style="color: #006400">
-  &quot;Input of population change vs. parametric constant change&quot;</span>
-
-  <span style="color: blue">parameter </span>Boolean useChangeInput = false <span style="color: #006400">
-    &quot;=true, if real input connector is used instead of parameter PopulationChange&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->Types.PopulationChange</a> PopulationChange=0 <span style="color: #006400">
-    &quot;Population change if useChangeInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeInput"
->Types.RealIO.PopulationChangeInput</a> populationChange(start=PopulationChange)=change <span style="color: blue">if </span>  useChangeInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->Types.PopulationChange</a> change <span style="color: #006400">&quot;Current population change&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useChangeInput<span style="color: blue"> then</span>
-    change = PopulationChange;
-  <span style="color: blue">end if</span>;
-
-<span style="color: blue">end </span>ConditionalChange;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ConditionalLifeTime<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -274,49 +173,21 @@ Connector with one flow signal of type Real.
 >Physiolibrary.Population.Interfaces</a>.ConditionalLifeTime</h2>
 <p>
 <b>Input of population change per one population member vs. parametric lifetime</b>
-<br>
-<br><img src="Physiolibrary.Population.a81d15e99ff5424feTimeD.png" alt="Physiolibrary.Population.Interfaces.ConditionalLifeTime">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
->Time</a></td><td>LifeTime</td><td>1e-8</td><td>Mean life time for population (=1.44*halftime) if useChangePerMember=false [s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useChangePerMemberInput</td><td>false</td><td>=true, if real input connector is used instead of parameter LifeTime</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>LifeTime</td><td>Mean life time for population (=1.44*halftime) if useChangePerMember=false [s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useChangePerMemberInput</td><td>=true, if real input connector is used instead of parameter LifeTime</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangePerMemberInput"
->PopulationChangePerMemberInput</a></td><td>changePerMember</td><td>[1/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>changePerMember</td><td>[1/s]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">partial </span><span style="color: blue">model</span> ConditionalLifeTime <span style="color: #006400">
-  &quot;Input of population change per one population member vs. parametric lifetime&quot;</span>
-
-  <span style="color: blue">parameter </span>Boolean useChangePerMemberInput = false <span style="color: #006400">
-    &quot;=true, if real input connector is used instead of parameter LifeTime&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
->Types.Time</a> LifeTime=1e-8 <span style="color: #006400">
-    &quot;Mean life time for population (=1.44*halftime) if useChangePerMember=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangePerMemberInput"
->Types.RealIO.PopulationChangePerMemberInput</a> changePerMember(start=1/LifeTime)=changePerPopulationMember <span style="color: blue">if </span>useChangePerMemberInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChangePerMember"
->Types.PopulationChangePerMember</a> changePerPopulationMember <span style="color: #006400">
-    &quot;Current population change per individual&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useChangePerMemberInput<span style="color: blue"> then</span>
-    changePerPopulationMember = 1/LifeTime;
-  <span style="color: blue">end if</span>;
-
-<span style="color: blue">end </span>ConditionalLifeTime;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:55 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:53 2015.
 </address>
 </body>
 </html>

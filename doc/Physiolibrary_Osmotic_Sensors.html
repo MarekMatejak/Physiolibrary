@@ -25,8 +25,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons_SensorsPackage.html#Modelica.Icons.SensorsPackage"
->Modelica.Icons.SensorsPackage</a> (Icon for packages containing sensors).</p>
+<p>Extends from Modelica.Icons.SensorsPackage (Icon for packages containing sensors).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -40,7 +39,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Measurement of flux through semipermeable membrane</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE FlowMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -49,8 +47,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Osmotic.Sensors</a>.FlowMeasure</h2>
 <p>
 <b>Measurement of flux through semipermeable membrane</b>
-<br>
-<br><img src="Physiolibrary.Osmotic.Sen7d3f5686cc9529a6asureD.png" alt="Physiolibrary.Osmotic.Sensors.FlowMeasure">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
@@ -58,38 +54,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.FlowMeasure</a>.</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_a"
->OsmoticPort_a</a></td><td>q_in</td><td>Forward flux through membrane</td></tr>
-<tr><td><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OsmoticPort_b"
->OsmoticPort_b</a></td><td>q_out</td><td>Backward flux through membrane</td></tr>
-<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
->VolumeFlowRateOutput</a></td><td>volumeFlowRate</td><td>Flux through membrane [m3/s]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Forward flux through membrane</td></tr>
+<tr><td>q_out</td><td>Backward flux through membrane</td></tr>
+<tr><td>volumeFlowRate</td><td>Flux through membrane [m3/s]</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> FlowMeasure <span style="color: #006400">
-  &quot;Measurement of flux through semipermeable membrane&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Interfaces.html#Physiolibrary.Osmotic.Interfaces.OnePort"
->Interfaces.OnePort</a>;
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowMeasure"
->Icons.FlowMeasure</a>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
->Types.RealIO.VolumeFlowRateOutput</a> volumeFlowRate <span style="color: #006400">&quot;Flux through membrane&quot;</span>;
-<span style="color: blue">equation </span>
-  q_out.o = q_in.o;
-
-  volumeFlowRate = q_in.q;
-
-<span style="color: blue">end </span>FlowMeasure;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:52 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:53 2015.
 </address>
 </body>
 </html>

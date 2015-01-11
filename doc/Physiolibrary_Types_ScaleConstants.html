@@ -39,7 +39,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Constant signal of type Power per Mass</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Power<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -48,37 +47,20 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.ScaleConstants</a>.Power</h2>
 <p>
 <b>Constant signal of type Power per Mass</b>
-<br>
-<br><img src="Physiolibrary.Types.ScaleConstants.PowerD.png" alt="Physiolibrary.Types.ScaleConstants.Power">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PowerPerMass"
->PowerPerMass</a></td><td>k</td><td>&nbsp;</td><td>Constant Power output value [W/kg]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>k</td><td>Constant Power output value [W/kg]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PowerOutput"
->PowerOutput</a></td><td>y</td><td>Power constant [W]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassInput"
->MassInput</a></td><td>mass</td><td>[kg]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>y</td><td>Power constant [W]</td></tr>
+<tr><td>mass</td><td>[kg]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">block</span> Power <span style="color: #006400">&quot;Constant signal of type Power per Mass&quot;</span>
- <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.PowerPerMass"
->Types.PowerPerMass</a> k <span style="color: #006400">&quot;Constant Power output value&quot;</span>;
-      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PowerOutput"
->RealIO.PowerOutput</a> y <span style="color: #006400">&quot;Power constant&quot;</span>;
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassInput"
->RealIO.MassInput</a> mass;
-<span style="color: blue">equation </span>
-      y=k*mass;
-<span style="color: blue">end </span>Power;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:22 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:58 2015.
 </address>
 </body>
 </html>

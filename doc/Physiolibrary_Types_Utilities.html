@@ -100,7 +100,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Conversions non-SI units at input/output</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE readReal<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -116,30 +115,11 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Name of parameter</td></tr>
-<tr><td>String</td><td>storeUnit</td><td>&nbsp;</td><td>Prefered units to store variable value</td></tr>
-<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->RealTypeRecord</a></td><td>unitConversions[:]</td><td>UnitConversions.RealTypeDef</td><td>Unit conversions</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Name of parameter</td></tr>
+<tr><td>storeUnit</td><td>Prefered units to store variable value</td></tr>
+<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> readReal <span style="color: #006400">&quot;Read the real value of parameter from file with lines in format:
-  &lt;parameterName&gt;
-  &lt;value&gt; &lt;unit&gt;&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Name of parameter&quot;</span>;
-  <span style="color: blue">input </span>String storeUnit <span style="color: #006400">&quot;Prefered units to store variable value&quot;</span>;
-  <span style="color: blue">input </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->UnitConversions.RealTypeRecord</a>[:] unitConversions = UnitConversions.RealTypeDef <span style="color: #006400">
-    &quot;Unit conversions&quot;</span>;
-
-  <span style="color: blue">output </span>Real value=0 <span style="color: #006400">&quot;Actual value of parameter in SI units&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>readReal;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE readReal_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -151,26 +131,12 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
   &lt;parameterName&gt;\n&lt;value&gt;</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Name of parameter</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Name of parameter</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> readReal_SI <span style="color: #006400">&quot;Read the real value in SI units of parameter from file with lines in format:
-  &lt;parameterName&gt;\\n&lt;value&gt;&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Name of parameter&quot;</span>;
-
-  <span style="color: blue">output </span>Real value=0 <span style="color: #006400">&quot;Actual value of parameter in SI units&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>readReal_SI;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE readBoolean<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -183,26 +149,12 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
   &lt;value&gt; &lt;unit&gt;</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> readBoolean <span style="color: #006400">&quot;Read the boolean value of parameter from file with lines in format:
-  &lt;parameterName&gt;
-  &lt;value&gt; &lt;unit&gt;&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">output </span>Boolean value <span style="color: #006400">&quot;Variable value&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>readBoolean;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeReal<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -213,31 +165,14 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Write the real value to file</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
-<tr><td>String</td><td>storeUnit</td><td>&nbsp;</td><td>Prefered units to store variable value</td></tr>
-<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->RealTypeRecord</a></td><td>unitConversions[:]</td><td>UnitConversions.RealTypeDef</td><td>Unit conversions</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
+<tr><td>storeUnit</td><td>Prefered units to store variable value</td></tr>
+<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeReal <span style="color: #006400">&quot;Write the real value to file&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Real value <span style="color: #006400">&quot;Variable value&quot;</span>;
-  <span style="color: blue">input </span>String storeUnit <span style="color: #006400">&quot;Prefered units to store variable value&quot;</span>;
-  <span style="color: blue">input </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->UnitConversions.RealTypeRecord</a>[:] unitConversions = UnitConversions.RealTypeDef <span style="color: #006400">
-    &quot;Unit conversions&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeReal;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeReal_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -248,25 +183,12 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Write the real value using SI unit to file</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeReal_SI <span style="color: #006400">
-  &quot;Write the real value using SI unit to file&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Real value <span style="color: #006400">&quot;Variable value&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeReal_SI;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeBoolean<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -277,24 +199,12 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Write the boolean value to file</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeBoolean <span style="color: #006400">&quot;Write the boolean value to file&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Boolean value <span style="color: #006400">&quot;Variable value&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeBoolean;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -305,40 +215,17 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Compare and write the result and the value to file</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
-<tr><td>Real</td><td>defaultValue</td><td>&nbsp;</td><td>Original value[in SIunits] to compare with final value</td></tr>
-<tr><td>Real</td><td>initialValue</td><td>&nbsp;</td><td>Initial variable value[in SI units]</td></tr>
-<tr><td>Real</td><td>finalValue</td><td>&nbsp;</td><td>Final variable value[in SI units]</td></tr>
-<tr><td>String</td><td>storeUnit</td><td>&nbsp;</td><td>Prefered units to store variable value</td></tr>
-<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->RealTypeRecord</a></td><td>unitConversions[:]</td><td>UnitConversions.RealTypeDef</td><td>Unit conversions</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
+<tr><td>defaultValue</td><td>Original value[in SIunits] to compare with final value</td></tr>
+<tr><td>initialValue</td><td>Initial variable value[in SI units]</td></tr>
+<tr><td>finalValue</td><td>Final variable value[in SI units]</td></tr>
+<tr><td>storeUnit</td><td>Prefered units to store variable value</td></tr>
+<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeComparison <span style="color: #006400">
-  &quot;Compare and write the result and the value to file&quot;</span>
-
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Real defaultValue <span style="color: #006400">
-    &quot;Original value[in SIunits] to compare with final value&quot;</span>;
-  <span style="color: blue">input </span>Real initialValue <span style="color: #006400">&quot;Initial variable value[in SI units]&quot;</span>;
-  <span style="color: blue">input </span>Real finalValue <span style="color: #006400">&quot;Final variable value[in SI units]&quot;</span>;
-
-  <span style="color: blue">input </span>String storeUnit <span style="color: #006400">&quot;Prefered units to store variable value&quot;</span>;
-  <span style="color: blue">input </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
->UnitConversions.RealTypeRecord</a>[:] unitConversions = UnitConversions.RealTypeDef <span style="color: #006400">
-    &quot;Unit conversions&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeComparison;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeComparison_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -349,33 +236,15 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Compare and write the result and the value to file using SI units</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
-<tr><td>Real</td><td>defaultValue</td><td>&nbsp;</td><td>Original value[in SIunits] to compare with final value</td></tr>
-<tr><td>Real</td><td>initialValue</td><td>&nbsp;</td><td>Initial variable value[in SI units]</td></tr>
-<tr><td>Real</td><td>finalValue</td><td>&nbsp;</td><td>Final variable value[in SI units]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
+<tr><td>defaultValue</td><td>Original value[in SIunits] to compare with final value</td></tr>
+<tr><td>initialValue</td><td>Initial variable value[in SI units]</td></tr>
+<tr><td>finalValue</td><td>Final variable value[in SI units]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeComparison_SI <span style="color: #006400">
-  &quot;Compare and write the result and the value to file using SI units&quot;</span>
-
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Real defaultValue <span style="color: #006400">
-    &quot;Original value[in SIunits] to compare with final value&quot;</span>;
-  <span style="color: blue">input </span>Real initialValue <span style="color: #006400">&quot;Initial variable value[in SI units]&quot;</span>;
-  <span style="color: blue">input </span>Real finalValue <span style="color: #006400">&quot;Final variable value[in SI units]&quot;</span>;
-
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeComparison_SI;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE writeBooleanComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -386,32 +255,17 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Compare and write the result and the value to file</b>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a> (Icon for functions).</p>
+<p>Extends from Modelica.Icons.Function (Icon for functions).</p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>String</td><td>name</td><td>&nbsp;</td><td>Variable name</td></tr>
-<tr><td>Boolean</td><td>defaultValue</td><td>&nbsp;</td><td>Original value[in SIunits] to compare with final value</td></tr>
-<tr><td>Boolean</td><td>initialValue</td><td>&nbsp;</td><td>Initial variable value[in SI units]</td></tr>
-<tr><td>Boolean</td><td>finalValue</td><td>&nbsp;</td><td>Final variable value[in SI units]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>name</td><td>Variable name</td></tr>
+<tr><td>defaultValue</td><td>Original value[in SIunits] to compare with final value</td></tr>
+<tr><td>initialValue</td><td>Initial variable value[in SI units]</td></tr>
+<tr><td>finalValue</td><td>Final variable value[in SI units]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">replaceable </span><span style="color: blue">function</span> writeBooleanComparison <span style="color: #006400">
-  &quot;Compare and write the result and the value to file&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Function"
->Modelica.Icons.Function</a>;
-
-  <span style="color: blue">input </span>String name <span style="color: #006400">&quot;Variable name&quot;</span>;
-  <span style="color: blue">input </span>Boolean defaultValue <span style="color: #006400">
-    &quot;Original value[in SIunits] to compare with final value&quot;</span>;
-  <span style="color: blue">input </span>Boolean initialValue <span style="color: #006400">&quot;Initial variable value[in SI units]&quot;</span>;
-  <span style="color: blue">input </span>Boolean finalValue <span style="color: #006400">&quot;Final variable value[in SI units]&quot;</span>;
-<span style="color: #006400">//algorithm</span>
-<span style="color: blue">end </span>writeBooleanComparison;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:24 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:39:01 2015.
 </address>
 </body>
 </html>

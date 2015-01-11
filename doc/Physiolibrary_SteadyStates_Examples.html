@@ -27,8 +27,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Examples that demonstrate usage of the Pressure flow components</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
->Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
+<p>Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -96,292 +95,55 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SimpleReaction_in_Equilibrium<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_in_Equilibrium" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.SimpleReaction_in_Equilibrium"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.SimpleReaction_in_Equilibrium</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState8840b230479e1253briumD.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_in_Equilibrium">
-</p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> SimpleReaction_in_Equilibrium
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>
-    amountOfSubstanceConservationLaw(
-    n=2,
-    Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=Types.SimulationType.SteadyState);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A(Simulation=Types.SimulationType.SteadyState,
-      solute_start=0.9);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> reaction(K=1);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> B(
-    Simulation=Types.SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=0.1);
-
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(A.solute, amountOfSubstanceConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(B.solute, amountOfSubstanceConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(B.q_out,reaction. products[1]);
-  <span style="color: red">connect</span>(A.q_out,reaction. substrates[1]);
-<span style="color: blue">end </span>SimpleReaction_in_Equilibrium;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SimpleReaction_NormalInit<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_NormalInit" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.SimpleReaction_NormalInit"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.SimpleReaction_NormalInit</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState8840b230479e1253briumD.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_NormalInit">
-</p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> SimpleReaction_NormalInit
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>
-    amountOfSubstanceConservationLaw(
-    n=2,
-    Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=Types.SimulationType.NormalInit);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A(Simulation=Types.SimulationType.NormalInit,
-      solute_start=0.9);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> reaction(K=1);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> B(
-    isDependent=true,
-    Simulation=Types.SimulationType.NormalInit,
-    solute_start=0.1);
-
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(A.solute, amountOfSubstanceConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(B.solute, amountOfSubstanceConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(B.q_out,reaction. products[1]);
-  <span style="color: red">connect</span>(A.q_out,reaction. substrates[1]);
-<span style="color: blue">end </span>SimpleReaction_NormalInit;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SimpleReaction_InitSteadyState<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_InitSteadyState" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.SimpleReaction_InitSteadyState"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.SimpleReaction_InitSteadyState</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState8840b230479e1253briumD.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction_InitSteadyState">
-</p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> SimpleReaction_InitSteadyState
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>
-    amountOfSubstanceConservationLaw(
-    n=2,
-    Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=Types.SimulationType.InitSteadyState);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A(Simulation=Types.SimulationType.InitSteadyState,
-      solute_start=0.9);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> reaction(K=1);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> B(
-    isDependent=true,
-    Simulation=Types.SimulationType.InitSteadyState,
-    solute_start=0.1);
-
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(A.solute, amountOfSubstanceConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(B.solute, amountOfSubstanceConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(B.q_out,reaction. products[1]);
-  <span style="color: red">connect</span>(A.q_out,reaction. substrates[1]);
-<span style="color: blue">end </span>SimpleReaction_InitSteadyState;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SimpleReaction2_in_Equilibrium<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction2_in_Equilibrium" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.SimpleReaction2_in_Equilibrium"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.SimpleReaction2_in_Equilibrium</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState53d3f984b91c4ca1briumD.png" alt="Physiolibrary.SteadyStates.Examples.SimpleReaction2_in_Equilibrium">
-</p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> SimpleReaction2_in_Equilibrium
-<span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A(Simulation=SimulationType.SteadyState,
-      solute_start=0.9);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> reaction(K=1, nP=2);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> B(
-    Simulation=SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=0.1);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> C(
-    Simulation=SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=0.1);
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->Components.MolarConservationLaw</a> totalB_ConservationLaw(
-    n=2,
-    Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=SimulationType.SteadyState);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->Components.MolarConservationLaw</a> totalC_ConservationLaw(
-    n=2,
-    Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=SimulationType.SteadyState);
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(A.q_out,reaction. substrates[1]);
-  <span style="color: red">connect</span>(reaction.products[1],B. q_out);
-  <span style="color: red">connect</span>(reaction.products[2],C. q_out);
-  <span style="color: red">connect</span>(A.solute, totalB_ConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(B.solute, totalB_ConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(C.solute, totalC_ConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(A.solute, totalC_ConservationLaw.fragment[2]);
-
-<span style="color: blue">end </span>SimpleReaction2_in_Equilibrium;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE O2_in_water<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.O2_in_water" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.O2_in_water"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.O2_in_water</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState303bb6afe208005awaterD.png" alt="Physiolibrary.SteadyStates.Examples.O2_in_water">
-</p>
 <h3>Information</h3>
 
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> O2_in_water
-<span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-<span style="color: blue">public </span>
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> oxygen_dissolved(
-                                                Simulation=SimulationType.SteadyState,
-      solute_start=0.000001*7.875647668393782383419689119171e-5,
-    isDependent=true);
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> oxygenPartialPressure(offset=1e-06);
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Sine"
->Modelica.Blocks.Sources.Sine</a> temperature(
-    amplitude=10,
-    freqHz=1/60,
-    offset=310.15);
-  <a href="Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature"
->Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature</a>
-    prescribedTemperature;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.GasSolubility"
->Chemical.Components.GasSolubility</a> gasSolubility(useHeatPort=true, kH_T0(
-        displayUnit=&quot;(mmol/l)/kPa at 25degC&quot;) = 0.026029047188736,
-    C=1700);
-  <a href="Physiolibrary_Chemical_Sources.html#Physiolibrary.Chemical.Sources.UnlimitedGasStorage"
->Chemical.Sources.UnlimitedGasStorage</a> unlimitedGasStorage(
-      Simulation=Types.SimulationType.SteadyState,
-    usePartialPressureInput=true,
-    useHeatPort=true,
-    T=295.15);
-<span style="color: blue">equation </span>
-
-  <span style="color: red">connect</span>(temperature.y, prescribedTemperature.T);
-  <span style="color: red">connect</span>(oxygen_dissolved.q_out, gasSolubility.q_in);
-  <span style="color: red">connect</span>(prescribedTemperature.port, gasSolubility.heatPort);
-  <span style="color: red">connect</span>(oxygenPartialPressure.y, unlimitedGasStorage.partialPressure);
-  <span style="color: red">connect</span>(unlimitedGasStorage.q_out, gasSolubility.q_out);
-  <span style="color: red">connect</span>(prescribedTemperature.port, unlimitedGasStorage.heatPort);
-<span style="color: blue">end </span>O2_in_water;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Allosteric_Hemoglobin_MWC<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.Allosteric_Hemoglobin_MWC" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.Allosteric_Hemoglobin_MWC"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.Allosteric_Hemoglobin_MWC</h2>
-<p>
-<br><img src="Physiolibrary.SteadyState311de485775bd168n_MWCD.png" alt="Physiolibrary.SteadyStates.Examples.Allosteric_Hemoglobin_MWC">
-</p>
 <h3>Information</h3>
 
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
@@ -395,240 +157,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>If you remove the quaternaryForm1,quaternaryForm2,quaternaryForm3,quaternaryForm4 then the model in equilibrium will be exactly the same as in MWC article.</p>
 <p><br/>Parameters was fitted to data of Severinghaus article from 1979. (For example at pO2=26mmHg is oxygen saturation sO2 = 48.27 &percnt;).</p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Allosteric_Hemoglobin_MWC
-<span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-<span style="color: #006400">//extends SteadyStates.Interfaces.SteadyStateSystem(</span>
-<span style="color: #006400">//                                         Simulation=SteadyStates.SimulationType.SteadyState);</span>
-<span style="color: #006400">//=States.SimulationType.NoInit); for dynamic simulation</span>
-<span style="color: blue">protected </span>
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
->Types.GasSolubility</a> alpha =  0.0105 * 1e-3 <span style="color: #006400">
-    &quot;oxygen solubility in plasma&quot;</span>;<span style="color: #006400"> // by Siggaard Andersen: 0.0105 (mmol/l)/kPa</span>
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Types.Fraction</a> L = 7.0529*10^6 <span style="color: #006400">
-    &quot;=[T0]/[R0] .. dissociation constant of relaxed &lt;-&gt; tensed change of deoxyhemoglobin tetramer&quot;</span>;
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Types.Fraction</a> c = 0.00431555 <span style="color: #006400">
-    &quot;=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit&quot;</span>;
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Types.Concentration</a> KR = 0.000671946 <span style="color: #006400">
-    &quot;oxygen dissociation on relaxed(R) hemoglobin subunit&quot;</span>;<span style="color: #006400">   //*7.875647668393782383419689119171e-5</span>
-  <span style="color: #006400">                                                          //10.500001495896 7.8756465463794e-05</span>
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Types.Concentration</a> KT=KR/c <span style="color: #006400">
-    &quot;oxygen dissociation on tensed(T) hemoglobin subunit&quot;</span>;
-<span style="color: #006400">//  Types.Fraction sO2 &quot;hemoglobin oxygen saturation&quot;;</span>
-
-<span style="color: #006400">//  parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;</span>
-<span style="color: #006400">//  Types.AmountOfSubstance totalAmountOfRforms;</span>
-<span style="color: #006400">//  Types.AmountOfSubstance totalAmountOfTforms;</span>
-
-<span style="color: blue">public </span>
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> T0(
-    stateName=&quot;T0&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=1);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> T1(
-    stateName=&quot;T1&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> R1(
-    stateName=&quot;R1&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0,
-    isDependent=true);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> T2(
-    stateName=&quot;T2&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> R2(
-    stateName=&quot;R2&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> T3(
-    stateName=&quot;T3&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> R3(
-    stateName=&quot;R3&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> T4(
-    stateName=&quot;T4&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0,
-    isDependent=true);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> R4(
-    stateName=&quot;R4&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> R0(
-    stateName=&quot;R0&quot;,
-    Simulation=SimulationType.SteadyState,
-    solute_start=0);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> quaternaryForm(K=L);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyR1(nP=2, K=KR/4);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyT1(nP=2, K=KT/4);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyR2(nP=2, K=KR/(3/2));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyR3(nP=2, K=KR/(2/3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyR4(nP=2, K=KR*4);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyT2(nP=2, K=KT/(3/2));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyT3(nP=2, K=KT/(2/3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> oxyT4(nP=2, K=KT*4);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> quaternaryForm1(K=c*L);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> quaternaryForm2(K=(c^2)*L);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> quaternaryForm3(K=(c^3)*L);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> quaternaryForm4(K=(c^4)*L);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> oxygen_unbound(solute_start=0.000001*
-        7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState);
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> clock(offset=60);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a> hemoglobinConservationLaw(
-    n=10, Total(displayUnit=&quot;mol&quot;) = 1,
-    Simulation=Types.SimulationType.SteadyState);
-
-  <a href="Physiolibrary_Chemical_Sources.html#Physiolibrary.Chemical.Sources.UnlimitedGasStorage"
->Chemical.Sources.UnlimitedGasStorage</a> O2_in_air(Simulation=Types.SimulationType.SteadyState,
-    T=295.15,
-    usePartialPressureInput=true);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.GasSolubility"
->Chemical.Components.GasSolubility</a> gasSolubility(
-                                      useHeatPort=false,
-    kH_T0=0.026029047188736,
-    C=1700);
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Sum"
->Modelica.Blocks.Math.Sum</a> oxygen_bound(k={1,1,2,2,3,3,4,4}, nin=8);
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Division"
->Modelica.Blocks.Math.Division</a> sO2_ <span style="color: #006400">&quot;hemoglobin oxygen saturation&quot;</span>;
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Sum"
->Modelica.Blocks.Math.Sum</a> tHb(nin=10, k=4*<span style="color: red">ones</span>(10));
-<span style="color: blue">equation </span>
- <span style="color: #006400">// sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*hemoglobinConservationLaw.Total);</span>
- <span style="color: #006400">// totalAmountOfRforms = R0.solute + R1.solute + R2.solute + R3.solute + R4.solute;</span>
- <span style="color: #006400">//  totalAmountOfTforms = T0.solute + T1.solute + T2.solute + T3.solute + T4.solute;</span>
-
- <span style="color: #006400">//  totalAmountOfHemoglobin*normalizedState[1] = totalAmountOfRforms + totalAmountOfTforms;</span>
-
-  <span style="color: red">connect</span>(quaternaryForm.products[1],T0. q_out);
-  <span style="color: red">connect</span>(oxyR1.products[2], oxygen_unbound.q_out);
-  <span style="color: red">connect</span>(oxyR2.products[2], oxygen_unbound.q_out);
-  <span style="color: red">connect</span>(oxyR3.products[2], oxygen_unbound.q_out);
-  <span style="color: red">connect</span>(oxyR4.products[2], oxygen_unbound.q_out);
-  <span style="color: red">connect</span>(oxyR1.substrates[1],R1. q_out);
-  <span style="color: red">connect</span>(R1.q_out,oxyR2. products[1]);
-  <span style="color: red">connect</span>(oxyR2.substrates[1],R2. q_out);
-  <span style="color: red">connect</span>(oxyR3.substrates[1],R3. q_out);
-  <span style="color: red">connect</span>(oxyR3.products[1],R2. q_out);
-  <span style="color: red">connect</span>(R3.q_out,oxyR4. products[1]);
-  <span style="color: red">connect</span>(oxyR4.substrates[1],R4. q_out);
-  <span style="color: red">connect</span>(oxyT1.products[1],T0. q_out);
-  <span style="color: red">connect</span>(oxyT1.substrates[1],T1. q_out);
-  <span style="color: red">connect</span>(oxygen_unbound.q_out, oxyT1.products[2]);
-  <span style="color: red">connect</span>(oxygen_unbound.q_out, oxyT2.products[2]);
-  <span style="color: red">connect</span>(oxygen_unbound.q_out, oxyT3.products[2]);
-  <span style="color: red">connect</span>(oxygen_unbound.q_out, oxyT4.products[2]);
-  <span style="color: red">connect</span>(T1.q_out,oxyT2. products[1]);
-  <span style="color: red">connect</span>(oxyT2.substrates[1],T2. q_out);
-  <span style="color: red">connect</span>(T2.q_out,oxyT3. products[1]);
-  <span style="color: red">connect</span>(oxyT3.substrates[1],T3. q_out);
-  <span style="color: red">connect</span>(T3.q_out,oxyT4. products[1]);
-  <span style="color: red">connect</span>(oxyT4.substrates[1],T4. q_out);
-  <span style="color: red">connect</span>(R0.q_out,quaternaryForm. substrates[1]);
-  <span style="color: red">connect</span>(R0.q_out,oxyR1. products[1]);
-  <span style="color: red">connect</span>(R1.q_out,quaternaryForm1. substrates[1]);
-  <span style="color: red">connect</span>(quaternaryForm1.products[1],T1. q_out);
-  <span style="color: red">connect</span>(R2.q_out,quaternaryForm2. substrates[1]);
-  <span style="color: red">connect</span>(quaternaryForm2.products[1],T2. q_out);
-  <span style="color: red">connect</span>(R3.q_out,quaternaryForm3. substrates[1]);
-  <span style="color: red">connect</span>(quaternaryForm3.products[1],T3. q_out);
-  <span style="color: red">connect</span>(R4.q_out,quaternaryForm4. substrates[1]);
-  <span style="color: red">connect</span>(quaternaryForm4.products[1],T4. q_out);
-  <span style="color: red">connect</span>(R4.solute, hemoglobinConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(T4.solute, hemoglobinConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(R3.solute, hemoglobinConservationLaw.fragment[3]);
-  <span style="color: red">connect</span>(T3.solute, hemoglobinConservationLaw.fragment[4]);
-  <span style="color: red">connect</span>(R2.solute, hemoglobinConservationLaw.fragment[5]);
-  <span style="color: red">connect</span>(T2.solute, hemoglobinConservationLaw.fragment[6]);
-  <span style="color: red">connect</span>(R1.solute, hemoglobinConservationLaw.fragment[7]);
-  <span style="color: red">connect</span>(T1.solute, hemoglobinConservationLaw.fragment[8]);
-  <span style="color: red">connect</span>(R0.solute, hemoglobinConservationLaw.fragment[9]);
-  <span style="color: red">connect</span>(T0.solute, hemoglobinConservationLaw.fragment[10]);
-  <span style="color: red">connect</span>(oxygen_unbound.q_out, gasSolubility.q_in);
-  <span style="color: red">connect</span>(O2_in_air.q_out, gasSolubility.q_out);
-  <span style="color: red">connect</span>(clock.y, O2_in_air.partialPressure);
-  <span style="color: red">connect</span>(R1.solute, oxygen_bound.u[1]);
-  <span style="color: red">connect</span>(T1.solute, oxygen_bound.u[2]);
-  <span style="color: red">connect</span>(R2.solute, oxygen_bound.u[3]);
-  <span style="color: red">connect</span>(T2.solute, oxygen_bound.u[4]);
-  <span style="color: red">connect</span>(R3.solute, oxygen_bound.u[5]);
-  <span style="color: red">connect</span>(T3.solute, oxygen_bound.u[6]);
-  <span style="color: red">connect</span>(R4.solute, oxygen_bound.u[7]);
-  <span style="color: red">connect</span>(T4.solute, oxygen_bound.u[8]);
-  <span style="color: red">connect</span>(oxygen_bound.y, sO2_.u1);
-  <span style="color: red">connect</span>(sO2_.u2, tHb.y);
-  <span style="color: red">connect</span>(R0.solute, tHb.u[1]);
-  <span style="color: red">connect</span>(T0.solute, tHb.u[2]);
-  <span style="color: red">connect</span>(R1.solute, tHb.u[3]);
-  <span style="color: red">connect</span>(T1.solute, tHb.u[4]);
-  <span style="color: red">connect</span>(R2.solute, tHb.u[5]);
-  <span style="color: red">connect</span>(T2.solute, tHb.u[6]);
-  <span style="color: red">connect</span>(R3.solute, tHb.u[7]);
-  <span style="color: red">connect</span>(T3.solute, tHb.u[8]);
-  <span style="color: red">connect</span>(R4.solute, tHb.u[9]);
-  <span style="color: red">connect</span>(T4.solute, tHb.u[10]);
-<span style="color: blue">end </span>Allosteric_Hemoglobin_MWC;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Allosteric_Hemoglobin2_MWC<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -637,42 +166,22 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Examples</a>.Allosteric_Hemoglobin2_MWC</h2>
 <p>
 <b>Allosteric hemoglobin model implemented by Speciation blocks</b>
-<br>
-<br><img src="Physiolibrary.SteadyState0ec9c4dded6347cd2_MWCD.png" alt="Physiolibrary.SteadyStates.Examples.Allosteric_Hemoglobin2_MWC">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Examples_Hemoglobin.html#Physiolibrary.Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC"
 >Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC</a> (Monod,Wyman,Changeux (1965) - The same allosteric hemoglobin model as Allosteric_Hemoglobin_MWC implemented by Speciation blocks).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
->MolarEnergy</a></td><td>dHT</td><td>10000</td><td>Enthalpy of heme oxygenation in T hemoglobin form [J/mol]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
->MolarEnergy</a></td><td>dHR</td><td>20000</td><td>Enthalpy of heme oxygenation in R hemoglobin form [J/mol]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
->MolarEnergy</a></td><td>dHL</td><td>-1000</td><td>Enthalpy of reaction T-&gt;R as hemoglobin tetramer structure change [J/mol]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Fraction</a></td><td>L</td><td>7.0529*10^6</td><td>=[T0]/[R0] .. dissociation constant of relaxed &lt;-&gt; tensed change of deoxyhemoglobin tetramer [1]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Fraction</a></td><td>c</td><td>0.00431555</td><td>=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit [1]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Concentration</a></td><td>KR</td><td>0.000671946</td><td>oxygen dissociation on relaxed(R) hemoglobin subunit [mol/m3]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Concentration</a></td><td>KT</td><td>KR/c</td><td>oxygen dissociation on tensed(T) hemoglobin subunit [mol/m3]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->AmountOfSubstance</a></td><td>totalAmountOfHemoglobin</td><td>1</td><td>[mol]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>dHT</td><td>Enthalpy of heme oxygenation in T hemoglobin form [J/mol]</td></tr>
+<tr><td>dHR</td><td>Enthalpy of heme oxygenation in R hemoglobin form [J/mol]</td></tr>
+<tr><td>dHL</td><td>Enthalpy of reaction T-&gt;R as hemoglobin tetramer structure change [J/mol]</td></tr>
+<tr><td>L</td><td>=[T0]/[R0] .. dissociation constant of relaxed &lt;-&gt; tensed change of deoxyhemoglobin tetramer [1]</td></tr>
+<tr><td>c</td><td>=KR/KT .. ration between oxygen affinities of relaxed vs. tensed subunit [1]</td></tr>
+<tr><td>KR</td><td>oxygen dissociation on relaxed(R) hemoglobin subunit [mol/m3]</td></tr>
+<tr><td>KT</td><td>oxygen dissociation on tensed(T) hemoglobin subunit [mol/m3]</td></tr>
+<tr><td>totalAmountOfHemoglobin</td><td>[mol]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Allosteric_Hemoglobin2_MWC <span style="color: #006400">
-  &quot;Allosteric hemoglobin model implemented by Speciation blocks&quot;</span>
-
- <span style="color: blue">extends </span><a href="Physiolibrary_Chemical_Examples_Hemoglobin.html#Physiolibrary.Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC"
->Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC</a>;
-
-<span style="color: blue">end </span>Allosteric_Hemoglobin2_MWC;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE CardiovascularSystem_GCG_SteadyState<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -681,8 +190,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Examples</a>.CardiovascularSystem_GCG_SteadyState</h2>
 <p>
 <b>Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972</b>
-<br>
-<br><img src="Physiolibrary.SteadyState3297743a12568920StateD.png" alt="Physiolibrary.SteadyStates.Examples.CardiovascularSystem_GCG_SteadyState">
 </p>
 <h3>Information</h3>
 
@@ -692,120 +199,26 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 
 <p>Extends from <a href="Physiolibrary_Hydraulic_Examples.html#Physiolibrary.Hydraulic.Examples.CardiovascularSystem_GCG"
 >Hydraulic.Examples.CardiovascularSystem_GCG</a> (Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972).</p>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> CardiovascularSystem_GCG_SteadyState <span style="color: #006400">
-  &quot;Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972&quot;</span>
-  <span style="color: #006400"> //extends Modelica.Icons.Example;</span>
-   <span style="color: blue">extends </span><a href="Physiolibrary_Hydraulic_Examples.html#Physiolibrary.Hydraulic.Examples.CardiovascularSystem_GCG"
->Hydraulic.Examples.CardiovascularSystem_GCG</a>(
-    pulmonaryArteries(Simulation=Types.SimulationType.SteadyState),
-    pulmonaryVeinsAndLeftAtrium(Simulation=Types.SimulationType.SteadyState),
-    rightAtrium(Simulation=Types.SimulationType.SteadyState),
-    arteries(Simulation=Types.SimulationType.SteadyState),
-    veins(Simulation=Types.SimulationType.SteadyState,
-        isDependent=true));
-
-  <span style="color: blue">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
->Physiolibrary.Types</a>.*;
-
-   <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MassConservationLaw"
->Components.MassConservationLaw</a> bloodVolume(
-    n=5,
-    Simulation=Types.SimulationType.SteadyState,
-    Total=0.005);
-<span style="color: blue">equation </span>
-  <span style="color: red"> connect</span>(pulmonaryArteries.volume, bloodVolume.fragment[4]);
-  <span style="color: red">connect</span>(pulmonaryVeinsAndLeftAtrium.volume, bloodVolume.fragment[5]);
-  <span style="color: red"> connect</span>(rightAtrium.volume, bloodVolume.fragment[1]);
-  <span style="color: red">connect</span>(veins.volume, bloodVolume.fragment[2]);
-  <span style="color: red">connect</span>(arteries.volume, bloodVolume.fragment[3]);
-<span style="color: blue">end </span>CardiovascularSystem_GCG_SteadyState;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ThermalBody_QHP_STeadyState<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.ThermalBody_QHP_STeadyState" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.ThermalBody_QHP_STeadyState"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.ThermalBody_QHP_STeadyState</h2>
-<p>
-<br><img src="Physiolibrary.SteadyStatef1ccb575cf66dfefStateD.png" alt="Physiolibrary.SteadyStates.Examples.ThermalBody_QHP_STeadyState">
-</p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples.ThermalBody_QHP"
 >Thermal.Examples.ThermalBody_QHP</a>.</p>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> ThermalBody_QHP_STeadyState
-  <span style="color: blue">extends </span><a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples.ThermalBody_QHP"
->Thermal.Examples.ThermalBody_QHP</a>(
-    skin(Simulation=Types.SimulationType.SteadyState),
-    skeletalMuscle(Simulation=Types.SimulationType.SteadyState,
-        isDependent=true),
-    core(Simulation=Types.SimulationType.SteadyState),
-    GILumen(Simulation=Types.SimulationType.SteadyState));
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.EnergyConservationLaw"
->Components.EnergyConservationLaw</a> energyConservationLaw(
-    n=4,
-    Simulation=Types.SimulationType.SteadyState,
-    useTotalInput=false,
-    Total=-8373.6);
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(core.relativeHeat, energyConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(skin.relativeHeat, energyConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(skeletalMuscle.relativeHeat, energyConservationLaw.fragment[3]);
-
-  <span style="color: red">connect</span>(GILumen.relativeHeat, energyConservationLaw.fragment[4]);
-<span style="color: blue">end </span>ThermalBody_QHP_STeadyState;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Cells_SteadyState<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.SteadyState8840b230479e1253briumI.png" alt="Physiolibrary.SteadyStates.Examples.Cells_SteadyState" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.SteadyStates.Examples.Cells_SteadyState"></a><a href="Physiolibrary_SteadyStates_Examples.html#Physiolibrary.SteadyStates.Examples"
 >Physiolibrary.SteadyStates.Examples</a>.Cells_SteadyState</h2>
-<p>
-<br><img src="Physiolibrary.SteadyStateb6e5a70f1f15bb1dStateD.png" alt="Physiolibrary.SteadyStates.Examples.Cells_SteadyState">
-</p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Osmotic_Examples.html#Physiolibrary.Osmotic.Examples.Cell"
 >Osmotic.Examples.Cell</a>.</p>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Cells_SteadyState
- <span style="color: blue">extends </span><a href="Physiolibrary_Osmotic_Examples.html#Physiolibrary.Osmotic.Examples.Cell"
->Osmotic.Examples.Cell</a>(
-    cells(Simulation=Types.SimulationType.SteadyState,
-        isDependent=true),
-    interstitium(Simulation=Types.SimulationType.SteadyState),
-    interstitium1(Simulation=Types.SimulationType.SteadyState),
-    cells1(Simulation=Types.SimulationType.SteadyState,
-        isDependent=true));
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MassConservationLaw"
->Components.MassConservationLaw</a> waterConservationLaw(
-    n=2,
-    Simulation=Types.SimulationType.SteadyState,
-    Total(displayUnit=&quot;l&quot;) = 0.002);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MassConservationLaw"
->Components.MassConservationLaw</a> waterConservationLaw1(
-    n=2,
-    Simulation=Types.SimulationType.SteadyState,
-    Total(displayUnit=&quot;l&quot;) = 0.002);
-<span style="color: blue">equation </span>
-
-  <span style="color: red">connect</span>(cells.volume, waterConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(interstitium.volume, waterConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(cells1.volume, waterConservationLaw1.fragment[1]);
-  <span style="color: red">connect</span>(interstitium1.volume, waterConservationLaw1.fragment[2]);
-<span style="color: blue">end </span>Cells_SteadyState;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:24:21 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:54 2015.
 </address>
 </body>
 </html>

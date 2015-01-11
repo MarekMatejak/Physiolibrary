@@ -27,8 +27,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Examples that demonstrate usage of the Population models</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
->Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
+<p>Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -42,7 +41,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Lotka–Volterra equations</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PredatorPrey<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -51,56 +49,11 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Population.Examples</a>.PredatorPrey</h2>
 <p>
 <b>Lotka–Volterra equations</b>
-<br>
-<br><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyD.png" alt="Physiolibrary.Population.Examples.PredatorPrey">
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> PredatorPrey <span style="color: #006400">&quot;Lotka–Volterra equations&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
->Components.Population</a> predator(population_start=2);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
->Components.Reproduction</a> reproduction2(useChangePerMemberInput=true);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
->Components.Mortality</a> mortality2(LifeTime(displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
->Components.Reproduction</a> reproduction1(LifeTime(displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
->Components.Mortality</a> mortality1(useChangePerMemberInput=true);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
->Components.Population</a> prey(population_start=1);
-  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
->Types.Constants.PopulationChangePerMemberConst</a>
-                                        preyMortality(LifeTime(displayUnit=
-          &quot;s&quot;) = 1);
-  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
->Blocks.Factors.Normalization</a> predatorEffect;
-  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
->Types.Constants.PopulationChangePerMemberConst</a>
-                                        predatorReproduction(LifeTime(
-        displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
->Blocks.Factors.Normalization</a> preyEffekt;
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(preyMortality.y, predatorEffect.yBase);
-  <span style="color: red">connect</span>(predator.population, predatorEffect.u);
-  <span style="color: red">connect</span>(predatorReproduction.y, preyEffekt.yBase);
-  <span style="color: red">connect</span>(prey.population, preyEffekt.u);
-  <span style="color: red">connect</span>(reproduction2.port_b, predator.port);
-  <span style="color: red">connect</span>(predator.port, mortality2.port_a);
-  <span style="color: red">connect</span>(reproduction1.port_b, prey.port);
-  <span style="color: red">connect</span>(prey.port, mortality1.port_a);
-  <span style="color: red">connect</span>(preyEffekt.y, reproduction2.changePerMember);
-  <span style="color: red">connect</span>(predatorEffect.y, mortality1.changePerMember);
-<span style="color: blue">end </span>PredatorPrey;
-</div>
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:55 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:53 2015.
 </address>
 </body>
 </html>

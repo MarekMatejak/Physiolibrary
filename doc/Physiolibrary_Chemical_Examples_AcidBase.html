@@ -61,7 +61,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE WaterSelfIonization<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -70,8 +69,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Examples.AcidBase</a>.WaterSelfIonization</h2>
 <p>
 <b>2 H2O  &lt;-&gt;  OH-   +   H3O+ (It is better to solve this model using Euler solver, because there is only time dependence/no integration needed/)</b>
-<br>
-<br><img src="Physiolibrary.Chemical.Ex9e1e6bbbc5144d4cationD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.WaterSelfIonization">
 </p>
 <h3>Information</h3>
 
@@ -80,72 +77,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <pre><b>plotExpression(apply(-log10(WaterSelfIonization.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
 <p><br>The titration slope der(pH)/der(SID)=1.48e+6 1/(mol/L) at pH=7.4.</p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> WaterSelfIonization <span style="color: #006400">
-  &quot;2 H2O  &lt;-&gt;  OH-   +   H3O+ (It is better to solve this model using Euler solver, because there is only time dependence/no integration needed/)&quot;</span>
-    <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-    q_out(conc(nominal=10^(-7 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7 + 3));
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a> electroneutrality(
-    Simulation=Types.SimulationType.SteadyState,
-    NumberOfParticles=2,
-    Total=0,
-    Charges={1,-1},
-    useTotalInput=true) <span style="color: #006400">&quot;strong ion difference of solution&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> OH(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7 + 3),
-    isDependent=true);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H2O(
-    q_out(conc(nominal=5.55e+4)),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start(displayUnit=&quot;mol&quot;) = 1/0.018,
-    isDependent=true);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> waterDissociation(nP=2,
-    s={2},
-    K=(1e-8)*((18e-6)^2));
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a> tH2O(
-    Simulation=Types.SimulationType.SteadyState,
-    n=3,
-    Total(displayUnit=&quot;mol&quot;) = 1/0.018) <span style="color: #006400">&quot;total water concentration&quot;</span>;
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID(offset=-1e-6) <span style="color: #006400">
-    &quot;strong ions difference with respect to albumin charge shift&quot;</span>;
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=-Modelica.Constants.F,  y(unit=&quot;C&quot;)) <span style="color: #006400">
-    &quot;from elementary charge to electric charge, which is needed in system&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(H2O.q_out, waterDissociation.substrates[1]);
-  <span style="color: red">connect</span>(waterDissociation.products[2], H3O.q_out);
-  <span style="color: red">connect</span>(waterDissociation.products[1], OH.q_out);
-  <span style="color: red">connect</span>(tH2O.fragment[1], H2O.solute);
-  <span style="color: red">connect</span>(OH.solute, tH2O.fragment[2]);
-  <span style="color: red">connect</span>(H3O.solute, tH2O.fragment[3]);
-
-  <span style="color: red">connect</span>(SID.y,toColoumn. u);
-  <span style="color: red">connect</span>(toColoumn.y, electroneutrality.total);
-  <span style="color: red">connect</span>(H3O.solute, electroneutrality.fragment[1]);
-  <span style="color: red">connect</span>(OH.solute, electroneutrality.fragment[2]);
-<span style="color: blue">end </span>WaterSelfIonization;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE CarbonDioxideInWater<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -154,8 +86,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Examples.AcidBase</a>.CarbonDioxideInWater</h2>
 <p>
 <b>CO2 as alone acid-base buffer</b>
-<br>
-<br><img src="Physiolibrary.Chemical.Exa48d89a72a3ce9eeWaterD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.CarbonDioxideInWater">
 </p>
 <h3>Information</h3>
 
@@ -173,81 +103,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p><br>Enthalphy of reaction H2O + CO2 &LT;-&GT; HCO3- + H+  :         7.3 kJ/mol</p>
 <p>Enthalphy of reaction HCO3- &LT;-&GT; CO3^-2 + H+  :        14.9 kJ/mol</p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> CarbonDioxideInWater <span style="color: #006400">&quot;CO2 as alone acid-base buffer&quot;</span>
-    <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> HCO3(                  Simulation=Types.SimulationType.SteadyState);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> HendersonHasselbalch(
-    nP=2,
-    K=10^(-6.103 + 3),
-    nS=1,
-    dH(displayUnit=&quot;kJ/mol&quot;) = 7300);
-  <a href="Physiolibrary_Chemical_Sources.html#Physiolibrary.Chemical.Sources.UnlimitedGasStorage"
->Sources.UnlimitedGasStorage</a> CO2_gas(
-      Simulation=Types.SimulationType.SteadyState,
-      PartialPressure=5332.8954966);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7 + 3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.GasSolubility"
->Components.GasSolubility</a> gasSolubility(C=2400, kH_T0(displayUnit=&quot;(mmol/l)/kPa at 25degC&quot;)=
-         0.81805576878885);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO2_liquid(Simulation=Types.SimulationType.SteadyState,
-      isDependent=true);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a> electroneutrality(
-    Simulation=Types.SimulationType.SteadyState,
-    useTotalInput=true,
-    NumberOfParticles=3,
-    Charges={-1,-2,1},
-    Total=2894.560197) <span style="color: #006400">&quot;strong ion difference of solution&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO3(
-    Simulation=Types.SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=1e-08);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> c2(
-    nP=2,
-    K=10^(-10.33 + 3),
-    nS=1,
-    dH(displayUnit=&quot;kJ/mol&quot;) = 14900);
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=-Modelica.Constants.F, y(unit=&quot;C&quot;)) <span style="color: #006400">
-    &quot;from elementary charge to to electric charge, which is needed in system&quot;</span>;
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID(offset=-0.01) <span style="color: #006400">
-    &quot;strong ions difference with respect to albumin charge shift&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(HendersonHasselbalch.products[1], HCO3.q_out);
-  <span style="color: red">connect</span>(H3O.q_out, HendersonHasselbalch.products[2]);
-  <span style="color: red">connect</span>(CO2_liquid.q_out, HendersonHasselbalch.substrates[1]);
-  <span style="color: red">connect</span>(gasSolubility.q_in, CO2_liquid.q_out);
-  <span style="color: red">connect</span>(CO2_gas.q_out, gasSolubility.q_out);
-  <span style="color: red">connect</span>(HCO3.solute, electroneutrality.fragment[1]);
-  <span style="color: red">connect</span>(CO3.solute, electroneutrality.fragment[2]);
-  <span style="color: red">connect</span>(H3O.solute, electroneutrality.fragment[3]);
-  <span style="color: red">connect</span>(H3O.q_out, c2.products[2]);
-  <span style="color: red">connect</span>(HCO3.q_out, c2.substrates[1]);
-  <span style="color: red">connect</span>(c2.products[1], CO3.q_out);
-  <span style="color: red">connect</span>(SID.y,toColoumn. u);
-  <span style="color: red">connect</span>(electroneutrality.total, toColoumn.y);
-<span style="color: blue">end </span>CarbonDioxideInWater;
-</div>
-<br clear="all" style="page-break-before: always">
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE AlbuminTitration<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -256,8 +112,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Examples.AcidBase</a>.AlbuminTitration</h2>
 <p>
 <b>Figge-Fencl model (22. Dec. 2007)</b>
-<br>
-<br><img src="Physiolibrary.Chemical.Exf3f4059e1c12acebationD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.AlbuminTitration">
 </p>
 <h3>Information</h3>
 
@@ -266,200 +120,30 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p><br>Data and model is described in</p>
 <p><font style="color: #222222; ">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>n</td><td>218</td><td>Number of weak acid group in albumin molecule</td></tr>
-<tr><td>Real</td><td>pKAs[n]</td><td>cat(1, {8.5}, fill(4.0, 98),...</td><td>acid dissociation constants</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>n</td><td>Number of weak acid group in albumin molecule</td></tr>
+<tr><td>pKAs[n]</td><td>acid dissociation constants</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> AlbuminTitration <span style="color: #006400">&quot;Figge-Fencl model (22. Dec. 2007)&quot;</span>
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7.4 + 3),
-    isDependent=true) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>
-    molarConservationLaw[n](
-    <span style="color: blue">each </span>n=2,
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>Total=0.00066);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a> electroneutrality(
-    Simulation=Types.SimulationType.SteadyState,
-    NumberOfParticles=n,
-    Charges=<span style="color: red">ones</span>(n),
-    useTotalInput=true,
-    Total=6425.92363734) <span style="color: #006400">&quot;strong ion difference of solution&quot;</span>;
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=-Modelica.Constants.F,y(unit=&quot;C&quot;)) <span style="color: #006400">
-    &quot;from elementary charge to to electric charge, which is needed in system&quot;</span>;
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID(offset=-0.0832) <span style="color: #006400">
-    &quot;strong ions difference with respect to albumin charge shift&quot;</span>;
-
-  <span style="color: blue">parameter </span>Integer n=218 <span style="color: #006400">&quot;Number of weak acid group in albumin molecule&quot;</span>;
-  <span style="color: blue">parameter </span>Real pKAs[n]=<span style="color: red">cat</span>(1,{8.5},<span style="color: red">fill</span>(4.0,98),<span style="color: red">fill</span>(11.7,18),<span style="color: red">fill</span>(12.5,24),<span style="color: red">fill</span>(5.8,2),<span style="color: red">fill</span>(6.0,2),{7.6,7.8,7.8,8,8},<span style="color: red">fill</span>(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1}) <span style="color: #006400">
-    &quot;acid dissociation constants&quot;</span>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A[n](
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>isDependent=true,
-    <span style="color: blue">each </span>solute_start=0.00033) <span style="color: #006400">&quot;deprotonated acid groups&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> react[n](
-    <span style="color: blue">each </span>nP=2,
-    K=<span style="color: red">fill</span>(10.0, n) .^ (-pKAs .+ 3));
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> HA[n](
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState, <span style="color: blue">each </span>
-      solute_start=0.00033) <span style="color: #006400">&quot;protonated acid groups&quot;</span>;
-
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(react.products[1], A.q_out);
-  <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
-    <span style="color: red">connect</span>(react[i].products[2], H3O.q_out);
-  <span style="color: blue">end for</span>;
-  <span style="color: red">connect</span>(HA.q_out, react.substrates[1]);
-  <span style="color: red">connect</span>(A.solute, molarConservationLaw.fragment[1]);
-  <span style="color: red">connect</span>(HA.solute, molarConservationLaw.fragment[2]);
-  <span style="color: red">connect</span>(SID.y,toColoumn. u);
-  <span style="color: red">connect</span>(HA.solute, electroneutrality.fragment);
-  <span style="color: red">connect</span>(toColoumn.y, electroneutrality.total);
-<span style="color: blue">end </span>AlbuminTitration;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Phosphate<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Chemical.Ex9e1e6bbbc5144d4cationI.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Phosphate" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Chemical.Examples.AcidBase.Phosphate"></a><a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase"
 >Physiolibrary.Chemical.Examples.AcidBase</a>.Phosphate</h2>
-<p>
-<br><img src="Physiolibrary.Chemical.Ex8d81b9327e178980phateD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Phosphate">
-</p>
 <h3>Information</h3>
 
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
 <p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
 
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Concentration</a></td><td>totalPO4</td><td>0.00115</td><td>Total phosphate concentration [mol/m3]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>totalPO4</td><td>Total phosphate concentration [mol/m3]</td></tr>
 </table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Phosphate
-    <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
->Types.Concentration</a> totalPO4=0.00115 <span style="color: #006400">
-    &quot;Total phosphate concentration&quot;</span>;
-
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Log10"
->Modelica.Blocks.Math.Log10</a> minusPh <span style="color: #006400">&quot;value of minus pH&quot;</span>;
-
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID(offset=0) <span style="color: #006400">
-    &quot;strong ions difference with respect to albumin charge shift&quot;</span>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> H(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7.4 + 3),
-    isDependent=true) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> H3PO4(
-    Simulation=Types.SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=1e-08);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> H2PO4(Simulation=Types.SimulationType.SteadyState,
-      solute_start=0.0005);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> HPO4(Simulation=Types.SimulationType.SteadyState,
-      solute_start=0.0006);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> PO4(Simulation=Types.SimulationType.SteadyState,
-      solute_start=1e-08);
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> chemicalReaction(nP=2, K=10
-        ^(-1.915 + 3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> chemicalReaction1(nP=2, K=10
-        ^(-6.66 + 3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> chemicalReaction2(nP=2, K=10
-        ^(-11.78 + 3));
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a> tP04(
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>n=4,
-    <span style="color: blue">each </span>Total=totalPO4*1);
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a>
-    electroneutrality(
-    Simulation=Types.SimulationType.SteadyState,
-    Total(displayUnit=&quot;meq&quot;) = 3502.41783837,
-    useTotalInput=true,
-    NumberOfParticles=3,
-    Charges={-1,-2,-3});
-
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=Modelica.Constants.F,y(unit=&quot;C&quot;)) <span style="color: #006400">
-    &quot;from elementary charge to Coloumn&quot;</span>;
-
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(H3PO4.q_out, chemicalReaction.substrates[1]);
-  <span style="color: red">connect</span>(chemicalReaction.products[1], H2PO4.q_out);
-  <span style="color: red">connect</span>(H2PO4.q_out, chemicalReaction1.substrates[1]);
-  <span style="color: red">connect</span>(chemicalReaction1.products[1], HPO4.q_out);
-  <span style="color: red">connect</span>(HPO4.q_out, chemicalReaction2.substrates[1]);
-  <span style="color: red">connect</span>(chemicalReaction2.products[1], PO4.q_out);
-  <span style="color: red">connect</span>(chemicalReaction.products[2], H.q_out);
-  <span style="color: red">connect</span>(chemicalReaction1.products[2], H.q_out);
-  <span style="color: red">connect</span>(chemicalReaction2.products[2], H.q_out);
-  <span style="color: red">connect</span>(H3PO4.solute, tP04.fragment[1]);
-  <span style="color: red">connect</span>(H2PO4.solute, tP04.fragment[2]);
-  <span style="color: red">connect</span>(HPO4.solute, tP04.fragment[3]);
-  <span style="color: red">connect</span>(PO4.solute, tP04.fragment[4]);
-  <span style="color: red">connect</span>(H.solute, minusPh.u);
-  <span style="color: red">connect</span>(SID.y, toColoumn.u);
-  <span style="color: red">connect</span>(toColoumn.y, electroneutrality.total);
-  <span style="color: red">connect</span>(H2PO4.solute, electroneutrality.fragment[1]);
-  <span style="color: red">connect</span>(HPO4.solute, electroneutrality.fragment[2]);
-  <span style="color: red">connect</span>(PO4.solute, electroneutrality.fragment[3]);
-<span style="color: blue">end </span>Phosphate;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Develop<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -467,387 +151,9 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <a name="Physiolibrary.Chemical.Examples.AcidBase.Develop"></a><a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase"
 >Physiolibrary.Chemical.Examples.AcidBase</a>.Develop</h2>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons.html#Modelica.Icons.UnderConstruction"
->Modelica.Icons.UnderConstruction</a> (Icon for classes that are still under construction).</p>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">class</span> Develop
-  <span style="color: blue">extends </span><a href="Modelica_Icons.html#Modelica.Icons.UnderConstruction"
->Modelica.Icons.UnderConstruction</a>;
-  <span style="color: blue">model</span> PlasmaAcidBase
-
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-      q_out(conc(nominal=10^(-7.4 + 3))),
-      Simulation=Types.SimulationType.SteadyState,
-      solute_start=10^(-7.4 + 3),
-      isDependent=true) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-
-    <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a> tAlb[n](
-      <span style="color: blue">each </span>n=2,
-      <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-      <span style="color: blue">each </span>Total=0.00066);
-    <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a> electroneutrality(
-      Simulation=Types.SimulationType.SteadyState,
-      useTotalInput=true,
-      Charges=<span style="color: red">cat</span>(
-          1,
-          {-1,-1,-2,-1},
-          <span style="color: red">ones</span>(n)),
-      NumberOfParticles=m + n,
-      Total=6425.92363734) <span style="color: #006400">&quot;strong ion difference of solution&quot;</span>;
-    <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=-Modelica.Constants.F,y(unit=&quot;C&quot;)) <span style="color: #006400">
-      &quot;from elementary charge to to electric charge, which is needed in system&quot;</span>;
-    <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID_less_Cl(offset=-0.0832) <span style="color: #006400">
-      &quot;strong ions difference without chloride with respect to albumin charge shift&quot;</span>;
-
-    <span style="color: blue">constant </span>Integer m=4 <span style="color: #006400">
-      &quot;number of particle types in electroneutrality equation&quot;</span>;
-
-    <span style="color: blue">parameter </span>Boolean isDependent[3] = {false,false,false};
-
-    <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> totalPO4=0.00115 <span style="color: #006400">
-      &quot;Total phosphate concentration&quot;</span>;
-    <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> totalAlb=0.00066 <span style="color: #006400">
-      &quot;Total albumin concentration&quot;</span>;
-
-    <span style="color: blue">parameter </span>Integer n=218 <span style="color: #006400">&quot;Number of weak acid group in albumin molecule&quot;</span>;
-    <span style="color: blue">parameter </span>Real pKAs[n]=<span style="color: red">cat</span>(1,{8.5},<span style="color: red">fill</span>(4.0,98),<span style="color: red">fill</span>(11.7,18),<span style="color: red">fill</span>(12.5,24),<span style="color: red">fill</span>(5.8,2),<span style="color: red">fill</span>(6.0,2),{7.6,7.8,7.8,8,8},<span style="color: red">fill</span>(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1}) <span style="color: #006400">
-      &quot;acid dissociation constants&quot;</span>;
-
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A[n](
-      <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-      <span style="color: blue">each </span>isDependent=true,
-      <span style="color: blue">each </span>solute_start=0.00033) <span style="color: #006400">&quot;deprotonated acid groups&quot;</span>;
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> react[n](
-      <span style="color: blue">each </span>nP=2,
-      K=<span style="color: red">fill</span>(10.0, n) .^ (-pKAs .+ 3));
-
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> HA[n](
-      <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState, <span style="color: blue">each </span>
-        solute_start=0.00033) <span style="color: #006400">&quot;protonated acid groups&quot;</span>;
-
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO2_liquid(Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[1]);
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> HCO3(                  Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[2]);
-    <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->Interfaces.ChemicalPort_a</a> substances[3] <span style="color: #006400">
-      &quot;{free dissolved CO2, bicarbonate, chloride}&quot;</span>;
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a>                        H2PO4(Simulation=Types.SimulationType.SteadyState,
-        solute_start=0.0005);
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> phosphateAcidification(nP=2, K=10^(-6.66 + 3));
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a>                        HPO4(Simulation=Types.SimulationType.SteadyState,
-      isDependent=true,
-      solute_start=0.0006);
-    <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>               tP04(
-      <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-      <span style="color: blue">each </span>n=2,
-      <span style="color: blue">each </span>Total=totalPO4);
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> Cl(Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[3]) <span style="color: #006400">&quot;chloride anion&quot;</span>;
-  <span style="color: blue">equation </span>
-    <span style="color: red">connect</span>(react.products[1], A.q_out);
-    <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
-      <span style="color: red">connect</span>(react[i].products[2], H3O.q_out);
-    <span style="color: blue">end for</span>;
-    <span style="color: red">connect</span>(HA.q_out, react.substrates[1]);
-    <span style="color: red">connect</span>(A.solute, tAlb.fragment[1]);
-    <span style="color: red">connect</span>(HA.solute, tAlb.fragment[2]);
-    <span style="color: red">connect</span>(toColoumn.y, electroneutrality.total);
-    <span style="color: red">connect</span>(substances[1], CO2_liquid.q_out);
-    <span style="color: red">connect</span>(HCO3.q_out, substances[2]);
-    <span style="color: red">connect</span>(H2PO4.q_out, phosphateAcidification.substrates[1]);
-    <span style="color: red">connect</span>(phosphateAcidification.products[1], HPO4.q_out);
-    <span style="color: red">connect</span>(H2PO4.solute, tP04.fragment[1]);
-    <span style="color: red">connect</span>(HPO4.solute, tP04.fragment[2]);
-    <span style="color: red">connect</span>(phosphateAcidification.products[2], H3O.q_out);
-    <span style="color: red">connect</span>(HCO3.solute, electroneutrality.fragment[1]);
-    <span style="color: red">connect</span>(H2PO4.solute, electroneutrality.fragment[2]);
-    <span style="color: red">connect</span>(HPO4.solute, electroneutrality.fragment[3]);
-    <span style="color: red">connect</span>(Cl.q_out, substances[3]);
-    <span style="color: red">connect</span>(HA.solute, electroneutrality.fragment[(m+1):(n+m)]);
-    <span style="color: red">connect</span>(SID_less_Cl.y, toColoumn.u);
-    <span style="color: red">connect</span>(Cl.solute, electroneutrality.fragment[4]);
-  <span style="color: blue">end </span>PlasmaAcidBase;
-
-  <span style="color: blue">model</span> ErythrocyteAcidBase
-    <span style="color: blue">parameter </span>Boolean isDependent[4] = {false,false,false,false};
-
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-      q_out(conc(nominal=10^(-7.4 + 3))),
-      Simulation=Types.SimulationType.SteadyState,
-      solute_start=10^(-7.4 + 3),
-      isDependent=isDependent[4]) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> HendersonHasselbalch(
-      nP=2,
-      dH=15.13,
-      K=10^(-6.103 + 3),
-      nS=1);
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO2_liquid(Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[1]);
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> HCO3(                  Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[2]);
-    <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->Interfaces.ChemicalPort_a</a> substances[3] <span style="color: #006400">
-      &quot;{free dissolved CO2, bicarbonate, chloride}&quot;</span>;
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> Cl(Simulation=Types.SimulationType.SteadyState,
-        isDependent=isDependent[3]) <span style="color: #006400">&quot;chloride anion&quot;</span>;
-  <span style="color: blue">equation </span>
-    <span style="color: red">connect</span>(HendersonHasselbalch.products[1],HCO3. q_out);
-    <span style="color: red">connect</span>(H3O.q_out,HendersonHasselbalch. products[2]);
-    <span style="color: red">connect</span>(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]);
-    <span style="color: red">connect</span>(substances[1], CO2_liquid.q_out);
-    <span style="color: red">connect</span>(HCO3.q_out, substances[2]);
-    <span style="color: red">connect</span>(Cl.q_out, substances[3]);
-  <span style="color: blue">end </span>ErythrocyteAcidBase;
-
-  <span style="color: blue">model</span> BloodAcidBase
-
-    <a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase.Develop.PlasmaAcidBase"
->PlasmaAcidBase</a> plasmaAcidBase;
-    <a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase.Develop.ErythrocyteAcidBase"
->Develop.ErythrocyteAcidBase</a> erythrocyteAcidBase;
-    <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Membrane"
->Components.Membrane</a> membrane(NumberOfParticles=3);
-  <span style="color: blue">equation </span>
-    <span style="color: red">connect</span>(plasmaAcidBase.substances, membrane.particlesInside);
-    <span style="color: red">connect</span>(membrane.particlesOutside, erythrocyteAcidBase.substances);
-  <span style="color: blue">end </span>BloodAcidBase;
-<span style="color: blue">end </span>Develop;
-</div>
-<br clear="all" style="page-break-before: always">
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE PlasmaAcidBase<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Chemical.Ex901168b5aa89ec25dBaseI.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Develop.PlasmaAcidBase" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Chemical.Examples.AcidBase.Develop.PlasmaAcidBase"></a><a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase.Develop"
->Physiolibrary.Chemical.Examples.AcidBase.Develop</a>.PlasmaAcidBase</h2>
-<p>
-<br><img src="Physiolibrary.Chemical.Ex901168b5aa89ec25dBaseD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Develop.PlasmaAcidBase">
-</p>
-<h3>Information</h3>
-
-<pre><b>plotExpression(apply(-log10(AlbuminTitration.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
-<p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
-<p><br>Data and model is described in</p>
-<p><font style="color: #222222; ">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-
-<h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Boolean</td><td>isDependent[3]</td><td>{false,false,false}</td><td>&nbsp;</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->AmountOfSubstance</a></td><td>totalPO4</td><td>0.00115</td><td>Total phosphate concentration [mol]</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->AmountOfSubstance</a></td><td>totalAlb</td><td>0.00066</td><td>Total albumin concentration [mol]</td></tr>
-<tr><td>Integer</td><td>n</td><td>218</td><td>Number of weak acid group in albumin molecule</td></tr>
-<tr><td>Real</td><td>pKAs[n]</td><td>cat(1, {8.5}, fill(4.0, 98),...</td><td>acid dissociation constants</td></tr>
-</table>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->ChemicalPort_a</a></td><td>substances[3]</td><td>{free dissolved CO2, bicarbonate, chloride}</td></tr>
-</table>
-<h3>Revisions</h3>
-
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> PlasmaAcidBase
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7.4 + 3),
-    isDependent=true) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a> tAlb[n](
-    <span style="color: blue">each </span>n=2,
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>Total=0.00066);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw"
->SteadyStates.Components.ElementaryChargeConservationLaw</a> electroneutrality(
-    Simulation=Types.SimulationType.SteadyState,
-    useTotalInput=true,
-    Charges=<span style="color: red">cat</span>(
-        1,
-        {-1,-1,-2,-1},
-        <span style="color: red">ones</span>(n)),
-    NumberOfParticles=m + n,
-    Total=6425.92363734) <span style="color: #006400">&quot;strong ion difference of solution&quot;</span>;
-  <a href="Modelica_Blocks_Math.html#Modelica.Blocks.Math.Gain"
->Modelica.Blocks.Math.Gain</a> toColoumn(k(unit=&quot;C/s&quot;)=-Modelica.Constants.F,y(unit=&quot;C&quot;)) <span style="color: #006400">
-    &quot;from elementary charge to to electric charge, which is needed in system&quot;</span>;
-  <a href="Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Clock"
->Modelica.Blocks.Sources.Clock</a> SID_less_Cl(offset=-0.0832) <span style="color: #006400">
-    &quot;strong ions difference without chloride with respect to albumin charge shift&quot;</span>;
-
-  <span style="color: blue">constant </span>Integer m=4 <span style="color: #006400">&quot;number of particle types in electroneutrality equation&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean isDependent[3] = {false,false,false};
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> totalPO4=0.00115 <span style="color: #006400">
-    &quot;Total phosphate concentration&quot;</span>;
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> totalAlb=0.00066 <span style="color: #006400">
-    &quot;Total albumin concentration&quot;</span>;
-
-  <span style="color: blue">parameter </span>Integer n=218 <span style="color: #006400">&quot;Number of weak acid group in albumin molecule&quot;</span>;
-  <span style="color: blue">parameter </span>Real pKAs[n]=<span style="color: red">cat</span>(1,{8.5},<span style="color: red">fill</span>(4.0,98),<span style="color: red">fill</span>(11.7,18),<span style="color: red">fill</span>(12.5,24),<span style="color: red">fill</span>(5.8,2),<span style="color: red">fill</span>(6.0,2),{7.6,7.8,7.8,8,8},<span style="color: red">fill</span>(10.3,50),{7.19,7.29,7.17,7.56,7.08,7.38,6.82,6.43,4.92,5.83,6.24,6.8,5.89,5.2,6.8,5.5,8,3.1}) <span style="color: #006400">
-    &quot;acid dissociation constants&quot;</span>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> A[n](
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>isDependent=true,
-    <span style="color: blue">each </span>solute_start=0.00033) <span style="color: #006400">&quot;deprotonated acid groups&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Chemical.Components.ChemicalReaction</a> react[n](
-    <span style="color: blue">each </span>nP=2,
-    K=<span style="color: red">fill</span>(10.0, n) .^ (-pKAs .+ 3));
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Chemical.Components.Substance</a> HA[n](
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState, <span style="color: blue">each </span>
-      solute_start=0.00033) <span style="color: #006400">&quot;protonated acid groups&quot;</span>;
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO2_liquid(Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[1]);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> HCO3(                  Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[2]);
-  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->Interfaces.ChemicalPort_a</a> substances[3] <span style="color: #006400">
-    &quot;{free dissolved CO2, bicarbonate, chloride}&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a>                        H2PO4(Simulation=Types.SimulationType.SteadyState,
-      solute_start=0.0005);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> phosphateAcidification(nP=2, K=10^(-6.66 + 3));
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a>                        HPO4(Simulation=Types.SimulationType.SteadyState,
-    isDependent=true,
-    solute_start=0.0006);
-  <a href="Physiolibrary_SteadyStates_Components.html#Physiolibrary.SteadyStates.Components.MolarConservationLaw"
->SteadyStates.Components.MolarConservationLaw</a>               tP04(
-    <span style="color: blue">each </span>Simulation=Types.SimulationType.SteadyState,
-    <span style="color: blue">each </span>n=2,
-    <span style="color: blue">each </span>Total=totalPO4);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> Cl(Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[3]) <span style="color: #006400">&quot;chloride anion&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(react.products[1], A.q_out);
-  <span style="color: blue">for </span>i<span style="color: blue"> in </span>1:n<span style="color: blue"> loop</span>
-    <span style="color: red">connect</span>(react[i].products[2], H3O.q_out);
-  <span style="color: blue">end for</span>;
-  <span style="color: red">connect</span>(HA.q_out, react.substrates[1]);
-  <span style="color: red">connect</span>(A.solute, tAlb.fragment[1]);
-  <span style="color: red">connect</span>(HA.solute, tAlb.fragment[2]);
-  <span style="color: red">connect</span>(toColoumn.y, electroneutrality.total);
-  <span style="color: red">connect</span>(substances[1], CO2_liquid.q_out);
-  <span style="color: red">connect</span>(HCO3.q_out, substances[2]);
-  <span style="color: red">connect</span>(H2PO4.q_out, phosphateAcidification.substrates[1]);
-  <span style="color: red">connect</span>(phosphateAcidification.products[1], HPO4.q_out);
-  <span style="color: red">connect</span>(H2PO4.solute, tP04.fragment[1]);
-  <span style="color: red">connect</span>(HPO4.solute, tP04.fragment[2]);
-  <span style="color: red">connect</span>(phosphateAcidification.products[2], H3O.q_out);
-  <span style="color: red">connect</span>(HCO3.solute, electroneutrality.fragment[1]);
-  <span style="color: red">connect</span>(H2PO4.solute, electroneutrality.fragment[2]);
-  <span style="color: red">connect</span>(HPO4.solute, electroneutrality.fragment[3]);
-  <span style="color: red">connect</span>(Cl.q_out, substances[3]);
-  <span style="color: red">connect</span>(HA.solute, electroneutrality.fragment[(m+1):(n+m)]);
-  <span style="color: red">connect</span>(SID_less_Cl.y, toColoumn.u);
-  <span style="color: red">connect</span>(Cl.solute, electroneutrality.fragment[4]);
-<span style="color: blue">end </span>PlasmaAcidBase;
-</div>
-<br clear="all" style="page-break-before: always">
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE ErythrocyteAcidBase<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Chemical.Ex4cdbe115e51f86bddBaseI.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Develop.ErythrocyteAcidBase" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Chemical.Examples.AcidBase.Develop.ErythrocyteAcidBase"></a><a href="Physiolibrary_Chemical_Examples_AcidBase.html#Physiolibrary.Chemical.Examples.AcidBase.Develop"
->Physiolibrary.Chemical.Examples.AcidBase.Develop</a>.ErythrocyteAcidBase</h2>
-<p>
-<br><img src="Physiolibrary.Chemical.Ex4cdbe115e51f86bddBaseD.png" alt="Physiolibrary.Chemical.Examples.AcidBase.Develop.ErythrocyteAcidBase">
-</p>
-<h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Boolean</td><td>isDependent[4]</td><td>{false,false,false,false}</td><td>&nbsp;</td></tr>
-</table>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->ChemicalPort_a</a></td><td>substances[3]</td><td>{free dissolved CO2, bicarbonate, chloride}</td></tr>
-</table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> ErythrocyteAcidBase
-  <span style="color: blue">parameter </span>Boolean isDependent[4] = {false,false,false,false};
-
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> H3O(
-    q_out(conc(nominal=10^(-7.4 + 3))),
-    Simulation=Types.SimulationType.SteadyState,
-    solute_start=10^(-7.4 + 3),
-    isDependent=isDependent[4]) <span style="color: #006400">&quot;hydrogen ions activity&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.ChemicalReaction"
->Components.ChemicalReaction</a> HendersonHasselbalch(
-    nP=2,
-    dH=15.13,
-    K=10^(-6.103 + 3),
-    nS=1);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> CO2_liquid(Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[1]);
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> HCO3(                  Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[2]);
-  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
->Interfaces.ChemicalPort_a</a> substances[3] <span style="color: #006400">
-    &quot;{free dissolved CO2, bicarbonate, chloride}&quot;</span>;
-  <a href="Physiolibrary_Chemical_Components.html#Physiolibrary.Chemical.Components.Substance"
->Components.Substance</a> Cl(Simulation=Types.SimulationType.SteadyState,
-      isDependent=isDependent[3]) <span style="color: #006400">&quot;chloride anion&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: red">connect</span>(HendersonHasselbalch.products[1],HCO3. q_out);
-  <span style="color: red">connect</span>(H3O.q_out,HendersonHasselbalch. products[2]);
-  <span style="color: red">connect</span>(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]);
-  <span style="color: red">connect</span>(substances[1], CO2_liquid.q_out);
-  <span style="color: red">connect</span>(HCO3.q_out, substances[2]);
-  <span style="color: red">connect</span>(Cl.q_out, substances[3]);
-<span style="color: blue">end </span>ErythrocyteAcidBase;
-</div>
+<p>Extends from Modelica.Icons.UnderConstruction (Icon for classes that are still under construction).</p>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:23:40 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:50 2015.
 </address>
 </body>
 </html>

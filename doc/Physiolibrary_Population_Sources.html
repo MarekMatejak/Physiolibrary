@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Physiolibrary.Population.Sources.Growth</title>
+<title>Physiolibrary.Population.Sources</title>
 <meta name="HTML-Generator" content="Dymola">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
@@ -17,84 +17,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </style>
 </head>
 <body>
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE Growth<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Population.Sources.GrowthI.png" alt="Physiolibrary.Population.Sources.Growth" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Population.Sources.Growth"></a><a href="Physiolibrary_Population_Sources.html#Physiolibrary.Population.Sources"
->Physiolibrary.Population.Sources</a>.Growth</h2>
-<p>
-<br><img src="Physiolibrary.Population.Sources.GrowthD.png" alt="Physiolibrary.Population.Sources.Growth">
-</p>
-<h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
->Interfaces.ConditionalChange</a> (Input of population change vs. parametric constant change).</p>
-<h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>PopulationChange</td><td>0</td><td>Population change if useChangeInput=false [1/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useChangeInput</td><td>false</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
-</table>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeInput"
->PopulationChangeInput</a></td><td>populationChange</td><td>[1/s]</td></tr>
-<tr><td><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_b"
->PopulationPort_b</a></td><td>port_b</td><td>&nbsp;</td></tr>
-</table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Growth
- <span style="color: blue">extends </span><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
->Interfaces.ConditionalChange</a>;
-  <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_b"
->Interfaces.PopulationPort_b</a> port_b;
-<span style="color: blue">equation </span>
-  port_b.change = - change;
-<span style="color: blue">end </span>Growth;
-</div>
-<br clear="all" style="page-break-before: always">
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE Loss<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Population.Sources.LossI.png" alt="Physiolibrary.Population.Sources.Loss" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Population.Sources.Loss"></a><a href="Physiolibrary_Population_Sources.html#Physiolibrary.Population.Sources"
->Physiolibrary.Population.Sources</a>.Loss</h2>
-<p>
-<br><img src="Physiolibrary.Population.Sources.LossD.png" alt="Physiolibrary.Population.Sources.Loss">
-</p>
-<h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
->Interfaces.ConditionalChange</a> (Input of population change vs. parametric constant change).</p>
-<h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
->PopulationChange</a></td><td>PopulationChange</td><td>0</td><td>Population change if useChangeInput=false [1/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useChangeInput</td><td>false</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
-</table>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeInput"
->PopulationChangeInput</a></td><td>populationChange</td><td>[1/s]</td></tr>
-<tr><td><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_a"
->PopulationPort_a</a></td><td>port_a</td><td>&nbsp;</td></tr>
-</table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> Loss
- <span style="color: blue">extends </span><a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
->Interfaces.ConditionalChange</a>;
-  <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.PopulationPort_a"
->Interfaces.PopulationPort_a</a> port_a;
-<span style="color: blue">equation </span>
-  port_a.change = change;
-<span style="color: blue">end </span>Loss;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Sources<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -123,8 +45,52 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Growth<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Population.Sources.GrowthI.png" alt="Physiolibrary.Population.Sources.Growth" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Population.Sources.Growth"></a><a href="Physiolibrary_Population_Sources.html#Physiolibrary.Population.Sources"
+>Physiolibrary.Population.Sources</a>.Growth</h2>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
+>Interfaces.ConditionalChange</a> (Input of population change vs. parametric constant change).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>PopulationChange</td><td>Population change if useChangeInput=false [1/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useChangeInput</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>populationChange</td><td>[1/s]</td></tr>
+<tr><td>port_b</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Loss<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Population.Sources.LossI.png" alt="Physiolibrary.Population.Sources.Loss" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Population.Sources.Loss"></a><a href="Physiolibrary_Population_Sources.html#Physiolibrary.Population.Sources"
+>Physiolibrary.Population.Sources</a>.Loss</h2>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Population_Interfaces.html#Physiolibrary.Population.Interfaces.ConditionalChange"
+>Interfaces.ConditionalChange</a> (Input of population change vs. parametric constant change).</p>
+<h3>Parameters</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>PopulationChange</td><td>Population change if useChangeInput=false [1/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useChangeInput</td><td>=true, if real input connector is used instead of parameter PopulationChange</td></tr>
+</table>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>populationChange</td><td>[1/s]</td></tr>
+<tr><td>port_a</td><td>&nbsp;</td></tr>
+</table>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:37 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:53 2015.
 </address>
 </body>
 </html>

@@ -25,8 +25,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Modelica_Icons_Package.html#Modelica.Icons.Package"
->Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<p>Extends from Modelica.Icons.Package (Icon for standard packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -64,7 +63,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>System amount of electric charge (=number of elementary charges) conservation law</td>
 </tr>
 </table>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE EnergyConservationLaw<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -73,8 +71,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Components</a>.EnergyConservationLaw</h2>
 <p>
 <b>System Energy conservation law</b>
-<br>
-<br><img src="Physiolibrary.SteadyState084f67ec014aa8b9onLawD.png" alt="Physiolibrary.SteadyStates.Components.EnergyConservationLaw">
 </p>
 <h3>Information</h3>
 
@@ -84,63 +80,23 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.ConservationLaw</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>n</td><td>&nbsp;</td><td>Number of mass/energy fragments</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
->Energy</a></td><td>Total</td><td>1</td><td>Total mass/energy if useTotalAsInput=false [J]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useTotalInput</td><td>false</td><td>=true, if total mass/energy is used as an input</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
-<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>n</td><td>Number of mass/energy fragments</td></tr>
+<tr><td>Total</td><td>Total mass/energy if useTotalAsInput=false [J]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useTotalInput</td><td>=true, if total mass/energy is used as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
+<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
+<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
->EnergyInput</a></td><td>fragment[n]</td><td>Mass/Energy fragment [J]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
->EnergyInput</a></td><td>total</td><td>[J]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>fragment[n]</td><td>Mass/Energy fragment [J]</td></tr>
+<tr><td>total</td><td>[J]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> EnergyConservationLaw <span style="color: #006400">&quot;System Energy conservation law&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
->Interfaces.SteadyStateSystem</a>;<span style="color: #006400"> //(Simulation=Types.SimulationType.SteadyState);</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ConservationLaw"
->Icons.ConservationLaw</a>;
-
-  <span style="color: blue">parameter </span>Integer n <span style="color: #006400">&quot;Number of mass/energy fragments&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
->Types.RealIO.EnergyInput</a> fragment[n] <span style="color: #006400">&quot;Mass/Energy fragment&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean useTotalInput = false <span style="color: #006400">
-    &quot;=true, if total mass/energy is used as an input&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
->Types.Energy</a> Total = 1 <span style="color: #006400">&quot;Total mass/energy if useTotalAsInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
->Types.RealIO.EnergyInput</a> total(start=Total) = t <span style="color: blue">if </span>useTotalInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
->Types.Energy</a> t <span style="color: #006400">&quot;Current Mass/Energy&quot;</span>;
-
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useTotalInput<span style="color: blue"> then</span>
-    t=Total;
-  <span style="color: blue">end if</span>;
-
-  t*normalizedState[1] =<span style="color: red"> sum</span>(fragment);
-
-  <span style="color: #006400">//fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);</span>
-
-<span style="color: blue">end </span>EnergyConservationLaw;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassConservationLaw<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -149,8 +105,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Components</a>.MassConservationLaw</h2>
 <p>
 <b>System Mass (incompresible volume) conservation law</b>
-<br>
-<br><img src="Physiolibrary.SteadyState084f67ec014aa8b9onLawD.png" alt="Physiolibrary.SteadyStates.Components.MassConservationLaw">
 </p>
 <h3>Information</h3>
 
@@ -160,63 +114,23 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.ConservationLaw</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>n</td><td>&nbsp;</td><td>Number of mass/energy fragments</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
->Volume</a></td><td>Total</td><td>1</td><td>Total mass/energy if useTotalAsInput=false [m3]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useTotalInput</td><td>false</td><td>=true, if total mass/energy is used as an input</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
-<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>n</td><td>Number of mass/energy fragments</td></tr>
+<tr><td>Total</td><td>Total mass/energy if useTotalAsInput=false [m3]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useTotalInput</td><td>=true, if total mass/energy is used as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
+<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
+<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
->VolumeInput</a></td><td>fragment[n]</td><td>Mass/Energy fragment [m3]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
->VolumeInput</a></td><td>total</td><td>[m3]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>fragment[n]</td><td>Mass/Energy fragment [m3]</td></tr>
+<tr><td>total</td><td>[m3]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> MassConservationLaw <span style="color: #006400">
-  &quot;System Mass (incompresible volume) conservation law&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
->Interfaces.SteadyStateSystem</a>;<span style="color: #006400"> //(Simulation=Types.SimulationType.SteadyState);</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ConservationLaw"
->Icons.ConservationLaw</a>;
-
-  <span style="color: blue">parameter </span>Integer n <span style="color: #006400">&quot;Number of mass/energy fragments&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
->Types.RealIO.VolumeInput</a> fragment[n] <span style="color: #006400">&quot;Mass/Energy fragment&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean useTotalInput = false <span style="color: #006400">
-    &quot;=true, if total mass/energy is used as an input&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
->Types.Volume</a> Total = 1 <span style="color: #006400">&quot;Total mass/energy if useTotalAsInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
->Types.RealIO.VolumeInput</a> total(start=Total) = t <span style="color: blue">if </span>useTotalInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
->Types.Volume</a> t <span style="color: #006400">&quot;Current Mass/Energy&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useTotalInput<span style="color: blue"> then</span>
-    t=Total;
-  <span style="color: blue">end if</span>;
-
-  t*normalizedState[1] =<span style="color: red"> sum</span>(<span style="color: red">abs</span>(fragment));
-
-  <span style="color: #006400">//fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);</span>
-
-<span style="color: blue">end </span>MassConservationLaw;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MolarConservationLaw<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -225,8 +139,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Components</a>.MolarConservationLaw</h2>
 <p>
 <b>System Amount of substance (=number of molecules) conservation law</b>
-<br>
-<br><img src="Physiolibrary.SteadyState69c5091711831a95onLawD.png" alt="Physiolibrary.SteadyStates.Components.MolarConservationLaw">
 </p>
 <h3>Information</h3>
 
@@ -236,69 +148,24 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.ConservationLaw</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>n</td><td>&nbsp;</td><td>Number of mass/energy fragments</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->AmountOfSubstance</a></td><td>Total</td><td>1</td><td>Total mass/energy if useTotalAsInput=false [mol]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useTotalInput</td><td>false</td><td>=true, if total mass/energy is used as an input</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
-<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>n</td><td>Number of mass/energy fragments</td></tr>
+<tr><td>Total</td><td>Total mass/energy if useTotalAsInput=false [mol]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useTotalInput</td><td>=true, if total mass/energy is used as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
+<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
+<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->AmountOfSubstanceInput</a></td><td>fragment[n]</td><td>Mass/Energy fragment [mol]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->AmountOfSubstanceInput</a></td><td>total</td><td>[mol]</td></tr>
-<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
->AmountOfSubstanceOutput</a></td><td>totalAmountOfSubstance</td><td>[mol]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>fragment[n]</td><td>Mass/Energy fragment [mol]</td></tr>
+<tr><td>total</td><td>[mol]</td></tr>
+<tr><td>totalAmountOfSubstance</td><td>[mol]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> MolarConservationLaw <span style="color: #006400">
-  &quot;System Amount of substance (=number of molecules) conservation law&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
->Interfaces.SteadyStateSystem</a>;<span style="color: #006400"> //(Simulation=Types.SimulationType.SteadyState);</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ConservationLaw"
->Icons.ConservationLaw</a>;
-
-  <span style="color: blue">parameter </span>Integer n <span style="color: #006400">&quot;Number of mass/energy fragments&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->Types.RealIO.AmountOfSubstanceInput</a> fragment[n] <span style="color: #006400">&quot;Mass/Energy fragment&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean useTotalInput = false <span style="color: #006400">
-    &quot;=true, if total mass/energy is used as an input&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> Total = 1 <span style="color: #006400">
-    &quot;Total mass/energy if useTotalAsInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->Types.RealIO.AmountOfSubstanceInput</a> total(start=Total) = t <span style="color: blue">if </span>useTotalInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
->Types.AmountOfSubstance</a> t <span style="color: #006400">&quot;Current Mass/Energy&quot;</span>;
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
->Types.RealIO.AmountOfSubstanceOutput</a> totalAmountOfSubstance;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useTotalInput<span style="color: blue"> then</span>
-    t=Total;
-  <span style="color: blue">end if</span>;
-
-  t*normalizedState[1] =<span style="color: red"> sum</span>(<span style="color: red">abs</span>(fragment));
-
-  <span style="color: #006400">//fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);</span>
-  totalAmountOfSubstance = t;
-
-<span style="color: blue">end </span>MolarConservationLaw;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ElectricChargeConservationLaw<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -307,8 +174,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Components</a>.ElectricChargeConservationLaw</h2>
 <p>
 <b>System amount of electric charge (=number of elementary charges) conservation law</b>
-<br>
-<br><img src="Physiolibrary.SteadyState386ebc6b23375150onLawD.png" alt="Physiolibrary.SteadyStates.Components.ElectricChargeConservationLaw">
 </p>
 <h3>Information</h3>
 
@@ -318,64 +183,23 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.ConservationLaw</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>n</td><td>&nbsp;</td><td>Number of mass/energy fragments</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->ElectricCharge</a></td><td>Total</td><td>1</td><td>Total mass/energy if useTotalAsInput=false [C]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useTotalInput</td><td>false</td><td>=true, if total mass/energy is used as an input</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
-<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>n</td><td>Number of mass/energy fragments</td></tr>
+<tr><td>Total</td><td>Total mass/energy if useTotalAsInput=false [C]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useTotalInput</td><td>=true, if total mass/energy is used as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
+<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
+<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->ElectricChargeInput</a></td><td>fragment[n]</td><td>Mass/Energy fragment [C]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->ElectricChargeInput</a></td><td>total</td><td>[C]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>fragment[n]</td><td>Mass/Energy fragment [C]</td></tr>
+<tr><td>total</td><td>[C]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> ElectricChargeConservationLaw <span style="color: #006400">
-  &quot;System amount of electric charge (=number of elementary charges) conservation law&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
->Interfaces.SteadyStateSystem</a>;<span style="color: #006400"> //(Simulation=Types.SimulationType.SteadyState);</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ConservationLaw"
->Icons.ConservationLaw</a>;
-
-  <span style="color: blue">parameter </span>Integer n <span style="color: #006400">&quot;Number of mass/energy fragments&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->Types.RealIO.ElectricChargeInput</a> fragment[n] <span style="color: #006400">&quot;Mass/Energy fragment&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean useTotalInput = false <span style="color: #006400">
-    &quot;=true, if total mass/energy is used as an input&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->Types.ElectricCharge</a> Total = 1 <span style="color: #006400">
-    &quot;Total mass/energy if useTotalAsInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->Types.RealIO.ElectricChargeInput</a> total(start=Total) = t <span style="color: blue">if </span>useTotalInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->Types.ElectricCharge</a> t <span style="color: #006400">&quot;Current Mass/Energy&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useTotalInput<span style="color: blue"> then</span>
-    t=Total;
-  <span style="color: blue">end if</span>;
-
-  t*normalizedState[1] =<span style="color: red"> sum</span>(fragment);
-
-  <span style="color: #006400">//fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);</span>
-
-<span style="color: blue">end </span>ElectricChargeConservationLaw;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ElementaryChargeConservationLaw<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -384,8 +208,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.SteadyStates.Components</a>.ElementaryChargeConservationLaw</h2>
 <p>
 <b>System amount of electric charge (=number of elementary charges) conservation law</b>
-<br>
-<br><img src="Physiolibrary.SteadyState386ebc6b23375150onLawD.png" alt="Physiolibrary.SteadyStates.Components.ElementaryChargeConservationLaw">
 </p>
 <h3>Information</h3>
 
@@ -395,73 +217,26 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.ConservationLaw</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>NumberOfParticles</td><td>1</td><td>Number of mass/energy fragments</td></tr>
-<tr><td>Integer</td><td>Charges[NumberOfParticles]</td><td>{1}</td><td>Elementary charges of particles</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->ElectricCharge</a></td><td>Total</td><td>1</td><td>Total mass/energy if useTotalAsInput=false [C]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useTotalInput</td><td>false</td><td>=true, if total mass/energy is used as an input</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>&nbsp;</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
-<tr><td>Integer</td><td>NumberOfDependentStates</td><td>1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>NumberOfParticles</td><td>Number of mass/energy fragments</td></tr>
+<tr><td>Charges[NumberOfParticles]</td><td>Elementary charges of particles</td></tr>
+<tr><td>Total</td><td>Total mass/energy if useTotalAsInput=false [C]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
+<tr><td>useTotalInput</td><td>=true, if total mass/energy is used as an input</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
+<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
+<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->AmountOfSubstanceInput</a></td><td>fragment[NumberOfParticles]</td><td>Mass/Energy fragment [mol]</td></tr>
-<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->ElectricChargeInput</a></td><td>total</td><td>[C]</td></tr>
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>fragment[NumberOfParticles]</td><td>Mass/Energy fragment [mol]</td></tr>
+<tr><td>total</td><td>[C]</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> ElementaryChargeConservationLaw <span style="color: #006400">
-  &quot;System amount of electric charge (=number of elementary charges) conservation law&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
->SteadyStates.Interfaces.SteadyStateSystem</a>;
-  <span style="color: #006400">                                      //(Simulation=Types.SimulationType.SteadyState);</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ConservationLaw"
->Icons.ConservationLaw</a>;
-
-  <span style="color: blue">parameter </span>Integer NumberOfParticles=1 <span style="color: #006400">&quot;Number of mass/energy fragments&quot;</span>;
-  <span style="color: blue">parameter </span>Integer Charges[NumberOfParticles] = {1} <span style="color: #006400">
-    &quot;Elementary charges of particles&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
->Types.RealIO.AmountOfSubstanceInput</a> fragment[NumberOfParticles] <span style="color: #006400">
-    &quot;Mass/Energy fragment&quot;</span>;
-
-  <span style="color: blue">parameter </span>Boolean useTotalInput = false <span style="color: #006400">
-    &quot;=true, if total mass/energy is used as an input&quot;</span>;
-
-  <span style="color: blue">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->Types.ElectricCharge</a> Total = 1 <span style="color: #006400">
-    &quot;Total mass/energy if useTotalAsInput=false&quot;</span>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeInput"
->Types.RealIO.ElectricChargeInput</a> total(start=Total)=t <span style="color: blue">if </span>
-    useTotalInput;
-
-  <a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
->Types.ElectricCharge</a> t <span style="color: #006400">&quot;Current Mass/Energy&quot;</span>;
-<span style="color: blue">equation </span>
-  <span style="color: blue">if </span><span style="color: blue">not </span>useTotalInput<span style="color: blue"> then</span>
-    t=Total;
-  <span style="color: blue">end if</span>;
-
-  <span style="color: #006400">//original meaning:</span>
-  t*normalizedState[1] = Modelica.Constants.F*Charges*<span style="color: red">abs</span>(fragment);<span style="color: #006400"> //elementary charge from Eq to C</span>
-
-  <span style="color: #006400">//hacked, but still the same:  (because Dymola find steady state solution for specific problems in negative concentrations, when abs() not used)</span>
-  <span style="color: #006400">//t*normalizedState[1] = Modelica.Constants.F*(Charges[1]*(if noEvent(fragment[1]&gt;=0) then fragment[1] else -fragment[1]) + sum(Charges[i]*fragment[i] for i in 2:NumberOfParticles));</span>
-
-<span style="color: blue">end </span>ElementaryChargeConservationLaw;
-</div>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:24:21 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:54 2015.
 </address>
 </body>
 </html>

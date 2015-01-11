@@ -1,10 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Physiolibrary.Hydraulic.Sensors.PressureMeasure</title>
+<title>Physiolibrary.Hydraulic.Sensors</title>
 <meta name="HTML-Generator" content="Dymola">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="&quot;Hydraulic pressure at port&quot;">
 <style type="text/css">
 *       { font-size: 10pt; font-family: Arial, sans-serif; }
 .modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
@@ -18,97 +17,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </style>
 </head>
 <body>
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE PressureMeasure<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Hydraulic.Sd4ad2c9a8fdeca15asureI.png" alt="Physiolibrary.Hydraulic.Sensors.PressureMeasure" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Hydraulic.Sensors.PressureMeasure"></a><a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors"
->Physiolibrary.Hydraulic.Sensors</a>.PressureMeasure</h2>
-<p>
-<b>Hydraulic pressure at port</b>
-<br>
-<br><img src="Physiolibrary.Hydraulic.Sd4ad2c9a8fdeca15asureD.png" alt="Physiolibrary.Hydraulic.Sensors.PressureMeasure">
-</p>
-<h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
->Icons.PressureMeasure</a>.</p>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
->HydraulicPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
->PressureOutput</a></td><td>pressure</td><td>Pressure [Pa]</td></tr>
-</table>
-<h3>Revisions</h3>
-
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> PressureMeasure <span style="color: #006400">&quot;Hydraulic pressure at port&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
->Icons.PressureMeasure</a>;
-
-  <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
->Interfaces.HydraulicPort_a</a>
-                       q_in;
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
->Types.RealIO.PressureOutput</a> pressure <span style="color: #006400">&quot;Pressure&quot;</span>;
-<span style="color: blue">equation </span>
-
-  pressure = q_in.pressure;
-  q_in.q = 0;
-<span style="color: blue">end </span>PressureMeasure;
-</div>
-<br clear="all" style="page-break-before: always">
-<!--[if supportFields]><span style="mso-element:field-begin"></span>
-<span style="mso-spacerun:yes"></span>XE FlowMeasure<![endif]-->
-<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Hydraulic.Sb6e95c21ca632035asureI.png" alt="Physiolibrary.Hydraulic.Sensors.FlowMeasure" align="right" style="border: 1px solid" width="80" height="80">
-<a name="Physiolibrary.Hydraulic.Sensors.FlowMeasure"></a><a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors"
->Physiolibrary.Hydraulic.Sensors</a>.FlowMeasure</h2>
-<p>
-<b>Volumetric flow between ports</b>
-<br>
-<br><img src="Physiolibrary.Hydraulic.Sb6e95c21ca632035asureD.png" alt="Physiolibrary.Hydraulic.Sensors.FlowMeasure">
-</p>
-<h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.OnePort"
->Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowMeasure"
->Icons.FlowMeasure</a>.</p>
-<h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
->HydraulicPort_a</a></td><td>q_in</td><td>Volume inflow</td></tr>
-<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"
->HydraulicPort_b</a></td><td>q_out</td><td>Volume outflow</td></tr>
-<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
->VolumeFlowRateOutput</a></td><td>volumeFlow</td><td>Actual volume flow rate [m3/s]</td></tr>
-</table>
-<h3>Revisions</h3>
-
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue">model</span> FlowMeasure <span style="color: #006400">&quot;Volumetric flow between ports&quot;</span>
-  <span style="color: blue">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.OnePort"
->Interfaces.OnePort</a>;
-  <span style="color: blue">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowMeasure"
->Icons.FlowMeasure</a>;
-
-  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
->Types.RealIO.VolumeFlowRateOutput</a> volumeFlow <span style="color: #006400">&quot;Actual volume flow rate&quot;</span>;
-<span style="color: blue">equation </span>
-  q_out.pressure = q_in.pressure;
-
-  volumeFlow = q_in.q;
-
-<span style="color: blue">end </span>FlowMeasure;
-</div>
-<br clear="all" style="page-break-before: always">
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Sensors<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -137,8 +45,46 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Hydraulic pressure at port</td>
 </tr>
 </table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE FlowMeasure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Hydraulic.Sb6e95c21ca632035asureI.png" alt="Physiolibrary.Hydraulic.Sensors.FlowMeasure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Hydraulic.Sensors.FlowMeasure"></a><a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors"
+>Physiolibrary.Hydraulic.Sensors</a>.FlowMeasure</h2>
+<p>
+<b>Volumetric flow between ports</b>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.OnePort"
+>Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowMeasure"
+>Icons.FlowMeasure</a>.</p>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Volume inflow</td></tr>
+<tr><td>q_out</td><td>Volume outflow</td></tr>
+<tr><td>volumeFlow</td><td>Actual volume flow rate [m3/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE PressureMeasure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Hydraulic.Sd4ad2c9a8fdeca15asureI.png" alt="Physiolibrary.Hydraulic.Sensors.PressureMeasure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Hydraulic.Sensors.PressureMeasure"></a><a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors"
+>Physiolibrary.Hydraulic.Sensors</a>.PressureMeasure</h2>
+<p>
+<b>Hydraulic pressure at port</b>
+</p>
+<h3>Information</h3>
+<p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
+>Icons.PressureMeasure</a>.</p>
+<h3>Connectors</h3>
+<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>pressure</td><td>Pressure [Pa]</td></tr>
+</table>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Dec 07 18:19:10 2014.
+<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:52 2015.
 </address>
 </body>
 </html>
