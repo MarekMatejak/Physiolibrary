@@ -1244,5 +1244,12 @@ package Icons "Icons for physiological models"
               fileName=
                 "modelica://Physiolibrary/Resources/Icons/flowFiltration.png")}));
   end FlowFiltration;
+
+  class Microcirculation
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}), graphics={Bitmap(extent={{-100,98},{100,-100}},
+              fileName="modelica://Physiolibrary/Resources/Icons/microcirculation.png")}));
+  end Microcirculation;
   annotation (Documentation(revisions=""));
 end Icons;
