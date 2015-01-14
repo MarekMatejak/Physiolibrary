@@ -620,13 +620,16 @@ input <i>u</i>:
 
      parameter Real NormalValue=1
         "Normal value of u, because y=(u/NormalValue)*yBase.";
+
+     parameter Boolean enabled=true "disabled => y=yBase";
+
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
       Types.Fraction effect;
     equation
-      effect = u/NormalValue;
+      effect = if enabled then u/NormalValue else 1;
       y=effect*yBase;
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -654,6 +657,8 @@ input <i>u</i>:
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
 
+     parameter Boolean enabled=true "disabled => y=yBase";
+
      parameter Real[:,3] data "Array of interpolating points as {x,y,slope}";
 
      parameter Real Xscale = 1 "conversion scale to SI unit of x values";
@@ -665,13 +670,14 @@ input <i>u</i>:
       Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
 
     protected
-        parameter Real a[:,:] = Interpolation.SplineCoefficients(
-                                                          data[:, 1],data[:, 2]*Yscale,data[:, 3]*Yscale)
+        parameter Real a[:,:] = if enabled then Interpolation.SplineCoefficients(
+                                                          data[:, 1],data[:, 2]*Yscale,data[:, 3]*Yscale) else zeros(1,1)
         "Cubic polynom coefficients of curve segments between interpolating points";
 
     equation
-      effect = if UsePositiveLog10 then Interpolation.Spline(data[:, 1],a,if u/Xscale <= 1 then 0 else log10(u/Xscale))
-     else Interpolation.Spline(data[:, 1],a,u/Xscale);
+      effect = if not enabled then 1 elseif UsePositiveLog10 then Interpolation.Spline(data[:, 1],a,if u/Xscale <= 1 then 0 else log10(u/Xscale))
+       else Interpolation.Spline(data[:, 1],a,u/Xscale);
+
       y=effect*yBase;
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -684,6 +690,9 @@ input <i>u</i>:
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
+
+     parameter Boolean enabled=true "disabled => y=yBase";
+
      parameter Types.Time HalfTime(displayUnit="min"); //=3462.468;
 
      parameter Real initialValue = 1 "as u/Xscale";
@@ -712,7 +721,8 @@ input <i>u</i>:
         data=data,
         Xscale=Xscale,
         Yscale=Yscale,
-        UsePositiveLog10=UsePositiveLog10)
+        UsePositiveLog10=UsePositiveLog10,
+        enabled=enabled)
         annotation (Placement(transformation(extent={{-10,-18},{10,2}})));
     equation
       effect = spline.effect;
@@ -756,6 +766,9 @@ input <i>u</i>:
      Modelica.Blocks.Interfaces.RealInput u
                   annotation (Placement(transformation(extent={{-100,-20},{-60,
                 20}})));
+
+     parameter Boolean enabled=true "disabled => y=yBase";
+
      parameter Types.Time HalfTime(displayUnit="d");
                                                     //Tau(unit="day");
 
@@ -789,7 +802,8 @@ input <i>u</i>:
       Spline spline(
         data=data,
         Xscale=Xscale,
-        UsePositiveLog10=UsePositiveLog10)
+        UsePositiveLog10=UsePositiveLog10,
+        enabled=enabled)
         annotation (Placement(transformation(extent={{-36,56},{-16,76}})));
       Types.Constants.FractionConst fraction(k(displayUnit="1") = 1)
         annotation (Placement(transformation(extent={{-44,82},{-36,90}})));
@@ -831,14 +845,19 @@ input <i>u</i>:
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}),
+                             graphics));
     end SplineLag;
 
     model SplineLagOrZero "LagSpline if not Failed"
      extends Icons.BaseFactorIcon2;
      Modelica.Blocks.Interfaces.RealInput u
-                  annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+                  annotation (Placement(transformation(extent={{-120,-40},{-80,
+                0}}), iconTransformation(extent={{-120,-40},{-80,0}})));
+
+     parameter Boolean enabled=true "disabled => y=yBase";
+
      parameter Types.Time HalfTime(displayUnit="d");
      parameter Real[:,3] data;
 
@@ -854,7 +873,7 @@ input <i>u</i>:
       y=data[:, 2],
       slope=data[:, 3],
         Xscale=Xscale)
-        annotation (Placement(transformation(extent={{-76,20},{-56,40}})));
+        annotation (Placement(transformation(extent={{-76,-10},{-56,10}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
@@ -871,18 +890,24 @@ input <i>u</i>:
             rotation=270,
             origin={-14,26})));
       Modelica.Blocks.Logical.Switch switch1
-        annotation (Placement(transformation(extent={{-36,40},{-16,60}})));
+        annotation (Placement(transformation(extent={{-48,40},{-28,60}})));
       Modelica.Blocks.Sources.Constant      Constant1(k=0)
-        annotation (Placement(transformation(extent={{-82,62},{-62,82}})));
+        annotation (Placement(transformation(extent={{-70,52},{-58,64}})));
       Modelica.Blocks.Interfaces.BooleanInput
                                             Failed
                           annotation (Placement(transformation(extent={{-120,20},{-80,
                 60}})));
        Types.Fraction effect;
+      Modelica.Blocks.Logical.Switch switch2
+        annotation (Placement(transformation(extent={{-24,90},{-4,70}})));
+      Types.Constants.OneConst One
+        annotation (Placement(transformation(extent={{-60,78},{-40,98}})));
+      Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=enabled)
+        annotation (Placement(transformation(extent={{-96,62},{-76,82}})));
     equation
       effect = integrator.y;
       connect(curve.u, u) annotation (Line(
-          points={{-76,30},{-87,30},{-87,0},{-100,0}},
+          points={{-76,0},{-88,0},{-88,-20},{-100,-20}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(yBase, product.u1) annotation (Line(
@@ -905,26 +930,41 @@ input <i>u</i>:
           points={{-14,-17},{-14,-26},{-6,-26},{-6,-38}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(switch1.y, feedback.u1) annotation (Line(
-          points={{-15,50},{-14,50},{-14,34}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(curve.val, switch1.u3) annotation (Line(
-          points={{-56,30},{-54,30},{-54,42},{-38,42}},
+          points={{-56,0},{-54,0},{-54,42},{-50,42}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Constant1.y, switch1.u1) annotation (Line(
-          points={{-61,72},{-58,72},{-58,58},{-38,58}},
+          points={{-57.4,58},{-50,58}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(switch1.u2, Failed) annotation (Line(
-          points={{-38,50},{-78,50},{-78,40},{-100,40}},
+          points={{-50,50},{-58,50},{-58,38},{-80,38},{-80,40},{-100,40}},
           color={255,0,255},
+          smooth=Smooth.None));
+      connect(switch2.y, feedback.u1) annotation (Line(
+          points={{-3,80},{0,80},{0,64},{-14,64},{-14,34}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(booleanConstant.y, switch2.u2) annotation (Line(
+          points={{-75,72},{-38,72},{-38,80},{-26,80}},
+          color={255,0,255},
+          smooth=Smooth.None));
+      connect(switch2.u1, switch1.y) annotation (Line(
+          points={{-26,72},{-34,72},{-34,66},{-22,66},{-22,50},{-27,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(One.y, switch2.u3) annotation (Line(
+          points={{-37.5,88},{-26,88}},
+          color={0,0,127},
           smooth=Smooth.None));
       annotation (        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}), graphics));
     end SplineLagOrZero;
   end Factors;
 
