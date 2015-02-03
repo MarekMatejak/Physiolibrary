@@ -1235,7 +1235,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       replaceable package Utilities = Types.FilesUtilities(directoryName=dirName)
                                                                       constrainedby
-        Types.Utilities
+        Types.Utilities "How to store or load the values"
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
       parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
@@ -1331,7 +1331,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
 
       replaceable package Utilities = Types.FilesUtilities            constrainedby
-        Types.Utilities
+        Types.Utilities "How to store or load the values"
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
       parameter Integer n "Number of states"
