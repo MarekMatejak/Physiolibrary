@@ -25,7 +25,7 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 ## Installation
 * Physiolibrary/package.mo can be directly opened by each Modelica environments. 
 
-* OpenModelica: Physiolibrary is already included in full installation of OpenModelica from version 1.9.
+* OpenModelica: Physiolibrary is already included from version 1.9.
 
 * Dymola support of physical units:
   * Using Windows batch script: call "Physiolibrary\Resources\Install\Dymola\install.bat"
@@ -34,8 +34,8 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Prerequisities
 
-* environment supporting Modelica 3.2 or higher ([Dymola](http://www.3ds.com/products-services/catia/capabilities/modelica-systems-simulation-info/dymola/trial-version/), [OpenModelica](https://build.openmodelica.org/omc/builds/windows/releases/), [SystemModeler](http://www.wolfram.com/system-modeler/trial/) or [JModelica](http://www.jmodelica.org/downloads))
-* Modelica Standard Library 3.2.1 (usually it is already part of environment, [MSL](https://github.com/modelica/Modelica))
+* environment supporting Modelica 3.2 or higher ([Dymola](http://www.3ds.com/products-services/catia/capabilities/modelica-systems-simulation-info/dymola/trial-version/), [OpenModelica](https://build.openmodelica.org/omc/builds/windows/releases/), [SystemModeler](http://www.wolfram.com/system-modeler/trial/) or [JModelica](http://www.jmodelica.org/binary))
+* Modelica Standard Library 3.2.1 ([MSL](https://github.com/modelica/Modelica))
 
 ## Current release
 
