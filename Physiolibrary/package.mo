@@ -121,7 +121,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
 <p>Charles University in Prague, Czech Republic</p>
 <p><br/>email: marek@matfyz.cz</p>
 <p><h4>Copyright notices of the files:</h4></p>
-<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
+<p>Copyright &copy; 2008-2015, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
 <p><br/><br/>This package with all of its subpackages is released under the &ldquo;Modelica License 2&rdquo; (if not explicitly noted otherwise). </p>
 <p><br/><a href=\"#The_Modelica_License_2-outline\">The Modelica License 2</a></p>
 <p><br/><a href=\"#How_to_Apply_the_Modelica_License_2-outline\">How to Apply the Modelica License 2</a></p>
@@ -410,7 +410,10 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
-<p><br>New release must be numbered by Semantic Versioning 2.0, see <a href=\"http://semver.org/\">semver.org</a>. </p><p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using \"annotation(conversion(from(version=..)))\"! </p><p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p><p><br>Update version number to &QUOT;X.Y.Z&QUOT;: </p>
+<p><br>New release must be numbered by Semantic Versioning 2.0, see <a href=\"http://semver.org/\">semver.org</a>. </p>
+<p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using &QUOT;annotation(conversion(from(version=..)))&QUOT;! </p>
+<p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p>
+<p><br>Update version number to &QUOT;X.Y.Z&QUOT;: </p>
 <ul>
 <li>At package Physiolibrary annotation: (version=&QUOT;X.Y.Z&QUOT;) together with &QUOT;versionBuild&QUOT;, &QUOT;versionDate&QUOT; and &QUOT;dateModified&QUOT; attribute </li>
 <li>At head of package Physiolibrary &QUOT;Physiological domains library (version X.Y.Z)&QUOT; </li>
@@ -424,11 +427,11 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
 <p><br>Publish release in GitHub: </p>
 <ul>
 <li>Prepare release in &QUOT;master&QUOT; branch</li>
-<li>Install, Check, Test, Test, Test.. </li>
+<li>Install, Check, Test, Test, Test (stop-time of examples).. </li>
 <li>Delete branch &QUOT;release&QUOT; </li>
 <li>Create new branch &QUOT;release&QUOT; from &QUOT;master&QUOT; branch </li>
 <li>Rename directory &QUOT;Physiolibrary&QUOT; in release branch to directory &QUOT;Physiolibrary X.Y.Z&QUOT; </li>
-<li>Commint and Push  </li>
+<li>Commint and Push </li>
 <li>Draft a new release from &QUOT;release&QUOT; branch with number &QUOT;vX.Y.Z&QUOT; and with release notes. </li>
 </ul>
 </html>"));
@@ -488,14 +491,6 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
 </table>
 </html>"));
   end UsersGuide;
-
-
-
-
-
-
-
-
 
 
   annotation (preferredView="info",

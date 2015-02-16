@@ -331,7 +331,7 @@ package Population
               lineColor={0,127,127},
               fillColor={0,127,127},
               fillPattern=FillPattern.Solid),
-        Text(extent = {{-160,110},{40,50}}, lineColor={0,127,127},
+        Text(extent=  {{-160,110},{40,50}}, lineColor={0,127,127},
               textString="%name")}),
         Documentation(info="<html>
 <p>
@@ -447,4 +447,9 @@ Connector with one flow signal of type Real.
 
     end ConditionalLifeTime;
   end Interfaces;
+  annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2015, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>"));
 end Population;

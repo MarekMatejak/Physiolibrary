@@ -63,7 +63,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=10));
+        experiment(StopTime=5));
     end MinimalCirculation;
 
     model Windkessel_2element "Two-element Windkessel model"
@@ -662,7 +662,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(leftHeart.outflow, SystemicArteries.q_in) annotation (Line(
-            points={{57.28,1.2},{57.28,-60},{46,-60}},
+            points={{52,0},{52,-60},{46,-60}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
@@ -696,7 +696,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(rightHeart.outflow, PulmonaryArteries.q_in) annotation (Line(
-            points={{-53.76,4.56},{-53.76,38},{-30,38}},
+            points={{-48,3},{-48,38},{-30,38}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
@@ -708,7 +708,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <li>Tribula M, Je~ek F, Privitzer P, Kofr&aacute;nek J, Kolman J. Webov&yacute; v&yacute;ukov&yacute; simul&aacute;tor krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2013: 197-204.</li>
 <li><a href=\"http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html\">http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html</a></li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end NonPulsatileCirculation;
 
       model PulsatileCirculation
@@ -727,7 +727,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <li>Kulh&aacute;nek T, Tribula M, Kofr&aacute;nek J, Matej&aacute;k M. Simple models of the cardiovascular system for educational and research purposes. MEFANET Journal 2014. Available at WWW:<a href=\"
  http://mj.mefanet.cz/mj-04140914\"> http://mj.mefanet.cz/mj-04140914</a>.</li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end PulsatileCirculation;
 
       package Parts "Utility components used by package KofranekModels2013"
@@ -1078,7 +1078,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <ul>
 <li><i>Sep 2014 </i>by Tomas Kulhanek: <br>Created. </li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end PulsatileCirculation;
 
       package Parts "Utility components used by package KofranekModels2013"
