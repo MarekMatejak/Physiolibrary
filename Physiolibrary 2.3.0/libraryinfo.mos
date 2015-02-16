@@ -8,5 +8,5 @@ LibraryInfoMenuCommand(
     isModel = true,
     description = "Physiology Library 2.3.0",
     version = "2.3.0",
-    ModelicaVersion = ">=3.2.1",
+    ModelicaVersion = ">=3.2",
     pos = 3753);
