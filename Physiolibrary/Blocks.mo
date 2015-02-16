@@ -364,9 +364,9 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
         "Half time to compute degradation from amount or mass";
     public
           Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
-              Placement(transformation(extent={{-140,-20},{-100,20}}, rotation=0)));
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
           Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
-             Placement(transformation(extent={{100,-10},{120,10}}, rotation=0)));
+             Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = (Modelica.Math.log(2)/HalfTime)*u;
@@ -411,9 +411,9 @@ input <i>u</i>:
         "Half time to compute degradation from amount or mass";
     public
           Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
-              Placement(transformation(extent={{-140,-20},{-100,20}}, rotation=0)));
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
           Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
-             Placement(transformation(extent={{100,-10},{120,10}}, rotation=0)));
+             Placement(transformation(extent={{100,-10},{120,10}})));
 
         equation
           y = f*u;
@@ -757,8 +757,7 @@ input <i>u</i>:
 <p>If the input signal u is constant and it is different from starting delayed input d, the middle value between u and d will be reached after HalfTime.</p>
 <p>The mathematical background:</p>
 <p>d&apos;(t) = k*(u(t) - d(t))       =&GT;       The solution of d(t) in special case, if u(t) is constant at each time t:  d(t)=u+(d(0)-u)*e^(-k*t),  where the definition of HalfTime is  d(HalfTime) = d(0) + (d(0)-u)/2.</p>
-</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
+</html>"));
     end LagSpline;
 
     model SplineLag "Adapt the effect after interpolation"
@@ -845,9 +844,7 @@ input <i>u</i>:
       annotation ( Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}),
-                             graphics));
+</html>"));
     end SplineLag;
 
     model SplineLagOrZero "LagSpline if not Failed"
@@ -961,10 +958,7 @@ input <i>u</i>:
       annotation (        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics),
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}}), graphics));
+</html>"));
     end SplineLagOrZero;
   end Factors;
 

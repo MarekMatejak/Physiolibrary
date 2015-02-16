@@ -78,9 +78,6 @@ package Population
           color={0,0,127},
           smooth=Smooth.None));
       annotation (
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),
-                        graphics),
         experiment(StopTime=20),
         __Dymola_experimentSetupOutput(equdistant=false));
     end PredatorPrey;
@@ -297,8 +294,7 @@ package Population
               lineColor={0,0,255},
               origin={-8,-78},
               rotation=360,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=
-               false, extent={{-100,-100},{100,100}}), graphics));
+              textString="%name")}));
     end Loss;
   end Sources;
 
@@ -421,10 +417,6 @@ Connector with one flow signal of type Real.
         change = PopulationChange;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
     end ConditionalChange;
 
     partial model ConditionalLifeTime
@@ -453,10 +445,6 @@ Connector with one flow signal of type Real.
         changePerPopulationMember = 1/LifeTime;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
     end ConditionalLifeTime;
   end Interfaces;
 end Population;

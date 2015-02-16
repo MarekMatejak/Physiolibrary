@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
+package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
  extends Modelica.Icons.Package;
 
 
@@ -239,6 +239,38 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
+  class Version_2_3_0 "Version 2.3.0 (Feb. 16, 2015)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">Population domain for population models of organisms, cells,..</font></li>
+<li><font style=\"color: #333333; \">cardiovascular models as example of Hydraulic domain</font></li>
+<li><font style=\"color: #333333; \">components: osmotic reabsorption, ideal osmotic flow filtration</font></li>
+<li><font style=\"color: #333333; \">display units: umol/min,nmol/min,pmol/min,l/day</font></li>
+<li><font style=\"color: #333333; \">icons: heart ventricle icon, microcirculation, population</font></li>
+<li><font style=\"color: #333333; \">blocks: 1(one) as constant, energy per mass, DegradationGain, FractionGain</font></li>
+<li><font style=\"color: #333333; \">installation to System Modeler script (Resources/Install)</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">OsmoticCell with more possible membrane type interfaces</font></li>
+<li><font style=\"color: #333333; \">factors: dissabling option and with decadic logarith</font></li>
+<li><font style=\"color: #333333; \">redefinition of unmeasurables physical quantities</font></li>
+<li><font style=\"color: #333333; \">manipulation with initial input and final output values of variables</font></li>
+<li><font style=\"color: #333333; \">units of heart starling slopes in CardiovascularSystem_GCG</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">units Torr with capital 'T' (from name - Evangelista Torricelli)</font></li>
+<li><font style=\"color: #333333; \">Blocks.Math.Exponentiation to Blocks.Math.Power</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_3_0;
+
   class Version_2_2_0 "Version 2.2.0 (Sep. 06, 2014)"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -467,10 +499,10 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 
 
   annotation (preferredView="info",
-version="2.3.0-beta",
+version="2.3.0",
 versionBuild=1,
-versionDate="2014-09-22",
-dateModified = "2014-09-22 10:30:00Z",
+versionDate="2015-02-16",
+dateModified = "2015-02-16 15:49:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(

@@ -1,8 +1,6 @@
 @echo off
 cls
 
-rem ****** Find paths *****
-
 set CurrentDirectory=%cd%
 echo %~dp0
 cd %~dp0\..\..\..
@@ -11,15 +9,29 @@ set PHYSIOLIBRARYDIR=%cd%
 FOR /f "delims=!" %%i IN ("%PHYSIOLIBRARYDIR%") DO (set PHYSIOLIBRARY=%%~nxi)
 echo %PHYSIOLIBRARY%
 
+
+rem ****** Check administration privileges (for copying files into Dymola Program-Files directory)  *****
+
+NET FILE 1>NUL 2>NUL
+if '%errorlevel%' NEQ '0' ( goto getPrivileges )
+
+
+rem ****** Find paths (find Dymola by windows file '.mo' association) *****
+
 for /F delims^=^=^ tokens^=2 %%z in ('assoc .mo') DO set mofile=%%z
 for /F delims^=^"^ tokens^=2 %%s in ('ftype %mofile%') DO set x=%%s
 call set DYMOLADIR=%%x:\bin%x:*\bin=%=%%
 set x=
 
-echo Selected Dymola directory is "%DYMOLADIR%".
-
-if "%1" == "EVEL" goto gotPrivileges
-
+if "%DYMOLADIR%"=="%DYMOLADIR:Dymola=%" ( set ISOK=N ) ELSE ( set ISOK=Y )
+choice /C YN /M "Do you want to install Physiolibrary into dymola directory '%DYMOLADIR%'? " /T 3 /D %ISOK%
+if errorlevel == 2 (
+  set DYMOLADIR=
+  set /P DYMOLADIR="Please write the Dymola directory:"
+)
+ 
+echo Selected Dymola directory is "%DYMOLADIR:"=%".
+set DYMOLADIR=%DYMOLADIR:"=%
 
 
 rem ****** Backup and generate "uninstall.bat" *****
@@ -43,15 +55,23 @@ if "%PHYSIOLIBRARY%" NEQ "" echo rmdir /S /Q "%DYMOLADIR%\Modelica\Library\%PHYS
 
 
 
-rem ****** Check administration privileges *****
+rem ****** Copy files into ProgramFiles\Dymola directory *****
 
-NET FILE 1>NUL 2>NUL
-if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
+if not exist "%DYMOLADIR%\Modelica\Library" ( 
+   echo "The Dymola directory '%DYMOLADIR%' is not valid?!"
+   exit /B
+) 
+
+xcopy /Y "Resources\DisplayUnits\displayunit.mos" "%DYMOLADIR%\insert\"
+mkdir "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
+xcopy /S /Y "%PHYSIOLIBRARYDIR%" "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
+
+cd "%CurrentDirectory%"
+set CurrentDirectory=
+exit /B
 
 
-
-
-rem ****** Get administration privileges *****
+rem ****** Get administration privileges (ask user for pasword) *****
 :getPrivileges
 
 ECHO Set UAC = CreateObject^("Shell.Application"^) > "%temp%\OEgetPrivileges.vbs"
@@ -61,15 +81,3 @@ ECHO UAC.ShellExecute "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola\install.bat",
 cd "%CurrentDirectory%"
 set CurrentDirectory=
 exit /B
-
-
-rem ****** Copy files into ProgramFiles\Dymola directory *****
-:gotPrivileges
-
-xcopy /Y "Resources\DisplayUnits\displayunit.mos" "%DYMOLADIR%\insert\"
-mkdir "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
-xcopy /S /Y "%PHYSIOLIBRARYDIR%" "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
-
-cd "%CurrentDirectory%"
-set CurrentDirectory=
-

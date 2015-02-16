@@ -279,8 +279,6 @@ package Types "Physiological units with nominals"
             string="%first",
             index=-1,
             extent={{-6,3},{-6,3}}));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
       end Test;
       annotation (Documentation(info="<html>
 <p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
@@ -3982,10 +3980,7 @@ constructed by the signals connected to this bus.
               lineColor={0,0,255},
               fillColor={215,215,215},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics),
-        Documentation(revisions="<html>
+              textString="%name")}),        Documentation(revisions="<html>
 <table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
 <td><p>Author:</p></td>
 <td><p>Marek Matejak</p></td>

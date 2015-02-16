@@ -3626,7 +3626,6 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             rotation=270,
             origin={60,-100}), iconTransformation(
             extent={{-20,-20},{20,20}},
-            rotation=0,
             origin={116,-40})));
     equation
       q_out.conc = solute/volume;
@@ -3884,9 +3883,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <td></td>
 </tr>
 </table>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end ChemicalReaction;
 
     model GasSolubility "Henry's law of gas solubility in liquid."
@@ -5210,8 +5207,6 @@ on the model behaviour.
         q = SolutionFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
     end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow
