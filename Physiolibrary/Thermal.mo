@@ -307,43 +307,6 @@ package Thermal
   package Components
     extends Modelica.Icons.Package;
 
-    model IdealRadiator
-      "Closed circiut radiator, where outflowed = ambient temperature"
-      extends Interfaces.ConditionalMassFlow;
-      extends Icons.Radiator;
-
-      parameter Types.SpecificHeatCapacity SpecificHeat=3851.856
-        "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
-
-      Thermal.Interfaces.HeatPort_a
-                       q_in annotation (Placement(
-            transformation(extent={{-110,10},{-90,30}})));
-      Thermal.Interfaces.HeatPort_b
-                       q_out annotation (Placement(
-            transformation(extent={{-10,90},{10,110}})));
-    equation
-      q_in.Q_flow + q_out.Q_flow = 0;
-    //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
-      q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
-
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={
-            Text(
-              extent={{-144,-142},{156,-102}},
-              textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p>This class has two thermal connectors &ndash; one for liquid inside the radiator and another for the material around the radiator. Note that there is no liquid flow inside these connectors. The liquid flow can be described by a parameter or input to the instance. Together with the liquid specific heat, this flow determines the amount of heat flux from the liquid to a surrounding environment of different temperature. The calculation fulfills the ideal condition of microcirculation, where the outflowing blood has the same temperature as a tissue. This is really useful for modeling body thermal transfers, because the transfer of heat with blood flow is more significant than the typical rate of conduction through solid mass.&nbsp;</p>
-<p><br>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
-<p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
-<p>The environment temperature is the same as radiator output temperature q_out.T. </p>
-<p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
-</html>"));
-    end IdealRadiator;
-
     model HeatAccumulation "Accumulating of heat to substance"
       extends Icons.HeatAccumulation;
       extends SteadyStates.Interfaces.SteadyState(
@@ -410,6 +373,43 @@ package Thermal
               textString="%name",
               lineColor={0,0,255})}));
     end HeatAccumulation;
+
+    model IdealRadiator
+      "Closed circiut radiator, where outflowed = ambient temperature"
+      extends Interfaces.ConditionalMassFlow;
+      extends Icons.Radiator;
+
+      parameter Types.SpecificHeatCapacity SpecificHeat=3851.856
+        "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
+
+      Thermal.Interfaces.HeatPort_a
+                       q_in annotation (Placement(
+            transformation(extent={{-110,10},{-90,30}})));
+      Thermal.Interfaces.HeatPort_b
+                       q_out annotation (Placement(
+            transformation(extent={{-10,90},{10,110}})));
+    equation
+      q_in.Q_flow + q_out.Q_flow = 0;
+    //  assert(substanceFlow>=-Modelica.Constants.eps,"In IdealRadiator must be always the forward flow direction! Not 'substanceFlow<0'!");
+      q_in.Q_flow = q*(q_in.T-q_out.T)*SpecificHeat;
+
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={
+            Text(
+              extent={{-144,-142},{156,-102}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p>This class has two thermal connectors &ndash; one for liquid inside the radiator and another for the material around the radiator. Note that there is no liquid flow inside these connectors. The liquid flow can be described by a parameter or input to the instance. Together with the liquid specific heat, this flow determines the amount of heat flux from the liquid to a surrounding environment of different temperature. The calculation fulfills the ideal condition of microcirculation, where the outflowing blood has the same temperature as a tissue. This is really useful for modeling body thermal transfers, because the transfer of heat with blood flow is more significant than the typical rate of conduction through solid mass.&nbsp;</p>
+<p><br>The real inflow to radiator can be described by substanceFlow and temperature q_in.T.</p>
+<p><b>q_in.q=q_out.q is not the heat inflow to Radiator input</b>, but the heat convected from radiator to environment!</p>
+<p>The environment temperature is the same as radiator output temperature q_out.T. </p>
+<p>And the flow of heat from radiator to environment is driven by Fick principle.</p>
+</html>"));
+    end IdealRadiator;
 
     model Conductor "Heat resistor"
      extends Interfaces.OnePort;

@@ -23,30 +23,56 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 ![screenshot](screenshot.png)
 
 ## Installation
-Download and unzip.
-* install to Dymola: please call "Physiolibrary\Resources\Install\Dymola\install.bat"
+* Physiolibrary/package.mo can be directly opened by each Modelica environments. 
+
+* OpenModelica: Physiolibrary is already included from version 1.9.
+
+* Dymola support of physical units:
+  * Using Windows batch script: call "Physiolibrary\Resources\Install\Dymola\install.bat"
+  * Manually: copy the Physiolibrary/Resources/DisplayUnits/displayUnits.mos over dymola-install-dir/insert/displayUnits.mos
+
+
+## Prerequisities
+
+* environment supporting Modelica 3.2 or higher ([Dymola](http://www.3ds.com/products-services/catia/capabilities/modelica-systems-simulation-info/dymola/trial-version/), [OpenModelica](https://build.openmodelica.org/omc/builds/windows/releases/), [SystemModeler](http://www.wolfram.com/system-modeler/trial/) or [JModelica](http://www.jmodelica.org/binary))
+* Modelica Standard Library 3.2.1 ([MSL](https://github.com/modelica/Modelica))
 
 ## Current release
 
-Download [Physiolibrary 2.2.0 (2014-09-06)](../../archive/v2.2.0.zip)
+Download [Physiolibrary 2.3.0 (2015-02-16)](../../archive/v2.3.0.zip)
 
 #### Release notes
 
-*  [Version v2.2.0 (2014-09-06)](../../archive/v2.2.0.zip)
+*  [Version v2.3.0 (2015-02-16)](../../archive/v2.3.0.zip)
  * New:
-  * international units for Insulin,EPO,ADH,Renin,TSH
-  * read/write of values in non-SI units from/to file
-  * outflow/inflow sources
-  * chemical internal heats
-  * passive fluxes through membranes
+		* Population domain for population models of organisms, cells,..
+		* cardiovascular models as example of Hydraulic domain
+		* components: osmotic reabsorption, ideal osmotic flow filtration
+		* display units: umol/min,nmol/min,pmol/min,l/day
+		* icons: heart ventricle icon, microcirculation, population
+		* blocks: 1(one) as constant, energy per mass, DegradationGain, FractionGain
+		* installation to System Modeler script (Resources/Install)
  * Fix:
-  * collapsing ElasticVessel at negative sucking pressures
-  * concentrations are always per volume of whole solution
-  * determining of Dymola installation folder
+		* OsmoticCell with more possible membrane type interfaces
+		* factors: dissabling option and with decadic logarith
+		* redefinition of unmeasurables physical quantities
+		* manipulation with initial input and final output values of variables
+		* units of heart starling slopes in CardiovascularSystemGCG example
  * Rename:
-  * actualFlow, actualConc, .. in sensors
-  * FlowConcentrationMeasure to IncrementalFlowConcentrationMeasure
-  * thermal OutStream to MassOutflow
+		* units Torr with capital 'T' (from name - Evangelista Torricelli)
+		* Blocks.Math.Exponentiation to Blocks.Math.Power
+
+*  [Version v2.2.0 (2014-09-06)](../../archive/v2.2.0.zip)
+ * New read/write of values in non-SI units from/to file
+ * New outflow/inflow sources
+ * New chemical internal heats
+ * New passive fluxes through membranes
+ * Fixed collapsing ElasticVessel at negative sucking pressures
+ * Fixed concentrations are always per volume of whole solution
+ * Fixed determining of Dymola installation folder
+ * Renamed actualFlow, actualConc, .. in sensors
+ * Renamed FlowConcentrationMeasure to IncrementalFlowConcentrationMeasure
+ * Renamed thermal OutStream to MassOutflow
 
 *  [Version v2.1.1 (2014-05-02)](../../archive/v2.1.1.zip)
  * New compoment: HydraulicComponents.IdealValve for modeling aortic, pulmonary, triscupid and mitral valve

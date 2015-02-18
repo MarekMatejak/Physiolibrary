@@ -216,7 +216,7 @@ package Types "Physiological units with nominals"
         Physiolibrary.Types.BusConnector busConnector
           annotation (Placement(transformation(extent={{-4,-2},{36,38}})));
         Physiolibrary.Types.Examples.IO_Bus.OutputToFile outputToFile
-          annotation (Placement(transformation(extent={{70,46},{90,66}})));
+          annotation (Placement(transformation(extent={{70,48},{90,68}})));
         Physiolibrary.Types.Constants.PressureConst
                    Bone_PO2(k=5599.54027143)
           "Partial oxygen pressure in bone blood venules."
@@ -236,7 +236,7 @@ package Types "Physiological units with nominals"
           annotation (Placement(transformation(extent={{72,-26},{92,-6}})));
       equation
         connect(busConnector, outputToFile.busConnector) annotation (Line(
-            points={{16,18},{48,18},{48,56},{80,56}},
+            points={{16,18},{48,18},{48,58},{80,58}},
             color={255,204,51},
             thickness=0.5,
             smooth=Smooth.None));
@@ -279,8 +279,6 @@ package Types "Physiological units with nominals"
             string="%first",
             index=-1,
             extent={{-6,3},{-6,3}}));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
       end Test;
       annotation (Documentation(info="<html>
 <p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
@@ -973,6 +971,35 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
   end MassConst;
+
+  block MassConcentrationConst "Constant signal of type MassConcentration"
+   parameter Types.MassConcentration k
+        "Constant MassConcentration output value";
+        RealIO.MassConcentrationOutput y "MassConcentration constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="massConcentration",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end MassConcentrationConst;
 
   block MassFlowRateConst "Constant signal of type MassFlowRate"
    parameter Types.MassFlowRate k "Constant MassFlowRate output value";
@@ -3918,8 +3945,8 @@ package Types "Physiological units with nominals"
               textString="%name")}),
         Documentation(info="<html>
 <p>
-This connector defines the \"expandable connector\" ControlBus that
-is used as bus in the HuMod model.
+This connector defines the \"expandable connector\" that
+is used as bus in the Physiomodel (www.physiomodel.org).
 Note, this connector is \"empty\". When using it, the actual content is
 constructed by the signals connected to this bus.
 </p>
@@ -3953,10 +3980,7 @@ constructed by the signals connected to this bus.
               lineColor={0,0,255},
               fillColor={215,215,215},
               fillPattern=FillPattern.Solid,
-              textString="%name")}), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics),
-        Documentation(revisions="<html>
+              textString="%name")}),        Documentation(revisions="<html>
 <table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
 <td><p>Author:</p></td>
 <td><p>Marek Matejak</p></td>
@@ -4421,7 +4445,7 @@ This icon is designed for a <b>signal bus</b> connector.
   type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
     "Gas solubility in liquid";
 
-  type StoichiometricNumber = Integer (final quantity="StoichiometricNumber", min=1);
+  type StoichiometricNumber = Modelica.SIunits.StoichiometricNumber; // Integer(final quantity="StoichiometricNumber", min=1);
 
   type Population = Real (final quantity="Population", final unit="1", displayUnit="1", min=0)
     "Average number of population individuals";
@@ -6628,6 +6652,7 @@ The Real output y is a constant signal:
       SteadyState "Steady State = Derivations are zeros during simulation")
     "Initialization or Steady state options (to determine model type before simulating)"
       annotation (Evaluate=true);
+
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>
 <p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
