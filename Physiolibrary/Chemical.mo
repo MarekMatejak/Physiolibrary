@@ -1174,7 +1174,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={64,-34})));
-      Modelica.Blocks.Math.Sum total[4](each nin=6) annotation (Placement(transformation(
+      Modelica.Blocks.Math.Sum totalAmounts[4](each nin=6) annotation (
+            Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-64,62})));
@@ -1196,9 +1197,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
-              origin={-100,-100})));
-      Modelica.Blocks.Math.Sum total1[
-                                     4](each nin=6) annotation (Placement(transformation(
+              origin={-100,-98})));
+      Modelica.Blocks.Math.Sum totalHeats[4](each nin=6) annotation (Placement(
+              transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-64,32})));
@@ -1248,30 +1249,30 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(Hbu_A_NH3.solute, total.u[1]) annotation (Line(
-          points={{-16,70},{-44,70},{-44,63.6667},{-52,63.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NH3.solute, total.u[2]) annotation (Line(
-          points={{70,70},{-2,70},{-2,63},{-52,63}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_A_NH2.solute, total.u[3]) annotation (Line(
-          points={{-16,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NH2.solute, total.u[4]) annotation (Line(
-          points={{70,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_A_NHCOO.solute, total.u[5]) annotation (Line(
-          points={{-16,-84},{-44,-84},{-44,61},{-52,61}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NHCOO.solute, total.u[6]) annotation (Line(
-          points={{70,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
+        connect(Hbu_A_NH3.solute, totalAmounts.u[1]) annotation (Line(
+            points={{-16,70},{-44,70},{-44,63.6667},{-52,63.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH3.solute, totalAmounts.u[2]) annotation (Line(
+            points={{70,70},{-2,70},{-2,63},{-52,63}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NH2.solute, totalAmounts.u[3]) annotation (Line(
+            points={{-16,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH2.solute, totalAmounts.u[4]) annotation (Line(
+            points={{70,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NHCOO.solute, totalAmounts.u[5]) annotation (Line(
+            points={{-16,-84},{-44,-84},{-44,61},{-52,61}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NHCOO.solute, totalAmounts.u[6]) annotation (Line(
+            points={{70,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
 
       connect(Hbu_A_NH2.q_out, h2.products[1]) annotation (Line(
           points={{-22,8},{-10,8},{-10,7.5},{12,7.5}},
@@ -1284,7 +1285,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(total.y, Hb_tn.amountOfSubunit) annotation (Line(
+        connect(totalAmounts.y, Hb_tn.amountOfSubunit) annotation (Line(
             points={{-75,62},{-78,62},{-78,-12},{-72,-12}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -1343,35 +1344,35 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
 
         connect(Hb_tn.internalHeat, internalHeat) annotation (Line(
-            points={{-58,-20},{-58,-100},{-100,-100}},
+            points={{-58,-20},{-58,-98},{-100,-98}},
             color={0,0,127},
             smooth=Smooth.None));
 
-        connect(Hbu_A_NH3.internalHeat, total1.u[1]) annotation (Line(
+        connect(Hbu_A_NH3.internalHeat, totalHeats.u[1]) annotation (Line(
             points={{-10.4,76},{-44,76},{-44,33.6667},{-52,33.6667}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NH3.internalHeat, total1.u[2]) annotation (Line(
+        connect(Hbu_AH_NH3.internalHeat, totalHeats.u[2]) annotation (Line(
             points={{75.6,76},{-2,76},{-2,33},{-52,33}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_A_NH2.internalHeat, total1.u[3]) annotation (Line(
+        connect(Hbu_A_NH2.internalHeat, totalHeats.u[3]) annotation (Line(
             points={{-10.4,4},{-44,4},{-44,32.3333},{-52,32.3333}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NH2.internalHeat, total1.u[4]) annotation (Line(
+        connect(Hbu_AH_NH2.internalHeat, totalHeats.u[4]) annotation (Line(
             points={{75.6,4},{-2,4},{-2,31.6667},{-52,31.6667}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_A_NHCOO.internalHeat, total1.u[5]) annotation (Line(
+        connect(Hbu_A_NHCOO.internalHeat, totalHeats.u[5]) annotation (Line(
             points={{-10.4,-78},{-44,-78},{-44,31},{-52,31}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NHCOO.internalHeat, total1.u[6]) annotation (Line(
+        connect(Hbu_AH_NHCOO.internalHeat, totalHeats.u[6]) annotation (Line(
             points={{75.6,-78},{-2,-78},{-2,30.3333},{-52,30.3333}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(total1.y, Hb_tn.subunitInternalHeat) annotation (Line(
+        connect(totalHeats.y, Hb_tn.subunitInternalHeat) annotation (Line(
             points={{-75,32},{-76,32},{-76,-6},{-72,-6}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -1386,7 +1387,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
 <p>[3] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
 
-</html>"));
+</html>"), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics));
       end Hemoglobin_MKM_Specie;
 
       model Hemoglobin_MKM_Adair "Matejak,Kulhanek,Matousek (2014)"
@@ -1753,23 +1755,25 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(Hb0.internalHeat, internalHeat.u[1]) annotation (Line(
-            points={{-24,78},{-24,66},{34,66},{34,-53.6},{42,-53.6}},
+            points={{-24,78.2},{-24,66},{34,66},{34,-53.6},{42,-53.6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb1.internalHeat, internalHeat.u[2]) annotation (Line(
-            points={{-24,40},{-26,40},{-26,36},{34,36},{34,-52.8},{42,-52.8}},
+            points={{-24,40.2},{-26,40.2},{-26,36},{34,36},{34,-52.8},{42,-52.8}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb2.internalHeat, internalHeat.u[3]) annotation (Line(
-            points={{-24,0},{-28,0},{-28,-2},{34,-2},{34,-52},{42,-52}},
+            points={{-24,0.2},{-28,0.2},{-28,-2},{34,-2},{34,-52},{42,-52}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb3.internalHeat, internalHeat.u[4]) annotation (Line(
-            points={{-24,-44},{-28,-44},{-28,-46},{34,-46},{34,-51.2},{42,-51.2}},
+            points={{-24,-43.8},{-28,-43.8},{-28,-46},{34,-46},{34,-51.2},{42,
+                -51.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb4.internalHeat, internalHeat.u[5]) annotation (Line(
-            points={{-24,-88},{-28,-88},{-28,-90},{34,-90},{34,-52},{42,-52},{42,-50.4}},
+            points={{-24,-87.8},{-28,-87.8},{-28,-90},{34,-90},{34,-52},{42,-52},
+                {42,-50.4}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(gain.u, sO2.y) annotation (Line(
@@ -5168,7 +5172,7 @@ on the model behaviour.
         "Normalized volume of solution is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Types.Volume volume "Solution volume" annotation(HideResult=useNormalizedVolume);
+      Types.Volume volume "Solution volume"; //annotation(HideResult=useNormalizedVolume);
 
       Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume
         "Volume of solution"                                                                         annotation (Placement(transformation(
