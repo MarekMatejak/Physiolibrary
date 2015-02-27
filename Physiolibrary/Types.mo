@@ -4406,6 +4406,9 @@ This icon is designed for a <b>signal bus</b> connector.
   replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
   replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
     "chemical internal energy, chemical enthalpy, Gibb's energy ..";
+  replaceable type MolarEntropy = Modelica.SIunits.MolarEntropy(displayUnit="kcal/(mol.K)", nominal=4186.8) constrainedby Real
+    "chemical entropy as energy per mol and per kelvin";
+
   type MassConcentration =
                  Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
 
@@ -4474,583 +4477,6 @@ This icon is designed for a <b>signal bus</b> connector.
     parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
       "Unit conversions"  annotation(Evaluate=true, HideResult=true);
   end AbstractReal;
-
-  package RealTypeInputParameters
-    extends Modelica.Icons.SourcesPackage;
-
-    replaceable package Utilities = Types.FilesUtilities constrainedby
-      Types.Utilities
-                   annotation (Dialog(group="Functions to read or store",tab="Types"));
-     block Base
-       parameter String varName=
-       "Stored name"
-       annotation (Dialog(group="Value I/O",tab="IO"));
-                                //getInstanceName()
-       parameter String storeUnit="" "Stored units"
-       annotation (Dialog(group="Value I/O",tab="IO"));
-       annotation (Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
-          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
-              graphics={
-          Text(         extent={{-44,6},{36,-14}},
-            lineColor={0,0,0},
-                fillColor={236,236,236},
-            fillPattern=FillPattern.Solid,
-                    textString=""),   Rectangle(
-           extent={{-40,12},{40,-14}},
-           lineColor={0,0,255},
-           fillPattern=FillPattern.Solid,
-           fillColor={170,255,170}), Text(
-           extent={{-40,-8},{40,6}},
-           lineColor={0,0,0},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid,
-              textString="%varName")}));
-     end Base;
-
-  block Velocity "Constant signal of type Velocity"
-
-    extends Base(storeUnit="m/s");
-   parameter Types.Velocity k=Utilities.readReal(varName, storeUnit)
-        "Constant Velocity output value";
-        RealIO.VelocityOutput y "Velocity input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="velocity");
-  end Velocity;
-
-  block Acceleration "Constant signal of type Acceleration"
-
-    extends Base(storeUnit="m/s2");
-   parameter Types.Acceleration k=Utilities.readReal(varName, storeUnit)
-        "Constant Acceleration output value";
-        RealIO.AccelerationOutput y "Acceleration input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="acceleration");
-  end Acceleration;
-
-  block AmountOfSubstance "Constant signal of type AmountOfSubstance"
-
-    extends Base(storeUnit="mmol");
-   parameter Types.AmountOfSubstance k=Utilities.readReal(varName, storeUnit)
-        "Constant AmountOfSubstance output value";
-        RealIO.AmountOfSubstanceOutput y "AmountOfSubstance input parameter"
-                                            annotation (Placement(transformation(
-              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
-                10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="amountOfSubstance");
-  end AmountOfSubstance;
-
-  block Concentration "Constant signal of type Concentration"
-
-    extends Base(storeUnit="mmol/l");
-   parameter Types.Concentration k=Utilities.readReal(varName, storeUnit)
-        "Constant Concentration output value";
-        RealIO.ConcentrationOutput y "Concentration input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="concentration");
-  end Concentration;
-
-  block MassConcentration "Constant signal of type MassConcentration"
-
-    extends Base(storeUnit="mmol/l");
-   parameter Types.MassConcentration k=Utilities.readReal(varName, storeUnit)
-        "Constant Concentration output value";
-        RealIO.MassConcentrationOutput y "Concentration input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="concentration");
-  end MassConcentration;
-
-  block Density "Constant signal of type Density"
-
-    extends Base(storeUnit="kg/l");
-   parameter Types.Density k=Utilities.readReal(varName, storeUnit)
-        "Constant Density output value";
-        RealIO.DensityOutput y "Density input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="density");
-  end Density;
-
-  block DiffusionPermeability "Constant signal of type DiffusionPermeability"
-
-    extends Base(storeUnit="ml/min");
-   parameter Types.DiffusionPermeability k=Utilities.readReal(varName,
-          storeUnit) "Constant DiffusionPermeability output value";
-        RealIO.DiffusionPermeabilityOutput y
-        "DiffusionPermeability input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="diffusionPermeability");
-  end DiffusionPermeability;
-
-  block ElectricCharge "Constant signal of type ElectricCharge"
-
-    extends Base(storeUnit="meq");
-   parameter Types.ElectricCharge k=Utilities.readReal(varName, storeUnit)
-        "Constant ElectricCharge output value";
-        RealIO.ElectricChargeOutput y "ElectricCharge input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="electricCharge");
-  end ElectricCharge;
-
-  block ElectricCurrent "Constant signal of type ElectricCurrent"
-
-    extends Base(storeUnit="meq/min");
-   parameter Types.ElectricCurrent k=Utilities.readReal(varName, storeUnit)
-        "Constant ElectricCurrent output value";
-        RealIO.ElectricCurrentOutput y "ElectricCurrent input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="electricCurrent");
-  end ElectricCurrent;
-
-  block ElectricPotential "Constant signal of type ElectricPotential"
-
-    extends Base(storeUnit="mV");
-   parameter Types.ElectricPotential k=Utilities.readReal(varName, storeUnit)
-        "Constant ElectricPotential output value";
-        RealIO.ElectricPotentialOutput y "ElectricPotential input parameter"
-                                            annotation (Placement(transformation(
-              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
-                10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="electricPotential");
-  end ElectricPotential;
-
-    block Energy "Constant signal of type Energy"
-
-      extends Base(storeUnit="kcal");
-      parameter Types.Energy k=Utilities.readReal(varName, storeUnit)
-        "Constant Energy output value";
-        RealIO.EnergyOutput y "Energy input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-    equation
-        y=k;
-    annotation (defaultComponentName="energy");
-    end Energy;
-
-  block Fraction "Constant signal of type Fraction"
-
-    extends Base(storeUnit="1");
-   parameter Types.Fraction k=Utilities.readReal(varName, storeUnit)
-        "Constant Fraction output value";
-        RealIO.FractionOutput y "Fraction input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="fraction");
-  end Fraction;
-
-  block Frequency "Constant signal of type Frequency"
-
-    extends Base(storeUnit="1/min");
-   parameter Types.Frequency k=Utilities.readReal(varName, storeUnit)
-        "Constant Frequency output value";
-        RealIO.FrequencyOutput y "Frequency input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="frequency");
-  end Frequency;
-
-  block GasSolubility "Constant signal of type GasSolubility"
-
-    extends Base(storeUnit="(mmol/l)/kPa at 25degC");
-   parameter Types.GasSolubility k=Utilities.readReal(varName, storeUnit)
-        "Constant GasSolubility output value";
-        RealIO.GasSolubilityOutput y "GasSolubility input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="gasSolubility");
-  end GasSolubility;
-
-  block Heat "Constant signal of type Heat"
-
-     extends Base(storeUnit="kcal");
-   parameter Types.Heat k=Utilities.readReal(varName, storeUnit)
-        "Constant Heat output value";
-        RealIO.HeatOutput y "Heat input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="heat");
-  end Heat;
-
-  block Height "Constant signal of type Height"
-
-    extends Base(storeUnit="cm");
-   parameter Types.Height k=Utilities.readReal(varName, storeUnit)
-        "Constant Height output value";
-        RealIO.HeightOutput y "Height input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="height");
-  end Height;
-
-  block HeatFlowRate "Constant signal of type HeatFlowRate"
-
-    extends Base(storeUnit="kcal/min");
-   parameter Types.HeatFlowRate k=Utilities.readReal(varName, storeUnit)
-        "Constant HeatFlowRate output value";
-        RealIO.HeatFlowRateOutput y "HeatFlowRate input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="heatFlowRate");
-  end HeatFlowRate;
-
-  block HydraulicCompliance "Constant signal of type HydraulicCompliance"
-
-    extends Base(storeUnit="ml/mmHg");
-   parameter Types.HydraulicCompliance k=Utilities.readReal(varName, storeUnit)
-        "Constant HydraulicCompliance output value";
-        RealIO.HydraulicComplianceOutput y
-        "HydraulicCompliance input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="hydraulicCompliance");
-  end HydraulicCompliance;
-
-  block HydraulicConductance "Constant signal of type HydraulicConductance"
-
-    extends Base(storeUnit="ml/(mmHg.min)");
-   parameter Types.HydraulicConductance k=Utilities.readReal(varName,
-          storeUnit) "Constant HydraulicConductance output value";
-        RealIO.HydraulicConductanceOutput y
-        "HydraulicConductance input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="hydraulicConductance");
-  end HydraulicConductance;
-
-  block HydraulicInertance "Constant signal of type HydraulicInertance"
-
-    extends Base(storeUnit="mmHg.min2/ml");
-   parameter Types.HydraulicInertance k=Utilities.readReal(varName, storeUnit)
-        "Constant HydraulicInertance output value";
-        RealIO.HydraulicInertanceOutput y "HydraulicInertance input parameter"
-                                             annotation (Placement(transformation(
-              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
-                10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="hydraulicInertance");
-  end HydraulicInertance;
-
-  block Mass "Constant signal of type Mass"
-
-    extends Base(storeUnit="g");
-   parameter Types.Mass k=Utilities.readReal(varName, storeUnit)
-        "Constant Mass output value";
-        RealIO.MassOutput y "Mass input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="mass");
-  end Mass;
-
-  block MassFlowRate "Constant signal of type MassFlowRate"
-
-    extends Base(storeUnit="g/min");
-   parameter Types.MassFlowRate k=Utilities.readReal(varName, storeUnit)
-        "Constant MassFlowRate output value";
-        RealIO.MassFlowRateOutput y "MassFlowRate input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="massFlowRate");
-  end MassFlowRate;
-
-  block MolarFlowRate "Constant signal of type MolarFlowRate"
-
-    extends Base(storeUnit="mmol/min");
-   parameter Types.MolarFlowRate k=Utilities.readReal(varName, storeUnit)
-        "Constant MolarFlowRate output value";
-        RealIO.MolarFlowRateOutput y "MolarFlowRate input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="molarFlowRate");
-  end MolarFlowRate;
-
-  block Osmolarity "Constant signal of type Osmolarity"
-
-    extends Base(storeUnit="mosm/l");
-   parameter Types.Osmolarity k=Utilities.readReal(varName, storeUnit)
-        "Constant Osmolarity output value";
-        RealIO.OsmolarityOutput y "Osmolarity input parameter" annotation (
-         Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="osmolarity");
-  end Osmolarity;
-
-  block OsmoticPermeability "Constant signal of type OsmoticPermeability"
-
-    extends Base(storeUnit="ml/(mmHg.min)");
-   parameter Types.OsmoticPermeability k=Utilities.readReal(varName, storeUnit)
-        "Constant OsmoticPermeability output value";
-        RealIO.OsmoticPermeabilityOutput y
-        "OsmoticPermeability input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="osmoticPermeability");
-  end OsmoticPermeability;
-
-  block Pressure "Constant signal of type Pressure"
-
-    extends Base(storeUnit="mmHg");
-   parameter Types.Pressure k=Utilities.readReal(varName, storeUnit)
-        "Constant Pressure output value";
-        RealIO.PressureOutput y "Pressure input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="pressure");
-  end Pressure;
-
-  block SpecificEnergy "Constant signal of type SpecificEnergy"
-
-    extends Base(storeUnit="kcal/kg");
-   parameter Types.SpecificEnergy k=Utilities.readReal(varName, storeUnit)
-        "Constant SpecificEnergy output value";
-        RealIO.SpecificEnergyOutput y "SpecificEnergy input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="specificEnergy");
-  end SpecificEnergy;
-
-  block SpecificHeatCapacity "Constant signal of type SpecificHeatCapacity"
-
-    extends Base(storeUnit="kcal/(kg.K)");
-   parameter Types.SpecificHeatCapacity k=Utilities.readReal(varName,
-          storeUnit) "Constant SpecificHeatCapacity output value";
-        RealIO.SpecificHeatCapacityOutput y
-        "SpecificHeatCapacity input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="specificHeatCapacity");
-  end SpecificHeatCapacity;
-
-  block Temperature "Constant signal of type Temperature"
-
-    extends Base(storeUnit="degC");
-   parameter Types.Temperature k=Utilities.readReal(varName, storeUnit)
-        "Constant Temperature output value";
-        RealIO.TemperatureOutput y "Temperature input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="temperature");
-  end Temperature;
-
-  block ThermalConductance "Constant signal of type ThermalConductance"
-
-    extends Base(storeUnit="kcal/(min.K)");
-   parameter Types.ThermalConductance k=Utilities.readReal(varName, storeUnit)
-        "Constant ThermalConductance output value";
-        RealIO.ThermalConductanceOutput y "ThermalConductance input parameter"
-                                             annotation (Placement(transformation(
-              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
-                10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="thermalConductance");
-  end ThermalConductance;
-
-  block Time "Constant signal of type Time"
-
-    extends Base(storeUnit="min");
-   parameter Types.Time k=Utilities.readReal(varName, storeUnit)
-        "Constant Time output value";
-        RealIO.TimeOutput y "Time input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="time");
-  end Time;
-
-  block VolumeFlowRate "Constant signal of type VolumeFlowRate"
-
-    extends Base(storeUnit="ml/min");
-   parameter Types.VolumeFlowRate k=Utilities.readReal(varName, storeUnit)
-        "Constant VolumeFlowRate output value";
-        RealIO.VolumeFlowRateOutput y "VolumeFlowRate input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="volumeFlowRate");
-  end VolumeFlowRate;
-
-  block Volume "Constant signal of type Volume"
-
-    extends Base(storeUnit="ml");
-   parameter Types.Volume k=Utilities.readReal(varName, storeUnit)
-        "Constant Volume output value";
-        RealIO.VolumeOutput y "Volume input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="volume");
-  end Volume;
-
-  block pH "Constant signal of type pH"
-
-    extends Base(storeUnit="1");
-   parameter Types.pH k=Utilities.readReal(varName, storeUnit)
-        "Constant pH output value";
-        RealIO.pHOutput y "pH input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="pH");
-  end pH;
-
-  block VolumeDensityOfCharge "Constant signal of type VolumeDensityOfCharge"
-
-    extends Base(storeUnit="meq/l");
-   parameter Types.VolumeDensityOfCharge k=Utilities.readReal(varName,
-          storeUnit) "Constant VolumeDensityOfCharge output value";
-        RealIO.VolumeDensityOfChargeOutput y
-        "VolumeDensityOfCharge input parameter" annotation (Placement(
-            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
-                {40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="volumeDensityOfCharge");
-  end VolumeDensityOfCharge;
-
-  block Power "Constant signal of type Power"
-
-    extends Base(storeUnit="kcal/min");
-   parameter Types.Power k=Utilities.readReal(varName, storeUnit)
-        "Constant Power output value";
-        RealIO.PowerOutput y "Power input parameter"
-        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
-            iconTransformation(extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="heatFlowRate");
-  end Power;
-
-  block Position "Constant signal of type Position"
-
-    extends Base(storeUnit="cm");
-   parameter Types.Position k=Utilities.readReal(varName, storeUnit)
-        "Constant Position output value";
-        RealIO.PositionOutput y "Position input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-  equation
-        y=k;
-    annotation (defaultComponentName="height");
-  end Position;
-
-    block MolarEnergy "Constant signal of type MolarEnergy"
-
-      extends Base(storeUnit="kcal/mol");
-      parameter Types.MolarEnergy k=Utilities.readReal(varName, storeUnit)
-        "Constant MolarEnergy output value";
-        RealIO.MolarEnergyOutput y "MolarEnergy input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-    equation
-        y=k;
-    annotation (defaultComponentName="molarEnergy");
-    end MolarEnergy;
-
-    block Population "Constant signal of type Population"
-
-      extends Base(storeUnit="1");
-      parameter Types.Population k=Utilities.readReal(varName, storeUnit)
-        "Constant Population output value";
-        RealIO.PopulationOutput y "Population input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-    equation
-        y=k;
-    annotation (defaultComponentName="population");
-    end Population;
-
-    block PopulationChange "Constant signal of type PopulationChange"
-
-      extends Base(storeUnit="1/d");
-      parameter Types.PopulationChange k=Utilities.readReal(varName, storeUnit)
-        "Constant PopulationChange output value";
-        RealIO.PopulationChangeOutput y "PopulationChange input parameter" annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-    equation
-        y=k;
-    annotation (defaultComponentName="populationChange");
-    end PopulationChange;
-
-    block PopulationChangePerMember
-      "Constant signal of type PopulationChangePerMember"
-      extends Base(storeUnit="1/d");
-      parameter Types.PopulationChangePerMember k=Utilities.readReal(varName, storeUnit)
-        "Constant PopulationChangePerMember output value";
-        RealIO.PopulationChangePerMemberOutput y
-        "PopulationChangePerMember input parameter"                                 annotation (
-          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
-              extent={{40,-10},{60,10}})));
-    equation
-        y=k;
-    annotation (defaultComponentName="populationChangePerMember");
-    end PopulationChangePerMember;
-  end RealTypeInputParameters;
 
   package RealExtension
     extends Modelica.Icons.VariantsPackage;
@@ -5681,6 +5107,583 @@ The Real output y is a constant signal:
             Types.PopulationChangePerMember,storeUnit="1/d");
   end RealTypes;
 
+  package RealTypeInputParameters
+    extends Modelica.Icons.SourcesPackage;
+
+    replaceable package Utilities = Types.FilesUtilities constrainedby
+      Types.Utilities
+                   annotation (Dialog(group="Functions to read or store",tab="Types"));
+     block Base
+       parameter String varName=
+       "Stored name"
+       annotation (Dialog(group="Value I/O",tab="IO"));
+                                //getInstanceName()
+       parameter String storeUnit="" "Stored units"
+       annotation (Dialog(group="Value I/O",tab="IO"));
+       annotation (Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Text(         extent={{-44,6},{36,-14}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString=""),   Rectangle(
+           extent={{-40,12},{40,-14}},
+           lineColor={0,0,255},
+           fillPattern=FillPattern.Solid,
+           fillColor={170,255,170}), Text(
+           extent={{-40,-8},{40,6}},
+           lineColor={0,0,0},
+           fillColor={255,255,255},
+           fillPattern=FillPattern.Solid,
+              textString="%varName")}));
+     end Base;
+
+  block Velocity "Constant signal of type Velocity"
+
+    extends Base(storeUnit="m/s");
+   parameter Types.Velocity k=Utilities.readReal(varName, storeUnit)
+        "Constant Velocity output value";
+        RealIO.VelocityOutput y "Velocity input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="velocity");
+  end Velocity;
+
+  block Acceleration "Constant signal of type Acceleration"
+
+    extends Base(storeUnit="m/s2");
+   parameter Types.Acceleration k=Utilities.readReal(varName, storeUnit)
+        "Constant Acceleration output value";
+        RealIO.AccelerationOutput y "Acceleration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="acceleration");
+  end Acceleration;
+
+  block AmountOfSubstance "Constant signal of type AmountOfSubstance"
+
+    extends Base(storeUnit="mmol");
+   parameter Types.AmountOfSubstance k=Utilities.readReal(varName, storeUnit)
+        "Constant AmountOfSubstance output value";
+        RealIO.AmountOfSubstanceOutput y "AmountOfSubstance input parameter"
+                                            annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="amountOfSubstance");
+  end AmountOfSubstance;
+
+  block Concentration "Constant signal of type Concentration"
+
+    extends Base(storeUnit="mmol/l");
+   parameter Types.Concentration k=Utilities.readReal(varName, storeUnit)
+        "Constant Concentration output value";
+        RealIO.ConcentrationOutput y "Concentration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="concentration");
+  end Concentration;
+
+  block MassConcentration "Constant signal of type MassConcentration"
+
+    extends Base(storeUnit="mmol/l");
+   parameter Types.MassConcentration k=Utilities.readReal(varName, storeUnit)
+        "Constant Concentration output value";
+        RealIO.MassConcentrationOutput y "Concentration input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="concentration");
+  end MassConcentration;
+
+  block Density "Constant signal of type Density"
+
+    extends Base(storeUnit="kg/l");
+   parameter Types.Density k=Utilities.readReal(varName, storeUnit)
+        "Constant Density output value";
+        RealIO.DensityOutput y "Density input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="density");
+  end Density;
+
+  block DiffusionPermeability "Constant signal of type DiffusionPermeability"
+
+    extends Base(storeUnit="ml/min");
+   parameter Types.DiffusionPermeability k=Utilities.readReal(varName,
+          storeUnit) "Constant DiffusionPermeability output value";
+        RealIO.DiffusionPermeabilityOutput y
+        "DiffusionPermeability input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="diffusionPermeability");
+  end DiffusionPermeability;
+
+  block ElectricCharge "Constant signal of type ElectricCharge"
+
+    extends Base(storeUnit="meq");
+   parameter Types.ElectricCharge k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricCharge output value";
+        RealIO.ElectricChargeOutput y "ElectricCharge input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricCharge");
+  end ElectricCharge;
+
+  block ElectricCurrent "Constant signal of type ElectricCurrent"
+
+    extends Base(storeUnit="meq/min");
+   parameter Types.ElectricCurrent k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricCurrent output value";
+        RealIO.ElectricCurrentOutput y "ElectricCurrent input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricCurrent");
+  end ElectricCurrent;
+
+  block ElectricPotential "Constant signal of type ElectricPotential"
+
+    extends Base(storeUnit="mV");
+   parameter Types.ElectricPotential k=Utilities.readReal(varName, storeUnit)
+        "Constant ElectricPotential output value";
+        RealIO.ElectricPotentialOutput y "ElectricPotential input parameter"
+                                            annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="electricPotential");
+  end ElectricPotential;
+
+    block Energy "Constant signal of type Energy"
+
+      extends Base(storeUnit="kcal");
+      parameter Types.Energy k=Utilities.readReal(varName, storeUnit)
+        "Constant Energy output value";
+        RealIO.EnergyOutput y "Energy input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="energy");
+    end Energy;
+
+  block Fraction "Constant signal of type Fraction"
+
+    extends Base(storeUnit="1");
+   parameter Types.Fraction k=Utilities.readReal(varName, storeUnit)
+        "Constant Fraction output value";
+        RealIO.FractionOutput y "Fraction input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="fraction");
+  end Fraction;
+
+  block Frequency "Constant signal of type Frequency"
+
+    extends Base(storeUnit="1/min");
+   parameter Types.Frequency k=Utilities.readReal(varName, storeUnit)
+        "Constant Frequency output value";
+        RealIO.FrequencyOutput y "Frequency input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="frequency");
+  end Frequency;
+
+  block GasSolubility "Constant signal of type GasSolubility"
+
+    extends Base(storeUnit="(mmol/l)/kPa at 25degC");
+   parameter Types.GasSolubility k=Utilities.readReal(varName, storeUnit)
+        "Constant GasSolubility output value";
+        RealIO.GasSolubilityOutput y "GasSolubility input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="gasSolubility");
+  end GasSolubility;
+
+  block Heat "Constant signal of type Heat"
+
+     extends Base(storeUnit="kcal");
+   parameter Types.Heat k=Utilities.readReal(varName, storeUnit)
+        "Constant Heat output value";
+        RealIO.HeatOutput y "Heat input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heat");
+  end Heat;
+
+  block Height "Constant signal of type Height"
+
+    extends Base(storeUnit="cm");
+   parameter Types.Height k=Utilities.readReal(varName, storeUnit)
+        "Constant Height output value";
+        RealIO.HeightOutput y "Height input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height");
+  end Height;
+
+  block HeatFlowRate "Constant signal of type HeatFlowRate"
+
+    extends Base(storeUnit="kcal/min");
+   parameter Types.HeatFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant HeatFlowRate output value";
+        RealIO.HeatFlowRateOutput y "HeatFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heatFlowRate");
+  end HeatFlowRate;
+
+  block HydraulicCompliance "Constant signal of type HydraulicCompliance"
+
+    extends Base(storeUnit="ml/mmHg");
+   parameter Types.HydraulicCompliance k=Utilities.readReal(varName, storeUnit)
+        "Constant HydraulicCompliance output value";
+        RealIO.HydraulicComplianceOutput y
+        "HydraulicCompliance input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicCompliance");
+  end HydraulicCompliance;
+
+  block HydraulicConductance "Constant signal of type HydraulicConductance"
+
+    extends Base(storeUnit="ml/(mmHg.min)");
+   parameter Types.HydraulicConductance k=Utilities.readReal(varName,
+          storeUnit) "Constant HydraulicConductance output value";
+        RealIO.HydraulicConductanceOutput y
+        "HydraulicConductance input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicConductance");
+  end HydraulicConductance;
+
+  block HydraulicInertance "Constant signal of type HydraulicInertance"
+
+    extends Base(storeUnit="mmHg.min2/ml");
+   parameter Types.HydraulicInertance k=Utilities.readReal(varName, storeUnit)
+        "Constant HydraulicInertance output value";
+        RealIO.HydraulicInertanceOutput y "HydraulicInertance input parameter"
+                                             annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="hydraulicInertance");
+  end HydraulicInertance;
+
+  block Mass "Constant signal of type Mass"
+
+    extends Base(storeUnit="g");
+   parameter Types.Mass k=Utilities.readReal(varName, storeUnit)
+        "Constant Mass output value";
+        RealIO.MassOutput y "Mass input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="mass");
+  end Mass;
+
+  block MassFlowRate "Constant signal of type MassFlowRate"
+
+    extends Base(storeUnit="g/min");
+   parameter Types.MassFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant MassFlowRate output value";
+        RealIO.MassFlowRateOutput y "MassFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="massFlowRate");
+  end MassFlowRate;
+
+  block MolarFlowRate "Constant signal of type MolarFlowRate"
+
+    extends Base(storeUnit="mmol/min");
+   parameter Types.MolarFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant MolarFlowRate output value";
+        RealIO.MolarFlowRateOutput y "MolarFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="molarFlowRate");
+  end MolarFlowRate;
+
+  block Osmolarity "Constant signal of type Osmolarity"
+
+    extends Base(storeUnit="mosm/l");
+   parameter Types.Osmolarity k=Utilities.readReal(varName, storeUnit)
+        "Constant Osmolarity output value";
+        RealIO.OsmolarityOutput y "Osmolarity input parameter" annotation (
+         Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmolarity");
+  end Osmolarity;
+
+  block OsmoticPermeability "Constant signal of type OsmoticPermeability"
+
+    extends Base(storeUnit="ml/(mmHg.min)");
+   parameter Types.OsmoticPermeability k=Utilities.readReal(varName, storeUnit)
+        "Constant OsmoticPermeability output value";
+        RealIO.OsmoticPermeabilityOutput y
+        "OsmoticPermeability input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="osmoticPermeability");
+  end OsmoticPermeability;
+
+  block Pressure "Constant signal of type Pressure"
+
+    extends Base(storeUnit="mmHg");
+   parameter Types.Pressure k=Utilities.readReal(varName, storeUnit)
+        "Constant Pressure output value";
+        RealIO.PressureOutput y "Pressure input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pressure");
+  end Pressure;
+
+  block SpecificEnergy "Constant signal of type SpecificEnergy"
+
+    extends Base(storeUnit="kcal/kg");
+   parameter Types.SpecificEnergy k=Utilities.readReal(varName, storeUnit)
+        "Constant SpecificEnergy output value";
+        RealIO.SpecificEnergyOutput y "SpecificEnergy input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificEnergy");
+  end SpecificEnergy;
+
+  block SpecificHeatCapacity "Constant signal of type SpecificHeatCapacity"
+
+    extends Base(storeUnit="kcal/(kg.K)");
+   parameter Types.SpecificHeatCapacity k=Utilities.readReal(varName,
+          storeUnit) "Constant SpecificHeatCapacity output value";
+        RealIO.SpecificHeatCapacityOutput y
+        "SpecificHeatCapacity input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="specificHeatCapacity");
+  end SpecificHeatCapacity;
+
+  block Temperature "Constant signal of type Temperature"
+
+    extends Base(storeUnit="degC");
+   parameter Types.Temperature k=Utilities.readReal(varName, storeUnit)
+        "Constant Temperature output value";
+        RealIO.TemperatureOutput y "Temperature input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="temperature");
+  end Temperature;
+
+  block ThermalConductance "Constant signal of type ThermalConductance"
+
+    extends Base(storeUnit="kcal/(min.K)");
+   parameter Types.ThermalConductance k=Utilities.readReal(varName, storeUnit)
+        "Constant ThermalConductance output value";
+        RealIO.ThermalConductanceOutput y "ThermalConductance input parameter"
+                                             annotation (Placement(transformation(
+              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},{60,
+                10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="thermalConductance");
+  end ThermalConductance;
+
+  block Time "Constant signal of type Time"
+
+    extends Base(storeUnit="min");
+   parameter Types.Time k=Utilities.readReal(varName, storeUnit)
+        "Constant Time output value";
+        RealIO.TimeOutput y "Time input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="time");
+  end Time;
+
+  block VolumeFlowRate "Constant signal of type VolumeFlowRate"
+
+    extends Base(storeUnit="ml/min");
+   parameter Types.VolumeFlowRate k=Utilities.readReal(varName, storeUnit)
+        "Constant VolumeFlowRate output value";
+        RealIO.VolumeFlowRateOutput y "VolumeFlowRate input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeFlowRate");
+  end VolumeFlowRate;
+
+  block Volume "Constant signal of type Volume"
+
+    extends Base(storeUnit="ml");
+   parameter Types.Volume k=Utilities.readReal(varName, storeUnit)
+        "Constant Volume output value";
+        RealIO.VolumeOutput y "Volume input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volume");
+  end Volume;
+
+  block pH "Constant signal of type pH"
+
+    extends Base(storeUnit="1");
+   parameter Types.pH k=Utilities.readReal(varName, storeUnit)
+        "Constant pH output value";
+        RealIO.pHOutput y "pH input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="pH");
+  end pH;
+
+  block VolumeDensityOfCharge "Constant signal of type VolumeDensityOfCharge"
+
+    extends Base(storeUnit="meq/l");
+   parameter Types.VolumeDensityOfCharge k=Utilities.readReal(varName,
+          storeUnit) "Constant VolumeDensityOfCharge output value";
+        RealIO.VolumeDensityOfChargeOutput y
+        "VolumeDensityOfCharge input parameter" annotation (Placement(
+            transformation(extent={{40,-10},{60,10}}), iconTransformation(extent={
+                {40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="volumeDensityOfCharge");
+  end VolumeDensityOfCharge;
+
+  block Power "Constant signal of type Power"
+
+    extends Base(storeUnit="kcal/min");
+   parameter Types.Power k=Utilities.readReal(varName, storeUnit)
+        "Constant Power output value";
+        RealIO.PowerOutput y "Power input parameter"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="heatFlowRate");
+  end Power;
+
+  block Position "Constant signal of type Position"
+
+    extends Base(storeUnit="cm");
+   parameter Types.Position k=Utilities.readReal(varName, storeUnit)
+        "Constant Position output value";
+        RealIO.PositionOutput y "Position input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="height");
+  end Position;
+
+    block MolarEnergy "Constant signal of type MolarEnergy"
+
+      extends Base(storeUnit="kcal/mol");
+      parameter Types.MolarEnergy k=Utilities.readReal(varName, storeUnit)
+        "Constant MolarEnergy output value";
+        RealIO.MolarEnergyOutput y "MolarEnergy input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="molarEnergy");
+    end MolarEnergy;
+
+    block Population "Constant signal of type Population"
+
+      extends Base(storeUnit="1");
+      parameter Types.Population k=Utilities.readReal(varName, storeUnit)
+        "Constant Population output value";
+        RealIO.PopulationOutput y "Population input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="population");
+    end Population;
+
+    block PopulationChange "Constant signal of type PopulationChange"
+
+      extends Base(storeUnit="1/d");
+      parameter Types.PopulationChange k=Utilities.readReal(varName, storeUnit)
+        "Constant PopulationChange output value";
+        RealIO.PopulationChangeOutput y "PopulationChange input parameter" annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="populationChange");
+    end PopulationChange;
+
+    block PopulationChangePerMember
+      "Constant signal of type PopulationChangePerMember"
+      extends Base(storeUnit="1/d");
+      parameter Types.PopulationChangePerMember k=Utilities.readReal(varName, storeUnit)
+        "Constant PopulationChangePerMember output value";
+        RealIO.PopulationChangePerMemberOutput y
+        "PopulationChangePerMember input parameter"                                 annotation (
+          Placement(transformation(extent={{40,-10},{60,10}}), iconTransformation(
+              extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="populationChangePerMember");
+    end PopulationChangePerMember;
+  end RealTypeInputParameters;
+
   partial block AbstractBoolean
     "Abstract parameter or the value at defined time of the model - can be input or output parameter"
 
@@ -5691,341 +5694,6 @@ The Real output y is a constant signal:
       annotation (Dialog(group="Parameters"));
 
   end AbstractBoolean;
-
-  package FilesUtilities "File input/output/test"
-    import Physiolibrary;
-    extends Types.Utilities;
-    extends Modelica.Icons.VariantsPackage;
-
-    constant String directoryName="io";
-
-    constant String inputFileName="input.txt"
-      "File to load values with (non-)SI units";
-    constant String outputFileName="output.txt"
-      "File to save values with (non-)SI units";
-    constant String comparisonFileName="comparison.txt"
-      "File to save comparison from loaded values and simulation results with (non-)SI units";
-
-    constant String inputSIFileName="input_SI.txt"
-      "File to load values in SI units";
-    constant String outputSIFileName="output_SI.txt"
-      "File to save values in SI units";
-    constant String comparisonSIFileName="comparison_SI.txt"
-      "File to save comparison in SI units from loaded values and simulation results";
-
-    redeclare function extends readReal
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      String line;
-      Integer nextIndex;
-      Integer lineLen;
-      Integer iline=1;
-      Boolean found = false;
-      Boolean endOfFile=false;
-      String str;
-      Real inputValue;
-      Integer typeDef;
-    algorithm
-      fn:=directoryName + "/" + inputFileName;
-
-      if not Files.exist(fn) then
-         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
-      else
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-      //Format "<variableName>\n<value> <unit>"
-      (line, endOfFile) :=Streams.readLine(fn, iline);
-      while not found and not endOfFile loop
-           if line == name then
-               // name found, get value of "name = value;"
-               (line, endOfFile) :=Streams.readLine(fn, iline+1);
-               lineLen := Strings.length(line);
-               nextIndex:=1;
-
-    /*
-other wariant: //Format "<variableName>=<value><unit>"
-  while not found and not endOfFile loop
-       iline:=iline+1;
-       (line, endOfFile) :=Streams.readLine(fn, iline);
-       lineLen := Strings.length(line);
-
-       if lineLen>3 then
-
-         nextIndex:=1; //because Coleman does not use the right identifiers, scanIdentifier can not be used :(
-         str:=Strings.substring(line,nextIndex,nextIndex);
-         while ((nextIndex+1)<lineLen and (not Strings.isEqual(str," ")) and (not Strings.isEqual(str,"=")) and (not Strings.isEqual(str,"\t"))) loop
-            nextIndex:=nextIndex+1;
-            str:=Strings.substring(line,nextIndex,nextIndex);
-         end while;
-         str := Strings.substring(line,1,nextIndex-1);
-
-         if str==name then
-
-           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
-           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex+1); //skip '=' and white-spaces before/after
-*/
-
-               (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
-
-               nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
-               if nextIndex>lineLen then
-                   if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
-                     Streams.error("No units detected for variable '" + name +
-                                    "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
-                   end if;
-                   //Streams.print(" > " + name + "\t " + String(inputValue) + " (no units)");
-               else
-                   str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-                   if str <> unitConversions[typeDef].DisplayUnit then
-                      Streams.error("Units '" + str + "' not expected for variable '"
-                       + name + "' in file '" + fn + "'. Expected unis are '" +
-                      unitConversions[typeDef].DisplayUnit + "'!\n");
-                   end if;
-                   //Streams.print(" > " + name + "\t " + String(inputValue) + " " + str);
-               end if;
-               value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
-               //Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
-               found := true;
-               // end if;  //Format "<variableName>=<value><unit>"
-
-               //Format "<variableName>\n<value><unit>"
-           else
-               // wrong name, skip lines
-               iline := iline + 2;
-               // read next variable name
-               (line, endOfFile) :=Streams.readLine(fn, iline);
-           end if;
-         end while;
-
-         if not found then
-            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
-         end if;
-       end if;
-
-    end readReal;
-
-    redeclare function extends readReal_SI
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      String line;
-      Integer nextIndex;
-      Integer iline=1;
-      Boolean found = false;
-      Boolean endOfFile=false;
-
-    algorithm
-      fn:=directoryName + "/" +inputSIFileName;
-
-      if not Files.exist(fn) then
-         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
-      else
-
-      //Format "<variableName>\n<value> <unit>"
-      (line, endOfFile) :=Streams.readLine(fn, iline);
-      while not found and not endOfFile loop
-           if line == name then
-               // name found, get value of "name = value;"
-               (line, endOfFile) :=Streams.readLine(fn, iline+1);
-               nextIndex:=1;
-
-               (value,nextIndex) := Strings.scanReal(line, nextIndex);
-               found := true;
-
-             else
-             // wrong name, skip lines
-               iline := iline + 2;
-               // read next variable name
-               (line, endOfFile) :=Streams.readLine(fn, iline);
-
-             end if;
-         end while;
-
-         if not found then
-            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
-         end if;
-       end if;
-
-    end readReal_SI;
-
-    redeclare function extends readBoolean
-      import Modelica.Utilities.*;
-
-    algorithm
-      value:=(readReal(name,"")>0.005);
-    end readBoolean;
-
-    redeclare function extends writeReal "Write the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Integer typeDef "Variable type";
-
-    algorithm
-      fn:=directoryName + "/" +outputFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-      Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
-      + " " + unitConversions[typeDef].DisplayUnit, fn);
-
-    end writeReal;
-
-    redeclare function extends writeReal_SI
-      "Write the value to file using SI unit"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Integer typeDef "Variable type";
-
-    algorithm
-      fn:=directoryName + "/" +outputSIFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-       Streams.print(name + "\n" + String(value), fn);
-
-    end writeReal_SI;
-
-    redeclare function extends writeBoolean
-      import Modelica.Utilities.*;
-    protected
-      String fn;
-
-    algorithm
-      fn:=directoryName + "/" +outputFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-      Streams.print( name + "\n" + String(if value then 1 else 0),      fn);
-
-    end writeBoolean;
-
-    redeclare function extends writeComparison
-      "Compare and write the result and the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-      Integer typeDef "Variable output units";
-
-    algorithm
-      fn:=directoryName + "/" +comparisonFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-    outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-    outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-    outputFinalValue :=((finalValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-
-      Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
-         then String(abs((outputFinalValue - outputDefaultValue)/
-        outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
-        " ; " + name + " : default=" + String(outputDefaultValue) + " " +
-        unitConversions[typeDef].DisplayUnit
-         + ", initial=" + String(outputInitialValue) + " " + unitConversions[
-        typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
-        unitConversions[typeDef].DisplayUnit,
-        fn);
-
-    end writeComparison;
-
-    redeclare function extends writeComparison_SI
-      "Compare and write the result and the value to file using SI units"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-
-    algorithm
-      fn:=directoryName + "/" +comparisonSIFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-
-    outputDefaultValue := defaultValue;
-    outputInitialValue := initialValue;
-    outputFinalValue := finalValue;
-
-    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
-      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
-       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
-      " : default=" + String(outputDefaultValue) + ", initial=" + String(outputInitialValue)
-       + ", final=" + String(outputFinalValue), fn);
-
-    end writeComparison_SI;
-
-    redeclare function extends writeBooleanComparison
-      "Compare and write the result and the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-    algorithm
-      fn:=directoryName + "/" +comparisonFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-       if (defaultValue==finalValue) then
-
-           Streams.print("0 ; "+ name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0) + ", final=" + String(if finalValue then 1 else 0), "differences.txt");
-         else
-           Streams.print("! ; " + name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0)+ ", final=" + String(if finalValue then 1 else 0), "differences.txt");
-       end if;
-
-    end writeBooleanComparison;
-
-    annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
-</html>",   info="<html>
-<p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
-<p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
-<p>Because the number of output variables for each subsytem changes during development, it is a good idea to have only one list for each subsystem. And generating consistent sets to store, restore, compare initial and final values is possible by the same pattern as presented in the package Types.Example. In this package it is also possible to define a customized &nbsp;way to save and load the variables that connect subsystems together. For this purpose, one has to redeclare the package Types.Utilities with simple functions for reading and writing values, such as is done in the default package FileUtilities. </p>
-</html>"));
-  end FilesUtilities;
 
   package BooleanExtension
     extends Modelica.Icons.VariantsPackage;
@@ -6642,6 +6310,341 @@ The Real output y is a constant signal:
     end writeBooleanComparison;
 
   end ZeroUtilities;
+
+  package FilesUtilities "File input/output/test"
+    import Physiolibrary;
+    extends Types.Utilities;
+    extends Modelica.Icons.VariantsPackage;
+
+    constant String directoryName="io";
+
+    constant String inputFileName="input.txt"
+      "File to load values with (non-)SI units";
+    constant String outputFileName="output.txt"
+      "File to save values with (non-)SI units";
+    constant String comparisonFileName="comparison.txt"
+      "File to save comparison from loaded values and simulation results with (non-)SI units";
+
+    constant String inputSIFileName="input_SI.txt"
+      "File to load values in SI units";
+    constant String outputSIFileName="output_SI.txt"
+      "File to save values in SI units";
+    constant String comparisonSIFileName="comparison_SI.txt"
+      "File to save comparison in SI units from loaded values and simulation results";
+
+    redeclare function extends readReal
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      String line;
+      Integer nextIndex;
+      Integer lineLen;
+      Integer iline=1;
+      Boolean found = false;
+      Boolean endOfFile=false;
+      String str;
+      Real inputValue;
+      Integer typeDef;
+    algorithm
+      fn:=directoryName + "/" + inputFileName;
+
+      if not Files.exist(fn) then
+         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
+      else
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+      //Format "<variableName>\n<value> <unit>"
+      (line, endOfFile) :=Streams.readLine(fn, iline);
+      while not found and not endOfFile loop
+           if line == name then
+               // name found, get value of "name = value;"
+               (line, endOfFile) :=Streams.readLine(fn, iline+1);
+               lineLen := Strings.length(line);
+               nextIndex:=1;
+
+    /*
+other wariant: //Format "<variableName>=<value><unit>"
+  while not found and not endOfFile loop
+       iline:=iline+1;
+       (line, endOfFile) :=Streams.readLine(fn, iline);
+       lineLen := Strings.length(line);
+
+       if lineLen>3 then
+
+         nextIndex:=1; //because Coleman does not use the right identifiers, scanIdentifier can not be used :(
+         str:=Strings.substring(line,nextIndex,nextIndex);
+         while ((nextIndex+1)<lineLen and (not Strings.isEqual(str," ")) and (not Strings.isEqual(str,"=")) and (not Strings.isEqual(str,"\t"))) loop
+            nextIndex:=nextIndex+1;
+            str:=Strings.substring(line,nextIndex,nextIndex);
+         end while;
+         str := Strings.substring(line,1,nextIndex-1);
+
+         if str==name then
+
+           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
+           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex+1); //skip '=' and white-spaces before/after
+*/
+
+               (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
+
+               nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
+               if nextIndex>lineLen then
+                   if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
+                     Streams.error("No units detected for variable '" + name +
+                                    "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " (no units)");
+               else
+                   str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
+                   if str <> unitConversions[typeDef].DisplayUnit then
+                      Streams.error("Units '" + str + "' not expected for variable '"
+                       + name + "' in file '" + fn + "'. Expected unis are '" +
+                      unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " " + str);
+               end if;
+               value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
+               //Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
+               found := true;
+               // end if;  //Format "<variableName>=<value><unit>"
+
+               //Format "<variableName>\n<value><unit>"
+           else
+               // wrong name, skip lines
+               iline := iline + 2;
+               // read next variable name
+               (line, endOfFile) :=Streams.readLine(fn, iline);
+           end if;
+         end while;
+
+         if not found then
+            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
+         end if;
+       end if;
+
+    end readReal;
+
+    redeclare function extends readReal_SI
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      String line;
+      Integer nextIndex;
+      Integer iline=1;
+      Boolean found = false;
+      Boolean endOfFile=false;
+
+    algorithm
+      fn:=directoryName + "/" +inputSIFileName;
+
+      if not Files.exist(fn) then
+         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
+      else
+
+      //Format "<variableName>\n<value> <unit>"
+      (line, endOfFile) :=Streams.readLine(fn, iline);
+      while not found and not endOfFile loop
+           if line == name then
+               // name found, get value of "name = value;"
+               (line, endOfFile) :=Streams.readLine(fn, iline+1);
+               nextIndex:=1;
+
+               (value,nextIndex) := Strings.scanReal(line, nextIndex);
+               found := true;
+
+             else
+             // wrong name, skip lines
+               iline := iline + 2;
+               // read next variable name
+               (line, endOfFile) :=Streams.readLine(fn, iline);
+
+             end if;
+         end while;
+
+         if not found then
+            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
+         end if;
+       end if;
+
+    end readReal_SI;
+
+    redeclare function extends readBoolean
+      import Modelica.Utilities.*;
+
+    algorithm
+      value:=(readReal(name,"")>0.005);
+    end readBoolean;
+
+    redeclare function extends writeReal "Write the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Integer typeDef "Variable type";
+
+    algorithm
+      fn:=directoryName + "/" +outputFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+      Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
+      + " " + unitConversions[typeDef].DisplayUnit, fn);
+
+    end writeReal;
+
+    redeclare function extends writeReal_SI
+      "Write the value to file using SI unit"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Integer typeDef "Variable type";
+
+    algorithm
+      fn:=directoryName + "/" +outputSIFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+       Streams.print(name + "\n" + String(value), fn);
+
+    end writeReal_SI;
+
+    redeclare function extends writeBoolean
+      import Modelica.Utilities.*;
+    protected
+      String fn;
+
+    algorithm
+      fn:=directoryName + "/" +outputFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+      Streams.print( name + "\n" + String(if value then 1 else 0),      fn);
+
+    end writeBoolean;
+
+    redeclare function extends writeComparison
+      "Compare and write the result and the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+      Integer typeDef "Variable output units";
+
+    algorithm
+      fn:=directoryName + "/" +comparisonFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+    outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputFinalValue :=((finalValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+
+      Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
+         then String(abs((outputFinalValue - outputDefaultValue)/
+        outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
+        " ; " + name + " : default=" + String(outputDefaultValue) + " " +
+        unitConversions[typeDef].DisplayUnit
+         + ", initial=" + String(outputInitialValue) + " " + unitConversions[
+        typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
+        unitConversions[typeDef].DisplayUnit,
+        fn);
+
+    end writeComparison;
+
+    redeclare function extends writeComparison_SI
+      "Compare and write the result and the value to file using SI units"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+
+    algorithm
+      fn:=directoryName + "/" +comparisonSIFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+
+    outputDefaultValue := defaultValue;
+    outputInitialValue := initialValue;
+    outputFinalValue := finalValue;
+
+    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
+      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
+       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
+      " : default=" + String(outputDefaultValue) + ", initial=" + String(outputInitialValue)
+       + ", final=" + String(outputFinalValue), fn);
+
+    end writeComparison_SI;
+
+    redeclare function extends writeBooleanComparison
+      "Compare and write the result and the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+    algorithm
+      fn:=directoryName + "/" +comparisonFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+       if (defaultValue==finalValue) then
+
+           Streams.print("0 ; "+ name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0) + ", final=" + String(if finalValue then 1 else 0), "differences.txt");
+         else
+           Streams.print("! ; " + name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0)+ ", final=" + String(if finalValue then 1 else 0), "differences.txt");
+       end if;
+
+    end writeBooleanComparison;
+
+    annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>",   info="<html>
+<p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
+<p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
+<p>Because the number of output variables for each subsytem changes during development, it is a good idea to have only one list for each subsystem. And generating consistent sets to store, restore, compare initial and final values is possible by the same pattern as presented in the package Types.Example. In this package it is also possible to define a customized &nbsp;way to save and load the variables that connect subsystems together. For this purpose, one has to redeclare the package Types.Utilities with simple functions for reading and writing values, such as is done in the default package FileUtilities. </p>
+</html>"));
+  end FilesUtilities;
 
   type SimulationType = enumeration(
       NoInit "Use start values only as a guess of state values",

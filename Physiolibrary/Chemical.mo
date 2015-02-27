@@ -1897,7 +1897,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                Types.SimulationType.SteadyState,each  solute_start=1e-08)
             "Val1 terminal of hemoglobin subunits "
             annotation (Placement(transformation(extent={{-10,52},{10,72}})));
-          Chemical.Components.Substance NH3[             4](
+          Chemical.Components.Substance NH3[4](
             each solute_start=0,
             each Simulation=Types.SimulationType.SteadyState,
             each isDependent=true) "Val1 terminal of hemoglobin subunits "

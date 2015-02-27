@@ -897,7 +897,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
-        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
+        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -930,7 +930,7 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
              fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
+        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
