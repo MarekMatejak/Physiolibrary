@@ -33,7 +33,7 @@ package Chemical2
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1e-007));
+        experiment(StopTime=1e-012));
     end SimpleReaction;
 
     model SimpleReaction2
@@ -43,11 +43,9 @@ package Chemical2
         annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
       Components.ChemicalReaction reaction(nP=2)
         annotation (Placement(transformation(extent={{-6,-8},{14,12}})));
-      Components.Substance B(substance(dS=-Modelica.Constants.R*log(10^4)),
-          solute_start=0.1)
+      Components.Substance B(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,-8},{56,12}})));
-      Components.Substance C(substance(dS=-Modelica.Constants.R*log(10^4)),
-          solute_start=0.1)
+      Components.Substance C(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,16},{56,36}})));
     equation
 
@@ -70,7 +68,7 @@ package Chemical2
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=1e-009));
+        experiment(StopTime=1e-014));
     end SimpleReaction2;
 
     model ExothermicReaction
@@ -81,7 +79,7 @@ package Chemical2
             0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Components.ChemicalReaction reaction(useHeatPort=true) annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
-      Components.Substance B(substance(dH=0, dS=0), solute_start=0.1)
+      Components.Substance B( solute_start=0.1)
         annotation (Placement(transformation(extent={{44,-8},{64,12}})));
       Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
         annotation (Placement(transformation(extent={{12,-58},{32,-38}})));
@@ -113,7 +111,7 @@ package Chemical2
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),
-        experiment(StopTime=5));
+        experiment(StopTime=1e-12));
     end ExothermicReaction;
 
     model MichaelisMenten "Basic enzyme kinetics"
@@ -122,11 +120,12 @@ package Chemical2
       extends SteadyStates.Interfaces.SteadyStateSystem(
                                                  Simulation=Types.SimulationType.SteadyState);
 
-      Chemical.Sources.UnlimitedSolutionStorage
-                       P(Conc=0)
+      Sources.UnlimitedSolutionStorage
+                       P(Conc=0, substance(dS=Modelica.Constants.inf))
         annotation (Placement(transformation(extent={{92,-12},{72,8}})));
-      Chemical.Sources.UnlimitedSolutionStorage
-                       S(Conc=0.1)
+      Sources.UnlimitedSolutionStorage
+                       S(Conc=0.1, substance(dS=-Modelica.Constants.R*log(2*k_cat/
+              Km)))
         annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
          parameter Types.AmountOfSubstance tE=0.01 "total amount of enzyme";
@@ -135,24 +134,19 @@ package Chemical2
          parameter Types.Concentration Km = 0.1
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
-          Chemical.Components.Substance
-                              ES(                       solute_start=0,
-            Simulation=Types.SimulationType.SteadyState)
+          Components.Substance ES(                      solute_start=0,
+            Simulation=Types.SimulationType.SteadyState,
+        substance(dS=-Modelica.Constants.R*log(k_cat)))
             annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-          Chemical.Components.Substance
-                              E(                       solute_start=tE,
+          Components.Substance E(                      solute_start=tE,
             isDependent=true,
             Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,38},{10,58}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction(
-        nS=2,
-        K=2/Km,
-        kf=2*k_cat/Km)
+          Components.ChemicalReaction chemicalReaction(
+        nS=2)
         annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
-          Physiolibrary.Chemical.Components.ChemicalReaction chemicalReaction1(
-        nP=2,
-        K=Modelica.Constants.inf,
-        kf=k_cat)
+          Components.ChemicalReaction chemicalReaction1(
+        nP=2)
         annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
          // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
@@ -228,120 +222,120 @@ package Chemical2
       //  AmountOfSubstance totalAmountOfRforms;
       //  AmountOfSubstance totalAmountOfTforms;
 
-        Chemical.Components.Substance T0(
+        Components.Substance T0(
           stateName="T0",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=1)
           annotation (Placement(transformation(extent={{32,78},{52,98}})));
 
-        Chemical.Components.Substance T1(
+        Components.Substance T1(
           stateName="T1",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,36},{54,56}})));
 
-        Chemical.Components.Substance R1(
+        Components.Substance R1(
           stateName="R1",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0,
           isDependent=true)
           annotation (Placement(transformation(extent={{-20,36},{0,56}})));
 
-        Chemical.Components.Substance T2(
+        Components.Substance T2(
           stateName="T2",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,-10},{54,10}})));
 
-        Chemical.Components.Substance R2(
+        Components.Substance R2(
           stateName="R2",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
 
-        Chemical.Components.Substance T3(
+        Components.Substance T3(
           stateName="T3",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{34,-54},{54,-34}})));
 
-        Chemical.Components.Substance R3(
+        Components.Substance R3(
           stateName="R3",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-54},{0,-34}})));
 
-        Chemical.Components.Substance T4(
+        Components.Substance T4(
           stateName="T4",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0,
           isDependent=true)
           annotation (Placement(transformation(extent={{34,-92},{54,-72}})));
 
-        Chemical.Components.Substance R4(
+        Components.Substance R4(
           stateName="R4",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,-92},{0,-72}})));
 
-        Chemical.Components.Substance R0(
+        Components.Substance R0(
           stateName="R0",
           Simulation=Types.SimulationType.SteadyState,
           solute_start=0)
           annotation (Placement(transformation(extent={{-20,78},{0,98}})));
 
-        Chemical.Components.ChemicalReaction quaternaryForm(K=L)
+        Components.ChemicalReaction quaternaryForm(K=L)
           annotation (Placement(transformation(extent={{4,78},{24,98}})));
-        Chemical.Components.ChemicalReaction oxyR1(nP=2, K=KR/4) annotation (
+        Components.ChemicalReaction oxyR1(nP=2, K=KR/4) annotation (
             Placement(transformation(
               extent={{-10,10},{10,-10}},
               rotation=90,
               origin={-10,64})));
-        Chemical.Components.ChemicalReaction oxyT1(nP=2, K=KT/4) annotation (
+        Components.ChemicalReaction oxyT1(nP=2, K=KT/4) annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={44,64})));
-        Chemical.Components.ChemicalReaction oxyR2(nP=2, K=KR/(3/2))
+        Components.ChemicalReaction oxyR2(nP=2, K=KR/(3/2))
           annotation (Placement(transformation(
               extent={{-10,10},{10,-10}},
               rotation=90,
               origin={-10,22})));
-        Chemical.Components.ChemicalReaction oxyR3(nP=2, K=KR/(2/3))
+        Components.ChemicalReaction oxyR3(nP=2, K=KR/(2/3))
           annotation (Placement(transformation(
               extent={{-10,10},{10,-10}},
               rotation=90,
               origin={-10,-24})));
-        Chemical.Components.ChemicalReaction oxyR4(nP=2, K=KR*4) annotation (
+        Components.ChemicalReaction oxyR4(nP=2, K=KR*4) annotation (
             Placement(transformation(
               extent={{-10,10},{10,-10}},
               rotation=90,
               origin={-10,-66})));
-        Chemical.Components.ChemicalReaction oxyT2(nP=2, K=KT/(3/2))
+        Components.ChemicalReaction oxyT2(nP=2, K=KT/(3/2))
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={44,22})));
-        Chemical.Components.ChemicalReaction oxyT3(nP=2, K=KT/(2/3))
+        Components.ChemicalReaction oxyT3(nP=2, K=KT/(2/3))
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={44,-24})));
-        Chemical.Components.ChemicalReaction oxyT4(nP=2, K=KT*4) annotation (
+        Components.ChemicalReaction oxyT4(nP=2, K=KT*4) annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={44,-66})));
-        Chemical.Components.ChemicalReaction quaternaryForm1(K=c*L)
+        Components.ChemicalReaction quaternaryForm1(K=c*L)
           annotation (Placement(transformation(extent={{8,36},{28,56}})));
-        Chemical.Components.ChemicalReaction quaternaryForm2(K=(c^2)*L)
+        Components.ChemicalReaction quaternaryForm2(K=(c^2)*L)
           annotation (Placement(transformation(extent={{8,-10},{28,10}})));
-        Chemical.Components.ChemicalReaction quaternaryForm3(K=(c^3)*L)
+        Components.ChemicalReaction quaternaryForm3(K=(c^3)*L)
           annotation (Placement(transformation(extent={{8,-54},{28,-34}})));
-        Chemical.Components.ChemicalReaction quaternaryForm4(K=(c^4)*L)
+        Components.ChemicalReaction quaternaryForm4(K=(c^4)*L)
           annotation (Placement(transformation(extent={{10,-92},{30,-72}})));
 
-        SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
+        Components.MolarConservationLaw hemoglobinConservationLaw(
           n=10, Total(displayUnit="mol") = 1,
           Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{72,-2},{92,18}})));
@@ -356,14 +350,14 @@ package Chemical2
           annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
           annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
-        Chemical.Sources.UnlimitedGasStorage O2_in_air(
+        Sources.UnlimitedGasStorage O2_in_air(
           Simulation=Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
           T=310.15) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-66,24})));
-        Chemical.Components.GasSolubility gasSolubility(
+        Components.GasSolubility gasSolubility(
           useHeatPort=false,
           kH_T0=0.026029047188736,
           C=1700)
@@ -2809,8 +2803,8 @@ package Chemical2
         Chemical.Components.Substance H3O(
           q_out(conc(nominal=10^(-7 + 3))),
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7 + 3)) annotation (Placement(transformation(extent
-                ={{-10,-10},{10,10}}, origin={-8,12})));
+          solute_start=10^(-7 + 3)) annotation (Placement(transformation(extent=
+                 {{-10,-10},{10,10}}, origin={-8,12})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
           Simulation=Types.SimulationType.SteadyState,
           NumberOfParticles=2,
@@ -2924,8 +2918,8 @@ package Chemical2
         Chemical.Components.Substance H3O(
           q_out(conc(nominal=10^(-7.4 + 3))),
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7 + 3)) annotation (Placement(transformation(extent
-                ={{-10,-10},{10,10}}, origin={-8,12})));
+          solute_start=10^(-7 + 3)) annotation (Placement(transformation(extent=
+                 {{-10,-10},{10,10}}, origin={-8,12})));
         Chemical.Components.GasSolubility gasSolubility(C=2400, kH_T0(
               displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
@@ -3608,8 +3602,9 @@ package Chemical2
       state_start=solute_start,
       storeUnit="mmol");
 
-      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=-Modelica.Constants.R*log(10^8))
-        "Molar Weight, Enthalpy, Entropy,..."; //deafult setting: enthalpy is zero, reaction forward rate is 10^8
+      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+        "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
+                                               //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
       parameter Types.AmountOfSubstance solute_start(nominal=NominalSolute) = 1e-8
         "Initial solute amount in compartment"
@@ -3669,10 +3664,10 @@ package Chemical2
     model ChemicalReaction "Chemical Reaction"
       import Physiolibrary;
 
-      Real KaT "Dissociation constant at current temperature";
+      Real K "Dissociation constant at current temperature";
       Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
+      Modelica.Blocks.Interfaces.RealInput dissociationConstant = K if useDissociationConstantInput
         "Dissociation coefficient [SI-unit]"
                                           annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -3686,14 +3681,6 @@ package Chemical2
         "Substrates"
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
 
-    /*  parameter Real K = exp(-(dH-TK*dS)/(TK*Modelica.Constants.R)) 
-    "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
-    annotation ( HideResult=true, Dialog(enable=not useDissociationConstantInput));
-*/
-    /*  parameter Real kf = exp(sum(s.*substrates.H)/(TK*Modelica.Constants.R)-sum(s.*substrates.S)/Modelica.Constants.R) 
-    "Forward reaction rate coefficient [SI unit]"
-    annotation ( Dialog(enable=not useForwardRateInput));
-*/
       parameter Integer nS=1 "Number of substrates types"
         annotation ( HideResult=true, Dialog(group="Substrates"));
       parameter Integer nP=1 "Number of products types"
@@ -3713,18 +3700,17 @@ package Chemical2
         "Activity coefficients of products"
         annotation ( HideResult=true, Dialog(group="Products"));
 
-    //  parameter Types.Temperature TK=298.15 "Base temperature"
-    //    annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
-
-      Types.MolarEnergy dH=sum(p.*products.H) - sum(s.*substrates.H)
-        "Standard Enthalpy Change (negative=exothermic)";
-      Types.MolarEntropy dS=sum(p.*products.S) - sum(s.*substrates.S)
-        "Standard Entropy Change";
-
-    //  Real KBase "dissociation constant at TK" annotation (HideResult=true);
-
       extends Physiolibrary.Chemical2.Interfaces.ConditionalHeatPort;
       extends Physiolibrary.Chemical2.Interfaces.ConditionalVolume;
+
+      parameter Types.MolarEnergy H_transition = 0
+        "Enthalpy of transition state"
+       annotation ( HideResult=true, Dialog(enable=not useMiddleTransition, group="Transition State"));
+                                                  //(sum(p.*products.H) + sum(s.*substrates.H))/2
+      parameter Types.MolarEntropy S_transition = 0
+        "Entropy of transition state"
+       annotation ( HideResult=true, Dialog(enable=not useMiddleTransition, group="Transition State"));
+                                                   // (sum(p.*products.S) + sum(s.*substrates.S))/2
 
       parameter Types.Fraction solventFraction=1
         "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)"
@@ -3738,15 +3724,28 @@ package Chemical2
         "=true, if external forward rate is used"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Real forwardRate;
+      parameter Boolean useMiddleTransition = true
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Transition State"));
+
+      Real kf "Forward rate coefficient";
+
+      Types.MolarEnergy dH =  sum(p.*products.H) - sum(s.*substrates.H)
+        "Standard Enthalpy Change of reaction (negative=exothermic)";
+      Types.MolarEntropy dS = sum(p.*products.S) - sum(s.*substrates.S)
+        "Standard Entropy Change of reaction";
+
+      Types.MolarEnergy dG "Gibb's energy of reaction";
+      Types.MolarEnergy dG_substrates "Gibb's energy of substrates";
+      Types.MolarEnergy dG_products "Gibb's energy of products";
+      Types.MolarEnergy dG_transition "Gibb's energy of transition state";
+
     protected
       parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
       parameter Types.Fraction fs=solventFraction^(sum(s));
       parameter Types.Fraction fp=solventFraction^(sum(p));
 
     public
-      Modelica.Blocks.Interfaces.RealInput forwardRateCoefficient(start=kf)=forwardRate if
-                                                                                    useForwardRateInput
+      Modelica.Blocks.Interfaces.RealInput forwardRateCoefficient = kf if   useForwardRateInput
         "Reaction forward rate coefficient [SI-unit]" annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
@@ -3754,16 +3753,19 @@ package Chemical2
             origin={40,40})));
     equation
       if not useDissociationConstantInput then
-        //KBase = exp(-(dH-TK*dS)/(TK*Modelica.Constants.R)); //K;
-        KaT = exp(-(dH-T_heatPort*dS)/(T_heatPort*Modelica.Constants.R));
+        K = exp(-(dH-T_heatPort*dS)/(T_heatPort*Modelica.Constants.R));
       end if;
       if not useForwardRateInput then
-        forwardRate = exp(sum(s.*substrates.H)/(T_heatPort*Modelica.Constants.R)-sum(s.*substrates.S)/Modelica.Constants.R); //kf;
+        kf = (Modelica.Constants.k*T_heatPort/Modelica.Constants.h)*exp((dG_substrates-dG_transition)/(T_heatPort*Modelica.Constants.R)); //the transition state theory
       end if;
 
-     // KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+      dG_substrates = sum(s.*substrates.H) - T_heatPort*sum(s.*substrates.S);
+      dG_products = sum(p.*products.H) - T_heatPort*sum(p.*products.S);
+      dG = dH - T_heatPort*dS; //= dG_products - dG_substrates;
 
-      rr*fsp = forwardRate*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
+      dG_transition = if useMiddleTransition then (dG_substrates + dG_products) / 2 else H_transition - T_heatPort*S_transition;
+
+      rr*fsp = kf*volume*(product((as.*substrates.conc).^s)*fp - (1/K)*product((ap.*products.conc).^p)*fs);  //the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -3907,21 +3909,21 @@ package Chemical2
       extends Icons.GasSolubility;
       extends Interfaces.ConditionalHeatPort;
 
-      parameter Types.DiffusionPermeability solubilityRateCoef=0.01
-        "The rate constant of incoming gas to solution (default 10 liter per second)"
-                                                                                     annotation ( HideResult=true);
+      Types.DiffusionPermeability solubilityRateCoef
+        "The rate constant of incoming gas to solution (default 10 liter per second)";
+                                                     //=0.01
 
       Types.GasSolubility kH
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
-      parameter Types.GasSolubility kH_T0
-        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)"
-                                                                                                    annotation ( HideResult=true);
-      parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
-         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Types.Temperature C(displayUnit="K")
-        "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
-        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+    //  parameter Types.GasSolubility kH_T0
+    //    "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)"
+    //                                                                                                annotation ( HideResult=true);
+    //  parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
+    //     annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+    //  parameter Types.Temperature C(displayUnit="K")
+    //    "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
+    //    annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
       parameter Types.Fraction solventFraction=1
         "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
@@ -3931,15 +3933,30 @@ package Chemical2
 
       Interfaces.ChemicalPort_a q_in "Dissolved in liquid solution"
         annotation (Placement(transformation(extent={{-10,-90},{10,-70}})));
+
+      Types.MolarEnergy dG "Gibb's energy of dissolution";
+      Types.MolarEnergy dH "Enthalpy of dissolution";
+
+      Types.MolarEnergy dG_liquid "Gibb's energy of substance in liquid";
+      Types.MolarEnergy dG_gas "Gibb's energy of substance in gas";
+
     equation
       q_in.q + q_out.q = 0;
 
-      kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
+      dG_gas = q_out.H - T_heatPort*q_out.S;
+      dG_liquid = q_in.H - T_heatPort*q_in.S;
+      dG = dG_liquid - dG_gas;
+      dH = q_in.H - q_out.H;
+
+      kH = exp(-dG/(T_heatPort*Modelica.Constants.R));
+      solubilityRateCoef = exp(dG_gas/(T_heatPort*Modelica.Constants.R)); //kf;
+
+      //kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
       q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc/solventFraction); //negative because of outflow
 
-      lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
+      lossHeat = dH*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
        annotation (Documentation(revisions="<html>
 <p><i>2009-2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -4207,7 +4224,8 @@ package Chemical2
       parameter Integer NumberOfSubunits=1
         "Number of independent subunits occuring in molecule";
 
-      Interfaces.ChemicalPort_a specificForm
+      Interfaces.ChemicalDefinitionPort_a
+                                specificForm
         "Specific form composed with subunits form of subunitSpiecies"
         annotation (Placement(transformation(extent={{90,-90},{110,-70}})));
       Interfaces.ChemicalPort_a specificSubunitForm[NumberOfSubunits]
@@ -4814,9 +4832,13 @@ package Chemical2
 
     model UnlimitedSolutionStorage "Constant concentration source"
 
-      Interfaces.ChemicalPort_b q_out
+      Interfaces.ChemicalDefinitionPort_a q_out
         "constant concentration with any possible flow"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+
+      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+        "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
+                                               //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
       parameter Boolean useConcentrationInput = false
         "=true, if fixed concentration is from input instead of parameter"
@@ -4851,6 +4873,8 @@ package Chemical2
        end if;
 
       q_out.conc = c;
+      q_out.H=substance.dH;
+      q_out.S=substance.dS;
 
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
         q_out.q = 0;
@@ -4894,9 +4918,13 @@ package Chemical2
 
     model UnlimitedGasStorage "Constant ideal gas source"
       extends Interfaces.ConditionalHeatPort;
-      Interfaces.ChemicalPort_b q_out
+      Interfaces.ChemicalDefinitionPort_a q_out
         "constant gas concentration with any possible flow"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+
+      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+        "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
+                                               //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
       parameter Boolean usePartialPressureInput = false
         "=true, if fixed partial pressure is from input instead of parameter"
@@ -4932,6 +4960,8 @@ package Chemical2
       end if;
 
       q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
+      q_out.H=substance.dH;
+      q_out.S=substance.dS;
 
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
          q_out.q = 0;
