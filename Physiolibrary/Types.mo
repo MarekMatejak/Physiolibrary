@@ -4404,9 +4404,9 @@ This icon is designed for a <b>signal bus</b> connector.
   replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby Real;
   replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby Real;
   replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
-  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
+  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kJ/mol", nominal=4186.8) constrainedby Real
     "chemical internal energy, chemical enthalpy, Gibb's energy ..";
-  replaceable type MolarEntropy = Modelica.SIunits.MolarEntropy(displayUnit="kcal/(mol.K)", nominal=4186.8) constrainedby Real
+  replaceable type MolarEntropy = Modelica.SIunits.MolarEntropy(displayUnit="J/(mol.K)", nominal=4186.8) constrainedby Real
     "chemical entropy as energy per mol and per kelvin";
 
   type MassConcentration =
