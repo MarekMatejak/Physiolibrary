@@ -98,7 +98,7 @@ package Population
          annotation ( HideResult=true, Dialog(group="Initialization"));
 
       parameter Types.Population NominalPopulation = 1
-        "Numerical scale. Default is 1, but for huge amount of cells it should be any number in the apropriate numerical order of typical amount."
+        "Numerical scale. Default is 1, but for huge amount of cells it should be any number in the appropriate numerical order of typical amount."
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very huge populations"));
       parameter Types.PopulationChange NominalPopulationChange = 1/(60*60*24)
         "Numerical scale. Default change is 1 individual per day, but for much faster or much slower chnages should be different."
@@ -382,7 +382,7 @@ Connector with one flow signal of type Real.
     end PopulationPort_b;
 
     partial model OnePort
-      "Partial change of population beween two ports without its accumulation"
+      "Partial change of population between two ports without its accumulation"
 
       PopulationPort_b port_b
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));

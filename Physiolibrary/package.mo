@@ -392,7 +392,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
   annotation (Documentation(info="<html>
 <p><ul>
 <li>migration to GITHub https://github.com/MarekMatejak/Physiolibrary from http://patf-biokyb.lf1.cuni.cz/repos/Modelica/Physiolibrary svn repository, commit 4947 </li>
-<li><font style=\"color: #333333; \">The library uses the Modelica Standard Libary (MSL) version 3.2.</font></li>
+<li><font style=\"color: #333333; \">The library uses the Modelica Standard Library (MSL) version 3.2.</font></li>
 <li><font style=\"color: #333333; \">Contains nice physiological icons.</font></li>
 <li><font style=\"color: #333333; \">Support for physiological units: min,kcal,mmHg,ml,mEq,..</font></li>
 <li><font style=\"color: #333333; \">Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</font></li>
@@ -486,7 +486,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
 </tr>
 <tr>
 <td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Blocks\">Blocks</a></p></td>
-<td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+<td valign=\"top\"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
 </table>
 </html>"));
