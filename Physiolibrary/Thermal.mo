@@ -642,7 +642,7 @@ i.e., it defines a fixed temperature as a boundary condition.
             transformation(extent={{90,-10},{110,10}}), iconTransformation(
               extent={{90,-10},{110,10}})));
       parameter Types.SpecificEnergy dH=0
-        "Enthalpy of incomming substance (i.e. enthalpy of solvation)";                                            // or 2428344 for water vaporization
+        "Enthalpy of incoming substance (i.e. enthalpy of solvation)";                                            // or 2428344 for water vaporization
       parameter Types.SpecificHeatCapacity SpecificHeat=4186.8
         "Of inflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 

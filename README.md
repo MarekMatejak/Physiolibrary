@@ -93,7 +93,7 @@ Download [Physiolibrary 2.3.0 (2015-02-16)](../../archive/v2.3.0.zip)
  * Fix: references in overview (user's guide)
 
 *  [Version v2.0.2 (2014-01-26)](../../archive/v2.0.2.zip)
- * Support for steady states calculation by energy/mass conservation laws or enviroment sources
+ * Support for steady states calculation by energy/mass conservation laws or environment sources
  * Conditional inputs for each domain blocks
  * Package States renamed to SteadyStates, added SteadyStates.Components
  * Removed package Mixed
@@ -114,7 +114,7 @@ Download [Physiolibrary 2.3.0 (2015-02-16)](../../archive/v2.3.0.zip)
  * New examples
 
 *  [Version v1.0.1 (2013-12-11)](../../archive/v1.0.1.zip)
- * The library uses the Modelica Standard Libary (MSL) version 3.2.
+ * The library uses the Modelica Standard Library (MSL) version 3.2.
  * Contains nice physiological icons.
  * Support for physiological units: min,kcal,mmHg,ml,mEq,..
  * Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains

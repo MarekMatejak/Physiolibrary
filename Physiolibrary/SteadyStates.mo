@@ -1316,7 +1316,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       if Simulation <> Types.SimulationType.SteadyState then
         der(state) = change;
-      elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+      elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependent equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
          change = 0;
       end if;
 
@@ -1419,7 +1419,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         der(state) = change;
       else
         for i in 1:n loop
-          if not isDependent[n] then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+          if not isDependent[n] then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependent equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
             change[i] = 0;
           end if;
         end for;
