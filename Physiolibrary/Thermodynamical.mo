@@ -3606,7 +3606,6 @@ package Thermodynamical
         end BloodAcidBase;
       end Develop;
 
-
       package Substances "Definitions of substances"
           extends Modelica.Icons.Package;
 
@@ -3617,7 +3616,7 @@ package Thermodynamical
             dH=0,
             dS=0,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.001,
+            activity=1,
             storeUnit="g") "H+"; //activity of H+ shifts the SI units from mol/l to mol/m3
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Hydronium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3644,7 +3643,7 @@ package Thermodynamical
             dH=-285830,
             dS=-163.14,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=1/55600,
+            activity=1,
             storeUnit="g") "H2O";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Oxygen=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3816,7 +3815,7 @@ package Thermodynamical
     extends Modelica.Icons.Package;
     model Substance "Substance accumulation in solution"
       extends Icons.Substance;
-      extends Interfaces.ConditionalVolume;
+      extends Interfaces.ConditionalSolution;
 
       extends SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
@@ -3846,7 +3845,7 @@ package Thermodynamical
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
       Interfaces.ChemicalDefinitionPort_a
-                                q_out(conc(start=solute_start/NormalVolume))
+                                q_out(conc(start=solute_start/SolutionAmount))
         "Concentration and molar flow from/to compartment"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
@@ -3859,7 +3858,7 @@ package Thermodynamical
             extent={{-20,-20},{20,20}},
             origin={116,-40})));
     equation
-      q_out.conc = solute/volume;
+      q_out.conc = solute/solution;
       q_out.S = substance.dS;
       q_out.H = substance.dH;
       q_out.activity = substance.activity;
@@ -3925,7 +3924,7 @@ package Thermodynamical
     //    annotation ( HideResult=true, Dialog(group="Products"));
 
       extends Physiolibrary.Thermodynamical.Interfaces.ConditionalHeatPort;
-      extends Physiolibrary.Thermodynamical.Interfaces.ConditionalVolume;
+      extends Physiolibrary.Thermodynamical.Interfaces.ConditionalSolution;
 
       parameter Types.MolarEnergy H_transition = 0
         "Enthalpy of transition state"
@@ -3992,7 +3991,7 @@ package Thermodynamical
 
       dG_transition = if useMiddleTransition then (dG_substrates + dG_products) / 2 else H_transition - T_heatPort*S_transition;
 
-      rr*fsp = kf*volume*(product((substrates.conc .* substrates.activity) .^ s) * fp - (1 / K) * product((products.conc .* products.activity) .^ p) * fs);  //the main equation
+      rr*fsp = kf*solution*(product((substrates.conc .* substrates.activity) .^ s) * fp - (1 / K) * product((products.conc .* products.activity) .^ p) * fs);  //the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -4458,7 +4457,7 @@ package Thermodynamical
 
       extends SteadyStates.Interfaces.SteadyStateSystem(
                                                Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
-      extends Interfaces.ConditionalVolume;
+      extends Interfaces.ConditionalSolution;
 
       parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
         "Properties of speciated form (Molar Weight, Enthalpy of formation, Entropy of formation)";
@@ -4567,7 +4566,7 @@ package Thermodynamical
     end Speciation;
 
     model Degradation "Degradation of solute"
-      extends Interfaces.ConditionalVolume;
+      extends Interfaces.ConditionalSolution;
 
       Interfaces.ChemicalPort_a q_in "Degraded solute outflow"
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
@@ -5090,7 +5089,7 @@ package Thermodynamical
         "=true, if fixed concentration is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Types.Concentration Conc = 0
+       parameter Types.Fraction Concentration = 0
         "Fixed concentration if useConcentrationInput=false"
         annotation (Dialog(enable=not useConcentrationInput));
 
@@ -5102,11 +5101,11 @@ package Thermodynamical
         "If in equilibrium, then zero-flow equation is added."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
-       Types.RealIO.ConcentrationInput concentration(start=Conc)=c if useConcentrationInput
+       Types.RealIO.FractionInput concentration(start=Concentration)=c if useConcentrationInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     protected
-      Types.Concentration c "Current concentration";
+      Types.Fraction c "Current concentration";
 
     initial equation
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
@@ -5115,7 +5114,7 @@ package Thermodynamical
 
     equation
        if not useConcentrationInput then
-         c=Conc;
+         c=Concentration;
        end if;
 
       q_out.conc = c;
@@ -5164,7 +5163,7 @@ package Thermodynamical
     end UnlimitedSolutionStorage;
 
     model UnlimitedGasStorage "Constant ideal gas source"
-      extends Interfaces.ConditionalHeatPort;
+
       Interfaces.ChemicalDefinitionPort_a q_out
         "constant gas concentration with any possible flow"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -5177,9 +5176,12 @@ package Thermodynamical
         "=true, if fixed partial pressure is from input instead of parameter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-       parameter Types.Pressure PartialPressure = 0
+      parameter Types.Pressure PartialPressure = 0
         "Fixed partial pressure if usePartialPressureInput=false"
         annotation (Dialog(enable=not usePartialPressureInput));
+
+      parameter Types.Pressure TotalPressure = 0
+        "Total pressure of the gas solution.";
 
       Types.RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
         "Partial pressure of Gas = air pressure * gas fraction"
@@ -5206,7 +5208,7 @@ package Thermodynamical
         p=PartialPressure;
       end if;
 
-      q_out.conc = p / (Modelica.Constants.R * T_heatPort);  //ideal gas equation
+      q_out.conc = p / TotalPressure;  //ideal gas equation
       q_out.H=substance.dH;
       q_out.S=substance.dS;
       q_out.activity=substance.activity;
@@ -5214,8 +5216,6 @@ package Thermodynamical
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
          q_out.q = 0;
       end if;
-
-      lossHeat=0; //only read temperature from heat port
 
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
@@ -5297,7 +5297,7 @@ package Thermodynamical
 
     connector ChemicalDefinitionPort_a
       "Concentration, expected positive Solute inflow, enthalpy and entropy of substance"
-      Types.Concentration conc "Solute concentration";
+      Types.Fraction conc "Solute concentration";
       flow Types.MolarFlowRate q "Solute flow";
 
       output Types.MolarEnergy H "substance enthalpy of formation";
@@ -5336,7 +5336,7 @@ Connector with one flow signal of type Real.
     end ChemicalDefinitionPort_a;
 
     connector ChemicalUsePort "Concentration and Solute flow"
-      Types.Concentration conc "Solute concentration";
+      Types.Fraction conc "Solute concentration";
       flow Types.MolarFlowRate q "Solute flow";
 
       input Types.MolarEnergy H "substance enthalpy of formation";
@@ -5479,41 +5479,44 @@ on the model behaviour.
 </html>"));
     end ConditionalHeatPort;
 
-    partial model ConditionalVolume
-      "Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume"
+    partial model ConditionalSolution
+      "Chemical processes can be modeled with or without variable amount of solution substances"
 
-      constant Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
+      parameter Types.AmountOfSubstance SolutionAmount=55.6
+        "Amount of all substances of the solution (blood plasma has 52.1 mol per liter)"
+                                                                                                            annotation(HideResult=useSolutionInput);
 
-      parameter Boolean useNormalizedVolume = true
-        "Normalized volume of solution is 1 liter"
+      parameter Boolean useSolutionAmountInput = false
+        "Is solution input enabled?"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Types.Volume volume "Solution volume"; //annotation(HideResult=useNormalizedVolume);
+      Types.AmountOfSubstance solution
+        "Amount of all substances in the solution";                                //annotation(HideResult=useNormalizedVolume);
 
-      Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume
-        "Volume of solution"                                                                         annotation (Placement(transformation(
+      Types.RealIO.AmountOfSubstanceInput solutionAmount=solution if useSolutionAmountInput
+        "Amount of all substances in the solution"                                                                         annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-40,40})));
     equation
-      if useNormalizedVolume then
-        volume = NormalVolume;
+      if not useSolutionAmountInput then
+        solution = SolutionAmount;
       end if;
 
-    end ConditionalVolume;
+    end ConditionalSolution;
 
     partial model ConditionalSolutionFlow
-      "Input of solution volumetric flow vs. parametric solution volumetric flow"
+      "Input of solution molar flow vs. parametric solution molar flow"
 
       parameter Boolean useSolutionFlowInput = false
         "=true, if solution flow input is used instead of parameter SolutionFlow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.VolumeFlowRate SolutionFlow=0
-        "Volumetric flow of solution if useSolutionFlowInput=false"
+      parameter Types.MolarFlowRate SolutionFlow=0
+        "Molar flow of solution if useSolutionFlowInput=false"
         annotation ( HideResult=not useSolutionFlowInput, Dialog(enable=not useSolutionFlowInput));
 
-      Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
+      Types.RealIO.MolarFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,40}), iconTransformation(
@@ -5521,7 +5524,7 @@ on the model behaviour.
             rotation=270,
             origin={0,70})));
 
-      Types.VolumeFlowRate q "Current solution flow";
+      Types.MolarFlowRate q "Current solution flow";
     equation
       if not useSolutionFlowInput then
         q = SolutionFlow;
