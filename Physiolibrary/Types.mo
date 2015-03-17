@@ -34,7 +34,7 @@ package Types "Physiological units with nominals"
 </tr>
 <tr>
 <td valign=\"top\"><p>Blocks</p></td>
-<td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+<td valign=\"top\"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
 <tr>
 <td valign=\"top\"><p>Chemical</p></td>
@@ -6181,7 +6181,7 @@ The Real output y is a constant signal:
       extends Modelica.Icons.Function;
 
       input String name "Name of parameter";
-      input String storeUnit "Prefered units to store variable value";
+      input String storeUnit "Preferred units to store variable value";
       input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
         "Unit conversions";
 
@@ -6214,7 +6214,7 @@ The Real output y is a constant signal:
 
       input String name "Variable name";
       input Real value "Variable value";
-      input String storeUnit "Prefered units to store variable value";
+      input String storeUnit "Preferred units to store variable value";
       input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
         "Unit conversions";
     //algorithm
@@ -6248,7 +6248,7 @@ The Real output y is a constant signal:
       input Real initialValue "Initial variable value[in SI units]";
       input Real finalValue "Final variable value[in SI units]";
 
-      input String storeUnit "Prefered units to store variable value";
+      input String storeUnit "Preferred units to store variable value";
       input UnitConversions.RealTypeRecord[:] unitConversions = UnitConversions.RealTypeDef
         "Unit conversions";
     //algorithm

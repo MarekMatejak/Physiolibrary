@@ -3014,7 +3014,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
 <p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
 <p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
-<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free dissolved CO2 in liquid and an amount of HCO3-.</p>
 <p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
 <p><br>Molar heat of formation (aqueous):</p>
 <p>CO2:        -413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
@@ -3291,7 +3291,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
         annotation ( Documentation(info="<html>
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
-<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free dissolved CO2 in liquid and an amount of HCO3-.</p>
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -3870,7 +3870,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </tr>
 <tr>
 <td><p>T<sub>K</sub></p></td>
-<td><p>base temperature of tabulated coeficients</p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
 </tr>
 <tr>
 <td><p>&omega;</p></td>
@@ -4006,7 +4006,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 </tr>
 <tr>
 <td><p>T<sub>K</sub></p></td>
-<td><p>base temperature of tabulated coeficients</p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
 </tr>
 <tr>
 <td><p>&Omega;</p></td>
@@ -4200,7 +4200,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       extends Chemical.Interfaces.ConditionalVolume;
 
       parameter Integer NumberOfSubunits=1
-        "Number of independent subunits occuring in molecule";
+        "Number of independent subunits occurring in molecule";
 
       Chemical.Interfaces.ChemicalPort_a specificForm
         "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
@@ -4239,7 +4239,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
 
       parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
-        "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
+        "Enthalpy changes of substances (can relative to one chosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
         annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
 
       Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
@@ -4284,7 +4284,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>This block identifies one specific chemical form of one macromolecule defined by forms of its subunits  (one chosen chemical species - called <i>specie</i>).</p>
 <p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
 <p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the subnunit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
-<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurrence in macromolecule. In equilibrium are this proporties fulfilled.</p>
 <p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
 <p>Where:</p>
 <p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
@@ -5106,7 +5106,7 @@ Connector with one flow signal of type Real.
     end ChemicalPort_b;
 
     partial model OnePort
-      "Partial transfer of solute beween two ports without its accumulation"
+      "Partial transfer of solute between two ports without its accumulation"
 
       ChemicalPort_b            q_out
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));

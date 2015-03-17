@@ -511,7 +511,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeflowrate
           annotation (Placement(transformation(extent={{80,-10},{100,10}}),
               iconTransformation(extent={{80,-10},{100,10}})));
-        discrete Time T0 "begining of cardiac cycle";
+        discrete Time T0 "beginning of cardiac cycle";
         Boolean b(start=false);
         discrete Time HP "duration of cardiac cycle";
         parameter Frequency HR=1.2;
@@ -522,7 +522,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       equation
         b = time - pre(T0) >= pre(HP) "true if new cardiac cycle begins";
         when {initial(),b} then
-          T0 = time "set begining of cardiac cycle";
+          T0 = time "set beginning of cardiac cycle";
           HP = 1/HR "update length of carciac cycle";
           TD2 = TD1 + (2/5)*HP "compute end time of systole";
         end when;
