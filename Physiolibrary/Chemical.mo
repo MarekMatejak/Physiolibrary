@@ -3751,6 +3751,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       end if;
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+      //this Hoff's equation is valid in gases reactions with the same number of substrates and products and plus-minus in liquid solutions.
+      //for gaseous reaction with dn!=0 (stoichoimetry difference, i.e. the stoichiometru number of products minus the stoichiometry number of reactants) is the Van't Hoff's energy (dE) different from enthalphy of reaction (DH): dE=dH-dn*R*T (Ref: D. M. Golden, "Standard states for thermochemical and activation parameters," Journal of Chemical Education, vol. 48, p. 235, 1971/04/01 1971.)
 
       rr*fsp = forwardRate*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
 
