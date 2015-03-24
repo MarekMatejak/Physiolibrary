@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
+package Physiolibrary "Modelica library for Physiology (version 2.3.1alpha)"
  extends Modelica.Icons.Package;
 
 
@@ -493,8 +493,16 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0)"
   end UsersGuide;
 
 
+
+
+
+
+
+
+
+
   annotation (preferredView="info",
-version="2.3.0",
+version="2.3.1alpha",
 versionBuild=1,
 versionDate="2015-02-16",
 dateModified = "2015-02-16 15:49:00Z",

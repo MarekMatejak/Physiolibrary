@@ -1621,7 +1621,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     extends Modelica.Icons.SensorsPackage;
     model FlowMeasure "Volumetric flow between ports"
       extends Interfaces.OnePort;
-      extends Icons.FlowMeasure;
+      //extends Icons.FlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlow "Actual volume flow rate"
                              annotation (Placement(transformation(extent={{-20,-20},
@@ -1649,16 +1650,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               points={{62,100},{80,80}},
               color={0,0,255},
               smooth=Smooth.None),
-            Rectangle(
-              extent={{-100,14},{-70,-14}},
-              pattern=LinePattern.None,
-              fillColor={190,0,0},
-              fillPattern=FillPattern.Solid),
-            Rectangle(
-              extent={{70,14},{100,-14}},
-              pattern=LinePattern.None,
-              fillColor={190,0,0},
-              fillPattern=FillPattern.Solid)}));
+            Text(
+              extent={{-25,-11},{34,-70}},
+              lineColor={0,0,0},
+              textString="V'")}));
     end FlowMeasure;
 
     model PressureMeasure "Hydraulic pressure at port"

@@ -693,12 +693,16 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.SensorsPackage;
     model FlowMeasure "Measurement of flux through semipermeable membrane"
       extends Interfaces.OnePort;
-      extends Icons.FlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
+      //extends Icons.FlowMeasure;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlowRate "Flux through membrane"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-60})));
+            origin={0,-60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
       q_out.o = q_in.o;
 
@@ -708,7 +712,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={
+            Text(
+              extent={{-29,-7},{30,-66}},
+              lineColor={0,0,0},
+              textString="V'")}));
     end FlowMeasure;
   end Sensors;
 

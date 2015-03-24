@@ -4698,13 +4698,17 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
     model MolarFlowMeasure "Measure of molar flow"
       extends Chemical.Interfaces.OnePort;
-      extends Icons.MolarFlowMeasure;
+      //extends Icons.MolarFlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
 
      Types.RealIO.MolarFlowRateOutput molarFlowRate
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
-            origin={0,-60})));
+            origin={0,-60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
       q_in.conc = q_out.conc;
 
@@ -4714,32 +4718,42 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={
+            Text(
+              extent={{-31,-7},{28,-66}},
+              lineColor={0,0,0},
+              textString="n'")}));
     end MolarFlowMeasure;
 
     model ConcentrationMeasure "Measure of molar concentration"
+      extends Modelica.Icons.RotationalSensor;
 
       Chemical.Interfaces.ChemicalPort_a
                                 q_in "For measure only"
                                 annotation (Placement(
-            transformation(extent={{-10,-30},{10,-10}})));
+            transformation(extent={{-10,-10},{10,10}}), iconTransformation(
+              extent={{-10,-10},{10,10}})));
       Types.RealIO.ConcentrationOutput concentration "Concentration"
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
-            origin={0,40})));
+            origin={0,40}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
 
       concentration =         q_in.conc;
 
       q_in.q = 0;
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={    Rectangle(
-              extent={{-20,20},{20,-20}},
-              lineColor={0,0,255},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
+            Text(
+              extent={{-29,-3},{30,-62}},
+              lineColor={0,0,0},
+              textString="c")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -4748,6 +4762,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
     model IncrementalFlowConcentrationMeasure
       "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
+      extends Modelica.Icons.RotationalSensor;
+
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
      Types.RealIO.ConcentrationOutput concentration
@@ -4769,14 +4785,10 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-                            graphics={Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-88,-50},{80,50}},
+                            graphics={        Text(
+              extent={{-88,-48},{86,0}},
               textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
+              lineColor={0,0,0})}),          Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
