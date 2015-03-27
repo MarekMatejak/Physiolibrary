@@ -1174,7 +1174,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={64,-34})));
-      Modelica.Blocks.Math.Sum total[4](each nin=6) annotation (Placement(transformation(
+      Modelica.Blocks.Math.Sum totalAmounts[4](each nin=6) annotation (
+            Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-64,62})));
@@ -1196,9 +1197,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
-              origin={-100,-100})));
-      Modelica.Blocks.Math.Sum total1[
-                                     4](each nin=6) annotation (Placement(transformation(
+              origin={-100,-98})));
+      Modelica.Blocks.Math.Sum totalHeats[4](each nin=6) annotation (Placement(
+              transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={-64,32})));
@@ -1248,30 +1249,30 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(Hbu_A_NH3.solute, total.u[1]) annotation (Line(
-          points={{-16,70},{-44,70},{-44,63.6667},{-52,63.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NH3.solute, total.u[2]) annotation (Line(
-          points={{70,70},{-2,70},{-2,63},{-52,63}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_A_NH2.solute, total.u[3]) annotation (Line(
-          points={{-16,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NH2.solute, total.u[4]) annotation (Line(
-          points={{70,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_A_NHCOO.solute, total.u[5]) annotation (Line(
-          points={{-16,-84},{-44,-84},{-44,61},{-52,61}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hbu_AH_NHCOO.solute, total.u[6]) annotation (Line(
-          points={{70,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
-          color={0,0,127},
-          smooth=Smooth.None));
+        connect(Hbu_A_NH3.solute, totalAmounts.u[1]) annotation (Line(
+            points={{-16,70},{-44,70},{-44,63.6667},{-52,63.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH3.solute, totalAmounts.u[2]) annotation (Line(
+            points={{70,70},{-2,70},{-2,63},{-52,63}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NH2.solute, totalAmounts.u[3]) annotation (Line(
+            points={{-16,-2},{-44,-2},{-44,62.3333},{-52,62.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NH2.solute, totalAmounts.u[4]) annotation (Line(
+            points={{70,-2},{-2,-2},{-2,61.6667},{-52,61.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_A_NHCOO.solute, totalAmounts.u[5]) annotation (Line(
+            points={{-16,-84},{-44,-84},{-44,61},{-52,61}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Hbu_AH_NHCOO.solute, totalAmounts.u[6]) annotation (Line(
+            points={{70,-84},{-2,-84},{-2,60.3333},{-52,60.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
 
       connect(Hbu_A_NH2.q_out, h2.products[1]) annotation (Line(
           points={{-22,8},{-10,8},{-10,7.5},{12,7.5}},
@@ -1284,7 +1285,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(total.y, Hb_tn.amountOfSubunit) annotation (Line(
+        connect(totalAmounts.y, Hb_tn.amountOfSubunit) annotation (Line(
             points={{-75,62},{-78,62},{-78,-12},{-72,-12}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -1343,35 +1344,35 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             smooth=Smooth.None));
 
         connect(Hb_tn.internalHeat, internalHeat) annotation (Line(
-            points={{-58,-20},{-58,-100},{-100,-100}},
+            points={{-58,-20},{-58,-98},{-100,-98}},
             color={0,0,127},
             smooth=Smooth.None));
 
-        connect(Hbu_A_NH3.internalHeat, total1.u[1]) annotation (Line(
+        connect(Hbu_A_NH3.internalHeat, totalHeats.u[1]) annotation (Line(
             points={{-10.4,76},{-44,76},{-44,33.6667},{-52,33.6667}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NH3.internalHeat, total1.u[2]) annotation (Line(
+        connect(Hbu_AH_NH3.internalHeat, totalHeats.u[2]) annotation (Line(
             points={{75.6,76},{-2,76},{-2,33},{-52,33}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_A_NH2.internalHeat, total1.u[3]) annotation (Line(
+        connect(Hbu_A_NH2.internalHeat, totalHeats.u[3]) annotation (Line(
             points={{-10.4,4},{-44,4},{-44,32.3333},{-52,32.3333}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NH2.internalHeat, total1.u[4]) annotation (Line(
+        connect(Hbu_AH_NH2.internalHeat, totalHeats.u[4]) annotation (Line(
             points={{75.6,4},{-2,4},{-2,31.6667},{-52,31.6667}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_A_NHCOO.internalHeat, total1.u[5]) annotation (Line(
+        connect(Hbu_A_NHCOO.internalHeat, totalHeats.u[5]) annotation (Line(
             points={{-10.4,-78},{-44,-78},{-44,31},{-52,31}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Hbu_AH_NHCOO.internalHeat, total1.u[6]) annotation (Line(
+        connect(Hbu_AH_NHCOO.internalHeat, totalHeats.u[6]) annotation (Line(
             points={{75.6,-78},{-2,-78},{-2,30.3333},{-52,30.3333}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(total1.y, Hb_tn.subunitInternalHeat) annotation (Line(
+        connect(totalHeats.y, Hb_tn.subunitInternalHeat) annotation (Line(
             points={{-75,32},{-76,32},{-76,-6},{-72,-6}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -1380,13 +1381,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 
-<p>Ref: Mateják Marek, Kulhánek Tomáa, Matouaek Stanislav. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 2014</p>
+<p>[1] Mateják M, Kulhánek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
 
-<p>Parameters are chosen to fit following measurements:</p>
-<p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
-<p>[2] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+<p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 
-</html>"));
+<p>[3] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+
+</html>"), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics));
       end Hemoglobin_MKM_Specie;
 
       model Hemoglobin_MKM_Adair "Matejak,Kulhanek,Matousek (2014)"
@@ -1753,23 +1755,25 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(Hb0.internalHeat, internalHeat.u[1]) annotation (Line(
-            points={{-24,78},{-24,66},{34,66},{34,-53.6},{42,-53.6}},
+            points={{-24,78.2},{-24,66},{34,66},{34,-53.6},{42,-53.6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb1.internalHeat, internalHeat.u[2]) annotation (Line(
-            points={{-24,40},{-26,40},{-26,36},{34,36},{34,-52.8},{42,-52.8}},
+            points={{-24,40.2},{-26,40.2},{-26,36},{34,36},{34,-52.8},{42,-52.8}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb2.internalHeat, internalHeat.u[3]) annotation (Line(
-            points={{-24,0},{-28,0},{-28,-2},{34,-2},{34,-52},{42,-52}},
+            points={{-24,0.2},{-28,0.2},{-28,-2},{34,-2},{34,-52},{42,-52}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb3.internalHeat, internalHeat.u[4]) annotation (Line(
-            points={{-24,-44},{-28,-44},{-28,-46},{34,-46},{34,-51.2},{42,-51.2}},
+            points={{-24,-43.8},{-28,-43.8},{-28,-46},{34,-46},{34,-51.2},{42,
+                -51.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Hb4.internalHeat, internalHeat.u[5]) annotation (Line(
-            points={{-24,-88},{-28,-88},{-28,-90},{34,-90},{34,-52},{42,-52},{42,-50.4}},
+            points={{-24,-87.8},{-28,-87.8},{-28,-90},{34,-90},{34,-52},{42,-52},
+                {42,-50.4}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(gain.u, sO2.y) annotation (Line(
@@ -1809,15 +1813,16 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation (          experiment(
             StopTime=15000,
             Tolerance=1e-014,
-            __Dymola_Algorithm="Euler"), Documentation(info=
-                   "<html>
-<p>Ref: Mateják Marek, Kulhánek Tomáa, Matouaek Stanislav. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 2014</p>
-
+            __Dymola_Algorithm="Euler"), Documentation(info="<html>
 <p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
-<p>Parameters are chosen to fit following measurements:</p>
-<p>[1] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
-<p>[2] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
-<p>[3] Severinghaus JW. Simple, accurate equations for human blood O2 dissociation computations. Journal of Applied Physiology 1979;46:599-602.</p>
+
+<p>[1] Mateják M, Kulhánek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
+
+<p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
+
+<p>[3] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
+
+<p>[4] Severinghaus JW. Simple, accurate equations for human blood O2 dissociation computations. Journal of Applied Physiology 1979;46:599-602.</p>
 </html>", revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -2847,15 +2852,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(tH2O.fragment[1], H2O.solute) annotation (Line(
-            points={{-48,-69.3333},{-82,-69.3333},{-82,-22}},
+            points={{-48,-69.3333},{-76,-69.3333},{-76,-22}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(OH.solute, tH2O.fragment[2]) annotation (Line(
-            points={{-8,-42},{-8,-50},{-76,-50},{-76,-68},{-48,-68}},
+            points={{-2,-42},{-2,-50},{-76,-50},{-76,-68},{-48,-68}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(H3O.solute, tH2O.fragment[3]) annotation (Line(
-            points={{-8,2},{-8,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
+            points={{-2,2},{-2,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
                 -66.6667}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -2869,11 +2874,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(H3O.solute, electroneutrality.fragment[1]) annotation (Line(
-            points={{-8,2},{-8,-6},{8,-6},{8,-89},{46,-89}},
+            points={{-2,2},{-2,-6},{8,-6},{8,-89},{46,-89}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(OH.solute, electroneutrality.fragment[2]) annotation (Line(
-            points={{-8,-42},{-8,-87},{46,-87}},
+            points={{-2,-42},{-2,-87},{46,-87}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation ( Documentation(info="<html>
@@ -2970,15 +2975,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
-            points={{-8,46},{-8,38},{16,38},{16,-89.3333},{46,-89.3333}},
+            points={{-2,46},{-2,38},{16,38},{16,-89.3333},{46,-89.3333}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(CO3.solute, electroneutrality.fragment[2]) annotation (Line(
-            points={{64,46},{64,38},{18,38},{18,-88},{46,-88}},
+            points={{70,46},{70,38},{18,38},{18,-88},{46,-88}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(H3O.solute, electroneutrality.fragment[3]) annotation (Line(
-            points={{-8,2},{-8,-6},{22,-6},{22,-86.6667},{46,-86.6667}},
+            points={{-2,2},{-2,-6},{22,-6},{22,-86.6667},{46,-86.6667}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(H3O.q_out, c2.products[2]) annotation (Line(
@@ -3009,7 +3014,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
 <pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
 <p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
 <p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
-<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free dissolved CO2 in liquid and an amount of HCO3-.</p>
 <p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
 <p><br>Molar heat of formation (aqueous):</p>
 <p>CO2:        -413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
@@ -3097,12 +3102,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(A.solute, molarConservationLaw.fragment[1]) annotation (Line(
-            points={{14,-16},{14,-20},{36,-20},{36,-1},{44,-1}},
+            points={{20,-16},{20,-20},{36,-20},{36,-1},{44,-1}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(HA.solute, molarConservationLaw.fragment[2]) annotation (Line(
-            points={{-66,-2},{-66,-8},{-78,-8},{-78,36},{36,36},{36,0},{44,0},{44,
-                1}},
+            points={{-60,-2},{-60,-8},{-78,-8},{-78,36},{36,36},{36,0},{44,0},{
+                44,1}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(SID.y,toColoumn. u) annotation (Line(
@@ -3110,7 +3115,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(HA.solute, electroneutrality.fragment) annotation (Line(
-            points={{-66,-2},{-66,-88},{46,-88}},
+            points={{-60,-2},{-60,-88},{46,-88}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(toColoumn.y, electroneutrality.total) annotation (Line(
@@ -3245,23 +3250,23 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             thickness=1,
             smooth=Smooth.None));
         connect(H3PO4.solute, tP04.fragment[1]) annotation (Line(
-            points={{-88,-58},{-88,-86},{-28,-86},{-28,-85.5}},
+            points={{-82,-58},{-82,-86},{-28,-86},{-28,-85.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(H2PO4.solute, tP04.fragment[2]) annotation (Line(
-            points={{-34,-58},{-34,-62},{-64,-62},{-64,-84.5},{-28,-84.5}},
+            points={{-28,-58},{-28,-62},{-64,-62},{-64,-84.5},{-28,-84.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(HPO4.solute, tP04.fragment[3]) annotation (Line(
-            points={{26,-58},{26,-64},{-50,-64},{-50,-83.5},{-28,-83.5}},
+            points={{32,-58},{32,-64},{-50,-64},{-50,-83.5},{-28,-83.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(PO4.solute, tP04.fragment[4]) annotation (Line(
-            points={{82,-58},{82,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
+            points={{88,-58},{88,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(H.solute, minusPh.u) annotation (Line(
-            points={{36,-22},{36,-26},{54,-26},{54,-10},{62,-10}},
+            points={{42,-22},{42,-26},{54,-26},{54,-10},{62,-10}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(SID.y, toColoumn.u) annotation (Line(
@@ -3273,20 +3278,20 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(H2PO4.solute, electroneutrality.fragment[1]) annotation (Line(
-            points={{-34,-58},{-34,-62},{24,-62},{24,-89.3333},{48,-89.3333}},
+            points={{-28,-58},{-28,-62},{24,-62},{24,-89.3333},{48,-89.3333}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(HPO4.solute, electroneutrality.fragment[2]) annotation (Line(
-            points={{26,-58},{26,-88},{48,-88}},
+            points={{32,-58},{32,-88},{48,-88}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(PO4.solute, electroneutrality.fragment[3]) annotation (Line(
-            points={{82,-58},{82,-68},{28,-68},{28,-86.6667},{48,-86.6667}},
+            points={{88,-58},{88,-68},{28,-68},{28,-86.6667},{48,-86.6667}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation ( Documentation(info="<html>
 <p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
-<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free dissolved CO2 in liquid and an amount of HCO3-.</p>
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -3406,11 +3411,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(A.solute, tAlb.fragment[1]) annotation (Line(
-              points={{0,14},{0,10},{-54,10},{-54,-5},{-40,-5}},
+              points={{6,14},{6,10},{-54,10},{-54,-5},{-40,-5}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(HA.solute, tAlb.fragment[2]) annotation (Line(
-              points={{-66,16},{-66,-4},{-40,-4},{-40,-3}},
+              points={{-60,16},{-60,-4},{-40,-4},{-40,-3}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(toColoumn.y, electroneutrality.total) annotation (Line(
@@ -3438,11 +3443,11 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(H2PO4.solute, tP04.fragment[1]) annotation (Line(
-              points={{-52,-54},{-52,-75},{-28,-75}},
+              points={{-46,-54},{-46,-75},{-28,-75}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(HPO4.solute, tP04.fragment[2]) annotation (Line(
-              points={{8,-54},{8,-60},{-40,-60},{-40,-73},{-28,-73}},
+              points={{14,-54},{14,-60},{-40,-60},{-40,-73},{-28,-73}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(phosphateAcidification.products[2], H3O.q_out) annotation (Line(
@@ -3451,15 +3456,15 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(HCO3.solute, electroneutrality.fragment[1]) annotation (Line(
-              points={{52,70},{52,-62},{32,-62},{32,-88},{46,-88}},
+              points={{58,70},{58,-62},{32,-62},{32,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(H2PO4.solute, electroneutrality.fragment[2]) annotation (Line(
-              points={{-52,-54},{-52,-86},{46,-86},{46,-88}},
+              points={{-46,-54},{-46,-86},{46,-86},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(HPO4.solute, electroneutrality.fragment[3]) annotation (Line(
-              points={{8,-54},{8,-88},{46,-88}},
+              points={{14,-54},{14,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(Cl.q_out, substances[3]) annotation (Line(
@@ -3468,7 +3473,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               thickness=1,
               smooth=Smooth.None));
           connect(HA.solute, electroneutrality.fragment[(m+1):(n+m)]) annotation (Line(
-              points={{-66,16},{-66,-88},{46,-88}},
+              points={{-60,16},{-60,-88},{46,-88}},
               color={0,0,127},
               smooth=Smooth.None));
           connect(SID_less_Cl.y, toColoumn.u) annotation (Line(
@@ -3476,7 +3481,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               color={0,0,127},
               smooth=Smooth.None));
           connect(Cl.solute, electroneutrality.fragment[4]) annotation (Line(
-              points={{86,42},{86,10},{54,10},{54,-64},{34,-64},{34,-88},{46,-88}},
+              points={{92,42},{92,10},{54,10},{54,-64},{34,-64},{34,-88},{46,
+                  -88}},
               color={0,0,127},
               smooth=Smooth.None));
           annotation ( Documentation(revisions="<html>
@@ -3611,20 +3617,19 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
       Chemical.Interfaces.ChemicalPort_b            q_out(conc(start=solute_start/NormalVolume))
-        "Flux from/to compartment" annotation (Placement(transformation(extent={{-10,
+        "Concentration and molar flow from/to compartment" annotation (Placement(transformation(extent={{-10,
                 -10},{10,10}})));
 
       parameter Types.MolarEnergy dH=0 "Standard Enthalpy Change"
         annotation ( HideResult=true, Dialog(tab="Energies"));
 
       Types.RealIO.EnergyOutput internalHeat
-        "internal heat energy = enthalpy*amountOfSubstance" annotation (Placement(
+        "Internal heat energy = enthalpy*amountOfSubstance" annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={60,-100}), iconTransformation(
             extent={{-20,-20},{20,20}},
-            rotation=0,
             origin={116,-40})));
     equation
       q_out.conc = solute/volume;
@@ -3642,9 +3647,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               lineColor={0,0,255},
               textString="%name")}),
         Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+<p>2009-2015 by Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
+<p><b>Solute = Concentration &middot; Volume = &int; MolarFlow</b></p>
 <p>The main class from &ldquo;Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
 </html>"));
     end Substance;
@@ -3746,6 +3751,8 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
       end if;
 
       KaT = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+      //this Hoff's equation is valid in gases reactions with the same number of substrates and products and plus-minus in liquid solutions.
+      //for gaseous reaction with dn!=0 (stoichoimetry difference, i.e. the stoichiometru number of products minus the stoichiometry number of reactants) is the Van't Hoff's energy (dE) different from enthalphy of reaction (DH): dE=dH-dn*R*T (Ref: D. M. Golden, "Standard states for thermochemical and activation parameters," Journal of Chemical Education, vol. 48, p. 235, 1971/04/01 1971.)
 
       rr*fsp = forwardRate*volume*(product((as.*substrates.conc).^s)*fp - (1/KaT)*product((ap.*products.conc).^p)*fs);  //Elementary first-order rate kinetics - the main equation
 
@@ -3779,43 +3786,110 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               fillColor={0,0,0},
               fillPattern=FillPattern.Solid)}),
         Documentation(revisions="<html>
-<p><i>2013-2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+<p><i>2013-2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
-<pre>The Chemical reaction
-
-Schema of chemical reaction:
-s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP]
-
-where
-S are substrates,
-s are stochiometric coefficients of substrates,
-P are products,
-p are stochiometric coefficients of products.
-
-In equilibrium (at zero reaction flow) is reached the dissociation constant K equation:
-<p><br><code></p><p><br>K = <font style=\"color: #ff0000; \">&nbsp;product</font>(P.^p) / <font style=\"color: #ff0000; \">product</font>(S.^s)</code></p>
-<pre>The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
-<p><br><code></p><p><br>The forward rate is kf*volume*<font style=\"color: #ff0000; \">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
-<p><code>The backward rate is (kf/K)*volume*<font style=\"color: #ff0000; \">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
-<pre>
-Temperature dependence is calculated by Van&apos;t Hoff equation using enthalpy change of reaction as parameter dH:
-<p><br><code></p><p><br>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style=\"color: #ff0000; \">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
-<pre>where KBase is base equilibrium constant at base temperature TK and T_heatPort is current temperature.
-<p><code></p><p>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
-<pre><i><b>dS = k ln(&omega;)</b></i>
-<i>where k is Boltzmann constant.</i>
-
-
-The Gibbs energy of reaction can be calculate from the change of entropy dS at defined temperature by equation
-<p><br><code></p><p><br><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
-<pre>where T is temperature.
-<p><code></p><p>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
-<p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
-<pre>where R is gass constant and T is temperature.</pre>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+<p><b>s<sub>1</sub>&middot;S<sub>1</sub> + .. + s<sub>nS</sub>&middot;S<sub>nS</sub> &LT;-&GT; p<sub>1</sub>&middot;P<sub>1</sub> + .. + p<sub>nP</sub>&middot;P<sub>nP</b></sub> </p>
+<h4><span style=\"color:#008000\">Relations</span></h4>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>k<sub>f</sub>&middot;volume&middot;<a href=\"modelica://ModelicaReference.Operators.'product()'\">product</a>(S<a href=\"ModelicaReference.Operators.ElementaryOperators\">.^</a>s)</p></td>
+<td><p>forward rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>b</sub>&middot;volume&middot;<a href=\"modelica://ModelicaReference.Operators.'product()'\">product</a>(P<a href=\"ModelicaReference.Operators.ElementaryOperators\">.^</a>p)</p></td>
+<td><p>backward rate</p></td>
+</tr>
+<tr>
+<td><p>K<sub>aT</sub> = k<sub>f</sub>/k<sub>b</sub> = <a href=\"modelica://ModelicaReference.Operators.'product()'\">product</a>(P<a href=\"ModelicaReference.Operators.ElementaryOperators\">.^</a>p) / <a href=\"modelica://ModelicaReference.Operators.'product()'\">product</a>(S<a href=\"ModelicaReference.Operators.ElementaryOperators\">.^</a>s)&nbsp;</p></td>
+<td><p>equilibrium</p></td>
+</tr>
+<tr>
+<td><p><a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(K<sub>aT</sub>/K<sub>Base</sub>) = (-&Delta;H/<a href=\"modelica://Modelica.Constants\">R</a>)&middot;(1/T<sub>heatPort</sub> - 1/T<sub>K</sub>)&nbsp;</p></td>
+<td><p>van&apos;t Hoff&apos;s equation</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup>= &Delta;H - T&middot;&Delta;S = -R&middot;T&middot;<a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(K<sub>aT</sub>) </p></td>
+<td><p>Gibb&apos;s energy </p></td>
+</tr>
+<tr>
+<td><p>&Delta;S = <a href=\"modelica://Modelica.Constants\">k</a>&middot;<a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(&omega;) </p></td>
+<td><p>entropy </p></td>
+</tr>
+</table>
+<h4><span style=\"color:#008000\">Notations</span></h4>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>S<sub>i</sub></p></td>
+<td><p>molar concentration of i-th substrate</p></td>
+</tr>
+<tr>
+<td><p>s<sub>i</sub></p></td>
+<td><p>stochiometric coefficients of i-th substrate</p></td>
+</tr>
+<tr>
+<td><p>nS</p></td>
+<td><p>number of substrates</p></td>
+</tr>
+<tr>
+<td><p>P<sub>j</sub></p></td>
+<td><p>molar concentration of j-th product</p></td>
+</tr>
+<tr>
+<td><p>p<sub>j</sub></p></td>
+<td><p>stochiometric coefficients of j-th product</p></td>
+</tr>
+<tr>
+<td><p>nP</p></td>
+<td><p>number of products</p></td>
+</tr>
+<tr>
+<td><p>K<sub>aT</sub></p></td>
+<td><p>dissociation constant at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>f</sub></p></td>
+<td><p>forward rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>b</sub></p></td>
+<td><p>backward rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>volume &nbsp;</p></td>
+<td><p>solution volume</p></td>
+</tr>
+<tr>
+<td><p>&Delta;H</p></td>
+<td><p>enthalpy of the reaction</p></td>
+</tr>
+<tr>
+<td><p>T<sub>heatPort</sub></p></td>
+<td><p>current temperature T</p></td>
+</tr>
+<tr>
+<td><p>K<sub>Base</sub></p></td>
+<td><p>tabulated dissociation constant at base temperature T<sub>K</sub></p></td>
+</tr>
+<tr>
+<td><p>T<sub>K</sub></p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
+</tr>
+<tr>
+<td><p>&omega;</p></td>
+<td><p>change of number of microstates of particles</p></td>
+</tr>
+<tr>
+<td><p>&Delta;S</p></td>
+<td><p>entropy of the reaction</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup></p></td>
+<td><p>Gibb&apos;s energy of the reaction</p></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</table>
+</html>"));
     end ChemicalReaction;
 
     model GasSolubility "Henry's law of gas solubility in liquid."
@@ -3863,16 +3937,98 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       lossHeat = C*Modelica.Constants.R*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
        annotation (Documentation(revisions="<html>
-<p><i>2009-2012</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+<p><i>2009-2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<h4><span style=\"color:#008000\">Henry's law of The solubility of a Gas in Liquid</span></h4>
-<p>Henry&apos;s law at equilibrium: The concentration of a gas in a liquid is proportional to the partial pressure of the gas.</p>
-<p>c=k*p</p>
-<p>where<b> p</b> is the partial pressure of the gas, <b>k</b> is a Henry&apos;s law constant and<b> c</b> is a small concentration of the gas in the liquid.</p>
-<p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
-<p><br><br>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution.</p>
-<p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701.</p>
+<p><b>Concentration<sub>Liquid</sub> = k<sub>H</sub> &middot; Concentration<sub>Gas</b></sub></p>
+<p>Henry&apos;s law: The concentration of the gas in the liquid is proportional to the partial pressure of the gas during equilibrium. </p>
+<h4><span style=\"color:#008000\">Relations</span></h4>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>k<sub>d</sub>&middot;A&middot;c<sub>gas</sub></p></td>
+<td><p>dissolution rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>v</sub>&middot;A&middot;c<sub>liquid</sub></p></td>
+<td><p>volatility rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>H</sub> = k<sub>d</sub>/k<sub>v</sub> = c<sub>liquid</sub>/c<sub>gas</sub></p></td>
+<td><p>equilibrium</p></td>
+</tr>
+<tr>
+<td><p><a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(k<sub>H</sub>/K<sub>H0</sub>) = (-&Delta;H/<a href=\"modelica://Modelica.Constants\">R</a>)&middot;(1/T<sub>heatPort</sub> - 1/T<sub>K</sub>)&nbsp;</p></td>
+<td><p>van&apos;t Hoff&apos;s equation</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup>= &Delta;H - T&middot;&Delta;S = -R&middot;T&middot;<a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(K<sub>H</sub>) </p></td>
+<td><p>Gibb&apos;s energy </p></td>
+</tr>
+<tr>
+<td><p>&Delta;S = <a href=\"modelica://Modelica.Constants\">k</a>&middot;<a href=\"modelica://ModelicaReference.Operators.'log()'\">log</a>(&Omega;) </p></td>
+<td><p>entropy </p></td>
+</tr>
+</table>
+<h4><span style=\"color:#008000\">Notations</span></h4>
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>c<sub>gas</sub></p></td>
+<td><p>gaseous molar concentration of the substance</p></td>
+</tr>
+<tr>
+<td><p>c<sub>liquid</sub></p></td>
+<td><p>liquid molar concentration of the substance</p></td>
+</tr>
+<tr>
+<td><p>K<sub>H</sub></p></td>
+<td><p>Henry&apos;s coeficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>d</sub></p></td>
+<td><p>dissolution rate coefficient in liquid at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>v</sub></p></td>
+<td><p>volatility rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>A &nbsp;</p></td>
+<td><p>surface area between gas and liquid</p></td>
+</tr>
+<tr>
+<td><p>&Delta;H</p></td>
+<td><p>enthalpy of dissolution</p></td>
+</tr>
+<tr>
+<td><p>T<sub>heatPort</sub></p></td>
+<td><p>current temperature T</p></td>
+</tr>
+<tr>
+<td><p>K<sub>H0</sub></p></td>
+<td><p>tabulated Henry&apos;s constant at base temperature T<sub>K</sub></p></td>
+</tr>
+<tr>
+<td><p>T<sub>K</sub></p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
+</tr>
+<tr>
+<td><p>&Omega;</p></td>
+<td><p>change of number of ways of arranging molecules</p></td>
+</tr>
+<tr>
+<td><p>&Delta;S</p></td>
+<td><p>entropy of the dissolution</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>s</sub>G<sup>0</sup></p></td>
+<td><p>Gibb&apos;s energy of the dissolution</p></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</table>
+<p>Henry&apos;s coefficient <b>k<sub>H</sub></b> depends on temperature and on the identities of all substances present in solution.</p>
+<p>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution. </p>
+<h4><span style=\"color:#008000\">References</span></h4>
+<p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701. </p>
 </html>"));
     end GasSolubility;
 
@@ -4035,7 +4191,6 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end Membrane;
 
-
     model Speciation
       "Chemical species definition by independent binding sides of macromolecule"
       extends Icons.Speciation;
@@ -4045,7 +4200,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       extends Chemical.Interfaces.ConditionalVolume;
 
       parameter Integer NumberOfSubunits=1
-        "Number of independent subunits occuring in molecule";
+        "Number of independent subunits occurring in molecule";
 
       Chemical.Interfaces.ChemicalPort_a specificForm
         "Specific form composed with subunits form of subunitSpiecies"                                                        annotation (Placement(
@@ -4084,7 +4239,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
 
       parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
-        "Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
+        "Enthalpy changes of substances (can relative to one chosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
         annotation (HideResult=not useInternalHeatsInput, Dialog(enable=not useInternalHeatsInput,tab="Heat"));
 
       Types.RealIO.EnergyInput subunitInternalHeat[NumberOfSubunits](each start=0)=internalHeatOfSubunit if useInternalHeatsInput
@@ -4129,7 +4284,7 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p>This block identifies one specific chemical form of one macromolecule defined by forms of its subunits  (one chosen chemical species - called <i>specie</i>).</p>
 <p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
 <p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the subnunit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
-<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurrence in macromolecule. In equilibrium are this proporties fulfilled.</p>
 <p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
 <p>Where:</p>
 <p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
@@ -4415,7 +4570,6 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 </html>"));
     end SolutePump;
 
-
     model Dilution "Adding/removing of the solvent to/from running solution"
       extends Chemical.Interfaces.OnePort;
       extends Icons.Dilution;
@@ -4544,13 +4698,17 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model MolarFlowMeasure "Measure of molar flow"
       extends Chemical.Interfaces.OnePort;
-      extends Icons.MolarFlowMeasure;
+      //extends Icons.MolarFlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
 
      Types.RealIO.MolarFlowRateOutput molarFlowRate
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=270,
-            origin={0,-60})));
+            origin={0,-60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
       q_in.conc = q_out.conc;
 
@@ -4560,32 +4718,42 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={
+            Text(
+              extent={{-31,-7},{28,-66}},
+              lineColor={0,0,0},
+              textString="n'")}));
     end MolarFlowMeasure;
 
     model ConcentrationMeasure "Measure of molar concentration"
+      extends Modelica.Icons.RotationalSensor;
 
       Chemical.Interfaces.ChemicalPort_a
                                 q_in "For measure only"
                                 annotation (Placement(
-            transformation(extent={{-10,-30},{10,-10}})));
+            transformation(extent={{-10,-10},{10,10}}), iconTransformation(
+              extent={{-10,-10},{10,10}})));
       Types.RealIO.ConcentrationOutput concentration "Concentration"
                              annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             rotation=90,
-            origin={0,40})));
+            origin={0,40}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
 
       concentration =         q_in.conc;
 
       q_in.q = 0;
      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={    Rectangle(
-              extent={{-20,20},{20,-20}},
-              lineColor={0,0,255},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
+                100,100}}), graphics={
+            Text(
+              extent={{-29,-3},{30,-62}},
+              lineColor={0,0,0},
+              textString="c")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -4594,6 +4762,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
     model IncrementalFlowConcentrationMeasure
       "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
+      extends Modelica.Icons.RotationalSensor;
+
       extends Chemical.Interfaces.ConditionalSolutionFlow;
 
      Types.RealIO.ConcentrationOutput concentration
@@ -4615,14 +4785,10 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
-                            graphics={Rectangle(
-              extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-88,-50},{80,50}},
+                            graphics={        Text(
+              extent={{-88,-48},{86,0}},
               textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
+              lineColor={0,0,0})}),          Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
@@ -4952,7 +5118,7 @@ Connector with one flow signal of type Real.
     end ChemicalPort_b;
 
     partial model OnePort
-      "Partial transfer of solute beween two ports without its accumulation"
+      "Partial transfer of solute between two ports without its accumulation"
 
       ChemicalPort_b            q_out
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -5017,12 +5183,13 @@ on the model behaviour.
       constant Types.Volume NormalVolume=0.001 "1 liter" annotation(Evaluate=true, HideResult=true);
 
       parameter Boolean useNormalizedVolume = true
-        "=true, if solution volume is 1 liter"
+        "Normalized volume of solution is 1 liter"
       annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      Types.Volume volume "Solution volume" annotation(HideResult=useNormalizedVolume);
+      Types.Volume volume "Solution volume"; //annotation(HideResult=useNormalizedVolume);
 
-      Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume annotation (Placement(transformation(
+      Types.RealIO.VolumeInput solutionVolume=volume if not useNormalizedVolume
+        "Volume of solution"                                                                         annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-40,40})));
@@ -5058,8 +5225,6 @@ on the model behaviour.
         q = SolutionFlow;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}), graphics));
     end ConditionalSolutionFlow;
 
     partial model ConditionalSoluteFlow

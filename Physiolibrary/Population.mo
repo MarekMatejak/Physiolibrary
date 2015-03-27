@@ -78,9 +78,6 @@ package Population
           color={0,0,127},
           smooth=Smooth.None));
       annotation (
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-                {100,100}}),
-                        graphics),
         experiment(StopTime=20),
         __Dymola_experimentSetupOutput(equdistant=false));
     end PredatorPrey;
@@ -101,7 +98,7 @@ package Population
          annotation ( HideResult=true, Dialog(group="Initialization"));
 
       parameter Types.Population NominalPopulation = 1
-        "Numerical scale. Default is 1, but for huge amount of cells it should be any number in the apropriate numerical order of typical amount."
+        "Numerical scale. Default is 1, but for huge amount of cells it should be any number in the appropriate numerical order of typical amount."
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very huge populations"));
       parameter Types.PopulationChange NominalPopulationChange = 1/(60*60*24)
         "Numerical scale. Default change is 1 individual per day, but for much faster or much slower chnages should be different."
@@ -297,8 +294,7 @@ package Population
               lineColor={0,0,255},
               origin={-8,-78},
               rotation=360,
-              textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=
-               false, extent={{-100,-100},{100,100}}), graphics));
+              textString="%name")}));
     end Loss;
   end Sources;
 
@@ -335,7 +331,7 @@ package Population
               lineColor={0,127,127},
               fillColor={0,127,127},
               fillPattern=FillPattern.Solid),
-        Text(extent = {{-160,110},{40,50}}, lineColor={0,127,127},
+        Text(extent=  {{-160,110},{40,50}}, lineColor={0,127,127},
               textString="%name")}),
         Documentation(info="<html>
 <p>
@@ -386,7 +382,7 @@ Connector with one flow signal of type Real.
     end PopulationPort_b;
 
     partial model OnePort
-      "Partial change of population beween two ports without its accumulation"
+      "Partial change of population between two ports without its accumulation"
 
       PopulationPort_b port_b
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -421,10 +417,6 @@ Connector with one flow signal of type Real.
         change = PopulationChange;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
     end ConditionalChange;
 
     partial model ConditionalLifeTime
@@ -453,10 +445,11 @@ Connector with one flow signal of type Real.
         changePerPopulationMember = 1/LifeTime;
       end if;
 
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                -100,-100},{100,100}}), graphics), Diagram(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics));
     end ConditionalLifeTime;
   end Interfaces;
+  annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2015, Marek Matejak, Charles University in Prague.</p>
+<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>"));
 end Population;

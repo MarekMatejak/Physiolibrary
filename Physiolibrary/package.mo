@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
+package Physiolibrary "Modelica library for Physiology (version 2.3.1alpha)"
  extends Modelica.Icons.Package;
 
 
@@ -121,7 +121,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 <p>Charles University in Prague, Czech Republic</p>
 <p><br/>email: marek@matfyz.cz</p>
 <p><h4>Copyright notices of the files:</h4></p>
-<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
+<p>Copyright &copy; 2008-2015, Marek Matejak, Charles University in Prague, First Faculty of Medicine, Institute of Pathological Physiology</p>
 <p><br/><br/>This package with all of its subpackages is released under the &ldquo;Modelica License 2&rdquo; (if not explicitly noted otherwise). </p>
 <p><br/><a href=\"#The_Modelica_License_2-outline\">The Modelica License 2</a></p>
 <p><br/><a href=\"#How_to_Apply_the_Modelica_License_2-outline\">How to Apply the Modelica License 2</a></p>
@@ -238,6 +238,38 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
+
+  class Version_2_3_0 "Version 2.3.0 (Feb. 16, 2015)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">Population domain for population models of organisms, cells,..</font></li>
+<li><font style=\"color: #333333; \">cardiovascular models as example of Hydraulic domain</font></li>
+<li><font style=\"color: #333333; \">components: osmotic reabsorption, ideal osmotic flow filtration</font></li>
+<li><font style=\"color: #333333; \">display units: umol/min,nmol/min,pmol/min,l/day</font></li>
+<li><font style=\"color: #333333; \">icons: heart ventricle icon, microcirculation, population</font></li>
+<li><font style=\"color: #333333; \">blocks: 1(one) as constant, energy per mass, DegradationGain, FractionGain</font></li>
+<li><font style=\"color: #333333; \">installation to System Modeler script (Resources/Install)</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">OsmoticCell with more possible membrane type interfaces</font></li>
+<li><font style=\"color: #333333; \">factors: dissabling option and with decadic logarith</font></li>
+<li><font style=\"color: #333333; \">redefinition of unmeasurables physical quantities</font></li>
+<li><font style=\"color: #333333; \">manipulation with initial input and final output values of variables</font></li>
+<li><font style=\"color: #333333; \">units of heart starling slopes in CardiovascularSystem_GCG</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">units Torr with capital 'T' (from name - Evangelista Torricelli)</font></li>
+<li><font style=\"color: #333333; \">Blocks.Math.Exponentiation to Blocks.Math.Power</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_3_0;
 
   class Version_2_2_0 "Version 2.2.0 (Sep. 06, 2014)"
     extends Modelica.Icons.ReleaseNotes;
@@ -360,7 +392,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
   annotation (Documentation(info="<html>
 <p><ul>
 <li>migration to GITHub https://github.com/MarekMatejak/Physiolibrary from http://patf-biokyb.lf1.cuni.cz/repos/Modelica/Physiolibrary svn repository, commit 4947 </li>
-<li><font style=\"color: #333333; \">The library uses the Modelica Standard Libary (MSL) version 3.2.</font></li>
+<li><font style=\"color: #333333; \">The library uses the Modelica Standard Library (MSL) version 3.2.</font></li>
 <li><font style=\"color: #333333; \">Contains nice physiological icons.</font></li>
 <li><font style=\"color: #333333; \">Support for physiological units: min,kcal,mmHg,ml,mEq,..</font></li>
 <li><font style=\"color: #333333; \">Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</font></li>
@@ -378,7 +410,10 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
-<p><br>New release must be numbered by Semantic Versioning 2.0, see <a href=\"http://semver.org/\">semver.org</a>. </p><p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using \"annotation(conversion(from(version=..)))\"! </p><p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p><p><br>Update version number to &QUOT;X.Y.Z&QUOT;: </p>
+<p><br>New release must be numbered by Semantic Versioning 2.0, see <a href=\"http://semver.org/\">semver.org</a>. </p>
+<p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using &QUOT;annotation(conversion(from(version=..)))&QUOT;! </p>
+<p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p>
+<p><br>Update version number to &QUOT;X.Y.Z&QUOT;: </p>
 <ul>
 <li>At package Physiolibrary annotation: (version=&QUOT;X.Y.Z&QUOT;) together with &QUOT;versionBuild&QUOT;, &QUOT;versionDate&QUOT; and &QUOT;dateModified&QUOT; attribute </li>
 <li>At head of package Physiolibrary &QUOT;Physiological domains library (version X.Y.Z)&QUOT; </li>
@@ -392,11 +427,11 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 <p><br>Publish release in GitHub: </p>
 <ul>
 <li>Prepare release in &QUOT;master&QUOT; branch</li>
-<li>Install, Check, Test, Test, Test.. </li>
+<li>Install, Check, Test, Test, Test (stop-time of examples).. </li>
 <li>Delete branch &QUOT;release&QUOT; </li>
 <li>Create new branch &QUOT;release&QUOT; from &QUOT;master&QUOT; branch </li>
 <li>Rename directory &QUOT;Physiolibrary&QUOT; in release branch to directory &QUOT;Physiolibrary X.Y.Z&QUOT; </li>
-<li>Commint and Push  </li>
+<li>Commint and Push </li>
 <li>Draft a new release from &QUOT;release&QUOT; branch with number &QUOT;vX.Y.Z&QUOT; and with release notes. </li>
 </ul>
 </html>"));
@@ -451,7 +486,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 </tr>
 <tr>
 <td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Blocks\">Blocks</a></p></td>
-<td valign=\"top\"><p>Usefull blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+<td valign=\"top\"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
 </tr>
 </table>
 </html>"));
@@ -467,10 +502,10 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.0-beta)"
 
 
   annotation (preferredView="info",
-version="2.3.0-beta",
+version="2.3.1alpha",
 versionBuild=1,
-versionDate="2014-09-22",
-dateModified = "2014-09-22 10:30:00Z",
+versionDate="2015-02-16",
+dateModified = "2015-02-16 15:49:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(

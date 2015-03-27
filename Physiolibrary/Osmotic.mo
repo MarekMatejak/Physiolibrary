@@ -360,9 +360,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>The liquid volume of the penetrating solution is accumulated in &QUOT;OsmoticCell&QUOT;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end OsmoticCell;
 
     model Membrane "Solvent diffusion through semipermeable membrane"
@@ -459,9 +457,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
                                    Text(
               extent={{-140,112},{140,150}},
               textString="%name",
-              lineColor={0,0,255})}),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+              lineColor={0,0,255})}));
     end Membrane;
 
     model SolventFlux "Prescripted solvent flow"
@@ -689,9 +685,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
 <p><ul>
 <li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
 </ul></p>
-</html>"),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}}), graphics));
+</html>"));
     end Reabsorption;
   end Components;
 
@@ -699,12 +693,16 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
     extends Modelica.Icons.SensorsPackage;
     model FlowMeasure "Measurement of flux through semipermeable membrane"
       extends Interfaces.OnePort;
-      extends Icons.FlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
+      //extends Icons.FlowMeasure;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlowRate "Flux through membrane"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,-60})));
+            origin={0,-60}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-80})));
     equation
       q_out.o = q_in.o;
 
@@ -714,7 +712,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics={
+            Text(
+              extent={{-29,-7},{30,-66}},
+              lineColor={0,0,0},
+              textString="V'")}));
     end FlowMeasure;
   end Sensors;
 

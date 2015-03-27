@@ -1235,7 +1235,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       replaceable package Utilities = Types.FilesUtilities(directoryName=dirName)
                                                                       constrainedby
-        Types.Utilities
+        Types.Utilities "How to store or load the values"
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
       parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
@@ -1316,7 +1316,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       if Simulation <> Types.SimulationType.SteadyState then
         der(state) = change;
-      elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+      elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependent equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
          change = 0;
       end if;
 
@@ -1331,7 +1331,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
 
       replaceable package Utilities = Types.FilesUtilities            constrainedby
-        Types.Utilities
+        Types.Utilities "How to store or load the values"
                      annotation (Dialog(group="Functions to read or store",tab="IO"));
 
       parameter Integer n "Number of states"
@@ -1419,7 +1419,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
         der(state) = change;
       else
         for i in 1:n loop
-          if not isDependent[n] then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependend equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
+          if not isDependent[n] then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependent equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
             change[i] = 0;
           end if;
         end for;

@@ -6,8 +6,7 @@ LibraryInfoMenuCommand(
     text = "Physiolibrary",
     reference = "Physiolibrary",
     isModel = true,
-    description = "Human Physiology Library 2.3.0-beta",
-    version = "2.3.0-beta",
-    ModelicaVersion = ">=3.2.1",
+    description = "Physiology Library 2.3",
+    version = "2.3.1alpha",
+    ModelicaVersion = ">=3.2",
     pos = 3753);
-

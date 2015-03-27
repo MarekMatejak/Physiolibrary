@@ -2,7 +2,7 @@ within Physiolibrary;
 package Icons "Icons for physiological models"
   //extends Modelica.Icons.IconsPackage;
   extends Modelica.Icons.Package;
-  class Library
+  package Library
       extends Modelica.Icons.Package;
   end Library;
 
@@ -385,7 +385,7 @@ package Icons "Icons for physiological models"
               fileName="modelica://Physiolibrary/Resources/Icons/golem.png")}));
   end GolemLib;
 
-  class BaseLib
+  package BaseLib
     extends Modelica.Icons.Package;
   end BaseLib;
 
