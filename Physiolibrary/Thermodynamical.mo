@@ -3825,15 +3825,11 @@ package Thermodynamical
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-80,82})));
-        Components.Substance H(
-          q_out(conc(nominal=10^(-7.4 + 3))),
-          solute_start=10^(-7 + 3),
-          substance=Substances.Proton,
-          SolutionAmount=52.3)      annotation (Placement(transformation(extent={{-10,
-                  -10},{10,10}}, origin={58,8})));
-        Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-               0.81805576878885,
-          solubilityRateCoef(displayUnit="mol/s") = 1)
+        Sources.UnlimitedSolutionStorage H(
+          substance=Substances.Proton, Concentration(displayUnit="1") = 10^(-7.4))
+                                                             annotation (Placement(
+              transformation(extent={{-10,-10},{10,10}}, origin={58,8})));
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mmol/l)/kPa at 25degC")= 0.8342702140786)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
                                               /*(C=2400, kH_T0(
         displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
@@ -3847,9 +3843,9 @@ package Thermodynamical
           solute_start=52)
           annotation (Placement(transformation(extent={{-64,6},{-44,26}})));
         Components.Membrane membrane(
-          NumberOfParticles=5,
-          Permeabilities=10*ones(5),
-          Charges={0,0,-1,-1})
+          Charges={0,0,-1,-1},
+          NumberOfParticles=4,
+          Permeabilities=10*ones(4))
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-4,-26})));
@@ -3863,8 +3859,7 @@ package Thermodynamical
           annotation (Placement(transformation(extent={{-16,-70},{4,-50}})));
         Components.Substance H_E(
           substance=Substances.Proton,
-          solute_start=10^(-6.9 + 3),
-          q_out(conc(nominal=10^(-7.2 + 3))),
+          solute_start=39.7*10^(-7.2),
           SolutionAmount=39.7) annotation (Placement(transformation(extent={{-10,-10},
                   {10,10}}, origin={60,-84})));
         Components.Substance CO2_liquid_E(
@@ -3887,14 +3882,18 @@ package Thermodynamical
           SolutionAmount=52.3,
           solute_start=0.103)
           annotation (Placement(transformation(extent={{78,-2},{98,18}})));
+
+        Real pH_e,pH_p;
       equation
+        pH_p = -log10(H.q_out.conc);
+        pH_e = -log10(H_E.q_out.conc);
         connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
             points={{0,31.5},{6,31.5},{6,32},{34,32}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
         connect(H.q_out, HendersonHasselbalch.products[2]) annotation (Line(
-            points={{58,8},{12,8},{12,32.5},{0,32.5}},
+            points={{68,8},{12,8},{12,32.5},{0,32.5}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
@@ -3941,42 +3940,42 @@ package Thermodynamical
             thickness=1,
             smooth=Smooth.None));
         connect(CO2_liquid_E.q_out, membrane.particlesOutside[1]) annotation (Line(
-            points={{-80,-60},{-80,-44},{-4.8,-44},{-4.8,-36}},
+            points={{-80,-60},{-80,-44},{-4.75,-44},{-4.75,-36}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(H2O_E.q_out, membrane.particlesOutside[2]) annotation (Line(
-            points={{-54,-78},{-54,-44},{-4,-44},{-4,-36},{-4.4,-36}},
+            points={{-54,-78},{-54,-44},{-4,-44},{-4,-36},{-4.25,-36}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(HCO3_E.q_out, membrane.particlesOutside[3]) annotation (Line(
-            points={{36,-60},{36,-44},{-4,-44},{-4,-36}},
+            points={{36,-60},{36,-44},{-3.75,-44},{-3.75,-36}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(CO2_liquid.q_out, membrane.particlesInside[1]) annotation (Line(
-            points={{-82,32},{-82,-10},{-4.8,-10},{-4.8,-16}},
+            points={{-82,32},{-82,-10},{-4.75,-10},{-4.75,-16}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(H2O.q_out, membrane.particlesInside[2]) annotation (Line(
-            points={{-54,16},{-54,-10},{-4.4,-10},{-4.4,-16}},
+            points={{-54,16},{-54,-10},{-4.25,-10},{-4.25,-16}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(HCO3.q_out, membrane.particlesInside[3]) annotation (Line(
-            points={{34,32},{34,-10},{-4,-10},{-4,-16}},
+            points={{34,32},{34,-10},{-3.75,-10},{-3.75,-16}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(Cl_P.q_out, membrane.particlesInside[4]) annotation (Line(
-            points={{88,8},{88,-10},{-3.6,-10},{-3.6,-16}},
+            points={{88,8},{88,-10},{-3.25,-10},{-3.25,-16}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
         connect(Cl_E.q_out, membrane.particlesOutside[4]) annotation (Line(
-            points={{88,-84},{88,-44},{-3.6,-44},{-3.6,-36}},
+            points={{88,-84},{88,-44},{-3.25,-44},{-3.25,-36}},
             color={158,66,200},
             thickness=1,
             smooth=Smooth.None));
@@ -3997,7 +3996,7 @@ package Thermodynamical
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=0.02, __Dymola_Algorithm="Dassl"),
+</html>"),experiment(StopTime=100, __Dymola_Algorithm="Dassl"),
           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                   100}}),            graphics),
           __Dymola_experimentSetupOutput);
@@ -4012,8 +4011,7 @@ package Thermodynamical
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-80,82})));
-        Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-               0.81805576878885)
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.8342702140786)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
                                               /*(C=2400, kH_T0(
         displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
@@ -4089,11 +4087,96 @@ package Thermodynamical
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=0.02, __Dymola_Algorithm="Euler"),
+</html>"),experiment(__Dymola_Algorithm="Dassl"),
           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
+                  -100},{100,100}}), graphics),
+          __Dymola_experimentSetupOutput);
       end CarbonDioxideInBlood2;
     end AcidBase;
+
+    model Henry
+
+      Components.GasSolubility gasSolubility(kH_T0=0.026)
+        annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
+      Components.GasSolubility gasSolubility1(
+        solubilityRateCoef(displayUnit="mol/s"), kH_T0(displayUnit=
+              "(mmol/l)/atm at 25degC") = 0.8342702140786)
+        annotation (Placement(transformation(extent={{-80,-26},{-60,-6}})));
+      Sources.UnlimitedGasStorage O2_g_n(
+        substance=AcidBase.Substances.Oxygen,
+        PartialPressure=12665.626804425,
+        TotalPressure=101325.0144354)
+        annotation (Placement(transformation(extent={{22,26},{42,46}})));
+      Sources.UnlimitedGasStorage CO2_g_n(
+        substance=AcidBase.Substances.CarbonDioxide[1],
+        PartialPressure=5332.8954966,
+        TotalPressure=101325.0144354)
+        annotation (Placement(transformation(extent={{-94,38},{-74,58}})));
+      Components.Substance CO2_l_n(substance=AcidBase.Substances.CarbonDioxide[2],
+          SolutionAmount=52.3)
+        annotation (Placement(transformation(extent={{-80,-56},{-60,-36}})));
+      Components.Substance O2_l_n(substance=AcidBase.Substances.Oxygen,
+          SolutionAmount=52.3)
+        annotation (Placement(transformation(extent={{34,-58},{54,-38}})));
+      Chemical.Components.GasSolubility gasSolubility2(kH_T0=0.81805576878885, C=2400)
+        annotation (Placement(transformation(extent={{-46,-26},{-26,-6}})));
+      Chemical.Sources.UnlimitedGasStorage CO2_g_o(PartialPressure=5332.8954966)
+        annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
+      Chemical.Components.Substance CO2_l_o
+        annotation (Placement(transformation(extent={{-46,-50},{-26,-30}})));
+      Chemical.Components.GasSolubility gasSolubility3(kH_T0(displayUnit="(mol/m3)/(mol/m3)")=
+             0.026)
+        annotation (Placement(transformation(extent={{60,-26},{80,-6}})));
+      Chemical.Sources.UnlimitedGasStorage O2_g_o(PartialPressure=12665.626804425)
+        annotation (Placement(transformation(extent={{48,-10},{68,10}})));
+      Chemical.Components.Substance O2_l_o
+        annotation (Placement(transformation(extent={{66,-50},{86,-30}})));
+    equation
+      connect(gasSolubility1.q_out, CO2_g_n.q_out) annotation (Line(
+          points={{-70,-6},{-70,48},{-74,48}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility.q_out, O2_g_n.q_out) annotation (Line(
+          points={{42,-6},{42,36}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility1.q_in, CO2_l_n.q_out) annotation (Line(
+          points={{-70,-24},{-70,-46}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility.q_in, O2_l_n.q_out) annotation (Line(
+          points={{42,-24},{44,-24},{44,-48}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility2.q_out, CO2_g_o.q_out) annotation (Line(
+          points={{-36,-6},{-36,6}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility2.q_in, CO2_l_o.q_out) annotation (Line(
+          points={{-36,-24},{-36,-40}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility3.q_out, O2_g_o.q_out) annotation (Line(
+          points={{70,-6},{70,0},{68,0}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(gasSolubility3.q_in, O2_l_o.q_out) annotation (Line(
+          points={{70,-24},{74,-24},{74,-40},{76,-40}},
+          color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (
+        Diagram(graphics),
+        experiment(__Dymola_Algorithm="Dassl"),
+        __Dymola_experimentSetupOutput);
+    end Henry;
   end Examples;
 
   package Components
@@ -4436,29 +4519,21 @@ package Thermodynamical
     end ChemicalReaction;
 
     model GasSolubility "Henry's law of gas solubility in liquid."
-       //q_in is dissolved in liquid and q_out is in gaseous solution"
 
       extends Icons.GasSolubility;
       extends Interfaces.ConditionalHeatPort;
 
-      parameter Types.MolarFlowRate solubilityRateCoef=0.01
-        "The rate constant of incoming gas to solution (default 10 liter per second)";
+      parameter Types.MolarFlowRate solubilityRateCoef=1e3
+        "The rate constant of incoming gas to solution";
 
-      Types.GasSolubility kH
+      Types.Fraction kH(displayUnit="1")
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
-      parameter Types.GasSolubility kH_T0
-        "Henry's law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)"
-                                                                                                    annotation ( HideResult=true);
+      parameter Types.GasSolubility kH_T0(displayUnit="1")
+        "Henry's law coefficient (liqiud/gas) in pure water, one atmosphere at temperature T0";
+                                                                                               //     annotation ( HideResult=true);
       parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
          annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-      parameter Types.Temperature C(displayUnit="K")
-        "Gas-liquid specific constant for Van't Hoff's change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)"
-        annotation (HideResult=true,Dialog(tab="Temperature dependence"));
-
-     /* parameter Types.Fraction solventFraction=1 
-    "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
-    */
 
       Interfaces.ChemicalPort_b q_out "Gaseous solution"
         annotation (Placement(transformation(extent={{-10,90},{10,110}})));
@@ -4466,25 +4541,17 @@ package Thermodynamical
       Interfaces.ChemicalPort_a q_in "Dissolved in liquid solution"
         annotation (Placement(transformation(extent={{-10,-90},{10,-70}})));
 
-      Types.MolarEnergy dG "Gibb's energy of dissolution";
       Types.MolarEnergy dH "Enthalpy of dissolution";
-
-      Types.MolarEnergy dG_liquid "Gibb's energy of substance in liquid";
-      Types.MolarEnergy dG_gas "Gibb's energy of substance in gas";
 
     equation
       q_in.q + q_out.q = 0;
 
-      dG_gas = q_out.H - T_heatPort*q_out.S;
-      dG_liquid = q_in.H - T_heatPort*q_in.S;
-      dG = dG_liquid - dG_gas;
       dH = q_in.H - q_out.H;
 
-      kH = kH_T0 * Modelica.Math.exp(C* (1/T_heatPort - 1/T0)); // Van't Hoff equation
+      //conversion from moles/volume concentration ratio to moles/moles concentration ratio is (101325/(Modelica.Constants.R*T_heatPort*55600) for Henry's coeficients in water
+      kH = (kH_T0*(101325/(Modelica.Constants.R*T0*55600))) * Modelica.Math.exp( (-dH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
-      //q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc/solventFraction); //negative because of outflow
-
       q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc); //negative because of outflow
 
       lossHeat = dH*q_out.q; //negative = heat are comsumed when change from liquid to gas
@@ -5458,7 +5525,7 @@ package Thermodynamical
             Text(
               extent={{140,-100},{-140,-160}},
               lineColor={0,0,0},
-              textString="%Conc mmol/l")}),
+              textString="%Concentration")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -5511,7 +5578,7 @@ package Thermodynamical
         p=PartialPressure;
       end if;
 
-      q_out.conc = p / TotalPressure;  //ideal gas equation
+      q_out.conc = p / TotalPressure;  //ideal gas
       q_out.H=substance.dH;
       q_out.S=substance.dS;
       q_out.activity=substance.activity;
@@ -5552,11 +5619,7 @@ package Thermodynamical
             Text(
               extent={{-150,150},{150,110}},
               textString="%name",
-              lineColor={0,0,255}),
-            Text(
-              extent={{-150,-110},{150,-140}},
-              lineColor={0,0,0},
-              textString="T=%T")}),
+              lineColor={0,0,255})}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
