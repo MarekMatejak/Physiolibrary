@@ -102,6 +102,8 @@ defineUnitConversion("kg/mol", "kDa", 1 );
 
 
 //gas solubility - Henry's constant
+defineUnitConversion("(mol/mol)/(Pa/Pa)", "(mol/kg H2O)/bar at 25degC,101325Pa", 100000*55.508/101325 );
+
 defineUnitConversion("(mol/m3)/(mol/m3)", "(mmol/l)/(mmol/l)", 1 );
 defineUnitConversion("(mol/m3)/(mol/m3)", "%", 100 );
 

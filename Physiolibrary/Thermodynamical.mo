@@ -121,10 +121,10 @@ package Thermodynamical
                                                  Simulation=Types.SimulationType.SteadyState);
 
       Sources.UnlimitedSolutionStorage
-                       P(Conc=0, substance(dS=Modelica.Constants.inf))
+                       P(Concentration=0, substance(dS=Modelica.Constants.inf))
         annotation (Placement(transformation(extent={{92,-12},{72,8}})));
       Sources.UnlimitedSolutionStorage
-                       S(Conc=0.1, substance(dS=-Modelica.Constants.R*log(2*k_cat/
+                       S(Concentration=0.1, substance(dS=-Modelica.Constants.R*log(2*k_cat/
               Km)))
         annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
@@ -2915,19 +2915,20 @@ package Thermodynamical
           annotation (Placement(transformation(extent={{-58,22},{-38,42}})));
         Sources.UnlimitedGasStorage CO2_gas(Simulation=Types.SimulationType.SteadyState,
           substance=Substances.CarbonDioxide[1],
-          PartialPressure=5332.8954966)   annotation (Placement(transformation(
+          PartialPressure=5332.8954966,
+          TotalPressure=101325.0144354)   annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-80,82})));
         Components.Substance H(
-          q_out(conc(nominal=10^(-7.4 + 3))),
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7 + 3),
-          substance=Substances.Proton)
+          substance=Substances.Proton,
+          solute_start=10^(-7),
+          q_out(conc(nominal=10^(-7.4))))
                                     annotation (Placement(transformation(extent={{-10,
                   -10},{10,10}}, origin={-8,12})));
-        Components.GasSolubility gasSolubility(C=2400, kH_T0(displayUnit="(mmol/l)/kPa at 25degC")=
-               0.81805576878885)
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa")=
+               0.00062064026806947)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
                                               /*(C=2400, kH_T0(
         displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
@@ -2961,8 +2962,8 @@ package Thermodynamical
         Modelica.Blocks.Sources.Clock SID(offset=-0.01)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{54,74},{74,94}})));
-        Sources.UnlimitedSolutionStorage H2O(substance=Substances.Water, Conc(
-              displayUnit="mol/l") = 55600)
+        Sources.UnlimitedSolutionStorage H2O(substance=Substances.Water,
+            Concentration(displayUnit="1") = 1)
           annotation (Placement(transformation(extent={{-90,-18},{-70,2}})));
       equation
         connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
@@ -3101,8 +3102,8 @@ package Thermodynamical
           annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
 
         Chemical.Components.Substance HA[n](
-          each Simulation=Types.SimulationType.SteadyState, each
-            solute_start=0.00033) "protonated acid groups"
+          each Simulation=Types.SimulationType.SteadyState, each solute_start=
+              0.00033) "protonated acid groups"
           annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
 
       equation
@@ -3164,45 +3165,45 @@ package Thermodynamical
         parameter Types.Concentration totalPO4=0.00115
           "Total phosphate concentration";
 
-        Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
-          annotation (Placement(transformation(extent={{64,-20},{84,0}})));
-
         Modelica.Blocks.Sources.Clock SID(offset=0)
           "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{44,74},{64,94}})));
 
-        Chemical.Components.Substance H(
-          q_out(conc(nominal=10^(-7.4 + 3))),
+        Components.Substance H(
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7.4 + 3),
-          isDependent=true) "hydrogen ions activity" annotation (Placement(
+          isDependent=true,
+          solute_start=55.6*10^(-7.4),
+          q_out(conc(nominal=10^(-7.4))),
+          substance=Substances.Proton) "hydrogen ions activity"
+                                                     annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               origin={36,-12})));
 
-        Chemical.Components.Substance H3PO4(
+        Components.Substance H3PO4(
           Simulation=Types.SimulationType.SteadyState,
           isDependent=true,
+          substance=Substances.Phosphate[1],
           solute_start=1e-08)
           annotation (Placement(transformation(extent={{-98,-58},{-78,-38}})));
-        Chemical.Components.Substance H2PO4(Simulation=Types.SimulationType.SteadyState,
-            solute_start=0.0005)
+        Components.Substance H2PO4(Simulation=Types.SimulationType.SteadyState,
+          substance=Substances.Phosphate[2],
+          solute_start=0.0005)
           annotation (Placement(transformation(extent={{-44,-58},{-24,-38}})));
-        Chemical.Components.Substance HPO4(Simulation=Types.SimulationType.SteadyState,
-            solute_start=0.0006)
+        Components.Substance HPO4(Simulation=Types.SimulationType.SteadyState,
+          substance=Substances.Phosphate[3],
+          solute_start=0.0006)
           annotation (Placement(transformation(extent={{16,-58},{36,-38}})));
-        Chemical.Components.Substance PO4(Simulation=Types.SimulationType.SteadyState,
-            solute_start=1e-08)
+        Components.Substance PO4(Simulation=Types.SimulationType.SteadyState,
+          substance=Substances.Phosphate[4],
+          solute_start=1e-08)
           annotation (Placement(transformation(extent={{72,-58},{92,-38}})));
 
-        Chemical.Components.ChemicalReaction chemicalReaction(nP=2, K=10
-              ^(-1.915 + 3))
+        Components.ChemicalReaction chemicalReaction(nP=2) "10^(-1.915 + 3)"
           annotation (Placement(transformation(extent={{-70,-58},{-50,-38}})));
-        Chemical.Components.ChemicalReaction chemicalReaction1(nP=2, K=10
-              ^(-6.66 + 3))
+        Components.ChemicalReaction chemicalReaction1(nP=2) "10^(-6.66 + 3)"
           annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
-        Chemical.Components.ChemicalReaction chemicalReaction2(nP=2, K=10
-              ^(-11.78 + 3))
+        Components.ChemicalReaction chemicalReaction2(nP=2) "10^(-11.78 + 3)"
           annotation (Placement(transformation(extent={{44,-58},{64,-38}})));
         SteadyStates.Components.MolarConservationLaw tP04(
           each Simulation=Types.SimulationType.SteadyState,
@@ -3285,10 +3286,6 @@ package Thermodynamical
             smooth=Smooth.None));
         connect(PO4.solute, tP04.fragment[4]) annotation (Line(
             points={{88,-58},{88,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(H.solute, minusPh.u) annotation (Line(
-            points={{42,-22},{42,-26},{54,-26},{54,-10},{62,-10}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(SID.y, toColoumn.u) annotation (Line(
@@ -3722,21 +3719,37 @@ package Thermodynamical
             storeUnit="mmol/l") "Cl-";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Phosphate[:]={
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
-            shortName="H2PO4-",
+            shortName="H3PO4(aq)",
             mw=0.095,
-            dH=-1302600,
-            dS=-561.8,
+            dH=-1288000,
+            dS=-496.4,
+            refs={"https://en.wikipedia.org/wiki/Phosphoric_acid", "https://www.researchgate.net/publication/6600409_Standard_thermodynamic_properties_of_H3PO4%28aq%29_over_a_wide_range_of_temperatures_and_pressures"},
+            activity=1,
+            storeUnit="mmol/l"),
+            Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
+            shortName="H2PO4-(aq)",
+            mw=0.095,
+            dH=-1302480,
+            dS=-561.395,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
             activity=0.73,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
-            shortName="HPO4--",
+            shortName="HPO4--(aq)",
             mw=0.095,
-            dH=-1299000,
-            dS=-687.24,
+            dH=-1298700,
+            dS=-686.232,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
             activity=0.284,
-            storeUnit="mmol/l")} "H2PO4^-, HPO4^2-";
+            storeUnit="mmol/l"),
+            Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
+            shortName="PO4---(aq)",
+            mw=0.095,
+            dH=-1284070,
+            dS=-866.946,
+            refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
+            activity=0.0065,
+            storeUnit="mmol/l")} "H3PO4, H2PO4^-, HPO4^2-, PO4^3-";
 
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Sulphates=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3815,12 +3828,273 @@ package Thermodynamical
           SolutionAmount=52.3,
           solute_start=0.024)
           annotation (Placement(transformation(extent={{24,22},{44,42}})));
+        Sources.UnlimitedGasStorage CO2_gas(
+          substance=Substances.CarbonDioxide[1],
+          PartialPressure=5999.507433675,
+          TotalPressure=101325.0144354)   annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-80,82})));
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa")=
+               0.00062064026806947)
+          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+                                              /*(C=2400, kH_T0(
+        displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
+        Components.Substance CO2_liquid(
+          substance=Substances.CarbonDioxide[2],
+          SolutionAmount=52.3,
+          solute_start=0.00123)
+          annotation (Placement(transformation(extent={{-92,22},{-72,42}})));
+        Components.Substance             H2O(substance=Substances.Water,
+          SolutionAmount=52.3,
+          solute_start=52)
+          annotation (Placement(transformation(extent={{-64,6},{-44,26}})));
+        Components.Membrane membrane(
+          Charges={0,0,-1,-1},
+          NumberOfParticles=4,
+          Permeabilities=10*ones(4))
+          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-4,-26})));
+        Components.Substance HCO3_E(
+          substance=Substances.CarbonicAcid[2],
+          SolutionAmount=39.7,
+          solute_start=0.0116)
+          annotation (Placement(transformation(extent={{26,-70},{46,-50}})));
+        Components.ChemicalReaction HendersonHasselbalch1(
+          nP=2, nS=2) "K=10^(-6.103 + 3), dH=7.3 kJ/mol"
+          annotation (Placement(transformation(extent={{-16,-70},{4,-50}})));
+        Components.Substance CO2_liquid_E(
+          substance=Substances.CarbonDioxide[2],
+          SolutionAmount=39.7,
+          solute_start=0.00093)
+          annotation (Placement(transformation(extent={{-90,-70},{-70,-50}})));
+        Components.Substance H2O_E(
+          substance=Substances.Water,
+          SolutionAmount=39.7,
+          solute_start=39.5)
+          annotation (Placement(transformation(extent={{-64,-88},{-44,-68}})));
+        Components.Substance Cl_E(
+          substance=Substances.Chloride,
+          SolutionAmount=39.7,
+          solute_start=0.0499)
+          annotation (Placement(transformation(extent={{78,-94},{98,-74}})));
+        Components.Substance Cl_P(
+          substance=Substances.Chloride,
+          SolutionAmount=52.3,
+          solute_start=0.103)
+          annotation (Placement(transformation(extent={{78,-2},{98,18}})));
+
+        Real pH_e;
+      //  Real pH_p;
+        Sources.UnlimitedSolutionStorage H_E(substance=Substances.Proton,
+            Concentration(displayUnit="1") = 10^(-7.2)) annotation (Placement(
+              transformation(extent={{10,-10},{-10,10}}, origin={60,-82})));
+      equation
+      //  pH_p = -log10(H.q_out.conc);
+        pH_e = -log10(H_E.q_out.conc);
+        connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
+            points={{-80,48},{-80,32},{-82,32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
+            points={{-80,72},{-80,66}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HendersonHasselbalch1.products[1], HCO3_E.q_out) annotation (Line(
+            points={{4,-60.5},{16,-60.5},{16,-60},{36,-60}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid_E.q_out, HendersonHasselbalch1.substrates[1]) annotation (
+            Line(
+            points={{-80,-60},{-28,-60},{-28,-60.5},{-16,-60.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2O_E.q_out, HendersonHasselbalch1.substrates[2]) annotation (Line(
+            points={{-54,-78},{-22,-78},{-22,-59.5},{-16,-59.5}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid_E.q_out, membrane.particlesOutside[1]) annotation (Line(
+            points={{-80,-60},{-80,-44},{-4.75,-44},{-4.75,-36}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2O_E.q_out, membrane.particlesOutside[2]) annotation (Line(
+            points={{-54,-78},{-54,-44},{-4,-44},{-4,-36},{-4.25,-36}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3_E.q_out, membrane.particlesOutside[3]) annotation (Line(
+            points={{36,-60},{36,-44},{-3.75,-44},{-3.75,-36}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid.q_out, membrane.particlesInside[1]) annotation (Line(
+            points={{-82,32},{-82,-10},{-4.75,-10},{-4.75,-16}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2O.q_out, membrane.particlesInside[2]) annotation (Line(
+            points={{-54,16},{-54,-10},{-4.25,-10},{-4.25,-16}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HCO3.q_out, membrane.particlesInside[3]) annotation (Line(
+            points={{34,32},{34,-10},{-3.75,-10},{-3.75,-16}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(Cl_P.q_out, membrane.particlesInside[4]) annotation (Line(
+            points={{88,8},{88,-10},{-3.25,-10},{-3.25,-16}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(Cl_E.q_out, membrane.particlesOutside[4]) annotation (Line(
+            points={{88,-84},{88,-44},{-3.25,-44},{-3.25,-36}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H_E.q_out, HendersonHasselbalch1.products[2]) annotation (Line(
+            points={{50,-82},{20,-82},{20,-59.5},{4,-59.5}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>CO2 solution in water without any other acid-base buffers.</p>
+<pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
+<p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
+<p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
+<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
+<p><br>Molar heat of formation (aqueous):</p>
+<p>CO2:        -413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
+<p>H2O:        -285.8 kJ/mol</p>
+<p>HCO3-:        -692.0 kJ/mol</p>
+<p>CO3^-2:        -677.1 kJ/mol</p>
+<p><br>Enthalphy of reaction H2O + CO2 &LT;-&GT; HCO3- + H+  :         7.3 kJ/mol</p>
+<p>Enthalphy of reaction HCO3- &LT;-&GT; CO3^-2 + H+  :        14.9 kJ/mol</p>
+</html>",      revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),experiment(StopTime=100, __Dymola_Algorithm="Dassl"),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics),
+          __Dymola_experimentSetupOutput);
+      end CarbonDioxideInBlood;
+
+      model CarbonDioxideInBlood2
+          extends Modelica.Icons.Example;
+        Sources.UnlimitedGasStorage CO2_gas(
+          substance=Substances.CarbonDioxide[1],
+          PartialPressure=5332.8954966,
+          TotalPressure=101325.0144354)   annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-80,82})));
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa")=
+               0.00062064026806947)
+          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
+                                              /*(C=2400, kH_T0(
+        displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
+        Components.Substance CO2_liquid(
+          substance=Substances.CarbonDioxide[2],
+          SolutionAmount=52.3,
+          solute_start=0.00123)
+          annotation (Placement(transformation(extent={{-92,22},{-72,42}})));
+        Components.Substance HCO3(
+            substance=Substances.CarbonicAcid[2],
+          SolutionAmount=52.3,
+          solute_start=0.024)
+          annotation (Placement(transformation(extent={{32,22},{52,42}})));
+        Components.ChemicalReaction HendersonHasselbalch(
+          nP=2, nS=2) "K=10^(-6.103 + 3), dH=7.3 kJ/mol"
+          annotation (Placement(transformation(extent={{-12,22},{8,42}})));
+        Components.Substance H(
+          substance=Substances.Proton,
+          q_out(conc(nominal=10^(-7.4))),
+          solute_start=52.3*10^(-7.4),
+          SolutionAmount=52.3)      annotation (Placement(transformation(extent={{-10,
+                  -10},{10,10}}, origin={66,8})));
+        Components.Substance             H2O(substance=Substances.Water,
+          SolutionAmount=52.3,
+          solute_start=52)
+          annotation (Placement(transformation(extent={{-56,6},{-36,26}})));
+
+        Real pH;
+      equation
+        pH=-log10(H.q_out.conc);
+        connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
+            points={{-80,48},{-80,32},{-82,32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
+            points={{-80,72},{-80,66}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
+            points={{8,31.5},{14,31.5},{14,32},{42,32}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H.q_out,HendersonHasselbalch. products[2]) annotation (Line(
+            points={{66,8},{20,8},{20,32.5},{8,32.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
+           Line(
+            points={{-82,32},{-62,32},{-62,31.5},{-12,31.5}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H2O.q_out,HendersonHasselbalch. substrates[2]) annotation (Line(
+            points={{-46,16},{-26,16},{-26,32.5},{-12,32.5}},
+            color={158,66,200},
+            thickness=1,
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>CO2 solution in water without any other acid-base buffers.</p>
+<pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
+<p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
+<p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
+<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+<p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
+<p><br>Molar heat of formation (aqueous):</p>
+<p>CO2:        -413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
+<p>H2O:        -285.8 kJ/mol</p>
+<p>HCO3-:        -692.0 kJ/mol</p>
+<p>CO3^-2:        -677.1 kJ/mol</p>
+<p><br>Enthalphy of reaction H2O + CO2 &LT;-&GT; HCO3- + H+  :         7.3 kJ/mol</p>
+<p>Enthalphy of reaction HCO3- &LT;-&GT; CO3^-2 + H+  :        14.9 kJ/mol</p>
+</html>",      revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),experiment(__Dymola_Algorithm="Dassl"),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics),
+          __Dymola_experimentSetupOutput);
+      end CarbonDioxideInBlood2;
+
+      model CarbonDioxideInBlood3
+          extends Modelica.Icons.Example;
+        Components.Substance HCO3(
+            substance=Substances.CarbonicAcid[2],
+          SolutionAmount=52.3,
+          solute_start=0.024)
+          annotation (Placement(transformation(extent={{24,22},{44,42}})));
         Components.ChemicalReaction HendersonHasselbalch(
           nP=2, nS=2) "K=10^(-6.103 + 3), dH=7.3 kJ/mol"
           annotation (Placement(transformation(extent={{-20,22},{0,42}})));
         Sources.UnlimitedGasStorage CO2_gas(
           substance=Substances.CarbonDioxide[1],
-          PartialPressure=7999.3432449,
+          PartialPressure=5332.8954966,
           TotalPressure=101325.0144354)   annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -3829,7 +4103,8 @@ package Thermodynamical
           substance=Substances.Proton, Concentration(displayUnit="1") = 10^(-7.4))
                                                              annotation (Placement(
               transformation(extent={{-10,-10},{10,10}}, origin={58,8})));
-        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mmol/l)/kPa at 25degC")= 0.8342702140786)
+        Components.GasSolubility gasSolubility(kH_T0(displayUnit=
+                "(mol/kg H2O)/bar at 25degC,101325Pa") = 0.00062064026806947)
           annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
                                               /*(C=2400, kH_T0(
         displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
@@ -4000,180 +4275,416 @@ package Thermodynamical
           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
                   100}}),            graphics),
           __Dymola_experimentSetupOutput);
-      end CarbonDioxideInBlood;
+      end CarbonDioxideInBlood3;
 
-      model CarbonDioxideInBlood2
+      model Phosphate2
           extends Modelica.Icons.Example;
-        Sources.UnlimitedGasStorage CO2_gas(
-          substance=Substances.CarbonDioxide[1],
-          PartialPressure=5332.8954966,
-          TotalPressure=101325.0144354)   annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=270,
-              origin={-80,82})));
-        Components.GasSolubility gasSolubility(kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.8342702140786)
-          annotation (Placement(transformation(extent={{-90,46},{-70,66}})));
-                                              /*(C=2400, kH_T0(
-        displayUnit="(mmol/l)/kPa at 25degC") = 0.81805576878885)*/
-        Components.Substance CO2_liquid(
-          substance=Substances.CarbonDioxide[2],
-          SolutionAmount=52.3,
-          solute_start=0.00123)
-          annotation (Placement(transformation(extent={{-92,22},{-72,42}})));
-        Components.Substance HCO3(
-            substance=Substances.CarbonicAcid[2],
-          SolutionAmount=52.3,
-          solute_start=0.024)
-          annotation (Placement(transformation(extent={{32,22},{52,42}})));
-        Components.ChemicalReaction HendersonHasselbalch(
-          nP=2, nS=2) "K=10^(-6.103 + 3), dH=7.3 kJ/mol"
-          annotation (Placement(transformation(extent={{-12,22},{8,42}})));
+
+        parameter Types.Concentration totalPO4=0.00115
+          "Total phosphate concentration";
+
+        Modelica.Blocks.Sources.Clock SID(offset=-1.9*totalPO4)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{44,74},{64,94}})));
+
         Components.Substance H(
-          q_out(conc(nominal=10^(-7.4 + 3))),
+          solute_start=55.6*10^(-7.4),
+          q_out(conc(nominal=10^(-7.4))),
           substance=Substances.Proton,
-          solute_start=10^(-7.4 + 3),
-          SolutionAmount=52.3)      annotation (Placement(transformation(extent={{-10,
-                  -10},{10,10}}, origin={66,8})));
-        Components.Substance             H2O(substance=Substances.Water,
-          SolutionAmount=52.3,
-          solute_start=52)
-          annotation (Placement(transformation(extent={{-56,6},{-36,26}})));
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          NominalSolute(displayUnit="mol") = 1e-06) "hydrogen ions activity"
+                                                     annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              origin={36,-12})));
+
+        Components.Substance H3PO4(
+          substance=Substances.Phosphate[1],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=4.8e-10,
+          NominalSolute=1e-10)
+          annotation (Placement(transformation(extent={{-98,-58},{-78,-38}})));
+        Components.Substance H2PO4(
+          substance=Substances.Phosphate[2],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=0.0005)
+          annotation (Placement(transformation(extent={{-44,-58},{-24,-38}})));
+        Components.Substance HPO4(
+          substance=Substances.Phosphate[3],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          solute_start=0.0006)
+          annotation (Placement(transformation(extent={{16,-58},{36,-38}})));
+        Components.Substance PO4(
+          substance=Substances.Phosphate[4],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=2.3e-07,
+          NominalSolute=1e-07)
+          annotation (Placement(transformation(extent={{72,-58},{92,-38}})));
+
+        Components.ChemicalReaction chemicalReaction(nP=2) "10^(-1.915 + 3)"
+          annotation (Placement(transformation(extent={{-70,-58},{-50,-38}})));
+        Components.ChemicalReaction chemicalReaction1(nP=2) "10^(-6.66 + 3)"
+          annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
+        Components.ChemicalReaction chemicalReaction2(nP=2) "10^(-11.78 + 3)"
+          annotation (Placement(transformation(extent={{44,-58},{64,-38}})));
+        SteadyStates.Components.MolarConservationLaw tP04(
+          each n=4,
+          each Total=totalPO4*1,
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          annotation (Placement(transformation(extent={{-28,-90},{-8,-70}})));
+
+
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=Modelica.Constants.F,y(unit="C"))
+          "from elementary charge to Coloumn" annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={84,-86})));
+
+        SteadyStates.Components.ElementaryChargeConservationLaw
+          electroneutrality(
+          Total(displayUnit="meq") = 3502.41783837,
+          useTotalInput=true,
+          NumberOfParticles=3,
+          Charges={-1,-2,-3},
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState)
+          annotation (Placement(transformation(extent={{44,-104},{64,-84}})));
       equation
-        connect(gasSolubility.q_in, CO2_liquid.q_out) annotation (Line(
-            points={{-80,48},{-80,32},{-82,32}},
+        connect(H3PO4.q_out, chemicalReaction.substrates[1]) annotation (Line(
+            points={{-88,-48},{-70,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(CO2_gas.q_out, gasSolubility.q_out) annotation (Line(
-            points={{-80,72},{-80,66}},
+        connect(chemicalReaction.products[1], H2PO4.q_out) annotation (Line(
+            points={{-50,-48.5},{-42,-48.5},{-42,-48},{-34,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(HendersonHasselbalch.products[1],HCO3. q_out) annotation (Line(
-            points={{8,31.5},{14,31.5},{14,32},{42,32}},
+        connect(H2PO4.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+            points={{-34,-48},{-14,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(H.q_out,HendersonHasselbalch. products[2]) annotation (Line(
-            points={{66,8},{20,8},{20,32.5},{8,32.5}},
+        connect(chemicalReaction1.products[1], HPO4.q_out) annotation (Line(
+            points={{6,-48.5},{16,-48.5},{16,-48},{26,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(CO2_liquid.q_out,HendersonHasselbalch. substrates[1]) annotation (
-           Line(
-            points={{-82,32},{-62,32},{-62,31.5},{-12,31.5}},
+        connect(HPO4.q_out, chemicalReaction2.substrates[1]) annotation (Line(
+            points={{26,-48},{44,-48}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(H2O.q_out,HendersonHasselbalch. substrates[2]) annotation (Line(
-            points={{-46,16},{-26,16},{-26,32.5},{-12,32.5}},
-            color={158,66,200},
+        connect(chemicalReaction2.products[1], PO4.q_out) annotation (Line(
+            points={{64,-48.5},{74,-48.5},{74,-48},{82,-48}},
+            color={107,45,134},
             thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction.products[2], H.q_out) annotation (Line(
+            points={{-50,-47.5},{-44,-47.5},{-44,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction1.products[2], H.q_out) annotation (Line(
+            points={{6,-47.5},{14,-47.5},{14,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction2.products[2], H.q_out) annotation (Line(
+            points={{64,-47.5},{72,-47.5},{72,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(H3PO4.solute, tP04.fragment[1]) annotation (Line(
+            points={{-82,-58},{-82,-86},{-28,-86},{-28,-85.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute, tP04.fragment[2]) annotation (Line(
+            points={{-28,-58},{-28,-62},{-64,-62},{-64,-84.5},{-28,-84.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, tP04.fragment[3]) annotation (Line(
+            points={{32,-58},{32,-64},{-50,-64},{-50,-83.5},{-28,-83.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO4.solute, tP04.fragment[4]) annotation (Line(
+            points={{88,-58},{88,-68},{-40,-68},{-40,-82.5},{-28,-82.5}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(SID.y, toColoumn.u) annotation (Line(
+            points={{65,84},{100,84},{100,-86},{96,-86}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute,electroneutrality. fragment[1]) annotation (Line(
+            points={{-28,-58},{-28,-62},{20,-62},{20,-99.3333},{44,-99.3333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute,electroneutrality. fragment[2]) annotation (Line(
+            points={{32,-58},{32,-98},{44,-98}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO4.solute,electroneutrality. fragment[3]) annotation (Line(
+            points={{88,-58},{88,-62},{24,-62},{24,-96.6667},{44,-96.6667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{73,-86},{68,-86},{68,-76},{54,-76},{54,-86}},
+            color={0,0,127},
             smooth=Smooth.None));
         annotation ( Documentation(info="<html>
-<p>CO2 solution in water without any other acid-base buffers.</p>
-<pre><b>plotExpression(apply(-log10(CarbonDioxideInWater.H3O.solute)),&nbsp;false,&nbsp;&QUOT;pH&QUOT;,&nbsp;1);</b></pre>
-<p><br>Please note, that OH- (and CO3^-2) can be neglected from electroneutrality calculation, because of very small concentrations (in physiological pH) anyway. </p>
-<p>And if SID&GT;0 then also H3O+ can be also neglected from electroneutrality, because only bicarbonate anions HCO3- (or CO3^-2) are needed there to balance the electroneutrality.</p>
-<p><br>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
-<p><br>The titration slope der(pH)/der(SID)=17.5 1/(mol/L) at pH=7.4 and pCO2=40 mmHg.</p>
-<p><br>Molar heat of formation (aqueous):</p>
-<p>CO2:        -413.5 kJ/mol  (gas: -393.5 kJ/mol )</p>
-<p>H2O:        -285.8 kJ/mol</p>
-<p>HCO3-:        -692.0 kJ/mol</p>
-<p>CO3^-2:        -677.1 kJ/mol</p>
-<p><br>Enthalphy of reaction H2O + CO2 &LT;-&GT; HCO3- + H+  :         7.3 kJ/mol</p>
-<p>Enthalphy of reaction HCO3- &LT;-&GT; CO3^-2 + H+  :        14.9 kJ/mol</p>
+<p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
 </html>",      revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(__Dymola_Algorithm="Dassl"),
+</html>"),experiment(
+            StopTime=0.0013,
+            Tolerance=1e-006,
+            __Dymola_Algorithm="Euler"),
           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics),
           __Dymola_experimentSetupOutput);
-      end CarbonDioxideInBlood2;
+      end Phosphate2;
+
+      model Phosphate3
+          extends Modelica.Icons.Example;
+
+        parameter Types.Concentration totalPO4=0.00115
+          "Total phosphate concentration";
+
+        Modelica.Blocks.Sources.Clock SID(offset=-1.99*totalPO4)
+          "strong ions difference with respect to albumin charge shift"
+          annotation (Placement(transformation(extent={{44,74},{64,94}})));
+
+        Components.Substance H(
+          solute_start=55.6*10^(-7.4),
+          q_out(conc(nominal=10^(-7.4))),
+          substance=Substances.Proton,
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          NominalSolute(displayUnit="mol") = 1e-06) "hydrogen ions activity"
+                                                     annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              origin={36,-12})));
+
+        Components.Substance H2PO4(
+          substance=Substances.Phosphate[2],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          isDependent=true,
+          solute_start=0.0005)
+          annotation (Placement(transformation(extent={{-48,-54},{-28,-34}})));
+        Components.Substance HPO4(
+          substance=Substances.Phosphate[3],
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          solute_start=0.0006)
+          annotation (Placement(transformation(extent={{16,-58},{36,-38}})));
+
+        Components.ChemicalReaction chemicalReaction1(nP=2) "10^(-6.66 + 3)"
+          annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
+        SteadyStates.Components.MolarConservationLaw tP04(
+          each Total=totalPO4*1,
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          each n=2)
+          annotation (Placement(transformation(extent={{-28,-90},{-8,-70}})));
+
+        Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=Modelica.Constants.F,y(unit="C"))
+          "from elementary charge to Coloumn" annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={84,-86})));
+
+        SteadyStates.Components.ElementaryChargeConservationLaw
+          electroneutrality(
+          Total(displayUnit="meq") = 3502.41783837,
+          useTotalInput=true,
+          Simulation=Physiolibrary.Types.SimulationType.SteadyState,
+          NumberOfParticles=2,
+          Charges={-1,-2})
+          annotation (Placement(transformation(extent={{44,-104},{64,-84}})));
+      equation
+        connect(H2PO4.q_out, chemicalReaction1.substrates[1]) annotation (Line(
+            points={{-38,-44},{-24,-44},{-24,-48},{-14,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction1.products[1], HPO4.q_out) annotation (Line(
+            points={{6,-48.5},{16,-48.5},{16,-48},{26,-48}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(chemicalReaction1.products[2], H.q_out) annotation (Line(
+            points={{6,-47.5},{14,-47.5},{14,-32},{36,-32},{36,-12}},
+            color={107,45,134},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(SID.y, toColoumn.u) annotation (Line(
+            points={{65,84},{100,84},{100,-86},{96,-86}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute,electroneutrality. fragment[1]) annotation (Line(
+            points={{-32,-54},{-32,-62},{20,-62},{20,-99},{44,-99}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute,electroneutrality. fragment[2]) annotation (Line(
+            points={{32,-58},{32,-97},{44,-97}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(toColoumn.y, electroneutrality.total) annotation (Line(
+            points={{73,-86},{68,-86},{68,-76},{54,-76},{54,-86}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(H2PO4.solute, tP04.fragment[1]) annotation (Line(
+            points={{-32,-54},{-54,-54},{-54,-85},{-28,-85}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HPO4.solute, tP04.fragment[2]) annotation (Line(
+            points={{32,-58},{-40,-58},{-40,-83},{-28,-83}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation ( Documentation(info="<html>
+<p>Henderson-Hasselbalch equation in ideal buffered solution, where pH remains constant.</p>
+<p>The partial pressure of CO2 in gas are input parameter. Outputs are an amount of free disolved CO2 in liquid and an amount of HCO3-.</p>
+</html>",      revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),experiment(StopTime=0.001),
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}),
+                          graphics),
+          __Dymola_experimentSetupOutput);
+      end Phosphate3;
     end AcidBase;
 
     model Henry
 
-      Components.GasSolubility gasSolubility(kH_T0=0.026)
-        annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
-      Components.GasSolubility gasSolubility1(
-        solubilityRateCoef(displayUnit="mol/s"), kH_T0(displayUnit=
-              "(mmol/l)/atm at 25degC") = 0.8342702140786)
-        annotation (Placement(transformation(extent={{-80,-26},{-60,-6}})));
-      Sources.UnlimitedGasStorage O2_g_n(
+      Chemical.Components.GasSolubility CO2_old(
+        C=2400,
+        kH_T0(displayUnit="(mmol/l)/kPa at 37degC") = 0.59310799667206,
+        T0=310.15) "solubility coeficient from Maas et. al (1984)"
+        annotation (Placement(transformation(extent={{-24,16},{-4,36}})));
+      Chemical.Sources.UnlimitedGasStorage CO2_g_old(PartialPressure=
+            5332.8954966)
+        annotation (Placement(transformation(extent={{-40,70},{-20,90}})));
+      Chemical.Components.Substance CO2_l_old
+        annotation (Placement(transformation(extent={{-24,-24},{-4,-4}})));
+      Chemical.Components.GasSolubility O2_old(
+        kH_T0(displayUnit="(mmol/l)/kPa at 37degC") = 0.025916240724149,
+        C=1700,
+        T0=310.15) "solubility coeficient from Sendroy et al. (1934)"
+        annotation (Placement(transformation(extent={{72,12},{92,32}})));
+      Chemical.Sources.UnlimitedGasStorage O2_g_old(PartialPressure=
+            12665.626804425)
+        annotation (Placement(transformation(extent={{58,56},{78,76}})));
+      Chemical.Components.Substance O2_l_old
+        annotation (Placement(transformation(extent={{72,-26},{92,-6}})));
+      Components.GasSolubility CO2_new(solubilityRateCoef(displayUnit="mol/s"),
+          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa") =
+          0.00062064026806947)
+        "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=10#Solubility"
+        annotation (Placement(transformation(extent={{-86,-20},{-66,0}})));
+      Components.Substance CO2_l_plasma(substance=AcidBase.Substances.CarbonDioxide[
+            2], SolutionAmount=52.3)
+        annotation (Placement(transformation(extent={{-86,-60},{-66,-40}})));
+      Components.GasSolubility O2_new(kH_T0(displayUnit=
+              "(mol/kg H2O)/bar at 25degC,101325Pa") = 2.3730363190891e-05)
+        "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Units=SI&Mask=10#Solubility"
+        annotation (Placement(transformation(extent={{16,-48},{36,-28}})));
+      Sources.UnlimitedGasStorage O2_g_n1(
         substance=AcidBase.Substances.Oxygen,
         PartialPressure=12665.626804425,
         TotalPressure=101325.0144354)
-        annotation (Placement(transformation(extent={{22,26},{42,46}})));
-      Sources.UnlimitedGasStorage CO2_g_n(
+        annotation (Placement(transformation(extent={{24,4},{44,24}})));
+      Components.Substance O2_l_plasma(substance=AcidBase.Substances.Oxygen,
+          SolutionAmount=52.3)
+        annotation (Placement(transformation(extent={{16,-88},{36,-68}})));
+      Components.GasSolubility CO2_new1(solubilityRateCoef(displayUnit="mol/s"),
+          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa") =
+          0.00062064026806947)
+        "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=10#Solubility"
+        annotation (Placement(transformation(extent={{-50,-20},{-30,0}})));
+      Sources.UnlimitedGasStorage CO2_g_n2(
         substance=AcidBase.Substances.CarbonDioxide[1],
         PartialPressure=5332.8954966,
         TotalPressure=101325.0144354)
-        annotation (Placement(transformation(extent={{-94,38},{-74,58}})));
-      Components.Substance CO2_l_n(substance=AcidBase.Substances.CarbonDioxide[2],
-          SolutionAmount=52.3)
-        annotation (Placement(transformation(extent={{-80,-56},{-60,-36}})));
-      Components.Substance O2_l_n(substance=AcidBase.Substances.Oxygen,
-          SolutionAmount=52.3)
-        annotation (Placement(transformation(extent={{34,-58},{54,-38}})));
-      Chemical.Components.GasSolubility gasSolubility2(kH_T0=0.81805576878885, C=2400)
-        annotation (Placement(transformation(extent={{-46,-26},{-26,-6}})));
-      Chemical.Sources.UnlimitedGasStorage CO2_g_o(PartialPressure=5332.8954966)
-        annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
-      Chemical.Components.Substance CO2_l_o
-        annotation (Placement(transformation(extent={{-46,-50},{-26,-30}})));
-      Chemical.Components.GasSolubility gasSolubility3(kH_T0(displayUnit="(mol/m3)/(mol/m3)")=
-             0.026)
-        annotation (Placement(transformation(extent={{60,-26},{80,-6}})));
-      Chemical.Sources.UnlimitedGasStorage O2_g_o(PartialPressure=12665.626804425)
-        annotation (Placement(transformation(extent={{48,-10},{68,10}})));
-      Chemical.Components.Substance O2_l_o
-        annotation (Placement(transformation(extent={{66,-50},{86,-30}})));
+        annotation (Placement(transformation(extent={{-80,34},{-60,54}})));
+      Components.Substance CO2_l_erythrocyte(substance=AcidBase.Substances.CarbonDioxide[
+            2], SolutionAmount=39.7)
+        annotation (Placement(transformation(extent={{-50,-60},{-30,-40}})));
+      Components.GasSolubility O2_new1(kH_T0(displayUnit=
+              "(mol/kg H2O)/bar at 25degC,101325Pa") = 2.3730363190891e-05)
+        "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Units=SI&Mask=10#Solubility"
+        annotation (Placement(transformation(extent={{48,-46},{68,-26}})));
+      Components.Substance O2_l_erythrocyte(substance=AcidBase.Substances.Oxygen,
+          SolutionAmount=39.7)
+        annotation (Placement(transformation(extent={{48,-88},{68,-68}})));
     equation
-      connect(gasSolubility1.q_out, CO2_g_n.q_out) annotation (Line(
-          points={{-70,-6},{-70,48},{-74,48}},
-          color={158,66,200},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility.q_out, O2_g_n.q_out) annotation (Line(
-          points={{42,-6},{42,36}},
-          color={158,66,200},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility1.q_in, CO2_l_n.q_out) annotation (Line(
-          points={{-70,-24},{-70,-46}},
-          color={158,66,200},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility.q_in, O2_l_n.q_out) annotation (Line(
-          points={{42,-24},{44,-24},{44,-48}},
-          color={158,66,200},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(gasSolubility2.q_out, CO2_g_o.q_out) annotation (Line(
-          points={{-36,-6},{-36,6}},
+      connect(CO2_old.q_out, CO2_g_old.q_out) annotation (Line(
+          points={{-14,36},{-14,80},{-20,80}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(gasSolubility2.q_in, CO2_l_o.q_out) annotation (Line(
-          points={{-36,-24},{-36,-40}},
+      connect(CO2_old.q_in, CO2_l_old.q_out) annotation (Line(
+          points={{-14,18},{-14,-14}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(gasSolubility3.q_out, O2_g_o.q_out) annotation (Line(
-          points={{70,-6},{70,0},{68,0}},
+      connect(O2_old.q_out, O2_g_old.q_out) annotation (Line(
+          points={{82,32},{82,66},{78,66}},
           color={107,45,134},
           thickness=1,
           smooth=Smooth.None));
-      connect(gasSolubility3.q_in, O2_l_o.q_out) annotation (Line(
-          points={{70,-24},{74,-24},{74,-40},{76,-40}},
+      connect(O2_old.q_in, O2_l_old.q_out) annotation (Line(
+          points={{82,14},{82,-16}},
           color={107,45,134},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_new.q_in, CO2_l_plasma.q_out) annotation (Line(
+          points={{-76,-18},{-76,-50}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(O2_g_n1.q_out, O2_new.q_out) annotation (Line(
+          points={{44,14},{44,-6},{26,-6},{26,-28}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(O2_new.q_in, O2_l_plasma.q_out) annotation (Line(
+          points={{26,-46},{26,-78}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_new1.q_out, CO2_g_n2.q_out) annotation (Line(
+          points={{-40,0},{-40,10},{-40,10},{-40,16},{-56,16},{-56,44},{-60,44}},
+
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_new1.q_in, CO2_l_erythrocyte.q_out) annotation (Line(
+          points={{-40,-18},{-40,-50}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(O2_new1.q_in, O2_l_erythrocyte.q_out) annotation (Line(
+          points={{58,-44},{58,-78}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(CO2_g_n2.q_out, CO2_new.q_out) annotation (Line(
+          points={{-60,44},{-56,44},{-56,16},{-76,16},{-76,0}},
+          color={158,66,200},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(O2_g_n1.q_out, O2_new1.q_out) annotation (Line(
+          points={{44,14},{44,-6},{58,-6},{58,-26}},
+          color={158,66,200},
           thickness=1,
           smooth=Smooth.None));
       annotation (
-        Diagram(graphics),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}),
+                graphics),
         experiment(__Dymola_Algorithm="Dassl"),
         __Dymola_experimentSetupOutput);
     end Henry;
@@ -4331,9 +4842,8 @@ package Thermodynamical
       Types.MolarEnergy dG_products "Gibb's energy of products";
       Types.MolarEnergy dG_transition "Gibb's energy of transition state";
 
-    protected
-      Real pKa "with activity", pKc "with concentration";
-      Real Ka,Kc,pKa2,pKc2,K3,ss[nS],pp[nP], firstProductActivityAtEquilibrium;
+    //  Real pKa "with activity", pKc "with concentration";
+    //  Real Ka,Kc,pKa2,pKc2,K3,ss[nS],pp[nP], firstProductActivityAtEquilibrium;
 
      /* parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
   parameter Types.Fraction fs=solventFraction^(sum(s));
@@ -4370,22 +4880,22 @@ package Thermodynamical
       rr*p = -products.q;
 
       /*only for debuging:*/
-      pKa = -log10(K);
-      pKc = -log10((product(substrates.activity)/product(products.activity))*K);
+     /* pKa = -log10(K);
+  pKc = -log10((product(substrates.activity)/product(products.activity))*K);
 
-      Ka = product((products.conc .* products.activity) .^ p)/product((substrates.conc .* substrates.activity) .^ s);
-      Kc = product((products.conc) .^ p)/product((substrates.conc) .^ s);
-      firstProductActivityAtEquilibrium=(Ka/K)/products[1].activity;
+  Ka = product((products.conc .* products.activity) .^ p)/product((substrates.conc .* substrates.activity) .^ s);
+  Kc = product((products.conc) .^ p)/product((substrates.conc) .^ s);
+  firstProductActivityAtEquilibrium=(Ka/K)/products[1].activity;
 
-      pKa2 = -log10(Ka);
-      pKc2 = -log10(Kc);
+  pKa2 = -log10(Ka);
+  pKc2 = -log10(Kc);
 
-    //  K3 =  (product((products.conc .* products.activity) .^ p) * fs) / (product((substrates.conc .* substrates.activity) .^ s) * fp);
-      K3 =  (product((products.conc .* products.activity) .^ p))  / (product((substrates.conc .* substrates.activity) .^ s));
+//  K3 =  (product((products.conc .* products.activity) .^ p) * fs) / (product((substrates.conc .* substrates.activity) .^ s) * fp);
+  K3 =  (product((products.conc .* products.activity) .^ p))  / (product((substrates.conc .* substrates.activity) .^ s));
 
-      pp= (products.conc .* products.activity) .^ p;
-      ss= (substrates.conc .* substrates.activity) .^ s;
-      /*****************/
+  pp= (products.conc .* products.activity) .^ p;
+  ss= (substrates.conc .* substrates.activity) .^ s;
+  /*****************/
 
       annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
@@ -4518,6 +5028,48 @@ package Thermodynamical
 </html>"));
     end ChemicalReaction;
 
+
+    model Diffusion "Solute diffusion"
+      extends Icons.Diffusion;
+      extends Interfaces.OnePort;
+
+      parameter Boolean useConductanceInput = false
+        "=true, if external conductance value is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.DiffusionPermeability Conductance=0
+        "Diffusion conductance if useConductanceInput=false"
+        annotation (Dialog(enable=not useConductanceInput));
+
+    protected
+      Types.DiffusionPermeability c;
+    public
+      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
+        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40})));
+    equation
+      if not useConductanceInput then
+        c=Conductance;
+      end if;
+
+       q_in.q = c * (q_in.conc - q_out.conc);
+
+       annotation (                 Documentation(revisions="<html>
+<p><i>2009-2013</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the Fick&apos;s laws of diffusion: </a></p>
+<p>J= -D*(dPhi)/dx</p>
+<p>where</p>
+<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
+<p>D is diffusion constant [m2/s]. </p>
+<p>dPhi is concentration gradient [mol/m3].</p>
+<p>dx is length of diffusion [m].</p>
+<p><br>The solution on both sides must have the same properties (for example solubilities, chemical activities, osmolarities,...)!</p>
+</html>"));
+    end Diffusion;
+
     model GasSolubility "Henry's law of gas solubility in liquid."
 
       extends Icons.GasSolubility;
@@ -4526,14 +5078,14 @@ package Thermodynamical
       parameter Types.MolarFlowRate solubilityRateCoef=1e3
         "The rate constant of incoming gas to solution";
 
-      Types.Fraction kH(displayUnit="1")
+      Types.ThermodynamicalGasSolubility kH(displayUnit="1")
         "Henry's law coefficient such as liquid-gas concentration ratio";
 
-      parameter Types.GasSolubility kH_T0(displayUnit="1")
+      parameter Types.ThermodynamicalGasSolubility kH_T0
         "Henry's law coefficient (liqiud/gas) in pure water, one atmosphere at temperature T0";
                                                                                                //     annotation ( HideResult=true);
       parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
-         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
+         annotation (HideResult=true);
 
       Interfaces.ChemicalPort_b q_out "Gaseous solution"
         annotation (Placement(transformation(extent={{-10,90},{10,110}})));
@@ -4548,8 +5100,7 @@ package Thermodynamical
 
       dH = q_in.H - q_out.H;
 
-      //conversion from moles/volume concentration ratio to moles/moles concentration ratio is (101325/(Modelica.Constants.R*T_heatPort*55600) for Henry's coeficients in water
-      kH = (kH_T0*(101325/(Modelica.Constants.R*T0*55600))) * Modelica.Math.exp( (-dH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
+      kH = kH_T0 * Modelica.Math.exp( (-dH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
       q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc); //negative because of outflow
@@ -4652,47 +5203,6 @@ package Thermodynamical
 </html>"));
     end GasSolubility;
 
-    model Diffusion "Solute diffusion"
-      extends Icons.Diffusion;
-      extends Interfaces.OnePort;
-
-      parameter Boolean useConductanceInput = false
-        "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Types.DiffusionPermeability Conductance=0
-        "Diffusion conductance if useConductanceInput=false"
-        annotation (Dialog(enable=not useConductanceInput));
-
-    protected
-      Types.DiffusionPermeability c;
-    public
-      Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
-        annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={0,40})));
-    equation
-      if not useConductanceInput then
-        c=Conductance;
-      end if;
-
-       q_in.q = c * (q_in.conc - q_out.conc);
-
-       annotation (                 Documentation(revisions="<html>
-<p><i>2009-2013</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p><a name=\"firstHeading\">The diffusion conductance parameter can be estimated using the Fick&apos;s laws of diffusion: </a></p>
-<p>J= -D*(dPhi)/dx</p>
-<p>where</p>
-<p>J is molar flow of solute per area [mol/(m2.s)]. </p>
-<p>D is diffusion constant [m2/s]. </p>
-<p>dPhi is concentration gradient [mol/m3].</p>
-<p>dx is length of diffusion [m].</p>
-<p><br>The solution on both sides must have the same properties (for example solubilities, chemical activities, osmolarities,...)!</p>
-</html>"));
-    end Diffusion;
-
     model Membrane
       "Donnan's equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ..."
       extends Icons.Membrane;
@@ -4733,19 +5243,49 @@ package Thermodynamical
         "Specific constant difference (C1-C2) for Van't Hoff's change of kH"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
-    /*  parameter Types.Fraction solventFractionInside=1 
-    "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
-  parameter Types.Fraction solventFractionOutside=1 
-    "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
-*/
+      parameter Boolean useHydraulicPressureInputs = false
+        "=true, if hydraulic pressure inputs is used"
+        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.Pressure HydraulicPressureIn=0
+        "Hydraulic pressure inside if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+      parameter Types.Pressure HydraulicPressureOut=0
+        "Hydraulic pressure outside if useHydraulicPressureInputs=false"
+        annotation (Dialog(enable=not useHydraulicPressureInputs));
+
+      Types.RealIO.PressureInput hydraulicPressureIn(start=HydraulicPressureIn)=pi if useHydraulicPressureInputs annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,80})));
+      Types.RealIO.PressureInput hydraulicPressureOut(start=HydraulicPressureOut)=po if useHydraulicPressureInputs annotation (Placement(
+            transformation(extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={80,80})));
+
     protected
+       Types.Pressure pi[NumberOfParticles]
+        "hydraulic pressure parts for substances at q_in side (sum(pi) = hydraulic pressure at q_in)";
+       Types.Pressure po[NumberOfParticles]
+        "hydraulic pressure parts for substances at q_out side (sum(po) = hydraulic pressure at q_out)";
+       Types.Pressure opi[NumberOfParticles]
+        "-sum(opi) = osmotic pressure at q_in";
+       Types.Pressure opo[NumberOfParticles]
+        "-sum(opo) = osmotic pressure at q_out";
        Real KAdjustment
         "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
        Types.DiffusionPermeability p[NumberOfParticles];
 
+       Real totPerm "sum(p) total permeability";
     equation
       if not usePermeabilityInput then
         p=Permeabilities;
+      end if;
+      totPerm = sum(p);
+      if not useHydraulicPressureInputs then
+        pi=HydraulicPressureIn .* p / totPerm;
+        po=HydraulicPressureOut .* p / totPerm;
       end if;
 
        //no accumulation of particles:
@@ -4759,25 +5299,31 @@ package Thermodynamical
        end if;
 
        //diffusion, penetration, particle movement:
-    /*   for i in 1:NumberOfParticles loop
-     if Charges[i]==0 then //normal diffusion
-       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - kH[i]*particlesOutside[i].conc/solventFractionOutside);
-     elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1+KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
-     else //anion goes to Donnan's equilibrium
-       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1-KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
-     end if;
-   end for;
-   */
        for i in 1:NumberOfParticles loop
          if Charges[i]==0 then //normal diffusion
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + kH[i] * opo[i]));
          elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1+KAdjustment)*kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + (1+KAdjustment)*kH[i] * opo[i]));
          else //anion goes to Donnan's equilibrium
-           particlesInside[i].q = p[i] * (particlesInside[i].conc - (1-KAdjustment)*kH[i]*particlesOutside[i].conc);
+           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + (1-KAdjustment)*kH[i] * opo[i]));
          end if;
        end for;
+       //The final osmotic equation for water solution of non-charged particles in both sides of semipermeable membrane with the same permeability of all pearmeable substances:
+       //    totalPermeableParticlesFlow = totPerm * ((-hydraulicPressureInside + osmoticPressureOfImpermeableParticlesInside) - (-hydraulicPressureOutside + osmoticPressureOfImpermeableParticlesOutside))
+       //  where
+       //    totalPermeableParticlesFlow = sum(particlesInside.q)
+       //    hydraulicPressureInside = sum(pi)
+       //    hydraulicPressureOutside = sum(po)
+       //    osmoticPressureOfImpermeableParticlesInside = R*T - sum(opi)
+       //       because  1 = totalConcentrationOfImpermeableParticlesInside + totalConcentrationOfPermeableParticlesInside
+       //                totalConcentrationOfPermeableParticlesInside = sum(opi)/(R*T)
+       //    osmoticPressureOfImpermeableParticlesOutside = R*T - sum(opo)
+       //       because  1 = totalConcentrationOfImpermeableParticlesOutside + totalConcentrationOfPermeableParticlesOutside
+       //                totalConcentrationOfPermeableParticlesOutside = sum(opo)/(R*T)
+
+       //concentration of all impermeable particales is one minus permeable particles
+       opi = particlesInside.conc*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
+       opo = particlesOutside.conc*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
 
        //different solubilities:
        kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));

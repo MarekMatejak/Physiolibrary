@@ -1095,7 +1095,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
         t=Total;
       end if;
 
-      t*normalizedState[1] = sum(abs(fragment));
+      //t*normalizedState[1] = sum(fragment); //sum(abs(fragment));
+       t*normalizedState[1] = sum(abs(fragment));
 
       //fragment[1] = homotopy( actual=Total*normalizedState[1] - sum(fragment[i] for i in 2:n), simplified=Total*normalizedState[1]*firstFragmentFraction);
       totalAmountOfSubstance = t;
@@ -1203,7 +1204,8 @@ package SteadyStates "Dynamic Simulation / Steady State"
       end if;
 
       //original meaning:
-      t*normalizedState[1] = Modelica.Constants.F*Charges*abs(fragment); //elementary charge from Eq to C
+      t*normalizedState[1] = Modelica.Constants.F*Charges*fragment; //abs(fragment); //elementary charge from Eq to C
+    //  t*normalizedState[1] = Modelica.Constants.F*Charges*abs(fragment); //elementary charge from Eq to C
 
       //hacked, but still the same:  (because Dymola find steady state solution for specific problems in negative concentrations, when abs() not used)
       //t*normalizedState[1] = Modelica.Constants.F*(Charges[1]*(if noEvent(fragment[1]>=0) then fragment[1] else -fragment[1]) + sum(Charges[i]*fragment[i] for i in 2:NumberOfParticles));

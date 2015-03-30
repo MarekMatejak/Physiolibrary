@@ -4435,6 +4435,7 @@ This icon is designed for a <b>signal bus</b> connector.
 
   type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7, min=0, max=14);
   type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
+  type ThermodynamicalOsmoticPermeability = Real(final quantity="ThermodynamicalOsmoticPermeability",final unit="mol/(Pa.s)", displayUnit="mmol/(mmHg.min)", nominal=(1e-6)*55000/((133.322387415)*60), min=0);
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60, min=0);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
@@ -4446,7 +4447,9 @@ This icon is designed for a <b>signal bus</b> connector.
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
 
   type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
-    "Gas solubility in liquid";
+    "Gas solubility in liquid as ratio of non-physical concentrations";
+  type ThermodynamicalGasSolubility = Real(final quantity="GasSolubility", final unit="(mol/mol)/(Pa/Pa)", displayUnit="(mol/kg H2O)/bar at 25degC", nominal=0.1, min=0)
+    "Gas solubility in liquid as ratio of physical concentrations";
 
   type StoichiometricNumber = Modelica.SIunits.StoichiometricNumber; // Integer(final quantity="StoichiometricNumber", min=1);
 
@@ -5695,6 +5698,341 @@ The Real output y is a constant signal:
 
   end AbstractBoolean;
 
+  package FilesUtilities "File input/output/test"
+    import Physiolibrary;
+    extends Types.Utilities;
+    extends Modelica.Icons.VariantsPackage;
+
+    constant String directoryName="io";
+
+    constant String inputFileName="input.txt"
+      "File to load values with (non-)SI units";
+    constant String outputFileName="output.txt"
+      "File to save values with (non-)SI units";
+    constant String comparisonFileName="comparison.txt"
+      "File to save comparison from loaded values and simulation results with (non-)SI units";
+
+    constant String inputSIFileName="input_SI.txt"
+      "File to load values in SI units";
+    constant String outputSIFileName="output_SI.txt"
+      "File to save values in SI units";
+    constant String comparisonSIFileName="comparison_SI.txt"
+      "File to save comparison in SI units from loaded values and simulation results";
+
+    redeclare function extends readReal
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      String line;
+      Integer nextIndex;
+      Integer lineLen;
+      Integer iline=1;
+      Boolean found = false;
+      Boolean endOfFile=false;
+      String str;
+      Real inputValue;
+      Integer typeDef;
+    algorithm
+      fn:=directoryName + "/" + inputFileName;
+
+      if not Files.exist(fn) then
+         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
+      else
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+      //Format "<variableName>\n<value> <unit>"
+      (line, endOfFile) :=Streams.readLine(fn, iline);
+      while not found and not endOfFile loop
+           if line == name then
+               // name found, get value of "name = value;"
+               (line, endOfFile) :=Streams.readLine(fn, iline+1);
+               lineLen := Strings.length(line);
+               nextIndex:=1;
+
+    /*
+other wariant: //Format "<variableName>=<value><unit>"
+  while not found and not endOfFile loop
+       iline:=iline+1;
+       (line, endOfFile) :=Streams.readLine(fn, iline);
+       lineLen := Strings.length(line);
+
+       if lineLen>3 then
+
+         nextIndex:=1; //because Coleman does not use the right identifiers, scanIdentifier can not be used :(
+         str:=Strings.substring(line,nextIndex,nextIndex);
+         while ((nextIndex+1)<lineLen and (not Strings.isEqual(str," ")) and (not Strings.isEqual(str,"=")) and (not Strings.isEqual(str,"\t"))) loop
+            nextIndex:=nextIndex+1;
+            str:=Strings.substring(line,nextIndex,nextIndex);
+         end while;
+         str := Strings.substring(line,1,nextIndex-1);
+
+         if str==name then
+
+           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
+           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex+1); //skip '=' and white-spaces before/after
+*/
+
+               (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
+
+               nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
+               if nextIndex>lineLen then
+                   if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
+                     Streams.error("No units detected for variable '" + name +
+                                    "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " (no units)");
+               else
+                   str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
+                   if str <> unitConversions[typeDef].DisplayUnit then
+                      Streams.error("Units '" + str + "' not expected for variable '"
+                       + name + "' in file '" + fn + "'. Expected unis are '" +
+                      unitConversions[typeDef].DisplayUnit + "'!\n");
+                   end if;
+                   //Streams.print(" > " + name + "\t " + String(inputValue) + " " + str);
+               end if;
+               value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
+               //Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
+               found := true;
+               // end if;  //Format "<variableName>=<value><unit>"
+
+               //Format "<variableName>\n<value><unit>"
+           else
+               // wrong name, skip lines
+               iline := iline + 2;
+               // read next variable name
+               (line, endOfFile) :=Streams.readLine(fn, iline);
+           end if;
+         end while;
+
+         if not found then
+            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
+         end if;
+       end if;
+
+    end readReal;
+
+    redeclare function extends readReal_SI
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      String line;
+      Integer nextIndex;
+      Integer iline=1;
+      Boolean found = false;
+      Boolean endOfFile=false;
+
+    algorithm
+      fn:=directoryName + "/" +inputSIFileName;
+
+      if not Files.exist(fn) then
+         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
+      else
+
+      //Format "<variableName>\n<value> <unit>"
+      (line, endOfFile) :=Streams.readLine(fn, iline);
+      while not found and not endOfFile loop
+           if line == name then
+               // name found, get value of "name = value;"
+               (line, endOfFile) :=Streams.readLine(fn, iline+1);
+               nextIndex:=1;
+
+               (value,nextIndex) := Strings.scanReal(line, nextIndex);
+               found := true;
+
+             else
+             // wrong name, skip lines
+               iline := iline + 2;
+               // read next variable name
+               (line, endOfFile) :=Streams.readLine(fn, iline);
+
+             end if;
+         end while;
+
+         if not found then
+            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
+         end if;
+       end if;
+
+    end readReal_SI;
+
+    redeclare function extends readBoolean
+      import Modelica.Utilities.*;
+
+    algorithm
+      value:=(readReal(name,"")>0.005);
+    end readBoolean;
+
+    redeclare function extends writeReal "Write the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Integer typeDef "Variable type";
+
+    algorithm
+      fn:=directoryName + "/" +outputFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+      Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
+      + " " + unitConversions[typeDef].DisplayUnit, fn);
+
+    end writeReal;
+
+    redeclare function extends writeReal_SI
+      "Write the value to file using SI unit"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Integer typeDef "Variable type";
+
+    algorithm
+      fn:=directoryName + "/" +outputSIFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+       Streams.print(name + "\n" + String(value), fn);
+
+    end writeReal_SI;
+
+    redeclare function extends writeBoolean
+      import Modelica.Utilities.*;
+    protected
+      String fn;
+
+    algorithm
+      fn:=directoryName + "/" +outputFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist(directoryName) then
+             Files.createDirectory(directoryName);
+         end if;
+      end if;
+
+      Streams.print( name + "\n" + String(if value then 1 else 0),      fn);
+
+    end writeBoolean;
+
+    redeclare function extends writeComparison
+      "Compare and write the result and the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+      Integer typeDef "Variable output units";
+
+    algorithm
+      fn:=directoryName + "/" +comparisonFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+
+      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
+
+    outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+    outputFinalValue :=((finalValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
+
+      Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
+         then String(abs((outputFinalValue - outputDefaultValue)/
+        outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
+        " ; " + name + " : default=" + String(outputDefaultValue) + " " +
+        unitConversions[typeDef].DisplayUnit
+         + ", initial=" + String(outputInitialValue) + " " + unitConversions[
+        typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
+        unitConversions[typeDef].DisplayUnit,
+        fn);
+
+    end writeComparison;
+
+    redeclare function extends writeComparison_SI
+      "Compare and write the result and the value to file using SI units"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+
+    algorithm
+      fn:=directoryName + "/" +comparisonSIFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+
+    outputDefaultValue := defaultValue;
+    outputInitialValue := initialValue;
+    outputFinalValue := finalValue;
+
+    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
+      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
+       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
+      " : default=" + String(outputDefaultValue) + ", initial=" + String(outputInitialValue)
+       + ", final=" + String(outputFinalValue), fn);
+
+    end writeComparison_SI;
+
+    redeclare function extends writeBooleanComparison
+      "Compare and write the result and the value to file"
+      import Modelica.Utilities.*;
+
+    protected
+      String fn;
+      Real outputInitialValue;
+      Real outputFinalValue;
+      Real outputDefaultValue;
+    algorithm
+      fn:=directoryName + "/" +comparisonFileName;
+
+      if not Files.exist(fn) then
+         if not Files.exist("output") then
+             Files.createDirectory("output");
+         end if;
+      end if;
+       if (defaultValue==finalValue) then
+
+           Streams.print("0 ; "+ name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0) + ", final=" + String(if finalValue then 1 else 0), "differences.txt");
+         else
+           Streams.print("! ; " + name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0)+ ", final=" + String(if finalValue then 1 else 0), "differences.txt");
+       end if;
+
+    end writeBooleanComparison;
+
+    annotation (Documentation(revisions="<html>
+<p>Licensed by Marek Matejak under the Modelica License 2</p>
+<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
+<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+</html>",   info="<html>
+<p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
+<p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
+<p>Because the number of output variables for each subsytem changes during development, it is a good idea to have only one list for each subsystem. And generating consistent sets to store, restore, compare initial and final values is possible by the same pattern as presented in the package Types.Example. In this package it is also possible to define a customized &nbsp;way to save and load the variables that connect subsystems together. For this purpose, one has to redeclare the package Types.Utilities with simple functions for reading and writing values, such as is done in the default package FileUtilities. </p>
+</html>"));
+  end FilesUtilities;
+
   package BooleanExtension
     extends Modelica.Icons.VariantsPackage;
         block Parameter "Read constant boolean signal"
@@ -6310,341 +6648,6 @@ The Real output y is a constant signal:
     end writeBooleanComparison;
 
   end ZeroUtilities;
-
-  package FilesUtilities "File input/output/test"
-    import Physiolibrary;
-    extends Types.Utilities;
-    extends Modelica.Icons.VariantsPackage;
-
-    constant String directoryName="io";
-
-    constant String inputFileName="input.txt"
-      "File to load values with (non-)SI units";
-    constant String outputFileName="output.txt"
-      "File to save values with (non-)SI units";
-    constant String comparisonFileName="comparison.txt"
-      "File to save comparison from loaded values and simulation results with (non-)SI units";
-
-    constant String inputSIFileName="input_SI.txt"
-      "File to load values in SI units";
-    constant String outputSIFileName="output_SI.txt"
-      "File to save values in SI units";
-    constant String comparisonSIFileName="comparison_SI.txt"
-      "File to save comparison in SI units from loaded values and simulation results";
-
-    redeclare function extends readReal
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      String line;
-      Integer nextIndex;
-      Integer lineLen;
-      Integer iline=1;
-      Boolean found = false;
-      Boolean endOfFile=false;
-      String str;
-      Real inputValue;
-      Integer typeDef;
-    algorithm
-      fn:=directoryName + "/" + inputFileName;
-
-      if not Files.exist(fn) then
-         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
-      else
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-      //Format "<variableName>\n<value> <unit>"
-      (line, endOfFile) :=Streams.readLine(fn, iline);
-      while not found and not endOfFile loop
-           if line == name then
-               // name found, get value of "name = value;"
-               (line, endOfFile) :=Streams.readLine(fn, iline+1);
-               lineLen := Strings.length(line);
-               nextIndex:=1;
-
-    /*
-other wariant: //Format "<variableName>=<value><unit>"
-  while not found and not endOfFile loop
-       iline:=iline+1;
-       (line, endOfFile) :=Streams.readLine(fn, iline);
-       lineLen := Strings.length(line);
-
-       if lineLen>3 then
-
-         nextIndex:=1; //because Coleman does not use the right identifiers, scanIdentifier can not be used :(
-         str:=Strings.substring(line,nextIndex,nextIndex);
-         while ((nextIndex+1)<lineLen and (not Strings.isEqual(str," ")) and (not Strings.isEqual(str,"=")) and (not Strings.isEqual(str,"\t"))) loop
-            nextIndex:=nextIndex+1;
-            str:=Strings.substring(line,nextIndex,nextIndex);
-         end while;
-         str := Strings.substring(line,1,nextIndex-1);
-
-         if str==name then
-
-           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
-           nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex+1); //skip '=' and white-spaces before/after
-*/
-
-               (inputValue,nextIndex) := Strings.scanReal(line, nextIndex);
-
-               nextIndex:=Strings.Advanced.skipWhiteSpace(line,nextIndex);
-               if nextIndex>lineLen then
-                   if Strings.length(unitConversions[typeDef].DisplayUnit) > 0 then
-                     Streams.error("No units detected for variable '" + name +
-                                    "' in file '" + fn + "'. Expected unis are '" + unitConversions[typeDef].DisplayUnit + "'!\n");
-                   end if;
-                   //Streams.print(" > " + name + "\t " + String(inputValue) + " (no units)");
-               else
-                   str :=Strings.substring(line, Strings.Advanced.skipWhiteSpace(line,nextIndex),  Strings.length(line));
-                   if str <> unitConversions[typeDef].DisplayUnit then
-                      Streams.error("Units '" + str + "' not expected for variable '"
-                       + name + "' in file '" + fn + "'. Expected unis are '" +
-                      unitConversions[typeDef].DisplayUnit + "'!\n");
-                   end if;
-                   //Streams.print(" > " + name + "\t " + String(inputValue) + " " + str);
-               end if;
-               value :=inputValue*unitConversions[typeDef].Scale + unitConversions[typeDef].Offset;
-               //Streams.print("\t\t =" + String(value) + " " + unitConversions[typeDef].Unit);
-               found := true;
-               // end if;  //Format "<variableName>=<value><unit>"
-
-               //Format "<variableName>\n<value><unit>"
-           else
-               // wrong name, skip lines
-               iline := iline + 2;
-               // read next variable name
-               (line, endOfFile) :=Streams.readLine(fn, iline);
-           end if;
-         end while;
-
-         if not found then
-            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
-         end if;
-       end if;
-
-    end readReal;
-
-    redeclare function extends readReal_SI
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      String line;
-      Integer nextIndex;
-      Integer iline=1;
-      Boolean found = false;
-      Boolean endOfFile=false;
-
-    algorithm
-      fn:=directoryName + "/" +inputSIFileName;
-
-      if not Files.exist(fn) then
-         Streams.error("readRealParameter(\""+name+"\", \""+ fn + "\")  Error: the file does not exist.\n");
-      else
-
-      //Format "<variableName>\n<value> <unit>"
-      (line, endOfFile) :=Streams.readLine(fn, iline);
-      while not found and not endOfFile loop
-           if line == name then
-               // name found, get value of "name = value;"
-               (line, endOfFile) :=Streams.readLine(fn, iline+1);
-               nextIndex:=1;
-
-               (value,nextIndex) := Strings.scanReal(line, nextIndex);
-               found := true;
-
-             else
-             // wrong name, skip lines
-               iline := iline + 2;
-               // read next variable name
-               (line, endOfFile) :=Streams.readLine(fn, iline);
-
-             end if;
-         end while;
-
-         if not found then
-            Streams.error("Parameter \"" + name + "\" not found in file \"" + fn + "\"\n");
-         end if;
-       end if;
-
-    end readReal_SI;
-
-    redeclare function extends readBoolean
-      import Modelica.Utilities.*;
-
-    algorithm
-      value:=(readReal(name,"")>0.005);
-    end readBoolean;
-
-    redeclare function extends writeReal "Write the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Integer typeDef "Variable type";
-
-    algorithm
-      fn:=directoryName + "/" +outputFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-      Streams.print(name + "\n" + String(((value - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale))
-      + " " + unitConversions[typeDef].DisplayUnit, fn);
-
-    end writeReal;
-
-    redeclare function extends writeReal_SI
-      "Write the value to file using SI unit"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Integer typeDef "Variable type";
-
-    algorithm
-      fn:=directoryName + "/" +outputSIFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-       Streams.print(name + "\n" + String(value), fn);
-
-    end writeReal_SI;
-
-    redeclare function extends writeBoolean
-      import Modelica.Utilities.*;
-    protected
-      String fn;
-
-    algorithm
-      fn:=directoryName + "/" +outputFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist(directoryName) then
-             Files.createDirectory(directoryName);
-         end if;
-      end if;
-
-      Streams.print( name + "\n" + String(if value then 1 else 0),      fn);
-
-    end writeBoolean;
-
-    redeclare function extends writeComparison
-      "Compare and write the result and the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-      Integer typeDef "Variable output units";
-
-    algorithm
-      fn:=directoryName + "/" +comparisonFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-
-      typeDef:=UnitConversions.findUnit(storeUnit,unitConversions);
-
-    outputDefaultValue :=((defaultValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-    outputInitialValue :=((initialValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-    outputFinalValue :=((finalValue - unitConversions[typeDef].Offset)/unitConversions[typeDef].Scale);
-
-      Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps)
-         then String(abs((outputFinalValue - outputDefaultValue)/
-        outputDefaultValue)) else "Zero vs. " + String(outputFinalValue)) +
-        " ; " + name + " : default=" + String(outputDefaultValue) + " " +
-        unitConversions[typeDef].DisplayUnit
-         + ", initial=" + String(outputInitialValue) + " " + unitConversions[
-        typeDef].DisplayUnit + ", final=" + String(outputFinalValue) + " " +
-        unitConversions[typeDef].DisplayUnit,
-        fn);
-
-    end writeComparison;
-
-    redeclare function extends writeComparison_SI
-      "Compare and write the result and the value to file using SI units"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-
-    algorithm
-      fn:=directoryName + "/" +comparisonSIFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-
-    outputDefaultValue := defaultValue;
-    outputInitialValue := initialValue;
-    outputFinalValue := finalValue;
-
-    Streams.print((if (abs(outputDefaultValue) > Modelica.Constants.eps) then
-      String(abs((outputFinalValue - outputDefaultValue)/outputDefaultValue))
-       else "Zero vs. " + String(outputFinalValue)) + " ; " + name +
-      " : default=" + String(outputDefaultValue) + ", initial=" + String(outputInitialValue)
-       + ", final=" + String(outputFinalValue), fn);
-
-    end writeComparison_SI;
-
-    redeclare function extends writeBooleanComparison
-      "Compare and write the result and the value to file"
-      import Modelica.Utilities.*;
-
-    protected
-      String fn;
-      Real outputInitialValue;
-      Real outputFinalValue;
-      Real outputDefaultValue;
-    algorithm
-      fn:=directoryName + "/" +comparisonFileName;
-
-      if not Files.exist(fn) then
-         if not Files.exist("output") then
-             Files.createDirectory("output");
-         end if;
-      end if;
-       if (defaultValue==finalValue) then
-
-           Streams.print("0 ; "+ name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0) + ", final=" + String(if finalValue then 1 else 0), "differences.txt");
-         else
-           Streams.print("! ; " + name + " : default=" + String(if defaultValue then 1 else 0) +", initial=" + String(if initialValue then 1 else 0)+ ", final=" + String(if finalValue then 1 else 0), "differences.txt");
-       end if;
-
-    end writeBooleanComparison;
-
-    annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
-</html>",   info="<html>
-<p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
-<p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
-<p>Because the number of output variables for each subsytem changes during development, it is a good idea to have only one list for each subsystem. And generating consistent sets to store, restore, compare initial and final values is possible by the same pattern as presented in the package Types.Example. In this package it is also possible to define a customized &nbsp;way to save and load the variables that connect subsystems together. For this purpose, one has to redeclare the package Types.Utilities with simple functions for reading and writing values, such as is done in the default package FileUtilities. </p>
-</html>"));
-  end FilesUtilities;
 
   type SimulationType = enumeration(
       NoInit "Use start values only as a guess of state values",
