@@ -252,12 +252,12 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
           smooth=Smooth.None));
       connect(flowMeasure1.volumeFlowRate, arachnoid_villi_hydraulic.solutionFlow)
         annotation (Line(
-          points={{8,62},{8,79}},
+          points={{8,64},{8,79}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(flowMeasure.volumeFlowRate, choroid_plexus_hydraulic.solutionFlow)
         annotation (Line(
-          points={{8,-2},{8,-15}},
+          points={{8,-4},{8,-15}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -476,13 +476,13 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
               lineColor={0,0,255}),
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={127,127,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-78,25},{82,0},{-78,-25},{-78,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={127,127,0},
+              fillColor={127,127,0},
               fillPattern=FillPattern.Solid)}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -739,13 +739,13 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
                             graphics={
             Rectangle(
               extent={{-60,-30},{60,30}},
-              lineColor={0,0,127},
+              lineColor={127,127,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-48,20},{50,0},{-48,-21},{-48,20}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={127,127,0},
+              fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-92,-58},{80,-34}},
@@ -769,14 +769,14 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-60,-32},{60,30}},
-              lineColor={0,0,127},
+              extent={{-60,-30},{60,30}},
+              lineColor={127,127,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
-              points={{-48,18},{50,-2},{-48,-26},{-48,18}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              points={{-46,22},{52,0},{-46,-22},{-46,22}},
+              lineColor={127,127,0},
+              fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-78,-58},{72,-36}},

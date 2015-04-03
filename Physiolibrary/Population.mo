@@ -216,7 +216,7 @@ package Population
                 {100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               rotation=360),
@@ -247,7 +247,7 @@ package Population
       annotation (Icon(graphics={
             Rectangle(
               extent={{-100,-52},{100,48}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               rotation=360),
@@ -279,7 +279,7 @@ package Population
                        graphics={
             Rectangle(
               extent={{-100,-52},{100,48}},
-              lineColor={0,0,127},
+              lineColor={0,127,127},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               rotation=360),
@@ -331,7 +331,7 @@ package Population
               lineColor={0,127,127},
               fillColor={0,127,127},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor={0,127,127},
+        Text(extent = {{-160,110},{40,50}}, lineColor={0,127,127},
               textString="%name")}),
         Documentation(info="<html>
 <p>
