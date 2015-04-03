@@ -4320,12 +4320,12 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                             graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,26},{62,0},{-80,-26},{-80,26}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Text(
@@ -4340,37 +4340,37 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               points={{-68,24},{-68,-24},{-58,-22},{-58,22},{-68,24}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-46,20},{-46,-20},{-36,-18},{-36,18},{-46,20}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-24,16},{-24,-16},{-14,-14},{-14,14},{-24,16}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-2,12},{-2,-12},{8,-10},{8,10},{-2,12}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{20,8},{20,-8},{30,-6},{30,6},{20,8}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{40,4},{40,-4},{50,-2},{50,2},{40,4}},
               lineColor={0,0,127},
               smooth=Smooth.None,
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid)}),
         Documentation(revisions="<html>
 <table>
@@ -4429,7 +4429,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Text(
@@ -4480,7 +4480,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               rotation=360),
@@ -4549,14 +4549,14 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               rotation=360),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
-              fillColor={0,0,127},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid,
               rotation=360),
             Text(
@@ -4814,13 +4814,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 100,100}}), graphics={
             Rectangle(
               extent={{-100,-42},{100,40}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-48,20},{50,0},{-48,-21},{-48,20}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={107,45,134},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-82,-82},{90,-58}},
@@ -5019,13 +5019,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
                 100,100}}), graphics={
             Rectangle(
               extent={{-100,-42},{100,40}},
-              lineColor={0,0,127},
+              lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-48,20},{50,0},{-48,-21},{-48,20}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={107,45,134},
+              fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-82,-82},{90,-58}},

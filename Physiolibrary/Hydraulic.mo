@@ -1323,14 +1323,14 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-100,-40},{100,60}},
-              lineColor={0,0,127},
+              extent={{-100,-50},{100,60}},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
-              fillColor={0,0,127},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-90},{150,-50}},
@@ -1690,13 +1690,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-94},{150,-54}},
@@ -1806,13 +1806,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                             graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-94},{150,-54}},
