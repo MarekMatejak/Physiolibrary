@@ -2800,12 +2800,12 @@ package Thermodynamical
       model WaterSelfIonization
         "H2O  <->  OH-   +   H+ (It is better to solve this model using Euler solver, because there is only time dependence/no integration needed/)"
           extends Modelica.Icons.Example;
-        Components.Substance H(
-          q_out(conc(nominal=10^(-7 + 3))),
+        Components.Substance H3O(
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7 + 3),
-          substance=Substances.Proton) annotation (Placement(transformation(
-                extent={{-10,-10},{10,10}}, origin={-8,12})));
+          substance=Substances.Hydronium,
+          solute_start=10^(-7)/Substances.Hydronium.activity,
+          SolutionAmount(displayUnit="mol") = 1)                annotation (Placement(
+              transformation(extent={{-10,-10},{10,10}}, origin={-8,14})));
         SteadyStates.Components.ElementaryChargeConservationLaw electroneutrality(
           Simulation=Types.SimulationType.SteadyState,
           NumberOfParticles=2,
@@ -2814,28 +2814,31 @@ package Thermodynamical
           useTotalInput=true) "strong ion difference of solution"
           annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
         Components.Substance OH(
-          q_out(conc(nominal=10^(-7.4 + 3))),
           Simulation=Types.SimulationType.SteadyState,
-          solute_start=10^(-7 + 3),
           isDependent=true,
-          substance=Substances.Hydroxide)
+          substance=Substances.Hydroxide,
+          solute_start=10^(-7)/Substances.Hydroxide.activity,
+          SolutionAmount(displayUnit="mol") = 1)
                             annotation (Placement(transformation(extent={{-10,-10},
                   {10,10}}, origin={-8,-32})));
         Components.Substance H2O(
-          q_out(conc(nominal=5.55e+4)),
           Simulation=Types.SimulationType.SteadyState,
-          solute_start(displayUnit="mol") = 1/0.018,
           isDependent=true,
-          substance=Substances.Water)
+          substance=Substances.Water,
+          solute_start(displayUnit="mol") = 1,
+          SolutionAmount(displayUnit="mol") = 1)
                             annotation (Placement(transformation(extent={{-10,-10},
                   {10,10}}, origin={-82,-12})));
         Components.ChemicalReaction waterDissociation(
-          nP=2, T=303.15) "(1e-8)*((18e-6)^2) =? 6.08e-5"
+          nP=2,
+          nS=1,
+          s={2},
+          T=298.15) "(1e-8)*((18e-6)^2) =? 6.08e-5"
           annotation (Placement(transformation(extent={{-56,-22},{-36,-2}})));
         SteadyStates.Components.MolarConservationLaw tH2O(
           Simulation=Types.SimulationType.SteadyState,
           n=3,
-          Total(displayUnit="mol") = 1/0.018) "total water concentration"
+          Total(displayUnit="mol") = 1) "total water concentration"
           annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
         Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
           "strong ions difference with respect to albumin charge shift"
@@ -2846,14 +2849,16 @@ package Thermodynamical
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={80,-74})));
+              Real pH;
       equation
+        pH = -log10(Substances.Hydronium.activity * H3O.q_out.conc);
         connect(H2O.q_out, waterDissociation.substrates[1]) annotation (Line(
             points={{-82,-12},{-56,-12}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
-        connect(waterDissociation.products[2], H.q_out) annotation (Line(
-            points={{-36,-11.5},{-26,-11.5},{-26,12},{-8,12}},
+        connect(waterDissociation.products[2], H3O.q_out) annotation (Line(
+            points={{-36,-11.5},{-26,-11.5},{-26,14},{-8,14}},
             color={107,45,134},
             thickness=1,
             smooth=Smooth.None));
@@ -2870,8 +2875,8 @@ package Thermodynamical
             points={{-2,-42},{-2,-50},{-76,-50},{-76,-68},{-48,-68}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(H.solute, tH2O.fragment[3]) annotation (Line(
-            points={{-2,2},{-2,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
+        connect(H3O.solute, tH2O.fragment[3]) annotation (Line(
+            points={{-2,4},{-2,-6},{8,-6},{8,-52},{-72,-52},{-72,-66.6667},{-48,
                 -66.6667}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -2884,8 +2889,8 @@ package Thermodynamical
             points={{69,-74},{56,-74},{56,-76}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(H.solute, electroneutrality.fragment[1]) annotation (Line(
-            points={{-2,2},{-2,-6},{8,-6},{8,-89},{46,-89}},
+        connect(H3O.solute, electroneutrality.fragment[1]) annotation (Line(
+            points={{-2,4},{-2,-6},{8,-6},{8,-89},{46,-89}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(OH.solute, electroneutrality.fragment[2]) annotation (Line(
@@ -2901,8 +2906,8 @@ package Thermodynamical
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"),experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"),
-          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                  100}}),            graphics));
       end WaterSelfIonization;
 
       model CarbonDioxideInWater "CO2 as alone acid-base buffer"
@@ -3057,7 +3062,7 @@ package Thermodynamical
       model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
         extends Modelica.Icons.Example;
 
-        Chemical.Components.Substance H3O(
+        Chemical.Components.Substance H(
           q_out(conc(nominal=10^(-7.4 + 3))),
           Simulation=Types.SimulationType.SteadyState,
           solute_start=10^(-7.4 + 3),
@@ -3113,7 +3118,7 @@ package Thermodynamical
             thickness=1,
             smooth=Smooth.None));
         for i in 1:n loop
-          connect(react[i].products[2], H3O.q_out) annotation (Line(
+          connect(react[i].products[2], H.q_out) annotation (Line(
               points={{-24,8.5},{-14,8.5},{-14,22},{14,22}},
               color={107,45,134},
               thickness=1,
@@ -3613,8 +3618,8 @@ package Thermodynamical
             dH=0,
             dS=0,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=1,
-            storeUnit="g") "H+"; //activity of H+ shifts the SI units from mol/l to mol/m3
+            ActivityCoefficient=1,
+            storeUnit="g") "H+"; //ActivityCoefficient of H+ shifts the SI units from mol/l to mol/m3
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Hydronium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="H3O+(aq)",
@@ -3622,7 +3627,7 @@ package Thermodynamical
             dH=-285840,
             dS=-163.17,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="g") "H3O+(aq)";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Hydroxide=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3631,7 +3636,7 @@ package Thermodynamical
             dH=-229940,
             dS=-243.64,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="g") "OH-(aq)";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Water=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3640,7 +3645,7 @@ package Thermodynamical
             dH=-285830,
             dS=-163.14,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=1,
+            ActivityCoefficient=1,
             storeUnit="g") "H2O";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Oxygen=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3672,7 +3677,7 @@ package Thermodynamical
             dH=-699700,
             dS=-256.582,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=1,
+            ActivityCoefficient=1,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="HCO3-",
@@ -3680,7 +3685,7 @@ package Thermodynamical
             dH=-691100,
             dS=-348.82,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.623,
+            ActivityCoefficient=0.623,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="CO3--",
@@ -3688,7 +3693,7 @@ package Thermodynamical
             dH=-676300,
             dS=-497.065,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.284,
+            ActivityCoefficient=0.284,
             storeUnit="mmol/l")} "H2CO3, HCO3-, CO3--";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Sodium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3697,7 +3702,7 @@ package Thermodynamical
             dH=-239660,
             dS=74.49,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="mmol/l") "Na+(aq)";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Potassium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3706,7 +3711,7 @@ package Thermodynamical
             dH=-251200,
             dS=103.97,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="mmol/l") "K+";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Chloride=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3715,7 +3720,7 @@ package Thermodynamical
             dH=-1674600,
             dS=-121.717,
             refs={"http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="mmol/l") "Cl-";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Phosphate[:]={
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3724,7 +3729,7 @@ package Thermodynamical
             dH=-1288000,
             dS=-496.4,
             refs={"https://en.wikipedia.org/wiki/Phosphoric_acid", "https://www.researchgate.net/publication/6600409_Standard_thermodynamic_properties_of_H3PO4%28aq%29_over_a_wide_range_of_temperatures_and_pressures"},
-            activity=1,
+            ActivityCoefficient=1,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="H2PO4-(aq)",
@@ -3732,7 +3737,7 @@ package Thermodynamical
             dH=-1302480,
             dS=-561.395,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
-            activity=0.73,
+            ActivityCoefficient=0.73,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="HPO4--(aq)",
@@ -3740,7 +3745,7 @@ package Thermodynamical
             dH=-1298700,
             dS=-686.232,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
-            activity=0.284,
+            ActivityCoefficient=0.284,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="PO4---(aq)",
@@ -3748,7 +3753,7 @@ package Thermodynamical
             dH=-1284070,
             dS=-866.946,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
-            activity=0.0065,
+            ActivityCoefficient=0.0065,
             storeUnit="mmol/l")} "H3PO4, H2PO4^-, HPO4^2-, PO4^3-";
 
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Sulphates=
@@ -3758,7 +3763,7 @@ package Thermodynamical
             dH=-907500,
             dS=-555.123,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf"},
-            activity=0.284,
+            ActivityCoefficient=0.284,
             storeUnit="mmol/l") "SO4^2-";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Amonium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3767,7 +3772,7 @@ package Thermodynamical
             dH=-132800,
             dS=-178.77,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf
-"},         activity=0.73,
+"},         ActivityCoefficient=0.73,
             storeUnit="mmol/l") "NH4+";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Magnesium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3777,7 +3782,7 @@ package Thermodynamical
             dS=-19.99,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf
 ",      "http://www.vias.org/genchem/standard_enthalpies_table.html"},
-            activity=0.284,
+            ActivityCoefficient=0.284,
             storeUnit="mmol/l") "Mg^2+";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Calcium=
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3786,7 +3791,7 @@ package Thermodynamical
             dH=-542960,
             dS=33.67,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf
-"},         activity=0.284,
+"},         ActivityCoefficient=0.284,
             storeUnit="mmol/l") "Ca^2+";
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Iron[:]={
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
@@ -3795,7 +3800,7 @@ package Thermodynamical
             dH=-87860,
             dS=-9.93,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf
-"},         activity=0.284,
+"},         ActivityCoefficient=0.284,
             storeUnit="mmol/l"),
             Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition(
             shortName="Fe+++",
@@ -3803,7 +3808,7 @@ package Thermodynamical
             dH=-47700,
             dS=-124.77,
             refs={"http://www.mhhe.com/physsci/chemistry/chang7/ssg/graphics/chang7/pdf/cng7pa08.pdf
-"},         activity=0.059,
+"},         ActivityCoefficient=0.059,
             storeUnit="mmol/l")} "Fe^2+, Fe^3+";
 
         constant Physiolibrary.Thermodynamical.Interfaces.SubstanceDefinition Glucose=
@@ -4335,7 +4340,6 @@ package Thermodynamical
           Simulation=Physiolibrary.Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-28,-90},{-8,-70}})));
 
-
         Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=Modelica.Constants.F,y(unit="C"))
           "from elementary charge to Coloumn" annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -4580,7 +4584,7 @@ package Thermodynamical
       Chemical.Components.Substance O2_l_old
         annotation (Placement(transformation(extent={{72,-26},{92,-6}})));
       Components.GasSolubility CO2_new(solubilityRateCoef(displayUnit="mol/s"),
-          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa") =
+          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa")=
           0.00062064026806947)
         "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=10#Solubility"
         annotation (Placement(transformation(extent={{-86,-20},{-66,0}})));
@@ -4600,7 +4604,7 @@ package Thermodynamical
           SolutionAmount=52.3)
         annotation (Placement(transformation(extent={{16,-88},{36,-68}})));
       Components.GasSolubility CO2_new1(solubilityRateCoef(displayUnit="mol/s"),
-          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa") =
+          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa")=
           0.00062064026806947)
         "from NIST: http://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=10#Solubility"
         annotation (Placement(transformation(extent={{-50,-20},{-30,0}})));
@@ -4656,11 +4660,11 @@ package Thermodynamical
           thickness=1,
           smooth=Smooth.None));
       connect(CO2_new1.q_out, CO2_g_n2.q_out) annotation (Line(
-          points={{-40,0},{-40,10},{-40,10},{-40,16},{-56,16},{-56,44},{-60,44}},
-
+          points={{-40,0},{-40,16},{-56,16},{-56,44},{-60,44}},
           color={158,66,200},
           thickness=1,
           smooth=Smooth.None));
+
       connect(CO2_new1.q_in, CO2_l_erythrocyte.q_out) annotation (Line(
           points={{-40,-18},{-40,-50}},
           color={158,66,200},
@@ -4724,7 +4728,7 @@ package Thermodynamical
           annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
 
       Interfaces.ChemicalDefinitionPort_a
-                                q_out(conc(start=solute_start/SolutionAmount))
+                                q_out(x(start=solute_start/SolutionAmount))
         "Concentration and molar flow from/to compartment"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
@@ -4737,10 +4741,10 @@ package Thermodynamical
             extent={{-20,-20},{20,20}},
             origin={116,-40})));
     equation
-      q_out.conc = solute/solution;
+      q_out.x = solute/solution;
       q_out.S = substance.dS;
       q_out.H = substance.dH;
-      q_out.activity = substance.activity;
+      q_out.activityCoefficient = substance.ActivityCoefficient;
 
       state = solute; // der(solute)=q_out.q
       change = q_out.q;
@@ -4872,7 +4876,7 @@ package Thermodynamical
 
      // rr*fsp = kf*solution*(product((substrates.conc .* substrates.activity) .^ s) * fp - (1 / K) * product((products.conc .* products.activity) .^ p) * fs);  //the main equation
 
-      rr = kf*solution*(product((substrates.conc .* substrates.activity) .^ s) - (1 / K) * product((products.conc .* products.activity) .^ p));   //the main equation
+      rr = kf*solution*(product((substrates.x .* substrates.activityCoefficient) .^ s) - (1 / K) * product((products.x .* products.activityCoefficient) .^ p));   //the main equation
 
       lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
@@ -5028,7 +5032,6 @@ package Thermodynamical
 </html>"));
     end ChemicalReaction;
 
-
     model Diffusion "Solute diffusion"
       extends Icons.Diffusion;
       extends Interfaces.OnePort;
@@ -5053,7 +5056,7 @@ package Thermodynamical
         c=Conductance;
       end if;
 
-       q_in.q = c * (q_in.conc - q_out.conc);
+       q_in.q = c * (q_in.x - q_out.x);
 
        annotation (                 Documentation(revisions="<html>
 <p><i>2009-2013</i></p>
@@ -5103,7 +5106,7 @@ package Thermodynamical
       kH = kH_T0 * Modelica.Math.exp( (-dH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
-      q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc); //negative because of outflow
+      q_out.q = solubilityRateCoef*(kH * q_out.x - q_in.x); //negative because of outflow
 
       lossHeat = dH*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
@@ -5322,8 +5325,8 @@ package Thermodynamical
        //                totalConcentrationOfPermeableParticlesOutside = sum(opo)/(R*T)
 
        //concentration of all impermeable particales is one minus permeable particles
-       opi = particlesInside.conc*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
-       opo = particlesOutside.conc*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
+       opi = particlesInside.x*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
+       opo = particlesOutside.x*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
 
        //different solubilities:
        kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
@@ -6208,13 +6211,16 @@ package Thermodynamical
     extends Modelica.Icons.InterfacesPackage;
 
     connector ChemicalDefinitionPort_a
-      "Concentration, expected positive Solute inflow, enthalpy and entropy of substance"
-      Types.Fraction conc "Solute concentration";
-      flow Types.MolarFlowRate q "Solute flow";
+      "Mole fraction and molar change of the substance"
+      Types.Fraction x "Mole fraction of the substance in solution";
+      flow Types.MolarFlowRate q "Molar change of the substance";
 
-      output Types.MolarEnergy H "substance enthalpy of formation";
-      output Types.MolarEntropy S "substance entropy of formation";
-      output Types.Fraction activity "substance activity in water";
+      output Types.MolarEnergy H
+        "Free enthalpy of the formation of the substance";
+      output Types.MolarEntropy S
+        "Free entropy of the formation of the substance";
+      output Types.Fraction activityCoefficient
+        "Substance activity coefficient in water";
 
     annotation (
         defaultComponentName="port_a",
@@ -6247,13 +6253,17 @@ Connector with one flow signal of type Real.
 
     end ChemicalDefinitionPort_a;
 
-    connector ChemicalUsePort "Concentration and Solute flow"
-      Types.Fraction conc "Solute concentration";
-      flow Types.MolarFlowRate q "Solute flow";
+    connector ChemicalUsePort
+      "Concentration and Solute flowMole fraction and molar change of the substance"
+      Types.Fraction x "Mole fraction of the substance in solution";
+      flow Types.MolarFlowRate q "Molar change of the substance";
 
-      input Types.MolarEnergy H "substance enthalpy of formation";
-      input Types.MolarEntropy S "substance entropy of formation";
-      input Types.Fraction activity "substance activity in water";
+      input Types.MolarEnergy H
+        "Free enthalpy of the formation of the substance";
+      input Types.MolarEntropy S
+        "Free entropy of the formation of the substance";
+      input Types.Fraction activityCoefficient
+        "Substance activity coefficient in water";
 
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
@@ -6485,8 +6495,8 @@ on the model behaviour.
 
      parameter String refs[:]={""} "References of values";
 
-     parameter Types.Fraction activity(displayUnit="1")=1
-        "activity of water (e.g: uncharged,large molecules: 1, monovalent: 0.73, divalent: 0.284)";
+     parameter Types.Fraction ActivityCoefficient(displayUnit="1")=1
+        "first estimation activity coefficient in water solution as blood plasma (e.g: uncharged,large molecules: 1, monovalent: 0.73, divalent: 0.284)";
 
      parameter Types.AmountOfSubstance molpIU=1
         "Pharmacological international unit conversion: mols per IU (or 1 if unknown)";
