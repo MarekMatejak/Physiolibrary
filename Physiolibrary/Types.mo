@@ -356,6 +356,34 @@ package Types "Physiological units with nominals"
                     textString="Const")}));
   end AmountOfSubstanceConst;
 
+  block AreaConst "Constant signal of type Area"
+   parameter Types.Area k "Constant Area output value";
+        RealIO.AreaOutput y "Area constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+  equation
+        y=k;
+    annotation (defaultComponentName="area",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+  end AreaConst;
+
   block ConcentrationConst "Constant signal of type Concentration"
    parameter Types.Concentration k "Constant Concentration output value";
         RealIO.ConcentrationOutput y "Concentration constant"
@@ -1661,6 +1689,37 @@ package Types "Physiological units with nominals"
             fillPattern=FillPattern.Solid,
                     textString="Const")}));
     end PopulationChangePerMemberConst;
+
+    block MembranePermeabilityConst
+      "Constant signal of type MembranePermeability"
+      parameter Types.MembranePermeability k
+        "Constant MembranePermeability output value";
+        RealIO.MembranePermeabilityOutput y "MembranePermeability constant"
+      annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+                  iconTransformation(extent={{40,-10},{60,10}})));
+    equation
+        y=k;
+    annotation (defaultComponentName="membranePermeability",
+               Diagram(coordinateSystem(extent={{-40,-40},{40,40}})), Icon(
+          coordinateSystem(extent={{-40,-40},{40,40}}, preserveAspectRatio=false),
+              graphics={
+          Rectangle(extent={{-40,40},{40,-40}},
+            lineColor={0,0,0},
+                radius=10,
+            fillColor={236,236,236},
+                            fillPattern=FillPattern.Solid),
+          Text( extent={{-100,-44},{100,-64}},
+            lineColor={0,0,0},
+                    fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                textString="%name"),
+          Text(         extent={{-40,10},{40,-10}},
+            lineColor={0,0,0},
+                fillColor={236,236,236},
+            fillPattern=FillPattern.Solid,
+                    textString="Const")}));
+    end MembranePermeabilityConst;
+
   end Constants;
 
   package ScaleConstants
@@ -1807,6 +1866,58 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type Real.
   </p>
   </html>"));
+
+    connector AreaInput = input Area "input Area as connector"
+      annotation (defaultComponentName="area",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type Area.
+    </p>
+    </html>"));
+    connector AreaOutput = output Area "output Area as connector"
+      annotation (defaultComponentName="area",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type Area.
+  </p>
+  </html>"));
+
     connector ConcentrationInput = input Concentration
       "input Concentration as connector"
       annotation (defaultComponentName="concentration",
@@ -3857,6 +3968,61 @@ package Types "Physiological units with nominals"
   Connector with one output signal of type PopulationChangePerMember.
   </p>
   </html>"));
+
+    connector MembranePermeabilityInput =
+                                  input MembranePermeability
+      "input MembranePermeability as connector"
+      annotation (defaultComponentName="membranePermeability",
+      Icon(graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid)},
+           coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true, initialScale=0.2,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{0,50},{100,0},{0,-50},{0,50}},
+              lineColor={0,0,127},
+              fillColor={0,0,127},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-10,85},{-10,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+    <p>
+    Connector with one input signal of type MembranePermeability.
+    </p>
+    </html>"));
+    connector MembranePermeabilityOutput =
+                                  output MembranePermeability
+      "output MembranePermeability as connector"
+      annotation (defaultComponentName="membranePermeability",
+      Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,100},{100,0},{-100,-100},{-100,100}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+      Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            grid={1,1}), graphics={Polygon(
+              points={{-100,50},{0,0},{-100,-50},{-100,50}},
+              lineColor={0,0,127},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{30,110},{30,60}},
+              lineColor={0,0,127},
+              textString="%name")}),
+        Documentation(info="<html>
+  <p>
+  Connector with one output signal of type MembranePermeability.
+  </p>
+  </html>"));
   end RealIO;
 
     expandable connector BusConnector
@@ -4391,8 +4557,10 @@ This icon is designed for a <b>signal bus</b> connector.
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
   type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
   type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
+  type MolarVolume = Modelica.SIunits.MolarVolume(displayUnit="l/mol", nominal=1e-5);
 
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
+  type Area = Modelica.SIunits.Area(displayUnit="cm2", nominal=1e-5);
   type Position = Modelica.SIunits.Position(displayUnit="cm", nominal=1e-2);
   type Velocity = Modelica.SIunits.Velocity(displayUnit="km/h", nominal=1);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
@@ -4437,6 +4605,7 @@ This icon is designed for a <b>signal bus</b> connector.
   type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
   type ThermodynamicalOsmoticPermeability = Real(final quantity="ThermodynamicalOsmoticPermeability",final unit="mol/(Pa.s)", displayUnit="mmol/(mmHg.min)", nominal=(1e-6)*55000/((133.322387415)*60), min=0);
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60, min=0);
+  type MembranePermeability = Real(final quantity="MembranePermeability", final unit="mol/(s.Pa.m2)", displayUnit="mmol/(min.mmHg.cm2)", nominal=(1e-3)/600, min=0);
 
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
   type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60, min=0);

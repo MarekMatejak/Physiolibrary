@@ -13,7 +13,7 @@ package Thermodynamical
 
       Components.Substance A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
-      Components.ChemicalReaction reaction
+      Components.ChemicalReaction reaction(ignoreSubstances=false)
         annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
       Components.Substance B(solute_start=0.1)
         annotation (Placement(transformation(extent={{42,-8},{62,12}})));
@@ -41,7 +41,7 @@ package Thermodynamical
 
       Components.Substance A(solute_start=0.9)
         annotation (Placement(transformation(extent={{-40,-8},{-20,12}})));
-      Components.ChemicalReaction reaction(nP=2)
+      Components.ChemicalReaction reaction(nP=2, ignoreSubstances=false)
         annotation (Placement(transformation(extent={{-6,-8},{14,12}})));
       Components.Substance B(solute_start=0.1)
         annotation (Placement(transformation(extent={{36,-8},{56,12}})));
@@ -75,7 +75,7 @@ package Thermodynamical
 
        extends Modelica.Icons.Example;
 
-      Components.Substance A(substance(dH=1000, dS=1000/310.15), solute_start=
+      Components.Substance A(substance(DfH=1000, DfS=1000/310.15), solute_start=
             0.9)
         annotation (Placement(transformation(extent={{-56,-8},{-36,12}})));
       Components.ChemicalReaction reaction(useHeatPort=true) annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
@@ -114,6 +114,7 @@ package Thermodynamical
         experiment(StopTime=1e-12));
     end ExothermicReaction;
 
+
     model MichaelisMenten "Basic enzyme kinetics"
       import Physiolibrary;
       extends Modelica.Icons.Example;
@@ -121,11 +122,10 @@ package Thermodynamical
                                                  Simulation=Types.SimulationType.SteadyState);
 
       Sources.UnlimitedSolutionStorage
-                       P(Concentration=0, substance(dS=Modelica.Constants.inf))
+                       P(MoleFraction=0)
         annotation (Placement(transformation(extent={{92,-12},{72,8}})));
       Sources.UnlimitedSolutionStorage
-                       S(Concentration=0.1, substance(dS=-Modelica.Constants.R*log(2*k_cat/
-              Km)))
+                       S(MoleFraction=0.1)
         annotation (Placement(transformation(extent={{-94,-12},{-74,8}})));
 
          parameter Types.AmountOfSubstance tE=0.01 "total amount of enzyme";
@@ -135,19 +135,24 @@ package Thermodynamical
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
           Components.Substance ES(                      solute_start=0,
-            Simulation=Types.SimulationType.SteadyState,
-        substance(dS=-Modelica.Constants.R*log(k_cat)))
+            Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
           Components.Substance E(                      solute_start=tE,
             isDependent=true,
             Simulation=Types.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-10,38},{10,58}})));
           Components.ChemicalReaction chemicalReaction(
-        nS=2)
+        nS=2,
+        K=2/Km,
+        kf=2*k_cat/Km,
+        ignoreSubstances=true)
         annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
           Components.ChemicalReaction chemicalReaction1(
-        nP=2)
-        annotation (Placement(transformation(extent={{24,-10},{44,10}})));
+        nP=2,
+        K=Modelica.Constants.inf,
+        kf=k_cat,
+        ignoreSubstances=true)
+                  annotation (Placement(transformation(extent={{24,-10},{44,10}})));
 
          // Real v(unit="mol/s", displayUnit="mmol/min") "test of MM equation";
     equation
@@ -286,7 +291,8 @@ package Thermodynamical
 
         Components.ChemicalReaction quaternaryForm(K=L)
           annotation (Placement(transformation(extent={{4,78},{24,98}})));
-        Components.ChemicalReaction oxyR1(nP=2, K=KR/4) annotation (
+        Components.ChemicalReaction oxyR1(nP=2, K=KR/4,
+          ignoreSubstances=true)                        annotation (
             Placement(transformation(
               extent={{-10,10},{10,-10}},
               rotation=90,
@@ -335,17 +341,17 @@ package Thermodynamical
         Components.ChemicalReaction quaternaryForm4(K=(c^4)*L)
           annotation (Placement(transformation(extent={{10,-92},{30,-72}})));
 
-        Components.MolarConservationLaw hemoglobinConservationLaw(
+        SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
           n=10, Total(displayUnit="mol") = 1,
           Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{72,-2},{92,18}})));
         Modelica.Blocks.Math.Sum oxygen_bound(k={1,1,2,2,3,3,4,4}, nin=8)
-          annotation (Placement(transformation(extent={{72,-56},{82,-46}})));
+          annotation (Placement(transformation(extent={{74,-44},{84,-34}})));
         Modelica.Blocks.Math.Division sO2_ "hemoglobin oxygen saturation"
           annotation (Placement(transformation(extent={{86,-60},{96,-50}})));
         Modelica.Blocks.Math.Sum tHb(nin=10, k=4*ones(10))
           annotation (Placement(transformation(extent={{72,-70},{82,-60}})));
-        Chemical.Components.Substance oxygen_unbound(solute_start=0.000001*
+        Components.Substance oxygen_unbound(solute_start=0.000001*
               7.875647668393782383419689119171e-5, Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
@@ -353,14 +359,16 @@ package Thermodynamical
         Sources.UnlimitedGasStorage O2_in_air(
           Simulation=Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
-          T=310.15) annotation (Placement(transformation(
+          TotalPressure=101325.0144354)
+                    annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-66,24})));
         Components.GasSolubility gasSolubility(
           useHeatPort=false,
-          kH_T0=0.026029047188736,
-          C=1700)
+          ignoreSubstances=true,
+          C(displayUnit="K") = 1700,
+          kH_T0(displayUnit="(mol/kg H2O)/bar at 25degC,101325Pa") = 2.3730363190891e-05)
           annotation (Placement(transformation(extent={{-76,-14},{-56,6}})));
       equation
        //  sO2 = (R1.solute + 2*R2.solute + 3*R3.solute + 4*R4.solute + T1.solute + 2*T2.solute + 3*T3.solute + 4*T4.solute)/(4*totalAmountOfHemoglobin);
@@ -550,39 +558,39 @@ package Thermodynamical
             color={0,0,127},
             smooth=Smooth.None));
         connect(R1.solute,oxygen_bound. u[1]) annotation (Line(
-            points={{-4,36},{64,36},{64,-51.875},{71,-51.875}},
+            points={{-4,36},{64,36},{64,-39.875},{73,-39.875}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T1.solute,oxygen_bound. u[2]) annotation (Line(
-            points={{50,36},{64,36},{64,-51.625},{71,-51.625}},
+            points={{50,36},{64,36},{64,-39.625},{73,-39.625}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R2.solute,oxygen_bound. u[3]) annotation (Line(
-            points={{-4,-10},{64,-10},{64,-51.375},{71,-51.375}},
+            points={{-4,-10},{64,-10},{64,-39.375},{73,-39.375}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T2.solute,oxygen_bound. u[4]) annotation (Line(
-            points={{50,-10},{64,-10},{64,-51.125},{71,-51.125}},
+            points={{50,-10},{64,-10},{64,-39.125},{73,-39.125}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R3.solute,oxygen_bound. u[5]) annotation (Line(
-            points={{-4,-54},{64,-54},{64,-50.875},{71,-50.875}},
+            points={{-4,-54},{64,-54},{64,-38.875},{73,-38.875}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T3.solute,oxygen_bound. u[6]) annotation (Line(
-            points={{50,-54},{64,-54},{64,-50.625},{71,-50.625}},
+            points={{50,-54},{64,-54},{64,-38.625},{73,-38.625}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(R4.solute,oxygen_bound. u[7]) annotation (Line(
-            points={{-4,-92},{-4,-98},{64,-98},{64,-50.375},{71,-50.375}},
+            points={{-4,-92},{-4,-98},{64,-98},{64,-38.375},{73,-38.375}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(T4.solute,oxygen_bound. u[8]) annotation (Line(
-            points={{50,-92},{50,-98},{64,-98},{64,-50.125},{71,-50.125}},
+            points={{50,-92},{50,-98},{64,-98},{64,-38.125},{73,-38.125}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(oxygen_bound.y,sO2_. u1) annotation (Line(
-            points={{82.5,-51},{84,-51},{84,-52},{85,-52}},
+            points={{84.5,-39},{84,-39},{84,-52},{85,-52}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(sO2_.u2,tHb. y) annotation (Line(
@@ -716,12 +724,12 @@ package Thermodynamical
 
        extends Modelica.Icons.Example;
 
-        parameter Types.MolarEnergy dHT=10000
-          "Enthalpy of heme oxygenation in T hemoglobin form";
-        parameter Types.MolarEnergy dHR=20000
-          "Enthalpy of heme oxygenation in R hemoglobin form";
-        parameter Types.MolarEnergy dHL=-1000
-          "Enthalpy of reaction T->R as hemoglobin tetramer structure change";
+        parameter Types.MolarEnergy DfHT=10000
+          "Enthalpy of formation of heme oxygenation in T hemoglobin form";
+        parameter Types.MolarEnergy DfHR=20000
+          "Enthalpy of formation of heme oxygenation in R hemoglobin form";
+        parameter Types.MolarEnergy DfHL=-1000
+          "Enthalpy of formation of reaction T->R as hemoglobin tetramer structure change";
 
         parameter Types.Fraction L = 7.0529*10^6
           "=[T0]/[R0] .. dissociation constant of relaxed <-> tensed change of deoxyhemoglobin tetramer";
@@ -737,53 +745,52 @@ package Thermodynamical
 
         parameter Types.AmountOfSubstance totalAmountOfHemoglobin=1;
 
-        Chemical.Components.ChemicalReaction      quaternaryForm(K=L,
+        Components.ChemicalReaction      quaternaryForm(K=L,
           TK=310.15,
-          dH=dHL)
+          DfH=DfHL)
           annotation (Placement(transformation(extent={{-2,-76},{18,-56}})));
-        Chemical.Components.Speciation R0_in_R(NumberOfSubunits=4,
+        Components.Speciation R0_in_R(NumberOfSubunits=4,
             useInternalHeatsInput=true)
           annotation (Placement(transformation(extent={{-30,-68},{-50,-48}})));
-        Chemical.Components.Speciation T0_in_T(NumberOfSubunits=4,
+        Components.Speciation T0_in_T(NumberOfSubunits=4,
             useInternalHeatsInput=true)
           annotation (Placement(transformation(extent={{70,-66},{50,-46}})));
-        Chemical.Components.Substance OxyRHm[4](
+        Components.Substance OxyRHm[4](
           each Simulation=Types.SimulationType.SteadyState,
           each isDependent=true,
           each solute_start=4e-19,
-          each dH=-dHL/4 - dHR)
+          each DfH=-DfHL/4 - DfHR)
           "Oxygenated subunit in R structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{-96,-18},{-76,2}})));
-        Chemical.Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2,
+        Components.ChemicalReaction oxygenation_R[4](each K=KR, each nP=2,
           each TK=310.15,
-          each dH=dHR)
+          each DfH=DfHR)
           annotation (Placement(transformation(extent={{-68,-18},{-48,2}})));
-        Chemical.Components.Substance DeoxyRHm[4](each Simulation=
+        Components.Substance DeoxyRHm[4](each Simulation=
               Types.SimulationType.SteadyState,
           each solute_start=4e-11,
-          each dH=-dHL/4)
+          each DfH=-DfHL/4)
           "Deoxygenated subunit in R structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{-40,-18},{-20,2}})));
-        Chemical.Components.Substance OxyTHm[4](
+        Components.Substance OxyTHm[4](
           each Simulation=Types.SimulationType.SteadyState,
           isDependent={false,true,true,true},
-          each dH=-dHT,
+          each DfH=-DfHT,
           each solute_start=1e-14)
           "Oxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{14,-18},{34,2}})));
-        Chemical.Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2,
-          each dH=dHT,
+        Components.ChemicalReaction oxygenation_T[4](each K=KT, each nP=2,
+          each DfH=DfHT,
           each TK=310.15)
           annotation (Placement(transformation(extent={{42,-18},{62,2}})));
-        Chemical.Components.Substance DeoxyTHm[4](
-                                                 each Simulation=Types.SimulationType.SteadyState,
+        Components.Substance DeoxyTHm[4](        each Simulation=Types.SimulationType.SteadyState,
           each solute_start=0.00025,
-          each dH=0)
+          each DfH=0)
           "Deoxygenated subunit in T structure of hemoglobin tetramer"
           annotation (Placement(transformation(extent={{70,-18},{90,2}})));
 
-        Chemical.Components.Substance
-                            oxygen_unbound(Simulation=Types.SimulationType.SteadyState, solute_start=0.000001
+        Components.Substance oxygen_unbound(
+                                           Simulation=Types.SimulationType.SteadyState, solute_start=0.000001
               *7.875647668393782383419689119171e-5)
           annotation (Placement(transformation(extent={{-2,6},{18,26}})));
         Modelica.Blocks.Sources.Clock clock(offset=10)
@@ -4706,7 +4713,7 @@ package Thermodynamical
       state_start=solute_start,
       storeUnit="mmol");
 
-      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+      parameter Interfaces.SubstanceDefinition substance(mw=1, DfH=0, DfS=0)
         "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
                                                //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
@@ -4742,14 +4749,14 @@ package Thermodynamical
             origin={116,-40})));
     equation
       q_out.x = solute/solution;
-      q_out.S = substance.dS;
-      q_out.H = substance.dH;
+      q_out.DfS = substance.DfS;
+      q_out.DfH = substance.DfH;
       q_out.activityCoefficient = substance.ActivityCoefficient;
 
       state = solute; // der(solute)=q_out.q
       change = q_out.q;
 
-      internalHeat = substance.dH*solute;
+      internalHeat = substance.DfH*solute;
 
                                                                                                         annotation (
         Icon(coordinateSystem(
@@ -4769,10 +4776,23 @@ package Thermodynamical
     model ChemicalReaction "Chemical Reaction"
       import Physiolibrary;
 
-      Real K "Dissociation constant at current temperature";
+      extends Physiolibrary.Thermodynamical.Interfaces.ConditionalSolution;
+
+      parameter Real K = 1
+        "Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false"
+        annotation ( HideResult=true, Dialog(enable=ignoreSubstances and not useDissociationConstantInput));
+
+      parameter Real kf = 10^8 "Forward reaction rate coefficient [SI unit]"
+        annotation ( HideResult=true, Dialog(enable=ignoreSubstances and not useForwardRateInput));
+
+      parameter Types.MolarEnergy dH=0
+        "Enthalpy of reaction (negative=exothermic)"
+        annotation ( HideResult=true, Dialog(enable=ignoreSubstances));
+
+      Real K_current "Current dissociation constant at current temperature";
       Types.MolarFlowRate rr "Reaction molar flow rate";
 
-      Modelica.Blocks.Interfaces.RealInput dissociationConstant = K if useDissociationConstantInput
+      Modelica.Blocks.Interfaces.RealInput dissociationConstant = KBase if useDissociationConstantInput
         "Dissociation coefficient [SI-unit]"
                                           annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
@@ -4788,72 +4808,62 @@ package Thermodynamical
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
 
       parameter Integer nS=1 "Number of substrates types"
-        annotation ( HideResult=true, Dialog(group="Substrates"));
-      parameter Integer nP=1 "Number of products types"
-        annotation ( HideResult=true, Dialog(group="Products"));
-
+        annotation ( HideResult=true);  //, Dialog(group="Substrates"));
       parameter Types.StoichiometricNumber s[nS]=ones(nS)
         "Stoichiometric reaction coefficient for substrates"
-        annotation (  HideResult=true, Dialog(group="Substrates"));
-    //  parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
-    //    "Activity coefficients of substrates"
-    //    annotation ( HideResult=true, Dialog(group="Substrates"));
+        annotation (  HideResult=true);  //, Dialog(group="Substrates"));
 
+      parameter Integer nP=1 "Number of products types"
+        annotation ( HideResult=true); //, Dialog(group="Products"));
       parameter Types.StoichiometricNumber p[nP]=ones(nP)
         "Stoichiometric reaction coefficients for products"
-        annotation ( HideResult=true, Dialog(group="Products"));
-    //   parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
-    //    "Activity coefficients of products"
-    //    annotation ( HideResult=true, Dialog(group="Products"));
+        annotation ( HideResult=true); //, Dialog(group="Products"));
+
+      parameter Boolean useDissociationConstantInput = false
+        "Is dissociation ratio an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
+
+      parameter Boolean useForwardRateInput = false "Is forward rate an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
+
+      parameter Boolean ignoreSubstances = true
+        "Are taken 'K', 'kf' and 'dH' as inputs or parameters instead of from properties of substances?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
 
       extends Physiolibrary.Thermodynamical.Interfaces.ConditionalHeatPort;
-      extends Physiolibrary.Thermodynamical.Interfaces.ConditionalSolution;
 
-      parameter Types.MolarEnergy H_transition = 0
-        "Enthalpy of transition state"
+      parameter Types.Temperature TK=298.15 "Base temperature"
+        annotation ( HideResult=true, Dialog(enable=ignoreSubstances)); //, Dialog(tab="Temperature dependence"));
+
+      parameter Boolean useMiddleTransition = true
+        "Is forward rate from middle transition state?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs", enable=not ignoreSubstances));
+
+      parameter Types.MolarEnergy DfH_transition = 0
+        "Enthalpy of formation of transition state"
        annotation ( HideResult=true, Dialog(enable=not useMiddleTransition, group="Transition State"));
                                                   //(sum(p.*products.H) + sum(s.*substrates.H))/2
-      parameter Types.MolarEntropy S_transition = 0
-        "Entropy of transition state"
+      parameter Types.MolarEntropy DfS_transition = 0
+        "Entropy of formation of transition state"
        annotation ( HideResult=true, Dialog(enable=not useMiddleTransition, group="Transition State"));
                                                    // (sum(p.*products.S) + sum(s.*substrates.S))/2
 
-     /* parameter Types.Fraction solventFraction=1 
-    "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)"
-    annotation ( HideResult=true, Dialog(group="Solution"));
-    */
+      Real KBase "Current dissociation constant at temperature TK";
 
-      parameter Boolean useDissociationConstantInput = false
-        "=true, if external dissociation ratio is used"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      Real kf_current "Current forward rate coefficient";
 
-      parameter Boolean useForwardRateInput = false
-        "=true, if external forward rate is used"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
-
-      parameter Boolean useMiddleTransition = true
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Transition State"));
-
-      Real kf "Forward rate coefficient";
-
-      Types.MolarEnergy dH =  sum(p.*products.H) - sum(s.*substrates.H)
+      Types.MolarEnergy DrH
         "Standard Enthalpy Change of reaction (negative=exothermic)";
-      Types.MolarEntropy dS = sum(p.*products.S) - sum(s.*substrates.S)
-        "Standard Entropy Change of reaction";
+      Types.MolarEntropy DrS "Standard Entropy Change of reaction";
 
-      Types.MolarEnergy dG "Gibb's energy of reaction";
-      Types.MolarEnergy dG_substrates "Gibb's energy of substrates";
-      Types.MolarEnergy dG_products "Gibb's energy of products";
-      Types.MolarEnergy dG_transition "Gibb's energy of transition state";
+      Types.MolarEnergy DrG "Gibb's energy of reaction";
+      Types.MolarEnergy DfG_substrates "Gibb's energy of substrates";
+      Types.MolarEnergy DfG_products "Gibb's energy of products";
+      Types.MolarEnergy DfG_transition "Gibb's energy of transition state";
 
     //  Real pKa "with activity", pKc "with concentration";
     //  Real Ka,Kc,pKa2,pKc2,K3,ss[nS],pp[nP], firstProductActivityAtEquilibrium;
 
-     /* parameter Types.Fraction fsp=solventFraction^(sum(s)+sum(p));
-  parameter Types.Fraction fs=solventFraction^(sum(s));
-  parameter Types.Fraction fp=solventFraction^(sum(p)); */
-
-    public
       Modelica.Blocks.Interfaces.RealInput forwardRateCoefficient = kf if   useForwardRateInput
         "Reaction forward rate coefficient [SI-unit]" annotation (Placement(
             transformation(
@@ -4861,25 +4871,48 @@ package Thermodynamical
             rotation=270,
             origin={40,40})));
     equation
-      if not useDissociationConstantInput then
-        K = exp(-(dH-T_heatPort*dS)/(T_heatPort*Modelica.Constants.R));
+      if ignoreSubstances then
+        DrH = dH;
+        -DrG/(T_heatPort*Modelica.Constants.R) = log(K_current);
+      else
+        DrH = sum(p.*products.DfH) - sum(s.*substrates.DfH);
+        DrS = sum(p.*products.DfS) - sum(s.*substrates.DfS);
       end if;
-      if not useForwardRateInput then
-        kf = (Modelica.Constants.k*T_heatPort/Modelica.Constants.h)*exp((dG_substrates-dG_transition)/(T_heatPort*Modelica.Constants.R)); //the transition state theory
+      if ignoreSubstances and not useDissociationConstantInput then
+        K_current = K * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+        KBase = K;
+      end if;
+      if useDissociationConstantInput then
+        K_current = KBase * Modelica.Math.exp(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));  //Hoff's equation
+      end if;
+      if ignoreSubstances and not useForwardRateInput then
+        kf_current = kf;
       end if;
 
-      dG_substrates = sum(s.*substrates.H) - T_heatPort*sum(s.*substrates.S);
-      dG_products = sum(p.*products.H) - T_heatPort*sum(p.*products.S);
-      dG = dH - T_heatPort*dS; //= dG_products - dG_substrates;
+      //the best choice:
+      if not useDissociationConstantInput and not ignoreSubstances then
+        K_current = exp(-(DrH-T_heatPort*DrS)/(T_heatPort*Modelica.Constants.R));
+        KBase = exp(-(DrH-TK*DrS)/(TK*Modelica.Constants.R));
+      end if;
+      if not useForwardRateInput and not ignoreSubstances then
+        kf_current = (Modelica.Constants.k*T_heatPort/Modelica.Constants.h)*exp((DfG_substrates-DfG_transition)/(T_heatPort*Modelica.Constants.R)); //the transition state theory
+      end if;
 
-      dG_transition = if useMiddleTransition then (dG_substrates + dG_products) / 2 else H_transition - T_heatPort*S_transition;
+      //Gibbs energies
+      DfG_substrates = sum(s.*substrates.DfH) - T_heatPort*sum(s.*substrates.DfS);
+      DfG_products = sum(p.*products.DfH) - T_heatPort*sum(p.*products.DfS);
+      DrG = DrH - T_heatPort*DrS; //= dG_products - dG_substrates;
 
-     // rr*fsp = kf*solution*(product((substrates.conc .* substrates.activity) .^ s) * fp - (1 / K) * product((products.conc .* products.activity) .^ p) * fs);  //the main equation
+      //speed of reaction
+      DfG_transition = if useMiddleTransition then (DfG_substrates + DfG_products) / 2 else DfH_transition - T_heatPort*DfS_transition;
 
-      rr = kf*solution*(product((substrates.x .* substrates.activityCoefficient) .^ s) - (1 / K) * product((products.x .* products.activityCoefficient) .^ p));   //the main equation
+      //the main equation
+      rr = kf_current*solution*(product((substrates.x .* substrates.activityCoefficient) .^ s) - (1 / K_current) * product((products.x .* products.activityCoefficient) .^ p));
 
-      lossHeat = -dH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
+      //heat of reaction
+      lossHeat = -DrH*rr; //dH<0 => Exothermic => lossHeat>0, Endothermic otherwise
 
+      //reaction molar rates
       rr*s = substrates.q;
       rr*p = -products.q;
 
@@ -5040,12 +5073,12 @@ package Thermodynamical
         "=true, if external conductance value is used"
         annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
 
-      parameter Types.DiffusionPermeability Conductance=0
+      parameter Types.MolarFlowRate Conductance=0
         "Diffusion conductance if useConductanceInput=false"
         annotation (Dialog(enable=not useConductanceInput));
 
     protected
-      Types.DiffusionPermeability c;
+      Types.MolarFlowRate c;
     public
       Types.RealIO.DiffusionPermeabilityInput conductance = c if useConductanceInput
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
@@ -5090,25 +5123,36 @@ package Thermodynamical
       parameter Types.Temperature T0=298.15 "Base temperature for kH_T0"
          annotation (HideResult=true);
 
+      parameter Boolean ignoreSubstances = false
+        "Is taken 'C' as parameter instead from enthalpies of substance?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
+
+      parameter Types.Temperature C(displayUnit="K")=0 " = Enthalpy / R"
+        annotation ( HideResult=true, Dialog(enable=ignoreSubstances)); //, Dialog(tab="Temperature dependence"));
+
       Interfaces.ChemicalPort_b q_out "Gaseous solution"
         annotation (Placement(transformation(extent={{-10,90},{10,110}})));
 
       Interfaces.ChemicalPort_a q_in "Dissolved in liquid solution"
         annotation (Placement(transformation(extent={{-10,-90},{10,-70}})));
 
-      Types.MolarEnergy dH "Enthalpy of dissolution";
+      Types.MolarEnergy DdisH "Enthalpy of dissolution";
 
     equation
       q_in.q + q_out.q = 0;
 
-      dH = q_in.H - q_out.H;
+      if ignoreSubstances then
+        DdisH = q_in.DfH - q_out.DfH;
+      else
+        C=-DdisH/Modelica.Constants.R;
+      end if;
 
-      kH = kH_T0 * Modelica.Math.exp( (-dH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
+      kH = kH_T0 * Modelica.Math.exp( (-DdisH/Modelica.Constants.R) * (1/T_heatPort - 1/T0)); // Van't Hoff equation
 
       // equilibrium:  liquid.conc = kH * gas.conc;
       q_out.q = solubilityRateCoef*(kH * q_out.x - q_in.x); //negative because of outflow
 
-      lossHeat = dH*q_out.q; //negative = heat are comsumed when change from liquid to gas
+      lossHeat = DdisH*q_out.q; //negative = heat are comsumed when change from liquid to gas
 
        annotation (Documentation(revisions="<html>
 <p><i>2009-2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -5215,8 +5259,13 @@ package Thermodynamical
         "Number of penetrating particle types";
       parameter Integer Charges[NumberOfParticles] = zeros(NumberOfParticles)
         "Elementary charges of particles";
-      parameter Types.DiffusionPermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
+      parameter Types.MembranePermeability Permeabilities[NumberOfParticles] = zeros(NumberOfParticles)
         "Permeabilities of particles through membrane chanel";
+
+      parameter Types.Area MembraneArea=1e-4 "Surface of the membrane";
+
+      parameter Types.MolarVolume Vm[NumberOfParticles] = (18.1367e-6) .* ones(NumberOfParticles)
+        "Molar volumes of particles, defaultly set to water molar volume at 37degC";
 
       parameter Boolean usePermeabilityInput = false
         "=true, if external permeability value is used"
@@ -5229,7 +5278,7 @@ package Thermodynamical
         "outer side of membrane, solution"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-      Types.RealIO.DiffusionPermeabilityInput permeability[NumberOfParticles] = p if usePermeabilityInput
+      Types.RealIO.MembranePermeabilityInput permeability[NumberOfParticles] = permeabilities if usePermeabilityInput
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,100})));
@@ -5268,65 +5317,53 @@ package Thermodynamical
             origin={80,80})));
 
     protected
-       Types.Pressure pi[NumberOfParticles]
+       Types.Pressure pi
         "hydraulic pressure parts for substances at q_in side (sum(pi) = hydraulic pressure at q_in)";
-       Types.Pressure po[NumberOfParticles]
+       Types.Pressure po
         "hydraulic pressure parts for substances at q_out side (sum(po) = hydraulic pressure at q_out)";
        Types.Pressure opi[NumberOfParticles]
         "-sum(opi) = osmotic pressure at q_in";
        Types.Pressure opo[NumberOfParticles]
         "-sum(opo) = osmotic pressure at q_out";
-       Real KAdjustment
-        "=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)";
-       Types.DiffusionPermeability p[NumberOfParticles];
+       Types.Pressure ep[NumberOfParticles]
+        "electric component of pressure gradients to reach Donnan equilibrium";
 
-       Real totPerm "sum(p) total permeability";
+       Real logD
+        "natural logarithm of Donnan's ratio log(ActivityOfCationInside/ActivityOfCationOutside)";
+
+       Types.MembranePermeability permeabilities[NumberOfParticles]
+        "Permeabilities of membrane for each substance";
+
     equation
       if not usePermeabilityInput then
-        p=Permeabilities;
+        permeabilities=Permeabilities;
       end if;
-      totPerm = sum(p);
       if not useHydraulicPressureInputs then
-        pi=HydraulicPressureIn .* p / totPerm;
-        po=HydraulicPressureOut .* p / totPerm;
+        pi=HydraulicPressureIn;
+        po=HydraulicPressureOut;
       end if;
+
+      //TODO: Compare of particles on both sides by DfH and DfS values.
+      //      Assert if it is not the same substance at the same index.
 
        //no accumulation of particles:
        particlesInside.q + particlesOutside.q = zeros(NumberOfParticles); //nothing lost inside
 
        //electroneutrality:
-       if abs(Charges.*Charges*p)<=Modelica.Constants.eps then
-         KAdjustment=0; //no penetrating electrolytes => KAdjustment and electroneutrality of flux is not needed
+       if abs(Charges.*Charges*permeabilities)<=Modelica.Constants.eps then
+         logD=0; //no penetrating electrolytes => Donnans ratio is 1 for each substance
        else
          Charges*particlesInside.q = 0; //electroneutrality of flux through membrane
        end if;
 
-       //diffusion, penetration, particle movement:
-       for i in 1:NumberOfParticles loop
-         if Charges[i]==0 then //normal diffusion
-           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + kH[i] * opo[i]));
-         elseif Charges[i]>0 then //cation goes to Donnan's equilibrium
-           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + (1+KAdjustment)*kH[i] * opo[i]));
-         else //anion goes to Donnan's equilibrium
-           particlesInside[i].q = totPerm * ((pi[i] + opi[i]) - (po[i] + (1-KAdjustment)*kH[i] * opo[i]));
-         end if;
-       end for;
-       //The final osmotic equation for water solution of non-charged particles in both sides of semipermeable membrane with the same permeability of all pearmeable substances:
-       //    totalPermeableParticlesFlow = totPerm * ((-hydraulicPressureInside + osmoticPressureOfImpermeableParticlesInside) - (-hydraulicPressureOutside + osmoticPressureOfImpermeableParticlesOutside))
-       //  where
-       //    totalPermeableParticlesFlow = sum(particlesInside.q)
-       //    hydraulicPressureInside = sum(pi)
-       //    hydraulicPressureOutside = sum(po)
-       //    osmoticPressureOfImpermeableParticlesInside = R*T - sum(opi)
-       //       because  1 = totalConcentrationOfImpermeableParticlesInside + totalConcentrationOfPermeableParticlesInside
-       //                totalConcentrationOfPermeableParticlesInside = sum(opi)/(R*T)
-       //    osmoticPressureOfImpermeableParticlesOutside = R*T - sum(opo)
-       //       because  1 = totalConcentrationOfImpermeableParticlesOutside + totalConcentrationOfPermeableParticlesOutside
-       //                totalConcentrationOfPermeableParticlesOutside = sum(opo)/(R*T)
+       //the main equation
+       particlesInside.q = MembraneArea .* permeabilities .* ((pi .+ opi) - (po .+ opo) - ep);
 
-       //concentration of all impermeable particales is one minus permeable particles
-       opi = particlesInside.x*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
-       opo = particlesOutside.x*(Modelica.Constants.R*T_heatPort) .* p / totPerm;
+       //osmotic pressures of the substances
+       opi = (Modelica.Constants.R*T_heatPort*log(particlesInside.x*particlesInside.activityCoefficient)) ./ Vm;
+       opo = (Modelica.Constants.R*T_heatPort*log(particlesOutside.x*particlesOutside.activityCoefficient)) ./ Vm;
+       //electric pressure gradient
+       ep = ((Modelica.Constants.R*T_heatPort*logD)) .* Charges ./ Vm;   //if Charges are expressed in Coloumbs then Modelica.Constants.F must be used!
 
        //different solubilities:
        kH = kH_T0 .* Modelica.Math.exp(C * (1/T_heatPort - 1/T0));
@@ -5378,7 +5415,7 @@ package Thermodynamical
                                                Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
       extends Interfaces.ConditionalSolution;
 
-      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+      parameter Interfaces.SubstanceDefinition substance(mw=1, DfH=0, DfS=0)
         "Properties of speciated form (Molar Weight, Enthalpy of formation, Entropy of formation)";
 
       parameter Integer NumberOfSubunits=1
@@ -5441,13 +5478,13 @@ package Thermodynamical
       amount = amountOfSubunit[1];
 
       fractions = if (amount < Modelica.Constants.eps) then zeros(NumberOfSubunits)
-                  else specificSubunitForm.conc ./ (amountOfSubunit/volume);
+                  else specificSubunitForm.x;
 
-      specificForm.conc = (amount/volume)*product(fractions); //chemical speciation
+      specificForm.x = (amount/solution)*product(fractions); //chemical speciation
 
-      specificForm.H=substance.dH;
-      specificForm.S=substance.dS;
-      specificForm.activity=substance.activity;
+      specificForm.DfH=substance.DfH;
+      specificForm.DfS=substance.DfS;
+      specificForm.activityCoefficient=substance.ActivityCoefficient;
 
       for i in 2:NumberOfSubunits loop
                  normalizedState[i-1]*amount = amountOfSubunit[i];
@@ -5494,10 +5531,10 @@ package Thermodynamical
         "Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.";
 
     protected
-      Types.VolumeFlowRate Clearance;
+      Types.MolarFlowRate molarClearance;
     equation
-      Clearance = volume*Modelica.Math.log(2)/HalfTime;
-      q_in.q = Clearance*q_in.conc;
+      molarClearance = solution*Modelica.Math.log(2)/HalfTime;
+      q_in.q = molarClearance*q_in.x;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
@@ -5753,7 +5790,6 @@ package Thermodynamical
     end SolutePump;
 
     model Dilution "Adding/removing of the solvent to/from running solution"
-      extends Interfaces.OnePort;
       extends Icons.Dilution;
 
       parameter Boolean useDilutionInput = false
@@ -5769,11 +5805,23 @@ package Thermodynamical
         annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
     protected
       Types.Fraction d;
+    public
+      Interfaces.ChemicalPort_a q_in
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      Interfaces.ChemicalDefinitionPort_a
+                                q_out
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
     equation
       if not useDilutionInput then
         d=Dilution;
       end if;
-      q_out.conc = d * q_in.conc;
+      q_out.x = d * q_in.x;
+
+      q_out.DfH = q_in.DfH;
+      q_out.DfS = q_in.DfS;
+      q_out.activityCoefficient = q_in.activityCoefficient;
+
+      q_out.q + q_in.q = 0;
 
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
@@ -5787,7 +5835,9 @@ package Thermodynamical
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics));
     end Dilution;
 
     model Reabsorption "Reabsorption as input fraction"
@@ -5840,7 +5890,7 @@ package Thermodynamical
       Types.Fraction reabFract,baseReabFract,e;
       Types.MolarFlowRate mr;
     equation
-      Inflow.conc = Outflow.conc;
+      Inflow.x = Outflow.x;
       0 = Inflow.q + Outflow.q + Reabsorption.q;
 
       Reabsorption.q=-min(mr,reabFract*Inflow.q);
@@ -5876,7 +5926,7 @@ package Thermodynamical
     extends Modelica.Icons.SensorsPackage;
 
     model MolarFlowMeasure "Measure of molar flow"
-      extends Interfaces.OnePort;
+
       extends Icons.MolarFlowMeasure;
 
      Types.RealIO.MolarFlowRateOutput molarFlowRate
@@ -5884,17 +5934,61 @@ package Thermodynamical
                 {20,20}},
             rotation=270,
             origin={0,-60})));
+      Interfaces.ChemicalPort_a q_in
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      Interfaces.ChemicalDefinitionPort_a
+                                q_out
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
     equation
-      q_in.conc = q_out.conc;
+      q_in.x = q_out.x;
 
       molarFlowRate = q_in.q;
+
+      q_out.DfH = q_in.DfH;
+      q_out.DfS = q_in.DfS;
+      q_out.activityCoefficient = q_in.activityCoefficient;
+
+      q_out.q + q_in.q = 0;
 
      annotation (
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end MolarFlowMeasure;
+
+    model MolarBackFlowMeasure "Measure of molar flow"
+
+      extends Icons.MolarFlowMeasure;
+
+     Types.RealIO.MolarFlowRateOutput molarFlowRate
+                             annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={0,-60})));
+      Interfaces.ChemicalDefinitionPort_a q_in
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      Interfaces.ChemicalPort_a q_out
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+    equation
+      q_in.x = q_out.x;
+
+      molarFlowRate = q_in.q;
+
+      q_out.DfH = q_in.DfH;
+      q_out.DfS = q_in.DfS;
+      q_out.activityCoefficient = q_in.activityCoefficient;
+
+      q_out.q + q_in.q = 0;
+
+     annotation (
+        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
+    end MolarBackFlowMeasure;
 
     model ConcentrationMeasure "Measure of molar concentration"
 
@@ -6000,31 +6094,31 @@ package Thermodynamical
         "constant concentration with any possible flow"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+      parameter Interfaces.SubstanceDefinition substance(mw=1, DfH=0, DfS=0)
         "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
                                                //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
-      parameter Boolean useConcentrationInput = false
-        "=true, if fixed concentration is from input instead of parameter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      parameter Boolean useMoleFractionInput = false
+        "Is MoleFraction an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
 
-       parameter Types.Fraction Concentration = 0
-        "Fixed concentration if useConcentrationInput=false"
-        annotation (Dialog(enable=not useConcentrationInput));
+       parameter Types.Fraction MoleFraction = 0
+        "Fixed concentration if useMoleFractionInput=false"
+        annotation (Dialog(enable=not useMoleFractionInput));
 
       parameter Boolean isIsolatedInSteadyState = true
-        "=true, if there is no flow at port in steady state"
+        "Is it without any flow during steady state?"
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
       parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "If in equilibrium, then zero-flow equation is added."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
-       Types.RealIO.FractionInput concentration(start=Concentration)=c if useConcentrationInput
+       Types.RealIO.FractionInput moleFraction(start=Concentration)=x if useMoleFractionInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     protected
-      Types.Fraction c "Current concentration";
+      Types.Fraction x "Current mole fration";
 
     initial equation
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.InitSteadyState) then
@@ -6032,14 +6126,14 @@ package Thermodynamical
       end if;
 
     equation
-       if not useConcentrationInput then
-         c=Concentration;
+       if not useMoleFractionInput then
+         x=MoleFraction;
        end if;
 
-      q_out.conc = c;
-      q_out.H=substance.dH;
-      q_out.S=substance.dS;
-      q_out.activity=substance.activity;
+      q_out.x = x;
+      q_out.DfH=substance.DfH;
+      q_out.DfS=substance.DfS;
+      q_out.activityCoefficient=substance.ActivityCoefficient;
 
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
         q_out.q = 0;
@@ -6087,7 +6181,7 @@ package Thermodynamical
         "constant gas concentration with any possible flow"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-      parameter Interfaces.SubstanceDefinition substance(mw=1, dH=0, dS=0)
+      parameter Interfaces.SubstanceDefinition substance(mw=1, DfH=0, DfS=0)
         "Molar Weight, Enthalpy, Entropy,...";                             //dS=-Modelica.Constants.R*log(10^8))
                                                //deafult setting: enthalpy is zero, reaction forward rate is 10^8
 
@@ -6099,7 +6193,7 @@ package Thermodynamical
         "Fixed partial pressure if usePartialPressureInput=false"
         annotation (Dialog(enable=not usePartialPressureInput));
 
-      parameter Types.Pressure TotalPressure = 0
+      parameter Types.Pressure TotalPressure = 101325
         "Total pressure of the gas solution.";
 
       Types.RealIO.PressureInput partialPressure(start=PartialPressure) = p if usePartialPressureInput
@@ -6127,10 +6221,10 @@ package Thermodynamical
         p=PartialPressure;
       end if;
 
-      q_out.conc = p / TotalPressure;  //ideal gas
-      q_out.H=substance.dH;
-      q_out.S=substance.dS;
-      q_out.activity=substance.activity;
+      q_out.x = p / TotalPressure;  //ideal gas
+      q_out.DfH=substance.DfH;
+      q_out.DfS=substance.DfS;
+      q_out.activityCoefficient=substance.ActivityCoefficient;
 
       if isIsolatedInSteadyState and (Simulation==Types.SimulationType.SteadyState) then
          q_out.q = 0;
@@ -6215,11 +6309,11 @@ package Thermodynamical
       Types.Fraction x "Mole fraction of the substance in solution";
       flow Types.MolarFlowRate q "Molar change of the substance";
 
-      output Types.MolarEnergy H
+      output Types.MolarEnergy DfH
         "Free enthalpy of the formation of the substance";
-      output Types.MolarEntropy S
+      output Types.MolarEntropy DfS
         "Free entropy of the formation of the substance";
-      output Types.Fraction activityCoefficient
+      output Types.Fraction activityCoefficient(displayUnit="1")
         "Substance activity coefficient in water";
 
     annotation (
@@ -6258,11 +6352,11 @@ Connector with one flow signal of type Real.
       Types.Fraction x "Mole fraction of the substance in solution";
       flow Types.MolarFlowRate q "Molar change of the substance";
 
-      input Types.MolarEnergy H
+      input Types.MolarEnergy DfH
         "Free enthalpy of the formation of the substance";
-      input Types.MolarEntropy S
+      input Types.MolarEntropy DfS
         "Free entropy of the formation of the substance";
-      input Types.Fraction activityCoefficient
+      input Types.Fraction activityCoefficient(displayUnit="1")
         "Substance activity coefficient in water";
 
       annotation (Documentation(revisions="<html>
@@ -6356,10 +6450,10 @@ Connector with one flow signal of type Real.
 
       parameter Types.Temperature T=310.15
         "Fixed device temperature if useHeatPort = false"
-        annotation ( HideResult=true, Dialog(enable=not useHeatPort, group="Solution"));
+        annotation ( HideResult=true, Dialog(enable=not useHeatPort));//, group="Solution"));
 
-      parameter Boolean useHeatPort = false "=true, if HeatPort is enabled"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="External inputs/outputs"));
+      parameter Boolean useHeatPort = false "Is HeatPort enabled?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="Conditional inputs"));
 
       Thermal.Interfaces.HeatPort_a       heatPort(T(start=T)=T_heatPort, Q_flow=-lossHeat) if useHeatPort
         annotation (Placement(transformation(extent={{-10,-10},{10,10}}),
@@ -6409,8 +6503,8 @@ on the model behaviour.
                                                                                                             annotation(HideResult=useSolutionInput);
 
       parameter Boolean useSolutionAmountInput = false
-        "Is solution input enabled?"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        "Is molar amount of solution an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
 
       Types.AmountOfSubstance solution
         "Amount of all substances in the solution";                                //annotation(HideResult=useNormalizedVolume);
@@ -6431,8 +6525,8 @@ on the model behaviour.
       "Input of solution molar flow vs. parametric solution molar flow"
 
       parameter Boolean useSolutionFlowInput = false
-        "=true, if solution flow input is used instead of parameter SolutionFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        "Is solution flow an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
 
       parameter Types.MolarFlowRate SolutionFlow=0
         "Molar flow of solution if useSolutionFlowInput=false"
@@ -6457,9 +6551,8 @@ on the model behaviour.
     partial model ConditionalSoluteFlow
       "Input of solute molar flow vs. parametric solute molar flow"
 
-      parameter Boolean useSoluteFlowInput = false
-        "=true, if solute flow input is used instead of parameter SoluteFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      parameter Boolean useSoluteFlowInput = false "Is solute flow an input?"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="Conditional inputs"));
 
       parameter Types.MolarFlowRate SoluteFlow=0
         "Volumetric flow of solute if useSoluteFlowInput=false"
@@ -6488,9 +6581,9 @@ on the model behaviour.
 
      parameter Types.MolarMass mw(displayUnit="kDa")
         "Molar weight in kg/mol or kDa";
-     parameter Types.MolarEnergy dH(displayUnit="kJ/mol")=0
+     parameter Types.MolarEnergy DfH(displayUnit="kJ/mol")=0
         "Enthalpy of formation";
-     parameter Types.MolarEntropy dS(displayUnit="J/(mol.K)")=0
+     parameter Types.MolarEntropy DfS(displayUnit="J/(mol.K)")=0
         "Entropy of formation";
 
      parameter String refs[:]={""} "References of values";
