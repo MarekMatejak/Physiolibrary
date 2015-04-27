@@ -404,11 +404,6 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         "Temperature on both membrane sides if  useTemperatureInputs=false"
         annotation (Dialog(enable=not  useTemperatureInputs));
 
-      parameter Types.Fraction solventFractionInside=1
-        "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65)";
-      parameter Types.Fraction solventFractionOutside=1
-        "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65)";
-
       Types.RealIO.TemperatureInput temperatureIn(start=T)=ti if useTemperatureInputs annotation (Placement(
             transformation(extent={{-20,-20},{20,20}},
             rotation=90,
@@ -448,10 +443,7 @@ package Osmotic "Domain with Osmorarity and Solvent Volumetric Flow"
         cond=perm;
       end if;
 
-      q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)*solventFractionOutside) - (-pi + q_in.o*(Modelica.Constants.R*ti)*solventFractionInside));
-      //OsmoticPressure*VolumeOfAveragePermeableParticle = -R*T*ln(MoleFractionOfPermeables) = -R*T*ln(1-MoleFractionOfImpermeables) =approx= R*T*MoleFractionOfImpermeables
-      //  OsmoticPressure =approx= R*T*AmountOfImpermeables/((AmountOfPermeables+AmountOfImpermeables)*VolumeOfAveragePermeableParticle)
-      //  solventFraction = VolumeOfSolvent/VolumeOfSolution =approx= ((AmountOfPermeables+AmountOfImpermeables)*VolumeOfAveragePermeableParticle)/VolumeOfSolution
+      q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
 
       opi = q_in.o*(Modelica.Constants.R*ti);
       opo = q_out.o*(Modelica.Constants.R*to);
