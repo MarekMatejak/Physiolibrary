@@ -5,6 +5,67 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     "Examples that demonstrate usage of the Pressure flow components"
   extends Modelica.Icons.ExamplesPackage;
 
+    model MinimalCirculation
+      "Minimal circulation models driven by cardiac output"
+       extends Modelica.Icons.Example;
+      Components.Pump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
+      Components.ElasticVessel
+                     arteries(
+        volume_start(displayUnit="l") = 0.001,
+        ZeroPressureVolume(displayUnit="l") = 0.00085,
+        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
+        annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
+      Components.Conductor resistance(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
+        annotation (Placement(transformation(extent={{-4,-84},{16,-64}})));
+      Components.ElasticVessel
+                     veins(
+        Compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
+        ZeroPressureVolume(displayUnit="l") = 0.00295,
+        volume_start(displayUnit="l") = 0.0032)
+        annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
+      Modelica.Blocks.Sources.Pulse pulse(
+        width=25,
+        amplitude=3.3e-4,
+        period=60/75)
+        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
+    equation
+      connect(heart.q_out, arteries.q_in) annotation (Line(
+          points={{14,-40},{46,-40},{46,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(arteries.q_in, resistance.q_out) annotation (Line(
+          points={{46,-74},{16,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(resistance.q_in, veins.q_in) annotation (Line(
+          points={{-4,-74},{-32,-74}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(veins.q_in, heart.q_in) annotation (Line(
+          points={{-32,-74},{-32,-40},{-6,-40}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(pulse.y, heart.solutionFlow) annotation (Line(
+          points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-33}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics={                          Text(
+              extent={{-40,-12},{80,-22}},
+              lineColor={175,175,175},
+              textString="Minimal circulation driven by cardiac output")}),
+          Documentation(revisions="<html>
+<p><i>2014</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"),
+        experiment(StopTime=5));
+    end MinimalCirculation;
+
     model Windkessel_2element "Two-element Windkessel model"
       extends Modelica.Icons.Example;
       Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=
@@ -24,7 +85,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-40,20})));
       Utilities.Pulses pulses(QP(displayUnit="m3/s")=
              0.000424, HR=1.2)
@@ -94,7 +154,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-40,20})));
       Utilities.Pulses pulses(
         QP(displayUnit="m3/s") = 0.000424,
@@ -105,7 +164,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
           1.5001231516913e-06) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-6,50})));
     equation
       connect(resistance.q_out, veins.y) annotation (Line(
@@ -172,7 +230,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-40,20})));
       Utilities.Pulses pulses(QP(displayUnit="m3/s")=
              0.000424, HR=1.2)
@@ -181,7 +238,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
           1.5001231516913e-06) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
-            rotation=0,
             origin={-6,48})));
       Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit=
               "mmHg.s2/ml") = 666611.937075, volumeFlow_start(displayUnit=
@@ -241,67 +297,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"),
         experiment(StopTime=5));
     end Windkessel_4element;
-
-    model MinimalCirculation
-      "Minimal circulation models driven by cardiac output"
-       extends Modelica.Icons.Example;
-      Components.Pump heart(useSolutionFlowInput=true)
-        annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
-      Components.ElasticVessel
-                     arteries(
-        volume_start(displayUnit="l") = 0.001,
-        ZeroPressureVolume(displayUnit="l") = 0.00085,
-        Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
-        annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
-      Components.Conductor resistance(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
-        annotation (Placement(transformation(extent={{-4,-84},{16,-64}})));
-      Components.ElasticVessel
-                     veins(
-        Compliance(displayUnit="l/mmHg") = 6.1880080007267e-07,
-        ZeroPressureVolume(displayUnit="l") = 0.00295,
-        volume_start(displayUnit="l") = 0.0032)
-        annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
-      Modelica.Blocks.Sources.Pulse pulse(
-        width=25,
-        amplitude=3.3e-4,
-        period=60/75)
-        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
-    equation
-      connect(heart.q_out, arteries.q_in) annotation (Line(
-          points={{14,-40},{46,-40},{46,-74}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(arteries.q_in, resistance.q_out) annotation (Line(
-          points={{46,-74},{16,-74}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(resistance.q_in, veins.q_in) annotation (Line(
-          points={{-4,-74},{-32,-74}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(veins.q_in, heart.q_in) annotation (Line(
-          points={{-32,-74},{-32,-40},{-6,-40}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
-      connect(pulse.y, heart.solutionFlow) annotation (Line(
-          points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-33}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics={                          Text(
-              extent={{-40,-12},{80,-22}},
-              lineColor={175,175,175},
-              textString="Minimal circulation driven by cardiac output")}),
-          Documentation(revisions="<html>
-<p><i>2014</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-        experiment(StopTime=10));
-    end MinimalCirculation;
 
     model CardiovascularSystem_GCG
       "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
@@ -516,7 +511,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeflowrate
           annotation (Placement(transformation(extent={{80,-10},{100,10}}),
               iconTransformation(extent={{80,-10},{100,10}})));
-        discrete Time T0 "begining of cardiac cycle";
+        discrete Time T0 "beginning of cardiac cycle";
         Boolean b(start=false);
         discrete Time HP "duration of cardiac cycle";
         parameter Frequency HR=1.2;
@@ -527,7 +522,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       equation
         b = time - pre(T0) >= pre(HP) "true if new cardiac cycle begins";
         when {initial(),b} then
-          T0 = time "set begining of cardiac cycle";
+          T0 = time "set beginning of cardiac cycle";
           HP = 1/HR "update length of carciac cycle";
           TD2 = TD1 + (2/5)*HP "compute end time of systole";
         end when;
@@ -557,7 +552,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end Pulses;
     end Utilities;
 
-    package KofranekModel2014
+    package Kofranek2014
       "models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
       model NonPulsatileCirculation
@@ -705,8 +700,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),        graphics), Documentation(info="<html>
+        annotation ( Documentation(info="<html>
 <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it. </p>
 <ul>
 <li>J. Kofranek, S. Matousek, J. Rusz, P. Stodulka, P. Privitzer,M. Matejak, M. Tribula, The Atlas of Physiology and Pathophysiology: Web-based multimedia enabled interactive simulations., Comput. Methods Programs Biomed. 104 (2) (2011) 143&ndash;53. doi:10.1016/j.cmpb.2010.12.007.</li>
@@ -714,7 +708,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <li>Tribula M, Je~ek F, Privitzer P, Kofr&aacute;nek J, Kolman J. Webov&yacute; v&yacute;ukov&yacute; simul&aacute;tor krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2013: 197-204.</li>
 <li><a href=\"http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html\">http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html</a></li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end NonPulsatileCirculation;
 
       model PulsatileCirculation
@@ -727,26 +721,25 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           SystemicArteries(volume_start=0.000603),
           SystemicVeins(volume_start=0.003991));
 
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}),        graphics), Documentation(info="<html>
+        annotation ( Documentation(info="<html>
 <p>Extension of the model of cardiovascular system with pulsatile dynamics</p>
 <ul>
 <li>Kulh&aacute;nek T, Tribula M, Kofr&aacute;nek J, Matej&aacute;k M. Simple models of the cardiovascular system for educational and research purposes. MEFANET Journal 2014. Available at WWW:<a href=\"
  http://mj.mefanet.cz/mj-04140914\"> http://mj.mefanet.cz/mj-04140914</a>.</li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end PulsatileCirculation;
 
       package Parts "Utility components used by package KofranekModels2013"
       extends Modelica.Icons.UtilitiesPackage;
-        model HeartPump "Heart as pump, which flowrate is determined 
+        model HeartPump "Heart as pump, which flowrate is determined
   by the StarlingSlope and filling pressure."
 
           Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow annotation (
-             Placement(transformation(extent={{-142,-62},{-122,-42}}),
+             Placement(transformation(extent={{-110,-10},{-90,10}}),
                 iconTransformation(extent={{-110,-10},{-90,10}})));
           Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow
-            annotation (Placement(transformation(extent={{-144,-66},{-124,-46}}),
+            annotation (Placement(transformation(extent={{90,-10},{110,10}}),
                 iconTransformation(extent={{90,-10},{110,10}})));
           parameter Physiolibrary.Types.HydraulicConductance StarlingSlope;
         equation
@@ -768,7 +761,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                           textString="%name")}));
         end HeartPump;
 
-        model PulsatileHeartPump "Heart as pump, which flowrate is determined 
+        model PulsatileHeartPump "Heart as pump, which flowrate is determined
   by the StarlingSlope and filling pressure."
 
           Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow annotation (
@@ -816,23 +809,19 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                           lineColor={0,0,127},
                           fillColor={255,170,170},
                           fillPattern=FillPattern.Solid,
-                          textString="%name")}), Diagram(coordinateSystem(
-                  preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-                graphics));
+                          textString="%name")}));
         end PulsatileHeartPump;
 
       end Parts;
 
-
       annotation (Documentation(info="<html>
 <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it.</p>
 </html>"));
-    end KofranekModel2014;
+    end Kofranek2014;
 
-    package FernandezModel2013
+    package Fernandez2013
       "Model of CVS introduced by Fernandez de Canete et al. 2013"
         extends Modelica.Icons.ExamplesPackage;
-
 
       model PulsatileCirculation
         "Model of cardiovascular system with pulsatile dynamic"
@@ -840,86 +829,85 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
         Physiolibrary.Hydraulic.Components.Conductor RPulmonaryVeins(
             useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-            7.425609600872e-08)                                      annotation(Placement(visible = true, transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
+            7.425609600872e-08)                                      annotation(Placement(transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}})));
         Physiolibrary.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
             volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
-                "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(visible = true, transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}}, rotation = 0)));
+                "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor RPulmonaryArtery(
             useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-            2.2216823876548e-07)                                      annotation(Placement(visible = true, transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}}, rotation = 0)));
+            2.2216823876548e-07)                                      annotation(Placement(transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}})));
         Physiolibrary.Hydraulic.Components.Inertia pulmonaryArterialInertia(
             volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
-              displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(visible = true, transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}}, rotation = 0)));
+              displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryVeins(
           useComplianceInput=false,
           volume_start(displayUnit="ml") = 0.0006597,
           ZeroPressureVolume=0.0001,
-          Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(visible = true, transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+          Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.IdealValve mitralValve(
                                     useLimitationInputs=false, _Gon(displayUnit=
-               "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(visible = true, transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+               "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
             useComplianceInput=true,
           useExternalPressureInput=true,
           volume_start=0.0002097,
-          ZeroPressureVolume=9e-05)                                    annotation(Placement(visible = true, transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+          ZeroPressureVolume=9e-05)                                    annotation(Placement(transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
             Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
-                                                              annotation(Placement(visible = true, transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                              annotation(Placement(transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-               1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(visible = true, transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+               1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel aorta(
           volume_start=4.6e-05,
           ZeroPressureVolume=3e-05,
           Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-09)
-                                                               annotation(Placement(visible = true, transformation(origin={-111,-3},   extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                               annotation(Placement(transformation(origin={-111,-3},   extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor Raorta(useConductanceInput=false,
             Conductance(displayUnit="m3/(Pa.s)") = 1.1108411938274e-07)
-                                                            annotation(Placement(visible = true, transformation(origin={-79,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                            annotation(Placement(transformation(origin={-79,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Inertia aorticInertia(
             volumeFlow_start(displayUnit="m3/s") = 1.0385e-05, I(displayUnit=
-                "Pa.s2/m3") = 109990.96961737)                   annotation(Placement(visible = true, transformation(origin={-37,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                "Pa.s2/m3") = 109990.96961737)                   annotation(Placement(transformation(origin={-37,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel arteries(
           volume_start=0.000805,
           ZeroPressureVolume=0.0007,
           Compliance(displayUnit="ml/mmHg") = 1.0950899007347e-08)
-                                                                  annotation(Placement(visible = true, transformation(origin={-1,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                                  annotation(Placement(transformation(origin={-1,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor RSystemic(useConductanceInput=false,
             Conductance(displayUnit="m3/(Pa.s)") = 7.5006157584566e-09)
-                                                               annotation(Placement(visible = true, transformation(origin={31,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                               annotation(Placement(transformation(origin={31,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Inertia systemicInertia(
             volumeFlow_start(displayUnit="m3/s") = 7.935e-05, I(displayUnit=
-                "Pa.s2/m3") = 479960.594694)                       annotation(Placement(visible = true, transformation(origin={75,-3},     extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                "Pa.s2/m3") = 479960.594694)                       annotation(Placement(transformation(origin={75,-3},     extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.IdealValve tricuspidValve(
             useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-                                                                     annotation(Placement(visible = true, transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                                     annotation(Placement(transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
             useComplianceInput=true,
           useExternalPressureInput=true,
           volume_start=0.00018,
-          ZeroPressureVolume=7e-05)                                     annotation(Placement(visible = true, transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+          ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
             Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
-                                                               annotation(Placement(visible = true, transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                               annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
                "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
-                                                                     annotation(Placement(visible = true, transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+                                                                     annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
           volume_start=2.1e-05,
           ZeroPressureVolume=2e-05,
-          Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(visible = true, transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+          Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
           volume_start=0.000637,
           ZeroPressureVolume=0.0006,
-          Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(visible = true, transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+          Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel veins(
           volume_start(displayUnit="ml") = 0.002443,
           ZeroPressureVolume=0.00237,
           Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07)
-          annotation (Placement(visible=true, transformation(
+          annotation (Placement(transformation(
               origin={105,-3},
-              extent={{-15,-15},{15,15}},
-              rotation=0)));
+              extent={{-15,-15},{15,15}})));
         Parts.TimeVaryingElastance timeVaryingElastanceLeft(
           Ed(displayUnit="mmHg/ml") = 13332238.7415,
           Es(displayUnit="mmHg/ml") = 183318282.69563,
@@ -1077,9 +1065,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-        annotation(Diagram(coordinateSystem(extent={{-350,-100},{400,100}},      preserveAspectRatio=false,  initialScale = 0.1, grid = {2, 2}),
+        annotation(Diagram(coordinateSystem(extent={{-350,-100},{400,100}},      preserveAspectRatio=false,  grid = {2, 2}),
               graphics),                                                                                                    Icon(coordinateSystem(extent={{-350,
-                  -100},{400,100}},                                                                                                    preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+                  -100},{400,100}},                                                                                                    preserveAspectRatio = true, grid = {2, 2})),
           Documentation(info="<html>
 <p>Model of cardiovascular system with pulsatile dynamics</p>
 <ul>
@@ -1090,7 +1078,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <ul>
 <li><i>Sep 2014 </i>by Tomas Kulhanek: <br>Created. </li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end PulsatileCirculation;
 
       package Parts "Utility components used by package KofranekModels2013"
@@ -1172,7 +1160,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                   textString="%name")}));
         end TimeVaryingElastance;
       end Parts;
-    end FernandezModel2013;
+    end Fernandez2013;
   end Examples;
 
   package Components
@@ -1297,11 +1285,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end if;
       excessVolume = max( 0, volume - zpv);
       q_in.pressure =
-      smooth(ep, if noEvent(volume>CollapsingPressureVolume)
+      smooth(0, if noEvent(volume>CollapsingPressureVolume)
       then
       excessVolume/c + ep
      else
-      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)));
+      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume))) + ep;
       //then: normal physiological state
       //else: abnormal collapsing state
       state = volume; // der(volume) =  q_in.q;
@@ -1335,14 +1323,14 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              extent={{-100,-40},{100,60}},
-              lineColor={0,0,127},
+              extent={{-100,-50},{100,60}},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
-              points={{-80,35},{80,10},{-80,-15},{-80,35}},
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
               lineColor={0,0,127},
-              fillColor={0,0,127},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-90},{150,-50}},
@@ -1633,7 +1621,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     extends Modelica.Icons.SensorsPackage;
     model FlowMeasure "Volumetric flow between ports"
       extends Interfaces.OnePort;
-      extends Icons.FlowMeasure;
+      //extends Icons.FlowMeasure;
+      extends Modelica.Icons.RotationalSensor;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlow "Actual volume flow rate"
                              annotation (Placement(transformation(extent={{-20,-20},
@@ -1661,16 +1650,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               points={{62,100},{80,80}},
               color={0,0,255},
               smooth=Smooth.None),
-            Rectangle(
-              extent={{-100,14},{-70,-14}},
-              pattern=LinePattern.None,
-              fillColor={190,0,0},
-              fillPattern=FillPattern.Solid),
-            Rectangle(
-              extent={{70,14},{100,-14}},
-              pattern=LinePattern.None,
-              fillColor={190,0,0},
-              fillPattern=FillPattern.Solid)}));
+            Text(
+              extent={{-25,-11},{34,-70}},
+              lineColor={0,0,0},
+              textString="V'")}));
     end FlowMeasure;
 
     model PressureMeasure "Hydraulic pressure at port"
@@ -1707,13 +1690,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 100,100}}), graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-94},{150,-54}},
@@ -1823,13 +1806,13 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                             graphics={
             Rectangle(
               extent={{-100,-50},{100,50}},
-              lineColor={0,0,127},
+              lineColor={0,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
             Polygon(
               points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
               fillPattern=FillPattern.Solid),
             Text(
               extent={{-150,-94},{150,-54}},
