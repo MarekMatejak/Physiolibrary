@@ -3649,8 +3649,13 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         Documentation(revisions="<html>
 <p>2009-2015 by Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p><b>Solute = Concentration &middot; Volume = &int; MolarFlow</b></p>
+<h4>Solute = Concentration &middot; Volume = &int; MolarFlow</h4>
 <p>The main class from &ldquo;Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
+<p><br>Having defined amount of all particles in solution as n(solution) and mass of solvent as m(solvent). It can be expressed mole fraction x and molality b as follows:</p>
+<p><b>x = Solute / n(solution) = Concentration &middot; Volume /n(solution)</b></p>
+<p><b>b = Solute / m(solvent) = Concentration &middot; Volume /m(solvent)</b></p>
+<p><br>The activity (mole fraction based) can be expressed using mole-fraction-based activity coefficient gamma as:</p>
+<h4>a = gamma * x</h4>
 </html>"));
     end Substance;
 
@@ -3724,7 +3729,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation ( HideResult=true, Dialog(tab="Temperature dependence"));
 
       parameter Types.Fraction solventFraction=1
-        "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
+        "Free solvent fraction in liquid (i.e. 'mol/mol' ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)";
 
       Real KBase "dissociation constant at TK" annotation (HideResult=true);
 
@@ -3915,7 +3920,7 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
       parameter Types.Fraction solventFraction=1
-        "Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81)";
+        "Free solvent fraction in liquid (i.e. 'mol/mol' ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)";
 
       Chemical.Interfaces.ChemicalPort_b
                                 q_out "Gaseous solution"
@@ -4114,9 +4119,9 @@ package Chemical "Domain with Molar Concentration and Molar Flow"
         annotation (HideResult=true,Dialog(tab="Temperature dependence"));
 
       parameter Types.Fraction solventFractionInside=1
-        "Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
+        "Free solvent fraction inside (i.e. 'mol/mol' ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)";
       parameter Types.Fraction solventFractionOutside=1
-        "Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81)";
+        "Free solvent fraction outside (i.e. 'mol/mol' ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)";
 
     protected
        Real KAdjustment

@@ -1285,7 +1285,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end if;
       excessVolume = max( 0, volume - zpv);
       q_in.pressure =
-      smooth(ep, if noEvent(volume>CollapsingPressureVolume)
+      smooth(0, if noEvent(volume>CollapsingPressureVolume)
       then
       excessVolume/c + ep
      else
