@@ -1285,11 +1285,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end if;
       excessVolume = max( 0, volume - zpv);
       q_in.pressure =
-      smooth(0, if noEvent(volume>CollapsingPressureVolume)
-      then
-      excessVolume/c + ep
-     else
-      a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume))) + ep;
+      smooth(0,
+        if noEvent(volume>CollapsingPressureVolume) then
+          excessVolume/c + ep
+        else
+          a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)) + ep);
       //then: normal physiological state
       //else: abnormal collapsing state
       state = volume; // der(volume) =  q_in.q;
