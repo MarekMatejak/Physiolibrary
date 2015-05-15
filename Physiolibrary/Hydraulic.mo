@@ -1202,7 +1202,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 <p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
-</html>"));
+</html>"),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}}), graphics));
     end Conductor;
 
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
@@ -1316,7 +1318,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model Pump "Prescribed volumetric flow"
       extends Hydraulic.Interfaces.OnePort;
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Interfaces.ConditionalSolutionFlow;
     equation
       volumeFlowRate = q;
      annotation (
@@ -1615,6 +1617,105 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p>Tomas Kulhanek, Charles University, Prague, Czech Republic </p>
 </html>"));
     end IdealValve;
+
+    model VesselSegment
+      "Vessel segment with resistance, inductance and compliance properties"
+       extends Modelica.Icons.UnderConstruction;
+
+      parameter Physiolibrary.Types.Height length "Length of the vessel";
+      parameter Physiolibrary.Types.Height radius
+        "Internal radius of the vessel";
+      parameter Physiolibrary.Types.Height wallWidth "Width of the vassel wall";
+      parameter Physiolibrary.Types.Pressure E
+        "Young's elactic modulus of the wall of the vessels";
+
+      parameter Real viscosity = 0.04 "Blood viscosity";
+      parameter Real density = 1050 "Blood density";
+
+      parameter Boolean isTerminal "Is it the segment before bifurcation?";
+
+      parameter Physiolibrary.Types.Fraction reflectionCoef = 0.8
+        "Reflection coefficient";
+      parameter Real freq "Angular frequency";
+      parameter Real angle
+        "The phase lead of pressure in relation to wall displacement";
+
+      parameter Real viscoelasticity = 15 "Wall viscoelacticity of the segment";
+      parameter Real sigma "Poisson ratio for arterial wall";
+
+      parameter Real pulseWaveVelocity "Pulse wave velocity";
+
+      function fact
+        input Integer n;
+        output Real y;
+      algorithm
+        y := 1;
+        for
+         k in 2:n loop
+          y := y*k;
+        end for;
+      end fact;
+
+      function Bessel
+         input Integer m;
+         input Complex x;
+         input Integer N = 20;
+         output Complex y;
+      algorithm
+         y := Complex(0,0);
+         for k in 0:N loop
+           y := y + ((-1)^k / (2^(2*k+m)*fact(k)*fact(m+k))) * x^(2*k+m);
+         end for;
+      end Bessel;
+
+      parameter Real alpha = radius*sqrt(freq*density/viscosity);
+      parameter Complex F10= 2*Bessel(1,alpha*Modelica.ComplexMath.j^(3/2))/(alpha*Bessel(0,alpha*Modelica.ComplexMath.j^(3/2))* Modelica.ComplexMath.j^(3/2))
+        "special expression";
+
+      parameter Complex impedance = ((density*pulseWaveVelocity/(sqrt(1-sigma^2)))*(1-F10)^(-1/2)) * Complex(cos(angle/2),sin(angle/2))
+        "Impedance of the vessel"; //Physiolibrary.Types.HydraulicResistance
+
+      Conductor conductor(Conductance = 1/((8*viscosity*length/(Modelica.Constants.pi*radius^4)) + (if
+                                                                                                    (isTerminal) then Modelica.ComplexMath.real(impedance)*(1+reflectionCoef)/(1-reflectionCoef) else 1)))
+        annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+      Inertia inertia(I=(9*density*length/(4*Modelica.Constants.pi*radius^2)))
+        annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
+      ElasticVessel elasticVessel(Compliance=(3*Modelica.Constants.pi*(radius^3)*length/(2*E*wallWidth)))
+        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      Interfaces.HydraulicPort_a
+                           q_in "Volume inflow" annotation (Placement(
+            transformation(extent={{-114,-14},{-86,14}})));
+      Interfaces.HydraulicPort_b
+                           q_out "Volume outflow"
+                             annotation (Placement(
+            transformation(extent={{86,-14},{114,14}})));
+    equation
+      connect(q_in, conductor.q_in) annotation (Line(
+          points={{-100,0},{-86,0},{-86,2.22045e-016},{-68,2.22045e-016}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(conductor.q_out, inertia.q_in) annotation (Line(
+          points={{-48,0},{-14,0}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(inertia.q_out, elasticVessel.q_in) annotation (Line(
+          points={{6,0},{50,0}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(elasticVessel.q_in, q_out) annotation (Line(
+          points={{50,0},{100,0}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics), Documentation(info="<html>
+<p>The segment becommest from the Avolio&apos;s model of arterial tree: </p>
+<p>http://staff.ustc.edu.cn/~yhe/avolio-arterial-system-model.pdf</p>
+</html>"));
+    end VesselSegment;
   end Components;
 
   package Sensors
@@ -1678,7 +1779,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
   package Sources
     extends Modelica.Icons.SourcesPackage;
     model UnlimitedPump "Prescribed flow at port"
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Interfaces.ConditionalSolutionFlow;
       Interfaces.HydraulicPort_b
                            q_out
                              annotation (Placement(
@@ -1796,7 +1897,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       end UnlimitedVolume;
 
     model UnlimitedOutflowPump "Prescribed flow at port"
-      extends Chemical.Interfaces.ConditionalSolutionFlow;
+      extends Interfaces.ConditionalSolutionFlow;
       Interfaces.HydraulicPort_a q_in annotation (Placement(transformation(extent={{
                 -114,-14},{-86,14}}), iconTransformation(extent={{-114,-14},{-86,14}})));
     equation
@@ -1942,7 +2043,36 @@ Connector with one flow signal of type Real.
       q_in.q + q_out.q = 0;
       volumeFlowRate = q_in.q;
       dp = q_in.pressure - q_out.pressure;
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics));
     end OnePort;
+
+    partial model ConditionalSolutionFlow
+      "Input of solution volumetric flow vs. parametric solution volumetric flow"
+
+      parameter Boolean useSolutionFlowInput = false
+        "=true, if solution flow input is used instead of parameter SolutionFlow"
+      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+
+      parameter Types.VolumeFlowRate SolutionFlow=0
+        "Volumetric flow of solution if useSolutionFlowInput=false"
+        annotation ( HideResult=not useSolutionFlowInput, Dialog(enable=not useSolutionFlowInput));
+
+      Types.RealIO.VolumeFlowRateInput solutionFlow(start=SolutionFlow)=q if useSolutionFlowInput annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,40}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,70})));
+
+      Types.VolumeFlowRate q "Current solution flow";
+    equation
+      if not useSolutionFlowInput then
+        q = SolutionFlow;
+      end if;
+
+    end ConditionalSolutionFlow;
   end Interfaces;
   annotation (Documentation(revisions="<html>
 <p>Licensed by Marek Matejak under the Modelica License 2</p>

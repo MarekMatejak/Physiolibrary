@@ -493,14 +493,6 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1alpha)"
   end UsersGuide;
 
 
-
-
-
-
-
-
-
-
   annotation (preferredView="info",
 version="2.3.1alpha",
 versionBuild=1,
