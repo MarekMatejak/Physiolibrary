@@ -13,12 +13,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Total(displayUnit="mol") = 1,
         Simulation=Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Obsolete.Chemical.Components.Substance A(Simulation=Types.SimulationType.SteadyState,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.SteadyState,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
-      Obsolete.Chemical.Components.ChemicalReaction reaction(K=1)
+      Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      Obsolete.Chemical.Components.Substance B(
+      Chemical.Components.Substance B(
         Simulation=Types.SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
@@ -63,12 +63,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Total(displayUnit="mol") = 1,
         Simulation=Types.SimulationType.NormalInit)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Obsolete.Chemical.Components.Substance A(Simulation=Types.SimulationType.NormalInit,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.NormalInit,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
-      Obsolete.Chemical.Components.ChemicalReaction reaction(K=1)
+      Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      Obsolete.Chemical.Components.Substance B(
+      Chemical.Components.Substance B(
         isDependent=true,
         Simulation=Types.SimulationType.NormalInit,
         solute_start=0.1)
@@ -113,12 +113,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Total(displayUnit="mol") = 1,
         Simulation=Types.SimulationType.InitSteadyState)
         annotation (Placement(transformation(extent={{68,-44},{88,-24}})));
-      Obsolete.Chemical.Components.Substance A(Simulation=Types.SimulationType.InitSteadyState,
+      Chemical.Components.Substance A(Simulation=Types.SimulationType.InitSteadyState,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-58,-10},{-38,10}})));
-      Obsolete.Chemical.Components.ChemicalReaction reaction(K=1)
+      Chemical.Components.ChemicalReaction reaction(K=1)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      Obsolete.Chemical.Components.Substance B(
+      Chemical.Components.Substance B(
         isDependent=true,
         Simulation=Types.SimulationType.InitSteadyState,
         solute_start=0.1)
@@ -157,18 +157,18 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       import Physiolibrary.Types.*;
 
-      Obsolete.Chemical.Components.Substance A(Simulation=SimulationType.SteadyState,
+      Chemical.Components.Substance A(Simulation=SimulationType.SteadyState,
           solute_start=0.9)
         annotation (Placement(transformation(extent={{-68,-8},{-48,12}})));
-      Obsolete.Chemical.Components.ChemicalReaction reaction(K=1, nP=2)
+      Chemical.Components.ChemicalReaction reaction(K=1, nP=2)
         annotation (Placement(transformation(extent={{-34,-8},{-14,12}})));
-      Obsolete.Chemical.Components.Substance B(
+      Chemical.Components.Substance B(
         Simulation=SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
         annotation (Placement(transformation(extent={{2,-10},{22,10}})));
 
-      Obsolete.Chemical.Components.Substance C(
+      Chemical.Components.Substance C(
         Simulation=SimulationType.SteadyState,
         isDependent=true,
         solute_start=0.1)
@@ -231,7 +231,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       import Physiolibrary.Types.*;
 
     public
-      Obsolete.Chemical.Components.Substance oxygen_dissolved(
+      Chemical.Components.Substance oxygen_dissolved(
         Simulation=SimulationType.SteadyState,
         solute_start=0.000001*7.875647668393782383419689119171e-5,
         isDependent=true)
@@ -246,12 +246,12 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
         prescribedTemperature
         annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
-      Obsolete.Chemical.Components.GasSolubility gasSolubility(
+      Chemical.Components.GasSolubility gasSolubility(
         useHeatPort=true,
         kH_T0(displayUnit="(mmol/l)/kPa at 25degC") = 0.026029047188736,
         C=1700)
         annotation (Placement(transformation(extent={{-12,-28},{8,-8}})));
-      Obsolete.Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
+      Chemical.Sources.UnlimitedGasStorage unlimitedGasStorage(
         Simulation=Types.SimulationType.SteadyState,
         usePartialPressureInput=true,
         useHeatPort=true,
@@ -325,122 +325,121 @@ package SteadyStates "Dynamic Simulation / Steady State"
     //  Types.AmountOfSubstance totalAmountOfTforms;
 
     public
-      Obsolete.Chemical.Components.Substance T0(
+      Chemical.Components.Substance T0(
         stateName="T0",
         Simulation=SimulationType.SteadyState,
         solute_start=1)
         annotation (Placement(transformation(extent={{32,78},{52,98}})));
 
-      Obsolete.Chemical.Components.Substance T1(
+      Chemical.Components.Substance T1(
         stateName="T1",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{34,36},{54,56}})));
 
-      Obsolete.Chemical.Components.Substance R1(
+      Chemical.Components.Substance R1(
         stateName="R1",
         Simulation=SimulationType.SteadyState,
         solute_start=0,
         isDependent=true)
         annotation (Placement(transformation(extent={{-20,36},{0,56}})));
 
-      Obsolete.Chemical.Components.Substance T2(
+      Chemical.Components.Substance T2(
         stateName="T2",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{34,-10},{54,10}})));
 
-      Obsolete.Chemical.Components.Substance R2(
+      Chemical.Components.Substance R2(
         stateName="R2",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
 
-      Obsolete.Chemical.Components.Substance T3(
+      Chemical.Components.Substance T3(
         stateName="T3",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{34,-54},{54,-34}})));
 
-      Obsolete.Chemical.Components.Substance R3(
+      Chemical.Components.Substance R3(
         stateName="R3",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{-20,-54},{0,-34}})));
 
-      Obsolete.Chemical.Components.Substance T4(
+      Chemical.Components.Substance T4(
         stateName="T4",
         Simulation=SimulationType.SteadyState,
         solute_start=0,
         isDependent=true)
         annotation (Placement(transformation(extent={{34,-92},{54,-72}})));
 
-      Obsolete.Chemical.Components.Substance R4(
+      Chemical.Components.Substance R4(
         stateName="R4",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{-20,-92},{0,-72}})));
 
-      Obsolete.Chemical.Components.Substance R0(
+      Chemical.Components.Substance R0(
         stateName="R0",
         Simulation=SimulationType.SteadyState,
         solute_start=0)
         annotation (Placement(transformation(extent={{-20,78},{0,98}})));
 
-      Obsolete.Chemical.Components.ChemicalReaction quaternaryForm(K=L)
+      Chemical.Components.ChemicalReaction quaternaryForm(K=L)
         annotation (Placement(transformation(extent={{4,78},{24,98}})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyR1(nP=2, K=KR/4)
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyR1(nP=2, K=KR/4) annotation (
+          Placement(transformation(
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={-10,64})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyT1(nP=2, K=KT/4)
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyT1(nP=2, K=KT/4) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={44,64})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyR2(nP=2, K=KR/(3/2))
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyR2(nP=2, K=KR/(3/2)) annotation (
+          Placement(transformation(
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={-10,22})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyR3(nP=2, K=KR/(2/3))
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyR3(nP=2, K=KR/(2/3)) annotation (
+          Placement(transformation(
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={-10,-24})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyR4(nP=2, K=KR*4)
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyR4(nP=2, K=KR*4) annotation (
+          Placement(transformation(
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={-10,-66})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyT2(nP=2, K=KT/(3/2))
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyT2(nP=2, K=KT/(3/2)) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={44,22})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyT3(nP=2, K=KT/(2/3))
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyT3(nP=2, K=KT/(2/3)) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={44,-24})));
-      Obsolete.Chemical.Components.ChemicalReaction oxyT4(nP=2, K=KT*4)
-        annotation (Placement(transformation(
+      Chemical.Components.ChemicalReaction oxyT4(nP=2, K=KT*4) annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={44,-66})));
-      Obsolete.Chemical.Components.ChemicalReaction quaternaryForm1(K=c*L)
+      Chemical.Components.ChemicalReaction quaternaryForm1(K=c*L)
         annotation (Placement(transformation(extent={{8,36},{28,56}})));
-      Obsolete.Chemical.Components.ChemicalReaction quaternaryForm2(K=(c^2)*L)
+      Chemical.Components.ChemicalReaction quaternaryForm2(K=(c^2)*L)
         annotation (Placement(transformation(extent={{8,-10},{28,10}})));
-      Obsolete.Chemical.Components.ChemicalReaction quaternaryForm3(K=(c^3)*L)
+      Chemical.Components.ChemicalReaction quaternaryForm3(K=(c^3)*L)
         annotation (Placement(transformation(extent={{8,-54},{28,-34}})));
-      Obsolete.Chemical.Components.ChemicalReaction quaternaryForm4(K=(c^4)*L)
+      Chemical.Components.ChemicalReaction quaternaryForm4(K=(c^4)*L)
         annotation (Placement(transformation(extent={{10,-92},{30,-72}})));
 
-      Obsolete.Chemical.Components.Substance oxygen_unbound(solute_start=
-            0.000001*7.875647668393782383419689119171e-5, Simulation=
-            SimulationType.SteadyState)
+      Chemical.Components.Substance oxygen_unbound(solute_start=0.000001*
+            7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
       Modelica.Blocks.Sources.Clock clock(offset=60)
         annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
@@ -449,14 +448,14 @@ package SteadyStates "Dynamic Simulation / Steady State"
         Simulation=Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{72,-2},{92,18}})));
 
-      Obsolete.Chemical.Sources.UnlimitedGasStorage O2_in_air(
+      Chemical.Sources.UnlimitedGasStorage O2_in_air(
         Simulation=Types.SimulationType.SteadyState,
         T=295.15,
         usePartialPressureInput=true) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={-66,32})));
-      Obsolete.Chemical.Components.GasSolubility gasSolubility(
+      Chemical.Components.GasSolubility gasSolubility(
         useHeatPort=false,
         kH_T0=0.026029047188736,
         C=1700)
@@ -817,7 +816,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     model Allosteric_Hemoglobin2_MWC
       "Allosteric hemoglobin model implemented by Speciation blocks"
 
-     extends Obsolete.Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
+     extends Chemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
 
     end Allosteric_Hemoglobin2_MWC;
 
@@ -913,7 +912,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
     end ThermalBody_QHP_STeadyState;
 
     model Cells_SteadyState
-     extends Obsolete.Osmotic.Examples.Cell(
+     extends Osmotic.Examples.Cell(
         cells(Simulation=Types.SimulationType.SteadyState,
             isDependent=true),
         interstitium(Simulation=Types.SimulationType.SteadyState),
