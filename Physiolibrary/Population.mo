@@ -35,48 +35,38 @@ package Population
     equation
       connect(preyMortality.y, predatorEffect.yBase) annotation (Line(
           points={{37,0},{42,0},{42,-12}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(predator.population, predatorEffect.u) annotation (Line(
           points={{8,42},{8,20},{56,20},{56,-14},{50,-14}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(predatorReproduction.y, preyEffekt.yBase) annotation (Line(
           points={{-47,84},{-42,84},{-42,72}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(prey.population, preyEffekt.u) annotation (Line(
           points={{4,-40},{4,-48},{-66,-48},{-66,70},{-50,70}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(reproduction2.port_b, predator.port) annotation (Line(
           points={{-32,52},{2,52}},
           color={0,127,127},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(predator.port, mortality2.port_a) annotation (Line(
           points={{2,52},{34.2,52}},
           color={0,127,127},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(reproduction1.port_b, prey.port) annotation (Line(
           points={{-36,-30},{-2,-30}},
           color={0,127,127},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(prey.port, mortality1.port_a) annotation (Line(
           points={{-2,-30},{32.2,-30}},
           color={0,127,127},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(preyEffekt.y, reproduction2.changePerMember) annotation (Line(
           points={{-42,66},{-42,56}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(predatorEffect.y, mortality1.changePerMember) annotation (Line(
           points={{42,-18},{42,-26}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       annotation (
         experiment(StopTime=20),
         __Dymola_experimentSetupOutput(equdistant=false));

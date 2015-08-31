@@ -28,23 +28,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(A.solute, amountOfSubstanceConservationLaw.fragment[1]) annotation (
           Line(
           points={{-48,-10},{-48,-39},{68,-39}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.solute, amountOfSubstanceConservationLaw.fragment[2]) annotation (
           Line(
           points={{52,-10},{52,-37},{68,-37}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.q_out,reaction. products[1]) annotation (Line(
           points={{52,0},{10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(A.q_out,reaction. substrates[1]) annotation (Line(
           points={{-48,0},{-10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -78,23 +74,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(A.solute, amountOfSubstanceConservationLaw.fragment[1]) annotation (
           Line(
           points={{-48,-10},{-48,-39},{68,-39}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.solute, amountOfSubstanceConservationLaw.fragment[2]) annotation (
           Line(
           points={{52,-10},{52,-37},{68,-37}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.q_out,reaction. products[1]) annotation (Line(
           points={{52,0},{10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(A.q_out,reaction. substrates[1]) annotation (Line(
           points={{-48,0},{-10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -128,23 +120,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(A.solute, amountOfSubstanceConservationLaw.fragment[1]) annotation (
           Line(
           points={{-48,-10},{-48,-39},{68,-39}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.solute, amountOfSubstanceConservationLaw.fragment[2]) annotation (
           Line(
           points={{52,-10},{52,-37},{68,-37}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.q_out,reaction. products[1]) annotation (Line(
           points={{52,0},{10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(A.q_out,reaction. substrates[1]) annotation (Line(
           points={{-48,0},{-10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -188,36 +176,29 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(A.q_out,reaction. substrates[1]) annotation (Line(
           points={{-58,2},{-34,2}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(reaction.products[1],B. q_out) annotation (Line(
           points={{-14,1.5},{-4,1.5},{-4,0},{12,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(reaction.products[2],C. q_out) annotation (Line(
           points={{-14,2.5},{-4,2.5},{-4,28},{12,28}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(A.solute, totalB_ConservationLaw.fragment[1])           annotation (
           Line(
           points={{-58,-8},{-58,-16},{26,-16},{26,-5},{34,-5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(B.solute, totalB_ConservationLaw.fragment[2])           annotation (
           Line(
           points={{12,-10},{12,-14},{24,-14},{24,-3},{34,-3}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(C.solute, totalC_ConservationLaw.fragment[1]) annotation (Line(
           points={{12,18},{12,14},{26,14},{26,23},{34,23}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(A.solute, totalC_ConservationLaw.fragment[2]) annotation (Line(
           points={{-58,-8},{-58,-16},{-70,-16},{-70,40},{26,40},{26,25},{34,25}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
 
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
@@ -261,33 +242,27 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       connect(temperature.y, prescribedTemperature.T) annotation (Line(
           points={{-73,-18},{-58,-18}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(oxygen_dissolved.q_out, gasSolubility.q_in) annotation (Line(
           points={{-2,-46},{-2,-26}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(prescribedTemperature.port, gasSolubility.heatPort) annotation (
           Line(
           points={{-36,-18},{-2,-18}},
-          color={191,0,0},
-          smooth=Smooth.None));
+          color={191,0,0}));
       connect(oxygenPartialPressure.y, unlimitedGasStorage.partialPressure)
         annotation (Line(
           points={{-59,70},{-40,70}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(unlimitedGasStorage.q_out, gasSolubility.q_out) annotation (Line(
           points={{-20,70},{-2,70},{-2,-8}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(prescribedTemperature.port, unlimitedGasStorage.heatPort)
         annotation (Line(
           points={{-36,-18},{-30,-18},{-30,70}},
-          color={191,0,0},
-          smooth=Smooth.None));
+          color={191,0,0}));
       annotation (        experiment(StopTime=100), Documentation(info=
                    "<html>
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
@@ -476,325 +451,258 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(quaternaryForm.products[1],T0. q_out) annotation (Line(
           points={{24,88},{42,88}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR1.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{-9.5,74},{-46,74},{-46,-26}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR2.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{-9.5,32},{-46,32},{-46,-26}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR3.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{-9.5,-14},{-46,-14},{-46,-26}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR4.products[2], oxygen_unbound.q_out)
                                           annotation (Line(
           points={{-9.5,-56},{-46,-56},{-46,-26}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR1.substrates[1],R1. q_out) annotation (Line(
           points={{-10,54},{-10,46}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R1.q_out,oxyR2. products[1]) annotation (Line(
           points={{-10,46},{-10,32},{-10.5,32}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR2.substrates[1],R2. q_out) annotation (Line(
           points={{-10,12},{-10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR3.substrates[1],R3. q_out) annotation (Line(
           points={{-10,-34},{-10,-44}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR3.products[1],R2. q_out) annotation (Line(
           points={{-10.5,-14},{-10.5,-7},{-10,-7},{-10,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R3.q_out,oxyR4. products[1]) annotation (Line(
           points={{-10,-44},{-10,-56},{-10.5,-56}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyR4.substrates[1],R4. q_out) annotation (Line(
           points={{-10,-76},{-10,-82}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyT1.products[1],T0. q_out) annotation (Line(
           points={{44.5,74},{44.5,88},{42,88}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyT1.substrates[1],T1. q_out) annotation (Line(
           points={{44,54},{44,46}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxygen_unbound.q_out, oxyT1.products[2])
                                           annotation (Line(
           points={{-46,-26},{-46,74},{43.5,74}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxygen_unbound.q_out, oxyT2.products[2])
                                           annotation (Line(
           points={{-46,-26},{-46,32},{43.5,32}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxygen_unbound.q_out, oxyT3.products[2])
                                           annotation (Line(
           points={{-46,-26},{-46,-14},{43.5,-14}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxygen_unbound.q_out, oxyT4.products[2])
                                           annotation (Line(
           points={{-46,-26},{-46,-56},{43.5,-56}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(T1.q_out,oxyT2. products[1]) annotation (Line(
           points={{44,46},{44,32},{44.5,32}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyT2.substrates[1],T2. q_out) annotation (Line(
           points={{44,12},{44,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(T2.q_out,oxyT3. products[1]) annotation (Line(
           points={{44,0},{44,-14},{44.5,-14}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyT3.substrates[1],T3. q_out) annotation (Line(
           points={{44,-34},{44,-44}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(T3.q_out,oxyT4. products[1]) annotation (Line(
           points={{44,-44},{44,-56},{44.5,-56}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(oxyT4.substrates[1],T4. q_out) annotation (Line(
           points={{44,-76},{44,-82}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R0.q_out,quaternaryForm. substrates[1]) annotation (Line(
           points={{-10,88},{4,88}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R0.q_out,oxyR1. products[1]) annotation (Line(
           points={{-10,88},{-10,74},{-10.5,74}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R1.q_out,quaternaryForm1. substrates[1]) annotation (Line(
           points={{-10,46},{8,46}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(quaternaryForm1.products[1],T1. q_out) annotation (Line(
           points={{28,46},{44,46}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R2.q_out,quaternaryForm2. substrates[1]) annotation (Line(
           points={{-10,0},{8,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(quaternaryForm2.products[1],T2. q_out) annotation (Line(
           points={{28,0},{44,0}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R3.q_out,quaternaryForm3. substrates[1]) annotation (Line(
           points={{-10,-44},{8,-44}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(quaternaryForm3.products[1],T3. q_out) annotation (Line(
           points={{28,-44},{44,-44}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R4.q_out,quaternaryForm4. substrates[1]) annotation (Line(
           points={{-10,-82},{10,-82}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(quaternaryForm4.products[1],T4. q_out) annotation (Line(
           points={{30,-82},{44,-82}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(R4.solute, hemoglobinConservationLaw.fragment[1])        annotation (
           Line(
           points={{-10,-92},{-10,-98},{64,-98},{64,2.2},{72,2.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T4.solute, hemoglobinConservationLaw.fragment[2])        annotation (
           Line(
           points={{44,-92},{44,-98},{64,-98},{64,2.6},{72,2.6}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R3.solute, hemoglobinConservationLaw.fragment[3])        annotation (
           Line(
           points={{-10,-54},{64,-54},{64,3},{72,3}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T3.solute, hemoglobinConservationLaw.fragment[4])        annotation (
           Line(
           points={{44,-54},{64,-54},{64,3.4},{72,3.4}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R2.solute, hemoglobinConservationLaw.fragment[5])        annotation (
           Line(
           points={{-10,-10},{64,-10},{64,3.8},{72,3.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T2.solute, hemoglobinConservationLaw.fragment[6])        annotation (
           Line(
           points={{44,-10},{64,-10},{64,4.2},{72,4.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R1.solute, hemoglobinConservationLaw.fragment[7])        annotation (
           Line(
           points={{-10,36},{64,36},{64,4.6},{72,4.6}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T1.solute, hemoglobinConservationLaw.fragment[8])        annotation (
           Line(
           points={{44,36},{64,36},{64,5},{72,5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R0.solute, hemoglobinConservationLaw.fragment[9])        annotation (
           Line(
           points={{-10,78},{64,78},{64,5.4},{72,5.4}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T0.solute, hemoglobinConservationLaw.fragment[10])        annotation (
          Line(
           points={{42,78},{64,78},{64,5.8},{72,5.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(oxygen_unbound.q_out, gasSolubility.q_in) annotation (Line(
           points={{-46,-26},{-66,-26},{-66,-4}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(O2_in_air.q_out, gasSolubility.q_out) annotation (Line(
           points={{-66,22},{-66,14}},
           color={107,45,134},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(clock.y, O2_in_air.partialPressure) annotation (Line(
           points={{-73,62},{-66,62},{-66,42}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R1.solute, oxygen_bound.u[1]) annotation (Line(
           points={{-10,36},{64,36},{64,-51.875},{71,-51.875}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T1.solute, oxygen_bound.u[2]) annotation (Line(
           points={{44,36},{64,36},{64,-51.625},{71,-51.625}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R2.solute, oxygen_bound.u[3]) annotation (Line(
           points={{-10,-10},{64,-10},{64,-51.375},{71,-51.375}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T2.solute, oxygen_bound.u[4]) annotation (Line(
           points={{44,-10},{64,-10},{64,-51.125},{71,-51.125}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R3.solute, oxygen_bound.u[5]) annotation (Line(
           points={{-10,-54},{64,-54},{64,-50.875},{71,-50.875}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T3.solute, oxygen_bound.u[6]) annotation (Line(
           points={{44,-54},{64,-54},{64,-50.625},{71,-50.625}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R4.solute, oxygen_bound.u[7]) annotation (Line(
           points={{-10,-92},{-10,-98},{64,-98},{64,-50.375},{71,-50.375}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T4.solute, oxygen_bound.u[8]) annotation (Line(
           points={{44,-92},{44,-98},{64,-98},{64,-50.125},{71,-50.125}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(oxygen_bound.y, sO2_.u1) annotation (Line(
           points={{82.5,-51},{84,-51},{84,-52},{85,-52}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(sO2_.u2, tHb.y) annotation (Line(
           points={{85,-58},{84,-58},{84,-65},{82.5,-65}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R0.solute, tHb.u[1]) annotation (Line(
           points={{-10,78},{64,78},{64,-65.9},{71,-65.9}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T0.solute, tHb.u[2]) annotation (Line(
           points={{42,78},{64,78},{64,-65.7},{71,-65.7}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R1.solute, tHb.u[3]) annotation (Line(
           points={{-10,36},{64,36},{64,-65.5},{71,-65.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T1.solute, tHb.u[4]) annotation (Line(
           points={{44,36},{64,36},{64,-65.3},{71,-65.3}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R2.solute, tHb.u[5]) annotation (Line(
           points={{-10,-10},{64,-10},{64,-65.1},{71,-65.1}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T2.solute, tHb.u[6]) annotation (Line(
           points={{44,-10},{64,-10},{64,-64.9},{71,-64.9}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R3.solute, tHb.u[7]) annotation (Line(
           points={{-10,-54},{64,-54},{64,-64.7},{71,-64.7}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T3.solute, tHb.u[8]) annotation (Line(
           points={{44,-54},{64,-54},{64,-64.5},{71,-64.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(R4.solute, tHb.u[9]) annotation (Line(
           points={{-10,-92},{-10,-98},{64,-98},{64,-64.3},{71,-64.3}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(T4.solute, tHb.u[10]) annotation (Line(
           points={{44,-92},{44,-98},{64,-98},{64,-64.1},{71,-64.1}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       annotation (        experiment(StopTime=10000), Documentation(info=
                    "<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
@@ -842,24 +750,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
        connect(pulmonaryArteries.volume, bloodVolume.fragment[4]) annotation (
           Line(
           points={{-52,74},{-52,68},{54,68},{54,-7.2},{68,-7.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(pulmonaryVeinsAndLeftAtrium.volume, bloodVolume.fragment[5]) annotation (Line(
           points={{14,74},{14,70},{56,70},{56,-6.4},{68,-6.4}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
        connect(rightAtrium.volume, bloodVolume.fragment[1]) annotation (Line(
           points={{-72,8},{-72,-72},{56,-72},{56,-9.6},{68,-9.6}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(veins.volume, bloodVolume.fragment[2]) annotation (Line(
           points={{-54,-46},{-54,-70},{54,-70},{54,-8.8},{68,-8.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(arteries.volume, bloodVolume.fragment[3]) annotation (Line(
           points={{24,-46},{24,-68},{52,-68},{52,-8},{68,-8}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
        annotation (     experiment(StopTime=1),
      Documentation(info="<html>
 <p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
@@ -889,25 +792,21 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(core.relativeHeat, energyConservationLaw.fragment[1])
                                                               annotation (Line(
           points={{-2,-4},{-2,-85.5},{70,-85.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(skin.relativeHeat, energyConservationLaw.fragment[2])
                                                               annotation (Line(
           points={{-58,4},{-58,-84.5},{70,-84.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(skeletalMuscle.relativeHeat, energyConservationLaw.fragment[3])
                                                                         annotation (
          Line(
           points={{46,42},{46,-12},{94,-12},{94,-64},{58,-64},{58,-83.5},{70,-83.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
 
       connect(GILumen.relativeHeat, energyConservationLaw.fragment[4])
                                                                  annotation (Line(
           points={{50,-52},{52,-52},{52,-82.5},{70,-82.5}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       annotation (experiment(StopTime=1));
     end ThermalBody_QHP_STeadyState;
 
@@ -934,23 +833,19 @@ package SteadyStates "Dynamic Simulation / Steady State"
       connect(cells.volume, waterConservationLaw.fragment[1])
                                                          annotation (Line(
           points={{-34,36},{-34,19},{72,19}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(interstitium.volume, waterConservationLaw.fragment[2])
                                                                 annotation (Line(
           points={{44,36},{44,21},{72,21}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(cells1.volume, waterConservationLaw1.fragment[1])
                                                            annotation (Line(
           points={{-34,-64},{-34,-87},{70,-87}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(interstitium1.volume, waterConservationLaw1.fragment[2])
                                                                   annotation (Line(
           points={{44,-64},{44,-85},{70,-85}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       annotation (experiment(StopTime=1));
     end Cells_SteadyState;
   end Examples;

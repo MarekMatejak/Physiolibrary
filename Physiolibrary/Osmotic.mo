@@ -31,23 +31,19 @@ package Osmotic "Please use 'Chemical' library instead!"
       connect(cells.q_in[1], membrane.q_in) annotation (Line(
           points={{-34,46},{-4,46}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(membrane.q_out, interstitium.q_in[1]) annotation (Line(
           points={{16,46},{44,46}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(cells1.q_in[1], membrane1.q_in) annotation (Line(
           points={{-34,-54},{-4,-54}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(membrane1.q_out, interstitium1.q_in[1]) annotation (Line(
           points={{16,-54},{44,-54}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),      graphics={
             Text(
@@ -61,7 +57,6 @@ package Osmotic "Please use 'Chemical' library instead!"
             Line(
               points={{-98,8},{98,8}},
               color={135,135,135},
-              smooth=Smooth.None,
               thickness=1)}),
         experiment(StopTime=60),
         Documentation(revisions=
@@ -145,123 +140,89 @@ package Osmotic "Please use 'Chemical' library instead!"
     equation
       connect(CSF_hydraulic.q_in, pressureMeasure.q_in) annotation (Line(
           points={{-86,-22},{-86,68},{-84,68}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(CSF_hydraulic.q_in, choroid_plexus_hydraulic.q_out) annotation (
           Line(
           points={{-86,-22},{-2,-22}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(flowMeasure.q_in, ECF_osmotic.port) annotation (Line(
           points={{18,4},{32,4},{32,32},{36,32}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(CSF_osmotic.q_in[1], arachnoid_villi.q_in) annotation (Line(
           points={{-66,4},{-66,56},{-36,56}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(CSF_hydraulic.q_in, arachnoid_villi_hydraulic.q_in) annotation (
           Line(
           points={{-86,-22},{-86,86},{-2,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(arachnoid_villi_hydraulic.q_out, veins.y) annotation (Line(
           points={{18,86},{72,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(arachnoid_villi.q_out, flowMeasure1.q_in) annotation (Line(
           points={{-16,56},{-2,56}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(flowMeasure1.q_out, ECF_osmotic.port) annotation (Line(
           points={{18,56},{32,56},{32,32},{36,32}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(conductor.q_out, choroidPlexusCapilaries.q_in) annotation (Line(
           points={{96,-10},{96,-22},{66,-22}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(choroidPlexusCapilaries.q_in, conductor1.q_in) annotation (Line(
           points={{66,-22},{66,40}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(veins.y, conductor1.q_out) annotation (Line(
           points={{72,86},{66,86},{66,60}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(arteries.y, conductor.q_in) annotation (Line(
           points={{90,26},{96,26},{96,10}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(choroid_plexus_hydraulic.q_in, choroidPlexusCapilaries.q_in)
         annotation (Line(
           points={{18,-22},{66,-22}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(pressureMeasure1.q_in, veins.y) annotation (Line(
           points={{62,68},{66,68},{66,86},{72,86}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(choroidPlexusCapilaries.q_in, pressureMeasure2.q_in) annotation (
           Line(
           points={{66,-22},{56,-22},{56,-18}},
-          color={0,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(CSF_osmotic.q_in[1], choroid_plexus.q_out) annotation (Line(
           points={{-66,4},{-36,4}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(choroid_plexus.q_in, flowMeasure.q_out) annotation (Line(
           points={{-16,4},{-2,4}},
           color={127,127,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(pressureMeasure2.pressure, choroid_plexus.hydraulicPressureIn)
         annotation (Line(
           points={{46,-16},{28,-16},{28,20},{-18,20},{-18,12}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(pressureMeasure1.pressure, arachnoid_villi.hydraulicPressureOut)
         annotation (Line(
           points={{52,70},{-18,70},{-18,64}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(pressureMeasure.pressure, arachnoid_villi.hydraulicPressureIn)
         annotation (Line(
           points={{-74,70},{-34,70},{-34,64}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(pressureMeasure.pressure, choroid_plexus.hydraulicPressureOut)
         annotation (Line(
           points={{-74,70},{-52,70},{-52,28},{-34,28},{-34,12}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(flowMeasure1.volumeFlowRate, arachnoid_villi_hydraulic.solutionFlow)
         annotation (Line(
           points={{8,64},{8,79}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       connect(flowMeasure.volumeFlowRate, choroid_plexus_hydraulic.solutionFlow)
         annotation (Line(
           points={{8,-4},{8,-15}},
-          color={0,0,127},
-          smooth=Smooth.None));
+          color={0,0,127}));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),      graphics={
             Text(
@@ -271,12 +232,10 @@ package Osmotic "Please use 'Chemical' library instead!"
             Line(
               points={{-50,-54},{-62,-14}},
               color={215,215,215},
-              smooth=Smooth.None,
               arrow={Arrow.None,Arrow.Filled}),
             Line(
               points={{-50,-54},{-72,-30}},
               color={215,215,215},
-              smooth=Smooth.None,
               arrow={Arrow.None,Arrow.Filled})}),
         experiment(StopTime=86400),
         Documentation(revisions=

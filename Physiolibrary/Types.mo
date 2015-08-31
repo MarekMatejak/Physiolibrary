@@ -177,32 +177,28 @@ package Types "Physiological units with nominals"
       equation
         connect(Bone_PO2.y, busConnector.Bone_PO2) annotation (Line(
             points={{6.1,65},{70.05,65},{70.05,-2},{90,-2}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneBloodFlow.y, busConnector.Bone_BloodFlow)
                                                          annotation (Line(
             points={{6.1,31},{71.05,31},{71.05,-2},{90,-2}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneO2Need.y, busConnector.Bone_O2Need)
                                                       annotation (Line(
             points={{6.1,-9},{71.05,-9},{71.05,-2},{90,-2}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneLiquidVol.y, busConnector.Bone_LiquidVol)
                                                          annotation (Line(
             points={{6.1,-51},{71.05,-51},{71.05,-2},{90,-2}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
@@ -238,44 +234,38 @@ package Types "Physiological units with nominals"
         connect(busConnector, outputToFile.busConnector) annotation (Line(
             points={{16,18},{48,18},{48,58},{80,58}},
             color={255,204,51},
-            thickness=0.5,
-            smooth=Smooth.None));
+            thickness=0.5));
         connect(Bone_PO2.y, busConnector.Bone_PO2) annotation (Line(
             points={{-67.5,80},{-11.95,80},{-11.95,18},{16,18}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneBloodFlow.y, busConnector.Bone_BloodFlow)
                                                          annotation (Line(
             points={{-67.5,40},{-10.95,40},{-10.95,18},{16,18}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneO2Need.y, busConnector.Bone_O2Need)
                                                       annotation (Line(
             points={{-67.5,-24},{-10.95,-24},{-10.95,18},{16,18}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(BoneLiquidVol.y, busConnector.Bone_LiquidVol)
                                                          annotation (Line(
             points={{-67.5,-60},{-10.95,-60},{-10.95,18},{16,18}},
-            color={0,0,127},
-            smooth=Smooth.None), Text(
+            color={0,0,127}), Text(
             string="%second",
             index=1,
             extent={{6,3},{6,3}}));
         connect(busConnector, outputToFile_SI.busConnector) annotation (Line(
             points={{16,18},{48,18},{48,-16},{82,-16}},
             color={255,204,51},
-            thickness=0.5,
-            smooth=Smooth.None), Text(
+            thickness=0.5), Text(
             string="%first",
             index=-1,
             extent={{-6,3},{-6,3}}));

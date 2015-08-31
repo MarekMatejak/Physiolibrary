@@ -20,13 +20,11 @@ package Thermal
       connect(skinCirculation.q_in, bodyCore.port) annotation (Line(
           points={{16,-20},{0,-20}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.port, skinCirculation.q_out) annotation (Line(
           points={{12,14},{26,14},{26,-12}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
           Documentation(revisions=
                         "<html>
@@ -59,18 +57,15 @@ package Thermal
                                             annotation (Line(
           points={{26,32},{8,32},{8,30},{-12,30}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(muscleCirculation.q_in, body.port) annotation (Line(
           points={{16,-20},{-12,-20}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(muscle.q_in, muscleCirculation.q_out) annotation (Line(
           points={{26,32},{26,-12}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
           Documentation(revisions=
                         "<html>
@@ -166,104 +161,85 @@ package Thermal
       connect(core.q_in, muscleBloodFlow.q_in) annotation (Line(
           points={{-2,6},{-2,32},{22,32}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skeletalMuscle.q_in, muscleBloodFlow.q_out) annotation (Line(
           points={{46,52},{32,52},{32,40}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(core.q_in, urination.q_in) annotation (Line(
           points={{-2,6},{-6,6},{-6,-50},{-28,-50}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(core.q_in, lungsVapor.q_in) annotation (Line(
           points={{-2,6},{-2,76},{12,76}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skinBloodFlow.q_in, lungsVapor.q_in) annotation (Line(
           points={{-18,4},{-2,4},{-2,76},{12,76}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.q_in, skinBloodFlow.q_out) annotation (Line(
           points={{-58,14},{-28,14},{-28,12}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.q_in, insensibleVapor.q_in) annotation (Line(
           points={{-58,14},{-58,42},{-48,42}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(sweating.q_in, insensibleVapor.q_in) annotation (Line(
           points={{-44,68},{-58,68},{-58,42},{-48,42}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(GILumen.q_in, lumenVolume.port_a) annotation (Line(
           points={{50,-42},{40,-42},{40,-50},{32,-50}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(core.q_in, lumenVolume.port_b) annotation (Line(
           points={{-2,6},{2,6},{2,-50},{12,-50}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.q_in, air.port_b) annotation (Line(
           points={{-58,14},{-58,30},{-76,30},{-76,40}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.q_in, skinMetabolicHeat.port)
                                               annotation (Line(
           points={{-58,14},{-66,14},{-66,12},{-72,12}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(GILumen.q_in, foodHeatIntake.port)
                                              annotation (Line(
           points={{50,-42},{60,-42},{60,-38},{68,-38}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skeletalMuscle.q_in, muscleMetabolicHeat.port)
                                                           annotation (Line(
           points={{46,52},{58,52},{58,60},{68,60}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(core.q_in, coreMetabolicHeat.port)
                                               annotation (Line(
           points={{-2,6},{32,6},{32,4},{66,4}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skinBloodFlow.q_in, core.q_in) annotation (Line(
           points={{-18,4},{-12,4},{-12,6},{-2,6}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(GILumen.q_in,foodAbsorption. q_in)
                                              annotation (Line(
           points={{50,-42},{50,-22},{44,-22}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(foodAbsorption.q_out, core.q_in)
                                            annotation (Line(
           points={{24,-22},{2,-22},{2,6},{-2,6}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(ambient.port, air.port_a) annotation (Line(
           points={{-76,74},{-76,60}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation ( Documentation(revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -286,13 +262,11 @@ package Thermal
       connect(skinCirculation.q_in, core.port) annotation (Line(
           points={{16,-20},{-12,-20}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       connect(skin.port, skinCirculation.q_out) annotation (Line(
           points={{8,12},{26,12},{26,-12}},
           color={191,0,0},
-          thickness=1,
-          smooth=Smooth.None));
+          thickness=1));
       annotation (        experiment(StopTime=10000, Tolerance=1e-006),
           Documentation(revisions=
                         "<html>
