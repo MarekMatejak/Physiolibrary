@@ -417,8 +417,8 @@ package Icons "Icons for physiological models"
             lineColor={0,0,0},
             fillColor={241,241,241},
             fillPattern=FillPattern.Solid),
-          Line(points={{-90,0},{-70,0}}, color={0,0,0}),
-          Line(points={{70,0},{90,0}}, color={0,0,0})}));
+          Line(points={{-90,0},{-70,0}}),
+          Line(points={{70,0},{90,0}})}));
   end Resistor;
 
   class Lymph
@@ -1163,14 +1163,11 @@ package Icons "Icons for physiological models"
           Polygon(
             points={{-40,-60},{-40,-20},{-80,-40},{-40,-60}},
             pattern=LinePattern.None,
-            smooth=Smooth.None,
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid,
             lineColor={0,0,0}),
           Line(
-            points={{-80,10},{-80,-80},{-80,-80}},
-            color={0,0,0},
-            smooth=Smooth.None)}));
+            points={{-80,10},{-80,-80},{-80,-80}})}));
   end ConservationLaw;
 
   class Nephron

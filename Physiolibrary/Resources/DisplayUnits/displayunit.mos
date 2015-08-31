@@ -26,7 +26,7 @@ defineUnitConversion("W", "cal/min", 60/4.1868 );               //flow
 defineUnitConversion("W/kg", "cal/(g.min)", 60/4186.8 );               //power per mass
 
 //Pharmacological international units of human secreted substances (http://www.who.int/bloodproducts/catalogue/Alph2014.pdf?ua=1)
-defineUnitConversion("1", "iu", 1 ); 
+defineUnitConversion("1", "iu", 1 );
 defineUnitConversion("1/m3", "iu/l", 1e-3 );
 defineUnitConversion("1/s", "iu/min", 60 );
 defineUnitConversion("J", "cal/iu", 1/4.1868 );
@@ -37,7 +37,7 @@ defineUnitConversion("J", "cal/Gu", 1/4.1868 );
 //Be carefull - most of the following substances still do not have precisely measured molar amount of international unit !!!
 //Following estimations are from some purified preparations:
 //1 IU (Insulin) = 38.46 ug = 6.622 nmol  (5.808 kDa, WHO Expert Committee on Biological Standardisation (1987). 37th Report. WHO Tech Rep Ser No 760, pg.25)
-//defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 ); 
+//defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 );
 //defineUnitConversion("mol/m3", "U_Insulin/m3", 1/6.622e-9 );
 //defineUnitConversion("mol/m3", "uU_Insulin/l", 1e3/6.622e-9 );
 //defineUnitConversion("mol/m3", "uU_Insulin/ml", 1/6.622e-9 );
@@ -149,8 +149,8 @@ defineUnitConversion("mol/m3", "mosm/l", 1 );
 defineUnitConversion("mol/m3", "mosm/ml", 10^(-3) );
 defineUnitConversion("mol/s", "mosm/min", (10^3)*60 );
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (10^6)*133.322387415*60 ); //osmotic permeability
-defineUnitConversion("m3/(Pa.s)", "ml/(kPa.min)", (10^9)*60 ); 
-defineUnitConversion("m3/(Pa.s)", "l/(kPa.d)", (10^6)*60*60*24 ); 
+defineUnitConversion("m3/(Pa.s)", "ml/(kPa.min)", (10^9)*60 );
+defineUnitConversion("m3/(Pa.s)", "l/(kPa.d)", (10^6)*60*60*24 );
 
 //Gases
 defineUnitConversion("mol", "litre_STP",  22.71095322615 ); //STP: 100Pa, 0degC
