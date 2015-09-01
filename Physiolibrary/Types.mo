@@ -25,7 +25,7 @@ package Types "Physiological units with nominals"
 </html>"));
   end NewType;
 
-  annotation (__Dymola_DocumentationClass=true, Documentation(info="<html>
+  annotation (DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
 <table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
