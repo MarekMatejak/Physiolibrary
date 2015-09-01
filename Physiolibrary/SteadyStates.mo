@@ -865,7 +865,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Boolean useTotalInput = false
         "=true, if total mass/energy is used as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Energy Total = 1
         "Total mass/energy if useTotalAsInput=false"
@@ -917,7 +917,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Boolean useTotalInput = false
         "=true, if total mass/energy is used as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Volume Total = 1
         "Total mass/energy if useTotalAsInput=false"
@@ -968,7 +968,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Boolean useTotalInput = false
         "=true, if total mass/energy is used as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.AmountOfSubstance Total = 1
         "Total mass/energy if useTotalAsInput=false"
@@ -1022,7 +1022,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Boolean useTotalInput = false
         "=true, if total mass/energy is used as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.ElectricCharge Total = 1
         "Total mass/energy if useTotalAsInput=false"
@@ -1076,7 +1076,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
 
       parameter Boolean useTotalInput = false
         "=true, if total mass/energy is used as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.ElectricCharge Total = 1
         "Total mass/energy if useTotalAsInput=false"

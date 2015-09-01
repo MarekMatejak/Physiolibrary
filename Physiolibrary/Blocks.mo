@@ -150,7 +150,7 @@ This is discussed in the description of package
 
           parameter Boolean useBaseInput = false
         "=true, if exponential base input is used instead of parameter Base"
-          annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+          annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
           parameter Real Base=10 "exponential base if useBaseInput=false"
             annotation (Dialog(enable=not useBaseInput));

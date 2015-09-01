@@ -313,7 +313,7 @@ package Thermal
         "Shift of absolute zero temperature to normal body values";
 
       parameter Boolean useMassInput = false "=true, if mass input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Mass Weight=1 "Total mass weight if useMassInput=false"
         annotation (Dialog(enable=not useMassInput));
@@ -391,7 +391,7 @@ package Thermal
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.ThermalConductance Conductance=0
         "Thermal conductance if useConductanceInput=false"
@@ -486,7 +486,7 @@ package Thermal
 
       parameter Boolean useTemperatureInput = false
         "=true, if fixed temperature is from input instead of parameter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
        parameter Types.Temperature T = 0
         "Fixed temperature at port if useTemperatureInput=false"
@@ -717,7 +717,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 
       parameter Boolean useMassFlowInput = false
         "=true, if mass flow input is used instead of parameter MassFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.MassFlowRate MassFlow=0
         "Mass flow if useMassFlowInput=false"
@@ -741,7 +741,7 @@ i.e., it defines a fixed temperature as a boundary condition.
 
       parameter Boolean useTemperatureInput = false
         "=true, if temperature input is used instead of parameter T"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Temperature T=0
         "Temperature if useTemperatureInput=false"
