@@ -279,7 +279,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useImpermeableSolutesInput = false
         "=true, if impermeable substance amount as an input"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.AmountOfSubstance ImpermeableSolutes[NumberOfMembraneTypes]=zeros(NumberOfMembraneTypes)
         "Amount of impermeable substance if useImpermeableSolutesInput=false"
@@ -330,7 +330,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
      parameter Boolean useConductanceInput = false
         "=true, if membrane permeability input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
      parameter Types.OsmoticPermeability cond=1e-15
         "Membrane permeability for solvent if useConductanceInput = false"
@@ -338,7 +338,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useHydraulicPressureInputs = false
         "=true, if hydraulic pressure inputs is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Pressure HydraulicPressureIn=0
         "Hydraulic pressure inside if useHydraulicPressureInputs=false"
@@ -359,7 +359,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useTemperatureInputs = false
         "=true, if temperature on both sides is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Temperature T=310.15
         "Temperature on both membrane sides if  useTemperatureInputs=false"
@@ -468,7 +468,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
        parameter Boolean useHydraulicPressureInputs = false
         "=true, if hydraulic pressure inputs is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Pressure HydraulicPressureIn=0
         "Hydraulic pressure inside of leaving overflow (e.g. blood pressure after capillary net) if useHydraulicPressureInputs=false"
@@ -492,7 +492,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useTemperatureInputs = false
         "=true, if temperature on both sides is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Temperature T=310.15
         "Temperature on both membrane sides if  useTemperatureInputs=false"
@@ -605,7 +605,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useExternalOutflowMin = false
         "=true, if minimal outflow is garanted"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.VolumeFlowRate OutflowMin = 0
         "Minimal outflow if useExternalOutflowMin=false"
@@ -753,7 +753,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 
       parameter Boolean useOsmolarityInput = false
         "=true, if fixed osmolarity at port is from input instead of parameter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
        parameter Types.Osmolarity Osm = 0
         "Fixed osmolarity at port if useOsmolarityInput=false"

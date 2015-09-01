@@ -1008,7 +1008,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.HydraulicConductance Conductance=0
         "Hydraulic conductance if useConductanceInput=false"
@@ -1057,7 +1057,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
        parameter Boolean useV0Input = false
         "=true, if zero-pressure-volume input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
        parameter Types.Volume ZeroPressureVolume = 1e-11
         "Maximal volume, that does not generate pressure if useV0Input=false"
@@ -1073,7 +1073,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             origin={-80,80})));
       parameter Boolean useComplianceInput = false
         "=true, if compliance input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.HydraulicCompliance Compliance = 1
         "Compliance if useComplianceInput=false"
         annotation (Dialog(enable=not useComplianceInput));
@@ -1085,7 +1085,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             origin={0,80})));
       parameter Boolean useExternalPressureInput = false
         "=true, if external pressure input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.Pressure ExternalPressure=0
         "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
         annotation (Dialog(enable=not useExternalPressureInput));
@@ -1208,7 +1208,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                              annotation (Placement(
             transformation(extent={{66,-74},{94,-46}})));
       parameter Boolean useHeightInput = false "=true, if height input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.Height H=0
         "Height of hydrostatic column if useHeightInput=false"
         annotation (Dialog(enable=not useFlowInput));
@@ -1221,7 +1221,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Modelica.SIunits.Density ro=1060; //liquid density
       parameter Boolean useExternalG = false
         "=true, if external gravity acceleration is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.Acceleration GravityAcceleration = 9.81
         "Gravity acceleration if useExternalG=false"
         annotation (Dialog(enable=not useExternalG));
@@ -1233,7 +1233,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             origin={0,-100})));
       parameter Boolean usePumpEffect = false
         "=true, if musce pump effect is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       Types.RealIO.FractionInput
                             pumpEffect(start=PumpEffect)=pe if       usePumpEffect      annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
@@ -1343,7 +1343,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                 -60},{-60,-20}})));
       parameter Boolean useExternalOutflowMin = false
         "=true, if minimal outflow is garanted"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.VolumeFlowRate OutflowMin = 0
         "Minimal outflow if useExternalOutflowMin=false"
         annotation (Dialog(enable=not useExternalOutflowMin));
@@ -1401,7 +1401,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         "Forward threshold pressure";
       parameter Boolean useLimitationInputs = false
         "=true, if Gon and Goff are from inputs"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       Types.RealIO.HydraulicConductanceInput Gon(start=_Gon)=gon if useLimitationInputs
         "open valve conductance = infinity for ideal case" annotation (Placement(
             transformation(
@@ -1652,7 +1652,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       model UnlimitedVolume "Prescribed pressure at port"
         parameter Boolean usePressureInput = false
         "=true, if pressure input is used"
-          annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+          annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
         parameter Types.Pressure P=0
         "Hydraulic pressure if usePressureInput=false"
@@ -1869,7 +1869,7 @@ Connector with one flow signal of type Real.
 
       parameter Boolean useSolutionFlowInput = false
         "=true, if solution flow input is used instead of parameter SolutionFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.VolumeFlowRate SolutionFlow=0
         "Volumetric flow of solution if useSolutionFlowInput=false"

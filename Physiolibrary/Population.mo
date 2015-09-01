@@ -387,7 +387,7 @@ Connector with one flow signal of type Real.
 
       parameter Boolean useChangeInput = false
         "=true, if real input connector is used instead of parameter PopulationChange"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.PopulationChange PopulationChange=0
         "Population change if useChangeInput=false"
@@ -414,7 +414,7 @@ Connector with one flow signal of type Real.
 
       parameter Boolean useChangePerMemberInput = false
         "=true, if real input connector is used instead of parameter LifeTime"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Time LifeTime=1e-8
         "Mean life time for population (=1.44*halftime) if useChangePerMember=false"

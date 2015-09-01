@@ -3282,11 +3282,11 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean useDissociationConstantInput = false
         "=true, if external dissociation ratio is used"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Boolean useForwardRateInput = false
         "=true, if external forward rate is used"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       Modelica.Blocks.Interfaces.RealInput dissociationConstant(start=K) = KBase if useDissociationConstantInput
         "Dissociation coefficient [SI-unit]"
@@ -3647,7 +3647,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean useConductanceInput = false
         "=true, if external conductance value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.DiffusionPermeability Conductance=0
         "Diffusion conductance if useConductanceInput=false"
@@ -3696,7 +3696,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean usePermeabilityInput = false
         "=true, if external permeability value is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       Interfaces.ChemicalPort_a particlesInside[NumberOfParticles]
         "inner side of membrane, solution"
@@ -3844,7 +3844,7 @@ package Chemical "Please use 'Chemical' library instead!"
     //system internal heat
       parameter Boolean useInternalHeatsInput = false
         "=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs",tab="Heat"));
 
       parameter Types.MolarEnergy SubunitEnthalpies[NumberOfSubunits]=zeros(NumberOfSubunits)
         "Enthalpy changes of substances (can relative to one chosen specific form of chemical substance in the system) if useEnthalpiesInput=false"
@@ -4175,7 +4175,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean useDilutionInput = false
         "=true, if dilition input is used"
-        annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.Fraction Dilution=1
         "Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false"
@@ -4212,15 +4212,15 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean useEffect = false
         "=true, if reabsorption fraction is BaseReabsorption^(1/Effect)"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Boolean useMaxReabInput = false
         "=true, if external maximum of reabsorption molar flow is used"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Boolean useBaseReabsorption = false
         "=false, if BaseReabsorption=1"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.MolarFlowRate MaxReabsorption = Modelica.Constants.inf
         "Maximal reabsorption molar flow if useMaxReabInput=false"
@@ -4431,7 +4431,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean useConcentrationInput = false
         "=true, if fixed concentration is from input instead of parameter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
        parameter Types.Concentration Conc = 0
         "Fixed concentration if useConcentrationInput=false"
@@ -4511,7 +4511,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Boolean usePartialPressureInput = false
         "=true, if fixed partial pressure is from input instead of parameter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
        parameter Types.Pressure PartialPressure = 0
         "Fixed partial pressure if usePartialPressureInput=false"
@@ -4719,7 +4719,7 @@ Connector with one flow signal of type Real.
       "Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network"
 
       parameter Boolean useHeatPort = false "=true, if HeatPort is enabled"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true), Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true), Dialog(group="External inputs/outputs"));
       parameter Types.Temperature T=310.15
         "Fixed device temperature if useHeatPort = false"
         annotation ( HideResult=true, Dialog(enable=not useHeatPort,tab="Temperature dependence"));
@@ -4771,7 +4771,7 @@ on the model behaviour.
 
       parameter Boolean useNormalizedVolume = true
         "Normalized volume of solution is 1 liter"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       Types.Volume volume "Solution volume"; //annotation(HideResult=useNormalizedVolume);
 
@@ -4792,7 +4792,7 @@ on the model behaviour.
 
       parameter Boolean useSoluteFlowInput = false
         "=true, if solute flow input is used instead of parameter SoluteFlow"
-      annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+      annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
       parameter Types.MolarFlowRate SoluteFlow=0
         "Volumetric flow of solute if useSoluteFlowInput=false"
