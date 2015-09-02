@@ -1407,7 +1407,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Types.HydraulicConductance _Goff(final min=0, displayUnit="l/(mmHg.min)") = 1.2501026264094e-12
         "Backward state-off conductance (closed valve conductance)"
         annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (l/min)/mmHg
-      parameter Types.Pressure Pknee(final min=0, start=0)
+      parameter Types.Pressure Pknee(final min=0) = 0
         "Forward threshold pressure";
       parameter Boolean useLimitationInputs = false
         "=true, if Gon and Goff are from inputs"
