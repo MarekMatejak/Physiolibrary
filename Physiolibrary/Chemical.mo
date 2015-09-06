@@ -127,8 +127,8 @@ package Chemical "Please use 'Chemical' library instead!"
          parameter Types.Concentration Km = 0.1
         "Michaelis constant = substrate concentration at rate of half Vmax";
 
-      Physiolibrary.Chemical.Components.Substance ES(solute_start=0, Simulation
-          =Types.SimulationType.SteadyState)
+      Physiolibrary.Chemical.Components.Substance ES(solute_start=0, Simulation=
+           Types.SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
       Physiolibrary.Chemical.Components.Substance E(
         solute_start=tE,
@@ -4374,7 +4374,7 @@ package Chemical "Please use 'Chemical' library instead!"
       Interfaces.ChemicalPort_a q_in
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
     equation
-      concentration = q_in.conc + addition/q;
+      concentration = if (q>0) then q_in.conc + addition/q else q_in.conc;
       q_in.q=0;
 
      annotation (
