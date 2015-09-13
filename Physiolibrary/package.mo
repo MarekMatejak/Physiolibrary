@@ -109,29 +109,6 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 </html>"));
   end Connectors;
 
-    class BSD "BSD 3-Clause License"
-       extends Modelica.Icons.Information;
-      annotation (Documentation(info="<html>
-<p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &QUOT;Physiolibrary&QUOT; are licensed by <u><b>Marek Matejak</b></u> under the <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD 3-Clause License</a> (with exception of files &QUOT;Resources/*&QUOT;). </p>
-<h4>Licensor:</h4>
-<p>Marek Matej&aacute;k,</p>
-<p>Hviezdoslavova 632/41,</p>
-<p>916 01 Star&aacute; Tur&aacute;, </p>
-<p>Slovak Republic,</p>
-<p>email: marek@matfyz.cz</p>
-<h4><span style=\"color:#008000\">Organization: </span></h4>
-<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,</p>
-<p>U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
-<p><br><h4>Copyright notices of the files:</h4></p>
-<p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague</p>
-<p><br>All rights reserved. </p>
-<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
-<p>1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </p>
-<p>2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </p>
-<p>3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </p>
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-</html>"));
-    end BSD;
 
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
@@ -321,6 +298,47 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 </html>"));
   end ReleaseNotes;
 
+
+  class Contact "Contact"
+    extends Modelica.Icons.Contact;
+
+   annotation (Documentation(info="<html>
+<p>Marek Matejak</p>
+<p>email: marek@matfy.cz</p>
+<p>skype: marek.matejak</p>
+<p>tel: +420 776 301 395</p>
+<p><br>Graphics of icons:</p>
+<p>Martin Broz,</p>
+<p>Veronika Sykorova</p>
+<p>email: elvenfall@gmail.com</p>
+</html>"));
+
+  end Contact;
+
+    class License "BSD 3-Clause License"
+       extends Modelica.Icons.Information;
+      annotation (Documentation(info="<html>
+<p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &QUOT;Physiolibrary&QUOT; are licensed by <u><b>Marek Matejak</b></u> under the <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD 3-Clause License</a> (with exception of files &QUOT;Resources/*&QUOT;). </p>
+<h4>Licensor:</h4>
+<p>Marek Matej&aacute;k,</p>
+<p>Hviezdoslavova 632/41,</p>
+<p>916 01 Star&aacute; Tur&aacute;, </p>
+<p>Slovak Republic,</p>
+<p>email: marek@matfyz.cz</p>
+<h4><span style=\"color:#008000\">Organization: </span></h4>
+<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,</p>
+<p>U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
+<p><br><h4>Copyright notices of the files:</h4></p>
+<p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague</p>
+<p><br>All rights reserved. </p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
+<p>1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </p>
+<p>2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </p>
+<p>3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</html>"));
+    end License;
+
   class NewRealease "Publishing new release"
     extends Modelica.Icons.Information;
 
@@ -348,22 +366,6 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
 </ul>
 </html>"));
   end NewRealease;
-
-  class Contact "Contact"
-    extends Modelica.Icons.Contact;
-
-   annotation (Documentation(info="<html>
-<p>Marek Matejak</p>
-<p>email: marek@matfy.cz</p>
-<p>skype: marek.matejak</p>
-<p>tel: +420 776 301 395</p>
-<p><br>Graphics of icons:</p>
-<p>Martin Broz,</p>
-<p>Veronika Sykorova</p>
-<p>email: elvenfall@gmail.com</p>
-</html>"));
-
-  end Contact;
 
   annotation (DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
