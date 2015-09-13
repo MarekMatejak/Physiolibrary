@@ -1029,16 +1029,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                 -100,-100},{100,100}}),
                        graphics={Text(
-              aorticInertia.extent=
-                     {{-220,-40},{200,-80}},
-              aorticInertia.lineColor=
-                        {0,0,255},
-              aorticInertia.fillColor=
-                        {58,117,175},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid,
-              aorticInertia.textString=
-                         "%name")}),
+              extent={{-220,-40},{200,-80}},
+              lineColor={0,0,255},
+              fillColor={58,117,175},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}),
         Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1144,12 +1139,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                 100,100}}), graphics={Text(
-              aorticInertia.extent=
-                     {{-318,-140},{160,-100}},
-              aorticInertia.textString=
-                         "%name",
-              aorticInertia.lineColor=
-                        {0,0,255})}),        Documentation(revisions="<html>
+              extent={{-318,-140},{160,-100}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <p><i>2009-2014 - </i>Marek Matejak, Charles University, Prague, Czech Republic</p>
 <ul>
 <li>initial implementation </li>
@@ -1178,30 +1170,19 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={
             Rectangle(
-              aorticInertia.extent=
-                     {{-100,-50},{100,60}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.fillColor=
-                        {255,255,255},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid),
+              extent={{-100,-50},{100,60}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
             Polygon(
-              aorticInertia.points=
-                     {{-80,25},{80,0},{-80,-25},{-80,25}},
-              aorticInertia.lineColor=
-                        {0,0,127},
-              aorticInertia.fillColor=
-                        {0,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid),
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
             Text(
-              aorticInertia.extent=
-                     {{-150,-90},{150,-50}},
-              aorticInertia.textString=
-                         "%name",
-              aorticInertia.lineColor=
-                        {0,0,255})}),        Documentation(revisions="<html>
+              extent={{-150,-90},{150,-50}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
 <table>
 <tr>
 <td>Author:</td>
@@ -1394,12 +1375,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
                 {100,100}}),       graphics={Text(
-              aorticInertia.extent=
-                     {{-100,130},{100,108}},
-              aorticInertia.lineColor=
-                        {0,0,255},
-              aorticInertia.textString=
-                         "%name")}),        Documentation(revisions="<html>
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}),        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>",     info="<html>
@@ -1461,34 +1439,21 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}),
                              graphics={Polygon(
-              aorticInertia.points=
-                     {{-76,66},{-76,-82},{34,-10},{34,12},{-66,68},{-76,74},{
+              points={{-76,66},{-76,-82},{34,-10},{34,12},{-66,68},{-76,74},{
                   -76,66}},
-              aorticInertia.lineColor=
-                        {0,0,127},
-              aorticInertia.fillColor=
-                        {0,0,255},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid), Rectangle(
-              aorticInertia.extent=
-                     {{40,96},{68,-94}},
-              aorticInertia.lineColor=
-                        {0,0,127},
-              aorticInertia.fillColor=
-                        {0,0,255},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid),
+              lineColor={0,0,127},
+              fillColor={0,0,255},
+              fillPattern=FillPattern.Solid), Rectangle(
+              extent={{40,96},{68,-94}},
+              lineColor={0,0,127},
+              fillColor={0,0,255},
+              fillPattern=FillPattern.Solid),
             Text(
-              aorticInertia.extent=
-                     {{-188,-96},{192,-118}},
-              aorticInertia.lineColor=
-                        {255,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Sphere,
-              aorticInertia.fillColor=
-                        {255,85,85},
-              aorticInertia.textString=
-                         "%name")}),
+              extent={{-188,-96},{192,-118}},
+              lineColor={255,0,0},
+              fillPattern=FillPattern.Sphere,
+              fillColor={255,85,85},
+              textString="%name")}),
         Documentation(info="<html>
 <p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
 </html>", revisions="<html>
@@ -1497,6 +1462,95 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end IdealValve;
 
+    model VesselSegment
+      "Vessel segment with resistance, inductance and compliance properties"
+       extends Modelica.Icons.UnderConstruction;
+
+      parameter Physiolibrary.Types.Height length "Length of the vessel";
+      parameter Physiolibrary.Types.Height radius
+        "Internal radius of the vessel";
+      parameter Physiolibrary.Types.Height wallWidth "Width of the vassel wall";
+      parameter Physiolibrary.Types.Pressure E
+        "Young's elactic modulus of the wall of the vessels";
+
+      parameter Real viscosity = 0.04 "Blood viscosity";
+      parameter Real density = 1050 "Blood density";
+
+      parameter Boolean isTerminal "Is it the segment before bifurcation?";
+
+      parameter Physiolibrary.Types.Fraction reflectionCoef = 0.8
+        "Reflection coefficient";
+      parameter Real freq "Angular frequency";
+      parameter Real angle
+        "The phase lead of pressure in relation to wall displacement";
+
+      parameter Real viscoelasticity = 15 "Wall viscoelacticity of the segment";
+      parameter Real sigma "Poisson ratio for arterial wall";
+
+      parameter Real pulseWaveVelocity "Pulse wave velocity";
+
+      function fact
+        input Integer n;
+        output Real y;
+      algorithm
+        y := 1;
+        for
+         k in 2:n loop
+          y := y*k;
+        end for;
+      end fact;
+
+      function Bessel
+         input Integer m;
+         input Complex x;
+         input Integer N = 20;
+         output Complex y;
+      algorithm
+         y := Complex(0,0);
+         for k in 0:N loop
+           y := y + ((-1)^k / (2^(2*k+m)*fact(k)*fact(m+k))) * x^(2*k+m);
+         end for;
+      end Bessel;
+
+      parameter Real alpha = radius*sqrt(freq*density/viscosity);
+      parameter Complex F10= 2*Bessel(1,alpha*Modelica.ComplexMath.j^(3/2))/(alpha*Bessel(0,alpha*Modelica.ComplexMath.j^(3/2))* Modelica.ComplexMath.j^(3/2))
+        "special expression";
+
+      parameter Complex impedance = ((density*pulseWaveVelocity/(sqrt(1-sigma^2)))*(1-F10)^(-1/2)) * Complex(cos(angle/2),sin(angle/2))
+        "Impedance of the vessel"; //Physiolibrary.Types.HydraulicResistance
+
+      Conductor conductor(Conductance = 1/((8*viscosity*length/(Modelica.Constants.pi*radius^4)) + (if
+                                                                                                    (isTerminal) then Modelica.ComplexMath.real(impedance)*(1+reflectionCoef)/(1-reflectionCoef) else 1)))
+        annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+      Inertia inertia(I=(9*density*length/(4*Modelica.Constants.pi*radius^2)))
+        annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
+      ElasticVessel elasticVessel(Compliance=(3*Modelica.Constants.pi*(radius^3)*length/(2*E*wallWidth)))
+        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      Interfaces.HydraulicPort_a
+                           q_in "Volume inflow" annotation (Placement(
+            transformation(extent={{-114,-14},{-86,14}})));
+      Interfaces.HydraulicPort_b
+                           q_out "Volume outflow"
+                             annotation (Placement(
+            transformation(extent={{86,-14},{114,14}})));
+    equation
+      connect(q_in, conductor.q_in) annotation (Line(
+          points={{-100,0},{-86,0},{-86,2.22045e-016},{-68,2.22045e-016}},
+          thickness=1));
+      connect(conductor.q_out, inertia.q_in) annotation (Line(
+          points={{-48,0},{-14,0}},
+          thickness=1));
+      connect(inertia.q_out, elasticVessel.q_in) annotation (Line(
+          points={{6,0},{50,0}},
+          thickness=1));
+      connect(elasticVessel.q_in, q_out) annotation (Line(
+          points={{50,0},{100,0}},
+          thickness=1));
+      annotation ( Documentation(info="<html>
+<p>The segment becommest from the Avolio&apos;s model of arterial tree: </p>
+<p>http://staff.ustc.edu.cn/~yhe/avolio-arterial-system-model.pdf</p>
+</html>"));
+    end VesselSegment;
   end Components;
 
   package Sensors
@@ -1759,36 +1813,21 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         defaultComponentName="port_a",
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Rectangle(
-              aorticInertia.extent=
-                     {{-20,10},{20,-10}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.lineThickness=
-                            1), Polygon(
-              aorticInertia.points=
-                     {{-1.22465e-014,100},{100,1.22465e-014},{1.22465e-014,-100},
+              extent={{-20,10},{20,-10}},
+              lineColor={0,0,0},
+              lineThickness=1), Polygon(
+              points={{-1.22465e-014,100},{100,1.22465e-014},{1.22465e-014,-100},
                   {-100,-1.22465e-014},{-1.22465e-014,100}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid,
-              aorticInertia.fillColor=
-                        {0,0,0},
-              aorticInertia.rotation=
-                       180)}),
+              lineColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={0,0,0},
+              rotation=180)}),
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Polygon(
-              aorticInertia.points=
-                     {{0,50},{50,0},{0,-50},{-50,0},{0,50}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid,
-              aorticInertia.fillColor=
-                        {0,0,0}),Text(aorticInertia.extent=
-                                             {{-112,118},{88,58}},
-                aorticInertia.lineColor =                                        {0,0,0},
-                aorticInertia.textString =                                                             "%name")}),
+              points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={0,0,0}),Text(extent={{-112,118},{88,58}},   lineColor=  {0,0,0}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1806,33 +1845,19 @@ Connector with one flow signal of type Real.
         defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Rectangle(
-              aorticInertia.extent=
-                     {{-20,10},{20,-10}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.lineThickness=
-                            1), Polygon(
-              aorticInertia.points=
-                     {{0,100},{100,0},{0,-100},{-100,0},{0,100}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid,
-              aorticInertia.fillColor=
-                        {200,200,200})}),
+              extent={{-20,10},{20,-10}},
+              lineColor={0,0,0},
+              lineThickness=1), Polygon(
+              points={{0,100},{100,0},{0,-100},{-100,0},{0,100}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={200,200,200})}),
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Polygon(
-              aorticInertia.points=
-                     {{0,50},{50,0},{0,-50},{-50,0},{0,50}},
-              aorticInertia.lineColor=
-                        {0,0,0},
-              aorticInertia.fillPattern=
-                          FillPattern.Solid,
-              aorticInertia.fillColor=
-                        {200,200,200}),Text(aorticInertia.extent=
-                                                     {{-160,110},{40,50}},
-                aorticInertia.lineColor =                                              {0,0,0},
-                aorticInertia.textString =                                                                   "%name")}));
+              points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"
