@@ -124,7 +124,7 @@ Download [Physiolibrary 2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
  * Support of equilibrated systems
  * Support for expandable inputs/outputs/tests lists
 
-## License
+## License (BSD 3-Clause)
 
 Copyright (c) 2008-2015, Marek Mateják, Charles University in Prague
 

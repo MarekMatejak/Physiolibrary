@@ -1462,95 +1462,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end IdealValve;
 
-    model VesselSegment
-      "Vessel segment with resistance, inductance and compliance properties"
-       extends Modelica.Icons.UnderConstruction;
-
-      parameter Physiolibrary.Types.Height length "Length of the vessel";
-      parameter Physiolibrary.Types.Height radius
-        "Internal radius of the vessel";
-      parameter Physiolibrary.Types.Height wallWidth "Width of the vassel wall";
-      parameter Physiolibrary.Types.Pressure E
-        "Young's elactic modulus of the wall of the vessels";
-
-      parameter Real viscosity = 0.04 "Blood viscosity";
-      parameter Real density = 1050 "Blood density";
-
-      parameter Boolean isTerminal "Is it the segment before bifurcation?";
-
-      parameter Physiolibrary.Types.Fraction reflectionCoef = 0.8
-        "Reflection coefficient";
-      parameter Real freq "Angular frequency";
-      parameter Real angle
-        "The phase lead of pressure in relation to wall displacement";
-
-      parameter Real viscoelasticity = 15 "Wall viscoelacticity of the segment";
-      parameter Real sigma "Poisson ratio for arterial wall";
-
-      parameter Real pulseWaveVelocity "Pulse wave velocity";
-
-      function fact
-        input Integer n;
-        output Real y;
-      algorithm
-        y := 1;
-        for
-         k in 2:n loop
-          y := y*k;
-        end for;
-      end fact;
-
-      function Bessel
-         input Integer m;
-         input Complex x;
-         input Integer N = 20;
-         output Complex y;
-      algorithm
-         y := Complex(0,0);
-         for k in 0:N loop
-           y := y + ((-1)^k / (2^(2*k+m)*fact(k)*fact(m+k))) * x^(2*k+m);
-         end for;
-      end Bessel;
-
-      parameter Real alpha = radius*sqrt(freq*density/viscosity);
-      parameter Complex F10= 2*Bessel(1,alpha*Modelica.ComplexMath.j^(3/2))/(alpha*Bessel(0,alpha*Modelica.ComplexMath.j^(3/2))* Modelica.ComplexMath.j^(3/2))
-        "special expression";
-
-      parameter Complex impedance = ((density*pulseWaveVelocity/(sqrt(1-sigma^2)))*(1-F10)^(-1/2)) * Complex(cos(angle/2),sin(angle/2))
-        "Impedance of the vessel"; //Physiolibrary.Types.HydraulicResistance
-
-      Conductor conductor(Conductance = 1/((8*viscosity*length/(Modelica.Constants.pi*radius^4)) + (if
-                                                                                                    (isTerminal) then Modelica.ComplexMath.real(impedance)*(1+reflectionCoef)/(1-reflectionCoef) else 1)))
-        annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
-      Inertia inertia(I=(9*density*length/(4*Modelica.Constants.pi*radius^2)))
-        annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
-      ElasticVessel elasticVessel(Compliance=(3*Modelica.Constants.pi*(radius^3)*length/(2*E*wallWidth)))
-        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-      Interfaces.HydraulicPort_a
-                           q_in "Volume inflow" annotation (Placement(
-            transformation(extent={{-114,-14},{-86,14}})));
-      Interfaces.HydraulicPort_b
-                           q_out "Volume outflow"
-                             annotation (Placement(
-            transformation(extent={{86,-14},{114,14}})));
-    equation
-      connect(q_in, conductor.q_in) annotation (Line(
-          points={{-100,0},{-86,0},{-86,2.22045e-016},{-68,2.22045e-016}},
-          thickness=1));
-      connect(conductor.q_out, inertia.q_in) annotation (Line(
-          points={{-48,0},{-14,0}},
-          thickness=1));
-      connect(inertia.q_out, elasticVessel.q_in) annotation (Line(
-          points={{6,0},{50,0}},
-          thickness=1));
-      connect(elasticVessel.q_in, q_out) annotation (Line(
-          points={{50,0},{100,0}},
-          thickness=1));
-      annotation ( Documentation(info="<html>
-<p>The segment becommest from the Avolio&apos;s model of arterial tree: </p>
-<p>http://staff.ustc.edu.cn/~yhe/avolio-arterial-system-model.pdf</p>
-</html>"));
-    end VesselSegment;
   end Components;
 
   package Sensors
@@ -1827,7 +1738,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
               lineColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent={{-112,118},{88,58}},   lineColor=  {0,0,0}, textString=  "%name")}),
+              fillColor={0,0,0}),Text(extent={{-112,118},{88,58}},   lineColor = {0,0,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1857,7 +1768,7 @@ Connector with one flow signal of type Real.
               points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
               lineColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
+              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"
