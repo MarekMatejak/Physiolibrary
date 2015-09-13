@@ -110,17 +110,19 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
   end Connectors;
 
     class BSD "BSD 3-Clause License"
-
+       extends Modelica.Icons.Information;
       annotation (Documentation(info="<html>
-<p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &QUOT;Physiolibrary&QUOT; are licensed by <u><b>Marek Matejak</b></u> under the <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD license</a> (with exception of files &QUOT;Resources/*&QUOT;). </p>
+<p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &QUOT;Physiolibrary&QUOT; are licensed by <u><b>Marek Matejak</b></u> under the <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD 3-Clause License</a> (with exception of files &QUOT;Resources/*&QUOT;). </p>
 <h4>Licensor:</h4>
 <p>Marek Matej&aacute;k,</p>
 <p>Hviezdoslavova 632/41,</p>
 <p>916 01 Star&aacute; Tur&aacute;, </p>
-<p>Slovak Republic, </p>
-<p>Charles University in Prague, Czech Republic</p>
-<p><br>email: marek@matfyz.cz</p>
-<h4>Copyright notices of the files:</h4>
+<p>Slovak Republic,</p>
+<p>email: marek@matfyz.cz</p>
+<h4><span style=\"color:#008000\">Organization: </span></h4>
+<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,</p>
+<p>U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
+<p><br><h4>Copyright notices of the files:</h4></p>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague</p>
 <p><br>All rights reserved. </p>
 <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
@@ -403,14 +405,6 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
   end UsersGuide;
 
 
-
-
-
-
-
-
-
-
   annotation (preferredView="info",
 version="2.3.1",
 versionBuild=1,
@@ -431,9 +425,15 @@ conversion(
   from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
   from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_2.3.mos")),
   Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2015, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
+<p>All rights reserved. </p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
+<ol>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ol>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </html>", info="<html>
 <ul>
 <li>Web pages: <a href=\"http://www.physiolibrary.org\">www.physiolibrary.org</a></li>

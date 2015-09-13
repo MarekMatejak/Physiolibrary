@@ -1697,22 +1697,33 @@ package Types "Physiological units with nominals"
       "input Acceleration as connector"
       annotation (defaultComponentName="acceleration",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type Acceleration.
@@ -2162,22 +2173,33 @@ package Types "Physiological units with nominals"
     connector HeightInput = input Height "input Height as connector"
       annotation (defaultComponentName="height",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type Height.
@@ -2422,22 +2444,33 @@ package Types "Physiological units with nominals"
     connector PressureInput = input Pressure "input Pressure as connector"
       annotation (defaultComponentName="pressure",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type Pressure.
@@ -2474,22 +2507,33 @@ package Types "Physiological units with nominals"
     connector VolumeInput = input Volume "input Volume as connector"
       annotation (defaultComponentName="volume",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type Volume.
@@ -2502,21 +2546,32 @@ package Types "Physiological units with nominals"
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {255,255,255},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)}),
       Diagram(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{-100,50},{0,0},{-100,-50},{-100,50}},
-              lineColor={0,0,127},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{30,110},{30,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{-100,50},{0,0},{-100,-50},{-100,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {255,255,255},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{30,110},{30,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
   <p>
   Connector with one output signal of type Real.
@@ -2527,22 +2582,33 @@ package Types "Physiological units with nominals"
       "input VolumeFlowRate as connector"
       annotation (defaultComponentName="volumeflowrate",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type VolumeFlowRate.
@@ -2792,22 +2858,33 @@ package Types "Physiological units with nominals"
     connector FractionInput = input Fraction "input Fraction as connector"
       annotation (defaultComponentName="fraction",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type Fraction.
@@ -2952,22 +3029,33 @@ package Types "Physiological units with nominals"
       "input HydraulicConductance as connector"
       annotation (defaultComponentName="hydraulicconductance",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type HydraulicConductance.
@@ -3006,22 +3094,33 @@ package Types "Physiological units with nominals"
       "input HydraulicCompliance as connector"
       annotation (defaultComponentName="hydrauliccompliance",
       Icon(graphics={Polygon(
-              points={{-100,100},{100,0},{-100,-100},{-100,100}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid)},
+              aorticInertia.points=
+                     {{-100,100},{100,0},{-100,-100},{-100,100}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)},
            coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=true, initialScale=0.2)),
       Diagram(coordinateSystem(
             preserveAspectRatio=true, initialScale=0.2,
             extent={{-100,-100},{100,100}},
             grid={1,1}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid), Text(
-              extent={{-10,85},{-10,60}},
-              lineColor={0,0,127},
-              textString="%name")}),
+              aorticInertia.points=
+                     {{0,50},{100,0},{0,-50},{0,50}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.fillColor=
+                        {0,0,127},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid), Text(
+              aorticInertia.extent=
+                     {{-10,85},{-10,60}},
+              aorticInertia.lineColor=
+                        {0,0,127},
+              aorticInertia.textString=
+                         "%name")}),
         Documentation(info="<html>
     <p>
     Connector with one input signal of type HydraulicCompliance.
@@ -3859,40 +3958,67 @@ package Types "Physiological units with nominals"
             grid={2,2},
             initialScale=0.2), graphics={
             Rectangle(
-              extent={{-20,2},{20,-2}},
-              lineColor={0,0,255},
-              lineThickness=0.5),
+              aorticInertia.extent=
+                     {{-20,2},{20,-2}},
+              aorticInertia.lineColor=
+                        {0,0,255},
+              aorticInertia.lineThickness=
+                            0.5),
             Polygon(
-              points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{
+              aorticInertia.points=
+                     {{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{
                 -80,-40},{-100,30},{-80,50}},
-              lineColor={0,0,0},
-              fillColor={0,0,255},
-              fillPattern=FillPattern.Solid),
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,255},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid),
             Ellipse(
-              extent={{-65,25},{-55,15}},
-              lineColor={0,0,0},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid),
+              aorticInertia.extent=
+                     {{-65,25},{-55,15}},
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,0},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid),
             Ellipse(
-              extent={{-5,25},{5,15}},
-              lineColor={0,0,0},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid),
+              aorticInertia.extent=
+                     {{-5,25},{5,15}},
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,0},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid),
             Ellipse(
-              extent={{55,25},{65,15}},
-              lineColor={0,0,0},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid),
+              aorticInertia.extent=
+                     {{55,25},{65,15}},
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,0},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid),
             Ellipse(
-              extent={{-35,-15},{-25,-25}},
-              lineColor={0,0,0},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid),
+              aorticInertia.extent=
+                     {{-35,-15},{-25,-25}},
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,0},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid),
             Ellipse(
-              extent={{25,-15},{35,-25}},
-              lineColor={0,0,0},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid)}),
+              aorticInertia.extent=
+                     {{25,-15},{35,-25}},
+              aorticInertia.lineColor=
+                        {0,0,0},
+              aorticInertia.fillColor=
+                        {0,0,0},
+              aorticInertia.fillPattern=
+                          FillPattern.Solid)}),
         Diagram(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
@@ -3956,7 +4082,7 @@ constructed by the signals connected to this bus.
 
       replaceable block BooleanVariable =
         Physiolibrary.Types.BooleanExtension.Parameter constrainedby
-        Physiolibrary.Types.AbstractBoolean;
+        aorticInertia.Physiolibrary.Types.AbstractBoolean;
 
       BusConnector busConnector annotation (Placement(transformation(extent={{
                 80,-12},{100,8}}), iconTransformation(extent={{-10,-10},{10,10}})));
@@ -3971,24 +4097,6 @@ constructed by the signals connected to this bus.
               fillColor={215,215,215},
               fillPattern=FillPattern.Solid,
               textString="%name")}),        Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
     end Variables;
 
@@ -3999,24 +4107,6 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.BooleanExtension.InputParameter)
       "Load values in non-SI units from file io/input.txt"                                                            annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     model OutputToFile = Variables(T(
@@ -4026,24 +4116,6 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.BooleanExtension.OutputFinal)
       "Store values in non-SI units to file io/output.txt"                                                         annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     model OutputComparison = Variables(T(
@@ -4054,24 +4126,6 @@ constructed by the signals connected to this bus.
       "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"
                                                                                                           annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     model InputFromFile_SI = Variables(T(
@@ -4081,24 +4135,6 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.BooleanExtension.InputParameter)
       "Load values in SI units from file io/input_SI.txt"                                                            annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     model OutputToFile_SI = Variables(T(
@@ -4108,24 +4144,6 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.BooleanExtension.OutputFinal)
       "Store values in SI units to file io/output_SI.txt"                                                         annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     model OutputComparison_SI = Variables(T(
@@ -4136,45 +4154,9 @@ constructed by the signals connected to this bus.
       "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"
                                                                                                           annotation (
         Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>"));
 
     annotation (Documentation(revisions="<html>
-<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
-<td><p>Author:</p></td>
-<td><p>Marek Matejak</p></td>
-</tr>
-<tr>
-<td><p>License:</p></td>
-<td><p>GPL 3.0</p></td>
-</tr>
-<tr>
-<td><p>By:</p></td>
-<td><p>Charles University, Prague</p></td>
-</tr>
-<tr>
-<td><p>Date of:</p></td>
-<td><p>2014</p></td>
-</tr>
-</table>
-<p>Copyright &copy; 2014 Marek Matejak</p>
 </html>",   info="<html>
 <p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
 <h4>Be surre, that the directory &QUOT;io&QUOT; is in working directory (File-&GT;Change Directory...)!</h4>
@@ -4200,40 +4182,67 @@ constructed by the signals connected to this bus.
           grid={2,2},
           initialScale=0.2), graphics={
           Rectangle(
-            extent={{-20,2},{20,-2}},
-            lineColor={129,194,194},
-            lineThickness=1),
+            aorticInertia.extent=
+                   {{-20,2},{20,-2}},
+            aorticInertia.lineColor=
+                      {129,194,194},
+            aorticInertia.lineThickness=
+                          1),
           Polygon(
-            points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
+            aorticInertia.points=
+                   {{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
                 -40},{-100,30},{-80,50}},
-            lineColor={0,0,0},
-            fillColor={115,172,172},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {115,172,172},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-65,25},{-55,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-65,25},{-55,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-5,25},{5,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-5,25},{5,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{55,25},{65,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{55,25},{65,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-35,-15},{-25,-25}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-35,-15},{-25,-25}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{25,-15},{35,-25}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid)}),
+            aorticInertia.extent=
+                   {{25,-15},{35,-25}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid)}),
       Diagram(coordinateSystem(
           preserveAspectRatio=true,
           extent={{-100,-100},{100,100}},
@@ -4291,40 +4300,67 @@ This icon is designed for a <b>signal bus</b> connector.
           grid={2,2},
           initialScale=0.2), graphics={
           Rectangle(
-            extent={{-20,2},{20,-2}},
-            lineColor={127,0,0},
-            lineThickness=0.5),
+            aorticInertia.extent=
+                   {{-20,2},{20,-2}},
+            aorticInertia.lineColor=
+                      {127,0,0},
+            aorticInertia.lineThickness=
+                          0.5),
           Polygon(
-            points={{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
+            aorticInertia.points=
+                   {{-80,50},{80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,
                 -40},{-100,30},{-80,50}},
-            lineColor={0,0,0},
-            fillColor={127,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {127,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-65,25},{-55,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-65,25},{-55,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-5,25},{5,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-5,25},{5,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{55,25},{65,15}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{55,25},{65,15}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{-35,-15},{-25,-25}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid),
+            aorticInertia.extent=
+                   {{-35,-15},{-25,-25}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid),
           Ellipse(
-            extent={{25,-15},{35,-25}},
-            lineColor={0,0,0},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid)}),
+            aorticInertia.extent=
+                   {{25,-15},{35,-25}},
+            aorticInertia.lineColor=
+                      {0,0,0},
+            aorticInertia.fillColor=
+                      {0,0,0},
+            aorticInertia.fillPattern=
+                        FillPattern.Solid)}),
       Diagram(coordinateSystem(
           preserveAspectRatio=true,
           extent={{-100,-100},{100,100}},
@@ -4391,10 +4427,14 @@ This icon is designed for a <b>signal bus</b> connector.
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
 
-  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby Real;
-  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby Real;
-  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
-  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
+  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby
+    aorticInertia.Real;
+  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby
+    aorticInertia.Real;
+  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby
+    aorticInertia.Real;
+  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby
+    aorticInertia.Real
     "chemical internal energy, chemical enthalpy, Gibb's energy ..";
   type MassConcentration =
                  Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
@@ -4448,7 +4488,7 @@ This icon is designed for a <b>signal bus</b> connector.
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
 
     replaceable type T=Real
-     constrainedby Real "Real type with units"
+     constrainedby aorticInertia.Real "Real type with units"
      annotation (Dialog(group="Simple type",tab="Types"));
 
     parameter String varName=
@@ -4469,7 +4509,7 @@ This icon is designed for a <b>signal bus</b> connector.
     extends Modelica.Icons.SourcesPackage;
 
     replaceable package Utilities = Types.FilesUtilities constrainedby
-      Types.Utilities
+      aorticInertia.Types.Utilities
                    annotation (Dialog(group="Functions to read or store",tab="Types"));
      block Base
        parameter String varName=
@@ -5084,7 +5124,7 @@ The Real output y is a constant signal:
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
           replaceable package Utilities = Types.FilesUtilities(inputFileName="input.txt")
-            constrainedby Types.Utilities
+            constrainedby aorticInertia.Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
@@ -5128,7 +5168,7 @@ The Real output y is a constant signal:
             redeclare type Type = T)
                          annotation (Dialog(group="Real type with units",tab="Types"));
           replaceable package Utilities = Types.FilesUtilities(inputSIFileName="input_SI.txt")
-            constrainedby Types.Utilities
+            constrainedby aorticInertia.Types.Utilities
                          annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           IO.Output y "Connector of Real output signal"
@@ -5164,7 +5204,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputFinal.txt")
                                                          constrainedby
-        Types.Utilities;
+        aorticInertia.Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5206,7 +5246,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputFinal_SI.txt")
                                                          constrainedby
-        Types.Utilities;
+        aorticInertia.Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5245,7 +5285,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputInitial.txt")
                                                          constrainedby
-        Types.Utilities;
+        aorticInertia.Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5287,7 +5327,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputInitial_SI.txt")
                                                          constrainedby
-        Types.Utilities;
+        aorticInertia.Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5326,7 +5366,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison.txt")
                                                          constrainedby
-        Types.Utilities
+        aorticInertia.Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5378,7 +5418,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparison_SI.txt")
                                                          constrainedby
-        Types.Utilities
+        aorticInertia.Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5427,7 +5467,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparisonInitial.txt")
                                                          constrainedby
-        Types.Utilities
+        aorticInertia.Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5479,7 +5519,7 @@ The Real output y is a constant signal:
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparisonInitial_SI.txt")
                                                          constrainedby
-        Types.Utilities
+        aorticInertia.Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5584,7 +5624,7 @@ The Real output y is a constant signal:
     import Physiolibrary;
 
       replaceable block Variable = RealExtension.Parameter constrainedby
-      AbstractReal;
+      aorticInertia.AbstractReal;
 
       block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
       block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
@@ -6007,9 +6047,6 @@ other wariant: //Format "<variableName>=<value><unit>"
     end writeBooleanComparison;
 
     annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2013, Marek Matejak, Charles University in Prague.</p>
-<p><br/><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
 </html>",   info="<html>
 <p>During the creation and debugging of huge integrated models it is necessary to easily define consistent input, output and test sets of all output variables for some subsystems. Let&apos;s imagine that we have a model composed only of subsystems that converge from some constant inputs to constant outputs. It should be possible to substitute each main subsystem for its chosen constant output values as parameters. Comparing the model with these parametric values and the original subsystem can show the wrong part of the simulation. </p>
 <p>For example in the huge HumMod model it is necessary to debug smaller parts separately. These tools could be use, because HumMod is the type of constant-converged model. Each subsystem in the first level has the constant input values set for its output variables. Simulating, for example, the cardiovascular subsystem is possible by creating the high-level system with the original cardiovascular subsystem, but with a constant metabolic, constant thermoregulation, constant hormonal, constant water, constant proteins, constant gases, constant electrolytes and constant status subsystem. </p>
@@ -6644,9 +6681,15 @@ The Real output y is a constant signal:
       annotation (Evaluate=true);
 
   annotation (Documentation(revisions="<html>
-<p>Licensed by Marek Matejak under the Modelica License 2</p>
-<p>Copyright &copy; 2008-2014, Marek Matejak, Charles University in Prague.</p>
-<p><br><i>This Modelica package is&nbsp;<u>free</u>&nbsp;software and the use is completely at&nbsp;<u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see&nbsp;<a href=\"modelica://Physiolibrary.UsersGuide.ModelicaLicense2\">UsersGuide.ModelicaLicense2</a>&nbsp;or visit&nbsp;<a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i></p>
+<p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
+<p>All rights reserved. </p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
+<ol>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ol>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </html>", info="<html>
 <p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &QUOT;physiological&QUOT; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
 </html>"));
