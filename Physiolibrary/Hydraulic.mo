@@ -1827,7 +1827,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
               points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
               lineColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              fillColor={0,0,0}),Text(extent={{-112,118},{88,58}},   lineColor = {0,0,0}, textString = "%name")}),
+              fillColor={0,0,0}),Text(extent={{-112,118},{88,58}},   lineColor=  {0,0,0}, textString=  "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -1857,7 +1857,7 @@ Connector with one flow signal of type Real.
               points={{0,50},{50,0},{0,-50},{-50,0},{0,50}},
               lineColor={0,0,0},
               fillPattern=FillPattern.Solid,
-              fillColor={200,200,200}),Text(extent = {{-160,110},{40,50}}, lineColor = {0,0,0}, textString = "%name")}));
+              fillColor={200,200,200}),Text(extent=  {{-160,110},{40,50}}, lineColor=  {0,0,0}, textString=  "%name")}));
     end HydraulicPort_b;
 
     partial model OnePort "Hydraulical OnePort"

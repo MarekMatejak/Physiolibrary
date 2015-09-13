@@ -74,7 +74,7 @@ package Osmotic "Please use 'Chemical' library instead!"
         "cerebro-spinal fluid"
         annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
       Physiolibrary.Osmotic.Components.Membrane choroid_plexus(
-          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)") =
+          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")=
           1.9966916949595e-12) "choroid plexus"
         annotation (Placement(transformation(extent={{-16,-6},{-36,14}})));
       Physiolibrary.Hydraulic.Components.ElasticVessel CSF_hydraulic(
@@ -106,7 +106,7 @@ package Osmotic "Please use 'Chemical' library instead!"
             rotation=180,
             origin={82,86})));
       Physiolibrary.Osmotic.Components.Membrane arachnoid_villi(
-          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)") =
+          useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")=
           1.1285648710641e-11) "choroid plexus"
         annotation (Placement(transformation(extent={{-36,46},{-16,66}})));
       Physiolibrary.Hydraulic.Components.Pump arachnoid_villi_hydraulic(
