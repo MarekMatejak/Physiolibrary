@@ -1126,7 +1126,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
 
       model HemodynamicsMeurs_flatNorm
-
+      extends Physiolibrary.Icons.CardioVascular;
         Physiolibrary.Hydraulic.Components.ElasticVesselElastance Epa(
           useV0Input=false,
           useExternalPressureInput=false,
@@ -1429,7 +1429,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <ul>
 <li><i>Jul 2015 </i>by Tomas Kulhanek: Created. </li>
 </ul>
-</html>"));
+</html>"),experiment(StopTime=5));
       end HemodynamicsMeurs_flatNorm;
       annotation(Documentation(info="<html>
 </html>"));
