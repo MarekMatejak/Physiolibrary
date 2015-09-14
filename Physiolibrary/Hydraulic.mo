@@ -1462,6 +1462,23 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end IdealValve;
 
+    model ElasticVesselElastance
+      extends Physiolibrary.Hydraulic.Components.ElasticVessel(final Compliance = 1/Elastance);
+      parameter Physiolibrary.Types.HydraulicElastance Elastance = 1
+        "Elastance if useComplianceInput=false";
+    end ElasticVesselElastance;
+
+    model Resistor
+      extends Physiolibrary.Hydraulic.Components.Conductor(final Conductance = 1/Resistance);
+      parameter Physiolibrary.Types.HydraulicResistance Resistance(displayUnit="(mmHg.s)/ml")
+        "Hydraulic conductance if useConductanceInput=false";
+    end Resistor;
+
+    model IdealValveResistance
+      extends Physiolibrary.Hydraulic.Components.IdealValve(final _Gon=1/_Ron);
+      parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit="(mmHg.s)/ml") = 79.993432449
+        "forward state resistance";
+    end IdealValveResistance;
   end Components;
 
   package Sensors
