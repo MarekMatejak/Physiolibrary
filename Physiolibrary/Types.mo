@@ -4396,11 +4396,14 @@ This icon is designed for a <b>signal bus</b> connector.
   block Concentration "Constant signal of type Concentration"
 
     extends Base(storeUnit="mmol/l");
-   parameter Types.Concentration k=Utilities.readReal(varName, storeUnit)
+   parameter Types.Concentration k=Utilities.readReal(varName, storeUnit, unitConversions)
         "Constant Concentration output value";
         RealIO.ConcentrationOutput y "Concentration input parameter"
         annotation (Placement(transformation(extent={{40,-10},{60,10}}),
             iconTransformation(extent={{40,-10},{60,10}})));
+    parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
+        "Unit conversions"
+                          annotation(Evaluate=true, HideResult=true);
   equation
         y=k;
     annotation (defaultComponentName="concentration");
@@ -4501,7 +4504,7 @@ This icon is designed for a <b>signal bus</b> connector.
 
   block Fraction "Constant signal of type Fraction"
 
-    extends Base(storeUnit="1");
+    extends Base(storeUnit="");
    parameter Types.Fraction k=Utilities.readReal(varName, storeUnit)
         "Constant Fraction output value";
         RealIO.FractionOutput y "Fraction input parameter" annotation (
@@ -4653,6 +4656,9 @@ This icon is designed for a <b>signal bus</b> connector.
         RealIO.MolarFlowRateOutput y "MolarFlowRate input parameter"
         annotation (Placement(transformation(extent={{40,-10},{60,10}}),
             iconTransformation(extent={{40,-10},{60,10}})));
+    parameter Utilities.UnitConversions.RealTypeRecord[:] unitConversions = Utilities.UnitConversions.RealTypeDef
+        "Unit conversions"
+                          annotation(Evaluate=true, HideResult=true);
   equation
         y=k;
     annotation (defaultComponentName="molarFlowRate");
@@ -4793,7 +4799,7 @@ This icon is designed for a <b>signal bus</b> connector.
 
   block pH "Constant signal of type pH"
 
-    extends Base(storeUnit="1");
+    extends Base(storeUnit="");
    parameter Types.pH k=Utilities.readReal(varName, storeUnit)
         "Constant pH output value";
         RealIO.pHOutput y "pH input parameter" annotation (Placement(
@@ -4859,7 +4865,7 @@ This icon is designed for a <b>signal bus</b> connector.
 
     block Population "Constant signal of type Population"
 
-      extends Base(storeUnit="1");
+      extends Base(storeUnit="");
       parameter Types.Population k=Utilities.readReal(varName, storeUnit)
         "Constant Population output value";
         RealIO.PopulationOutput y "Population input parameter" annotation (
