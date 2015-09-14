@@ -1003,13 +1003,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       "models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
 
-
       package Parts "Utility components used by package KofranekModels2013"
         extends Modelica.Icons.UtilitiesPackage;
 
-
         model AtrialElastance
-          extends Cardiovascular.Model.Meurs.Parts.HeartIntervals;
+          extends HeartIntervals;
           Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct "compliance" annotation(Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -20}, {138, 18}})));
           Physiolibrary.Types.HydraulicElastance Et "elasticity";
           parameter Physiolibrary.Types.HydraulicElastance EMIN
@@ -1050,7 +1048,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         end AtrialElastance;
 
         model VentricularElastance
-          extends Cardiovascular.Model.Meurs.Parts.HeartIntervals;
+          extends HeartIntervals;
           Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct
             "ventricular elasticity"                                                       annotation(Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, 4}, {138, 42}})));
           Modelica.Blocks.Interfaces.RealOutput Et0
@@ -1121,9 +1119,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                       -64,102},{-6,78}},                                                                                                    lineColor = {0, 0, 255}, textString = "HR")}));
         end HeartIntervals;
       end Parts;
-
-
-
 
       model HemodynamicsMeurs_flatNorm
       extends Physiolibrary.Icons.CardioVascular;
@@ -1478,6 +1473,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end Conductor;
 
+    model Resistor
+      extends Physiolibrary.Hydraulic.Components.Conductor(final Conductance = 1/Resistance);
+      parameter Physiolibrary.Types.HydraulicResistance Resistance(displayUnit="(mmHg.s)/ml")
+        "Hydraulic conductance if useConductanceInput=false";
+    end Resistor;
+
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
      extends SteadyStates.Interfaces.SteadyState(
@@ -1597,50 +1598,12 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end ElasticVessel;
 
-    model Pump "Prescribed volumetric flow"
-      extends Hydraulic.Interfaces.OnePort;
-      extends Interfaces.ConditionalSolutionFlow;
-    equation
-      volumeFlowRate = q;
-     annotation (
-        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Rectangle(
-              extent={{-100,-50},{100,60}},
-              lineColor={0,0,0},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-            Polygon(
-              points={{-80,25},{80,0},{-80,-25},{-80,25}},
-              lineColor={0,0,127},
-              fillColor={0,0,0},
-              fillPattern=FillPattern.Solid),
-            Text(
-              extent={{-150,-90},{150,-50}},
-              textString="%name",
-              lineColor={0,0,255})}),        Documentation(revisions="<html>
-<table>
-<tr>
-<td>Author:</td>
-<td>Marek Matejak</td>
-</tr>
-<tr>
-<td>Copyright:</td>
-<td>In public domains</td>
-</tr>
-<tr>
-<td>By:</td>
-<td>Charles University, Prague, Czech Republic</td>
-</tr>
-<tr>
-<td>Date of:</td>
-<td>january 2009</td>
-</tr>
-</table>
-</html>",     info="<html>
-<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
-</html>"));
-    end Pump;
+    model ElasticVesselElastance
+      extends Physiolibrary.Hydraulic.Components.ElasticVessel(final Compliance = 1/Elastance);
+      parameter Physiolibrary.Types.HydraulicElastance Elastance = 1
+        "Elastance if useComplianceInput=false";
+    end ElasticVesselElastance;
+
 
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
@@ -1714,39 +1677,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end HydrostaticColumn;
 
-    model ElasticMembrane "Interaction between internal and external cavities"
-     extends SteadyStates.Interfaces.SteadyState(
-                                        state_start=volume_start, storeUnit=
-          "ml");
-     extends Icons.InternalElasticBalloon;
-      Interfaces.HydraulicPort_a
-                           q_int "Internal space"
-        annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
-      Interfaces.HydraulicPort_b
-                           q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
-                {54,14}})));
-     parameter Types.HydraulicCompliance Compliance "Compliance";
-     parameter Types.Volume zeroPressureVolume=0
-        "Maximal volume, that does not generate pressure";
-     parameter Types.Volume volume_start=0 "Volume start value"
-         annotation (Dialog(group="Initialization"));
-     Types.Volume volume;
-     Types.Volume stressedVolume;
-
-     parameter Types.Volume NominalVolume=1e-6
-        "Scale numerical calculation from quadratic meter to miniliters.";
-    equation
-      q_int.q + q_ext.q = 0;
-      q_int.pressure = (stressedVolume/Compliance) + q_ext.pressure;
-      stressedVolume = max(volume-zeroPressureVolume,0);
-      state = volume; // der(volume) =  q_int.q;
-      change = q_int.q;
-      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
-      annotation (        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end ElasticMembrane;
 
     model Inertia "Inertia of the volumetric flow"
       extends SteadyStates.Interfaces.SteadyState(
@@ -1771,63 +1701,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end Inertia;
 
-    model Reabsorption "Divide inflow to outflow and reabsorption"
-      import Physiolibrary;
-      extends Icons.Reabsorption;
-
-      Hydraulic.Interfaces.HydraulicPort_a
-                           Inflow                    annotation (Placement(
-            transformation(extent={{-114,26},{-86,54}})));
-      Hydraulic.Interfaces.HydraulicPort_b
-                           Outflow
-        annotation (Placement(transformation(extent={{86,26},{114,54}})));
-      Hydraulic.Interfaces.HydraulicPort_b
-                           Reabsorption                annotation (Placement(
-            transformation(extent={{-14,-114},{14,-86}})));
-      Types.RealIO.FractionInput FractReab
-                                   annotation (Placement(transformation(extent={{-100,
-                -60},{-60,-20}})));
-      parameter Boolean useExternalOutflowMin = false
-        "=true, if minimal outflow is garanted"
-        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-      parameter Types.VolumeFlowRate OutflowMin = 0
-        "Minimal outflow if useExternalOutflowMin=false"
-        annotation (Dialog(enable=not useExternalOutflowMin));
-
-      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
-                                                           annotation (Placement(transformation(extent={{-20,-20},
-                {20,20}},
-            rotation=270,
-            origin={40,80})));
-    protected
-       Types.VolumeFlowRate om;
-    equation
-      if not useExternalOutflowMin then
-        om = OutflowMin;
-      end if;
-      Inflow.pressure = Outflow.pressure;
-      0 = Inflow.q + Outflow.q + Reabsorption.q;
-     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
-      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),       graphics={Text(
-              extent={{-100,130},{100,108}},
-              lineColor={0,0,255},
-              textString="%name")}),        Documentation(revisions="<html>
-<p><i>2009-2010</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
-<p>If useOutflowMin=false then the next schema is used.</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
-</ul></p>
-<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
-<p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
-</ul></p>
-</html>"));
-    end Reabsorption;
 
     model IdealValve
       extends Interfaces.OnePort;
@@ -1898,23 +1771,150 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end IdealValve;
 
-    model ElasticVesselElastance
-      extends Physiolibrary.Hydraulic.Components.ElasticVessel(final Compliance = 1/Elastance);
-      parameter Physiolibrary.Types.HydraulicElastance Elastance = 1
-        "Elastance if useComplianceInput=false";
-    end ElasticVesselElastance;
-
-    model Resistor
-      extends Physiolibrary.Hydraulic.Components.Conductor(final Conductance = 1/Resistance);
-      parameter Physiolibrary.Types.HydraulicResistance Resistance(displayUnit="(mmHg.s)/ml")
-        "Hydraulic conductance if useConductanceInput=false";
-    end Resistor;
 
     model IdealValveResistance
       extends Physiolibrary.Hydraulic.Components.IdealValve(final _Gon=1/_Ron);
       parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit="(mmHg.s)/ml") = 79.993432449
         "forward state resistance";
     end IdealValveResistance;
+
+    model Pump "Prescribed volumetric flow"
+      extends Hydraulic.Interfaces.OnePort;
+      extends Interfaces.ConditionalSolutionFlow;
+    equation
+      volumeFlowRate = q;
+     annotation (
+        Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
+                100,100}}), graphics={
+            Rectangle(
+              extent={{-100,-50},{100,60}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-80,25},{80,0},{-80,-25},{-80,25}},
+              lineColor={0,0,127},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-150,-90},{150,-50}},
+              textString="%name",
+              lineColor={0,0,255})}),        Documentation(revisions="<html>
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>Copyright:</td>
+<td>In public domains</td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague, Czech Republic</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>january 2009</td>
+</tr>
+</table>
+</html>",     info="<html>
+<p><font style=\"font-size: 9pt; \">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style=\"font-size: 9pt; \">hydraulic volume flow</font></b><font style=\"font-size: 9pt; \"> variable, which is set to value of input signal variable. </font></p>
+</html>"));
+    end Pump;
+
+    model Reabsorption "Divide inflow to outflow and reabsorption"
+      import Physiolibrary;
+      extends Icons.Reabsorption;
+
+      Hydraulic.Interfaces.HydraulicPort_a
+                           Inflow                    annotation (Placement(
+            transformation(extent={{-114,26},{-86,54}})));
+      Hydraulic.Interfaces.HydraulicPort_b
+                           Outflow
+        annotation (Placement(transformation(extent={{86,26},{114,54}})));
+      Hydraulic.Interfaces.HydraulicPort_b
+                           Reabsorption                annotation (Placement(
+            transformation(extent={{-14,-114},{14,-86}})));
+      Types.RealIO.FractionInput FractReab
+                                   annotation (Placement(transformation(extent={{-100,
+                -60},{-60,-20}})));
+      parameter Boolean useExternalOutflowMin = false
+        "=true, if minimal outflow is garanted"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
+      parameter Types.VolumeFlowRate OutflowMin = 0
+        "Minimal outflow if useExternalOutflowMin=false"
+        annotation (Dialog(enable=not useExternalOutflowMin));
+
+      Types.RealIO.VolumeFlowRateInput outflowMin(start=OutflowMin) = om if useExternalOutflowMin
+                                                           annotation (Placement(transformation(extent={{-20,-20},
+                {20,20}},
+            rotation=270,
+            origin={40,80})));
+    protected
+       Types.VolumeFlowRate om;
+    equation
+      if not useExternalOutflowMin then
+        om = OutflowMin;
+      end if;
+      Inflow.pressure = Outflow.pressure;
+      0 = Inflow.q + Outflow.q + Reabsorption.q;
+     // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
+      Reabsorption.q = -max(0,FractReab*(Inflow.q-om));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
+                {100,100}}),       graphics={Text(
+              extent={{-100,130},{100,108}},
+              lineColor={0,0,255},
+              textString="%name")}),        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+</ul></p>
+</html>"));
+    end Reabsorption;
+
+    model ElasticMembrane "Interaction between internal and external cavities"
+     extends SteadyStates.Interfaces.SteadyState(
+                                        state_start=volume_start, storeUnit=
+          "ml");
+     extends Icons.InternalElasticBalloon;
+      Interfaces.HydraulicPort_a
+                           q_int "Internal space"
+        annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
+      Interfaces.HydraulicPort_b
+                           q_ext "External space" annotation (Placement(transformation(extent={{26,-14},
+                {54,14}})));
+     parameter Types.HydraulicCompliance Compliance "Compliance";
+     parameter Types.Volume zeroPressureVolume=0
+        "Maximal volume, that does not generate pressure";
+     parameter Types.Volume volume_start=0 "Volume start value"
+         annotation (Dialog(group="Initialization"));
+     Types.Volume volume;
+     Types.Volume stressedVolume;
+
+     parameter Types.Volume NominalVolume=1e-6
+        "Scale numerical calculation from quadratic meter to miniliters.";
+    equation
+      q_int.q + q_ext.q = 0;
+      q_int.pressure = (stressedVolume/Compliance) + q_ext.pressure;
+      stressedVolume = max(volume-zeroPressureVolume,0);
+      state = volume; // der(volume) =  q_int.q;
+      change = q_int.q;
+      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
+      annotation (        Documentation(revisions="<html>
+<p><i>2009-2010</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end ElasticMembrane;
+
   end Components;
 
   package Sensors
