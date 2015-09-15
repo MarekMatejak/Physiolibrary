@@ -1002,10 +1002,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     package MeursModel2011
       "models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
-
       package Parts "Utility components used by package KofranekModels2013"
         extends Modelica.Icons.UtilitiesPackage;
-
         model AtrialElastance
           extends HeartIntervals;
           Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct "compliance" annotation(Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -20}, {138, 18}})));
@@ -1162,10 +1160,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           ZeroPressureVolume=6e-05,
           ExternalPressure=-533.28954966)
           annotation (Placement(transformation(extent={{150,50},{178,78}})));
-        Physiolibrary.Hydraulic.Components.IdealValveResistance ventricleArteryValve(
-          _Ron=9.3757696980707e-07,
+        Physiolibrary.Hydraulic.Components.IdealValveResistance AorticValve(
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
-          useLimitationInputs=false)
+          useLimitationInputs=false,
+          _Ron=1066579.09932)
           annotation (Placement(transformation(extent={{184,76},{208,52}})));
         Parts.AtrialElastance LAtrialElastance(
           Tav(displayUnit="s"),
@@ -1175,10 +1173,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Parts.VentricularElastance LVentricularElastance(EMIN=11999014.86735,
             EMAX=533289549.66)
           annotation (Placement(transformation(extent={{164,88},{200,120}})));
-        Physiolibrary.Hydraulic.Components.IdealValveResistance atrioVentricleValve(
-          _Ron=2.4999552322936e-06,
+        Physiolibrary.Hydraulic.Components.IdealValveResistance MitralValve(
           useLimitationInputs=false,
-          _Goff(displayUnit="ml/(mmHg.s)") = 0) annotation (Placement(visible=true,
+          _Goff(displayUnit="ml/(mmHg.s)") = 0,
+          _Ron=399967.162245) annotation (Placement(visible=true,
               transformation(
               origin={127,64},
               extent={{-13,12},{13,-12}},
@@ -1264,20 +1262,21 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           ZeroPressureVolume=4e-05,
           ExternalPressure=-533.28954966)
           annotation (Placement(transformation(extent={{-170,42},{-140,72}})));
-        Physiolibrary.Hydraulic.Components.IdealValveResistance ventricleArteryValve1(
+        Physiolibrary.Hydraulic.Components.IdealValveResistance PulmonaryValve(
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
           useLimitationInputs=false,
-          _Ron=2.4999552322936e-06)
+          _Ron=399967.162245)
           annotation (Placement(transformation(extent={{-132,70},{-106,44}})));
-        Parts.AtrialElastance RAtrialElastance(EMIN=6666119.37075, EMAX=19998358.11225)
+        Parts.AtrialElastance RAtrialElastance(EMIN=6666119.37075, EMAX=
+              19998358.11225)
           annotation (Placement(transformation(extent={{-244,86},{-206,118}})));
         Parts.VentricularElastance RVentricularElastance(EMIN=7599376.082655,
             EMAX=65327969.83335)
           annotation (Placement(transformation(extent={{-180,88},{-150,122}})));
-        Physiolibrary.Hydraulic.Components.IdealValveResistance atrioVentricleValve1(
-          _Ron=2.497705047566e-06,
+        Physiolibrary.Hydraulic.Components.IdealValveResistance TricuspidValve(
           _Goff=0,
-          useLimitationInputs=false) annotation (Placement(visible=true,
+          useLimitationInputs=false,
+          _Ron=399967.162245) annotation (Placement(visible=true,
               transformation(
               origin={-189,58},
               extent={{-13,12},{13,-12}},
@@ -1299,17 +1298,26 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-        connect(LeftAtrium.q_in, atrioVentricleValve.q_in) annotation(Line(points = {{88, 64}, {114, 64}}, color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
-        connect(LeftVentricle.q_in, atrioVentricleValve.q_out) annotation(Line(points={{164,64},
-                {140,64}},                                                                                                    color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
-        connect(LeftVentricle.q_in, ventricleArteryValve.q_in) annotation(Line(points={{164,64},
-                {184,64}},                                                                                                    color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
+        connect(LeftAtrium.q_in, MitralValve.q_in) annotation (Line(
+            points={{88,64},{114,64}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(LeftVentricle.q_in, MitralValve.q_out) annotation (Line(
+            points={{164,64},{140,64}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(LeftVentricle.q_in, AorticValve.q_in) annotation (Line(
+            points={{164,64},{184,64}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
         connect(LeftVentricle.compliance, LVentricularElastance.Ct) annotation (
            Line(
             points={{164,75.2},{164,74},{212,74},{212,107.68},{203.42,107.68}},
             color={0,0,127},
             smooth=Smooth.None));
-
         connect(Rlain.q_out, LeftAtrium.q_in) annotation (Line(
             points={{56,98},{74,98},{74,64},{88,64}},
             color={0,0,0},
@@ -1330,16 +1338,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-        connect(Eitha.q_in, ventricleArteryValve.q_out) annotation (Line(
+        connect(Eitha.q_in, AorticValve.q_out) annotation (Line(
             points={{179,17},{216,17},{216,64},{208,64}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-      /*  connect(Est.q_in, SmallVenuleConductance.q_in) annotation (Line(
-      points={{-16,17},{-46,17}},
-      color={0,0,0},
-      thickness=1,
-      smooth=Smooth.None));*/
         connect(Rrain.q_in, Eithv.q_in) annotation (Line(
             points={{-208,17},{-180,17}},
             color={0,0,0},
@@ -1355,23 +1358,28 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
-      /*  connect(Eethv.q_in, SmallVenuleConductance.q_out) annotation (Line(
-      points={{-95,17},{-74,17}},
-      color={0,0,0},
-      thickness=1,
-      smooth=Smooth.None));*/
-        connect(RightAtrium.q_in, atrioVentricleValve1.q_in) annotation(Line(points = {{-228, 58}, {-202, 58}}, color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
-        connect(RightVentricle.q_in, atrioVentricleValve1.q_out) annotation(Line(points={{-155,57},
-                {-164.5,57},{-164.5,58},{-176,58}},                                                                                             color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
-        connect(RightVentricle.q_in, ventricleArteryValve1.q_in) annotation(Line(points={{-155,57},
-                {-132,57}},                                                                                                    color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
+        connect(RightAtrium.q_in, TricuspidValve.q_in) annotation (Line(
+            points={{-228,58},{-202,58}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(RightVentricle.q_in, TricuspidValve.q_out) annotation (Line(
+            points={{-155,57},{-164.5,57},{-164.5,58},{-176,58}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(RightVentricle.q_in, PulmonaryValve.q_in) annotation (Line(
+            points={{-155,57},{-132,57}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
         connect(Rrain.q_out, RightAtrium.q_in) annotation (Line(
             points={{-236,17},{-250,17},{-250,58},{-228,58}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
         connect(RightAtrium.compliance,RAtrialElastance. Ct) annotation(Line(points = {{-228, 69.2}, {-228, 92}, {-202.39, 92}, {-202.39, 101.84}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(ventricleArteryValve1.q_out, Epa.q_in) annotation (Line(
+        connect(PulmonaryValve.q_out, Epa.q_in) annotation (Line(
             points={{-106,57},{-92,57},{-92,98},{-80,98}},
             color={0,0,0},
             thickness=1,
@@ -1601,9 +1609,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model ElasticVesselElastance
       extends Physiolibrary.Hydraulic.Components.ElasticVessel(final Compliance = 1/Elastance);
       parameter Physiolibrary.Types.HydraulicElastance Elastance = 1
-        "Elastance if useComplianceInput=false";
+        "Elastance if useComplianceInput=false" annotation (Dialog(enable=not useComplianceInput));
     end ElasticVesselElastance;
-
 
     model HydrostaticColumn
       "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
@@ -1677,7 +1684,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 </html>"));
     end HydrostaticColumn;
 
-
     model Inertia "Inertia of the volumetric flow"
       extends SteadyStates.Interfaces.SteadyState(
                                          state_start=volumeFlow_start,
@@ -1700,7 +1706,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end Inertia;
-
 
     model IdealValve
       extends Interfaces.OnePort;
@@ -1770,7 +1775,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 <p>Tomas Kulhanek, Charles University, Prague, Czech Republic </p>
 </html>"));
     end IdealValve;
-
 
     model IdealValveResistance
       extends Physiolibrary.Hydraulic.Components.IdealValve(final _Gon=1/_Ron);
