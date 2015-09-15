@@ -7,9 +7,7 @@ water distribution, hormonal regulation and pharmacological regulation.
 
 ## Library description
 
-The origin of this Modelica Physiolibrary was in the first version of our Physiomodel ( http://www.physiomodel.org ) implementation, 
-which is based on model of human physiology called HumMod. As the successors of Guyton's Medical Physiology School write,
-the original HumMod model is “The best, most complete, mathematical model of human physiology ever created” ( http://hummod.org ).
+The origin of this Modelica Physiolibrary was in the initial version of our Physiomodel ( http://www.physiomodel.org ) implementation, which is based on model of human physiology called HumMod. As the successors of Guyton's Medical Physiology School write, the original HumMod model is “The best, most complete, mathematical model of human physiology ever created” ( http://hummod.org ).
 
 We are also developing many types of smaller physiological models for use in medical education,
 so it was essential to separate this library from our HumMod Modelica implementation. This separation improves
