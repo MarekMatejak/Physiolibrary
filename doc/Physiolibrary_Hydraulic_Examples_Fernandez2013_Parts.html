@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Utility components used by package KofranekModels2013</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.UtilitiesPackage (Icon for utility packages).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_UtilitiesPackage.html#Modelica.Icons.UtilitiesPackage"
+>Modelica.Icons.UtilitiesPackage</a> (Icon for utility packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -41,28 +42,82 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE TimeVaryingElastance<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Hydraulic.E5c9dd62de0a513b0tanceI.png" alt="Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance"></a><a href="Physiolibrary_Hydraulic_Examples_Fernandez2013_Parts.html#Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts"
 >Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts</a>.TimeVaryingElastance</h2>
+<p>
+<br><img src="Physiolibrary.Hydraulic.E5c9dd62de0a513b0tanceD.png" alt="Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance">
+</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Ed</td><td>elastance of diastole [Pa/m3]</td></tr>
-<tr><td>Es</td><td>elastance of systole [Pa/m3]</td></tr>
-<tr><td>Pi0</td><td>peak isovolumic pressure [Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>HydraulicElastance</a></td><td>Ed</td><td>&nbsp;</td><td>elastance of diastole [Pa/m3]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>HydraulicElastance</a></td><td>Es</td><td>&nbsp;</td><td>elastance of systole [Pa/m3]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>Pi0</td><td>&nbsp;</td><td>peak isovolumic pressure [Pa]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>C</td><td>[m3/Pa]</td></tr>
-<tr><td>Pi</td><td>[Pa]</td></tr>
-<tr><td>HR</td><td>heart rate [Hz]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>HydraulicComplianceOutput</a></td><td>C</td><td>[m3/Pa]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>PressureOutput</a></td><td>Pi</td><td>[Pa]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FrequencyInput"
+>FrequencyInput</a></td><td>HR</td><td>heart rate [Hz]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> TimeVaryingElastance
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>Physiolibrary.Types.HydraulicElastance</a> Ed <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;elastance of diastole&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>Physiolibrary.Types.HydraulicElastance</a> Es <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;elastance of systole&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Physiolibrary.Types.Pressure</a> Pi0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;peak isovolumic pressure&quot;</span>;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Physiolibrary.Types.Time</a> tm <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;relative time from the beginning of cardiac cycle&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Physiolibrary.Types.Time</a> HP <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;heart period&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Physiolibrary.Types.Time</a> t0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;time of beginning of the cardiac cycle&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Physiolibrary.Types.Time</a> ts <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;duration of systole&quot;</span>;
+  Real a;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>Physiolibrary.Types.RealIO.HydraulicComplianceOutput</a> C;
+        <a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>Physiolibrary.Types.HydraulicElastance</a> E;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>Physiolibrary.Types.RealIO.PressureOutput</a> Pi;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FrequencyInput"
+>Physiolibrary.Types.RealIO.FrequencyInput</a> HR <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;heart rate&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  tm = time -<span style="color: red; font-weight: normal; font-style: normal;"> pre</span>(t0);
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>(tm&lt;<span style="color: red; font-weight: normal; font-style: normal;">pre</span>(ts))<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    a= (1-<span style="color: red; font-weight: normal; font-style: normal;">cos</span>(2*Modelica.Constants.pi*tm/<span style="color: red; font-weight: normal; font-style: normal;">pre</span>(ts)))/2;
+  <span style="color: blue; font-weight: normal; font-style: normal;">else</span>
+    a=0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  E=Ed+Es*a;
+  C=1/E;
+  Pi = Pi0*a;
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span>{<span style="color: red; font-weight: normal; font-style: normal;">initial</span>(), tm &gt;=<span style="color: red; font-weight: normal; font-style: normal;"> pre</span>(HP)}<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    HP = 1/HR;
+    t0= time;
+    ts = 0.16+0.3*HP;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>TimeVaryingElastance;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:51 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:52:36 2015.
 </address>
 </body>
 </html>

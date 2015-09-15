@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Empirical Dependence of Two Variables</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Package (Icon for standard packages).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -53,6 +54,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>2D natural cubic interpolation spline defined with (x,y,slope) points</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Spline<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -63,16 +65,71 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>x[:]</td><td>x coordinations of interpolating points</td></tr>
-<tr><td>a[:, 4]</td><td>cubic polynom coefficients of curve segments between interpolating points</td></tr>
-<tr><td>xVal</td><td>input value of x to calculate y value</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>x[:]</td><td>&nbsp;</td><td>x coordinations of interpolating points</td></tr>
+<tr><td>Real</td><td>a[:, 4]</td><td>&nbsp;</td><td>cubic polynom coefficients of curve segments between interpolating points</td></tr>
+<tr><td>Real</td><td>xVal</td><td>&nbsp;</td><td>input value of x to calculate y value</td></tr>
 </table>
 <h3>Outputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Outputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yVal</td><td>y value at xVal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>Real</td><td>yVal</td><td>y value at xVal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">function</span> Spline <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Cubic spline interpolation function&quot;</span>
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real[:] x <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;x coordinations of interpolating points&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;"> //souradnice x souradnice uzlovych bodu</span>
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real[:,4] a <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;cubic polynom coefficients of curve segments between interpolating points&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">                    //parametry kubiky</span>
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real xVal <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;input value of x to calculate y value&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;"> //vstupni hodnota</span>
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">output </span>Real yVal <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;y value at xVal&quot;</span>;
+<span style="color: #006400; font-weight: normal; font-style: normal;">//     output Real outExtra;</span>
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+   Integer index <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;index of segment&quot;</span>;
+   Integer n <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;number of interpolating points&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">algorithm </span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;">     // Najdi interval, ve kterem se nachazi xVal</span>
+
+       <span style="color: blue; font-weight: normal; font-style: normal;">if </span>(xVal &lt;= x[1])<span style="color: blue; font-weight: normal; font-style: normal;"> then</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //kdyz je hodnota xVal pred prvnim uzlovym bodem</span>
+
+         yVal := xVal * a[1,3] + a[1,4];<span style="color: #006400; font-weight: normal; font-style: normal;"> //pocitam primku</span>
+
+       <span style="color: blue; font-weight: normal; font-style: normal;">else</span>
+         n :=<span style="color: red; font-weight: normal; font-style: normal;"> size</span>(x,1);<span style="color: #006400; font-weight: normal; font-style: normal;"> //pocet uzlovych bodu</span>
+         <span style="color: blue; font-weight: normal; font-style: normal;">if </span>(xVal&gt;=x[n])<span style="color: blue; font-weight: normal; font-style: normal;"> then</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //kdyz je hodnota xVal za poslednim uzlovym bodem</span>
+
+            yVal := xVal * a[n+1,3] + a[n+1,4];<span style="color: #006400; font-weight: normal; font-style: normal;">  //pocitam primku</span>
+
+       <span style="color: blue; font-weight: normal; font-style: normal;">else</span>
+         index := 2;
+         <span style="color: blue; font-weight: normal; font-style: normal;">while </span> xVal &gt; x[index]<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>index &lt; n<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span>
+           index:=index+1;
+         <span style="color: blue; font-weight: normal; font-style: normal;">end while</span>;
+         yVal := ((a[index,1]*xVal + a[index,2])*xVal + a[index,3])*xVal + a[index,4];
+
+      <span style="color: #006400; font-weight: normal; font-style: normal;">   /*
+         x1:=x[index-1];
+         x2:=x[index];
+         y1:=y[index-1];
+         y2:=y[index];
+         slope1:=slope[index-1];
+         slope2:=slope[index];
+
+         a1:=-(-x2*slope2 - x2*slope1 + slope2*x1 + slope1*x1 + 2*y2 - 2*y1)/(x2 - x1)^3;
+         a2:=(-x2^2*slope2-2*x2^2*slope1-3*x2*y1+x2*slope1*x1+3*x2*y2-x2*slope2*x1-3*y1*x1+slope1*x1^2+3*y2*x1+2*slope2*x1^2)/(x2-x1)^3;
+         a3:=-(-slope1*x2^3-2*x2^2*slope2*x1-x2^2*slope1*x1+x2*slope2*x1^2+2*x2*slope1*x1^2+6*x2*x1*y2-6*x2*x1*y1+slope2*x1^3)/(x2-x1)^3;
+         a4:=(-slope1*x2^3*x1+y1*x2^3-slope2*x1^2*x2^2+slope1*x1^2*x2^2-3*y1*x2^2*x1+3*y2*x1^2*x2+slope2*x1^3*x2-y2*x1^3)/(x2-x1)^3;
+
+         yVal :=a1*(xVal)^3 + a2*(xVal)^2 + a3*(xVal) + a4;
+         */</span>
+         <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+      <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//    outExtra := xVal + yVal;</span>
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Spline;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SplineCoefficients<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -83,16 +140,59 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </p>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>x[:]</td><td>x coordinations of interpolating points</td></tr>
-<tr><td>y[:]</td><td>y coordinations of interpolating points</td></tr>
-<tr><td>slope[:]</td><td>slopes at interpolating points</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>x[:]</td><td>&nbsp;</td><td>x coordinations of interpolating points</td></tr>
+<tr><td>Real</td><td>y[:]</td><td>&nbsp;</td><td>y coordinations of interpolating points</td></tr>
+<tr><td>Real</td><td>slope[:]</td><td>&nbsp;</td><td>slopes at interpolating points</td></tr>
 </table>
 <h3>Outputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Outputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>a[size(x, 1) + 1, 4]</td><td>cubic polynom coefficients of curve segments between interpolating points</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>Real</td><td>a[size(x, 1) + 1, 4]</td><td>cubic polynom coefficients of curve segments between interpolating points</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">function</span> SplineCoefficients <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Cubic spline interpolation coefficients&quot;</span>
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real[:] x <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;x coordinations of interpolating points&quot;</span>;
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real[:] y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;y coordinations of interpolating points&quot;</span>;
+     <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real[:] slope <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;slopes at interpolating points&quot;</span>;
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">output </span>Real[<span style="color: red; font-weight: normal; font-style: normal;">size</span>(x,1)+1,4] a <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;cubic polynom coefficients of curve segments between interpolating points&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">                                //pocet hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+   Integer n <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;number of interpolating points&quot;</span>;
+   Integer i <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;index of segment&quot;</span>;
+
+   Real x1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;previos point&quot;</span>;
+   Real x2 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;current point&quot;</span>;
+
+   Real y1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;previous point&quot;</span>;
+   Real y2 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;current point&quot;</span>;
+   Real slope1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;previous point&quot;</span>;
+   Real slope2 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;current point&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">algorithm </span>
+   n :=<span style="color: red; font-weight: normal; font-style: normal;"> size</span>(x,1);<span style="color: #006400; font-weight: normal; font-style: normal;">//pocet uzlovych bodu</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>2:n<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //cyklus od 2 do n</span>
+         x1:=x[i-1];<span style="color: #006400; font-weight: normal; font-style: normal;"> //predchozi bod</span>
+         x2:=x[i];<span style="color: #006400; font-weight: normal; font-style: normal;">  //soucasny bod</span>
+         y1:=y[i-1];<span style="color: #006400; font-weight: normal; font-style: normal;"> //predchozi bod</span>
+         y2:=y[i];<span style="color: #006400; font-weight: normal; font-style: normal;"> //soucasny bod</span>
+         slope1:=slope[i-1];<span style="color: #006400; font-weight: normal; font-style: normal;"> //predchozi bod</span>
+         slope2:=slope[i];<span style="color: #006400; font-weight: normal; font-style: normal;"> //soucasny bod</span>
+    <span style="color: #006400; font-weight: normal; font-style: normal;">     //vypocty parametru kubiky (od 2 do n) podle souradnic a smernic dvou bodu : y=a[i,4]+a[i,3]*x+a[i,2]*x^2+a[i,1]*x^3</span>
+         a[i,1]:=-(-x2*slope2 - x2*slope1 + x1*slope2 + x1*slope1 + 2*y2 - 2*y1)/((x2 - x1)^3);
+         a[i,2]:=(-(x2^2)*slope2-2*(x2^2)*slope1-3*x2*y1+x2*slope1*x1+3*x2*y2-x2*slope2*x1-3*y1*x1+slope1*(x1^2)+3*y2*x1+2*slope2*(x1^2))/((x2-x1)^3);
+         a[i,3]:=-(-slope1*(x2^3)-2*(x2^2)*slope2*x1-(x2^2)*slope1*x1+x2*slope2*(x1^2)+2*x2*slope1*(x1^2)+6*x2*x1*y2-6*x2*x1*y1+slope2*(x1^3))/((x2-x1)^3);
+         a[i,4]:=(-slope1*(x2^3)*x1+y1*(x2^3)-slope2*(x1^2)*(x2^2)+slope1*(x1^2)*(x2^2)-3*y1*(x2^2)*x1+3*y2*(x1^2)*x2+slope2*(x1^3)*x2-y2*(x1^3))/((x2-x1)^3);
+   <span style="color: blue; font-weight: normal; font-style: normal;">end for</span>;
+   a[1,  :] := { 0, 0, slope[1], y[1] - x[1]*slope[1]};<span style="color: #006400; font-weight: normal; font-style: normal;"> //vypocet prvni sady parametru kubiky  - primky</span>
+   a[n+1,:] := { 0, 0, slope[n], y[n] - x[n]*slope[n]};<span style="color: #006400; font-weight: normal; font-style: normal;"> //vypocet posledni sady parametru kubiky - primky</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SplineCoefficients;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Curve<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -101,25 +201,64 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Interpolation</a>.Curve</h2>
 <p>
 <b>2D natural cubic interpolation spline defined with (x,y,slope) points</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Interpolation.CurveD.png" alt="Physiolibrary.Blocks.Interpolation.Curve">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>x[:]</td><td>x coordinations of interpolating points</td></tr>
-<tr><td>y[:]</td><td>y coordinations of interpolating points</td></tr>
-<tr><td>slope[:]</td><td>slopes at interpolating points</td></tr>
-<tr><td>data[:, 3]</td><td>Array of interpolating points as {x,y,slope}</td></tr>
-<tr><td>Xscale</td><td>conversion scale to SI unit of x values</td></tr>
-<tr><td>Yscale</td><td>conversion scale to SI unit of y values</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>x[:]</td><td>fill(Modelica.Constants.N_A,...</td><td>x coordinations of interpolating points</td></tr>
+<tr><td>Real</td><td>y[:]</td><td>fill(Modelica.Constants.N_A,...</td><td>y coordinations of interpolating points</td></tr>
+<tr><td>Real</td><td>slope[:]</td><td>fill(Modelica.Constants.N_A,...</td><td>slopes at interpolating points</td></tr>
+<tr><td>Real</td><td>data[:, 3]</td><td>transpose({x,y,slope})</td><td>Array of interpolating points as {x,y,slope}</td></tr>
+<tr><td>Real</td><td>Xscale</td><td>1</td><td>conversion scale to SI unit of x values</td></tr>
+<tr><td>Real</td><td>Yscale</td><td>1</td><td>conversion scale to SI unit of y values</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
-<tr><td>val</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>val</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Curve <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;2D natural cubic interpolation spline defined with (x,y,slope) points&quot;</span>
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real x[:] =<span style="color: red; font-weight: normal; font-style: normal;"> fill</span>(Modelica.Constants.N_A,1) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;x coordinations of interpolating points&quot;</span>;
+     <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real y[:] =<span style="color: red; font-weight: normal; font-style: normal;"> fill</span>(Modelica.Constants.N_A,1) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;y coordinations of interpolating points&quot;</span>;
+     <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real slope[:] =<span style="color: red; font-weight: normal; font-style: normal;"> fill</span>(Modelica.Constants.N_A,1) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;slopes at interpolating points&quot;</span>;
+
+     <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real[:,3] data =<span style="color: red; font-weight: normal; font-style: normal;"> transpose</span>({x,y,slope}) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Array of interpolating points as {x,y,slope}&quot;</span>;
+
+    <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Xscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of x values&quot;</span>;
+    <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Yscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of y values&quot;</span>;
+
+     <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u;
+     <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>Modelica.Blocks.Interfaces.RealOutput</a> val;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+    <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real a[:,:] =<span style="color: red; font-weight: normal; font-style: normal;"> SplineCoefficients</span>( data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;cubic polynom coefficients of curve segments between interpolating points&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  val =<span style="color: red; font-weight: normal; font-style: normal;"> Spline</span>(
+        data[:, 1]*Xscale,
+        a,
+        u);
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Curve;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:39:01 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:48 2015.
 </address>
 </body>
 </html>

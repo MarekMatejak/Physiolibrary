@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Package (Icon for standard packages).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -105,6 +106,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Reabsorption as input fraction</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Substance<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -113,10 +115,18 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Components</a>.Substance</h2>
 <p>
 <b>Substance accumulation in solution</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co5f7f5aad434b2400tanceD.png" alt="Physiolibrary.Chemical.Components.Substance">
 </p>
 <h3>Information</h3>
 
+<h4>Solute = Concentration &middot; Volume = &int; MolarFlow</h4>
 <p>The main class from &ldquo;Chemical&rdquo; package is called &QUOT;Substance&QUOT;. It has one chemical connector, where molar concentration and molar flow is presented as usually. An amount of a substance (&QUOT;solute&QUOT;) is accumulated by molar flow inside an instance of this class. In the default setting the volume is set to one liter, so in this setting the concentration at &ldquo;mol/L&rdquo; has the same value as the variable solute at &ldquo;mol&rdquo;. But in the advanced settings the default volume can be changed with external input. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
+<p><br>Having defined amount of all particles in solution as n(solution) and mass of solvent as m(solvent). It can be expressed mole fraction x and molality b as follows:</p>
+<p><b>x = Solute / n(solution) = Concentration &middot; Volume /n(solution)</b></p>
+<p><b>b = Solute / m(solvent) = Concentration &middot; Volume /m(solvent)</b></p>
+<p><br>The activity (mole fraction based) can be expressed using mole-fraction-based activity coefficient gamma as:</p>
+<h4>a = gamma * x</h4>
 
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Substance"
 >Icons.Substance</a>, <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
@@ -124,40 +134,95 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >SteadyStates.Interfaces.SteadyState</a> (Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useNormalizedVolume</td><td>=true, if solution volume is 1 liter</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Initialization</td></tr>
-<tr><td>solute_start</td><td>Initial solute amount in compartment [mol]</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Initialization</td></tr>
-<tr><td>state_start</td><td>State start or init value</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>storeUnit</td><td>Unit in Utilities input/output function</td></tr>
-<tr><td>stateName</td><td>Name in Utilities input/output function</td></tr>
-<tr><td>LOAD_STARTS</td><td>Load start value of state</td></tr>
-<tr><td>SAVE_RESULTS</td><td>Save final state values</td></tr>
-<tr><td>SAVE_COMPARISON</td><td>Compare final state values with original values</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation</td></tr>
-<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr><td>isDependent</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Solver</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Numerical support of very small concentrations</td></tr>
-<tr><td>NominalSolute</td><td>Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller. [mol]</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Energies</b></td></tr>
-<tr><td>dH</td><td>Standard Enthalpy Change [J/mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useNormalizedVolume</td><td>true</td><td>Normalized volume of solution is 1 liter</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a></td><td>solute_start</td><td>1e-8</td><td>Initial solute amount in compartment [mol]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (direct...</td><td>How to store or load the values</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
+<tr><td>Real</td><td>state_start</td><td>solute_start</td><td>State start or init value</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;mmol&quot;</td><td>Unit in Utilities input/output function</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
+<tr><td>Boolean</td><td>LOAD_STARTS</td><td>false</td><td>Load start value of state</td></tr>
+<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>Save final state values</td></tr>
+<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr><td>Boolean</td><td>isDependent</td><td>false</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Solver</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Numerical support of very small concentrations</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a></td><td>NominalSolute</td><td>0.001</td><td>Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller. [mol]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Energies</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>MolarEnergy</a></td><td>dH</td><td>0</td><td>Standard Enthalpy Change [J/mol]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionVolume</td><td>[m3]</td></tr>
-<tr><td>solute</td><td>Current amount of solute [mol]</td></tr>
-<tr><td>q_out</td><td>Flux from/to compartment</td></tr>
-<tr><td>internalHeat</td><td>internal heat energy = enthalpy*amountOfSubstance [J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
+>VolumeInput</a></td><td>solutionVolume</td><td>Volume of solution [m3]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>AmountOfSubstanceOutput</a></td><td>solute</td><td>Current amount of solute [mol]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>Concentration and molar flow from/to compartment</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>EnergyOutput</a></td><td>internalHeat</td><td>Internal heat energy = enthalpy*amountOfSubstance [J]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Substance <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Substance accumulation in solution&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Substance"
+>Icons.Substance</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
+>Interfaces.ConditionalVolume</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
+>SteadyStates.Interfaces.SteadyState</a>(
+  state(nominal=NominalSolute),
+  change(nominal=NominalSolute/60),
+  state_start=solute_start,
+  storeUnit=&quot;mmol&quot;);
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> solute_start(nominal=NominalSolute) = 1e-8 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Initial solute amount in compartment&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>Types.RealIO.AmountOfSubstanceOutput</a> solute(nominal=
+      NominalSolute) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Current amount of solute&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> NominalSolute = 0.001 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Numerical scale. Default is from mmol to mol, but for some substances such as hormones, hydronium or hydroxide ions can be much smaller.&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> q_out(conc(start=solute_start/NormalVolume)) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Concentration and molar flow from/to compartment&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>Types.MolarEnergy</a> dH=0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Standard Enthalpy Change&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>Types.RealIO.EnergyOutput</a> internalHeat <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Internal heat energy = enthalpy*amountOfSubstance&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_out.conc = solute/volume;
+
+  state = solute;<span style="color: #006400; font-weight: normal; font-style: normal;"> // der(solute)=q_out.q</span>
+  change = q_out.q;
+
+  internalHeat = dH*solute;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Substance;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ChemicalReaction<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -166,79 +231,281 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Components</a>.ChemicalReaction</h2>
 <p>
 <b>Chemical Reaction</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co8c3cd97214dbe062ctionD.png" alt="Physiolibrary.Chemical.Components.ChemicalReaction">
 </p>
 <h3>Information</h3>
 
-<pre>The Chemical reaction
-
-Schema of chemical reaction:
-s[1]*S[1] + .. + s[nS]*S[nS]  &LT;-&GT;  p[1]*P[1] + .. + p[nP]*P[nP]
-
-where
-S are substrates,
-s are stochiometric coefficients of substrates,
-P are products,
-p are stochiometric coefficients of products.
-
-In equilibrium (at zero reaction flow) is reached the dissociation constant K equation:
-<p><br><code></p><p><br>K = <font style="color: #ff0000; ">&nbsp;product</font>(P.^p) / <font style="color: #ff0000; ">product</font>(S.^s)</code></p>
-<pre>The dissociation constant is dependent on temperature by Hoff&apos;s equation using reaction enthalphy change parameter dH.
-<p><br><code></p><p><br>The forward rate is kf*volume*<font style="color: #ff0000; ">product</font>(S.^s), where kf is forward rate coefficient. </code></p>
-<p><code>The backward rate is (kf/K)*volume*<font style="color: #ff0000; ">product</font>(P.^p), where backward rate coefficient kb is kf/K.</code></p>
-<pre>
-Temperature dependence is calculated by Van&apos;t Hoff equation using enthalpy change of reaction as parameter dH:
-<p><br><code></p><p><br>KaT&nbsp;=&nbsp;KBase&nbsp;*<font style="color: #ff0000; ">&nbsp;Modelica.Math.exp</font>(((-dH)/Modelica.Constants.R)*(1/T_heatPort&nbsp;-&nbsp;1/TK))</code></p>
-<pre>where KBase is base equilibrium constant at base temperature TK and T_heatPort is current temperature.
-<p><code></p><p>A change of entropy in reaction can be tabulated or calculated from number of microstates of particles <i><b>&omega; </b>by equation</i></code></p>
-<pre><i><b>dS = k ln(&omega;)</b></i>
-<i>where k is Boltzmann constant.</i>
-
-
-The Gibbs energy of reaction can be calculate from the change of entropy dS at defined temperature by equation
-<p><br><code></p><p><br><i><b>&Delta;<sub>r</sub>G<sup>0</sup>= dH - T dS</b></i> </code></p>
-<pre>where T is temperature.
-<p><code></p><p>It is possible to calculate the dissociation constant K (for concentratio as molar fracions) from Gibbs energy of reaction <i><b>&Delta;<sub>r</sub>G<sup>0</b></i></sup> by equation</code></p>
-<p><code><i><b>&Delta;<sub>r</sub>G<sup>0</sup>=-RT ln(K)</b></i> </code></p>
-<pre>where R is gass constant and T is temperature.</pre>
+<p><b>s<sub>1</sub>&middot;S<sub>1</sub> + .. + s<sub>nS</sub>&middot;S<sub>nS</sub> &LT;-&GT; p<sub>1</sub>&middot;P<sub>1</sub> + .. + p<sub>nP</sub>&middot;P<sub>nP</b></sub> </p>
+<h4><span style="color:#008000">Relations</span></h4>
+<table cellspacing="2" cellpadding="0" border="0"><tr>
+<td><p>k<sub>f</sub>&middot;volume&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'product()'"
+>product</a>(S<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.ElementaryOperators"
+>.^</a>s)</p></td>
+<td><p>forward rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>b</sub>&middot;volume&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'product()'"
+>product</a>(P<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.ElementaryOperators"
+>.^</a>p)</p></td>
+<td><p>backward rate</p></td>
+</tr>
+<tr>
+<td><p>K<sub>aT</sub> = k<sub>f</sub>/k<sub>b</sub> = <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'product()'"
+>product</a>(P<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.ElementaryOperators"
+>.^</a>p) / <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'product()'"
+>product</a>(S<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.ElementaryOperators"
+>.^</a>s)&nbsp;</p></td>
+<td><p>equilibrium</p></td>
+</tr>
+<tr>
+<td><p><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(K<sub>aT</sub>/K<sub>Base</sub>) = (-&Delta;H/<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Constants.html#Modelica.Constants"
+>R</a>)&middot;(1/T<sub>heatPort</sub> - 1/T<sub>K</sub>)&nbsp;</p></td>
+<td><p>van&apos;t Hoff&apos;s equation</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup>= &Delta;H - T&middot;&Delta;S = -R&middot;T&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(K<sub>aT</sub>) </p></td>
+<td><p>Gibb&apos;s energy </p></td>
+</tr>
+<tr>
+<td><p>&Delta;S = <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Constants.html#Modelica.Constants"
+>k</a>&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(&omega;) </p></td>
+<td><p>entropy </p></td>
+</tr>
+</table>
+<h4><span style="color:#008000">Notations</span></h4>
+<table cellspacing="2" cellpadding="0" border="0"><tr>
+<td><p>S<sub>i</sub></p></td>
+<td><p>molar concentration of i-th substrate</p></td>
+</tr>
+<tr>
+<td><p>s<sub>i</sub></p></td>
+<td><p>stochiometric coefficients of i-th substrate</p></td>
+</tr>
+<tr>
+<td><p>nS</p></td>
+<td><p>number of substrates</p></td>
+</tr>
+<tr>
+<td><p>P<sub>j</sub></p></td>
+<td><p>molar concentration of j-th product</p></td>
+</tr>
+<tr>
+<td><p>p<sub>j</sub></p></td>
+<td><p>stochiometric coefficients of j-th product</p></td>
+</tr>
+<tr>
+<td><p>nP</p></td>
+<td><p>number of products</p></td>
+</tr>
+<tr>
+<td><p>K<sub>aT</sub></p></td>
+<td><p>dissociation constant at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>f</sub></p></td>
+<td><p>forward rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>b</sub></p></td>
+<td><p>backward rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>volume &nbsp;</p></td>
+<td><p>solution volume</p></td>
+</tr>
+<tr>
+<td><p>&Delta;H</p></td>
+<td><p>enthalpy of the reaction</p></td>
+</tr>
+<tr>
+<td><p>T<sub>heatPort</sub></p></td>
+<td><p>current temperature T</p></td>
+</tr>
+<tr>
+<td><p>K<sub>Base</sub></p></td>
+<td><p>tabulated dissociation constant at base temperature T<sub>K</sub></p></td>
+</tr>
+<tr>
+<td><p>T<sub>K</sub></p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
+</tr>
+<tr>
+<td><p>&omega;</p></td>
+<td><p>change of number of microstates of particles</p></td>
+</tr>
+<tr>
+<td><p>&Delta;S</p></td>
+<td><p>entropy of the reaction</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup></p></td>
+<td><p>Gibb&apos;s energy of the reaction</p></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</table>
 
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
->Chemical.Interfaces.ConditionalVolume</a> (Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
->Chemical.Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
+>Physiolibrary.Chemical.Interfaces.ConditionalVolume</a> (Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
+>Physiolibrary.Chemical.Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>K</td><td>Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false</td></tr>
-<tr><td>kf</td><td>Forward reaction rate coefficient [SI unit]</td></tr>
-<tr><td>solventFraction</td><td>Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81) [1]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useNormalizedVolume</td><td>=true, if solution volume is 1 liter</td></tr>
-<tr><td>useDissociationConstantInput</td><td>=true, if external dissociation ratio is used</td></tr>
-<tr><td>useForwardRateInput</td><td>=true, if external forward rate is used</td></tr>
-<tr><td>useHeatPort</td><td>=true, if HeatPort is enabled</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Reaction type</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Substrates</td></tr>
-<tr><td>nS</td><td>Number of substrates types</td></tr>
-<tr><td>s[nS]</td><td>Stoichiometric reaction coefficient for substrates [1]</td></tr>
-<tr><td>as[nS]</td><td>Activity coefficients of substrates [1]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Products</td></tr>
-<tr><td>nP</td><td>Number of products types</td></tr>
-<tr><td>p[nP]</td><td>Stoichiometric reaction coefficients for products [1]</td></tr>
-<tr><td>ap[nP]</td><td>Activity coefficients of products [1]</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Temperature dependence</b></td></tr>
-<tr><td>T</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
-<tr><td>TK</td><td>Base temperature [K]</td></tr>
-<tr><td>dH</td><td>Standard Enthalpy Change (negative=exothermic) [J/mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>K</td><td>1</td><td>Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false</td></tr>
+<tr><td>Real</td><td>kf</td><td>10^8</td><td>Forward reaction rate coefficient [SI unit]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>solventFraction</td><td>1</td><td>Free solvent fraction in liquid (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717) [1]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useNormalizedVolume</td><td>true</td><td>Normalized volume of solution is 1 liter</td></tr>
+<tr><td>Boolean</td><td>useDissociationConstantInput</td><td>false</td><td>=true, if external dissociation ratio is used</td></tr>
+<tr><td>Boolean</td><td>useForwardRateInput</td><td>false</td><td>=true, if external forward rate is used</td></tr>
+<tr><td>Boolean</td><td>useHeatPort</td><td>false</td><td>=true, if HeatPort is enabled</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Reaction type</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Substrates</td></tr>
+<tr><td>Integer</td><td>nS</td><td>1</td><td>Number of substrates types</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.StoichiometricNumber"
+>StoichiometricNumber</a></td><td>s[nS]</td><td>ones(nS)</td><td>Stoichiometric reaction coefficient for substrates [1]</td></tr>
+<tr><td><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_SIunits.html#Modelica.SIunits.ActivityCoefficient"
+>ActivityCoefficient</a></td><td>as[nS]</td><td>ones(nS)</td><td>Activity coefficients of substrates [1]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Products</td></tr>
+<tr><td>Integer</td><td>nP</td><td>1</td><td>Number of products types</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.StoichiometricNumber"
+>StoichiometricNumber</a></td><td>p[nP]</td><td>ones(nP)</td><td>Stoichiometric reaction coefficients for products [1]</td></tr>
+<tr><td><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_SIunits.html#Modelica.SIunits.ActivityCoefficient"
+>ActivityCoefficient</a></td><td>ap[nP]</td><td>ones(nP)</td><td>Activity coefficients of products [1]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Temperature dependence</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>310.15</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>TK</td><td>298.15</td><td>Base temperature [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>MolarEnergy</a></td><td>dH</td><td>0</td><td>Standard Enthalpy Change (negative=exothermic) [J/mol]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionVolume</td><td>[m3]</td></tr>
-<tr><td>dissociationConstant</td><td>Dissociation coefficient [SI-unit]</td></tr>
-<tr><td>products[nP]</td><td>Products</td></tr>
-<tr><td>substrates[nS]</td><td>Substrates</td></tr>
-<tr><td>heatPort</td><td>&nbsp;</td></tr>
-<tr><td>forwardRateCoefficient</td><td>Reaction forward rate coefficient [SI-unit]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
+>VolumeInput</a></td><td>solutionVolume</td><td>Volume of solution [m3]</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>dissociationConstant</td><td>Dissociation coefficient [SI-unit]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>products[nP]</td><td>Products</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>substrates[nS]</td><td>Substrates</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>forwardRateCoefficient</td><td>Reaction forward rate coefficient [SI-unit]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> ChemicalReaction <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Chemical Reaction&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+
+  Real KaT <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Dissociation constant at current temperature&quot;</span>;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>Types.MolarFlowRate</a> rr <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Reaction molar flow rate&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
+>Physiolibrary.Chemical.Interfaces.ConditionalVolume</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useDissociationConstantInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if external dissociation ratio is used&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useForwardRateInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if external forward rate is used&quot;</span>;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> dissociationConstant(start=K) = KBase <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useDissociationConstantInput <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Dissociation coefficient [SI-unit]&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Physiolibrary.Chemical.Interfaces.ChemicalPort_b</a> products[nP] <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Products&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Physiolibrary.Chemical.Interfaces.ChemicalPort_a</a> substrates[nS] <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Substrates&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real K = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Fixed dissociation constant [SI-unit] if useDissociationConstantInput=false&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real kf = 10^8 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Forward reaction rate coefficient [SI unit]&quot;</span>;
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//  annotation (Dialog(group=&quot;Parameters&quot;)); //forward K*(10^rateLevel) at temperature TK</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Integer nS=1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Number of substrates types&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Integer nP=1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Number of products types&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.StoichiometricNumber"
+>Types.StoichiometricNumber</a> s[nS]=<span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nS) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Stoichiometric reaction coefficient for substrates&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_SIunits.html#Modelica.SIunits.ActivityCoefficient"
+>Modelica.SIunits.ActivityCoefficient</a> as[nS]=<span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nS) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Activity coefficients of substrates&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.StoichiometricNumber"
+>Types.StoichiometricNumber</a> p[nP]=<span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nP) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Stoichiometric reaction coefficients for products&quot;</span>;
+   <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_SIunits.html#Modelica.SIunits.ActivityCoefficient"
+>Modelica.SIunits.ActivityCoefficient</a> ap[nP]=<span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nP) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Activity coefficients of products&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
+>Physiolibrary.Chemical.Interfaces.ConditionalHeatPort</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> TK=298.15 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Base temperature&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>Types.MolarEnergy</a> dH=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Standard Enthalpy Change (negative=exothermic)&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> solventFraction=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Free solvent fraction in liquid (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)&quot;</span>;
+
+  Real KBase <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;dissociation constant at TK&quot;</span>;
+
+  Real forwardRate;
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> fsp=solventFraction^(<span style="color: red; font-weight: normal; font-style: normal;">sum</span>(s)+<span style="color: red; font-weight: normal; font-style: normal;">sum</span>(p));
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> fs=solventFraction^(<span style="color: red; font-weight: normal; font-style: normal;">sum</span>(s));
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> fp=solventFraction^(<span style="color: red; font-weight: normal; font-style: normal;">sum</span>(p));
+
+<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> forwardRateCoefficient(start=kf)=forwardRate <span style="color: blue; font-weight: normal; font-style: normal;">if </span>
+                                                                                useForwardRateInput <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Reaction forward rate coefficient [SI-unit]&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useDissociationConstantInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    KBase = K;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useForwardRateInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    forwardRate = kf;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  KaT = KBase *<span style="color: red; font-weight: normal; font-style: normal;"> Modelica.Math.exp</span>(((-dH)/Modelica.Constants.R)*(1/T_heatPort - 1/TK));<span style="color: #006400; font-weight: normal; font-style: normal;">  //Hoff&#39;s equation</span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//this Hoff&#39;s equation is valid in gases reactions with the same number of substrates and products and plus-minus in liquid solutions.</span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//for gaseous reaction with dn!=0 (stoichoimetry difference, i.e. the stoichiometru number of products minus the stoichiometry number of reactants) is the Van&#39;t Hoff&#39;s energy (dE) different from enthalphy of reaction (DH): dE=dH-dn*R*T (Ref: D. M. Golden, &quot;Standard states for thermochemical and activation parameters,&quot; Journal of Chemical Education, vol. 48, p. 235, 1971/04/01 1971.)</span>
+
+  rr*fsp = forwardRate*volume*(<span style="color: red; font-weight: normal; font-style: normal;">product</span>((as.*substrates.conc).^s)*fp - (1/KaT)*<span style="color: red; font-weight: normal; font-style: normal;">product</span>((ap.*products.conc).^p)*fs);<span style="color: #006400; font-weight: normal; font-style: normal;">  //Elementary first-order rate kinetics - the main equation</span>
+
+  lossHeat = -dH*rr;<span style="color: #006400; font-weight: normal; font-style: normal;"> //dH&lt;0 =&gt; Exothermic =&gt; lossHeat&gt;0, Endothermic otherwise</span>
+
+  rr*s = substrates.q;
+  rr*p = -products.q;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ChemicalReaction;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE GasSolubility<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -247,40 +514,187 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.GasSolubility</h2>
 <p>
 <b>Henry&#39;s law of gas solubility in liquid.</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co08260aacc8b3a524ilityD.png" alt="Physiolibrary.Chemical.Components.GasSolubility">
 </p>
 <h3>Information</h3>
 
-<h4><span style="color:#008000">Henry's law of The solubility of a Gas in Liquid</span></h4>
-<p>Henry&apos;s law at equilibrium: The concentration of a gas in a liquid is proportional to the partial pressure of the gas.</p>
-<p>c=k*p</p>
-<p>where<b> p</b> is the partial pressure of the gas, <b>k</b> is a Henry&apos;s law constant and<b> c</b> is a small concentration of the gas in the liquid.</p>
-<p>Henry&apos;s coefficient <b>k</b> depends on temperature and on the identities of all substances present in solution! </p>
-<p><br><br>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution.</p>
-<p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701.</p>
+<p><b>Concentration<sub>Liquid</sub> = k<sub>H</sub> &middot; Concentration<sub>Gas</b></sub></p>
+<p>Henry&apos;s law: The concentration of the gas in the liquid is proportional to the partial pressure of the gas during equilibrium. </p>
+<h4><span style="color:#008000">Relations</span></h4>
+<table cellspacing="2" cellpadding="0" border="0"><tr>
+<td><p>k<sub>d</sub>&middot;A&middot;c<sub>gas</sub></p></td>
+<td><p>dissolution rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>v</sub>&middot;A&middot;c<sub>liquid</sub></p></td>
+<td><p>volatility rate</p></td>
+</tr>
+<tr>
+<td><p>k<sub>H</sub> = k<sub>d</sub>/k<sub>v</sub> = c<sub>liquid</sub>/c<sub>gas</sub></p></td>
+<td><p>equilibrium</p></td>
+</tr>
+<tr>
+<td><p><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(k<sub>H</sub>/K<sub>H0</sub>) = (-&Delta;H/<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Constants.html#Modelica.Constants"
+>R</a>)&middot;(1/T<sub>heatPort</sub> - 1/T<sub>K</sub>)&nbsp;</p></td>
+<td><p>van&apos;t Hoff&apos;s equation</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>r</sub>G<sup>0</sup>= &Delta;H - T&middot;&Delta;S = -R&middot;T&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(K<sub>H</sub>) </p></td>
+<td><p>Gibb&apos;s energy </p></td>
+</tr>
+<tr>
+<td><p>&Delta;S = <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Constants.html#Modelica.Constants"
+>k</a>&middot;<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/ModelicaReference/help/ModelicaReference_Operators.html#ModelicaReference.Operators.'log()'"
+>log</a>(&Omega;) </p></td>
+<td><p>entropy </p></td>
+</tr>
+</table>
+<h4><span style="color:#008000">Notations</span></h4>
+<table cellspacing="2" cellpadding="0" border="0"><tr>
+<td><p>c<sub>gas</sub></p></td>
+<td><p>gaseous molar concentration of the substance</p></td>
+</tr>
+<tr>
+<td><p>c<sub>liquid</sub></p></td>
+<td><p>liquid molar concentration of the substance</p></td>
+</tr>
+<tr>
+<td><p>K<sub>H</sub></p></td>
+<td><p>Henry&apos;s coeficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>d</sub></p></td>
+<td><p>dissolution rate coefficient in liquid at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>k<sub>v</sub></p></td>
+<td><p>volatility rate coefficient at current temperature T</p></td>
+</tr>
+<tr>
+<td><p>A &nbsp;</p></td>
+<td><p>surface area between gas and liquid</p></td>
+</tr>
+<tr>
+<td><p>&Delta;H</p></td>
+<td><p>enthalpy of dissolution</p></td>
+</tr>
+<tr>
+<td><p>T<sub>heatPort</sub></p></td>
+<td><p>current temperature T</p></td>
+</tr>
+<tr>
+<td><p>K<sub>H0</sub></p></td>
+<td><p>tabulated Henry&apos;s constant at base temperature T<sub>K</sub></p></td>
+</tr>
+<tr>
+<td><p>T<sub>K</sub></p></td>
+<td><p>base temperature of tabulated coefficients</p></td>
+</tr>
+<tr>
+<td><p>&Omega;</p></td>
+<td><p>change of number of ways of arranging molecules</p></td>
+</tr>
+<tr>
+<td><p>&Delta;S</p></td>
+<td><p>entropy of the dissolution</p></td>
+</tr>
+<tr>
+<td><p>&Delta;<sub>s</sub>G<sup>0</sup></p></td>
+<td><p>Gibb&apos;s energy of the dissolution</p></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</table>
+<p>Henry&apos;s coefficient <b>k<sub>H</sub></b> depends on temperature and on the identities of all substances present in solution.</p>
+<p>Water fraction (W_solution, plasma 0.94, RBC 0.65 =&GT; blood 0.81 ml/ml) in solution can change the solubility of gases in water [1] as c_pure=c_solution/W_solution. </p>
+<h4><span style="color:#008000">References</span></h4>
+<p>[1] Dash RK, Bassingthwaighte JB. Erratum to: Blood HbO2 and HbCO2 dissociation curves at varied O2, CO2, pH, 2, 3-DPG and temperature levels. Ann Biomed Eng 2010;38:1683-701. </p>
 
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.GasSolubility"
 >Icons.GasSolubility</a>, <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
->Chemical.Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
+>Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solubilityRateCoef</td><td>The rate constant of incoming gas to solution (default 10 liter per second) [m3/s]</td></tr>
-<tr><td>kH_T0</td><td>Henry&#39;s law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..) [(mol/m3)/(mol/m3)]</td></tr>
-<tr><td>solventFraction</td><td>Free solvent fraction in liquid (i.e. water fraction in plasma=0.94, in RBC=0.65, in blood=0.81) [1]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useHeatPort</td><td>=true, if HeatPort is enabled</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Temperature dependence</b></td></tr>
-<tr><td>T</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
-<tr><td>T0</td><td>Base temperature for kH_T0 [K]</td></tr>
-<tr><td>C</td><td>Gas-liquid specific constant for Van&#39;t Hoff&#39;s change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..) [K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>DiffusionPermeability</a></td><td>solubilityRateCoef</td><td>0.01</td><td>The rate constant of incoming gas to solution (default 10 liter per second) [m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>GasSolubility</a></td><td>kH_T0</td><td>&nbsp;</td><td>Henry&#39;s law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..) [(mol/m3)/(mol/m3)]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>solventFraction</td><td>1</td><td>Free solvent fraction in liquid (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717) [1]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useHeatPort</td><td>false</td><td>=true, if HeatPort is enabled</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Temperature dependence</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>310.15</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T0</td><td>298.15</td><td>Base temperature for kH_T0 [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>C</td><td>&nbsp;</td><td>Gas-liquid specific constant for Van&#39;t Hoff&#39;s change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..) [K]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>heatPort</td><td>&nbsp;</td></tr>
-<tr><td>q_out</td><td>Gaseous solution</td></tr>
-<tr><td>q_in</td><td>Dissolved in liquid solution</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>Gaseous solution</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>Dissolved in liquid solution</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> GasSolubility <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Henry&#39;s law of gas solubility in liquid.&quot;</span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;"> //q_in is dissolved in liquid and q_out is in gaseous solution&quot;</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.GasSolubility"
+>Icons.GasSolubility</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
+>Interfaces.ConditionalHeatPort</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> solubilityRateCoef=0.01 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;The rate constant of incoming gas to solution (default 10 liter per second)&quot;</span>;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>Types.GasSolubility</a> kH <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Henry&#39;s law coefficient such as liquid-gas concentration ratio&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>Types.GasSolubility</a> kH_T0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Henry&#39;s law coefficient at base temperature (i.e. in (mmol/l)/kPa at 25degC: aO2=0.011, aCO2=0.245, ..)&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> T0=298.15 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Base temperature for kH_T0&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> C(displayUnit=&quot;K&quot;) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Gas-liquid specific constant for Van&#39;t Hoff&#39;s change of kH (i.e.: O2..1700K,CO2..2400K,N2..1300K,CO..1300K,..)&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> solventFraction=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Free solvent fraction in liquid (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> q_out <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Gaseous solution&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Dissolved in liquid solution&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.q + q_out.q = 0;
+
+  kH = kH_T0 *<span style="color: red; font-weight: normal; font-style: normal;"> Modelica.Math.exp</span>(C* (1/T_heatPort - 1/T0));<span style="color: #006400; font-weight: normal; font-style: normal;"> // Van&#39;t Hoff equation</span>
+
+  <span style="color: #006400; font-weight: normal; font-style: normal;">// equilibrium:  liquid.conc = kH * gas.conc;</span>
+  q_out.q = solubilityRateCoef*(kH * q_out.conc - q_in.conc/solventFraction);<span style="color: #006400; font-weight: normal; font-style: normal;"> //negative because of outflow</span>
+
+  lossHeat = C*Modelica.Constants.R*q_out.q;<span style="color: #006400; font-weight: normal; font-style: normal;"> //negative = heat are comsumed when change from liquid to gas</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>GasSolubility;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Diffusion<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -289,6 +703,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Diffusion</h2>
 <p>
 <b>Solute diffusion</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co6fbfc27e69522e6ausionD.png" alt="Physiolibrary.Chemical.Components.Diffusion">
 </p>
 <h3>Information</h3>
 
@@ -303,21 +719,55 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Diffusion"
 >Icons.Diffusion</a>, <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
->Chemical.Interfaces.OnePort</a> (Partial transfer of solute beween two ports without its accumulation).</p>
+>Interfaces.OnePort</a> (Partial transfer of solute between two ports without its accumulation).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Conductance</td><td>Diffusion conductance if useConductanceInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useConductanceInput</td><td>=true, if external conductance value is used</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>DiffusionPermeability</a></td><td>Conductance</td><td>0</td><td>Diffusion conductance if useConductanceInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useConductanceInput</td><td>false</td><td>=true, if external conductance value is used</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>conductance</td><td>[m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityInput"
+>DiffusionPermeabilityInput</a></td><td>conductance</td><td>[m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Diffusion <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Solute diffusion&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Diffusion"
+>Icons.Diffusion</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useConductanceInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if external conductance value is used&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> Conductance=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Diffusion conductance if useConductanceInput=false&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> c;
+<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityInput"
+>Types.RealIO.DiffusionPermeabilityInput</a> conductance = c <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useConductanceInput;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useConductanceInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    c=Conductance;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+   q_in.q = c * (q_in.conc - q_out.conc);
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Diffusion;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Membrane<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -326,6 +776,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Membrane</h2>
 <p>
 <b>Donnan&#39;s equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ...</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co509b63a2350d59d1braneD.png" alt="Physiolibrary.Chemical.Components.Membrane">
 </p>
 <h3>Information</h3>
 
@@ -366,33 +818,131 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Membrane"
 >Icons.Membrane</a>, <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
->Chemical.Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
+>Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>NumberOfParticles</td><td>Number of penetrating particle types</td></tr>
-<tr><td>Charges[NumberOfParticles]</td><td>Elementary charges of particles</td></tr>
-<tr><td>Permeabilities[NumberOfParticles]</td><td>Permeabilities of particles through membrane chanel [m3/s]</td></tr>
-<tr><td>solventFractionInside</td><td>Free solvent fraction inside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81) [1]</td></tr>
-<tr><td>solventFractionOutside</td><td>Free solvent fraction outside (i.e. water fraction in plasma=0.94, in cells=0.65, in blood=0.81) [1]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useHeatPort</td><td>=true, if HeatPort is enabled</td></tr>
-<tr><td>usePermeabilityInput</td><td>=true, if external permeability value is used</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Temperature dependence</b></td></tr>
-<tr><td>T</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
-<tr><td>T0</td><td>Base temperature for kH_T0 [K]</td></tr>
-<tr><td>C[NumberOfParticles]</td><td>Specific constant difference (C1-C2) for Van&#39;t Hoff&#39;s change of kH [K]</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Different solubilities</b></td></tr>
-<tr><td>kH_T0[NumberOfParticles]</td><td>Equilibrated concentration ratio at temperature T0 - can be estimated by Henry&#39;s law coefficient ratios (kH1/kH2) [(mol/m3)/(mol/m3)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Integer</td><td>NumberOfParticles</td><td>1</td><td>Number of penetrating particle types</td></tr>
+<tr><td>Integer</td><td>Charges[NumberOfParticles]</td><td>zeros(NumberOfParticles)</td><td>Elementary charges of particles</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>DiffusionPermeability</a></td><td>Permeabilities[NumberOfParticles]</td><td>zeros(NumberOfParticles)</td><td>Permeabilities of particles through membrane chanel [m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>solventFractionInside</td><td>1</td><td>Free solvent fraction inside (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717) [1]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>solventFractionOutside</td><td>1</td><td>Free solvent fraction outside (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717) [1]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useHeatPort</td><td>false</td><td>=true, if HeatPort is enabled</td></tr>
+<tr><td>Boolean</td><td>usePermeabilityInput</td><td>false</td><td>=true, if external permeability value is used</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Temperature dependence</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>310.15</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T0</td><td>298.15</td><td>Base temperature for kH_T0 [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>C[NumberOfParticles]</td><td>zeros(NumberOfParticles)</td><td>Specific constant difference (C1-C2) for Van&#39;t Hoff&#39;s change of kH [K]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Different solubilities</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>GasSolubility</a></td><td>kH_T0[NumberOfParticles]</td><td>ones(NumberOfParticles)</td><td>Equilibrated concentration ratio at temperature T0 - can be estimated by Henry&#39;s law coefficient ratios (kH1/kH2) [(mol/m3)/(mol/m3)]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>heatPort</td><td>&nbsp;</td></tr>
-<tr><td>particlesInside[NumberOfParticles]</td><td>inner side of membrane, solution</td></tr>
-<tr><td>particlesOutside[NumberOfParticles]</td><td>outer side of membrane, solution</td></tr>
-<tr><td>permeability[NumberOfParticles]</td><td>[m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>particlesInside[NumberOfParticles]</td><td>inner side of membrane, solution</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>particlesOutside[NumberOfParticles]</td><td>outer side of membrane, solution</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityInput"
+>DiffusionPermeabilityInput</a></td><td>permeability[NumberOfParticles]</td><td>[m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Membrane <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Donnan&#39;s equilibrium of electrolytes usable for glomerular membrane, open/leak membrane channels, pores, ...&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Membrane"
+>Icons.Membrane</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
+>Interfaces.ConditionalHeatPort</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Integer NumberOfParticles = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Number of penetrating particle types&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Integer Charges[NumberOfParticles] =<span style="color: red; font-weight: normal; font-style: normal;"> zeros</span>(NumberOfParticles) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Elementary charges of particles&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> Permeabilities[NumberOfParticles] =<span style="color: red; font-weight: normal; font-style: normal;"> zeros</span>(NumberOfParticles) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Permeabilities of particles through membrane chanel&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean usePermeabilityInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if external permeability value is used&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> particlesInside[NumberOfParticles] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;inner side of membrane, solution&quot;</span>;
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> particlesOutside[NumberOfParticles] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;outer side of membrane, solution&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityInput"
+>Types.RealIO.DiffusionPermeabilityInput</a> permeability[NumberOfParticles] = p <span style="color: blue; font-weight: normal; font-style: normal;">if </span>usePermeabilityInput;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>Types.GasSolubility</a> kH[NumberOfParticles] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Concentration ratio at equilibrium&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>Types.GasSolubility</a> kH_T0[NumberOfParticles] =<span style="color: red; font-weight: normal; font-style: normal;"> ones</span>( NumberOfParticles) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Equilibrated concentration ratio at temperature T0 - can be estimated by Henry&#39;s law coefficient ratios (kH1/kH2)&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> T0=298.15 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Base temperature for kH_T0&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> C[NumberOfParticles](displayUnit=&quot;K&quot;) =<span style="color: red; font-weight: normal; font-style: normal;"> zeros</span>(NumberOfParticles) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Specific constant difference (C1-C2) for Van&#39;t Hoff&#39;s change of kH&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> solventFractionInside=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Free solvent fraction inside (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> solventFractionOutside=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Free solvent fraction outside (i.e. &#39;mol/mol&#39; ratio between current solution and pure solvent in one liter; e.g. in plasma=0.96, in RBC=0.717)&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+   Real KAdjustment <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;=(Cations-AnionLessProteins)/(Cations+AnionLessProteins)&quot;</span>;
+   <a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> p[NumberOfParticles];
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>usePermeabilityInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    p=Permeabilities;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  <span style="color: #006400; font-weight: normal; font-style: normal;"> //no accumulation of particles:</span>
+   particlesInside.q + particlesOutside.q =<span style="color: red; font-weight: normal; font-style: normal;"> zeros</span>(NumberOfParticles);<span style="color: #006400; font-weight: normal; font-style: normal;"> //nothing lost inside</span>
+
+  <span style="color: #006400; font-weight: normal; font-style: normal;"> //electroneutrality:</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: red; font-weight: normal; font-style: normal;">abs</span>(Charges.*Charges*p)&lt;=Modelica.Constants.eps<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+     KAdjustment=0;<span style="color: #006400; font-weight: normal; font-style: normal;"> //no penetrating electrolytes =&gt; KAdjustment and electroneutrality of flux is not needed</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">else</span>
+     Charges*particlesInside.q = 0;<span style="color: #006400; font-weight: normal; font-style: normal;"> //electroneutrality of flux through membrane</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  <span style="color: #006400; font-weight: normal; font-style: normal;"> //diffusion, penetration, particle movement:</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>1:NumberOfParticles<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span>
+     <span style="color: blue; font-weight: normal; font-style: normal;">if </span>Charges[i]==0<span style="color: blue; font-weight: normal; font-style: normal;"> then</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //normal diffusion</span>
+       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - kH[i]*particlesOutside[i].conc/solventFractionOutside);
+     <span style="color: blue; font-weight: normal; font-style: normal;">elseif </span>Charges[i]&gt;0<span style="color: blue; font-weight: normal; font-style: normal;"> then</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //cation goes to Donnan&#39;s equilibrium</span>
+       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1+KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
+     <span style="color: blue; font-weight: normal; font-style: normal;">else</span><span style="color: #006400; font-weight: normal; font-style: normal;"> //anion goes to Donnan&#39;s equilibrium</span>
+       particlesInside[i].q = p[i] * (particlesInside[i].conc/solventFractionInside - (1-KAdjustment)*kH[i]*particlesOutside[i].conc/solventFractionOutside);
+     <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+   <span style="color: blue; font-weight: normal; font-style: normal;">end for</span>;
+
+  <span style="color: #006400; font-weight: normal; font-style: normal;"> //different solubilities:</span>
+   kH = kH_T0 .*<span style="color: red; font-weight: normal; font-style: normal;"> Modelica.Math.exp</span>(C * (1/T_heatPort - 1/T0));
+   lossHeat = Modelica.Constants.R* C*particlesOutside.q;<span style="color: #006400; font-weight: normal; font-style: normal;"> //negative = heat are comsumed when change from liquid to gas</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Membrane;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Speciation<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -401,13 +951,15 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Speciation</h2>
 <p>
 <b>Chemical species definition by independent binding sides of macromolecule</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Coadfcb8662369ac1aationD.png" alt="Physiolibrary.Chemical.Components.Speciation">
 </p>
 <h3>Information</h3>
 
 <p>This block identifies one specific chemical form of one macromolecule defined by forms of its subunits  (one chosen chemical species - called <i>specie</i>).</p>
 <p>Only main connector called <b>species </b>is designed for inflow and outflow of macromolecule to/from <i>system</i>. The concentration in this connector is the concentration of its specific <i>specie.</i></p>
 <p>Connectors <b>subunitSpecies[:] </b>represent specific forms of the macromolecule subunit types. If the subnunit type occures n-times in macromolecule, the inflow is n-time greater than the inflow of macromolecule.</p>
-<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurence in macromolecule. In equilibrium are this proporties fullfiled.</p>
+<p><br>Initial total concentrations of subunits must be set to be right distribution of total macromolecule concentration. So the ratios between subunit concentrations are the ratios of their occurrence in macromolecule. In equilibrium are this proporties fulfilled.</p>
 <p><br>For example: If the macromolecule has four identical independent subunits and each subunit can occur in two form F1 and F2, then the concentration of macromolecule <i>specie </i>composed only from four subunits in form F1 is <b>species.conc=</b>conc*fF1^4. </p>
 <p>Where:</p>
 <p>conc is totat concentration of macromolecule in <i>system</i> accumulated by <b>species.q</b>,</p>
@@ -422,35 +974,118 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Speciation"
 >Icons.Speciation</a>, <a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
 >SteadyStates.Interfaces.SteadyStateSystem</a> (Global abstract class, for additional global state equations), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
->Chemical.Interfaces.ConditionalVolume</a> (Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume).</p>
+>Interfaces.ConditionalVolume</a> (Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>NumberOfSubunits</td><td>Number of independent subunits occuring in molecule</td></tr>
-<tr><td>subunitInternalHeat[NumberOfSubunits]</td><td>[J]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useNormalizedVolume</td><td>=true, if solution volume is 1 liter</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Simulation</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation type</td></tr>
-<tr><td>Simulation</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Equilibrium</td></tr>
-<tr><td>NumberOfDependentStates</td><td>Number of additional steady state equation of the system</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Heat</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useInternalHeatsInput</td><td>=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies</td></tr>
-<tr><td>SubunitEnthalpies[NumberOfSubunits]</td><td>Enthalpy changes of substances (can relative to one choosen specific form of chemical substance in the system) if useEnthalpiesInput=false [J/mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Integer</td><td>NumberOfSubunits</td><td>1</td><td>Number of independent subunits occurring in molecule</td></tr>
+<tr><td><a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
+>EnergyInput</a></td><td>subunitInternalHeat[NumberOfSubunits]</td><td>internalHeatOfSubunit</td><td>[J]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useNormalizedVolume</td><td>true</td><td>Normalized volume of solution is 1 liter</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Simulation</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation type</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.SteadyS...</td><td>Dynamic with Initialization or Steady State</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Equilibrium</td></tr>
+<tr><td>Integer</td><td>NumberOfDependentStates</td><td>NumberOfSubunits - 1</td><td>Number of additional steady state equation of the system</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Heat</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useInternalHeatsInput</td><td>false</td><td>=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>MolarEnergy</a></td><td>SubunitEnthalpies[NumberOfSubunits]</td><td>zeros(NumberOfSubunits)</td><td>Enthalpy changes of substances (can relative to one chosen specific form of chemical substance in the system) if useEnthalpiesInput=false [J/mol]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionVolume</td><td>[m3]</td></tr>
-<tr><td>specificForm</td><td>Specific form composed with subunits form of subunitSpiecies</td></tr>
-<tr><td>specificSubunitForm[NumberOfSubunits]</td><td>Specific form of subunits of specific molecule form in connector called spieces</td></tr>
-<tr><td>amountOfSubunit[NumberOfSubunits]</td><td>Total amount of the subunits in all forms [mol]</td></tr>
-<tr><td>amount</td><td>Total amount of macromolecules in this system [mol]</td></tr>
-<tr><td>internalHeat</td><td>Relative internal heat of all chemical forms in this system [J]</td></tr>
-<tr><td>subunitInternalHeat[NumberOfSubunits]</td><td>[J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
+>VolumeInput</a></td><td>solutionVolume</td><td>Volume of solution [m3]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>specificForm</td><td>Specific form composed with subunits form of subunitSpiecies</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>specificSubunitForm[NumberOfSubunits]</td><td>Specific form of subunits of specific molecule form in connector called spieces</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
+>AmountOfSubstanceInput</a></td><td>amountOfSubunit[NumberOfSubunits]</td><td>Total amount of the subunits in all forms [mol]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>AmountOfSubstanceOutput</a></td><td>amount</td><td>Total amount of macromolecules in this system [mol]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>EnergyOutput</a></td><td>internalHeat</td><td>Relative internal heat of all chemical forms in this system [J]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
+>EnergyInput</a></td><td>subunitInternalHeat[NumberOfSubunits]</td><td>[J]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Speciation <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Chemical species definition by independent binding sides of macromolecule&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Speciation"
+>Icons.Speciation</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyStateSystem"
+>SteadyStates.Interfaces.SteadyStateSystem</a>(
+                                           Simulation=Types.SimulationType.SteadyState, NumberOfDependentStates=NumberOfSubunits-1);
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
+>Interfaces.ConditionalVolume</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Integer NumberOfSubunits=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Number of independent subunits occurring in molecule&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> specificForm <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Specific form composed with subunits form of subunitSpiecies&quot;</span>;
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> specificSubunitForm[NumberOfSubunits] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Specific form of subunits of specific molecule form in connector called spieces&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  Real fractions[NumberOfSubunits];
+<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceInput"
+>Types.RealIO.AmountOfSubstanceInput</a> amountOfSubunit[NumberOfSubunits] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Total amount of the subunits in all forms&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>Types.RealIO.AmountOfSubstanceOutput</a> amount <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Total amount of macromolecules in this system&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">                                   //(start=1e-8)</span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>Types.RealIO.EnergyOutput</a> internalHeat <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Relative internal heat of all chemical forms in this system&quot;</span>;
+
+<span style="color: #006400; font-weight: normal; font-style: normal;">//system internal heat</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useInternalHeatsInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if subunitInternalHeat inputs are used instead of parameter SubunitEnthalpies&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>Types.MolarEnergy</a> SubunitEnthalpies[NumberOfSubunits]=<span style="color: red; font-weight: normal; font-style: normal;">zeros</span>(NumberOfSubunits) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Enthalpy changes of substances (can relative to one chosen specific form of chemical substance in the system) if useEnthalpiesInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyInput"
+>Types.RealIO.EnergyInput</a> subunitInternalHeat[NumberOfSubunits](<span style="color: blue; font-weight: normal; font-style: normal;">each </span>start=0)=internalHeatOfSubunit <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useInternalHeatsInput;
+
+   <a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
+>Types.Energy</a> internalHeatOfSubunit[NumberOfSubunits] <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Internal heat of subunits&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+
+  amount = amountOfSubunit[1];
+
+  fractions = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>(amount &lt; Modelica.Constants.eps)<span style="color: blue; font-weight: normal; font-style: normal;"> then </span><span style="color: red; font-weight: normal; font-style: normal;">zeros</span>(NumberOfSubunits)<span style="color: blue; font-weight: normal; font-style: normal;">
+              else </span>specificSubunitForm.conc ./ (amountOfSubunit/volume);
+
+  specificForm.conc = (amount/volume)*<span style="color: red; font-weight: normal; font-style: normal;">product</span>(fractions);<span style="color: #006400; font-weight: normal; font-style: normal;"> //chemical speciation</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>2:NumberOfSubunits<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span>
+             normalizedState[i-1]*amount = amountOfSubunit[i];
+  <span style="color: blue; font-weight: normal; font-style: normal;">end for</span>;
+
+<span style="color: #006400; font-weight: normal; font-style: normal;">//molar flow:</span>
+  specificSubunitForm.q = -specificForm.q *<span style="color: red; font-weight: normal; font-style: normal;"> ones</span>(NumberOfSubunits);
+
+<span style="color: #006400; font-weight: normal; font-style: normal;">//heat:</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useInternalHeatsInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    internalHeatOfSubunit = SubunitEnthalpies.*amountOfSubunit;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  internalHeat=<span style="color: red; font-weight: normal; font-style: normal;">sum</span>(internalHeatOfSubunit);
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Speciation;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Degradation<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -459,23 +1094,50 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Degradation</h2>
 <p>
 <b>Degradation of solute</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co19a8b3e36635b982ationD.png" alt="Physiolibrary.Chemical.Components.Degradation">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
 >Interfaces.ConditionalVolume</a> (Chemical processes can be modeled with or without(normalized to 1 liter) variable solution volume).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>HalfTime</td><td>Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist. [s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useNormalizedVolume</td><td>=true, if solution volume is 1 liter</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>HalfTime</td><td>&nbsp;</td><td>Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist. [s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useNormalizedVolume</td><td>true</td><td>Normalized volume of solution is 1 liter</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionVolume</td><td>[m3]</td></tr>
-<tr><td>q_in</td><td>Degraded solute outflow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeInput"
+>VolumeInput</a></td><td>solutionVolume</td><td>Volume of solution [m3]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>Degraded solute outflow</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Degradation <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Degradation of solute&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalVolume"
+>Interfaces.ConditionalVolume</a>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Degraded solute outflow&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> HalfTime <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Degradation half time. The time after which will remain half of initial concentration in the defined volume when no other generation nor clearence nor degradation exist.&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> Clearance;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  Clearance = volume*<span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log</span>(2)/HalfTime;
+  q_in.q = Clearance*q_in.conc;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Degradation;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Clearance<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -484,25 +1146,61 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Clearance</h2>
 <p>
 <b>Clearance with or without solvent outflow</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Coe786590da72b34c9ranceD.png" alt="Physiolibrary.Chemical.Components.Clearance">
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
->Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Clearance</td><td>Clearance of solute if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr><td>K</td><td>Coefficient such that Clearance = K*solutionFlow [1]</td></tr>
-<tr><td>SolutionFlow</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>Clearance</td><td>0</td><td>Clearance of solute if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr><td>Real</td><td>K</td><td>1</td><td>Coefficient such that Clearance = K*solutionFlow [1]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>Clearance/K</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
-<tr><td>q_in</td><td>solute outflow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>solute outflow</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Clearance <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Clearance with or without solvent outflow&quot;</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> Clearance=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Clearance of solute if useSolutionFlowInput=false&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real K(unit=&quot;1&quot;)=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Coefficient such that Clearance = K*solutionFlow&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a>(SolutionFlow=
+        Clearance/K);
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;solute outflow&quot;</span>;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> clearance;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+
+  clearance = q*K;
+
+  q_in.q = clearance*q_in.conc;
+
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  assert(clearance&gt;=-Modelica.Constants.eps, &quot;Clearance can not be negative!&quot;);</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Clearance;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Stream<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -511,6 +1209,8 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Stream</h2>
 <p>
 <b>Flow of whole solution</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Components.StreamD.png" alt="Physiolibrary.Chemical.Components.Stream">
 </p>
 <h3>Information</h3>
 
@@ -540,22 +1240,40 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 <br/>
 
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
->Chemical.Interfaces.OnePort</a> (Partial transfer of solute beween two ports without its accumulation), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
->Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+>Interfaces.OnePort</a> (Partial transfer of solute between two ports without its accumulation), <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SolutionFlow</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Stream <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Flow of whole solution&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.q = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>
+             (q&gt;0)<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>q*q_in.conc<span style="color: blue; font-weight: normal; font-style: normal;"> else </span>q*q_out.conc;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Stream;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SolutePump<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -564,25 +1282,44 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.SolutePump</h2>
 <p>
 <b>Prescribed solute flow</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co9d58f925993bc309ePumpD.png" alt="Physiolibrary.Chemical.Components.SolutePump">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
->Chemical.Interfaces.OnePort</a> (Partial transfer of solute beween two ports without its accumulation), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
->Chemical.Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
+>Interfaces.OnePort</a> (Partial transfer of solute between two ports without its accumulation), <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
+>Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SoluteFlow</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSoluteFlowInput</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a></td><td>SoluteFlow</td><td>0</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSoluteFlowInput</td><td>false</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>soluteFlow</td><td>[mol/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>MolarFlowRateInput</a></td><td>soluteFlow</td><td>[mol/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> SolutePump <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Prescribed solute flow&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
+>Interfaces.ConditionalSoluteFlow</a>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.q = q;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SolutePump;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Dilution<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -591,25 +1328,60 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Dilution</h2>
 <p>
 <b>Adding/removing of the solvent to/from running solution</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Co4319033d367e79b1utionD.png" alt="Physiolibrary.Chemical.Components.Dilution">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
->Chemical.Interfaces.OnePort</a> (Partial transfer of solute beween two ports without its accumulation), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Dilution"
+>Interfaces.OnePort</a> (Partial transfer of solute between two ports without its accumulation), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Dilution"
 >Icons.Dilution</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Dilution</td><td>Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false [1]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useDilutionInput</td><td>=true, if dilition input is used</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>Dilution</td><td>1</td><td>Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false [1]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useDilutionInput</td><td>false</td><td>=true, if dilition input is used</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>dilution</td><td>Fraction of final undilutes solution [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>FractionInput</a></td><td>dilution</td><td>Fraction of final undilutes solution [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Dilution <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Adding/removing of the solvent to/from running solution&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Dilution"
+>Icons.Dilution</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useDilutionInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;=true, if dilition input is used&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> Dilution=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>Types.RealIO.FractionInput</a> dilution(start=Dilution)= d <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useDilutionInput <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Fraction of final undilutes solution&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> d;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useDilutionInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    d=Dilution;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  q_out.conc = d * q_in.conc;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Dilution;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Reabsorption<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -618,32 +1390,107 @@ The Gibbs energy of reaction can be calculate from the change of entropy dS at d
 >Physiolibrary.Chemical.Components</a>.Reabsorption</h2>
 <p>
 <b>Reabsorption as input fraction</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Coe00e385d2bf97850ptionD.png" alt="Physiolibrary.Chemical.Components.Reabsorption">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Reabsorption"
 >Icons.Reabsorption</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>MaxReabsorption</td><td>Maximal reabsorption molar flow if useMaxReabInput=false [mol/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useEffect</td><td>=true, if reabsorption fraction is BaseReabsorption^(1/Effect)</td></tr>
-<tr><td>useMaxReabInput</td><td>=true, if external maximum of reabsorption molar flow is used</td></tr>
-<tr><td>useBaseReabsorption</td><td>=false, if BaseReabsorption=1</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a></td><td>MaxReabsorption</td><td>Modelica.Constants.inf</td><td>Maximal reabsorption molar flow if useMaxReabInput=false [mol/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useEffect</td><td>false</td><td>=true, if reabsorption fraction is BaseReabsorption^(1/Effect)</td></tr>
+<tr><td>Boolean</td><td>useMaxReabInput</td><td>false</td><td>=true, if external maximum of reabsorption molar flow is used</td></tr>
+<tr><td>Boolean</td><td>useBaseReabsorption</td><td>false</td><td>=false, if BaseReabsorption=1</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Inflow</td><td>Tubular inflow</td></tr>
-<tr><td>Outflow</td><td>Tubular outflow</td></tr>
-<tr><td>Reabsorption</td><td>Reabsorption from tubules</td></tr>
-<tr><td>baseReabsorption</td><td>Base fraction of molar inflow for reabsorption flow [1]</td></tr>
-<tr><td>Effect</td><td>Effects&lt;1 decrease reabsorption, effects&gt;1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect) [1]</td></tr>
-<tr><td>MaxReab</td><td>Maximal allowed reabsorption molar flow rate [mol/s]</td></tr>
-<tr><td>ReabFract</td><td>Actual reabsorbed fraction from solute inflow rate [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>Inflow</td><td>Tubular inflow</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>Outflow</td><td>Tubular outflow</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>Reabsorption</td><td>Reabsorption from tubules</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>FractionInput</a></td><td>baseReabsorption</td><td>Base fraction of molar inflow for reabsorption flow [1]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>FractionInput</a></td><td>Effect</td><td>Effects&lt;1 decrease reabsorption, effects&gt;1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect) [1]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>MolarFlowRateInput</a></td><td>MaxReab</td><td>Maximal allowed reabsorption molar flow rate [mol/s]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>FractionOutput</a></td><td>ReabFract</td><td>Actual reabsorbed fraction from solute inflow rate [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Reabsorption <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Reabsorption as input fraction&quot;</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Reabsorption"
+>Icons.Reabsorption</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useEffect = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if reabsorption fraction is BaseReabsorption^(1/Effect)&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useMaxReabInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if external maximum of reabsorption molar flow is used&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useBaseReabsorption = false <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;=false, if BaseReabsorption=1&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>Types.MolarFlowRate</a> MaxReabsorption = Modelica.Constants.inf <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Maximal reabsorption molar flow if useMaxReabInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> Inflow <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Tubular inflow&quot;</span>;
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> Outflow <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Tubular outflow&quot;</span>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> Reabsorption <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Reabsorption from tubules&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>Types.RealIO.FractionInput</a> baseReabsorption=baseReabFract <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useBaseReabsorption <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Base fraction of molar inflow for reabsorption flow&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionInput"
+>Types.RealIO.FractionInput</a> Effect(displayUnit=&quot;1&quot;)=e <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useEffect <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Effects&lt;1 decrease reabsorption, effects&gt;1 increase reabsorption fraction by equation ReabFract=BaseReabsorption^(1/Effect)&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>Types.RealIO.MolarFlowRateInput</a>               MaxReab=mr <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useMaxReabInput <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Maximal allowed reabsorption molar flow rate&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>Types.RealIO.FractionOutput</a>               ReabFract=reabFract <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useEffect <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Actual reabsorbed fraction from solute inflow rate&quot;</span>;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> reabFract,baseReabFract,e;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>Types.MolarFlowRate</a> mr;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  Inflow.conc = Outflow.conc;
+  0 = Inflow.q + Outflow.q + Reabsorption.q;
+
+  Reabsorption.q=-<span style="color: red; font-weight: normal; font-style: normal;">min</span>(mr,reabFract*Inflow.q);
+
+  reabFract = baseReabFract^(1/e);
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useBaseReabsorption<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    baseReabFract=1;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useMaxReabInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    mr=MaxReabsorption;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useEffect<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    e=1;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Reabsorption;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:50 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:56:34 2015.
 </address>
 </body>
 </html>

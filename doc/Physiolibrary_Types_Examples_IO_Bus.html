@@ -104,6 +104,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Variables<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -112,35 +113,106 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Examples.IO_Bus</a>.Variables</h2>
 <p>
 <b>Example of subsystem outputs</b>
+<br>
+<br><img src="Physiolibrary.Types.Examp47a97599d7fa5cc7ablesD.png" alt="Physiolibrary.Types.Examples.IO_Bus.Variables">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
 ></a> (Subsystem output busConnector variables).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">model</span> <span style="color: blue; font-weight: normal; font-style: normal;">extends </span>Variables <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Example of subsystem outputs&quot;</span>
+
+  <a href="Physiolibrary_Types_RealTypes.html#Physiolibrary.Types.RealTypes.Pressure"
+>T.Pressure</a> Bone_PO2(varName=&quot;Bone-Flow.PO2&quot;) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Partial oxygen pressure in bone blood venules.&quot;</span>;
+  <a href="Physiolibrary_Types_RealTypes.html#Physiolibrary.Types.RealTypes.VolumeFlowRate"
+>T.VolumeFlowRate</a> BoneBloodFlow(varName=&quot;Bone-Flow.BloodFlow&quot;) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Blood flow through bones&quot;</span>;
+  <a href="Physiolibrary_Types_RealTypes.html#Physiolibrary.Types.RealTypes.MolarFlowRate"
+>T.MolarFlowRate</a> BoneO2Need(varName=&quot;Bone-Metabolism.O2-Need&quot;) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Current desired delivery flow of oxygen to bone metabolism&quot;</span>;
+  <a href="Physiolibrary_Types_RealTypes.html#Physiolibrary.Types.RealTypes.Volume"
+>T.Volume</a> BoneLiquidVol(varName=&quot;Bone-Tissue.LiquidVol&quot;) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;The extravascular water in bones. &quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(Bone_PO2.y, busConnector.Bone_PO2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneBloodFlow.y, busConnector.Bone_BloodFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneO2Need.y, busConnector.Bone_O2Need);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneLiquidVol.y, busConnector.Bone_LiquidVol);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Variables;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Test<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Types.Examples.IO_Bus.TestI.png" alt="Physiolibrary.Types.Examples.IO_Bus.Test" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Types.Examples.IO_Bus.Test"></a><a href="Physiolibrary_Types_Examples_IO_Bus.html#Physiolibrary.Types.Examples.IO_Bus"
 >Physiolibrary.Types.Examples.IO_Bus</a>.Test</h2>
+<p>
+<br><img src="Physiolibrary.Types.Examples.IO_Bus.TestD.png" alt="Physiolibrary.Types.Examples.IO_Bus.Test">
+</p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Test
+  <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>Physiolibrary.Types.BusConnector</a> busConnector;
+  <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.OutputToFile"
+>Physiolibrary.Types.Examples.IO_Bus.OutputToFile</a> outputToFile;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PressureConst"
+>Physiolibrary.Types.Constants.PressureConst</a>
+             Bone_PO2(k=5599.54027143) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Partial oxygen pressure in bone blood venules.&quot;</span>;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.VolumeFlowRateConst"
+>Physiolibrary.Types.Constants.VolumeFlowRateConst</a>
+                   BoneBloodFlow(k=5.3333333333333e-06) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Blood flow through bones&quot;</span>;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.MolarFlowRateConst"
+>Physiolibrary.Types.Constants.MolarFlowRateConst</a>
+                  BoneO2Need(k(displayUnit=&quot;ml_STP/min&quot;) = 1.027404402668e-05) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Current desired delivery flow of oxygen to bone metabolism&quot;</span>;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.VolumeConst"
+>Physiolibrary.Types.Constants.VolumeConst</a>
+           BoneLiquidVol(k=0.0027) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;The extravascular water in bones. &quot;</span>;
+  <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.OutputToFile_SI"
+>Physiolibrary.Types.Examples.IO_Bus.OutputToFile_SI</a> outputToFile_SI;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(busConnector, outputToFile.busConnector);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(Bone_PO2.y, busConnector.Bone_PO2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneBloodFlow.y, busConnector.Bone_BloodFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneO2Need.y, busConnector.Bone_O2Need);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(BoneLiquidVol.y, busConnector.Bone_LiquidVol);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(busConnector, outputToFile_SI.busConnector);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Test;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:58 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:31 2015.
 </address>
 </body>
 </html>

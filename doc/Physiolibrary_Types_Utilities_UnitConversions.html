@@ -75,6 +75,269 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
+<h3>Types and constants</h3>
+<pre>  <span style="color: blue; font-weight: normal; font-style: normal;">constant </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a> RealTypeDef[:]={<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(),
+      <span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;pH&quot;,
+        Unit=&quot;log10(mol/l)&quot;,
+        DisplayUnit=&quot;log10(mol/l)&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Energy&quot;,
+        Unit=&quot;J&quot;,
+        DisplayUnit=&quot;kcal&quot;,
+        Scale=4186.8),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Time&quot;,
+        Unit=&quot;s&quot;,
+        DisplayUnit=&quot;min&quot;,
+        Scale=60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Frequency&quot;,
+        Unit=&quot;1/s&quot;,
+        DisplayUnit=&quot;Hz&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Frequency&quot;,
+        Unit=&quot;1/s&quot;,
+        DisplayUnit=&quot;1/min&quot;,
+        Scale=1/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Mass&quot;,
+        Unit=&quot;kg&quot;,
+        Min=0,
+        DisplayUnit=&quot;g&quot;,
+        Scale=1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Mass&quot;,
+        Unit=&quot;kg&quot;,
+        Min=0,
+        DisplayUnit=&quot;mg&quot;,
+        Scale=1e-6),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassFlowRate&quot;,
+        Unit=&quot;kg/s&quot;,
+        DisplayUnit=&quot;mg/min&quot;,
+        Scale=(1e-6)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassFlowRate&quot;,
+        Unit=&quot;kg/s&quot;,
+        DisplayUnit=&quot;g/min&quot;,
+        Scale=(1e-3)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Density&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;kg/l&quot;,
+        Scale=1e3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Density&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;g/l&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassConcentration&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;mg/l&quot;,
+        Scale=1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassConcentration&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;mg/dl&quot;,
+        Scale=1e-6/1e-4),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassConcentration&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;ng/l&quot;,
+        Scale=1e-12/1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassConcentration&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;ng/dl&quot;,
+        Scale=1e-12/1e-4),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MassConcentration&quot;,
+        Unit=&quot;kg/m3&quot;,
+        Min=0,
+        DisplayUnit=&quot;ng/ml&quot;,
+        Scale=1e-12/1e-6),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Length&quot;,
+        Unit=&quot;m&quot;,
+        DisplayUnit=&quot;cm&quot;,
+        Scale=1e-2),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Velocity&quot;,
+        Unit=&quot;m/s&quot;,
+        DisplayUnit=&quot;MPH&quot;,
+        Scale=0.44704),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Acceleration&quot;,
+        Unit=&quot;m/s2&quot;,
+        DisplayUnit=&quot;m/s2&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Pressure&quot;,
+        Unit=&quot;Pa&quot;,
+        DisplayUnit=&quot;mmHg&quot;,
+        Scale=101325/760),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Volume&quot;,
+        Unit=&quot;m3&quot;,
+        DisplayUnit=&quot;ml&quot;,
+        Scale=1e-6),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;VolumeFlowRate&quot;,
+        Unit=&quot;m3/s&quot;,
+        DisplayUnit=&quot;ml/min&quot;,
+        Scale=(1e-6)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Concentration&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;mol/l&quot;,
+        Scale=1e+3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Concentration&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;mmol/l&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Concentration&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;pmol/l&quot;,
+        Scale=1e-12/1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Concentration&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;uU_Insulin/ml&quot;,
+        Scale=6.622e-9),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Concentration&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;U_EPO/l&quot;,
+        Scale=0.45e-9),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;AmountOfSubstance&quot;,
+        Unit=&quot;mol&quot;,
+        DisplayUnit=&quot;mmol&quot;,
+        Scale=1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;AmountOfSubstance&quot;,
+        Unit=&quot;mol&quot;,
+        DisplayUnit=&quot;osm&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;AmountOfSubstance&quot;,
+        Unit=&quot;mol&quot;,
+        DisplayUnit=&quot;mosm&quot;,
+        Scale=1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MolarFlowRate&quot;,
+        Unit=&quot;mol/s&quot;,
+        DisplayUnit=&quot;mmol/min&quot;,
+        Scale=(1e-3)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MolarFlowRate&quot;,
+        Unit=&quot;mol/s&quot;,
+        DisplayUnit=&quot;ml_STP/min&quot;,
+        Scale=1/1362657.193569),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Energy&quot;,
+        Unit=&quot;J&quot;,
+        DisplayUnit=&quot;kcal&quot;,
+        Scale=4186.8),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ThermodynamicTemperature&quot;,
+        Unit=&quot;K&quot;,
+        DisplayUnit=&quot;K&quot;,
+        Scale=1,
+        Start=310.15),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ThermodynamicTemperature&quot;,
+        Unit=&quot;K&quot;,
+        DisplayUnit=&quot;degC&quot;,
+        Scale=1,
+        Offset=273.15,
+        Start=310.15),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Power&quot;,
+        Unit=&quot;W&quot;,
+        DisplayUnit=&quot;W&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Power&quot;,
+        Unit=&quot;W&quot;,
+        DisplayUnit=&quot;kcal/min&quot;,
+        Scale=4186.8/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Power&quot;,
+        Unit=&quot;W&quot;,
+        DisplayUnit=&quot;cal/min&quot;,
+        Scale=4.1868/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ThermalConductance&quot;,
+        Unit=&quot;W/K&quot;,
+        DisplayUnit=&quot;kcal/(min.degC)&quot;,
+        Scale=4186.8/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;SpecificHeatCapacity&quot;,
+        Unit=&quot;J/(kg.K)&quot;,
+        DisplayUnit=&quot;kcal/(degC.kg)&quot;,
+        Scale=4186.8),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;SpecificEnergy&quot;,
+        Unit=&quot;J/kg&quot;,
+        DisplayUnit=&quot;kcal/kg&quot;,
+        Scale=4186.8),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ElectricPotential&quot;,
+        Unit=&quot;V&quot;,
+        DisplayUnit=&quot;mV&quot;,
+        Scale=1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ElectricCharge&quot;,
+        Unit=&quot;C&quot;,
+        DisplayUnit=&quot;meq&quot;,
+        Scale=(1e-3)*(9.64853399*10^4)),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;VolumeDensityOfCharge&quot;,
+        Unit=&quot;C/m3&quot;,
+        DisplayUnit=&quot;meq/l&quot;,
+        Scale=(1e-3)*(9.64853399*10^4)/1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;VolumeDensityOfCharge&quot;,
+        Unit=&quot;C/m3&quot;,
+        DisplayUnit=&quot;eq/l&quot;,
+        Scale=(9.64853399*10^4)/1e-3),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;ElectricCurrent&quot;,
+        Unit=&quot;A&quot;,
+        DisplayUnit=&quot;meq/min&quot;,
+        Scale=(1e-3)*(9.64853399*10^4)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Fraction&quot;,
+        Unit=&quot;1&quot;,
+        DisplayUnit=&quot;%&quot;,
+        Scale=1e-2),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;OsmoticMembramePermeability&quot;,
+        Unit=&quot;m6/(mol.s)&quot;,
+        DisplayUnit=&quot;ml/(mOsmol.min)&quot;,
+        Scale=(1e-6)/((1e-3)*60)),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;DiffusionMembranePermeability&quot;,
+        Unit=&quot;m3/s&quot;,
+        DisplayUnit=&quot;ml/min&quot;,
+        Scale=(1e-3)/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;HydraulicConductance&quot;,
+        Unit=&quot;m3/(Pa.s)&quot;,
+        DisplayUnit=&quot;ml/(mmHg.min)&quot;,
+        Scale=(1e-6)/((101325/760)*60)),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;HydraulicCompliance&quot;,
+        Unit=&quot;m3/Pa&quot;,
+        DisplayUnit=&quot;ml/mmHg&quot;,
+        Scale=(1e-6)/(101325/760)),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;HydraulicInertance&quot;,
+        Unit=&quot;Pa.s2/m3&quot;,
+        DisplayUnit=&quot;mmHg.min2/ml&quot;,
+        Scale=((101325/760)*(60^2)/(1e-6))),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;GasSolubility&quot;,
+        Unit=&quot;mol/(m3.Pa)&quot;,
+        DisplayUnit=&quot;mmol/(l.mmHg)&quot;,
+        Scale=(1e-3)/((1e-3)*(101325/760))),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Osmolarity&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;mosm/l&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Osmolarity&quot;,
+        Unit=&quot;mol/m3&quot;,
+        DisplayUnit=&quot;osm/l&quot;,
+        Scale=1000),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;MolarEnergy&quot;,
+        Unit=&quot;J/mol&quot;,
+        DisplayUnit=&quot;kcal/mol&quot;,
+        Scale=4186.8),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Pharmacology Concentration&quot;,
+        Unit=&quot;1/m3&quot;,
+        DisplayUnit=&quot;iu/l&quot;,
+        Scale=1000),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;Pharmacology Concentration&quot;,
+        Unit=&quot;1/m3&quot;,
+        DisplayUnit=&quot;uiu/ml&quot;,
+        Scale=1),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;PopulationChange&quot;,
+        Unit=&quot;1/s&quot;,
+        DisplayUnit=&quot;1/min&quot;,
+        Scale=1/60),<span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Quantity=&quot;PopulationChange&quot;,
+        Unit=&quot;1/s&quot;,
+        DisplayUnit=&quot;1/d&quot;,
+        Scale=1/(60*60*24))} <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;All defined Real types - units, displayUnits, conversions, nominals&quot;</span>;</pre>
+<pre>   <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>String[:] Prefix =    {&quot;&quot;,&quot;m&quot;, &quot;u&quot;, &quot;n&quot;, &quot;p&quot;};</pre>
+<pre>   <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>Real[:]   PrefixScale={1.0, 1e-3,1e-6,1e-9,1e-12};</pre>
+<pre>   <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>String[:] SuffixSI= {&quot;&quot;,&quot;/m3&quot;,&quot;/m3&quot;,&quot;/m3&quot;,&quot;/s&quot;};</pre>
+<pre>   <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>String[:] Suffix =  {&quot;&quot;,&quot;/l&quot;, &quot;/dl&quot;,&quot;/ml&quot;,&quot;/min&quot;};</pre>
+<pre>   <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>Real[:]   SuffixScale={1, 1e+3, 1e+4, 1e+6, 1/60};</pre>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE findUnit<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -82,15 +345,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Utilities.UnitConversions</a>.findUnit</h2>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>unitToFind</td><td>display unit to find in unitConversions</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>String</td><td>unitToFind</td><td>&nbsp;</td><td>display unit to find in unitConversions</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>UnitConversions.RealTypeDef</td><td>Unit conversions</td></tr>
 </table>
 <h3>Outputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Outputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>typeDef</td><td>index in unitConversions</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>Integer</td><td>typeDef</td><td>index in unitConversions</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">function</span> findUnit
+  <span style="color: blue; font-weight: normal; font-style: normal;">input </span>String unitToFind <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;display unit to find in unitConversions&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">input </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>UnitConversions.RealTypeRecord</a>[:] unitConversions = UnitConversions.RealTypeDef <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Unit conversions&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">output </span>Integer typeDef <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;index in unitConversions&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">algorithm </span>
+  typeDef:=0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>1:<span style="color: red; font-weight: normal; font-style: normal;">size</span>(unitConversions,1)<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span>
+    <span style="color: blue; font-weight: normal; font-style: normal;">if </span>unitConversions[i].DisplayUnit == unitToFind<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+      typeDef:=i;
+      break;
+    <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end for</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>typeDef==0<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: red; font-weight: normal; font-style: normal;"> Modelica.Utilities.Streams.print</span>(&quot;Unit \&quot;&quot; + unitToFind + &quot;\&quot; not defined. Do not hesitate to contact me. marek@matfyz.cz\n&quot;);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>findUnit;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE RealTypeRecord<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -101,18 +386,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Quantity</td><td>Quantity</td></tr>
-<tr><td>Unit</td><td>SI unit</td></tr>
-<tr><td>DisplayUnit</td><td>Display unit</td></tr>
-<tr><td>Scale</td><td>Scale from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;</td></tr>
-<tr><td>Offset</td><td>Offset from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;</td></tr>
-<tr><td>Min</td><td>minimal value</td></tr>
-<tr><td>Max</td><td>&nbsp;</td></tr>
-<tr><td>Start</td><td>&nbsp;</td></tr>
-<tr><td>Nominal</td><td>&nbsp;</td></tr>
-<tr><td>StateSelection</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>String</td><td>Quantity</td><td>&quot;&quot;</td><td>Quantity</td></tr>
+<tr><td>String</td><td>Unit</td><td>&quot;1&quot;</td><td>SI unit</td></tr>
+<tr><td>String</td><td>DisplayUnit</td><td>&quot;&quot;</td><td>Display unit</td></tr>
+<tr><td>Real</td><td>Scale</td><td>1</td><td>Scale from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;</td></tr>
+<tr><td>Real</td><td>Offset</td><td>0</td><td>Offset from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;</td></tr>
+<tr><td>Real</td><td>Min</td><td>-Modelica.Constants.inf</td><td>minimal value</td></tr>
+<tr><td>Real</td><td>Max</td><td>+Modelica.Constants.inf</td><td>&nbsp;</td></tr>
+<tr><td>Real</td><td>Start</td><td>Offset</td><td>&nbsp;</td></tr>
+<tr><td>Real</td><td>Nominal</td><td>Scale</td><td>&nbsp;</td></tr>
+<tr><td>StateSelect</td><td>StateSelection</td><td>StateSelect.default</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">record</span> RealTypeRecord <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;The Real Type definition&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String Quantity=&quot;&quot; <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Quantity&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String Unit=&quot;1&quot; <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;SI unit&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String DisplayUnit=&quot;&quot; <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Display unit&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Scale=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Scale from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Offset=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Offset from display unit to SI unit such that x &lt;d&gt; = x*s+o &lt;u&gt;&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Min=-Modelica.Constants.inf <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;minimal value&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Max=+Modelica.Constants.inf;<span style="color: #006400; font-weight: normal; font-style: normal;"> // Inf denotes a large value</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Start = Offset;<span style="color: #006400; font-weight: normal; font-style: normal;"> // Initial value</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Nominal = Scale;<span style="color: #006400; font-weight: normal; font-style: normal;"> // Nominal value</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>StateSelect StateSelection = StateSelect.default;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>RealTypeRecord;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE GenerateSubstanceUnits<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -120,17 +424,38 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Utilities.UnitConversions</a>.GenerateSubstanceUnits</h2>
 <h3>Inputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Inputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>nonSIunit</td><td>non-SI unit</td></tr>
-<tr><td>scale</td><td>1 mol = &#39;scale&#39; &#39;nonSIunit&#39;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>String</td><td>nonSIunit</td><td>&nbsp;</td><td>non-SI unit</td></tr>
+<tr><td>Real</td><td>scale</td><td>&nbsp;</td><td>1 mol = &#39;scale&#39; &#39;nonSIunit&#39;</td></tr>
 </table>
 <h3>Outputs</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Outputs">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>units[size(Prefix, 1)*size(Suffix, 1)]</td><td>generated conversions for mili-, micro-, .. amount/concentration/flow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>units[size(Prefix, 1)*size(Suffix, 1)]</td><td>generated conversions for mili-, micro-, .. amount/concentration/flow</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">function</span> GenerateSubstanceUnits
+   <span style="color: blue; font-weight: normal; font-style: normal;">input </span>String nonSIunit <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;non-SI unit&quot;</span>;
+   <span style="color: blue; font-weight: normal; font-style: normal;">input </span>Real scale <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;1 mol = &#39;scale&#39; &#39;nonSIunit&#39;&quot;</span>;
+   <span style="color: blue; font-weight: normal; font-style: normal;">output </span><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a>[<span style="color: red; font-weight: normal; font-style: normal;">size</span>(Prefix,1)*<span style="color: red; font-weight: normal; font-style: normal;">size</span>(Suffix,1)] units <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;generated conversions for mili-, micro-, .. amount/concentration/flow&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>Integer np =<span style="color: red; font-weight: normal; font-style: normal;"> size</span>(Prefix,1);
+ <span style="color: blue; font-weight: normal; font-style: normal;">constant </span>Integer ns =<span style="color: red; font-weight: normal; font-style: normal;"> size</span>(Suffix,1);
+<span style="color: blue; font-weight: normal; font-style: normal;">algorithm </span>
+  units:={
+      <span style="color: red; font-weight: normal; font-style: normal;">RealTypeRecord</span>(
+        Unit=&quot;mol&quot;+SuffixSI[<span style="color: red; font-weight: normal; font-style: normal;">integer</span>(1+<span style="color: red; font-weight: normal; font-style: normal;">mod</span>(i,ns))],
+        DisplayUnit=Prefix[<span style="color: red; font-weight: normal; font-style: normal;">integer</span>(1+<span style="color: red; font-weight: normal; font-style: normal;">div</span>(i,ns))] + nonSIunit + Suffix[<span style="color: red; font-weight: normal; font-style: normal;">integer</span>(1+<span style="color: red; font-weight: normal; font-style: normal;">mod</span>(i,ns))],
+        Scale=PrefixScale[<span style="color: red; font-weight: normal; font-style: normal;">integer</span>(1+<span style="color: red; font-weight: normal; font-style: normal;">div</span>(i,ns))]*scale*SuffixScale[<span style="color: red; font-weight: normal; font-style: normal;">integer</span>(1+<span style="color: red; font-weight: normal; font-style: normal;">mod</span>(i,ns))])
+      <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>0:(np*ns-1)};
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>GenerateSubstanceUnits;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:39:01 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:46 2015.
 </address>
 </body>
 </html>

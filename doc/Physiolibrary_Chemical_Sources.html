@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SourcesPackage (Icon for packages containing sources).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SourcesPackage.html#Modelica.Icons.SourcesPackage"
+>Modelica.Icons.SourcesPackage</a> (Icon for packages containing sources).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -57,6 +58,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Molar pump of solute out of system</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedSolutePump<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -65,23 +67,42 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sources</a>.UnlimitedSolutePump</h2>
 <p>
 <b>Molar pump of solute to system</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Sof422a93c37439491ePumpD.png" alt="Physiolibrary.Chemical.Sources.UnlimitedSolutePump">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
->Chemical.Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
+>Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SoluteFlow</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSoluteFlowInput</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a></td><td>SoluteFlow</td><td>0</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSoluteFlowInput</td><td>false</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>soluteFlow</td><td>[mol/s]</td></tr>
-<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>MolarFlowRateInput</a></td><td>soluteFlow</td><td>[mol/s]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>Outflow</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedSolutePump <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Molar pump of solute to system&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
+>Interfaces.ConditionalSoluteFlow</a>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> q_out <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Outflow&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_out.q = - q;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedSolutePump;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedSolutionStorage<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -90,24 +111,77 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sources</a>.UnlimitedSolutionStorage</h2>
 <p>
 <b>Constant concentration source</b>
+<br>
+<br><img src="Physiolibrary.Chemical.So3e7fdf1cac8fb07borageD.png" alt="Physiolibrary.Chemical.Sources.UnlimitedSolutionStorage">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>Conc</td><td>Fixed concentration if useConcentrationInput=false [mol/m3]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useConcentrationInput</td><td>=true, if fixed concentration is from input instead of parameter</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation</td></tr>
-<tr><td>isIsolatedInSteadyState</td><td>=true, if there is no flow at port in steady state</td></tr>
-<tr><td>Simulation</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>Conc</td><td>0</td><td>Fixed concentration if useConcentrationInput=false [mol/m3]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useConcentrationInput</td><td>false</td><td>=true, if fixed concentration is from input instead of parameter</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Boolean</td><td>isIsolatedInSteadyState</td><td>true</td><td>=true, if there is no flow at port in steady state</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>constant concentration with any possible flow</td></tr>
-<tr><td>concentration</td><td>[mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>constant concentration with any possible flow</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationInput"
+>ConcentrationInput</a></td><td>concentration</td><td>[mol/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedSolutionStorage <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant concentration source&quot;</span>
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> q_out <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;constant concentration with any possible flow&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useConcentrationInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if fixed concentration is from input instead of parameter&quot;</span>;
+
+   <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Types.Concentration</a> Conc = 0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Fixed concentration if useConcentrationInput=false&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean isIsolatedInSteadyState = true <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if there is no flow at port in steady state&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;If in equilibrium, then zero-flow equation is added.&quot;</span>;
+
+   <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationInput"
+>Types.RealIO.ConcentrationInput</a> concentration(start=Conc)=c <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useConcentrationInput;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Types.Concentration</a> c <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Current concentration&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.InitSteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    q_out.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useConcentrationInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+     c=Conc;
+   <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  q_out.conc = c;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.SteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    q_out.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedSolutionStorage;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedGasStorage<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -116,31 +190,90 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sources</a>.UnlimitedGasStorage</h2>
 <p>
 <b>Constant ideal gas source</b>
+<br>
+<br><img src="Physiolibrary.Chemical.So9f430534b7f04b35orageD.png" alt="Physiolibrary.Chemical.Sources.UnlimitedGasStorage">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
 >Interfaces.ConditionalHeatPort</a> (Partial model to include a conditional HeatPort in order to describe the power loss via a thermal network).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>PartialPressure</td><td>Fixed partial pressure if usePartialPressureInput=false [Pa]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useHeatPort</td><td>=true, if HeatPort is enabled</td></tr>
-<tr><td>usePartialPressureInput</td><td>=true, if fixed partial pressure is from input instead of parameter</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Temperature dependence</b></td></tr>
-<tr><td>T</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation</td></tr>
-<tr><td>isIsolatedInSteadyState</td><td>=true, if there is no flow at port in steady state</td></tr>
-<tr><td>Simulation</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>PartialPressure</td><td>0</td><td>Fixed partial pressure if usePartialPressureInput=false [Pa]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useHeatPort</td><td>false</td><td>=true, if HeatPort is enabled</td></tr>
+<tr><td>Boolean</td><td>usePartialPressureInput</td><td>false</td><td>=true, if fixed partial pressure is from input instead of parameter</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Temperature dependence</b></td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>310.15</td><td>Fixed device temperature if useHeatPort = false [K]</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Boolean</td><td>isIsolatedInSteadyState</td><td>true</td><td>=true, if there is no flow at port in steady state</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>heatPort</td><td>&nbsp;</td></tr>
-<tr><td>q_out</td><td>constant gas concentration with any possible flow</td></tr>
-<tr><td>partialPressure</td><td>Partial pressure of Gas = air pressure * gas fraction [Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>constant gas concentration with any possible flow</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>PressureInput</a></td><td>partialPressure</td><td>Partial pressure of Gas = air pressure * gas fraction [Pa]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedGasStorage <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant ideal gas source&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalHeatPort"
+>Interfaces.ConditionalHeatPort</a>;
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>Interfaces.ChemicalPort_b</a> q_out <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;constant gas concentration with any possible flow&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean usePartialPressureInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if fixed partial pressure is from input instead of parameter&quot;</span>;
+
+   <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> PartialPressure = 0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Fixed partial pressure if usePartialPressureInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>Types.RealIO.PressureInput</a> partialPressure(start=PartialPressure) = p <span style="color: blue; font-weight: normal; font-style: normal;">if </span>usePartialPressureInput <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Partial pressure of Gas = air pressure * gas fraction&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean isIsolatedInSteadyState = true <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if there is no flow at port in steady state&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;If in equilibrium, then zero-flow equation is added.&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> p <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Current partial pressure&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.InitSteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    q_out.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>usePartialPressureInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    p=PartialPressure;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  q_out.conc = p / (Modelica.Constants.R * T_heatPort);<span style="color: #006400; font-weight: normal; font-style: normal;">  //ideal gas equation</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.SteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+     q_out.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  lossHeat=0;<span style="color: #006400; font-weight: normal; font-style: normal;"> //only read temperature from heat port</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedGasStorage;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedSolutePumpOut<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -149,25 +282,44 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sources</a>.UnlimitedSolutePumpOut</h2>
 <p>
 <b>Molar pump of solute out of system</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Sob7f06f6eca49a775mpOutD.png" alt="Physiolibrary.Chemical.Sources.UnlimitedSolutePumpOut">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
->Chemical.Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
+>Interfaces.ConditionalSoluteFlow</a> (Input of solute molar flow vs. parametric solute molar flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SoluteFlow</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSoluteFlowInput</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a></td><td>SoluteFlow</td><td>0</td><td>Volumetric flow of solute if useSoluteFlowInput=false [mol/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSoluteFlowInput</td><td>false</td><td>=true, if solute flow input is used instead of parameter SoluteFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>soluteFlow</td><td>[mol/s]</td></tr>
-<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>MolarFlowRateInput</a></td><td>soluteFlow</td><td>[mol/s]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>Inflow</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedSolutePumpOut <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Molar pump of solute out of system&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSoluteFlow"
+>Interfaces.ConditionalSoluteFlow</a>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Inflow&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.q = q;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedSolutePumpOut;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:51 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:56:34 2015.
 </address>
 </body>
 </html>

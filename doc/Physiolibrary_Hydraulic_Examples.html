@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Examples that demonstrate usage of the Pressure flow components</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
+>Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -82,7 +83,14 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </td>
 <td>Model of CVS introduced by Fernandez de Canete et al. 2013</td>
 </tr>
+<tr>
+<td><img src="Physiolibrary.Hydraulic.Ed29b1d834d1c6e40k2014S.png" alt="Physiolibrary.Hydraulic.Examples.MeursModel2011" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Hydraulic_Examples_MeursModel2011.html#Physiolibrary.Hydraulic.Examples.MeursModel2011"
+>MeursModel2011</a>
+</td>
+<td>models of cardiovascular system used in www.physiome.cz/atlas</td>
+</tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MinimalCirculation<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -91,9 +99,47 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples</a>.MinimalCirculation</h2>
 <p>
 <b>Minimal circulation models driven by cardiac output</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E25bd2b217981d449ationD.png" alt="Physiolibrary.Hydraulic.Examples.MinimalCirculation">
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> MinimalCirculation <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Minimal circulation models driven by cardiac output&quot;</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Pump"
+>Components.Pump</a> heart(useSolutionFlowInput=true);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 arteries(
+    volume_start(displayUnit=&quot;l&quot;) = 0.001,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00085,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.1625954425608e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Components.Conductor</a> resistance(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 6.2755151845753e-09);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 veins(
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 6.1880080007267e-07,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00295,
+    volume_start(displayUnit=&quot;l&quot;) = 0.0032);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Pulse"
+>Modelica.Blocks.Sources.Pulse</a> pulse(
+    width=25,
+    amplitude=3.3e-4,
+    period=60/75);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heart.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(arteries.q_in, resistance.q_out);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_in, veins.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(veins.q_in, heart.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulse.y, heart.solutionFlow);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MinimalCirculation;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Windkessel_2element<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -102,6 +148,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples</a>.Windkessel_2element</h2>
 <p>
 <b>Two-element Windkessel model</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E8d08c495eb1b3698ementD.png" alt="Physiolibrary.Hydraulic.Examples.Windkessel_2element">
 </p>
 <h3>Information</h3>
 
@@ -112,7 +160,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li><a href="http://en.wikipedia.org/wiki/Windkessel_effect">http://en.wikipedia.org/wiki/Windkessel_effect</a></li>
 </ul>
 
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Windkessel_2element <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Two-element Windkessel model&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedPump"
+>Physiolibrary.Hydraulic.Sources.UnlimitedPump</a> heart(useSolutionFlowInput=
+        true);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> arteries(
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00085,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.0500862061839e-08,
+    volume_start(displayUnit=&quot;l&quot;) = 0.00097);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> resistance(
+      useConductanceInput=false, Conductance(displayUnit=&quot;ml/(mmHg.s)&quot;)=
+      8.1006650191331e-09);
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedVolume"
+>Physiolibrary.Hydraulic.Sources.UnlimitedVolume</a> veins;
+  <a href="Physiolibrary_Hydraulic_Examples_Utilities.html#Physiolibrary.Hydraulic.Examples.Utilities.Pulses"
+>Utilities.Pulses</a> pulses(QP(displayUnit=&quot;m3/s&quot;)=
+         0.000424, HR=1.2);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heart.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_out, veins.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulses.volumeflowrate, heart.solutionFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_in, arteries.q_in);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Windkessel_2element;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Windkessel_3element<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -121,6 +199,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples</a>.Windkessel_3element</h2>
 <p>
 <b>Three-element windkessel model</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E046e84a0eb1b3690ementD.png" alt="Physiolibrary.Hydraulic.Examples.Windkessel_3element">
 </p>
 <h3>Information</h3>
 
@@ -130,7 +210,43 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li>Westerhof, N., Lankhaar, J.-W., &AMP; Westerhof, B. E. (2009). The arterial Windkessel. <i>Medical &AMP; Biological Engineering &AMP; Computing</i>, <i>47</i>(2), 131&ndash;41. doi:10.1007/s11517-008-0359-2</li>
 </ul>
 
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Windkessel_3element <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Three-element windkessel model&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedPump"
+>Physiolibrary.Hydraulic.Sources.UnlimitedPump</a> heart(useSolutionFlowInput=
+        true);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> arteries(
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00085,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.0500862061839e-08,
+    volume_start(displayUnit=&quot;l&quot;) = 0.00097);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> resistance(
+      useConductanceInput=false, Conductance(displayUnit=&quot;ml/(mmHg.s)&quot;) = 8.1006650191331e-09);
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedVolume"
+>Physiolibrary.Hydraulic.Sources.UnlimitedVolume</a> veins;
+  <a href="Physiolibrary_Hydraulic_Examples_Utilities.html#Physiolibrary.Hydraulic.Examples.Utilities.Pulses"
+>Utilities.Pulses</a> pulses(
+    QP(displayUnit=&quot;m3/s&quot;) = 0.000424,
+    TD1(displayUnit=&quot;s&quot;),
+    HR(displayUnit=&quot;1/min&quot;) = 1.2);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> impedance(
+      useConductanceInput=false, Conductance(displayUnit=&quot;ml/(mmHg.s)&quot;)=
+      1.5001231516913e-06);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_out, veins.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulses.volumeflowrate, heart.solutionFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heart.q_out, impedance.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(impedance.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_in, arteries.q_in);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Windkessel_3element;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Windkessel_4element<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -139,6 +255,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples</a>.Windkessel_4element</h2>
 <p>
 <b>Four-element windkessel model</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E7bd444abeb1b36a8ementD.png" alt="Physiolibrary.Hydraulic.Examples.Windkessel_4element">
 </p>
 <h3>Information</h3>
 
@@ -148,7 +266,47 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li>Westerhof, N., Lankhaar, J.-W., &AMP; Westerhof, B. E. (2009). The arterial Windkessel. <i>Medical &AMP; Biological Engineering &AMP; Computing</i>, <i>47</i>(2), 131&ndash;41. doi:10.1007/s11517-008-0359-2</li>
 </ul>
 
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Windkessel_4element <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Four-element windkessel model&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedPump"
+>Physiolibrary.Hydraulic.Sources.UnlimitedPump</a> heart(useSolutionFlowInput=
+        true);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> arteries(
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00085,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.0500862061839e-08,
+    volume_start(displayUnit=&quot;l&quot;) = 0.00097);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> resistance(
+      useConductanceInput=false, Conductance(displayUnit=&quot;ml/(mmHg.s)&quot;) = 8.1006650191331e-09);
+  <a href="Physiolibrary_Hydraulic_Sources.html#Physiolibrary.Hydraulic.Sources.UnlimitedVolume"
+>Physiolibrary.Hydraulic.Sources.UnlimitedVolume</a> veins;
+  <a href="Physiolibrary_Hydraulic_Examples_Utilities.html#Physiolibrary.Hydraulic.Examples.Utilities.Pulses"
+>Utilities.Pulses</a> pulses(QP(displayUnit=&quot;m3/s&quot;)=
+         0.000424, HR=1.2);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> impedance(
+      useConductanceInput=false, Conductance(displayUnit=&quot;ml/(mmHg.s)&quot;)=
+      1.5001231516913e-06);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Inertia"
+>Physiolibrary.Hydraulic.Components.Inertia</a> inertia(I(displayUnit=
+          &quot;mmHg.s2/ml&quot;) = 666611.937075, volumeFlow_start(displayUnit=
+          &quot;l/min&quot;) = 8.3333333333333e-05);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_out, veins.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulses.volumeflowrate, heart.solutionFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heart.q_out, impedance.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(impedance.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heart.q_out, inertia.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(inertia.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(resistance.q_in, arteries.q_in);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Windkessel_4element;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE CardiovascularSystem_GCG<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -157,6 +315,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples</a>.CardiovascularSystem_GCG</h2>
 <p>
 <b>Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E50fcfa6bff46fd6dm_GCGD.png" alt="Physiolibrary.Hydraulic.Examples.CardiovascularSystem_GCG">
 </p>
 <h3>Information</h3>
 
@@ -164,9 +324,113 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p><br/>Model, all parameters and all initial values are from article: </p>
 <p>A.C. Guyton, T.G. Coleman, H.J. Granger (1972). &QUOT;Circulation: overall regulation.&QUOT; Annual review of physiology 34(1): 13-44.</p>
 
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> CardiovascularSystem_GCG <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972&quot;</span>
+   <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+   <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary_Hydraulic.html#Physiolibrary.Hydraulic"
+>Physiolibrary.Hydraulic</a>;
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a> pulmonaryVeinsAndLeftAtrium(
+    volume_start(displayUnit=&quot;l&quot;) = 0.0004,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.0004,
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 7.5006157584566e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 pulmonaryArteries(
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00030625,
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 3.6002955640592e-08,
+    volume_start(displayUnit=&quot;l&quot;) = 0.00038);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Hydraulic.Components.Conductor</a>
+           pulmonary(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 4.1665920538226e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 arteries(
+    volume_start(displayUnit=&quot;l&quot;) = 0.00085,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.000495,
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 2.6627185942521e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 veins(
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 6.1880080007267e-07,
+    volume_start(displayUnit=&quot;l&quot;) = 0.00325,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.00295);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Hydraulic.Components.Conductor</a>
+           nonMuscle(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 3.5627924852669e-09);
+  <a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors.PressureMeasure"
+>Sensors.PressureMeasure</a>
+                  pressureMeasure;
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Pump"
+>Components.Pump</a>
+       rightHeart(useSolutionFlowInput=true);
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.VolumeFlowRateConst"
+>Types.Constants.VolumeFlowRateConst</a> RNormalCO(k(displayUnit=&quot;l/min&quot;) = 8.3333333333333e-05);
+  <a href="Physiolibrary_Hydraulic_Sensors.html#Physiolibrary.Hydraulic.Sensors.PressureMeasure"
+>Sensors.PressureMeasure</a>
+                  pressureMeasure1;
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Pump"
+>Components.Pump</a>
+       leftHeart(useSolutionFlowInput=true);
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.VolumeFlowRateConst"
+>Types.Constants.VolumeFlowRateConst</a> LNormalCO(k(displayUnit=&quot;l/min&quot;) = 8.3333333333333e-05);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Hydraulic.Components.Conductor</a>
+           kidney(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 1.4126159678427e-09);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Hydraulic.Components.Conductor</a>
+           muscle(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 1.3001067314658e-09);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Hydraulic.Components.Conductor</a>
+           largeVeins(Conductance(displayUnit=&quot;l/(mmHg.min)&quot;) = 1.6888886482791e-07);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Components.ElasticVessel</a>
+                 rightAtrium(
+    volume_start(displayUnit=&quot;l&quot;) = 0.0001,
+    ZeroPressureVolume(displayUnit=&quot;l&quot;) = 0.0001,
+    Compliance(displayUnit=&quot;l/mmHg&quot;) = 3.7503078792283e-08);
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Spline"
+>Blocks.Factors.Spline</a>       rightStarling(data={{-6,0,0},{-3,0.15,0.104},{-1,0.52,
+        0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}}, Xscale=101325/760) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1).&quot;</span>;
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Spline"
+>Blocks.Factors.Spline</a>       leftStarling(data={{-4,0,0},{-1,
+        0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}}, Xscale=
+        101325/760) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1).&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryArteries.q_in,pulmonary. q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonary.q_out, pulmonaryVeinsAndLeftAtrium.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(veins.q_in, nonMuscle.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(nonMuscle.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(rightHeart.q_out,pulmonaryArteries. q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(leftHeart.q_in, pulmonaryVeinsAndLeftAtrium.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(leftHeart.q_out,arteries. q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pressureMeasure.q_in,rightHeart. q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(muscle.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(kidney.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(kidney.q_in, nonMuscle.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(muscle.q_in, nonMuscle.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(veins.q_in, largeVeins.q_out);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(largeVeins.q_in, rightAtrium.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(rightAtrium.q_in, rightHeart.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RNormalCO.y, rightStarling.yBase);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(LNormalCO.y, leftStarling.yBase);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pressureMeasure.q_in, rightAtrium.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(rightHeart.solutionFlow, rightStarling.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(leftStarling.y, leftHeart.solutionFlow);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pressureMeasure.pressure, rightStarling.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pressureMeasure1.pressure, leftStarling.u);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>CardiovascularSystem_GCG;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:51 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:52:19 2015.
 </address>
 </body>
 </html>

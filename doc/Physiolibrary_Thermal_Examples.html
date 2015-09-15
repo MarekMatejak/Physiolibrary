@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Examples that demonstrate usage of the Pressure flow components</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
+>Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -59,43 +60,220 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SkinHeatFlow<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Thermal.Exa59aba266e8a2d93dtFlowI.png" alt="Physiolibrary.Thermal.Examples.SkinHeatFlow" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Thermal.Examples.SkinHeatFlow"></a><a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples"
 >Physiolibrary.Thermal.Examples</a>.SkinHeatFlow</h2>
+<p>
+<br><img src="Physiolibrary.Thermal.Exa59aba266e8a2d93dtFlowD.png" alt="Physiolibrary.Thermal.Examples.SkinHeatFlow">
+</p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> SkinHeatFlow
+<span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>Components.IdealRadiator</a> skinCirculation(MassFlow(displayUnit=&quot;g/min&quot;)=
+      0.0028333333333333) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Blood flow through skin&quot;</span>;
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Sources.UnlimitedHeat</a> bodyCore(T(displayUnit=&quot;degC&quot;) = 310.15);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Sources.UnlimitedHeat</a> skin(T(displayUnit=&quot;degC&quot;) = 301.15);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skinCirculation.q_in, bodyCore.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.port, skinCirculation.q_out);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SkinHeatFlow;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MuscleHeat<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Thermal.Exa59aba266e8a2d93dtFlowI.png" alt="Physiolibrary.Thermal.Examples.MuscleHeat" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Thermal.Examples.MuscleHeat"></a><a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples"
 >Physiolibrary.Thermal.Examples</a>.MuscleHeat</h2>
+<p>
+<br><img src="Physiolibrary.Thermal.Exa6970250022ad769eeHeatD.png" alt="Physiolibrary.Thermal.Examples.MuscleHeat">
+</p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> MuscleHeat
+<span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>Components.HeatAccumulation</a>
+                   muscle(
+    relativeHeat_start=52125.66,
+    SpecificHeat=3475.044,
+    Weight(displayUnit=&quot;kg&quot;) = 15);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>Components.IdealRadiator</a>
+                muscleCirculation(MassFlow(displayUnit=&quot;g/min&quot;) = 0.0114) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Blood circulation in skeletal muscle&quot;</span>;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow"
+>Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow</a> generatedHeat(Q_flow=13.956) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Heat energy created by muscle&quot;</span>;
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Sources.UnlimitedHeat</a>                                  body(T(displayUnit=&quot;degC&quot;)=
+         310.15);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(muscle.q_in, generatedHeat.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(muscleCirculation.q_in, body.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(muscle.q_in, muscleCirculation.q_out);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MuscleHeat;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ThermalBody_QHP<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Thermal.Exa59aba266e8a2d93dtFlowI.png" alt="Physiolibrary.Thermal.Examples.ThermalBody_QHP" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Thermal.Examples.ThermalBody_QHP"></a><a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples"
 >Physiolibrary.Thermal.Examples</a>.ThermalBody_QHP</h2>
+<p>
+<br><img src="Physiolibrary.Thermal.Exa1b36eedcf37f353dy_QHPD.png" alt="Physiolibrary.Thermal.Examples.ThermalBody_QHP">
+</p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> ThermalBody_QHP
+  <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>Thermal.Components.HeatAccumulation</a>
+                    core(SpecificHeat=3475.044, Weight=10.75);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>Thermal.Components.HeatAccumulation</a>
+                    GILumen(Weight=1);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>Thermal.Components.HeatAccumulation</a>
+                    skeletalMuscle(SpecificHeat=3475.044, Weight=7.05);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>Thermal.Components.IdealRadiator</a>
+                muscleBloodFlow(
+    MassFlow(displayUnit=&quot;g/min&quot;) = 0.0114,
+    useMassFlowInput=false,
+    SpecificHeat=3851.856);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.MassOutflow"
+>Thermal.Sources.MassOutflow</a> urination;
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.MassOutflow"
+>Thermal.Sources.MassOutflow</a> lungsVapor(
+    VaporizationHeat(displayUnit=&quot;kcal/g&quot;) = 2428344,
+    SpecificHeat(displayUnit=&quot;kcal/(kg.K)&quot;),
+    MassFlow(displayUnit=&quot;g/min&quot;) = 4.6666666666667e-06);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.HeatAccumulation"
+>Thermal.Components.HeatAccumulation</a>
+                    skin(
+    relativeHeat_start=-8373.6,
+    SpecificHeat=3475.044,
+    Weight=0.56);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>Thermal.Components.IdealRadiator</a>
+                skinBloodFlow(
+    MassFlow(displayUnit=&quot;g/min&quot;) = 0.0028333333333333,
+    useMassFlowInput=false,
+    SpecificHeat=3851.856);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.MassOutflow"
+>Thermal.Sources.MassOutflow</a> insensibleVapor(
+    VaporizationHeat(displayUnit=&quot;kcal/g&quot;) = 2428344,
+    SpecificHeat(displayUnit=&quot;kcal/(kg.K)&quot;),
+    MassFlow(displayUnit=&quot;g/min&quot;) = 6.5e-06);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.MassOutflow"
+>Thermal.Sources.MassOutflow</a> sweating(VaporizationHeat(
+        displayUnit=&quot;kcal/g&quot;) = 2428344, SpecificHeat(displayUnit=
+          &quot;kcal/(kg.K)&quot;));
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Components.html#Modelica.Thermal.HeatTransfer.Components.ThermalConductor"
+>Modelica.Thermal.HeatTransfer.Components.ThermalConductor</a> lumenVolume(G(
+        displayUnit=&quot;kcal/(min.K)&quot;) = 1);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Components.html#Modelica.Thermal.HeatTransfer.Components.ThermalConductor"
+>Modelica.Thermal.HeatTransfer.Components.ThermalConductor</a> air(G(
+        displayUnit=&quot;kcal/(min.K)&quot;) = 2.4423);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Thermal.Sources.UnlimitedHeat</a>            ambient(T=295.15);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow"
+>Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow</a> skinMetabolicHeat(Q_flow=
+        1.95384);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow"
+>Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow</a> coreMetabolicHeat(Q_flow=
+        55.824);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow"
+>Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow</a> muscleMetabolicHeat(Q_flow(
+        displayUnit=&quot;kcal/min&quot;) = 9.7692);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Thermal_HeatTransfer_Sources.html#Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow"
+>Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow</a> foodHeatIntake(Q_flow=0);
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.Stream"
+>Thermal.Components.Stream</a>
+             foodAbsorption(SpecificHeat=4186.8);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(core.q_in, muscleBloodFlow.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skeletalMuscle.q_in, muscleBloodFlow.q_out);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(core.q_in, urination.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(core.q_in, lungsVapor.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skinBloodFlow.q_in, lungsVapor.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.q_in, skinBloodFlow.q_out);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.q_in, insensibleVapor.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(sweating.q_in, insensibleVapor.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(GILumen.q_in, lumenVolume.port_a);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(core.q_in, lumenVolume.port_b);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.q_in, air.port_b);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.q_in, skinMetabolicHeat.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(GILumen.q_in, foodHeatIntake.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skeletalMuscle.q_in, muscleMetabolicHeat.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(core.q_in, coreMetabolicHeat.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skinBloodFlow.q_in, core.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(GILumen.q_in,foodAbsorption. q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(foodAbsorption.q_out, core.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(ambient.port, air.port_a);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ThermalBody_QHP;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SkinHeatTransferOnBloodFlow<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Thermal.Exa59aba266e8a2d93dtFlowI.png" alt="Physiolibrary.Thermal.Examples.SkinHeatTransferOnBloodFlow" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Thermal.Examples.SkinHeatTransferOnBloodFlow"></a><a href="Physiolibrary_Thermal_Examples.html#Physiolibrary.Thermal.Examples"
 >Physiolibrary.Thermal.Examples</a>.SkinHeatTransferOnBloodFlow</h2>
+<p>
+<br><img src="Physiolibrary.Thermal.Exabde6df8a2d5407e7dFlowD.png" alt="Physiolibrary.Thermal.Examples.SkinHeatTransferOnBloodFlow">
+</p>
 <h3>Information</h3>
 
 <p>This flow rate can affect how much heat leaves the body, especially in cold conditions. This is shown in this model, where modeling constant temperatures of the body core (37&deg;C) and skin (28&deg;C), with a skin blood flow of 170 g/min and blood specific heat of 0.92 kcal/(kg.K), gives heat losses of about 1.4 kcal/min.</p>
 
-<p>Extends from Modelica.Icons.Example (Icon for runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a> (Icon for runnable examples).</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> SkinHeatTransferOnBloodFlow
+<span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
+>Modelica.Icons.Example</a>;
+
+  <a href="Physiolibrary_Thermal_Components.html#Physiolibrary.Thermal.Components.IdealRadiator"
+>Components.IdealRadiator</a> skinCirculation(MassFlow(displayUnit=&quot;g/min&quot;)=
+      0.0028333333333333) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Blood circulation through skin&quot;</span>;
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Sources.UnlimitedHeat</a>                                  core(T(displayUnit=&quot;degC&quot;)=
+         310.15);
+  <a href="Physiolibrary_Thermal_Sources.html#Physiolibrary.Thermal.Sources.UnlimitedHeat"
+>Sources.UnlimitedHeat</a> skin(T(displayUnit=&quot;degC&quot;) = 301.15);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skinCirculation.q_in, core.port);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(skin.port, skinCirculation.q_out);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SkinHeatTransferOnBloodFlow;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:52 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:53:51 2015.
 </address>
 </body>
 </html>

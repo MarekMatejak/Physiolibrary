@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SourcesPackage (Icon for packages containing sources).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SourcesPackage.html#Modelica.Icons.SourcesPackage"
+>Modelica.Icons.SourcesPackage</a> (Icon for packages containing sources).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -51,6 +52,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Prescribed flow at port</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedPump<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -59,26 +61,43 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Sources</a>.UnlimitedPump</h2>
 <p>
 <b>Prescribed flow at port</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.S9ac74515bca2c294dPumpD.png" alt="Physiolibrary.Hydraulic.Sources.UnlimitedPump">
 </p>
 <h3>Information</h3>
 
 <p><font style="font-size: 9pt; ">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style="font-size: 9pt; ">hydraulic volume flow</font></b><font style="font-size: 9pt; "> variable, which is set to value of input signal variable. </font></p>
 
-<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
->Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SolutionFlow</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"
+>HydraulicPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedPump <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Prescribed flow at port&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Interfaces.ConditionalSolutionFlow</a>;
+  <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"
+>Interfaces.HydraulicPort_b</a>
+                       q_out;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_out.q = - q;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedPump;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedVolume<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -87,6 +106,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Sources</a>.UnlimitedVolume</h2>
 <p>
 <b>Prescribed pressure at port</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.S13bca54786aadb37olumeD.png" alt="Physiolibrary.Hydraulic.Sources.UnlimitedVolume">
 </p>
 <h3>Information</h3>
 
@@ -95,21 +116,60 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>P</td><td>Hydraulic pressure if usePressureInput=false [Pa]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>usePressureInput</td><td>=true, if pressure input is used</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation</td></tr>
-<tr><td>isIsolatedInSteadyState</td><td>=true, if there is no flow at port in steady state</td></tr>
-<tr><td>Simulation</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>P</td><td>0</td><td>Hydraulic pressure if usePressureInput=false [Pa]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>usePressureInput</td><td>false</td><td>=true, if pressure input is used</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Boolean</td><td>isIsolatedInSteadyState</td><td>true</td><td>=true, if there is no flow at port in steady state</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>pressure</td><td>Pressure [Pa]</td></tr>
-<tr><td>y</td><td>PressureFlow output connectors</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>PressureInput</a></td><td>pressure</td><td>Pressure [Pa]</td></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>HydraulicPort_a</a></td><td>y</td><td>PressureFlow output connectors</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedVolume <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Prescribed pressure at port&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean usePressureInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;=true, if pressure input is used&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> P=0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Hydraulic pressure if usePressureInput=false&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureInput"
+>Types.RealIO.PressureInput</a> pressure(start=P)=p <span style="color: blue; font-weight: normal; font-style: normal;">if </span>usePressureInput <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Pressure&quot;</span>;
+  <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>Interfaces.HydraulicPort_a</a>
+                       y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;PressureFlow output connectors&quot;</span>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean isIsolatedInSteadyState = true <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if there is no flow at port in steady state&quot;</span>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;If in equilibrium, then zero-flow equation is added.&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> p;
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.InitSteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    y.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>usePressureInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    p=P;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+  y.pressure = p;
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.SteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+     y.q = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedVolume;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedOutflowPump<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -118,28 +178,44 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Sources</a>.UnlimitedOutflowPump</h2>
 <p>
 <b>Prescribed flow at port</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.S3ac0db0b3c33d54ewPumpD.png" alt="Physiolibrary.Hydraulic.Sources.UnlimitedOutflowPump">
 </p>
 <h3>Information</h3>
 
 <p><font style="font-size: 9pt; ">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style="font-size: 9pt; ">hydraulic volume flow</font></b><font style="font-size: 9pt; "> variable, which is set to value of input signal variable. </font></p>
 
-<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
->Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SolutionFlow</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>HydraulicPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedOutflowPump <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Prescribed flow at port&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Interfaces.ConditionalSolutionFlow</a>;
+  <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>Interfaces.HydraulicPort_a</a> q_in;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.q = q;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedOutflowPump;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:52 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:53:45 2015.
 </address>
 </body>
 </html>

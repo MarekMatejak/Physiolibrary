@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Model of CVS introduced by Fernandez de Canete et al. 2013</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
+>Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -47,6 +48,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Utility components used by package KofranekModels2013</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PulsatileCirculation<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -55,6 +57,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples.Fernandez2013</a>.PulsatileCirculation</h2>
 <p>
 <b>Model of cardiovascular system with pulsatile dynamic</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E1bf060900af4dbcaationD.png" alt="Physiolibrary.Hydraulic.Examples.Fernandez2013.PulsatileCirculation">
 </p>
 <h3>Information</h3>
 
@@ -66,8 +70,151 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.CardioVascular"
 >Physiolibrary.Icons.CardioVascular</a>.</p>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> PulsatileCirculation <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Model of cardiovascular system with pulsatile dynamic&quot;</span>
+                          <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.CardioVascular"
+>Physiolibrary.Icons.CardioVascular</a>;
+
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> RPulmonaryVeins(
+      useConductanceInput=false, Conductance(displayUnit=&quot;m3/(Pa.s)&quot;)=
+      7.425609600872e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Inertia"
+>Physiolibrary.Hydraulic.Components.Inertia</a> pulmonaryVeinsInertia(
+      volumeFlow_start(displayUnit=&quot;m3/s&quot;) = 2.225e-05, I(displayUnit=
+          &quot;Pa.s2/m3&quot;) = 410632.9532382);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> RPulmonaryArtery(
+      useConductanceInput=false, Conductance(displayUnit=&quot;m3/(Pa.s)&quot;)=
+      2.2216823876548e-07);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Inertia"
+>Physiolibrary.Hydraulic.Components.Inertia</a> pulmonaryArterialInertia(
+      volumeFlow_start(displayUnit=&quot;ml/min&quot;) = 7.3233333333333e-07, I(
+        displayUnit=&quot;mmHg.s2/ml&quot;) = 99991.79056125);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> pulmonaryVeins(
+    useComplianceInput=false,
+    volume_start(displayUnit=&quot;ml&quot;) = 0.0006597,
+    ZeroPressureVolume=0.0001,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 3.5027875591992e-07);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.IdealValve"
+>Physiolibrary.Hydraulic.Components.IdealValve</a> mitralValve(
+                              useLimitationInputs=false, _Gon(displayUnit=
+         &quot;ml/(mmHg.s)&quot;) = 1.9996641612045e-06);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> leftVentricle(
+      useComplianceInput=true,
+    useExternalPressureInput=true,
+    volume_start=0.0002097,
+    ZeroPressureVolume=9e-05);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> RLeftMyo(useConductanceInput=false,
+      Conductance(displayUnit=&quot;m3/(Pa.s)&quot;) = 9.3757696980707e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.IdealValve"
+>Physiolibrary.Hydraulic.Components.IdealValve</a> aorticValve(_Gon(displayUnit=&quot;ml/(mmHg.s)&quot;)=
+         1.9996641612045e-06, useLimitationInputs=false);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> aorta(
+    volume_start=4.6e-05,
+    ZeroPressureVolume=3e-05,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.6501354668604e-09);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> Raorta(useConductanceInput=false,
+      Conductance(displayUnit=&quot;m3/(Pa.s)&quot;) = 1.1108411938274e-07);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Inertia"
+>Physiolibrary.Hydraulic.Components.Inertia</a> aorticInertia(
+      volumeFlow_start(displayUnit=&quot;m3/s&quot;) = 1.0385e-05, I(displayUnit=
+          &quot;Pa.s2/m3&quot;) = 109990.96961737);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> arteries(
+    volume_start=0.000805,
+    ZeroPressureVolume=0.0007,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.0950899007347e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> RSystemic(useConductanceInput=false,
+      Conductance(displayUnit=&quot;m3/(Pa.s)&quot;) = 7.5006157584566e-09);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Inertia"
+>Physiolibrary.Hydraulic.Components.Inertia</a> systemicInertia(
+      volumeFlow_start(displayUnit=&quot;m3/s&quot;) = 7.935e-05, I(displayUnit=
+          &quot;Pa.s2/m3&quot;) = 479960.594694);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.IdealValve"
+>Physiolibrary.Hydraulic.Components.IdealValve</a> tricuspidValve(
+      useLimitationInputs=false, _Gon(displayUnit=&quot;ml/(mmHg.s)&quot;) = 1.9996641612045e-06);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> rightVentricle(
+      useComplianceInput=true,
+    useExternalPressureInput=true,
+    volume_start=0.00018,
+    ZeroPressureVolume=7e-05);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.Conductor"
+>Physiolibrary.Hydraulic.Components.Conductor</a> RRightMyo(useConductanceInput=false,
+      Conductance(displayUnit=&quot;m3/(Pa.s)&quot;) = 4.2858518443821e-07);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.IdealValve"
+>Physiolibrary.Hydraulic.Components.IdealValve</a> pulmonaryValve(_Gon(displayUnit=
+         &quot;ml/(mmHg.s)&quot;) = 1.9996641612045e-06, useLimitationInputs=false);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> pulmonaryArtery(
+    volume_start=2.1e-05,
+    ZeroPressureVolume=2e-05,
+    Compliance(displayUnit=&quot;m3/Pa&quot;) = 6.7505541826109e-10);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> pulmonaryArterioles(
+    volume_start=0.000637,
+    ZeroPressureVolume=0.0006,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 2.0026644075079e-08);
+  <a href="Physiolibrary_Hydraulic_Components.html#Physiolibrary.Hydraulic.Components.ElasticVessel"
+>Physiolibrary.Hydraulic.Components.ElasticVessel</a> veins(
+    volume_start(displayUnit=&quot;ml&quot;) = 0.002443,
+    ZeroPressureVolume=0.00237,
+    Compliance(displayUnit=&quot;ml/mmHg&quot;) = 1.5001231516913e-07);
+  <a href="Physiolibrary_Hydraulic_Examples_Fernandez2013_Parts.html#Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance"
+>Parts.TimeVaryingElastance</a> timeVaryingElastanceLeft(
+    Ed(displayUnit=&quot;mmHg/ml&quot;) = 13332238.7415,
+    Es(displayUnit=&quot;mmHg/ml&quot;) = 183318282.69563,
+    Pi0(displayUnit=&quot;mmHg&quot;) = 6666.11937075);
+  <a href="Physiolibrary_Hydraulic_Examples_Fernandez2013_Parts.html#Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance"
+>Parts.TimeVaryingElastance</a> timeVaryingElastanceRight(
+    Ed(displayUnit=&quot;mmHg/ml&quot;) = 3999671.62245,
+    Es(displayUnit=&quot;mmHg/ml&quot;) = 43729743.0721,
+    Pi0(displayUnit=&quot;mmHg&quot;) = 3199.73729796);
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.FrequencyConst"
+>Physiolibrary.Types.Constants.FrequencyConst</a> heartRate(k(displayUnit=
+          &quot;Hz&quot;) = 1.2);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(aorta.q_in, Raorta.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(Raorta.q_out, aorticInertia.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(systemicInertia.q_out, veins.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(timeVaryingElastanceLeft.C, leftVentricle.compliance);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(timeVaryingElastanceRight.C, rightVentricle.compliance);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(veins.q_in, tricuspidValve.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(timeVaryingElastanceLeft.Pi, leftVentricle.externalPressure);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(timeVaryingElastanceRight.Pi, rightVentricle.externalPressure);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heartRate.y, timeVaryingElastanceLeft.HR);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(aorticInertia.q_out, arteries.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(arteries.q_in, RSystemic.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RSystemic.q_out, systemicInertia.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(rightVentricle.q_in, tricuspidValve.q_out);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RRightMyo.q_in, rightVentricle.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(heartRate.y, timeVaryingElastanceRight.HR);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RRightMyo.q_out, pulmonaryValve.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryValve.q_out, pulmonaryArtery.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryArtery.q_in, RPulmonaryArtery.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RPulmonaryArtery.q_out, pulmonaryArterialInertia.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryArterialInertia.q_out, pulmonaryArterioles.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryArterioles.q_in, RPulmonaryVeins.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RPulmonaryVeins.q_out, pulmonaryVeinsInertia.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryVeinsInertia.q_out, pulmonaryVeins.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(pulmonaryVeins.q_in, mitralValve.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(mitralValve.q_out, leftVentricle.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(leftVentricle.q_in, RLeftMyo.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(aorticValve.q_out, aorta.q_in);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(RLeftMyo.q_out, aorticValve.q_in);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PulsatileCirculation;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:51 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:52:35 2015.
 </address>
 </body>
 </html>

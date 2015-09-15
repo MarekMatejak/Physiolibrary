@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SensorsPackage (Icon for packages containing sensors).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SensorsPackage.html#Modelica.Icons.SensorsPackage"
+>Modelica.Icons.SensorsPackage</a> (Icon for packages containing sensors).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -45,6 +46,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Hydraulic pressure at port</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE FlowMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -53,18 +55,39 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Sensors</a>.FlowMeasure</h2>
 <p>
 <b>Volumetric flow between ports</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.Sb6e95c21ca632035asureD.png" alt="Physiolibrary.Hydraulic.Sensors.FlowMeasure">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.OnePort"
->Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.FlowMeasure"
->Icons.FlowMeasure</a>.</p>
+>Interfaces.OnePort</a> (Hydraulical OnePort), <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a> (Icon representing a round measurement device).</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_in</td><td>Volume inflow</td></tr>
-<tr><td>q_out</td><td>Volume outflow</td></tr>
-<tr><td>volumeFlow</td><td>Actual volume flow rate [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>HydraulicPort_a</a></td><td>q_in</td><td>Volume inflow</td></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"
+>HydraulicPort_b</a></td><td>q_out</td><td>Volume outflow</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>VolumeFlowRateOutput</a></td><td>volumeFlow</td><td>Actual volume flow rate [m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> FlowMeasure <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Volumetric flow between ports&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//extends Icons.FlowMeasure;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>Types.RealIO.VolumeFlowRateOutput</a> volumeFlow <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Actual volume flow rate&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_out.pressure = q_in.pressure;
+  volumeFlow = q_in.q;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>FlowMeasure;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PressureMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -73,18 +96,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Sensors</a>.PressureMeasure</h2>
 <p>
 <b>Hydraulic pressure at port</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.Sd4ad2c9a8fdeca15asureD.png" alt="Physiolibrary.Hydraulic.Sensors.PressureMeasure">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
 >Icons.PressureMeasure</a>.</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>pressure</td><td>Pressure [Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>HydraulicPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>PressureOutput</a></td><td>pressure</td><td>Pressure [Pa]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> PressureMeasure <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Hydraulic pressure at port&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
+>Icons.PressureMeasure</a>;
+  <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a"
+>Interfaces.HydraulicPort_a</a>
+                       q_in;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>Types.RealIO.PressureOutput</a> pressure <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Pressure&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  pressure = q_in.pressure;
+  q_in.q = 0;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PressureMeasure;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:52 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:53:45 2015.
 </address>
 </body>
 </html>

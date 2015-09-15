@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SourcesPackage (Icon for packages containing sources).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SourcesPackage.html#Modelica.Icons.SourcesPackage"
+>Modelica.Icons.SourcesPackage</a> (Icon for packages containing sources).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -315,6 +316,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Constant signal of type PopulationChangePerMember</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE AccelerationConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -323,17 +325,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.AccelerationConst</h2>
 <p>
 <b>Constant signal of type Acceleration</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.AccelerationConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Acceleration output value [m/s2]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Acceleration"
+>Acceleration</a></td><td>k</td><td>&nbsp;</td><td>Constant Acceleration output value [m/s2]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Acceleration constant [m/s2]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AccelerationOutput"
+>AccelerationOutput</a></td><td>y</td><td>Acceleration constant [m/s2]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> AccelerationConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Acceleration&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Acceleration"
+>Types.Acceleration</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Acceleration output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AccelerationOutput"
+>RealIO.AccelerationOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Acceleration constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>AccelerationConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE AmountOfSubstanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -342,17 +359,33 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.AmountOfSubstanceConst</h2>
 <p>
 <b>Constant signal of type AmountOfSubstance</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.AmountOfSubstanceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant AmountOfSubstance output value [mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>AmountOfSubstance</a></td><td>k</td><td>&nbsp;</td><td>Constant AmountOfSubstance output value [mol]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>AmountOfSubstance constant [mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>AmountOfSubstanceOutput</a></td><td>y</td><td>AmountOfSubstance constant [mol]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> AmountOfSubstanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type AmountOfSubstance&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AmountOfSubstance"
+>Types.AmountOfSubstance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant AmountOfSubstance output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.AmountOfSubstanceOutput"
+>RealIO.AmountOfSubstanceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;AmountOfSubstance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>AmountOfSubstanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ConcentrationConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -361,17 +394,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.ConcentrationConst</h2>
 <p>
 <b>Constant signal of type Concentration</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.ConcentrationConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Concentration output value [mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Concentration</a></td><td>k</td><td>&nbsp;</td><td>Constant Concentration output value [mol/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Concentration constant [mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>ConcentrationOutput</a></td><td>y</td><td>Concentration constant [mol/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> ConcentrationConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Concentration&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Concentration"
+>Types.Concentration</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Concentration output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>RealIO.ConcentrationOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Concentration constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ConcentrationConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE DensityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -380,17 +428,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.DensityConst</h2>
 <p>
 <b>Constant signal of type Density</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.DensityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Density output value [kg/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Density"
+>Density</a></td><td>k</td><td>&nbsp;</td><td>Constant Density output value [kg/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Density constant [kg/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DensityOutput"
+>DensityOutput</a></td><td>y</td><td>Density constant [kg/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> DensityConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Density&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Density"
+>Types.Density</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Density output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DensityOutput"
+>RealIO.DensityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Density constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>DensityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE DiffusionPermeabilityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -399,17 +462,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.DiffusionPermeabilityConst</h2>
 <p>
 <b>Constant signal of type DiffusionPermeability</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.DiffusionPermeabilityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant DiffusionPermeability output value [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>DiffusionPermeability</a></td><td>k</td><td>&nbsp;</td><td>Constant DiffusionPermeability output value [m3/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>DiffusionPermeability constant [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityOutput"
+>DiffusionPermeabilityOutput</a></td><td>y</td><td>DiffusionPermeability constant [m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> DiffusionPermeabilityConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type DiffusionPermeability&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.DiffusionPermeability"
+>Types.DiffusionPermeability</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant DiffusionPermeability output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.DiffusionPermeabilityOutput"
+>RealIO.DiffusionPermeabilityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;DiffusionPermeability constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>DiffusionPermeabilityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ElectricChargeConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -418,17 +498,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.ElectricChargeConst</h2>
 <p>
 <b>Constant signal of type ElectricCharge</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.ElectricChargeConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant ElectricCharge output value [C]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
+>ElectricCharge</a></td><td>k</td><td>&nbsp;</td><td>Constant ElectricCharge output value [C]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>ElectricCharge constant [C]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeOutput"
+>ElectricChargeOutput</a></td><td>y</td><td>ElectricCharge constant [C]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> ElectricChargeConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type ElectricCharge&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCharge"
+>Types.ElectricCharge</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant ElectricCharge output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricChargeOutput"
+>RealIO.ElectricChargeOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;ElectricCharge constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ElectricChargeConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ElectricCurrentConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -437,17 +532,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.ElectricCurrentConst</h2>
 <p>
 <b>Constant signal of type ElectricCurrent</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.ElectricCurrentConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant ElectricCurrent output value [A]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCurrent"
+>ElectricCurrent</a></td><td>k</td><td>&nbsp;</td><td>Constant ElectricCurrent output value [A]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>ElectricCurrent constant [A]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricCurrentOutput"
+>ElectricCurrentOutput</a></td><td>y</td><td>ElectricCurrent constant [A]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> ElectricCurrentConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type ElectricCurrent&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricCurrent"
+>Types.ElectricCurrent</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant ElectricCurrent output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricCurrentOutput"
+>RealIO.ElectricCurrentOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;ElectricCurrent constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ElectricCurrentConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ElectricPotentialConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -456,17 +566,33 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.ElectricPotentialConst</h2>
 <p>
 <b>Constant signal of type ElectricPotential</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.ElectricPotentialConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant ElectricPotential output value [V]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricPotential"
+>ElectricPotential</a></td><td>k</td><td>&nbsp;</td><td>Constant ElectricPotential output value [V]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>ElectricPotential constant [V]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricPotentialOutput"
+>ElectricPotentialOutput</a></td><td>y</td><td>ElectricPotential constant [V]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> ElectricPotentialConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type ElectricPotential&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ElectricPotential"
+>Types.ElectricPotential</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant ElectricPotential output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ElectricPotentialOutput"
+>RealIO.ElectricPotentialOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;ElectricPotential constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ElectricPotentialConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE EnergyConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -475,17 +601,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.EnergyConst</h2>
 <p>
 <b>Constant signal of type Energy</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.EnergyConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Energy output value [J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
+>Energy</a></td><td>k</td><td>&nbsp;</td><td>Constant Energy output value [J]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Energy constant [J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>EnergyOutput</a></td><td>y</td><td>Energy constant [J]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> EnergyConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Energy&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Energy"
+>Types.Energy</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Energy output value&quot;</span>;
+    <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.EnergyOutput"
+>RealIO.EnergyOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Energy constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+    y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>EnergyConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE FractionConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -494,17 +635,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.FractionConst</h2>
 <p>
 <b>Constant signal of type Fraction</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.FractionConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Fraction output value [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>k</td><td>&nbsp;</td><td>Constant Fraction output value [1]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Fraction constant [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>FractionOutput</a></td><td>y</td><td>Fraction constant [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> FractionConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Fraction&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Fraction output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>RealIO.FractionOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Fraction constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>FractionConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE FrequencyConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -513,17 +669,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.FrequencyConst</h2>
 <p>
 <b>Constant signal of type Frequency</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.FrequencyConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Frequency output value [Hz]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Frequency"
+>Frequency</a></td><td>k</td><td>&nbsp;</td><td>Constant Frequency output value [Hz]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Frequency constant [Hz]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FrequencyOutput"
+>FrequencyOutput</a></td><td>y</td><td>Frequency constant [Hz]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> FrequencyConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Frequency&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Frequency"
+>Types.Frequency</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Frequency output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FrequencyOutput"
+>RealIO.FrequencyOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Frequency constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>FrequencyConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE GasSolubilityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -532,17 +703,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.GasSolubilityConst</h2>
 <p>
 <b>Constant signal of type GasSolubility</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.GasSolubilityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant GasSolubility output value [(mol/m3)/(mol/m3)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>GasSolubility</a></td><td>k</td><td>&nbsp;</td><td>Constant GasSolubility output value [(mol/m3)/(mol/m3)]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>GasSolubility constant [(mol/m3)/(mol/m3)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.GasSolubilityOutput"
+>GasSolubilityOutput</a></td><td>y</td><td>GasSolubility constant [(mol/m3)/(mol/m3)]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> GasSolubilityConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type GasSolubility&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.GasSolubility"
+>Types.GasSolubility</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant GasSolubility output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.GasSolubilityOutput"
+>RealIO.GasSolubilityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;GasSolubility constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>GasSolubilityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HeatConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -551,17 +737,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HeatConst</h2>
 <p>
 <b>Constant signal of type Heat</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.HeatConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Heat output value [J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Heat"
+>Heat</a></td><td>k</td><td>&nbsp;</td><td>Constant Heat output value [J]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Heat constant [J]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatOutput"
+>HeatOutput</a></td><td>y</td><td>Heat constant [J]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HeatConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Heat&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Heat"
+>Types.Heat</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Heat output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatOutput"
+>RealIO.HeatOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Heat constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HeatConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HeightConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -570,17 +771,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HeightConst</h2>
 <p>
 <b>Constant signal of type Height</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.HeightConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Height output value [m]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Height"
+>Height</a></td><td>k</td><td>&nbsp;</td><td>Constant Height output value [m]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Height constant [m]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeightOutput"
+>HeightOutput</a></td><td>y</td><td>Height constant [m]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HeightConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Height&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Height"
+>Types.Height</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Height output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeightOutput"
+>RealIO.HeightOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Height constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HeightConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HeatFlowRateConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -589,17 +805,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HeatFlowRateConst</h2>
 <p>
 <b>Constant signal of type HeatFlowRate</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.HeatFlowRateConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant HeatFlowRate output value [W]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HeatFlowRate"
+>HeatFlowRate</a></td><td>k</td><td>&nbsp;</td><td>Constant HeatFlowRate output value [W]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HeatFlowRate constant [W]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatFlowRateOutput"
+>HeatFlowRateOutput</a></td><td>y</td><td>HeatFlowRate constant [W]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HeatFlowRateConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type HeatFlowRate&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HeatFlowRate"
+>Types.HeatFlowRate</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant HeatFlowRate output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HeatFlowRateOutput"
+>RealIO.HeatFlowRateOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HeatFlowRate constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HeatFlowRateConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicComplianceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -608,17 +839,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicComplianceConst</h2>
 <p>
 <b>Constant signal of type HydraulicCompliance</b>
+<br>
+<br><img src="Physiolibrary.Types.Const205f9158b1888181ConstD.png" alt="Physiolibrary.Types.Constants.HydraulicComplianceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant HydraulicCompliance output value [m3/Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicCompliance"
+>HydraulicCompliance</a></td><td>k</td><td>&nbsp;</td><td>Constant HydraulicCompliance output value [m3/Pa]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicCompliance constant [m3/Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>HydraulicComplianceOutput</a></td><td>y</td><td>HydraulicCompliance constant [m3/Pa]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicComplianceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type HydraulicCompliance&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicCompliance"
+>Types.HydraulicCompliance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant HydraulicCompliance output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>RealIO.HydraulicComplianceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HydraulicCompliance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicComplianceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicElastanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -627,23 +875,44 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicElastanceConst</h2>
 <p>
 <b>Obsolete, please use HydraulicCompliance instead!</b>
+<br>
+<br><img src="Physiolibrary.Types.Const017af3b5e33b7c7aConstD.png" alt="Physiolibrary.Types.Constants.HydraulicElastanceConst">
 </p>
 <h3>Information</h3>
 
 <p>Please use the reciprocal value of hydraulic elastance, wich is called hydraulic compliance for the compatibility with other blocks and models!</p>
 <p>Even it is not recommended, you can use this block, but do not forget to make reciprocal value (in example using Blocks.Math.Reciprocal) before connecting to library components!</p>
 
-<p>Extends from Modelica.Icons.ObsoleteModel (Icon for classes that are obsolete and will be removed in later versions).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ObsoleteModel"
+>Modelica.Icons.ObsoleteModel</a> (Icon for classes that are obsolete and will be removed in later versions).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Hydraulic elastance [Pa/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>HydraulicElastance</a></td><td>k</td><td>&nbsp;</td><td>Hydraulic elastance [Pa/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicElastance constant [Pa/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>HydraulicElastance constant [Pa/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicElastanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Obsolete, please use HydraulicCompliance instead!&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ObsoleteModel"
+>Modelica.Icons.ObsoleteModel</a>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>Types.HydraulicElastance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Hydraulic elastance&quot;</span>;
+      <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>Modelica.Blocks.Interfaces.RealOutput</a>
+                                       y(<span style="color: blue; font-weight: normal; font-style: normal;">final </span>quantity=&quot;HydraulicCompliance&quot;,<span style="color: blue; font-weight: normal; font-style: normal;">final </span>unit=&quot;Pa/m3&quot;, displayUnit=&quot;mmHg/ml&quot;, nominal=(133.322387415)/(1e-6)) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;HydraulicElastance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicElastanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicElastanceToComplianceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -652,17 +921,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicElastanceToComplianceConst</h2>
 <p>
 <b>Constant signal of type HydraulicCompliance from HydraulicElastance constant</b>
+<br>
+<br><img src="Physiolibrary.Types.Const290b33cf099fc642ConstD.png" alt="Physiolibrary.Types.Constants.HydraulicElastanceToComplianceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Reciprocal constant value of hydraulic compliance [Pa/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>HydraulicElastance</a></td><td>k</td><td>&nbsp;</td><td>Reciprocal constant value of hydraulic compliance [Pa/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicCompliance constant [m3/Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>HydraulicComplianceOutput</a></td><td>y</td><td>HydraulicCompliance constant [m3/Pa]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicElastanceToComplianceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type HydraulicCompliance from HydraulicElastance constant&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicElastance"
+>Types.HydraulicElastance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Reciprocal constant value of hydraulic compliance&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicComplianceOutput"
+>RealIO.HydraulicComplianceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HydraulicCompliance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=1/k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicElastanceToComplianceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicConductanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -671,17 +957,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicConductanceConst</h2>
 <p>
 <b>Constant signal of type HydraulicConductance</b>
+<br>
+<br><img src="Physiolibrary.Types.Const290b33cf099fc642ConstD.png" alt="Physiolibrary.Types.Constants.HydraulicConductanceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant HydraulicConductance output value [m3/(Pa.s)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicConductance"
+>HydraulicConductance</a></td><td>k</td><td>&nbsp;</td><td>Constant HydraulicConductance output value [m3/(Pa.s)]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicConductance constant [m3/(Pa.s)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicConductanceOutput"
+>HydraulicConductanceOutput</a></td><td>y</td><td>HydraulicConductance constant [m3/(Pa.s)]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicConductanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type HydraulicConductance&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicConductance"
+>Types.HydraulicConductance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant HydraulicConductance output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicConductanceOutput"
+>RealIO.HydraulicConductanceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HydraulicConductance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicConductanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicResistanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -690,6 +993,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicResistanceConst</h2>
 <p>
 <b>Obsolete, please use HydraulicConductance instead!</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste7a5b1a684b11172ConstD.png" alt="Physiolibrary.Types.Constants.HydraulicResistanceConst">
 </p>
 <h3>Information</h3>
 
@@ -699,14 +1004,31 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Hydraulic resistance [(Pa.s)/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicResistance"
+>HydraulicResistance</a></td><td>k</td><td>&nbsp;</td><td>Hydraulic resistance [(Pa.s)/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicResistance constant [(Pa.s)/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>HydraulicResistance constant [(Pa.s)/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicResistanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Obsolete, please use HydraulicConductance instead!&quot;</span>
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicResistance"
+>Types.HydraulicResistance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Hydraulic resistance&quot;</span>;
+      <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>Modelica.Blocks.Interfaces.RealOutput</a>
+                                        y(<span style="color: blue; font-weight: normal; font-style: normal;">final </span>quantity=&quot;HydraulicConductance&quot;,<span style="color: blue; font-weight: normal; font-style: normal;">final </span>unit=&quot;(Pa.s)/m3&quot;, displayUnit=&quot;(mmHg.min)/ml&quot;, nominal=(1e+6)*(133.322387415)*60) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;HydraulicResistance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicResistanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicResistanceToConductanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -715,17 +1037,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicResistanceToConductanceConst</h2>
 <p>
 <b>Constant signal of type HydraulicConductance from HydraulicResistance parameter</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Reciprocal constant value of hydraulic conductance [(Pa.s)/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicResistance"
+>HydraulicResistance</a></td><td>k</td><td>&nbsp;</td><td>Reciprocal constant value of hydraulic conductance [(Pa.s)/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicConductance constant [m3/(Pa.s)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicConductanceOutput"
+>HydraulicConductanceOutput</a></td><td>y</td><td>HydraulicConductance constant [m3/(Pa.s)]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicResistanceToConductanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type HydraulicConductance from HydraulicResistance parameter&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicResistance"
+>Types.HydraulicResistance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Reciprocal constant value of hydraulic conductance&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicConductanceOutput"
+>RealIO.HydraulicConductanceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HydraulicConductance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=1/k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicResistanceToConductanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HydraulicInertanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -734,17 +1073,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.HydraulicInertanceConst</h2>
 <p>
 <b>Constant signal of type HydraulicInertance</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.HydraulicInertanceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant HydraulicInertance output value [Pa.s2/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicInertance"
+>HydraulicInertance</a></td><td>k</td><td>&nbsp;</td><td>Constant HydraulicInertance output value [Pa.s2/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>HydraulicInertance constant [Pa.s2/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicInertanceOutput"
+>HydraulicInertanceOutput</a></td><td>y</td><td>HydraulicInertance constant [Pa.s2/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HydraulicInertanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type HydraulicInertance&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.HydraulicInertance"
+>Types.HydraulicInertance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant HydraulicInertance output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.HydraulicInertanceOutput"
+>RealIO.HydraulicInertanceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;HydraulicInertance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HydraulicInertanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -753,17 +1109,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.MassConst</h2>
 <p>
 <b>Constant signal of type Mass</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.MassConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Mass output value [kg]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Mass</a></td><td>k</td><td>&nbsp;</td><td>Constant Mass output value [kg]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Mass constant [kg]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassOutput"
+>MassOutput</a></td><td>y</td><td>Mass constant [kg]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> MassConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Mass&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Mass"
+>Types.Mass</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Mass output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassOutput"
+>RealIO.MassOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Mass constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MassConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassConcentrationConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -772,17 +1143,33 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.MassConcentrationConst</h2>
 <p>
 <b>Constant signal of type MassConcentration</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.MassConcentrationConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant MassConcentration output value [kg/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassConcentration"
+>MassConcentration</a></td><td>k</td><td>&nbsp;</td><td>Constant MassConcentration output value [kg/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>MassConcentration constant [kg/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassConcentrationOutput"
+>MassConcentrationOutput</a></td><td>y</td><td>MassConcentration constant [kg/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> MassConcentrationConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type MassConcentration&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassConcentration"
+>Types.MassConcentration</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant MassConcentration output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassConcentrationOutput"
+>RealIO.MassConcentrationOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;MassConcentration constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MassConcentrationConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassFlowRateConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -791,17 +1178,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.MassFlowRateConst</h2>
 <p>
 <b>Constant signal of type MassFlowRate</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.MassFlowRateConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant MassFlowRate output value [kg/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a></td><td>k</td><td>&nbsp;</td><td>Constant MassFlowRate output value [kg/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>MassFlowRate constant [kg/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateOutput"
+>MassFlowRateOutput</a></td><td>y</td><td>MassFlowRate constant [kg/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> MassFlowRateConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type MassFlowRate&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>Types.MassFlowRate</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant MassFlowRate output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateOutput"
+>RealIO.MassFlowRateOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;MassFlowRate constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MassFlowRateConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MolarFlowRateConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -810,17 +1212,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.MolarFlowRateConst</h2>
 <p>
 <b>Constant signal of type MolarFlowRate</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.MolarFlowRateConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant MolarFlowRate output value [mol/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>MolarFlowRate</a></td><td>k</td><td>&nbsp;</td><td>Constant MolarFlowRate output value [mol/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>MolarFlowRate constant [mol/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateOutput"
+>MolarFlowRateOutput</a></td><td>y</td><td>MolarFlowRate constant [mol/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> MolarFlowRateConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type MolarFlowRate&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarFlowRate"
+>Types.MolarFlowRate</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant MolarFlowRate output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateOutput"
+>RealIO.MolarFlowRateOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;MolarFlowRate constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MolarFlowRateConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OsmolarityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -829,17 +1246,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.OsmolarityConst</h2>
 <p>
 <b>Constant signal of type Osmolarity</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.OsmolarityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Osmolarity output value [mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Osmolarity</a></td><td>k</td><td>&nbsp;</td><td>Constant Osmolarity output value [mol/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Osmolarity constant [mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmolarityOutput"
+>OsmolarityOutput</a></td><td>y</td><td>Osmolarity constant [mol/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OsmolarityConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Osmolarity&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Osmolarity"
+>Types.Osmolarity</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Osmolarity output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmolarityOutput"
+>RealIO.OsmolarityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Osmolarity constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OsmolarityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OsmoticPermeabilityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -848,17 +1280,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.OsmoticPermeabilityConst</h2>
 <p>
 <b>Constant signal of type OsmoticPermeability</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.OsmoticPermeabilityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant OsmoticPermeability output value [m3/(Pa.s)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>OsmoticPermeability</a></td><td>k</td><td>&nbsp;</td><td>Constant OsmoticPermeability output value [m3/(Pa.s)]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>OsmoticPermeability constant [m3/(Pa.s)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmoticPermeabilityOutput"
+>OsmoticPermeabilityOutput</a></td><td>y</td><td>OsmoticPermeability constant [m3/(Pa.s)]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OsmoticPermeabilityConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type OsmoticPermeability&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.OsmoticPermeability"
+>Types.OsmoticPermeability</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant OsmoticPermeability output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.OsmoticPermeabilityOutput"
+>RealIO.OsmoticPermeabilityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;OsmoticPermeability constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OsmoticPermeabilityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PressureConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -867,17 +1316,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PressureConst</h2>
 <p>
 <b>Constant signal of type Pressure</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.PressureConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Pressure output value [Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Pressure</a></td><td>k</td><td>&nbsp;</td><td>Constant Pressure output value [Pa]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Pressure constant [Pa]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>PressureOutput</a></td><td>y</td><td>Pressure constant [Pa]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PressureConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Pressure&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Pressure"
+>Types.Pressure</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Pressure output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PressureOutput"
+>RealIO.PressureOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Pressure constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PressureConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SpecificEnergyConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -886,17 +1350,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.SpecificEnergyConst</h2>
 <p>
 <b>Constant signal of type SpecificEnergy</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.SpecificEnergyConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant SpecificEnergy output value [J/kg]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>SpecificEnergy</a></td><td>k</td><td>&nbsp;</td><td>Constant SpecificEnergy output value [J/kg]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>SpecificEnergy constant [J/kg]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.SpecificEnergyOutput"
+>SpecificEnergyOutput</a></td><td>y</td><td>SpecificEnergy constant [J/kg]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> SpecificEnergyConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type SpecificEnergy&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>Types.SpecificEnergy</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant SpecificEnergy output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.SpecificEnergyOutput"
+>RealIO.SpecificEnergyOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;SpecificEnergy constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SpecificEnergyConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SpecificHeatCapacityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -905,17 +1384,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.SpecificHeatCapacityConst</h2>
 <p>
 <b>Constant signal of type SpecificHeatCapacity</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.SpecificHeatCapacityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant SpecificHeatCapacity output value [J/(kg.K)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>k</td><td>&nbsp;</td><td>Constant SpecificHeatCapacity output value [J/(kg.K)]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>SpecificHeatCapacity constant [J/(kg.K)]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.SpecificHeatCapacityOutput"
+>SpecificHeatCapacityOutput</a></td><td>y</td><td>SpecificHeatCapacity constant [J/(kg.K)]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> SpecificHeatCapacityConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type SpecificHeatCapacity&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant SpecificHeatCapacity output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.SpecificHeatCapacityOutput"
+>RealIO.SpecificHeatCapacityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;SpecificHeatCapacity constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SpecificHeatCapacityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE TemperatureConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -924,17 +1420,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.TemperatureConst</h2>
 <p>
 <b>Constant signal of type Temperature</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.TemperatureConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Temperature output value [K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>k</td><td>&nbsp;</td><td>Constant Temperature output value [K]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Temperature constant [K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureOutput"
+>TemperatureOutput</a></td><td>y</td><td>Temperature constant [K]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> TemperatureConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Temperature&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Temperature output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureOutput"
+>RealIO.TemperatureOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Temperature constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>TemperatureConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ThermalConductanceConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -943,17 +1454,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.ThermalConductanceConst</h2>
 <p>
 <b>Constant signal of type ThermalConductance</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.ThermalConductanceConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant ThermalConductance output value [W/K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>ThermalConductance</a></td><td>k</td><td>&nbsp;</td><td>Constant ThermalConductance output value [W/K]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>ThermalConductance constant [W/K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ThermalConductanceOutput"
+>ThermalConductanceOutput</a></td><td>y</td><td>ThermalConductance constant [W/K]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> ThermalConductanceConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type ThermalConductance&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.ThermalConductance"
+>Types.ThermalConductance</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant ThermalConductance output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ThermalConductanceOutput"
+>RealIO.ThermalConductanceOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;ThermalConductance constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ThermalConductanceConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE TimeConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -962,17 +1490,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.TimeConst</h2>
 <p>
 <b>Constant signal of type Time</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.TimeConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Time output value [s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>k</td><td>&nbsp;</td><td>Constant Time output value [s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Time constant [s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TimeOutput"
+>TimeOutput</a></td><td>y</td><td>Time constant [s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> TimeConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Time&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Time output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TimeOutput"
+>RealIO.TimeOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Time constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>TimeConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE VolumeFlowRateConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -981,17 +1524,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.VolumeFlowRateConst</h2>
 <p>
 <b>Constant signal of type VolumeFlowRate</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.VolumeFlowRateConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant VolumeFlowRate output value [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>k</td><td>&nbsp;</td><td>Constant VolumeFlowRate output value [m3/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>VolumeFlowRate constant [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>VolumeFlowRateOutput</a></td><td>y</td><td>VolumeFlowRate constant [m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> VolumeFlowRateConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type VolumeFlowRate&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>Types.VolumeFlowRate</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant VolumeFlowRate output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>RealIO.VolumeFlowRateOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;VolumeFlowRate constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>VolumeFlowRateConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE VolumeConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1000,17 +1558,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.VolumeConst</h2>
 <p>
 <b>Constant signal of type Volume</b>
+<br>
+<br><img src="Physiolibrary.Types.Conste97fdc207ebd19abConstD.png" alt="Physiolibrary.Types.Constants.VolumeConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Volume output value [m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
+>Volume</a></td><td>k</td><td>&nbsp;</td><td>Constant Volume output value [m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Volume constant [m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeOutput"
+>VolumeOutput</a></td><td>y</td><td>Volume constant [m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> VolumeConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Volume&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Volume"
+>Types.Volume</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Volume output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeOutput"
+>RealIO.VolumeOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Volume constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>VolumeConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE DeprecatedUntypedConstant<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1019,21 +1592,42 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.DeprecatedUntypedConstant</h2>
 <p>
 <b>Deprecated Untyped Constant for automatic conversion from initial versions of Physiolibrary</b>
+<br>
+<br><img src="Physiolibrary.Types.Constdbcc231fa3b55216stantD.png" alt="Physiolibrary.Types.Constants.DeprecatedUntypedConstant">
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.ObsoleteModel (Icon for classes that are obsolete and will be removed in later versions).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ObsoleteModel"
+>Modelica.Icons.ObsoleteModel</a> (Icon for classes that are obsolete and will be removed in later versions).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Untyped constant output value</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>units</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>&nbsp;</td><td>Untyped constant output value</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>units</td><td>&quot;1&quot;</td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Untyped constant</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>Untyped constant</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> DeprecatedUntypedConstant <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Deprecated Untyped Constant for automatic conversion from initial versions of Physiolibrary&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ObsoleteModel"
+>Modelica.Icons.ObsoleteModel</a>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Untyped constant output value&quot;</span>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String varName=&quot;&quot;;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String units=&quot;1&quot;;
+
+      <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>Modelica.Blocks.Interfaces.RealOutput</a>
+                                y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Untyped constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>DeprecatedUntypedConstant;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE pHConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1042,17 +1636,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.pHConst</h2>
 <p>
 <b>Constant signal of type pH</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.pHConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant pH output value [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.pH"
+>pH</a></td><td>k</td><td>&nbsp;</td><td>Constant pH output value [1]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>pH constant [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.pHOutput"
+>pHOutput</a></td><td>y</td><td>pH constant [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> pHConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type pH&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.pH"
+>Types.pH</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant pH output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.pHOutput"
+>Types.RealIO.pHOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;pH constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>pHConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE VolumeDensityOfChargeConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1061,17 +1670,35 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.VolumeDensityOfChargeConst</h2>
 <p>
 <b>Constant signal of type VolumeDensityOfCharge</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.VolumeDensityOfChargeConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant VolumeDensityOfCharge output value [C/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeDensityOfCharge"
+>VolumeDensityOfCharge</a></td><td>k</td><td>&nbsp;</td><td>Constant VolumeDensityOfCharge output value [C/m3]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>VolumeDensityOfCharge constant [C/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeDensityOfChargeOutput"
+>VolumeDensityOfChargeOutput</a></td><td>y</td><td>VolumeDensityOfCharge constant [C/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> VolumeDensityOfChargeConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type VolumeDensityOfCharge&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeDensityOfCharge"
+>Types.VolumeDensityOfCharge</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Constant VolumeDensityOfCharge output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeDensityOfChargeOutput"
+>Types.RealIO.VolumeDensityOfChargeOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;VolumeDensityOfCharge constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>VolumeDensityOfChargeConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE VelocityConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1080,17 +1707,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.VelocityConst</h2>
 <p>
 <b>Constant signal of type Velocity</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.VelocityConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Velocity output value [m/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Velocity"
+>Velocity</a></td><td>k</td><td>&nbsp;</td><td>Constant Velocity output value [m/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Velocity constant [m/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VelocityOutput"
+>VelocityOutput</a></td><td>y</td><td>Velocity constant [m/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> VelocityConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Velocity&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Velocity"
+>Types.Velocity</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Velocity output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VelocityOutput"
+>Types.RealIO.VelocityOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Velocity constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>VelocityConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PowerConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1099,17 +1741,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PowerConst</h2>
 <p>
 <b>Constant signal of type Power</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.PowerConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Power output value [W]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Power"
+>Power</a></td><td>k</td><td>&nbsp;</td><td>Constant Power output value [W]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Power constant [W]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PowerOutput"
+>PowerOutput</a></td><td>y</td><td>Power constant [W]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PowerConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Power&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Power"
+>Types.Power</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Power output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PowerOutput"
+>RealIO.PowerOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Power constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PowerConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PositionConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1118,17 +1775,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PositionConst</h2>
 <p>
 <b>Constant signal of type Position</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.PositionConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Position output value [m]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Position"
+>Position</a></td><td>k</td><td>&nbsp;</td><td>Constant Position output value [m]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Position constant [m]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PositionOutput"
+>PositionOutput</a></td><td>y</td><td>Position constant [m]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PositionConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Position&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Position"
+>Types.Position</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Position output value&quot;</span>;
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PositionOutput"
+>RealIO.PositionOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Position constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PositionConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MolarEnergyConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1137,17 +1809,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.MolarEnergyConst</h2>
 <p>
 <b>Constant signal of type MolarEnergy</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.MolarEnergyConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant MolarEnergy output value [J/mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>MolarEnergy</a></td><td>k</td><td>&nbsp;</td><td>Constant MolarEnergy output value [J/mol]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>MolarEnergy constant [J/mol]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarEnergyOutput"
+>MolarEnergyOutput</a></td><td>y</td><td>MolarEnergy constant [J/mol]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> MolarEnergyConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type MolarEnergy&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.MolarEnergy"
+>Types.MolarEnergy</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant MolarEnergy output value&quot;</span>;
+    <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarEnergyOutput"
+>RealIO.MolarEnergyOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;MolarEnergy constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+    y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MolarEnergyConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OneConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1156,12 +1843,25 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.OneConst</h2>
 <p>
 <b>1</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.OneConst">
 </p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>=1 [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>FractionOutput</a></td><td>y</td><td>=1 [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OneConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;1&quot;</span>
+
+      <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.FractionOutput"
+>RealIO.FractionOutput</a>     y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;=1&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+      y=1;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OneConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1170,17 +1870,32 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PopulationConst</h2>
 <p>
 <b>Constant signal of type Population</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.PopulationConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant Population output value [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
+>Population</a></td><td>k</td><td>&nbsp;</td><td>Constant Population output value [1]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Population constant [1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationOutput"
+>PopulationOutput</a></td><td>y</td><td>Population constant [1]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PopulationConst <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant signal of type Population&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Population"
+>Types.Population</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant Population output value&quot;</span>;
+    <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationOutput"
+>RealIO.PopulationOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Population constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+    y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PopulationConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationChangeConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1189,17 +1904,33 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PopulationChangeConst</h2>
 <p>
 <b>Constant signal of type PopulationChange</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.PopulationChangeConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Constant PopulationChange output value [1/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
+>PopulationChange</a></td><td>k</td><td>&nbsp;</td><td>Constant PopulationChange output value [1/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>PopulationChange constant [1/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeOutput"
+>PopulationChangeOutput</a></td><td>y</td><td>PopulationChange constant [1/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PopulationChangeConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type PopulationChange&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.PopulationChange"
+>Types.PopulationChange</a> k <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Constant PopulationChange output value&quot;</span>;
+    <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangeOutput"
+>RealIO.PopulationChangeOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;PopulationChange constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+    y=k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PopulationChangeConst;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PopulationChangePerMemberConst<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -1208,19 +1939,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.Constants</a>.PopulationChangePerMemberConst</h2>
 <p>
 <b>Constant signal of type PopulationChangePerMember</b>
+<br>
+<br><img src="Physiolibrary.Types.Constants.pHConstD.png" alt="Physiolibrary.Types.Constants.PopulationChangePerMemberConst">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>LifeTime</td><td>Mean lifetime as 1/PopulationChangePerMember output value [s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>LifeTime</td><td>&nbsp;</td><td>Mean lifetime as 1/PopulationChangePerMember output value [s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>PopulationChangePerMember constant [1/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangePerMemberOutput"
+>PopulationChangePerMemberOutput</a></td><td>y</td><td>PopulationChangePerMember constant [1/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> PopulationChangePerMemberConst <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Constant signal of type PopulationChangePerMember&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> LifeTime <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Mean lifetime as 1/PopulationChangePerMember output value&quot;</span>;
+    <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.PopulationChangePerMemberOutput"
+>RealIO.PopulationChangePerMemberOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;PopulationChangePerMember constant&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+    y=1/LifeTime;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PopulationChangePerMemberConst;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:58 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:32 2015.
 </address>
 </body>
 </html>

@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SensorsPackage (Icon for packages containing sensors).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SensorsPackage.html#Modelica.Icons.SensorsPackage"
+>Modelica.Icons.SensorsPackage</a> (Icon for packages containing sensors).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -51,6 +52,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MolarFlowMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -59,18 +61,41 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sensors</a>.MolarFlowMeasure</h2>
 <p>
 <b>Measure of molar flow</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Sef520dacbdd6cfc98asureD.png" alt="Physiolibrary.Chemical.Sensors.MolarFlowMeasure">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
->Chemical.Interfaces.OnePort</a> (Partial transfer of solute beween two ports without its accumulation), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.MolarFlowMeasure"
->Icons.MolarFlowMeasure</a>.</p>
+>Interfaces.OnePort</a> (Partial transfer of solute between two ports without its accumulation), <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a> (Icon representing a round measurement device).</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_out</td><td>&nbsp;</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
-<tr><td>molarFlowRate</td><td>[mol/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_b"
+>ChemicalPort_b</a></td><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateOutput"
+>MolarFlowRateOutput</a></td><td>molarFlowRate</td><td>[mol/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> MolarFlowMeasure <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Measure of molar flow&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.OnePort"
+>Interfaces.OnePort</a>;
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//extends Icons.MolarFlowMeasure;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a>;
+
+ <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateOutput"
+>Types.RealIO.MolarFlowRateOutput</a> molarFlowRate;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  q_in.conc = q_out.conc;
+
+  molarFlowRate = q_in.q;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MolarFlowMeasure;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE ConcentrationMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -79,13 +104,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sensors</a>.ConcentrationMeasure</h2>
 <p>
 <b>Measure of molar concentration</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Sec4645edf3c52b034asureD.png" alt="Physiolibrary.Chemical.Sensors.ConcentrationMeasure">
 </p>
+<h3>Information</h3>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a> (Icon representing a round measurement device).</p>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>q_in</td><td>For measure only</td></tr>
-<tr><td>concentration</td><td>Concentration [mol/m3]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>For measure only</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>ConcentrationOutput</a></td><td>concentration</td><td>Concentration [mol/m3]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> ConcentrationMeasure <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Measure of molar concentration&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a>;
+
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;For measure only&quot;</span>;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>Types.RealIO.ConcentrationOutput</a> concentration <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Concentration&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+
+  concentration =         q_in.conc;
+
+  q_in.q = 0;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>ConcentrationMeasure;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE IncrementalFlowConcentrationMeasure<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -94,27 +143,59 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Chemical.Sensors</a>.IncrementalFlowConcentrationMeasure</h2>
 <p>
 <b>Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)</b>
+<br>
+<br><img src="Physiolibrary.Chemical.Se4b8efab757cb9b81asureD.png" alt="Physiolibrary.Chemical.Sensors.IncrementalFlowConcentrationMeasure">
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ConditionalSolutionFlow"
->Chemical.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a> (Icon representing a round measurement device), <a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a> (Input of solution volumetric flow vs. parametric solution volumetric flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>SolutionFlow</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>SolutionFlow</td><td>0</td><td>Volumetric flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useSolutionFlowInput</td><td>false</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
-<tr><td>concentration</td><td>Concentration after absorption source [mol/m3]</td></tr>
-<tr><td>addition</td><td>[mol/s]</td></tr>
-<tr><td>q_in</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateInput"
+>VolumeFlowRateInput</a></td><td>solutionFlow</td><td>[m3/s]</td></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>ConcentrationOutput</a></td><td>concentration</td><td>Concentration after absorption source [mol/m3]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>MolarFlowRateInput</a></td><td>addition</td><td>[mol/s]</td></tr>
+<tr><td><a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>ChemicalPort_a</a></td><td>q_in</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> IncrementalFlowConcentrationMeasure <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.RotationalSensor"
+>Modelica.Icons.RotationalSensor</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Hydraulic_Interfaces.html#Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow"
+>Hydraulic.Interfaces.ConditionalSolutionFlow</a>;
+
+ <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.ConcentrationOutput"
+>Types.RealIO.ConcentrationOutput</a> concentration <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Concentration after absorption source&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MolarFlowRateInput"
+>Types.RealIO.MolarFlowRateInput</a> addition;
+  <a href="Physiolibrary_Chemical_Interfaces.html#Physiolibrary.Chemical.Interfaces.ChemicalPort_a"
+>Interfaces.ChemicalPort_a</a> q_in;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  concentration = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>(q&gt;0)<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>q_in.conc + addition/q<span style="color: blue; font-weight: normal; font-style: normal;"> else </span>q_in.conc;
+  q_in.q=0;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>IncrementalFlowConcentrationMeasure;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:50 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:56:34 2015.
 </address>
 </body>
 </html>

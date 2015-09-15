@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Utility components used by package Examples</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.UtilitiesPackage (Icon for utility packages).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_UtilitiesPackage.html#Modelica.Icons.UtilitiesPackage"
+>Modelica.Icons.UtilitiesPackage</a> (Icon for utility packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -41,6 +42,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>example pulse flow generator</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Pulses<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -49,21 +51,62 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Hydraulic.Examples.Utilities</a>.Pulses</h2>
 <p>
 <b>example pulse flow generator</b>
+<br>
+<br><img src="Physiolibrary.Hydraulic.E97a9e20d45ca6bc5ulsesD.png" alt="Physiolibrary.Hydraulic.Examples.Utilities.Pulses">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>HR</td><td>[Hz]</td></tr>
-<tr><td>TD1</td><td>relative time of start of systole [s]</td></tr>
-<tr><td>QP</td><td>peak volume flowrate [m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Frequency"
+>Frequency</a></td><td>HR</td><td>1.2</td><td>[Hz]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>TD1</td><td>0.07</td><td>relative time of start of systole [s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a></td><td>QP</td><td>0.000424</td><td>peak volume flowrate [m3/s]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>volumeflowrate</td><td>[m3/s]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>VolumeFlowRateOutput</a></td><td>volumeflowrate</td><td>[m3/s]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Pulses <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;example pulse flow generator&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary_Types.html#Physiolibrary.Types"
+>Physiolibrary.Types</a>.*;
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.VolumeFlowRateOutput"
+>Physiolibrary.Types.RealIO.VolumeFlowRateOutput</a> volumeflowrate;
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a> T0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;beginning of cardiac cycle&quot;</span>;
+  Boolean b(start=false);
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a> HP <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;duration of cardiac cycle&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Frequency"
+>Frequency</a> HR=1.2;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a> tc <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;relative time in carciac cycle&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a> TD1=0.07 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;relative time of start of systole&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">discrete </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a> TD2 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;relative time of end of systole&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.VolumeFlowRate"
+>VolumeFlowRate</a> QP=0.000424 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;peak volume flowrate&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  b = time -<span style="color: red; font-weight: normal; font-style: normal;"> pre</span>(T0) &gt;=<span style="color: red; font-weight: normal; font-style: normal;"> pre</span>(HP) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;true if new cardiac cycle begins&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span>{<span style="color: red; font-weight: normal; font-style: normal;">initial</span>(),b}<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    T0 = time <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;set beginning of cardiac cycle&quot;</span>;
+    HP = 1/HR <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;update length of carciac cycle&quot;</span>;
+    TD2 = TD1 + (2/5)*HP <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;compute end time of systole&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+  tc = time - T0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;relative time in carciac cycle&quot;</span>;
+  volumeflowrate = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>tc &lt; TD1<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>0<span style="color: blue; font-weight: normal; font-style: normal;"> else </span><span style="color: blue; font-weight: normal; font-style: normal;">if </span>tc &lt; TD2<span style="color: blue; font-weight: normal; font-style: normal;"> then </span><span style="color: red; font-weight: normal; font-style: normal;">sin</span>((tc - TD1)/
+    (TD2 - TD1)*Modelica.Constants.pi)*QP<span style="color: blue; font-weight: normal; font-style: normal;"> else </span>0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;zero before and after systole, otherwise sin up to peak flow&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Pulses;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:51 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:52:19 2015.
 </address>
 </body>
 </html>

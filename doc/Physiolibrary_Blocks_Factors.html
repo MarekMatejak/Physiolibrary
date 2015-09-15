@@ -27,7 +27,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <b>Multiplication Effects</b><br>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.Package (Icon for standard packages).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_Package.html#Modelica.Icons.Package"
+>Modelica.Icons.Package</a> (Icon for standard packages).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -71,6 +72,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>LagSpline if not Failed</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Normalization<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -79,6 +81,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.Normalization</h2>
 <p>
 <b>effect = u/NormalValue</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Factebb9f1aee6d37c65ationD.png" alt="Physiolibrary.Blocks.Factors.Normalization">
 </p>
 <h3>Information</h3>
 
@@ -88,16 +92,41 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.BaseFactorIcon</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>NormalValue</td><td>Normal value of u, because y=(u/NormalValue)*yBase.</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>NormalValue</td><td>1</td><td>Normal value of u, because y=(u/NormalValue)*yBase.</td></tr>
+<tr><td>Boolean</td><td>enabled</td><td>true</td><td>disabled =&gt; y=yBase</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Normalization <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;effect = u/NormalValue&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon"
+>Icons.BaseFactorIcon</a>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real NormalValue=1 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Normal value of u, because y=(u/NormalValue)*yBase.&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean enabled=true <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;disabled =&gt; y=yBase&quot;</span>;
+
+ <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  effect = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>enabled<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>u/NormalValue<span style="color: blue; font-weight: normal; font-style: normal;"> else </span>1;
+  y=effect*yBase;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Normalization;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE DamagedFraction<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -106,21 +135,42 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.DamagedFraction</h2>
 <p>
 <b>effect = 1 - DamagedAreaFraction</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Factb5cbee503145286cctionD.png" alt="Physiolibrary.Blocks.Factors.DamagedFraction">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon"
 >Icons.BaseFactorIcon</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>DamagedAreaFraction</td><td>[1]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Fraction</a></td><td>DamagedAreaFraction</td><td>0</td><td>[1]</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> DamagedFraction <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;effect = 1 - DamagedAreaFraction&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon"
+>Icons.BaseFactorIcon</a>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> DamagedAreaFraction = 0;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  effect = 1-DamagedAreaFraction;
+  y=yBase*effect;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>DamagedFraction;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Spline<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -129,25 +179,64 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.Spline</h2>
 <p>
 <b>effect = spline(data,u)</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Factors.SplineD.png" alt="Physiolibrary.Blocks.Factors.Spline">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon4"
 >Icons.BaseFactorIcon4</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>data[:, 3]</td><td>Array of interpolating points as {x,y,slope}</td></tr>
-<tr><td>Xscale</td><td>conversion scale to SI unit of x values</td></tr>
-<tr><td>Yscale</td><td>conversion scale to SI unit of y values</td></tr>
-<tr><td>UsePositiveLog10</td><td>x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>enabled</td><td>true</td><td>disabled =&gt; y=yBase</td></tr>
+<tr><td>Real</td><td>data[:, 3]</td><td>&nbsp;</td><td>Array of interpolating points as {x,y,slope}</td></tr>
+<tr><td>Real</td><td>Xscale</td><td>1</td><td>conversion scale to SI unit of x values</td></tr>
+<tr><td>Real</td><td>Yscale</td><td>1</td><td>conversion scale to SI unit of y values</td></tr>
+<tr><td>Boolean</td><td>UsePositiveLog10</td><td>false</td><td>x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Spline <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;effect = spline(data,u)&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon4"
+>Icons.BaseFactorIcon4</a>;
+ <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u(nominal=Xscale);
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean enabled=true <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;disabled =&gt; y=yBase&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real[:,3] data <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Array of interpolating points as {x,y,slope}&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Xscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of x values&quot;</span>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Yscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of y values&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean UsePositiveLog10 = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)&quot;</span>;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Multiplication coeffecient for yBase to reach y&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+    <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real a[:,:] = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>enabled<span style="color: blue; font-weight: normal; font-style: normal;"> then </span><span style="color: red; font-weight: normal; font-style: normal;">Interpolation.SplineCoefficients</span>(
+                                                      data[:, 1],data[:, 2]*Yscale,data[:, 3]*Yscale)<span style="color: blue; font-weight: normal; font-style: normal;"> else </span><span style="color: red; font-weight: normal; font-style: normal;">zeros</span>(1,1) <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Cubic polynom coefficients of curve segments between interpolating points&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  effect = <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>enabled<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>1<span style="color: blue; font-weight: normal; font-style: normal;"> elseif </span>UsePositiveLog10<span style="color: blue; font-weight: normal; font-style: normal;"> then </span><span style="color: red; font-weight: normal; font-style: normal;">Interpolation.Spline</span>(data[:, 1],a,<span style="color: blue; font-weight: normal; font-style: normal;">if </span>u/Xscale &lt;= 1<span style="color: blue; font-weight: normal; font-style: normal;"> then </span>0<span style="color: blue; font-weight: normal; font-style: normal;"> else </span><span style="color: red; font-weight: normal; font-style: normal;">log10</span>(u/Xscale))<span style="color: blue; font-weight: normal; font-style: normal;">
+   else </span><span style="color: red; font-weight: normal; font-style: normal;">Interpolation.Spline</span>(data[:, 1],a,u/Xscale);
+
+  y=effect*yBase;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Spline;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE LagSpline<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -156,6 +245,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.LagSpline</h2>
 <p>
 <b>Adapt the input signal before interpolation</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Factors.LagSplineD.png" alt="Physiolibrary.Blocks.Factors.LagSpline">
 </p>
 <h3>Information</h3>
 
@@ -167,21 +258,73 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Icons.BaseFactorIcon5</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>HalfTime</td><td>[s]</td></tr>
-<tr><td>initialValue</td><td>as u/Xscale</td></tr>
-<tr><td>Xscale</td><td>conversion scale to SI unit of x values</td></tr>
-<tr><td>Yscale</td><td>conversion scale to SI unit of y values</td></tr>
-<tr><td>UsePositiveLog10</td><td>x = if u_delayed/scaleX &lt;=1 then 0 else log10(u_delayed/scaleX)</td></tr>
-<tr><td>data[:, 3]</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>enabled</td><td>true</td><td>disabled =&gt; y=yBase</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>HalfTime</td><td>&nbsp;</td><td>[s]</td></tr>
+<tr><td>Real</td><td>initialValue</td><td>1</td><td>as u/Xscale</td></tr>
+<tr><td>Real</td><td>Xscale</td><td>1</td><td>conversion scale to SI unit of x values</td></tr>
+<tr><td>Real</td><td>Yscale</td><td>1</td><td>conversion scale to SI unit of y values</td></tr>
+<tr><td>Boolean</td><td>UsePositiveLog10</td><td>false</td><td>x = if u_delayed/scaleX &lt;=1 then 0 else log10(u_delayed/scaleX)</td></tr>
+<tr><td>Real</td><td>data[:, 3]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> LagSpline <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Adapt the input signal before interpolation&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon5"
+>Icons.BaseFactorIcon5</a>;
+ <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean enabled=true <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;disabled =&gt; y=yBase&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> HalfTime(displayUnit=&quot;min&quot;);<span style="color: #006400; font-weight: normal; font-style: normal;"> //=3462.468;</span>
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real initialValue = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;as u/Xscale&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Xscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of x values&quot;</span>;
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Yscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of y values&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean UsePositiveLog10 = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;x = if u_delayed/scaleX &lt;=1 then 0 else log10(u_delayed/scaleX)&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real[:,3] data;
+  <a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Integrator"
+>Blocks.Math.Integrator</a> integrator(k=(<span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log</span>(2)/
+        HalfTime), y_start=initialValue*Xscale,
+    NominalValue=Xscale);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Math.html#Modelica.Blocks.Math.Feedback"
+>Modelica.Blocks.Math.Feedback</a> feedback;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect;
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Spline"
+>Spline</a> spline(
+    data=data,
+    Xscale=Xscale,
+    Yscale=Yscale,
+    UsePositiveLog10=UsePositiveLog10,
+    enabled=enabled);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  effect = spline.effect;
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(feedback.y, integrator.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, feedback.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(feedback.u1, u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, spline.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(yBase, spline.yBase);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(spline.y, y);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>LagSpline;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SplineLag<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -190,28 +333,89 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.SplineLag</h2>
 <p>
 <b>Adapt the effect after interpolation</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Factors.SplineLagD.png" alt="Physiolibrary.Blocks.Factors.SplineLag">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon3"
 >Icons.BaseFactorIcon3</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>HalfTime</td><td>[s]</td></tr>
-<tr><td>Xscale</td><td>conversion scale to SI unit of x values</td></tr>
-<tr><td>UsePositiveLog10</td><td>x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)</td></tr>
-<tr><td>data[:, 3]</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>stateName</td><td>Name in Utilities input/output function</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>enabled</td><td>true</td><td>disabled =&gt; y=yBase</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>HalfTime</td><td>&nbsp;</td><td>[s]</td></tr>
+<tr><td>Real</td><td>Xscale</td><td>1</td><td>conversion scale to SI unit of x values</td></tr>
+<tr><td>Boolean</td><td>UsePositiveLog10</td><td>false</td><td>x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)</td></tr>
+<tr><td>Real</td><td>data[:, 3]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> SplineLag <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Adapt the effect after interpolation&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon3"
+>Icons.BaseFactorIcon3</a>;
+ <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean enabled=true <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;disabled =&gt; y=yBase&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> HalfTime(displayUnit=&quot;d&quot;);
+  <span style="color: #006400; font-weight: normal; font-style: normal;">                                              //Tau(unit=&quot;day&quot;);</span>
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String stateName=<span style="color: red; font-weight: normal; font-style: normal;">getInstanceName</span>() <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Name in Utilities input/output function&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Xscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of x values&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean UsePositiveLog10 = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;x = if u/scaleX &lt;=1 then 0 else log10(u/scaleX)&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real[:,3] data;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Math.html#Modelica.Blocks.Math.Product"
+>Modelica.Blocks.Math.Product</a> product;
+  <a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Integrator"
+>Blocks.Math.Integrator</a> integrator(y_start=1, k=(
+        <span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log</span>(2)/HalfTime),
+    stateName=stateName);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Math.html#Modelica.Blocks.Math.Feedback"
+>Modelica.Blocks.Math.Feedback</a> feedback;
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect;
+  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Spline"
+>Spline</a> spline(
+    data=data,
+    Xscale=Xscale,
+    UsePositiveLog10=UsePositiveLog10,
+    enabled=enabled);
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.FractionConst"
+>Types.Constants.FractionConst</a> fraction(k(displayUnit=&quot;1&quot;) = 1);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//der(effect) = (ln(2)/HalfTime)*(spline(data,u)-effect)</span>
+  effect = integrator.y;
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(yBase, product.u1);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(product.y, y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(feedback.y, integrator.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, feedback.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, product.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(feedback.u1, spline.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(u, spline.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(fraction.y, spline.yBase);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SplineLag;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE SplineLagOrZero<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -220,30 +424,104 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Blocks.Factors</a>.SplineLagOrZero</h2>
 <p>
 <b>LagSpline if not Failed</b>
+<br>
+<br><img src="Physiolibrary.Blocks.Fact11f3e9d938663712rZeroD.png" alt="Physiolibrary.Blocks.Factors.SplineLagOrZero">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon2"
 >Icons.BaseFactorIcon2</a>.</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>HalfTime</td><td>[s]</td></tr>
-<tr><td>data[:, 3]</td><td>&nbsp;</td></tr>
-<tr><td>Xscale</td><td>conversion scale to SI unit of x values</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>stateName</td><td>Name in Utilities input/output function</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>enabled</td><td>true</td><td>disabled =&gt; y=yBase</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Time</a></td><td>HalfTime</td><td>&nbsp;</td><td>[s]</td></tr>
+<tr><td>Real</td><td>data[:, 3]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Real</td><td>Xscale</td><td>1</td><td>conversion scale to SI unit of x values</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>yBase</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>&nbsp;</td></tr>
-<tr><td>u</td><td>&nbsp;</td></tr>
-<tr><td>Failed</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>yBase</td><td>&nbsp;</td></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
+>RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>u</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>BooleanInput</a></td><td>Failed</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> SplineLagOrZero <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;LagSpline if not Failed&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Icons.html#Physiolibrary.Icons.BaseFactorIcon2"
+>Icons.BaseFactorIcon2</a>;
+ <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a> u;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean enabled=true <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;disabled =&gt; y=yBase&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
+>Types.Time</a> HalfTime(displayUnit=&quot;d&quot;);
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real[:,3] data;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>String stateName=<span style="color: red; font-weight: normal; font-style: normal;">getInstanceName</span>() <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Name in Utilities input/output function&quot;</span>;
+
+ <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Xscale = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;conversion scale to SI unit of x values&quot;</span>;
+
+  <a href="Physiolibrary_Blocks_Interpolation.html#Physiolibrary.Blocks.Interpolation.Curve"
+>Interpolation.Curve</a>
+               curve(
+  x=data[:, 1],
+  y=data[:, 2],
+  slope=data[:, 3],
+    Xscale=Xscale);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Math.html#Modelica.Blocks.Math.Product"
+>Modelica.Blocks.Math.Product</a> product;
+  <a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Integrator"
+>Blocks.Math.Integrator</a> integrator(y_start=1, k=(
+        <span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log</span>(2)/HalfTime),
+    stateName=stateName);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Math.html#Modelica.Blocks.Math.Feedback"
+>Modelica.Blocks.Math.Feedback</a> feedback;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Logical.html#Modelica.Blocks.Logical.Switch"
+>Modelica.Blocks.Logical.Switch</a> switch1;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.Constant"
+>Modelica.Blocks.Sources.Constant</a>      Constant1(k=0);
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>Modelica.Blocks.Interfaces.BooleanInput</a>
+                                        Failed;
+   <a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
+>Types.Fraction</a> effect;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Logical.html#Modelica.Blocks.Logical.Switch"
+>Modelica.Blocks.Logical.Switch</a> switch2;
+  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.OneConst"
+>Types.Constants.OneConst</a> One;
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Sources.html#Modelica.Blocks.Sources.BooleanConstant"
+>Modelica.Blocks.Sources.BooleanConstant</a> booleanConstant(k=enabled);
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  effect = integrator.y;
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(curve.u, u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(yBase, product.u1);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(product.y, y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(feedback.y, integrator.u);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, feedback.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(integrator.y, product.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(curve.val, switch1.u3);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(Constant1.y, switch1.u1);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(switch1.u2, Failed);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(switch2.y, feedback.u1);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(booleanConstant.y, switch2.u2);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(switch2.u1, switch1.y);
+  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(One.y, switch2.u3);
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>SplineLagOrZero;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:39:01 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:55:05 2015.
 </address>
 </body>
 </html>

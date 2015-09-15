@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.SourcesPackage (Icon for packages containing sources).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_SourcesPackage.html#Modelica.Icons.SourcesPackage"
+>Modelica.Icons.SourcesPackage</a> (Icon for packages containing sources).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -51,6 +52,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>One-directional inflow of heated mass with enthalpy (heat of solvation)</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE UnlimitedHeat<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -59,6 +61,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Thermal.Sources</a>.UnlimitedHeat</h2>
 <p>
 <b>Prescribed temperature</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Souff1f1e09dccab2a4dHeatD.png" alt="Physiolibrary.Thermal.Sources.UnlimitedHeat">
 </p>
 <h3>Information</h3>
 
@@ -70,21 +74,72 @@ i.e., it defines a fixed temperature as a boundary condition.
 </pre>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>T</td><td>Fixed temperature at port if useTemperatureInput=false [K]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useTemperatureInput</td><td>=true, if fixed temperature is from input instead of parameter</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simulation</td></tr>
-<tr><td>isIsolatedInSteadyState</td><td>=true, if there is no flow at port in steady state</td></tr>
-<tr><td>Simulation</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>0</td><td>Fixed temperature at port if useTemperatureInput=false [K]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useTemperatureInput</td><td>false</td><td>=true, if fixed temperature is from input instead of parameter</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
+<tr><td>Boolean</td><td>isIsolatedInSteadyState</td><td>false</td><td>=true, if there is no flow at port in steady state</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>If in equilibrium, then zero-flow equation is added.</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>port</td><td>&nbsp;</td></tr>
-<tr><td>temperature</td><td>[K]</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>port</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>TemperatureInput</a></td><td>temperature</td><td>[K]</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> UnlimitedHeat <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Prescribed temperature&quot;</span>
+  <span style="color: #006400; font-weight: normal; font-style: normal;">//extends Modelica.Thermal.HeatTransfer.Sources.FixedTemperature;</span>
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useTemperatureInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if fixed temperature is from input instead of parameter&quot;</span>;
+
+   <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> T = 0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Fixed temperature at port if useTemperatureInput=false&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean isIsolatedInSteadyState = false <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;=true, if there is no flow at port in steady state&quot;</span>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
+>Types.SimulationType</a>  Simulation=Types.SimulationType.NormalInit <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;If in equilibrium, then zero-flow equation is added.&quot;</span>;
+
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>Interfaces.HeatPort_b</a>       port;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Types.Temperature</a> t <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Current temperature&quot;</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
+  <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>Types.RealIO.TemperatureInput</a> temperature(start=T)= t <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useTemperatureInput;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.InitSteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    port.Q_flow = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useTemperatureInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    t=T;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+  port.T = t;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">if </span>isIsolatedInSteadyState<span style="color: blue; font-weight: normal; font-style: normal;"> and </span>(Simulation==Types.SimulationType.SteadyState)<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+      port.Q_flow = 0;
+  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>UnlimitedHeat;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassOutflow<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -93,25 +148,55 @@ i.e., it defines a fixed temperature as a boundary condition.
 >Physiolibrary.Thermal.Sources</a>.MassOutflow</h2>
 <p>
 <b>One-directional outflow of heated mass with enthalpy (vaporization heat)</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Sou9fd0974804572985tflowD.png" alt="Physiolibrary.Thermal.Sources.MassOutflow">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
 >Interfaces.ConditionalMassFlow</a> (Input of mass flow vs. parametric mass flow).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>MassFlow</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
-<tr><td>VaporizationHeat</td><td>Used for whole outflow stream [J/kg]</td></tr>
-<tr><td>SpecificHeat</td><td>Of outflowing medium [J/(kg.K)]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useMassFlowInput</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a></td><td>MassFlow</td><td>0</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>SpecificEnergy</a></td><td>VaporizationHeat</td><td>0</td><td>Used for whole outflow stream [J/kg]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>SpecificHeat</td><td>4186.8</td><td>Of outflowing medium [J/(kg.K)]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useMassFlowInput</td><td>false</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>massFlow</td><td>[kg/s]</td></tr>
-<tr><td>q_in</td><td>flow circuit</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateInput"
+>MassFlowRateInput</a></td><td>massFlow</td><td>[kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>HeatPort_a</a></td><td>q_in</td><td>flow circuit</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> MassOutflow <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;One-directional outflow of heated mass with enthalpy (vaporization heat)&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a>;
+
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_a"
+>Interfaces.HeatPort_a</a>
+                   q_in <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;flow circuit&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>Types.SpecificEnergy</a> VaporizationHeat=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Used for whole outflow stream&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">                                            // or 2428344 for water vaporization</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> SpecificHeat=4186.8 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Of outflowing medium&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">  //default heat capacity of water is 1 kcal/(degC.kg)</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  assert(liquidOutflow_&gt;=-Modelica.Constants.eps,&quot;HeatOutstream must have always one forward flow direction! Not &#39;liquidOutflow_&lt;0&#39;!&quot;);</span>
+  q_in.Q_flow = q*(q_in.T*SpecificHeat + VaporizationHeat);
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MassOutflow;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE MassInflow<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -120,6 +205,8 @@ i.e., it defines a fixed temperature as a boundary condition.
 >Physiolibrary.Thermal.Sources</a>.MassInflow</h2>
 <p>
 <b>One-directional inflow of heated mass with enthalpy (heat of solvation)</b>
+<br>
+<br><img src="Physiolibrary.Thermal.Sources.MassInflowD.png" alt="Physiolibrary.Thermal.Sources.MassInflow">
 </p>
 <h3>Information</h3>
 <p>Extends from <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
@@ -127,24 +214,56 @@ i.e., it defines a fixed temperature as a boundary condition.
 >Interfaces.ConditionalTemperature</a> (Input of temperature vs. parametric temperature).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>MassFlow</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
-<tr><td>T</td><td>Temperature if useTemperatureInput=false [K]</td></tr>
-<tr><td>dH</td><td>Enthalpy of incomming substance (i.e. enthalpy of solvation) [J/kg]</td></tr>
-<tr><td>SpecificHeat</td><td>Of inflowing medium [J/(kg.K)]</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">External inputs/outputs</td></tr>
-<tr><td>useMassFlowInput</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
-<tr><td>useTemperatureInput</td><td>=true, if temperature input is used instead of parameter T</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.MassFlowRate"
+>MassFlowRate</a></td><td>MassFlow</td><td>0</td><td>Mass flow if useMassFlowInput=false [kg/s]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Temperature"
+>Temperature</a></td><td>T</td><td>0</td><td>Temperature if useTemperatureInput=false [K]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>SpecificEnergy</a></td><td>dH</td><td>0</td><td>Enthalpy of incoming substance (i.e. enthalpy of solvation) [J/kg]</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>SpecificHeatCapacity</a></td><td>SpecificHeat</td><td>4186.8</td><td>Of inflowing medium [J/(kg.K)]</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
+<tr><td>Boolean</td><td>useMassFlowInput</td><td>false</td><td>=true, if mass flow input is used instead of parameter MassFlow</td></tr>
+<tr><td>Boolean</td><td>useTemperatureInput</td><td>false</td><td>=true, if temperature input is used instead of parameter T</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>massFlow</td><td>[kg/s]</td></tr>
-<tr><td>t</td><td>[K]</td></tr>
-<tr><td>q_out</td><td>flow circuit</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.MassFlowRateInput"
+>MassFlowRateInput</a></td><td>massFlow</td><td>[kg/s]</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealIO.html#Physiolibrary.Types.RealIO.TemperatureInput"
+>TemperatureInput</a></td><td>t</td><td>[K]</td></tr>
+<tr><td><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>HeatPort_b</a></td><td>q_out</td><td>flow circuit</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> MassInflow <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;One-directional inflow of heated mass with enthalpy (heat of solvation)&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalMassFlow"
+>Interfaces.ConditionalMassFlow</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.ConditionalTemperature"
+>Interfaces.ConditionalTemperature</a>;
+
+  <a href="Physiolibrary_Thermal_Interfaces.html#Physiolibrary.Thermal.Interfaces.HeatPort_b"
+>Interfaces.HeatPort_b</a>
+                   q_out <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;flow circuit&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificEnergy"
+>Types.SpecificEnergy</a> dH=0 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Enthalpy of incoming substance (i.e. enthalpy of solvation)&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">                                            // or 2428344 for water vaporization</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.SpecificHeatCapacity"
+>Types.SpecificHeatCapacity</a> SpecificHeat=4186.8 <span style="color: #006400; font-weight: normal; font-style: normal;">
+    &quot;Of inflowing medium&quot;</span>;<span style="color: #006400; font-weight: normal; font-style: normal;">  //default heat capacity of water is 1 kcal/(degC.kg)</span>
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  assert(liquidOutflow_&gt;=-Modelica.Constants.eps,&quot;HeatOutstream must have always one forward flow direction! Not &#39;liquidOutflow_&lt;0&#39;!&quot;);</span>
+  q_out.Q_flow = - q*(temperature*SpecificHeat + dH);
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>MassInflow;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:52 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:53:52 2015.
 </address>
 </body>
 </html>

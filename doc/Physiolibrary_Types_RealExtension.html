@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.VariantsPackage (Icon for package containing variants).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_VariantsPackage.html#Modelica.Icons.VariantsPackage"
+>Modelica.Icons.VariantsPackage</a> (Icon for package containing variants).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -105,6 +106,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>&nbsp;</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Parameter<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -113,6 +115,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.RealExtension</a>.Parameter</h2>
 <p>
 <b>Generate constant signal in SI units from file</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEc3839e3829ecb16dmeterD.png" alt="Physiolibrary.Types.RealExtension.Parameter">
 </p>
 <h3>Information</h3>
 
@@ -124,27 +128,47 @@ The Real output y is a constant signal:
 >AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Packages</td></tr>
-<tr><td>replaceable package IO</td><td>Real type with units</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>extends Real</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Packages</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Packages</td></tr>
-<tr><td>replaceable package IO</td><td>Real type with units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>Output</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Packages</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Real type with units</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Parameter <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Generate constant signal in SI units from file&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>AbstractReal</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type = <a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Real type with units&quot;</span>;
+
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>IO.Output</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  y = k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Parameter;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE InputParameter<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -153,6 +177,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.InputParameter</h2>
 <p>
 <b>Generate constant signal from file</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEc3839e3829ecb16dmeterD.png" alt="Physiolibrary.Types.RealExtension.InputParameter">
 </p>
 <h3>Information</h3>
 
@@ -164,31 +190,61 @@ The Real output y is a constant signal:
 >AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Real type with units</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal(varName, ...</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Real type with units</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (inputF...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Real type with units</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>Output</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Real type with units</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> InputParameter <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Generate constant signal from file&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>AbstractReal</a>(                   k =<span style="color: red; font-weight: normal; font-style: normal;"> Utilities.readReal</span>( varName, storeUnit, unitConversions));
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type = <a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(inputFileName=&quot;input.txt&quot;)
+    <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>IO.Output</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">/*  when initial() then
+    Modelica.Utilities.Streams.print(&quot; ii &quot; + varName + &quot; = &quot; + String(y) + &quot; SI , store as &quot; + storeUnit);
+  end when;
+  when terminal() then
+    Modelica.Utilities.Streams.print(&quot; it &quot; + varName + &quot; = &quot; + String(y) + &quot; SI , store as &quot; + storeUnit);
+  end when;
+*/</span>
+  y = k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>InputParameter;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE InputParameter_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -197,6 +253,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.InputParameter_SI</h2>
 <p>
 <b>Generate constant signal in SI units from file</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEc3839e3829ecb16dmeterD.png" alt="Physiolibrary.Types.RealExtension.InputParameter_SI">
 </p>
 <h3>Information</h3>
 
@@ -208,31 +266,55 @@ The Real output y is a constant signal:
 >AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Real type with units</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal_SI(varName)</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Real type with units</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (inputS...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Real type with units</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>Output</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Real type with units</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> InputParameter_SI <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Generate constant signal in SI units from file&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>AbstractReal</a>(                   k =<span style="color: red; font-weight: normal; font-style: normal;"> Utilities.readReal_SI</span>( varName));
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type = <a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(inputSIFileName=&quot;input_SI.txt&quot;)
+    <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Output"
+>IO.Output</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  y = k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>InputParameter_SI;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputFinal<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -241,6 +323,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputFinal</h2>
 <p>
 <b>Save variable to Output</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputFinal">
 </p>
 <h3>Information</h3>
 
@@ -252,26 +336,55 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>extends Real</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (output...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>Input</a></td><td>y</td><td>Connector of Real input signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputFinal <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable to Output&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(outputFileName=&quot;outputFinal.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>IO.Input</a>              y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: #006400; font-weight: normal; font-style: normal;">//Modelica.Utilities.Streams.print(&quot; &lt; &quot; + varName + &quot; = &quot; + String(y) + &quot; SI , store as &quot; + storeUnit);</span>
+    <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeReal</span>(
+      varName,
+      y,
+      storeUnit,
+      unitConversions);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputFinal;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputFinal_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -280,6 +393,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputFinal_SI</h2>
 <p>
 <b>Save variable to Output</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputFinal_SI">
 </p>
 <h3>Information</h3>
 
@@ -291,26 +406,52 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>extends Real</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (output...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>Input</a></td><td>y</td><td>Connector of Real input signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputFinal_SI <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable to Output&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(outputSIFileName=&quot;outputFinal_SI.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>IO.Input</a>              y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeReal_SI</span>(
+      varName,
+      y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputFinal_SI;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputInitial<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -319,6 +460,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputInitial</h2>
 <p>
 <b>Save variable to Output</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputInitial">
 </p>
 <h3>Information</h3>
 
@@ -330,26 +473,55 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>extends Real</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (output...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>Input</a></td><td>y</td><td>Connector of Real input signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputInitial <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable to Output&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(outputFileName=&quot;outputInitial.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>IO.Input</a>              y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">initial</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: #006400; font-weight: normal; font-style: normal;">//Modelica.Utilities.Streams.print(&quot; &lt; &quot; + varName + &quot; = &quot; + String(y) + &quot; SI , store as &quot; + storeUnit);</span>
+    <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeReal</span>(
+      varName,
+      y,
+      storeUnit,
+      unitConversions);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputInitial;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputInitial_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -358,6 +530,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputInitial_SI</h2>
 <p>
 <b>Save variable to Output</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputInitial_SI">
 </p>
 <h3>Information</h3>
 
@@ -369,26 +543,52 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>extends Real</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (output...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>Input</a></td><td>y</td><td>Connector of Real input signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputInitial_SI <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable to Output&quot;</span>
+ <span style="color: #006400; font-weight: normal; font-style: normal;">// import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(outputSIFileName=&quot;outputInitial_SI.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+  <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO.Input"
+>IO.Input</a>              y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">initial</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeReal_SI</span>(
+      varName,
+      y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputInitial_SI;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -397,6 +597,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputComparison</h2>
 <p>
 <b>Save variable comparison to file</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputComparison">
 </p>
 <h3>Information</h3>
 
@@ -408,29 +610,67 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal(varName, ...</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (compar...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>y</td><td>Connector of Real input signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputComparison <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable comparison to file&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>(             k=<span style="color: red; font-weight: normal; font-style: normal;">Utilities.readReal</span>(varName,storeUnit,unitConversions));
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(comparisonFileName=&quot;comparison.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a>
+                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a> initialValue(fixed=false);
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  initialValue = y;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+   <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeComparison</span>(
+    varName,
+    k,
+    initialValue,
+    y,
+    storeUnit,
+    unitConversions);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputComparison;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputComparison_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -439,6 +679,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputComparison_SI</h2>
 <p>
 <b>Save variable comparison to file using SI units during input and output</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputComparison_SI">
 </p>
 <h3>Information</h3>
 
@@ -450,29 +692,66 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal_SI(varName)</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (compar...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>y</td><td>Connector of Real input signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputComparison_SI <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Save variable comparison to file using SI units during input and output&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>(             k=<span style="color: red; font-weight: normal; font-style: normal;">Utilities.readReal_SI</span>(varName));
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(comparisonSIFileName=&quot;comparison_SI.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a>
+                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a> initialValue(fixed=false);
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  initialValue = y;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+   <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeComparison_SI</span>(
+    varName,
+    k,
+    initialValue,
+    y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputComparison_SI;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputInitialComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -481,6 +760,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputInitialComparison</h2>
 <p>
 <b>Save variable comparison to file</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputInitialComparison">
 </p>
 <h3>Information</h3>
 
@@ -492,29 +773,67 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal(varName, ...</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (compar...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>y</td><td>Connector of Real input signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputInitialComparison <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable comparison to file&quot;</span>
+<span style="color: #006400; font-weight: normal; font-style: normal;">//  import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>(             k=<span style="color: red; font-weight: normal; font-style: normal;">Utilities.readReal</span>(varName,storeUnit,unitConversions));
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(comparisonFileName=&quot;comparisonInitial.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a>
+                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a> initialValue(fixed=false);
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  initialValue = y;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">initial</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+   <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeComparison</span>(
+    varName,
+    k,
+    initialValue,
+    y,
+    storeUnit,
+    unitConversions);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputInitialComparison;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputInitialComparison_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -523,6 +842,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.RealExtension</a>.OutputInitialComparison_SI</h2>
 <p>
 <b>Save variable comparison to file using SI units</b>
+<br>
+<br><img src="Physiolibrary.Types.RealEe478ee40939d4e69FinalD.png" alt="Physiolibrary.Types.RealExtension.OutputInitialComparison_SI">
 </p>
 <h3>Information</h3>
 
@@ -534,31 +855,68 @@ The Real output y is a constant signal:
 >Types.AbstractReal</a> (Abstract parameter or the value at defined time (final) of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>unitConversions[:]</td><td>Unit conversions</td></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Simple type</td></tr>
-<tr><td>replaceable type T</td><td>Real type with units</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>&nbsp;</td></tr>
-<tr><td>storeUnit</td><td>Stored units</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Real</td><td>k</td><td>Utilities.readReal_SI(varName)</td><td>Value</td></tr>
+<tr><td><a href="Physiolibrary_Types_Utilities_UnitConversions.html#Physiolibrary.Types.Utilities.UnitConversions.RealTypeRecord"
+>RealTypeRecord</a></td><td>unitConversions[:]</td><td>Utilities.UnitConversions.Re...</td><td>Unit conversions</td></tr>
+<tr><td colspan="2">replaceable package IO</td><td>Types.RealExtension.IO (rede...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Simple type</td></tr>
+<tr><td colspan="2">replaceable type T</td><td>Real</td><td>Real type with units</td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (compar...</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;Stored name&quot;</td><td>&nbsp;</td></tr>
+<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Stored units</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package IO</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package IO</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>RealInput</a></td><td>y</td><td>Connector of Real input signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputInitialComparison_SI <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Save variable comparison to file using SI units&quot;</span>
+ <span style="color: #006400; font-weight: normal; font-style: normal;">// import Physiolibrary;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal"
+>Types.AbstractReal</a>(             k=<span style="color: red; font-weight: normal; font-style: normal;">Utilities.readReal_SI</span>(varName));
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> IO = <a href="Physiolibrary_Types_RealExtension_IO.html#Physiolibrary.Types.RealExtension.IO"
+>Types.RealExtension.IO</a> (
+                                    <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">type</span> Type=<a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a>);
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>(comparisonSIFileName=&quot;comparisonInitial_SI.txt&quot;)
+                                                 <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>Types.Utilities;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
+>Modelica.Blocks.Interfaces.RealInput</a>
+                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractReal.T"
+>T</a> initialValue(fixed=false);
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  initialValue = y;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">initial</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+   <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeComparison_SI</span>(
+    varName,
+    k,
+    initialValue,
+    y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputInitialComparison_SI;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:59 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:45 2015.
 </address>
 </body>
 </html>

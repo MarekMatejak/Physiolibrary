@@ -25,7 +25,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>
 </p>
 <h3>Information</h3>
-<p>Extends from Modelica.Icons.VariantsPackage (Icon for package containing variants).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_VariantsPackage.html#Modelica.Icons.VariantsPackage"
+>Modelica.Icons.VariantsPackage</a> (Icon for package containing variants).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -57,6 +58,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Save variable comparison to file</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Parameter<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -65,6 +67,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.BooleanExtension</a>.Parameter</h2>
 <p>
 <b>Read constant boolean signal</b>
+<br>
+<br><img src="Physiolibrary.Types.Booleff6d8bea553c59e0meterD.png" alt="Physiolibrary.Types.BooleanExtension.Parameter">
 </p>
 <h3>Information</h3>
 
@@ -76,17 +80,31 @@ The Real output y is a constant signal:
 >Types.AbstractBoolean</a> (Abstract parameter or the value at defined time of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>Name of stored variable</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>k</td><td>false</td><td>Value</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>Name of stored variable</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanOutput"
+>BooleanOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Parameter <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Read constant boolean signal&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractBoolean"
+>Types.AbstractBoolean</a>;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanOutput"
+>Modelica.Blocks.Interfaces.BooleanOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  y = k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Parameter;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE InputParameter<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -95,6 +113,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.BooleanExtension</a>.InputParameter</h2>
 <p>
 <b>Read constant boolean signal</b>
+<br>
+<br><img src="Physiolibrary.Types.Booleff6d8bea553c59e0meterD.png" alt="Physiolibrary.Types.BooleanExtension.InputParameter">
 </p>
 <h3>Information</h3>
 
@@ -106,19 +126,36 @@ The Real output y is a constant signal:
 >Types.AbstractBoolean</a> (Abstract parameter or the value at defined time of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>Name of stored variable</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>k</td><td>Utilities.readBoolean(varName)</td><td>Value</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>Name of stored variable</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanOutput"
+>BooleanOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> InputParameter <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Read constant boolean signal&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractBoolean"
+>Types.AbstractBoolean</a>(k=
+    <span style="color: red; font-weight: normal; font-style: normal;">Utilities.readBoolean</span>(varName));
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanOutput"
+>Modelica.Blocks.Interfaces.BooleanOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  y = k;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>InputParameter;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputFinal<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -127,6 +164,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.BooleanExtension</a>.OutputFinal</h2>
 <p>
 <b>Save boolean value to file</b>
+<br>
+<br><img src="Physiolibrary.Types.Boole38e7df82d0217b96FinalD.png" alt="Physiolibrary.Types.BooleanExtension.OutputFinal">
 </p>
 <h3>Information</h3>
 
@@ -138,19 +177,40 @@ The Real output y is a constant signal:
 >Types.AbstractBoolean</a> (Abstract parameter or the value at defined time of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>Name of stored variable</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>k</td><td>false</td><td>Value</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities</td><td>&nbsp;</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>Name of stored variable</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
-<tr><td>y</td><td>Connector of Real output signal</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>BooleanInput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputFinal <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save boolean value to file&quot;</span>
+ <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractBoolean"
+>Types.AbstractBoolean</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>Modelica.Blocks.Interfaces.BooleanInput</a>
+                                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real output signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+    <span style="color: red; font-weight: normal; font-style: normal;"> Utilities.writeBoolean</span>(varName,y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputFinal;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -159,6 +219,8 @@ The Real output y is a constant signal:
 >Physiolibrary.Types.BooleanExtension</a>.OutputComparison</h2>
 <p>
 <b>Save variable comparison to file</b>
+<br>
+<br><img src="Physiolibrary.Types.Boole38e7df82d0217b96FinalD.png" alt="Physiolibrary.Types.BooleanExtension.OutputComparison">
 </p>
 <h3>Information</h3>
 
@@ -170,25 +232,55 @@ The Real output y is a constant signal:
 >Types.AbstractBoolean</a> (Abstract parameter or the value at defined time of the model - can be input or output parameter).</p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>k</td><td>Value</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Value I/O</td></tr>
-<tr><td>varName</td><td>Name of stored variable</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td>Boolean</td><td>k</td><td>Utilities.readBoolean(varName)</td><td>Value</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
+<tr><td>String</td><td>varName</td><td>&quot;&quot;</td><td>Name of stored variable</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="4"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities</td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>y</td><td>Connector of Real input signal</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="2"><b>Types</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="2">Functions to read or store</td></tr>
-<tr><td>replaceable package Utilities</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>BooleanInput</a></td><td>y</td><td>Connector of Real input signal</td></tr>
+<tr style="background-color: #c0c0c0"><td colspan="3"><b>Types</b></td></tr>
+<tr style="background-color: #e0e0e0"><td colspan="3">Functions to read or store</td></tr>
+<tr><td colspan="2">replaceable package Utilities</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> OutputComparison <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Save variable comparison to file&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">import </span><a href="Physiolibrary.html#Physiolibrary"
+>Physiolibrary</a>;
+  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.AbstractBoolean"
+>Types.AbstractBoolean</a>(          k=<span style="color: red; font-weight: normal; font-style: normal;">Utilities.readBoolean</span>(varName));
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">package</span> Utilities = <a href="Physiolibrary_Types_FilesUtilities.html#Physiolibrary.Types.FilesUtilities"
+>Types.FilesUtilities</a>;
+
+  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.BooleanInput"
+>Modelica.Blocks.Interfaces.BooleanInput</a>
+                        y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Connector of Real input signal&quot;</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean initialValue(fixed=false);
+<span style="color: blue; font-weight: normal; font-style: normal;">initial </span><span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  initialValue = y;
+<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">when </span><span style="color: red; font-weight: normal; font-style: normal;">terminal</span>()<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
+   <span style="color: red; font-weight: normal; font-style: normal;">Utilities.writeBooleanComparison</span>(
+    varName,
+    k,
+    initialValue,
+    y);
+  <span style="color: blue; font-weight: normal; font-style: normal;">end when</span>;
+
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>OutputComparison;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:39:00 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:46 2015.
 </address>
 </body>
 </html>

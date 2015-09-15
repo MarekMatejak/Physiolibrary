@@ -40,7 +40,8 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <p>For comparison values in SI units of these variables with file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.OutputComparison_SI and result will be stored as &QUOT;io/comparison_SI.txt&QUOT;.</p>
 <p>For comparison values in non-SI units of these variables with file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.OutputComparison and result will be stored as &QUOT;io/comparison.txt&QUOT;.</p>
 
-<p>Extends from Modelica.Icons.VariantsPackage (Icon for package containing variants).</p>
+<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_VariantsPackage.html#Modelica.Icons.VariantsPackage"
+>Modelica.Icons.VariantsPackage</a> (Icon for package containing variants).</p>
 <h3>Package Content</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
 <tr>
@@ -96,6 +97,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt</td>
 </tr>
 </table>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Variables<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -104,18 +106,37 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.Variables</h2>
 <p>
 <b>Subsystem output busConnector variables</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.Variables">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>Physiolibrary.Types.BooleanE...</td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">partial </span><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Variables <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Subsystem output busConnector variables&quot;</span>
+  <span style="color: blue; font-weight: normal; font-style: normal;">package</span> T = <a href="Physiolibrary_Types_IO_Bus_PhysiolibTypesRealTypes.html#Physiolibrary.Types.IO_Bus.PhysiolibTypesRealTypes"
+>PhysiolibTypesRealTypes</a>;
+
+  <span style="color: blue; font-weight: normal; font-style: normal;">replaceable </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+    <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Physiolibrary.Types.BooleanExtension.Parameter</a> <span style="color: blue; font-weight: normal; font-style: normal;">constrainedby </span>
+    Physiolibrary.Types.AbstractBoolean;
+
+  <a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a> busConnector;
+<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Variables;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE InputFromFile<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -124,18 +145,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.InputFromFile</h2>
 <p>
 <b>Load values in non-SI units from file io/input.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.InputFromFile">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> InputFromFile = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.InputParameter"
+>Physiolibrary.Types.RealExtension.InputParameter</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.InputParameter"
+>Physiolibrary.Types.BooleanExtension.InputParameter</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Load values in non-SI units from file io/input.txt&quot;</span>;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputToFile<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -144,18 +181,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.OutputToFile</h2>
 <p>
 <b>Store values in non-SI units to file io/output.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.OutputToFile">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> OutputToFile = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.OutputFinal"
+>Physiolibrary.Types.RealExtension.OutputFinal</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.OutputFinal"
+>Physiolibrary.Types.BooleanExtension.OutputFinal</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Store values in non-SI units to file io/output.txt&quot;</span>;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputComparison<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -164,18 +217,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.OutputComparison</h2>
 <p>
 <b>Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.OutputComparison">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> OutputComparison = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.OutputComparison"
+>Physiolibrary.Types.RealExtension.OutputComparison</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.OutputComparison"
+>Physiolibrary.Types.BooleanExtension.OutputComparison</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt&quot;</span>;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE InputFromFile_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -184,18 +253,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.InputFromFile_SI</h2>
 <p>
 <b>Load values in SI units from file io/input_SI.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.InputFromFile_SI">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> InputFromFile_SI = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.InputParameter_SI"
+>Physiolibrary.Types.RealExtension.InputParameter_SI</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.InputParameter"
+>Physiolibrary.Types.BooleanExtension.InputParameter</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Load values in SI units from file io/input_SI.txt&quot;</span>;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputToFile_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -204,18 +289,34 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.OutputToFile_SI</h2>
 <p>
 <b>Store values in SI units to file io/output_SI.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.OutputToFile_SI">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> OutputToFile_SI = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.OutputFinal_SI"
+>Physiolibrary.Types.RealExtension.OutputFinal_SI</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.OutputFinal"
+>Physiolibrary.Types.BooleanExtension.OutputFinal</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Store values in SI units to file io/output_SI.txt&quot;</span>;
+</div>
+<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE OutputComparison_SI<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -224,20 +325,36 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 >Physiolibrary.Types.IO_Bus</a>.OutputComparison_SI</h2>
 <p>
 <b>Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt</b>
+<br>
+<br><img src="Physiolibrary.Types.IO_Bus.VariablesD.png" alt="Physiolibrary.Types.IO_Bus.OutputComparison_SI">
 </p>
 <h3>Parameters</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td><a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.Parameter"
+>Parameter</a></td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
 <table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Name</th><th>Description</th></tr>
-<tr><td>replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
-<tr><td>busConnector</td><td>&nbsp;</td></tr>
+<tr><th>Type</th><th>Name</th><th>Description</th></tr>
+<tr><td colspan="2">replaceable block BooleanVariable</td><td>&nbsp;</td></tr>
+<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.BusConnector"
+>BusConnector</a></td><td>busConnector</td><td>&nbsp;</td></tr>
 </table>
+<h3>Modelica definition</h3>
+<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> OutputComparison_SI = <a href="Physiolibrary_Types_IO_Bus.html#Physiolibrary.Types.IO_Bus.Variables"
+>Variables</a>(T(
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Variable =
+        <a href="Physiolibrary_Types_RealExtension.html#Physiolibrary.Types.RealExtension.OutputComparison_SI"
+>Physiolibrary.Types.RealExtension.OutputComparison_SI</a>),
+  <span style="color: blue; font-weight: normal; font-style: normal;">redeclare </span><span style="color: blue; font-weight: normal; font-style: normal;">block</span> BooleanVariable =
+        <a href="Physiolibrary_Types_BooleanExtension.html#Physiolibrary.Types.BooleanExtension.OutputComparison"
+>Physiolibrary.Types.BooleanExtension.OutputComparison</a>) <span style="color: #006400; font-weight: normal; font-style: normal;">
+  &quot;Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt&quot;</span>;
+</div>
+<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Sun Jan 11 19:38:59 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:43 2015.
 </address>
 </body>
 </html>
