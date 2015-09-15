@@ -7,9 +7,9 @@ water distribution, hormonal regulation and pharmacological regulation.
 
 ## Library description
 
-The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation,
-where it was called HumMod.Library. As the successors of Guyton's Medical Physiology School write,
-the original HumMod model is “The best, most complete, mathematical model of human phys-iology ever created” ( http://hummod.org ).
+The origin of this Modelica Physiolibrary was in the first version of our [Physiomodel](www.physiomodel.org) implementation, 
+which is based on model of human physiology called HumMod. As the successors of Guyton's Medical Physiology School write,
+the original HumMod model is “The best, most complete, mathematical model of human physiology ever created” ( http://hummod.org ).
 
 We are also developing many types of smaller physiological models for use in medical education,
 so it was essential to separate this library from our HumMod Modelica implementation. This separation improves
@@ -44,7 +44,12 @@ Download [Physiolibrary 2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
 #### Release notes
 
 *  [Version v2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
+ * Change of license to [BSD](http://opensource.org/licenses/BSD-3-Clause): 
+		* no additional restricions 
+		* supported decentralized development
  * Fixed external pressure in elastic vessel compertment
+ * New example of pulsative blood circulation by Willem van Meurs 2011
+ * Support of [Physiomodel 1.0.0] (https://github.com/physiology/Physiomodel/releases/tag/v1.0.0)
 
 *  [Version v2.3.0 (2015-02-16)](../../archive/v2.3.0.zip)
  * New:

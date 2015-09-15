@@ -109,7 +109,6 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 </html>"));
   end Connectors;
 
-
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
 
@@ -118,7 +117,7 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 
      annotation (Documentation(info="<html>
 <ul>
-<li>Change of license to <a href=\"https://en.wikipedia.org/wiki/BSD_licenses\">BSD</a>:	</li>
+<li>Change of license to <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD</a>: </li>
 <li><ul>
 <li><font style=\"color: #333333; \">no additional restricions</font></li>
 <li><font style=\"color: #333333; \">supported decentralized development</font></li>
@@ -127,6 +126,8 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 <li><ul>
 <li><font style=\"color: #333333; \">External pressure of elastic vessel compartment.</font></li>
 </ul></li>
+<li>New example of pulsative blood circulation by Willem van Meurs 2011</li>
+<li>Support of [Physiomodel 1.0.0] (https://github.com/physiology/Physiomodel/releases/tag/v1.0.0)</li>
 </ul>
 </html>"));
   end Version_2_3_1;
@@ -298,7 +299,6 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
 </html>"));
   end ReleaseNotes;
 
-
   class Contact "Contact"
     extends Modelica.Icons.Contact;
 
@@ -411,7 +411,7 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
 version="2.3.1",
 versionBuild=1,
 versionDate="2015-09-15",
-dateModified = "2015-09-13 17:49:00Z",
+dateModified = "2015-09-15 12:49:00Z",
 revisionId="",
 uses(Modelica(version="3.2.1")),
 conversion(
