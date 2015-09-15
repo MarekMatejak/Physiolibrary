@@ -1130,7 +1130,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           Elastance=31064116.267695)
           annotation (Placement(transformation(extent={{-94,84},{-66,112}})));
         Physiolibrary.Hydraulic.Components.Resistor Rpp(useConductanceInput=false,
-            Resistance=14665462.61565)
+            Resistance(displayUnit="(mmHg.s)/ml") = 14665462.61565)
           annotation (Placement(transformation(extent={{-56,85},{-22,111}})));
         Physiolibrary.Hydraulic.Components.ElasticVesselElastance Epv(
           useV0Input=false,
@@ -1142,7 +1142,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           Elastance=6066168.6273825)
           annotation (Placement(transformation(extent={{-10,84},{24,112}})));
         Physiolibrary.Hydraulic.Components.Resistor Rlain(useConductanceInput=false,
-            Resistance=399967.162245)
+            Resistance(displayUnit="(mmHg.s)/ml") = 399967.162245)
           annotation (Placement(transformation(extent={{26,86},{56,110}})));
         Physiolibrary.Hydraulic.Components.ElasticVesselElastance LeftAtrium(
           useComplianceInput=true,
@@ -1163,7 +1163,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Hydraulic.Components.IdealValveResistance AorticValve(
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
           useLimitationInputs=false,
-          _Ron=1066579.09932)
+          _Ron(displayUnit="(mmHg.s)/ml") = 1066579.09932)
           annotation (Placement(transformation(extent={{184,76},{208,52}})));
         Parts.AtrialElastance LAtrialElastance(
           Tav(displayUnit="s"),
@@ -1176,7 +1176,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Hydraulic.Components.IdealValveResistance MitralValve(
           useLimitationInputs=false,
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
-          _Ron=399967.162245) annotation (Placement(visible=true,
+          _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
+                              annotation (Placement(visible=true,
               transformation(
               origin={127,64},
               extent={{-13,12},{13,-12}},
@@ -1198,7 +1199,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           ZeroPressureVolume=0.00037,
           Elastance=74127247.40274)
           annotation (Placement(transformation(extent={{56,4},{82,30}})));
-        Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit = "mmHg.s2/ml") = 93325.6711905, volumeFlow_start(displayUnit = "ml/min") = 2.1666666666667e-005) annotation(Placement(transformation(extent={{-11,-11},
+        Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit = "mmHg.s2/ml") = 93325.6711905,
+            volumeFlow_start(displayUnit="ml/min") = 2.1666666666667e-05)                                                                                                  annotation(Placement(transformation(extent={{-11,-11},
                   {11,11}},                                                                                                    rotation = 180, origin={141,17})));
         Physiolibrary.Hydraulic.Components.Resistor Retha(useConductanceInput=false,
             Resistance(displayUnit="(mmHg.s)/ml") = 7999343.2449)
@@ -1265,7 +1267,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Hydraulic.Components.IdealValveResistance PulmonaryValve(
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
           useLimitationInputs=false,
-          _Ron=399967.162245)
+          _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
           annotation (Placement(transformation(extent={{-132,70},{-106,44}})));
         Parts.AtrialElastance RAtrialElastance(EMIN=6666119.37075, EMAX=
               19998358.11225)
@@ -1276,7 +1278,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         Physiolibrary.Hydraulic.Components.IdealValveResistance TricuspidValve(
           _Goff=0,
           useLimitationInputs=false,
-          _Ron=399967.162245) annotation (Placement(visible=true,
+          _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
+                              annotation (Placement(visible=true,
               transformation(
               origin={-189,58},
               extent={{-13,12},{13,-12}},
@@ -1401,22 +1404,22 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             color={0,0,127},
             smooth=Smooth.None));
         connect(Est.q_in, Rsart.q_out) annotation (Line(
-            points={{-16,17},{-4,17},{-4,17},{10,17}},
+            points={{-16,17},{10,17}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
         connect(Rsart.q_in, Eetha.q_in) annotation (Line(
-            points={{38,17},{53,17},{53,17},{69,17}},
+            points={{38,17},{69,17}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
         connect(Eethv.q_in, Rsven.q_out) annotation (Line(
-            points={{-95,17},{-84.5,17},{-84.5,17},{-74,17}},
+            points={{-95,17},{-74,17}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
         connect(Rsven.q_in, Est.q_in) annotation (Line(
-            points={{-46,17},{-32,17},{-32,17},{-16,17}},
+            points={{-46,17},{-16,17}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
@@ -1483,7 +1486,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model Resistor
       extends Physiolibrary.Hydraulic.Components.Conductor(final Conductance = 1/Resistance);
-      parameter Physiolibrary.Types.HydraulicResistance Resistance(displayUnit="(mmHg.s)/ml")
+      parameter Physiolibrary.Types.HydraulicResistance Resistance
         "Hydraulic conductance if useConductanceInput=false";
     end Resistor;
 
@@ -1778,7 +1781,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model IdealValveResistance
       extends Physiolibrary.Hydraulic.Components.IdealValve(final _Gon=1/_Ron);
-      parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit="(mmHg.s)/ml") = 79.993432449
+      parameter Physiolibrary.Types.HydraulicResistance _Ron = 79.993432449
         "forward state resistance";
     end IdealValveResistance;
 
