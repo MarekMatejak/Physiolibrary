@@ -1019,7 +1019,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
            annotation (
               Placement(transformation(extent={{60,60},{100,100}}), iconTransformation(
                 extent={{-20,-20},{20,20}},
-                rotation=0,
                 origin={-80,80})));
         protected
            Physiolibrary.Types.HydraulicElastance es_int;
@@ -1042,7 +1041,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                     fillPattern =                                                                                                   FillPattern.Solid, textString = "Atrial elastance"), Line(points = {{-78, -34}, {-76, -26}, {-70, -14}, {-58, 6}, {-36, 36}, {-14, 14}, {-6, -10}, {0, -32}, {6, -34}, {88, -34}, {94, -34}}, color = {0, 0, 255}, smooth = Smooth.Bezier), Text(extent = {{-220, -102}, {200, -120}}, lineColor = {0, 0, 255},
                     lineThickness =                                                                                                   1, fillColor = {255, 255, 170},
                     fillPattern =                                                                                                   FillPattern.Solid, textString = "%name"), Text(extent = {{72, 4}, {102, -8}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 170},
-                    fillPattern =                                                                                                   FillPattern.Solid, textString = "Ct")}), Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics));
+                    fillPattern =                                                                                                   FillPattern.Solid, textString = "Ct")}));
         end AtrialElastance;
 
         model VentricularElastance
@@ -1069,7 +1068,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
            annotation (
               Placement(transformation(extent={{60,60},{100,100}}), iconTransformation(
                 extent={{-20,-20},{20,20}},
-                rotation=0,
                 origin={-80,80})));
         protected
            Physiolibrary.Types.HydraulicElastance es_int;
@@ -1095,7 +1093,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                     fillPattern =                                                                                                   FillPattern.Solid, textString = "Et0"), Text(extent = {{42, -72}, {88, -84}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 170},
                     fillPattern =                                                                                                   FillPattern.Solid, textString = "Heart interval"), Text(extent = {{62, 30}, {96, 8}}, lineColor = {0, 0, 255},
                     lineThickness =                                                                                                   1, fillColor = {255, 255, 170},
-                    fillPattern =                                                                                                   FillPattern.Solid, textString = "Ct")}), Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics));
+                    fillPattern =                                                                                                   FillPattern.Solid, textString = "Ct")}));
         end VentricularElastance;
 
         model HeartIntervals
@@ -1177,11 +1175,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           useLimitationInputs=false,
           _Goff(displayUnit="ml/(mmHg.s)") = 0,
           _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
-                              annotation (Placement(visible=true,
-              transformation(
+                              annotation (Placement(transformation(
               origin={127,64},
-              extent={{-13,12},{13,-12}},
-              rotation=0)));
+              extent={{-13,12},{13,-12}})));
         Physiolibrary.Hydraulic.Components.ElasticVesselElastance Eitha(
           useV0Input=false,
           useExternalPressureInput=false,
@@ -1209,13 +1205,11 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             Resistance(displayUnit="(mmHg.s)/ml") = 106657909.932) annotation (
             Placement(transformation(
               extent={{14,-13},{-14,13}},
-              rotation=0,
               origin={24,17})));
         Physiolibrary.Hydraulic.Components.Resistor Rsven(useConductanceInput=false,
             Resistance(displayUnit="(mmHg.s)/ml") = 26664477.483) annotation (
             Placement(transformation(
               extent={{14,-13},{-14,13}},
-              rotation=0,
               origin={-60,17})));
         Physiolibrary.Hydraulic.Components.ElasticVesselElastance Est(
           useV0Input=false,
@@ -1279,150 +1273,98 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           _Goff=0,
           useLimitationInputs=false,
           _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
-                              annotation (Placement(visible=true,
-              transformation(
+                              annotation (Placement(transformation(
               origin={-189,58},
-              extent={{-13,12},{13,-12}},
-              rotation=0)));
-        replaceable Physiolibrary.Types.Constants.FrequencyConst HeartRate(k(displayUnit = "1/min") = 1.2) annotation(Placement(visible = true, transformation(origin = {-243, 128.5}, extent = {{-11, -6.5}, {11, 6.5}}, rotation = 0)));
+              extent={{-13,12},{13,-12}})));
+        replaceable Physiolibrary.Types.Constants.FrequencyConst HeartRate(k(displayUnit = "1/min") = 1.2) annotation(Placement(transformation(origin = {-243, 128.5}, extent = {{-11, -6.5}, {11, 6.5}})));
       equation
         connect(Epa.q_in, Rpp.q_in) annotation (Line(
             points={{-80,98},{-56,98}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rpp.q_out, Epv.q_in) annotation (Line(
             points={{-22,98},{7,98}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Epv.q_in, Rlain.q_in) annotation (Line(
             points={{7,98},{26,98}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(LeftAtrium.q_in, MitralValve.q_in) annotation (Line(
             points={{88,64},{114,64}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(LeftVentricle.q_in, MitralValve.q_out) annotation (Line(
             points={{164,64},{140,64}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(LeftVentricle.q_in, AorticValve.q_in) annotation (Line(
             points={{164,64},{184,64}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(LeftVentricle.compliance, LVentricularElastance.Ct) annotation (
            Line(
             points={{164,75.2},{164,74},{212,74},{212,107.68},{203.42,107.68}},
-            color={0,0,127},
-            smooth=Smooth.None));
+            color={0,0,127}));
         connect(Rlain.q_out, LeftAtrium.q_in) annotation (Line(
             points={{56,98},{74,98},{74,64},{88,64}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Retha.q_in, Eetha.q_in) annotation (Line(
             points={{90,17},{69,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Retha.q_out, inertia.q_out) annotation (Line(
             points={{112,17},{130,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(inertia.q_in, Eitha.q_in) annotation (Line(
             points={{152,17},{179,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Eitha.q_in, AorticValve.q_out) annotation (Line(
             points={{179,17},{216,17},{216,64},{208,64}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rrain.q_in, Eithv.q_in) annotation (Line(
             points={{-208,17},{-180,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Eithv.q_in, Rethv.q_out) annotation (Line(
             points={{-180,17},{-146,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rethv.q_in, Eethv.q_in) annotation (Line(
             points={{-120,17},{-95,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(RightAtrium.q_in, TricuspidValve.q_in) annotation (Line(
             points={{-228,58},{-202,58}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(RightVentricle.q_in, TricuspidValve.q_out) annotation (Line(
             points={{-155,57},{-164.5,57},{-164.5,58},{-176,58}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(RightVentricle.q_in, PulmonaryValve.q_in) annotation (Line(
             points={{-155,57},{-132,57}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rrain.q_out, RightAtrium.q_in) annotation (Line(
             points={{-236,17},{-250,17},{-250,58},{-228,58}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
-        connect(RightAtrium.compliance,RAtrialElastance. Ct) annotation(Line(points = {{-228, 69.2}, {-228, 92}, {-202.39, 92}, {-202.39, 101.84}}, color = {0, 0, 127}, smooth = Smooth.None));
+            thickness=1));
+        connect(RightAtrium.compliance,RAtrialElastance. Ct) annotation(Line(points = {{-228, 69.2}, {-228, 92}, {-202.39, 92}, {-202.39, 101.84}}, color = {0, 0, 127}));
         connect(PulmonaryValve.q_out, Epa.q_in) annotation (Line(
             points={{-106,57},{-92,57},{-92,98},{-80,98}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(RightVentricle.compliance,RVentricularElastance. Ct) annotation(Line(points={{-155,69},
-                {-155,80},{-126,80},{-126,108.91},{-147.15,108.91}},                                                                                                   color = {0, 0, 127}, smooth = Smooth.None));
+                {-155,80},{-126,80},{-126,108.91},{-147.15,108.91}},                                                                                                   color = {0, 0, 127}));
         connect(LeftAtrium.compliance, LAtrialElastance.Ct) annotation (Line(
             points={{88,75.2},{88,74},{121.61,74},{121.61,107.84}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(HeartRate.y,RAtrialElastance. HR) annotation(Line(points = {{-229.25, 128.5}, {-225, 128.5}, {-225, 114.8}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(RVentricularElastance.HR, HeartRate.y) annotation(Line(points = {{-165, 118.6}, {-165, 128.5}, {-229.25, 128.5}}, color = {0, 0, 127}, smooth = Smooth.None));
+            color={0,0,127}));
+        connect(HeartRate.y,RAtrialElastance. HR) annotation(Line(points = {{-229.25, 128.5}, {-225, 128.5}, {-225, 114.8}}, color = {0, 0, 127}));
+        connect(RVentricularElastance.HR, HeartRate.y) annotation(Line(points = {{-165, 118.6}, {-165, 128.5}, {-229.25, 128.5}}, color = {0, 0, 127}));
         connect(LAtrialElastance.HR, HeartRate.y) annotation (Line(
             points={{99,120.8},{99,128.5},{-229.25,128.5}},
-            color={0,0,127},
-            smooth=Smooth.None));
+            color={0,0,127}));
         connect(LVentricularElastance.HR, HeartRate.y) annotation (Line(
             points={{182,116.8},{182,128.5},{-229.25,128.5}},
-            color={0,0,127},
-            smooth=Smooth.None));
+            color={0,0,127}));
         connect(Est.q_in, Rsart.q_out) annotation (Line(
             points={{-16,17},{10,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rsart.q_in, Eetha.q_in) annotation (Line(
             points={{38,17},{69,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Eethv.q_in, Rsven.q_out) annotation (Line(
             points={{-95,17},{-74,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         connect(Rsven.q_in, Est.q_in) annotation (Line(
             points={{-46,17},{-16,17}},
-            color={0,0,0},
-            thickness=1,
-            smooth=Smooth.None));
+            thickness=1));
         annotation(Diagram(coordinateSystem(extent={{-280,-140},{280,180}},      preserveAspectRatio=false),   graphics), Icon(coordinateSystem(extent = {{-280, -140}, {280, 180}}, preserveAspectRatio = false), graphics),
           Documentation(info="<html>
 <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it.</p>
