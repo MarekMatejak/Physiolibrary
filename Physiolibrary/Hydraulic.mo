@@ -1012,7 +1012,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             "Diastolic elastance";
         parameter Boolean useEs_extInput = false
             "=true, if external elastance/compliance value is used"
-            annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+            annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
           parameter Physiolibrary.Types.HydraulicElastance EMAX
             "Maximum systolic elastance"         annotation (Dialog(enable=not useEs_extInput));
         Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/Ees)=1/es_int if useEs_extInput
@@ -1061,7 +1061,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           //Et0=EMIN+(EMAX-EMIN)*((time-T0)-(Tas+Tav))/Tvs)*sin(Modelica.Constants.pi*(((time-T0)-(Tas+Tav))/Tvs));
         parameter Boolean useEs_extInput = false
             "=true, if external elastance/compliance value is used"
-            annotation(Evaluate=true, HideResult=true, choices(__Dymola_checkBox=true),Dialog(group="External inputs/outputs"));
+            annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
           parameter Physiolibrary.Types.HydraulicElastance EMAX
             "Maximum systolic elastance"         annotation (Dialog(enable=not useEs_extInput));
         Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/EMAX)=1/es_int if useEs_extInput
