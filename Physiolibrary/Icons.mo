@@ -283,7 +283,7 @@ package Icons "Icons for physiological models"
               fileName="modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
   end Cell;
 
-  class HeatLib
+  package HeatLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-100,44},{76,-82}},
@@ -291,7 +291,7 @@ package Icons "Icons for physiological models"
 
   end HeatLib;
 
-  class StatusLib
+  package StatusLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,40}},
@@ -299,7 +299,7 @@ package Icons "Icons for physiological models"
 
   end StatusLib;
 
-   class NervesLib
+   package NervesLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
@@ -307,7 +307,7 @@ package Icons "Icons for physiological models"
 
    end NervesLib;
 
-  class NutrientsMetabolismLib
+  package NutrientsMetabolismLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,40},{80,-100}},
@@ -315,14 +315,14 @@ package Icons "Icons for physiological models"
 
   end NutrientsMetabolismLib;
 
-  class OxygenLib
+  package OxygenLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
               fileName="modelica://Physiolibrary/Resources/Icons/O2.png")}));
   end OxygenLib;
 
-  class ProteinsLib
+  package ProteinsLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-98,42},{76,-98}},
@@ -330,7 +330,7 @@ package Icons "Icons for physiological models"
 
   end ProteinsLib;
 
-  class SetupLib
+  package SetupLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-94,44},{72,-98}},
@@ -338,7 +338,7 @@ package Icons "Icons for physiological models"
 
   end SetupLib;
 
-  class CardioVascularLib
+  package CardioVascularLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{76,-100}},
@@ -346,7 +346,7 @@ package Icons "Icons for physiological models"
 
   end CardioVascularLib;
 
-  class WaterLib
+  package WaterLib
    extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-90,42},{72,-84}},
@@ -354,7 +354,7 @@ package Icons "Icons for physiological models"
 
   end WaterLib;
 
-   class KidneyLib
+   package KidneyLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
@@ -362,7 +362,7 @@ package Icons "Icons for physiological models"
 
    end KidneyLib;
 
-  class ElectrolytesLib
+  package ElectrolytesLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-78,38},{64,-94}},
@@ -370,7 +370,7 @@ package Icons "Icons for physiological models"
 
   end ElectrolytesLib;
 
-  class GasesLib
+  package GasesLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-88,34},{66,-82}},
@@ -378,7 +378,7 @@ package Icons "Icons for physiological models"
 
   end GasesLib;
 
-  class GolemLib
+  package GolemLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{78,-98}},
@@ -389,7 +389,7 @@ package Icons "Icons for physiological models"
     extends Modelica.Icons.Package;
   end BaseLib;
 
-  class HormonesLib
+  package HormonesLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-88,30},{74,-88}},
@@ -397,7 +397,7 @@ package Icons "Icons for physiological models"
 
   end HormonesLib;
 
-   class AutonomicControlLib
+   package AutonomicControlLib
     extends BaseLib;
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Bitmap(extent={{-96,42},{72,-96}},
