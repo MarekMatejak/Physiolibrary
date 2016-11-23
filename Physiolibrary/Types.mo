@@ -11,9 +11,9 @@ package Types "Physiological units with nominals"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
-<p>Definition of new type (&QUOT;QuantityX&QUOT;) in Physiolibrary:</p>
+<p>Definition of new type (&quot;QuantityX&quot;) in Physiolibrary:</p>
 <ul>
-<li>Define base type Types.QuantityX with SI units in &QUOT;final unit&QUOT;, default display units and nominal (e.g. value of one display unit at SI units). </li>
+<li>Define base type Types.QuantityX with SI units in &quot;final unit&quot;, default display units and nominal (e.g. value of one display unit at SI units). </li>
 </ul>
 <p>Optional: </p>
 <ul>
@@ -151,7 +151,7 @@ package Types "Physiological units with nominals"
         annotation (Placement(transformation(extent={{-14,8},{6,28}})));
       annotation (experiment(StopTime=1),
      Documentation(info="<html>
-<p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
+<p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &quot;1&quot; of physiological unit.</p>
 </html>"));
     end Units;
 
@@ -272,16 +272,16 @@ package Types "Physiological units with nominals"
       end Test;
       annotation (Documentation(info="<html>
 <p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
-<h4>Be surre, that the directory &QUOT;io&QUOT; is in working directory (File-&GT;Change Directory...)!</h4>
+<h4>Be surre, that the directory &quot;io&quot; is in working directory (File-&gt;Change Directory...)!</h4>
 <p>Implementation:</p>
 <p>Model should be divided into subsystems, which has <b>output</b> variables grouped to busConnector (variables, which are inputs to other subsystems). For each subsystem S: <b>all</b> these variables should be defined in <b>extended redeclared</b> class S.IO_Bus.Variables, where package S.IO_Bus is <b>extended</b> from Physiolibrary.Types.IO_Bus. </p>
 <p>Usage:</p>
-<p>For loading values in SI units of these variables from file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.InputFromFile_SI.</p>
-<p>For loading values in non-SI units of these variables from file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.InputFromFile.</p>
-<p>For storing values in SI units of these variables from file &QUOT;io/output_SI.txt&QUOT; use block S.IO_Bus.OutputToFile_SI.</p>
-<p>For storing values in non-SI units of these variables from file &QUOT;io/output.txt&QUOT; use block S.IO_Bus.OutputToFile.</p>
-<p>For comparison values in SI units of these variables with file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.OutputComparison_SI and result will be stored as &QUOT;io/comparison_SI.txt&QUOT;.</p>
-<p>For comparison values in non-SI units of these variables with file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.OutputComparison and result will be stored as &QUOT;io/comparison.txt&QUOT;.</p>
+<p>For loading values in SI units of these variables from file &quot;io/input_SI.txt&quot; use block S.IO_Bus.InputFromFile_SI.</p>
+<p>For loading values in non-SI units of these variables from file &quot;io/input.txt&quot; use block S.IO_Bus.InputFromFile.</p>
+<p>For storing values in SI units of these variables from file &quot;io/output_SI.txt&quot; use block S.IO_Bus.OutputToFile_SI.</p>
+<p>For storing values in non-SI units of these variables from file &quot;io/output.txt&quot; use block S.IO_Bus.OutputToFile.</p>
+<p>For comparison values in SI units of these variables with file &quot;io/input_SI.txt&quot; use block S.IO_Bus.OutputComparison_SI and result will be stored as &quot;io/comparison_SI.txt&quot;.</p>
+<p>For comparison values in non-SI units of these variables with file &quot;io/input.txt&quot; use block S.IO_Bus.OutputComparison and result will be stored as &quot;io/comparison.txt&quot;.</p>
 </html>"));
     end IO_Bus;
   end Examples;
@@ -4033,16 +4033,16 @@ constructed by the signals connected to this bus.
     annotation (Documentation(revisions="<html>
 </html>",   info="<html>
 <p>Subsystem initial and terminal data manipulations using busConnector (Physiomodel expandable connector).</p>
-<h4>Be surre, that the directory &QUOT;io&QUOT; is in working directory (File-&GT;Change Directory...)!</h4>
+<h4>Be surre, that the directory &quot;io&quot; is in working directory (File-&gt;Change Directory...)!</h4>
 <p>Implementation:</p>
 <p>Model should be divided into subsystems, which has <b>output</b> variables grouped to busConnector (variables, which are inputs to other subsystems). For each subsystem S: <b>all</b> these variables should be defined in <b>extended redeclared</b> class S.IO_Bus.Variables, where package S.IO_Bus is <b>extended</b> from Physiolibrary.Types.IO_Bus. </p>
 <p>Usage:</p>
-<p>For loading values in SI units of these variables from file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.InputFromFile_SI.</p>
-<p>For loading values in non-SI units of these variables from file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.InputFromFile.</p>
-<p>For storing values in SI units of these variables from file &QUOT;io/output_SI.txt&QUOT; use block S.IO_Bus.OutputToFile_SI.</p>
-<p>For storing values in non-SI units of these variables from file &QUOT;io/output.txt&QUOT; use block S.IO_Bus.OutputToFile.</p>
-<p>For comparison values in SI units of these variables with file &QUOT;io/input_SI.txt&QUOT; use block S.IO_Bus.OutputComparison_SI and result will be stored as &QUOT;io/comparison_SI.txt&QUOT;.</p>
-<p>For comparison values in non-SI units of these variables with file &QUOT;io/input.txt&QUOT; use block S.IO_Bus.OutputComparison and result will be stored as &QUOT;io/comparison.txt&QUOT;.</p>
+<p>For loading values in SI units of these variables from file &quot;io/input_SI.txt&quot; use block S.IO_Bus.InputFromFile_SI.</p>
+<p>For loading values in non-SI units of these variables from file &quot;io/input.txt&quot; use block S.IO_Bus.InputFromFile.</p>
+<p>For storing values in SI units of these variables from file &quot;io/output_SI.txt&quot; use block S.IO_Bus.OutputToFile_SI.</p>
+<p>For storing values in non-SI units of these variables from file &quot;io/output.txt&quot; use block S.IO_Bus.OutputToFile.</p>
+<p>For comparison values in SI units of these variables with file &quot;io/input_SI.txt&quot; use block S.IO_Bus.OutputComparison_SI and result will be stored as &quot;io/comparison_SI.txt&quot;.</p>
+<p>For comparison values in non-SI units of these variables with file &quot;io/input.txt&quot; use block S.IO_Bus.OutputComparison and result will be stored as &quot;io/comparison.txt&quot;.</p>
 </html>"));
   end IO_Bus;
 
@@ -6514,8 +6514,8 @@ The Real output y is a constant signal:
 <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li>
 <li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
 </ol>
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </html>", info="<html>
-<p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &QUOT;physiological&QUOT; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
+<p>The main problem of medical research, articles, and experiments is using obscure units from medicine, pharmacology, biology and non-physics disciplines. The Physiolibrary fulfills the Modelica ideal of using SI units as the main unit for each variable, and the previously described physiological units are also implemented as the displayUnits for each variable. Using these displayUnits the user sets and sees the &quot;physiological&quot; values. The implementation can also be joined to any unit-correct Modelica models and physical equations without crashing due to unit incompatibilities. The unit support of Physiolibrary is so strong that you even can chose the right unit-typed &ldquo;input real&rdquo;/&rdquo;output real&rdquo; from the library package Types.RealIO. As can be expected, only the non-specific packages States and Blocks in the Physiolibrary have variables without units.</p>
 </html>"));
 end Types;

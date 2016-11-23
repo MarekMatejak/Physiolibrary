@@ -245,8 +245,8 @@ package Osmotic "Please use 'Chemical' library instead!"
 </html>", info="<html>
 <p>Parameters are only manually estimated to reach steady state at 150ml CSF with CSF production and rebsorbtion 550ml/day and osmolarity 285 mosm/l.</p>
 <p><br>[1] Dee Unglaub Silverthorn: Human Physiology</p>
-<p>The cerebrospinal fluid (CSF) circulation: blood capilaries -&GT; choriod plexus of third and fourth ventricle -&GT; arachnoid villi -&GT; blood in venous sinus.</p>
-<p><br><font style=\"color: #222222; \">[2] Hochwald, G. M., Wald, A., DiMattio, J., &AMP; Malhan, C. (1974). The effects of serum osmolarity on cerebrospinal fluid volume flow.&nbsp;<i>Life sciences</i>,&nbsp;<i>15</i>(7), 1309-1316.</font></p>
+<p>The cerebrospinal fluid (CSF) circulation: blood capilaries -&gt; choriod plexus of third and fourth ventricle -&gt; arachnoid villi -&gt; blood in venous sinus.</p>
+<p><br><font style=\"color: #222222; \">[2] Hochwald, G. M., Wald, A., DiMattio, J., &amp; Malhan, C. (1974). The effects of serum osmolarity on cerebrospinal fluid volume flow.&nbsp;<i>Life sciences</i>,&nbsp;<i>15</i>(7), 1309-1316.</font></p>
 <p><br><font style=\"color: #2e2e2e; \">The effects of changes in serum osmolarity on cerebrospinal fluid (CSF) formation were studied in cats. CSF production rates were measured by ventriculocisternal perfusion both before and after intravenous infusion of glucose solutions.</font></p>
 <p><font style=\"color: #2e2e2e; \">Infusion of glucose, hyperosmolar with respect to serum, increased serum osmolarity and caused a decrease in CSF formation rate; conversely, infusion of hypoosmolar solutions lowered serum osmolarity and increased CSF formation. CSF production and serum osmolarity were found to be linearly related. A 1&percnt; serum osmolarity change resulted in a 6.7&percnt; change in CSF formation. CSF formation increased by 130&percnt; with a serum osmolarity of 265 m0sm/1 and was undetectable with serum of 380 m0sm/1.</font></p>
 <p><br><font style=\"color: #2e2e2e; \">[3] https://en.wikipedia.org/wiki/Cerebrospinal_fluid</font></p>
@@ -320,7 +320,7 @@ package Osmotic "Please use 'Chemical' library instead!"
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
-<p>The liquid volume of the penetrating solution is accumulated in &QUOT;OsmoticCell&QUOT;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
+<p>The liquid volume of the penetrating solution is accumulated in &quot;OsmoticCell&quot;, where the nonpenetrating solutes are held. Instances of this class can represent both sides of the membrane, for example intracellular space, extracellular space, interstitial space, blood plasma or cerebrospinal fluid.</p>
 </html>"));
     end OsmoticCell;
 
@@ -567,8 +567,8 @@ package Osmotic "Please use 'Chemical' library instead!"
 </tr>
 <tr>
 <td><p align=\"center\"><h4>solutionFlow</h4></p></td>
-<td><p align=\"center\">&GT;=0</p></td>
-<td><p align=\"center\">&LT;=0</p></td>
+<td><p align=\"center\">&gt;=0</p></td>
+<td><p align=\"center\">&lt;=0</p></td>
 </tr>
 <tr>
 <td><p align=\"center\"><h4>q_in.q</h4></p></td>
@@ -940,7 +940,7 @@ Connector with one flow signal of type Real.
 <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li>
 <li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
 </ol>
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &QUOT;AS IS&QUOT; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </html>", info="<html>
 <p>One of the basic phenomenon of biological systems is the osmotically-driven flow of water. This is always connected with semipermeable membranes. The different concentrations of impermeable solutes on both sides of the membrane causes the hydrostatic pressure at the concentrated side to rise. This pressure difference is called osmotic pressure. Osmotic pressure is linearly proportional to the concentration gradient of impermeable solutes. The osmolarity (osmotic concentration) is also one of the main indexes of human body balance, called homeostasis. Its value should not significantly deviate for a long period of time from a value of 285-295 mosm/l. </p>
 <p>In Physiolibrary the osmotic connector OsmoticPort is composed of the osmotic concentration and the volumetric flux of permeable liquid. The two main blocks are called Membrane and OsmoticCell. Here, inside the membrane blocks, it is of course possible to also define hydraulic pressure and temperatures effects on both sides of membrane. </p>
