@@ -321,7 +321,7 @@ package Population
               lineColor={0,127,127},
               fillColor={0,127,127},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor={0,127,127},
+        Text(extent = {{-160,110},{40,50}}, lineColor={0,127,127},
               textString="%name")}),
         Documentation(info="<html>
 <p>

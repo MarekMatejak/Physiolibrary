@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.1)"
+package Physiolibrary "Modelica library for Physiology (version 2.3.2)"
  extends Modelica.Icons.Package;
 
 
@@ -366,7 +366,6 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
 </ul>
 </html>"));
   end NewRealease;
-
   annotation (DocumentationClass=true, Documentation(info="<html>
 <p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
@@ -406,14 +405,13 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
 </html>"));
   end UsersGuide;
 
-
   annotation (preferredView="info",
-version="2.3.1",
+version="2.3.2",
 versionBuild=1,
 versionDate="2015-09-15",
 dateModified = "2015-09-15 12:49:00Z",
 revisionId="",
-uses(Modelica(version="3.2.1")),
+uses(Modelica(version="3.2.2")),
 conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
   from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
@@ -425,7 +423,8 @@ conversion(
   from(version="2.1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
   from(version="2.1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
   from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
-  from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_2.3.mos")),
+  from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_2.3.mos"),
+    noneFromVersion="2.3.1"),
   Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>

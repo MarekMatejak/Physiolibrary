@@ -933,7 +933,6 @@ input <i>u</i>:
 </html>"));
     end SplineLagOrZero;
   end Factors;
-
   annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>

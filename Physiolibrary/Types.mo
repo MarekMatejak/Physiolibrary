@@ -3997,8 +3997,7 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.RealExtension.OutputComparison),
       redeclare block BooleanVariable =
             Physiolibrary.Types.BooleanExtension.OutputComparison)
-      "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"
-                                                                                                          annotation (
+      "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"      annotation (
         Documentation(revisions="<html>
 </html>"));
 
@@ -4025,8 +4024,7 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.RealExtension.OutputComparison_SI),
       redeclare block BooleanVariable =
             Physiolibrary.Types.BooleanExtension.OutputComparison)
-      "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"
-                                                                                                          annotation (
+      "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"    annotation (
         Documentation(revisions="<html>
 </html>"));
 
@@ -4232,21 +4230,17 @@ This icon is designed for a <b>signal bus</b> connector.
   type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
   type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
-
   type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3, min=0);
   type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
   type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
   type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
-
   type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
   type Position = Modelica.SIunits.Position(displayUnit="cm", nominal=1e-2);
   type Velocity = Modelica.SIunits.Velocity(displayUnit="km/h", nominal=1);
   type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
-
   type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
   type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
   type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
-
   replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby Real;
   replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby Real;
   replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
@@ -4254,9 +4248,7 @@ This icon is designed for a <b>signal bus</b> connector.
     "chemical internal energy, chemical enthalpy, Gibb's energy ..";
   type MassConcentration =
                  Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
-
   type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mosm/l", nominal=1);
-
   type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1, min=0);
   type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
@@ -4266,31 +4258,23 @@ This icon is designed for a <b>signal bus</b> connector.
   type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
   type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
     "vaporization, ..";
-
   type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
   type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=(9.64853399*10^4)/1000);
   type VolumeDensityOfCharge =
                         Modelica.SIunits.VolumeDensityOfCharge(displayUnit="meq/l", nominal=(9.64853399*10^4));
   type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=(9.64853399*10^4/1000)/60);
-
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
-
   type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7, min=0, max=14);
   type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
   type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60, min=0);
-
   type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
   type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60, min=0);
-
   type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
   type HydraulicElastance = Real(final quantity="HydraulicElastance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
-
   type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
-
   type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
     "Gas solubility in liquid";
-
   type StoichiometricNumber = Modelica.SIunits.StoichiometricNumber; // Integer(final quantity="StoichiometricNumber", min=1);
 
   type Population = Real (final quantity="Population", final unit="1", displayUnit="1", min=0)
@@ -4299,7 +4283,6 @@ This icon is designed for a <b>signal bus</b> connector.
     "Average change of population individuals";
   type PopulationChangePerMember = Real (final quantity="PopulationChangePerMember", final unit="1/s", displayUnit="1/d")
     "Average change per population individual";
-
   partial block AbstractReal
     "Abstract parameter or the value at defined time (final) of the model - can be input or output parameter"
 
@@ -6504,7 +6487,6 @@ The Real output y is a constant signal:
       SteadyState "Steady State = Derivations are zeros during simulation")
     "Initialization or Steady state options (to determine model type before simulating)"
       annotation (Evaluate=true);
-
   annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>

@@ -671,7 +671,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={191,0,0},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
     end HeatPort_a;
 
     connector HeatPort_b "Heat outflow"
@@ -694,7 +694,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={191,0,0},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent={{-160,110},{40,50}},   lineColor=  {191,0,0}, textString=  "%name")}));
+       Text(extent={{-160,110},{40,50}},   lineColor = {191,0,0}, textString = "%name")}));
 
     end HeatPort_b;
 

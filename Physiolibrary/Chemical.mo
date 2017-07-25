@@ -1,4 +1,4 @@
-within Physiolibrary;
+Ôªøwithin Physiolibrary;
 package Chemical "Please use 'Chemical' library instead!"
  extends Modelica.Icons.Package;
   package Examples
@@ -1237,7 +1237,7 @@ package Chemical "Please use 'Chemical' library instead!"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 
-<p>[1] Matej·k M, Kulh·nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &amp; Laboratory Investigation; 2015</p>
+<p>[1] Matej√°k M, Kulh√°nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &amp; Laboratory Investigation; 2015</p>
 
 <p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 
@@ -1632,7 +1632,7 @@ package Chemical "Please use 'Chemical' library instead!"
             __Dymola_Algorithm="Euler"), Documentation(info="<html>
 <p>Before silumation in &quot;Dymola 2014 FD01&quot; please set environment variable &quot;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&quot;</b></code> and chose &quot;Euler&quot; method!</p>
 
-<p>[1] Matej·k M, Kulh·nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &amp; Laboratory Investigation; 2015</p>
+<p>[1] Matej√°k M, Kulh√°nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &amp; Laboratory Investigation; 2015</p>
 
 <p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 
@@ -4657,7 +4657,7 @@ package Chemical "Please use 'Chemical' library instead!"
               lineColor={107,45,134},
               fillColor={107,45,134},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -4691,7 +4691,7 @@ Connector with one flow signal of type Real.
               lineColor={107,45,134},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-       Text(extent=  {{-160,110},{40,50}}, lineColor=  {107,45,134}, textString=  "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor = {107,45,134}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -4838,7 +4838,6 @@ on the model behaviour.
 
     end SubstanceDefinition;
   end Interfaces;
-
   annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>
