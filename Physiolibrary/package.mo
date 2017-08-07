@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.2)"
+package Physiolibrary "Modelica library for Physiology (version 2.3.2-beta)"
  extends Modelica.Icons.Package;
 
 
@@ -406,7 +406,7 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
   end UsersGuide;
 
   annotation (preferredView="info",
-version="2.3.2",
+version="2.3.2-beta",
 versionBuild=1,
 versionDate="2015-09-15",
 dateModified = "2015-09-15 12:49:00Z",
