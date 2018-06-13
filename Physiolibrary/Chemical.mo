@@ -4136,6 +4136,112 @@ package Chemical "Please use 'Chemical' library instead!"
 </html>"));
     end Stream;
 
+	model AdvectionStream "Flow of whole solution through a dead-volume pipe."
+	  extends Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow;
+	  Physiolibrary.Chemical.Interfaces.ChemicalPort_b q_out
+		annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+	  Physiolibrary.Chemical.Interfaces.ChemicalPort_a q_in
+		annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+
+	  parameter Integer N=100 "number of the discrete elements of the tube";
+	  parameter Physiolibrary.Types.Position length=0.1 "tube length";
+	  parameter Physiolibrary.Types.Position d=1e-2 "Diameter of the tube";
+	  Modelica.SIunits.Area area_tube_crosssection=3.14*(d/2)^2
+		"crosssection tube area";
+	  Physiolibrary.Types.Velocity v=q/area_tube_crosssection
+		"velocity of the flow in m/s";
+	  Physiolibrary.Types.Concentration c[N];
+	  parameter Physiolibrary.Types.Concentration c_init[N]=zeros(N)
+		"Initial concentrations. The border values are not used, as they are set by the border conditions.";
+	initial equation
+	  c[2:N - 1] = c_init[2:N - 1];
+	equation
+
+	  for i in 1:N loop
+		if q > 0 then
+		  if i == 1 then
+			c[1] = q_in.conc;
+		  elseif i == N then
+			c[end] = 2*c[end - 1] - c[end - 2];
+		  else
+			der(c[i]) = -v*(c[i] - c[i - 1])/(2*length/N);
+		  end if;
+		else
+		  if i == 1 then
+			c[1] = 2*c[2] - c[3];
+		  elseif i == N then
+			q_out.conc = c[N];
+		  else
+			der(c[i]) = -v*(c[i + 1] - c[i])/(2*length/N);
+		  end if;
+		end if;
+	  end for;
+
+	  q_in.q = if q > 0 then q_in.conc*q else c[1]*q;
+	  q_out.q = if q > 0 then -c[N]*q else -q_out.conc*q;
+
+	  annotation (
+		Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+			Rectangle(
+			  extent={{-100,-52},{100,48}},
+			  lineColor={0,0,127},
+			  fillColor={255,255,255},
+			  fillPattern=FillPattern.Solid,
+			  rotation=360),
+			Polygon(
+			  points={{-80,26},{-40,0},{-80,-25},{-80,26}},
+			  lineColor={107,45,134},
+			  fillColor={255,255,255},
+			  fillPattern=FillPattern.Solid,
+			  rotation=360),
+			Text(
+			  extent={{-150,-20},{150,20}},
+			  textString="%name",
+			  lineColor={0,0,255},
+			  origin={2,-74},
+			  rotation=180),
+			Polygon(
+			  points={{-20,28},{20,2},{-20,-23},{-20,28}},
+			  lineColor={107,45,134},
+			  fillColor={255,255,255},
+			  fillPattern=FillPattern.Solid,
+			  rotation=360),
+			Polygon(
+			  points={{40,26},{80,0},{40,-25},{40,26}},
+			  lineColor={107,45,134},
+			  fillColor={255,255,255},
+			  fillPattern=FillPattern.Solid,
+			  rotation=360)}),
+		Diagram(coordinateSystem(preserveAspectRatio=false)),
+		Documentation(info="<html>
+	<h4><span style=\"color: #008000\">Bidirectional mass flow by concentration through discretized dead-volume pipe</span></h4>
+	<p>Uses discretization of the partial differention. Acts similarly to stream, just has non-zero volume for shift of dead-volume.</p>
+	<p>Possible field values: </p>
+	<table cellspacing=\"2\" cellpadding=\"0\" border=\"0.1\"><tr>
+	<td></td>
+	<td><p align=\"center\"><br><h4>forward flow</h4></p></td>
+	<td><p align=\"center\"><h4>backward flow</h4></p></td>
+	</tr>
+	<tr>
+	<td><p align=\"center\"><h4>solutionFlow</h4></p></td>
+	<td><p align=\"center\">&gt;=0</p></td>
+	<td><p align=\"center\">&lt;=0</p></td>
+	</tr>
+	<tr>
+	<td><p align=\"center\"><h4>q_in.q</h4></p></td>
+	<td><p align=\"center\">=solutionFlow*q_in.conc</p></td>
+	<td><p align=\"center\">=-q_out.q</p></td>
+	</tr>
+	<tr>
+	<td><p align=\"center\"><h4>q_out.q</h4></p></td>
+	<td><p align=\"center\">=-q_in.q</p></td>
+	<td><p align=\"center\">=solutionFlow*q_out.conc</p></td>
+	</tr>
+	</table>
+	<p>Filip Jezek, Charles University, Prague, Czech Republic </p>
+	</html>"));
+	end AdvectionStream;	
+	
     model SolutePump "Prescribed solute flow"
       extends Interfaces.OnePort;
       extends Interfaces.ConditionalSoluteFlow;
