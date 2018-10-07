@@ -1,0 +1,62 @@
+from pymodelica import compile_fmu
+from pyfmi import load_fmu
+import matplotlib.pyplot as plt
+physiolibrary = '..\\..\\..\\..\\Physiolibrary'
+
+my_fmu = compile_fmu('Physiolibrary.Chemical.Examples.SimpleReaction',physiolibrary)
+model = load_fmu(my_fmu)
+res = model.simulate()
+plt.figure(1)
+plt.plot(res['time'],res['A.solute'],res['time'],res['B.solute'])
+plt.legend(('A','B'))
+plt.title('SimpleReaction')
+plt.ylabel('solute (mol)')
+plt.xlabel('time (s)')
+
+my_fmu = compile_fmu('Physiolibrary.Chemical.Examples.SimpleReaction2',physiolibrary)
+model = load_fmu(my_fmu)
+res = model.simulate()
+plt.figure(2)
+plt.subplot(311)
+plt.plot(res['time'],res['A.solute'])
+plt.title('SimpleReaction2')
+plt.ylabel('A (mol)')
+plt.xlabel('time (s)')
+plt.subplot(312)
+plt.plot(res['time'],res['B.solute'])
+plt.ylabel('B (mol)')
+plt.xlabel('time (s)')
+plt.subplot(313)
+plt.plot(res['time'],res['C.solute'])
+plt.legend(('C'))
+plt.ylabel('C (mol)')
+plt.xlabel('time (s)')
+
+my_fmu = compile_fmu('Physiolibrary.Chemical.Examples.ExothermicReaction',physiolibrary)
+model = load_fmu(my_fmu)
+res = model.simulate()
+plt.figure(3)
+plt.subplot(211)
+plt.plot(res['time'],res['A.solute'],res['time'],res['B.solute'])
+plt.legend(('A','B'))
+plt.title('ExothermicReaction')
+plt.ylabel('solute (mol)')
+plt.xlabel('time (s)')
+plt.subplot(212)
+plt.plot(res['time'],res['heatFlowSensor.Q_flow'])
+plt.ylabel('heat flow (W)')
+plt.xlabel('time (s)')
+
+
+my_fmu = compile_fmu('Physiolibrary.Chemical.Examples.MichaelisMenten',physiolibrary)
+model = load_fmu(my_fmu)
+res = model.simulate()
+plt.figure(4)
+plt.plot(res['time'],res['P.q_out.q'])
+plt.legend(('reaction rate'))
+plt.title('MichaelisMenten')
+plt.ylabel('reaction rate (mol/s)')
+plt.xlabel('time (s)')
+
+plt.show()
+
