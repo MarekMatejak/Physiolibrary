@@ -1016,251 +1016,6 @@ package Physiolib "Library of Physiological componentsl models (version 1.0.0)"
 </html>"));
       end Stream;
 
-      model FluidAdapter
-      "Adapter between chemical substances of one homogenous chemical solution and Modelica.Fluid package components of MSL 3.2.1"
-
-       /* constant String substanceNames[:]= {""}
-  "To express number and order of substances"         annotation (Evaluate=true);
-
-  replaceable package Medium = Interfaces.SimpleChemicalMedium (substanceNames=substanceNames,
-        redeclare package stateOfMatter = Interfaces.Incompressible)
-  "Medium model"   annotation (choicesAllMatching=true);
-
-  package StateOfMatter = Medium.stateOfMatter
-  "State of matter of each chemical substance";
-  constant StateOfMatter.SubstanceData substanceData[:] = Medium.substanceData
-  "Definitions of all chemical substances";
-
-  Modelica.Fluid.Interfaces.FluidPort_a fluid(redeclare package Medium = Medium)
-  "Connector of Modelica.Fluid package"
-    annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Interfaces.SubstancePorts_b substances[n]
-  "All chemical substances of the solution"                                           annotation (Placement(transformation(
-          extent={{-110,-40},{-90,40}}), iconTransformation(extent={{-110,-40},{
-            -90,40}})));
-  Interfaces.SolutionPort solution(redeclare package stateOfMatter =
-        Medium.stateOfMatter) "Chemical solution"
-    annotation (Placement(transformation(extent={{30,-40},{50,-20}}),
-        iconTransformation(extent={{30,-40},{50,-20}})));
-   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-  "Heat port of the chemical solution"                                                               annotation (
-      Placement(transformation(extent={{-50,-40},{-30,-20}}),iconTransformation(
-          extent={{-50,-40},{-30,-20}})));
-
-  Modelica.SIunits.MoleFraction x[n] "Mole fraction of the substance";
-
-protected 
-  constant Integer n=size(substanceNames,1) "Number of substances";
-  Modelica.SIunits.MolarMass molarMass[n] "Molar mass of the substance";
-
-  Modelica.SIunits.Temperature temperature(start=298.15)
-  "Temperature of the solution";
-
-  Modelica.SIunits.Pressure pressure(start=100000)
-  "Pressure of the solution";
-
-  Modelica.SIunits.ElectricPotential electricPotential(start=0)
-  "Electric potential of the solution";
-
-  Medium.ThermodynamicState actualStreamThermodynamicState
-  "Thermodynamic state of solution inside stream";
-
-  //  Modelica.SIunits.SpecificEnergy actualStreamSpecificEnthalpy
-  //    "Specific Enthalpy of solution inside stream";
-
-  Modelica.SIunits.SpecificEnergy actualStreamSpecificInternalEnergy
-  "Specific Internal Energy of solution inside stream";
-
-equation 
-  //fluid
-  fluid.p = pressure;
-  fluid.m_flow * actualStream(fluid.Xi_outflow) + molarMass .* substances.q = zeros(n);
-  fluid.Xi_outflow = x .* molarMass ./ (x*molarMass);
-
-  //substances
-  molarMass = StateOfMatter.molarMass(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-  substances.u = StateOfMatter.chemicalPotentialPure(
-    Medium.substanceData,
-    temperature,
-    pressure,
-    electricPotential,
-    solution.I)
-    + Modelica.Constants.R*temperature*log(x .* StateOfMatter.activityCoefficient(Medium.substanceData,temperature,pressure,electricPotential,solution.I))
-    + Modelica.Constants.F*electricPotential*StateOfMatter.chargeNumberOfIon(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-
-  //energy balance
-  //fluid.h_outflow = solution.H / solution.m;
-  fluid.h_outflow = Medium.specificEnthalpy(Medium.setState_pTX(pressure, temperature, fluid.Xi_outflow, electricPotential, solution.I));
-
-  actualStreamThermodynamicState = Medium.setState_phX(pressure, actualStream(fluid.h_outflow), actualStream(fluid.Xi_outflow), electricPotential, solution.I);
-
-  //The first idea was to changne only the enthalpy as extensive energy, but it changes the temperature with change of volume during isobaric and isothermic conditions!!!
-  //  actualStreamSpecificEnthalpy = Medium.specificEnthalpy(actualStreamThermodynamicState);
-  //  heatPort.Q_flow = -actualStreamSpecificEnthalpy*fluid.m_flow;
-
-  //As a result, whole internal energy must be changed during mass changes. This energy is balenced using heat port with solution.
-  actualStreamSpecificInternalEnergy = Medium.specificInternalEnergy(actualStreamThermodynamicState);
-  heatPort.Q_flow = -actualStreamSpecificInternalEnergy*fluid.m_flow;
-
-  //solution aliasses
-  temperature = solution.T;
-  pressure = solution.p;
-  electricPotential = solution.v;
-
-  //do not affect solution at port:
-  solution.dH = 0;
-  solution.i = 0;
-  solution.dV = 0;
-  solution.Gj = 0;
-  solution.nj = 0;
-  solution.mj = 0;
-  solution.Qj = 0;
-  solution.Ij = 0;
-  solution.Vj = 0;
-  solution.otherPropertiesOfSubstance = zeros(Medium.stateOfMatter.OtherPropertiesCount);
-*/
-        annotation ( Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={Line(
-                points={{-90,0},{90,0}},
-                color={158,66,200},
-                thickness=1)}));
-      end FluidAdapter;
-
-      model FluidAdapter2
-        "Adapter between chemical substances of one homogenous chemical solution and Modelica.Fluid package components of MSL 3.2.1"
-
-        /*
-  constant String substanceNames[:]= {""}
-  "To express number and order of substances"         annotation (Evaluate=true);
-*/
-      /*  replaceable package Medium = Physiolib.Media.BaseMedium_C
-    "Medium model"   annotation (choicesAllMatching=true);
-
-  //Interfaces.SimpleChemicalMedium (
- ///       redeclare package stateOfMatter = Interfaces.Incompressible)
-                                                                //substanceNames=substanceNames,
-
-  package StateOfMatter = Medium.stateOfMatter
-  "State of matter of each chemical substance";
-  constant StateOfMatter.SubstanceData substanceData[Medium.nXi] = Medium.substanceData
-  "Definitions of all chemical substances";
-
-  // Fluid Port definitions
-  parameter Integer nFluidPorts=0 "Number of fluid ports"
-    annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
-  Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b fluidPorts[nFluidPorts](redeclare 
-      each package Medium = Medium)
-  "Fluid inlets and outlets"
-    annotation (Placement(transformation(extent={{-40,-10},{40,10}},
-      origin={100,0},
-        rotation=90)));
-
-  Interfaces.SubstancePorts_b substances[Medium.nXi]
-  "All chemical substances of the solution"                                           annotation (Placement(transformation(
-          extent={{-110,-40},{-90,40}}), iconTransformation(extent={{-110,-40},{
-            -90,40}})));
-  Interfaces.SolutionPort solution(redeclare package stateOfMatter =
-        Medium.stateOfMatter) "Chemical solution"
-    annotation (Placement(transformation(extent={{-50,-40},{-30,-20}}),
-        iconTransformation(extent={{-50,-40},{-30,-20}})));
-   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-  "Heat port of the chemical solution"                                                               annotation (
-      Placement(transformation(extent={{30,-40},{50,-20}}),  iconTransformation(
-          extent={{30,-40},{50,-20}})));
-
-  Modelica.SIunits.MoleFraction x[Medium.nXi] "Mole fraction of the substance";
-
-  //constant Integer n=size(substanceNames,1) "Number of substances";
-protected 
-  Modelica.SIunits.MolarMass molarMass[Medium.nXi] "Molar mass of the substance";
-
-  Modelica.SIunits.Temperature temperature(start=298.15)
-  "Temperature of the solution";
-
-  Modelica.SIunits.Pressure pressure(start=100000)
-  "Pressure of the solution";
-
-  Modelica.SIunits.ElectricPotential electricPotential(start=0)
-  "Electric potential of the solution";
-
-  //Real actualStreamXFlow[n,nFluidPorts];
-
-  Medium.ThermodynamicState actualStreamThermodynamicState[nFluidPorts]
-  "Thermodynamic state of solution inside stream";
-
-  //  Modelica.SIunits.SpecificEnergy actualStreamSpecificEnthalpy
-  //    "Specific Enthalpy of solution inside stream";
-
-  Modelica.SIunits.SpecificEnergy actualStreamSpecificInternalEnergy[nFluidPorts]
-  "Specific Internal Energy of solution inside stream";
-
-equation 
-  //fluid connectors
-  for i in 1:nFluidPorts loop
-    assert(cardinality(fluidPorts[i]) <= 1,"
-each fluidPorts[i] of boundary shall at most be connected to one component.
-If two or more connections are present, ideal mixing takes
-place with these connections, which is usually not the intention
-of the modeller. Increase nFuildPorts to add an additional fluidPort.
-");
-
-     fluidPorts[i].p          = pressure;
-     fluidPorts[i].Xi_outflow = x .* molarMass ./ (x*molarMass);
-
-    //energy balance
-     fluidPorts[i].h_outflow  = Medium.specificEnthalpy(Medium.setState_pTX(pressure, temperature, fluidPorts[i].Xi_outflow, electricPotential, solution.I));
-
-     actualStreamThermodynamicState[i] = Medium.setState_phX(pressure, actualStream(fluidPorts[i].h_outflow), actualStream(fluidPorts[i].Xi_outflow), electricPotential, solution.I);
-     actualStreamSpecificInternalEnergy[i] = Medium.specificInternalEnergy(actualStreamThermodynamicState[i]);
-  end for;
-
-  //substance flow balances
-  for s in 1:Medium.nXi loop
-     fluidPorts.m_flow * actualStream(fluidPorts.Xi_outflow[s]) + molarMass[s] * substances[s].q = 0;
-  end for;
-
-  //substances
-  molarMass = StateOfMatter.molarMass(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-  substances.u = StateOfMatter.chemicalPotentialPure(
-    Medium.substanceData,
-    temperature,
-    pressure,
-    electricPotential,
-    solution.I)
-    + Modelica.Constants.R*temperature*log(x .* StateOfMatter.activityCoefficient(Medium.substanceData,temperature,pressure,electricPotential,solution.I))
-    + Modelica.Constants.F*electricPotential*StateOfMatter.chargeNumberOfIon(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-
-  //The first idea was to changne only the enthalpy as extensive energy, but it changes the temperature with change of volume during isobaric and isothermic conditions!!!
-  //  actualStreamSpecificEnthalpy = Medium.specificEnthalpy(actualStreamThermodynamicState);
-  //  heatPort.Q_flow = -actualStreamSpecificEnthalpy*fluid.m_flow;
-
-  //As a result, whole internal energy must be changed during mass changes. This energy is balenced using heat port with solution.
-  heatPort.Q_flow = -actualStreamSpecificInternalEnergy*fluidPorts.m_flow;
-
-  //solution aliasses
-  temperature = solution.T;
-  pressure = solution.p;
-  electricPotential = solution.v;
-
-  //do not affect solution at port:
-  solution.dH = 0;
-  solution.i = 0;
-  solution.dV = 0;
-  solution.Gj = 0;
-  solution.nj = 0;
-  solution.mj = 0;
-  solution.Qj = 0;
-  solution.Ij = 0;
-  solution.Vj = 0;
-  solution.otherPropertiesOfSubstance = zeros(Medium.stateOfMatter.OtherPropertiesCount);
-
-  annotation ( Icon(coordinateSystem(
-          preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={Line(
-          points={{-90,0},{90,0}},
-          color={158,66,200},
-          thickness=1)})); */
-      end FluidAdapter2;
-
       model Vessel "Chemical solution as homogenous mixture of the substances in vessel"
         extends Icons.Solution;
 
@@ -1437,147 +1192,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 <p>To calculate the sum of extensive substance's properties is misused the Modelica \"flow\" prefix even there are not real physical flows. </p>
 </html>"));
       end Vessel;
-
-      model FluidAdapter_C
-        "Adapter between chemical substances of one homogenous chemical solution and Modelica.Fluid package components of MSL 3.2, where substances are stored as molarities in expraProperties"
-
-        replaceable package Medium = Physiolib.Media.BaseMedium_C
-        "Medium model"   annotation (choicesAllMatching=true);
-          //SystemModelingInModelica.Interfaces.BloodPlasma
-
-        //Interfaces.SimpleChemicalMedium (
-       ///       redeclare package stateOfMatter = Interfaces.Incompressible)
-                                                                      //substanceNames=substanceNames,
-
-        package StateOfMatter = Medium.stateOfMatter
-        "State of matter of each chemical substance";
-
-        constant StateOfMatter.SubstanceData substanceData[Medium.nC] = Medium.substanceData
-        "Definitions of all chemical substances";
-
-        // Fluid Port definitions
-        parameter Integer nFluidPorts=0 "Number of fluid ports"
-          annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
-        Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b fluidPorts[nFluidPorts](redeclare
-            each package Medium = Medium)
-        "Fluid inlets and outlets"
-          annotation (Placement(transformation(extent={{-40,-10},{40,10}},
-            origin={100,0},
-              rotation=90)));
-
-        Interfaces.SubstancePorts_b substances[Medium.nC]
-        "All chemical substances of the solution"                                           annotation (Placement(transformation(
-                extent={{-110,-40},{-90,40}}), iconTransformation(extent={{-110,-40},{
-                  -90,40}})));
-        Interfaces.SolutionPort solution(redeclare package stateOfMatter =
-              Medium.stateOfMatter) "Chemical solution"
-          annotation (Placement(transformation(extent={{-50,-40},{-30,-20}}),
-              iconTransformation(extent={{-50,-40},{-30,-20}})));
-         Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-        "Heat port of the chemical solution"                                                               annotation (
-            Placement(transformation(extent={{30,-40},{50,-20}}),  iconTransformation(
-                extent={{30,-40},{50,-20}})));
-
-        Modelica.SIunits.MoleFraction x[Medium.nC] "Mole fraction of the substance";
-
-        //constant Integer n=size(substanceNames,1) "Number of substances";
-      //protected
-
-        Modelica.SIunits.MolarMass molarMass[Medium.nC] "Molar mass of the substance";
-
-        Modelica.SIunits.Temperature temperature(start=298.15)
-        "Temperature of the solution";
-
-        Modelica.SIunits.Pressure pressure(start=101325)
-        "Pressure of the solution";
-
-        Modelica.SIunits.ElectricPotential electricPotential(start=0)
-        "Electric potential of the solution";
-
-        //Real actualStreamXFlow[n,nFluidPorts];
-
-        Medium.ThermodynamicState actualStreamThermodynamicState[nFluidPorts]
-        "Thermodynamic state of solution inside stream";
-
-        //  Modelica.SIunits.SpecificEnergy actualStreamSpecificEnthalpy
-        //    "Specific Enthalpy of solution inside stream";
-
-        Modelica.SIunits.SpecificEnergy actualStreamSpecificInternalEnergy[nFluidPorts]
-        "Specific Internal Energy of solution inside stream";
-        Medium.ThermodynamicState state;
-        Modelica.SIunits.Density density;
-
-      equation
-        //fluid connectors
-        for i in 1:nFluidPorts loop
-          assert(cardinality(fluidPorts[i]) <= 1,"
-each fluidPorts[i] of boundary shall at most be connected to one component.
-If two or more connections are present, ideal mixing takes
-place with these connections, which is usually not the intention
-of the modeller. Increase nFuildPorts to add an additional fluidPort.
-");
-
-           fluidPorts[i].p          = pressure;
-           fluidPorts[i].C_outflow = (x ./ molarMass) * density;
-
-          //energy balance
-           fluidPorts[i].h_outflow  = Medium.specificEnthalpy(state);
-
-           actualStreamThermodynamicState[i] = Medium.setState_phX(pressure, actualStream(fluidPorts[i].h_outflow), actualStream(fluidPorts[i].Xi_outflow));
-           //, electricPotential, solution.I);
-           actualStreamSpecificInternalEnergy[i] = Medium.specificInternalEnergy(actualStreamThermodynamicState[i]);
-        end for;
-
-        state = Medium.setState_pTX(pressure, temperature, x .* molarMass ./ (x*molarMass)); //, electricPotential, solution.I);
-        density = Medium.density(state);
-
-        //substance flow balances
-        for s in 1:Medium.nC loop
-           fluidPorts.m_flow * actualStream(fluidPorts.C_outflow[s])/density + substances[s].q = 0;
-        end for;
-
-        //substances
-        molarMass = StateOfMatter.molarMass(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-        substances.u = StateOfMatter.chemicalPotentialPure(
-          Medium.substanceData,
-          temperature,
-          pressure,
-          electricPotential,
-          solution.I)
-          + Modelica.Constants.R*temperature*log(x .* StateOfMatter.activityCoefficient(Medium.substanceData,temperature,pressure,electricPotential,solution.I))
-          + Modelica.Constants.F*electricPotential*StateOfMatter.chargeNumberOfIon(Medium.substanceData,temperature,pressure,electricPotential,solution.I);
-
-        //The first idea was to changne only the enthalpy as extensive energy, but it changes the temperature with change of volume during isobaric and isothermic conditions!!!
-        //  actualStreamSpecificEnthalpy = Medium.specificEnthalpy(actualStreamThermodynamicState);
-        //  heatPort.Q_flow = -actualStreamSpecificEnthalpy*fluid.m_flow;
-
-        //As a result, whole internal energy must be changed during mass changes. This energy is balenced using heat port with solution.
-        heatPort.Q_flow + fluidPorts.m_flow*actualStream(fluidPorts.h_outflow) = 0;
-        //-actualStreamSpecificInternalEnergy*fluidPorts.m_flow;
-
-        //solution aliasses
-        temperature = solution.T;
-        pressure = solution.p;
-        electricPotential = solution.v;
-
-        //do not affect solution at port:
-        solution.dH = 0;
-        solution.i = 0;
-        solution.dV = 0;
-        solution.Gj = 0;
-        solution.nj = 0;
-        solution.mj = 0;
-        solution.Qj = 0;
-        solution.Ij = 0;
-        solution.Vj = 0;
-        solution.otherPropertiesOfSubstance = zeros(Medium.stateOfMatter.OtherPropertiesCount);
-
-        annotation ( Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics={Line(
-                points={{-90,0},{90,0}},
-                color={158,66,200},
-                thickness=1)}));
-      end FluidAdapter_C;
 
       model FluidAdapter_D
         "Adapter between chemical substances of one homogenous chemical solution and Modelica.Fluid package components of MSL 3.2, where substances are stored as molarities in expraProperties"
@@ -10392,6 +10006,13 @@ Modelica source.
           amountOfSubstance_start=(concentration_start/Medium.density( Medium.setState_pTX(101325,310,zeros(Medium.nC))))*
               mass_start)
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
+
+         parameter Boolean useSubstances = false
+          "=true, if substance ports are used"
+          annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
+
+        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC] if useSubstances
+          annotation (Placement(transformation(extent={{-104,-40},{-84,40}})));
       equation
 
         if useM0Input then
@@ -10402,6 +10023,10 @@ Modelica source.
         end if;
         if useExternalPressureInput then
           connect(externalPressure,vessel.externalPressure);
+        end if;
+        if useSubstances then
+          connect(fluidAdapter_D.substances, substances) annotation (Line(points={{-36,-14},
+                {-44,-14},{-44,0},{-94,0}}, color={158,66,200}));
         end if;
         /* 
   excessVolume = max( 0, volume - zpv);
@@ -10438,6 +10063,7 @@ Modelica source.
               points={{-30,-17},{-30,-98},{60,-98}}, color={127,127,0}));
         connect(vessel.fluidMass, mass) annotation (Line(points={{100,-80},{110,-80}},
                           color={0,0,127}));
+
        annotation (
           Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                   100,100}}), graphics={Text(
@@ -10760,40 +10386,6 @@ Modelica source.
 </ul></p>
 </html>"));
       end Reabsorption;
-
-      model ElasticMembrane "Interaction between internal and external cavities"
-      /* extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
-        volume_start, storeUnit="ml");
- extends Physiolib.Icons.InternalElasticBalloon;
-  Physiolib.Hydraulic.Interfaces.HydraulicPort_a q_int
-    "Internal space"
-    annotation (Placement(transformation(extent={{-94,-14},{-66,14}})));
-  Physiolib.Hydraulic.Interfaces.HydraulicPort_b q_ext
-    "External space"
-    annotation (Placement(transformation(extent={{26,-14},{54,14}})));
- parameter Physiolib.Types.HydraulicCompliance Compliance
-    "Compliance";
- parameter Physiolib.Types.Volume zeroPressureVolume=0
-    "Maximal volume, that does not generate pressure";
- parameter Physiolib.Types.Volume volume_start=0 "Volume start value"
-    annotation (Dialog(group="Initialization"));
- Physiolib.Types.Volume volume;
- Physiolib.Types.Volume stressedVolume;
-
- parameter Physiolib.Types.Volume NominalVolume=1e-6
-    "Scale numerical calculation from quadratic meter to miniliters.";
-equation 
-  q_int.m_flow + q_ext.m_flow = 0;
-  q_int.p = (stressedVolume/Compliance) + q_ext.p;
-  stressedVolume = max(volume-zeroPressureVolume,0);
-  state = volume; // der(volume) =  q_int.q;
-  change = q_int.m_flow;
-  // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
-  annotation (        Documentation(revisions="<html>
-<p><i>2017-2018</i></p>
-<p>Marek Matejak, http://www.physiolib.com </p>
-</html>")); */
-      end ElasticMembrane;
 
     end Components;
 
@@ -11583,9 +11175,9 @@ Connector with one flow signal of type Real.
             color={0,0,127}));
         connect(rightHeart.q_out, pulmonaryArteries.q_in[1]) annotation (Line(
             points={{-36,18},{-30,18},{-30,60},{-82,60},{-82,85.3},{-52.3,85.3}},
-
             color={127,0,0},
             thickness=0.5));
+
         connect(pulmonary.q_in, pulmonaryArteries.q_in[2]) annotation (Line(
             points={{-30,84},{-42,84},{-42,82.7},{-52.3,82.7}},
             color={127,0,0},
@@ -11783,7 +11375,7 @@ Connector with one flow signal of type Real.
           replaceable Parts.HeartPump leftHeart(StarlingSlope(displayUnit=
                   "g/(Pa.s)") = 7.5006157584566e-05)
             annotation (Placement(transformation(extent={{74,-10},{52,10}})));
-          inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg") =
+          inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354)
             annotation (Placement(transformation(extent={{-94,70},{-74,90}})));
           Sensors.PressureMeasure pressureMeasure
@@ -11820,7 +11412,7 @@ Connector with one flow signal of type Real.
               points={{29.75,-43},{38,-43},{38,-50}},
               color={0,0,127}));
           connect(rightHeart.q_out, PulmonaryArteries.q_in[1]) annotation (Line(
-              points={{-48,3},{-40,3},{-40,39.3},{-30.3,39.3}},
+              points={{-53.76,4.56},{-40,4.56},{-40,39.3},{-30.3,39.3}},
               color={127,0,0},
               thickness=0.5));
           connect(PulmonaryArteries.q_in[2], TotalPulmonaryResistance.q_in)
@@ -11838,8 +11430,7 @@ Connector with one flow signal of type Real.
               color={127,0,0},
               thickness=0.5));
           connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (Line(
-              points={{52,2.22045e-16},{50,2.22045e-16},{50,-58.2667},{45.7,
-                  -58.2667}},
+              points={{57.28,1.2},{50,1.2},{50,-58.2667},{45.7,-58.2667}},
               color={127,0,0},
               thickness=0.5));
           connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in)
@@ -12099,7 +11690,7 @@ Connector with one flow signal of type Real.
           Physiolib.Types.Constants.FrequencyConst heartRate(k(displayUnit=
                   "Hz") = 1.2)
             annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
-          inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg") =
+          inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354)
             annotation (Placement(transformation(extent={{-94,70},{-74,90}})));
         equation
@@ -12204,9 +11795,9 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(leftVentricle.q_in[2], RLeftMyo.q_in) annotation (Line(
               points={{-209.45,-4.95},{-203.725,-4.95},{-203.725,-3},{-196,-3}},
-
               color={127,0,0},
               thickness=0.5));
+
           connect(pulmonaryVeins.q_in[1], pulmonaryVeinsInertia.q_out)
             annotation (Line(
               points={{-279.45,-1.05},{-318,-1.05},{-318,60},{-293,60}},
@@ -12214,9 +11805,9 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(pulmonaryVeins.q_in[2], mitralValve.q_in) annotation (Line(
               points={{-279.45,-4.95},{-268.725,-4.95},{-268.725,-3},{-258,-3}},
-
               color={127,0,0},
               thickness=0.5));
+
           annotation(Diagram(coordinateSystem(extent={{-350,-100},{400,100}},      preserveAspectRatio=false,  grid = {2, 2})),
                                                                                                                               Icon(coordinateSystem(extent={{-350,
                     -100},{400,100}},                                                                                                    preserveAspectRatio = true, grid = {2, 2})),
@@ -12639,9 +12230,9 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(RightVentricle.q_in[2], PulmonaryValve.q_in) annotation (Line(
               points={{-155.45,55.05},{-143.725,55.05},{-143.725,57},{-132,57}},
-
               color={127,0,0},
               thickness=0.5));
+
           connect(PulmonaryValve.q_out, Epa.q_in[1]) annotation (Line(
               points={{-106,57},{-94,57},{-94,99.82},{-80.42,99.82}},
               color={127,0,0},
@@ -19002,22 +18593,21 @@ constructed by the signals connected to this bus.
     package Math "Modelica.Math extension"
       extends Modelica.Icons.Package;
       model Integrator "Integrator with support of steady state calculation."
-        extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
-              y_start, state(nominal=NominalValue));
+       // extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
+       //       y_start, state(nominal=NominalValue));
 
         parameter Real k=1 "Integrator gain";
 
         parameter Real y_start=0 "Initial or guess value of output (= state)"
           annotation (Dialog(group="Initialization"));
-        extends Modelica.Blocks.Interfaces.SISO(u(nominal=NominalValue/k),y(nominal=NominalValue));
+        extends Modelica.Blocks.Interfaces.SISO(u(nominal=NominalValue/k),y(start=y_start,nominal=NominalValue));
 
         parameter Real NominalValue = 1
           "Numerical scale. For some substances such as hormones, hydronium or hydroxide ions should be set."
             annotation ( HideResult=true, Dialog(tab="Solver",group="Numerical support of very small concentrations"));
       equation
-        state = y;  //der(y) = k*u
-        change = k*u;
-
+        //state = y;  //
+        der(y) = k*u
         annotation (defaultComponentName="int",
           Documentation(info="<html>
 <p>
@@ -19079,6 +18669,8 @@ This is discussed in the description of package
                 lineColor={0,0,0},
                 textString="s"),
               Line(points={{-46,0},{46,0}})}));
+        //change = k*u;
+
       end Integrator;
 
           block Add "u + parameter"
@@ -19779,8 +19371,8 @@ input <i>u</i>:
               origin={0,-32})));
         Blocks.Math.Integrator integrator(
           y_start=1,
-          k=(Modelica.Math.log(2)/HalfTime),
-          stateName=stateName) annotation (Placement(transformation(
+          k=(Modelica.Math.log(2)/HalfTime))
+                               annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-26,12})));
@@ -19862,8 +19454,8 @@ input <i>u</i>:
               origin={0,-50})));
         Blocks.Math.Integrator integrator(
           y_start=1,
-          k=(Modelica.Math.log(2)/HalfTime),
-          stateName=stateName) annotation (Placement(transformation(
+          k=(Modelica.Math.log(2)/HalfTime))
+                               annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-14,-6})));
@@ -20403,7 +19995,7 @@ input <i>u</i>:
     package BaseMedium_C
       extends Modelica.Media.Water.StandardWater(
          extraPropertiesNames={"H2O","Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others"},
-         singleState=true, T_default=310.15, X_default=zeros(nXi));
+         singleState=true, T_default=310.15, X_default=ones(nX));
 
       constant Real C_default[nC]={51523,135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6};
 
@@ -20445,6 +20037,257 @@ input <i>u</i>:
        //constant Physiolib.Types.Density constDensity = 1024 "Constant density of fluid";
     end BaseMedium_C;
   end Media;
+
+  package Examples
+    model DialysisMembrane
+      import Chemical = Physiolib;
+     // import SystemModelingInModelica.Interfaces;
+     // import SystemModelingInModelica;
+
+      replaceable package BloodPlasma = Physiolib.Media.BaseMedium_C
+          "Medium model of blood plasma"
+         annotation (choicesAllMatching=true);
+
+      replaceable package Dialysate = Physiolib.Media.BaseMedium_C
+          "Medium model of dialysate"
+         annotation (choicesAllMatching=true);
+        //  SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+
+     parameter Modelica.SIunits.Length Length(displayUnit="mm")=0.02 "Length of each pipe";
+     parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
+     parameter Integer NParallel=50 "Number of paralel pipes";
+
+     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nC](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
+
+     parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nC](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
+     parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nC](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
+
+     parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 0 "Initial relative blood pressure";
+     parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 0 "Initial relative dialysate pressure";
+     parameter Modelica.SIunits.Pressure AmbientPressure(displayUnit="mmHg") = 101325.0144354 "Ambient pressure";
+
+     parameter Modelica.SIunits.Temperature InitialTemperature = 273.15 + 37 "Initial temperature";
+
+     /*parameter Modelica.SIunits.VolumeFlowRate WaterClearance(displayUnit="ml/min")= 1e-06 "Water clearance";
+ parameter Modelica.SIunits.VolumeFlowRate NaClearance(displayUnit="ml/min")= 1e-06 "Sodium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate BicClearance(displayUnit="ml/min")= 1e-06 "Bicarbonate clearance";
+ parameter Modelica.SIunits.VolumeFlowRate KClearance(displayUnit="ml/min")= 1e-06 "Potasium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate GluClearance(displayUnit="ml/min")= 1e-06 "Glucose clearance";
+ parameter Modelica.SIunits.VolumeFlowRate UreaClearance(displayUnit="ml/min")= 1e-06 "Urea clearance";
+ parameter Modelica.SIunits.VolumeFlowRate ClClearance(displayUnit="ml/min")= 1e-06 "Chloride clearance";
+ parameter Modelica.SIunits.VolumeFlowRate CaClearance(displayUnit="ml/min")= 1e-06 "Calcium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate MgClearance(displayUnit="ml/min")= 1e-06 "Magnesium clearance";
+*/
+
+      Modelica.Fluid.Pipes.StaticPipe blood_pipe(
+        redeclare package Medium = BloodPlasma,
+        nParallel=NParallel,
+        length=Length,
+        diameter=Diameter) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={-94,-58})));
+      Modelica.Fluid.Pipes.StaticPipe dialysate_pipe(
+        redeclare package Medium = Dialysate,
+        length=Length,
+        diameter=Diameter,
+        nParallel=NParallel) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={94,48})));
+      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
+            BloodPlasma)
+        annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
+            BloodPlasma)
+        annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
+      Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package Medium = Dialysate)
+        annotation (Placement(transformation(extent={{50,110},{70,90}})));
+      Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package Medium = Dialysate)
+        annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
+
+      Physiolib.Chemical.Components.Membrane membrane[BloodPlasma.nC](KC=KC)
+        annotation (Placement(transformation(extent={{-10,-16},{10,4}})));
+      Chemical.Fluid.Components.ElasticVessel elasticVessel(useSubstances=true,
+          nHydraulicPorts=2) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-68,-4})));
+      Chemical.Fluid.Components.ElasticVessel elasticVessel1(useSubstances=true,
+          nHydraulicPorts=2)
+        annotation (Placement(transformation(extent={{56,-16},{76,4}})));
+    protected
+      parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
+      parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
+      parameter Real KC[BloodPlasma.nC] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
+    equation
+      connect(blood_pipe.port_a, blood_in)
+        annotation (Line(points={{-94,-68},{-94,-100},{-60,-100}}, color={0,127,255}));
+
+      for s in 1:BloodPlasma.nXi loop
+      end for;
+
+      for s in 1:Dialysate.nXi loop
+      end for;
+      connect(dialysate_in, dialysate_pipe.port_a)
+        annotation (Line(points={{60,100},{94,100},{94,58}}, color={0,127,255}));
+      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,
+              -48},{-82,-48},{-82,-5.3},{-67.7,-5.3}}, color={0,127,255}));
+      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},{
+              -86,100},{-86,-4},{-67.7,-4},{-67.7,-2.7}}, color={0,127,255}));
+      connect(membrane.port_b, elasticVessel1.substances)
+        annotation (Line(points={{10,-6},{56.6,-6}}, color={158,66,200}));
+      connect(elasticVessel1.q_in[1], dialysate_pipe.port_b) annotation (Line(
+          points={{65.7,-4.7},{94,-4.7},{94,38}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(dialysate_out, elasticVessel1.q_in[2]) annotation (Line(points={{60,-100},
+              {76,-100},{76,-30},{65.7,-30},{65.7,-7.3}}, color={0,127,255}));
+      connect(elasticVessel.substances, membrane.port_a) annotation (Line(points={{-58.6,
+              -4},{-34,-4},{-34,-6},{-10,-6}}, color={158,66,200}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+              Rectangle(
+              extent={{-100,100},{0,-100}},
+              lineColor={255,255,0},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.VerticalCylinder), Rectangle(
+              extent={{0,100},{100,-100}},
+              lineColor={255,255,0},
+              fillPattern=FillPattern.VerticalCylinder,
+              fillColor={28,108,200})}), Diagram(coordinateSystem(
+              preserveAspectRatio=false)));
+    end DialysisMembrane;
+
+    model Dialysis
+     // import SystemModelingInModelica;
+
+      replaceable package BloodPlasma = Physiolib.Media.BaseMedium_C
+          "Medium model of blood plasma"
+         annotation (choicesAllMatching=true);
+         // SystemModelingInModelica.UsingPhysiolib.Interfaces.BloodPlasma
+
+      replaceable package Dialysate = Physiolib.Media.BaseMedium_C
+          "Medium model of dialysate"
+         annotation (choicesAllMatching=true);
+         // SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+
+      parameter Integer N=10 "Number of parts";
+
+      parameter Modelica.SIunits.Concentration PlasmaSubstances[
+        BloodPlasma.nC](each displayUnit="mmol/l")=
+         {51523,135,24,5,5,30,106,1.5,0.5,0.7,0.8,1e-6};
+      parameter Modelica.SIunits.Concentration DialysateSubstances[
+        Dialysate.nC](each displayUnit="mmol/l")=
+         {54500,138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6};
+
+      parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 23998.0297347 "Initial blood pressure";
+      parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 78660.20857485 "Initial dialysate pressure";
+
+      parameter Modelica.SIunits.VolumeFlowRate ExpectedBloodFlow(displayUnit="ml/min") = 5e-06;
+
+      DialysisMembrane                                            dialysis[N](
+        each InitialPlasma=PlasmaSubstances,
+        each InitialDialysate=DialysateSubstances,
+        each InitialBloodPressure=InitialBloodPressure,
+        each InitialDialysatePressure=InitialDialysatePressure,
+        each Length=0.02/N,
+        each Clearances=0.7*ExpectedBloodFlow/N * {1,1,1,1,1,1,1,1,1,0,0,0},
+        redeclare package BloodPlasma = BloodPlasma,
+        redeclare package Dialysate = Dialysate,
+        each Diameter=0.0002,
+        each InitialTemperature=310.15)
+        annotation (Placement(transformation(extent={{16,-18},{36,2}})));
+                                             //{Plasma - (i/N)*(Plasma - Dialysate) for i in 1:N},
+                                                   //{Dialysate + ((N-i+1)/N)*(Plasma - Dialysate) for i in 1:N},
+                                                        //{InitialBloodPressure - (i/N)*(InitialBloodPressure-Interfaces.BloodPlasma.p_default) for i in 1:N},
+                                                                //{InitialDialysatePressure - ((N-i+1)/N)*(InitialDialysatePressure-Interfaces.Dialysate.p_default) for i in 1:N},
+      Modelica.Fluid.Sources.FixedBoundary blood_output(nPorts=1, redeclare
+          package Medium = BloodPlasma,
+        use_T=true,
+        C=PlasmaSubstances,
+        T=310.15)
+        annotation (Placement(transformation(extent={{-50,36},{-30,56}})));
+      Modelica.Fluid.Sources.FixedBoundary dialysate_output(nPorts=1, redeclare
+          package Medium = Dialysate,
+        T=310.15,
+        C=DialysateSubstances)
+        annotation (Placement(transformation(extent={{94,-84},{74,-64}})));
+      inner Modelica.Fluid.System system(T_ambient=310.15)
+        annotation (Placement(transformation(extent={{-78,72},{-58,92}})));
+      Modelica.Fluid.Pipes.DynamicPipe pipe_blood_outflow(
+        redeclare package Medium = BloodPlasma,
+        length=0.5,
+        diameter=0.01,
+        C_start=PlasmaSubstances,
+        T_start=310.15)
+        annotation (Placement(transformation(extent={{4,36},{-16,56}})));
+      Modelica.Fluid.Pipes.DynamicPipe pipe_dialysate_outflow(
+        redeclare package Medium = Dialysate,
+        length=0.5,
+        diameter=0.01,
+        T_start=310.15,
+        C_start=DialysateSubstances)
+        annotation (Placement(transformation(extent={{38,-84},{58,-64}})));
+      Modelica.Fluid.Sources.Boundary_pT blood_input(
+        redeclare package Medium = BloodPlasma,
+        nPorts=1,
+        p=InitialBloodPressure,
+        use_p_in=true,
+        T=310.15,
+        C=PlasmaSubstances)
+                  annotation (Placement(transformation(extent={{-16,-84},{4,-64}})));
+      Modelica.Fluid.Sources.Boundary_pT dialysate_input(
+        nPorts=1,
+        redeclare package Medium = Dialysate,
+        p=InitialDialysatePressure,
+        use_p_in=true,
+        T=310.15,
+        C=DialysateSubstances)
+                  annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=0,
+            origin={48,46})));
+      Modelica.Blocks.Sources.Sine sine_blood_pressure_input(
+        amplitude=20000,
+        freqHz(displayUnit="1/min") = 0.16666666666667,
+        offset=InitialBloodPressure + 101325)
+        annotation (Placement(transformation(extent={{-50,-76},{-30,-56}})));
+      Modelica.Blocks.Sources.Sine sine_dialysate_pressure_input(
+        freqHz(displayUnit="1/min") = 0.41666666666667,
+        amplitude=50000,
+        offset=InitialDialysatePressure + 101325)
+        annotation (Placement(transformation(extent={{94,44},{74,64}})));
+    equation
+
+      connect(sine_blood_pressure_input.y, blood_input.p_in)
+        annotation (Line(points={{-29,-66},{-18,-66}}, color={0,0,127}));
+      connect(blood_input.ports[1], dialysis[1].blood_in) annotation (Line(points={{4,-74},
+              {20,-74},{20,-18},{20,-18}},      color={0,127,255}));
+      for i in 1:N-1 loop
+        connect(dialysis[i].blood_out, dialysis[i+1].blood_in);
+      end for;
+      connect(dialysis[N].blood_out, pipe_blood_outflow.port_a)
+        annotation (Line(points={{20,2},{20,2},{20,46},{4,46}}, color={0,127,255}));
+      connect(pipe_blood_outflow.port_b,blood_output.ports[1])
+        annotation (Line(points={{-16,46},{-30,46}}, color={0,127,255}));
+
+      connect(sine_dialysate_pressure_input.y, dialysate_input.p_in)
+        annotation (Line(points={{73,54},{60,54}}, color={0,0,127}));
+      connect(dialysate_input.ports[1], dialysis[N].dialysate_in) annotation (Line(
+            points={{38,46},{32,46},{32,2}},        color={0,127,255}));
+      for i in 1:N-1 loop
+        connect(dialysis[i+1].dialysate_out, dialysis[i].dialysate_in);
+      end for;
+      connect(dialysis[1].dialysate_out, pipe_dialysate_outflow.port_a) annotation (
+          Line(points={{32,-18},{32,-74},{38,-74}},          color={0,127,255}));
+      connect(pipe_dialysate_outflow.port_b, dialysate_output.ports[1])
+        annotation (Line(points={{58,-74},{74,-74}}, color={0,127,255}));
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(StopTime=60, Tolerance=1e-005));
+    end Dialysis;
+  end Examples;
   annotation (
 preferredView="info",
 version="1.0.0",
