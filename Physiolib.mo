@@ -951,8 +951,8 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         "Mole fraction of the macromolecule (all form of in the conformation)";
 
       public
-        Interfaces.SolutionPort subunitSolution(redeclare package stateOfMatter
-            = stateOfMatter) "The port to connect all subunits"
+        Interfaces.SolutionPort subunitSolution(redeclare package stateOfMatter =
+              stateOfMatter) "The port to connect all subunits"
           annotation (Placement(transformation(extent={{-70,92},{-50,112}}),
               iconTransformation(extent={{30,50},{50,70}})));
       Interfaces.SubstancePort_a port_a annotation (Placement(transformation(
@@ -1507,6 +1507,106 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 <p>To calculate the sum of extensive substance's properties is misused the Modelica \"flow\" prefix even there are not real physical flows. </p>
 </html>"));
       end Vessel;
+
+      model Substance2 "Substance in solution"
+        extends Icons.Substance;
+
+        Modelica.SIunits.Concentration c "Molar concentration";
+
+        extends Interfaces.PartialSubstanceInSolutionWithAdditionalPorts;
+
+        //If it is selected the amount of solution per one kilogram of solvent then the values of amountOfSubstance will be the same as molality
+        //If it is selected the amount of solution in one liter of solution then the values of amountOfSubstance will be the same as molarity
+
+        parameter Modelica.SIunits.Mass mass_start=1
+        "Initial mass"   annotation(HideResult=true);
+
+
+         Modelica.SIunits.MolarVolume molarVolume2 = stateOfMatter.molarVolume(substanceData,
+           solution.T,
+           solution.p,
+           solution.v,
+           solution.I,
+           solution.otherProperties);
+
+         Modelica.SIunits.Density density2 = substanceData.MolarWeight / molarVolume2;
+
+        parameter Modelica.SIunits.AmountOfSubstance amountOfSubstance_start=mass_start / substanceData.MolarWeight
+        "Initial amount of the substance in compartment"   annotation(HideResult=true);
+
+      protected
+        Modelica.SIunits.AmountOfSubstance amountOfSubstance(start=amountOfSubstance_start);
+        Real log10n(stateSelect=StateSelect.prefer, start=log10(amountOfSubstance_start))
+        "Decadic logarithm of the amount of the substance in solution";
+        constant Real InvLog_10=1/log(10);
+
+      initial equation
+
+        amountOfSubstance=amountOfSubstance_start;
+
+      equation
+
+        //The main accumulation equation is "der(amountOfSubstance)=(port_a.q+port_m.q)"
+        // However, the numerical solvers can handle it in form of log10n much better. :-)
+        der(log10n)=(InvLog_10)*(q/amountOfSubstance);
+        amountOfSubstance = 10^log10n;
+
+        //Molar Concentration
+        c = amountOfSubstance/solution.V;
+
+        //Mole fraction is an analogy of molar concentration or molality.
+        x = amountOfSubstance/solution.n;
+
+        //solution flows
+        solution.dH = molarEnthalpy*(q) + der(molarEnthalpy)*amountOfSubstance;
+        solution.i = Modelica.Constants.F * z * (q) + Modelica.Constants.F*der(z)*amountOfSubstance;
+        solution.dV = molarVolume * (q) + der(molarVolume)*amountOfSubstance;
+
+        //extensive properties
+        solution.nj=amountOfSubstance;
+        solution.mj=amountOfSubstance*molarMass;
+        solution.Vj=amountOfSubstance*molarVolume;
+        solution.Gj=amountOfSubstance*port_a.u;
+        solution.Qj=Modelica.Constants.F*amountOfSubstance*z;
+        solution.Ij=(1/2) * ( amountOfSubstance * z^2);
+        solution.otherPropertiesOfSubstance=amountOfSubstance * otherPropertiesPerSubstance;
+
+                                                                                                          annotation (
+          Icon(coordinateSystem(
+                preserveAspectRatio=false,extent={{-100,-100},{100,100}}),
+              graphics={Text(
+                extent={{-84,22},{92,64}},
+                lineColor={0,0,255},
+              textString="%name")}),
+          Documentation(revisions="<html>
+<p>2018 by Marek Matejak, marek@matfyz.cz </p>
+</html>",   info="<html>
+<h4>n = x &middot; n(solution) = &int; MolarFlow</h4>
+<p>where n is amount of the substance and x is mole fraction.</p>
+<p>The main class from &ldquo;Chemical&rdquo; package is called &quot;Substance&quot;. It has one chemical connector, where chemical potential and molar flow is presented. An amount of solute &quot;n&quot; is accumulated by molar flow inside an instance of this class. In the default setting the amount of solution &quot;n(solution)&quot; is set to 55.6 as amount of water in one liter, so in this setting the concentration of very diluted solution in pure water at &ldquo;mol/L&rdquo; has the same value as the amount of substance at &ldquo;mol&rdquo;. But in the advanced settings the default amount of solution can be changed by parameter or using solution port to connect with solution. The molar flow at the port can be also negative, which means that the solute leaves the Substance instance.&nbsp;</p>
+<p><br>The recalculation between mole fraction, molarity and molality can be written as follows:</p>
+<p>x = n/n(solution) = b * m(solvent)/n(solution) = c * V(solution)/n(solution)</p>
+<p>where m(solvent) is mass of solvent, V(solution) is volume of solution, b=n/m(solvent) is molality of the substance, c=n/V(solution) is molarity of the substance.</p>
+<p>If the amount of solution is selected to the number of total solution moles per one kilogram of solvent then the values of x will be the same as molality.</p>
+<p>If the amount of solution is selected to the number of total solution moles in one liter of solution then the values of x will be the same as molarity.</p>
+<p><br><br>Definition of electro-chemical potential:</p>
+<h4>u = u&deg; + R*T*ln(gamma*x) + z*F*v</h4>
+<h4>u&deg; = DfG = DfH - T * DfS</h4>
+<p>where</p>
+<p>x .. mole fraction of the substance in the solution</p>
+<p>T .. temperature in Kelvins</p>
+<p>v .. relative eletric potential of the solution</p>
+<p>z .. elementary charge of the substance (like -1 for electron, +2 for Ca^2+)</p>
+<p>R .. gas constant</p>
+<p>F .. Faraday constant</p>
+<p>gamma .. activity coefficient</p>
+<p>u&deg; .. chemical potential of pure substance</p>
+<p>DfG .. free Gibbs energy of formation of the substance</p>
+<p>DfH .. free enthalpy of formation of the substance</p>
+<p>DfS .. free entropy of formation of the substance </p>
+<p><br>Be carefull, DfS is not the same as absolute entropy of the substance S&deg; from III. thermodinamic law! It must be calculated from tabulated value of DfG(298.15 K) and DfH as DfS=(DfH - DfG)/298.15. </p>
+</html>"));
+      end Substance2;
     end Components;
 
     package Sensors "Chemical sensors"
@@ -5145,7 +5245,7 @@ Modelica source.
       package Media
         package SimpleBodyFluid_C
         extends Modelica.Media.Water.StandardWater(
-           extraPropertiesNames={"H2O","Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others"},
+           extraPropertiesNames={"Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others","H2O"},
            singleState=true, T_default=310.15, X_default=ones(nX));
 
          replaceable package stateOfMatter =
@@ -5155,13 +5255,15 @@ Modelica source.
            annotation (choicesAllMatching = true);
 
         // Provide medium constants here
-        constant Modelica.SIunits.Concentration C_default[nC]={1000,135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6};
+        constant Modelica.SIunits.Concentration C_default[nC-1]={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6}; //50769,
         constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
+        constant Modelica.SIunits.Density default_density=1000; //50769,
+
+
 
         /*
 type Substances = enumeration(
-      H2O
-         "Water",
+  
       Na "Sodium",
       Bic
          "Bicarbonate",
@@ -5178,12 +5280,13 @@ type Substances = enumeration(
       Glb
          "Globulins",
       Others
-            "Unknown uncharged non-permeble substances");
+      "Unknown uncharged non-permeble substances",
+      H2O
+         "Water",);
 */
           constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Water_liquid(),
           Chemical.Examples.Substances.Sodium_aqueous(),
-          Chemical.Examples.Substances.Bicarbonate_blood(),
+          Chemical.Examples.Substances.Bicarbonate_aqueous(),
           Chemical.Examples.Substances.Potassium_aqueous(),
           Chemical.Examples.Substances.Glucose_solid(),
           Chemical.Examples.Substances.Urea_aqueous(),
@@ -5192,6 +5295,7 @@ type Substances = enumeration(
           Chemical.Examples.Substances.Magnesium_aqueous(),
           Chemical.Examples.Substances.Albumin_aqueous(),
           Chemical.Examples.Substances.Globulins_aqueous(),
+          Chemical.Examples.Substances.Water_liquid(),
           Chemical.Examples.Substances.Water_liquid()}
         "Definition of the substances"
         annotation (choicesAllMatching = true);
@@ -11201,10 +11305,16 @@ type Substances = enumeration(
               rotation=180,
               origin={-3,0})));
 
-        parameter Physiolib.Types.Mass mass_start=1e-8
-          "Mass start value" annotation (Dialog(group="Initialization"));            //default = 1e-5 g
-        parameter Physiolib.Types.Concentration concentration_start[Medium.nC]=Medium.C_default
+        parameter Physiolib.Types.Density density_start=Medium.default_density
+          "Density start value" annotation (Dialog(group="Initialization"));
+
+        parameter Physiolib.Types.Mass mass_start=1
+          "Mass start value" annotation (Dialog(group="Initialization"));
+                                                    //e-8                            //default = 1e-5 g
+        parameter Physiolib.Types.Concentration concentration_start[Medium.nC]=
+        cat(1, Medium.C_default, {(density_start - Medium.substanceData.MolarWeight[1:Medium.nC-1]*Medium.C_default)/Medium.substanceData.MolarWeight[Medium.nC]})
           "Initial molar concentrations" annotation (Dialog(group="Initialization"));
+           //= cat(1, q, {4});        // Vector append OK, result is {1, 2, 3, 4}
 
          parameter Boolean useV0Input = false
           "=true, if zero-pressure-mass input is used"
@@ -11288,30 +11398,41 @@ type Substances = enumeration(
           MinimalCollapsingPressure=MinimalCollapsingPressure)
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
-
-      protected
+      //protected
         parameter Modelica.SIunits.MolarMass MM[Medium.nC] = Medium.substanceData.MolarWeight;
         parameter Modelica.SIunits.MoleFraction x_start[Medium.nC] = concentration_start ./ (concentration_start*ones(Medium.nC));
         parameter Modelica.SIunits.AmountOfSubstance nt_start = mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
         parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nC] = nt_start * x_start;
 
+
+        parameter Modelica.SIunits.Density ro_T = MM * concentration_start;
+        parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.substanceData.density) * n_start;
+
+        parameter Modelica.SIunits.Concentration conc_start[Medium.nC] = n_start ./ V_T;
+
+
+
       public
-        Chemical.Components.Substance substance[Medium.nC](
-          redeclare package stateOfMatter =
-              Chemical.Interfaces.Incompressible,
-          substanceData=Medium.substanceData,
-          amountOfSubstance_start = n_start)
+        Chemical.Components.Substance2 substance[Medium.nC - 1](
+          redeclare package stateOfMatter = Chemical.Interfaces.Incompressible,
+          substanceData=Medium.substanceData[1:Medium.nC - 1],
+          amountOfSubstance_start=n_start[1:Medium.nC - 1])
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
 
          parameter Boolean useSubstances = false
           "=true, if substance ports are used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC] if useSubstances
+        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC + 1] if
+                                                                      useSubstances
           annotation (Placement(transformation(extent={{-104,-40},{-84,40}})));
 
         Types.Pressure p "Relative pressure inside";
+        Chemical.Components.LiquidWater liquidWater(mass_start=n_start[Medium.nC]*Medium.substanceData[Medium.nC].MolarWeight)
+          annotation (Placement(transformation(extent={{-66,-58},{-46,-38}})));
       equation
+
+
         p = vessel.relative_pressure;
 
         if useV0Input then
@@ -11350,7 +11471,7 @@ type Substances = enumeration(
        // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
         connect(q_in,fluidAdapter_D. fluidPorts)
           annotation (Line(points={{4,-14},{-16,-14}}, color={238,46,47}));
-        for i in 1:Medium.nC loop
+        for i in 1:Medium.nC-1 loop
           connect(vessel.solution, substance[i].solution) annotation (Line(points=
                {{60,-98},{-70,-98},{-70,-24}}, color={127,127,0}));
         end for;
@@ -11359,10 +11480,16 @@ type Substances = enumeration(
         connect(vessel.fluidMass, mass) annotation (Line(points={{100,-80},{110,-80}},
                           color={0,0,127}));
 
-        connect(substance.port_m, fluidAdapter_D.substances) annotation (Line(points={
+        connect(substance.port_m, fluidAdapter_D.substances[1:Medium.nC-1]) annotation (Line(points={
                 {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
-        connect(substance.port_a, substances) annotation (Line(points={{-54,-14},
-                {-48,-14},{-48,0},{-94,0}}, color={158,66,200}));
+        connect(substance.port_a, substances) annotation (Line(points={{-54,-14},{-50,
+                -14},{-50,0},{-94,0}},      color={158,66,200}));
+        connect(liquidWater.solution, vessel.solution) annotation (Line(points={{-62,-58},
+                {-62,-98},{60,-98}}, color={127,127,0}));
+        connect(substances[Medium.nC], liquidWater.port_a) annotation (Line(points={{-94,0},{-42,
+                0},{-42,-48},{-46,-48}}, color={158,66,200}));
+        connect(liquidWater.port_m, fluidAdapter_D.substances[Medium.nC]) annotation (Line(
+              points={{-45.8,-58},{-40,-58},{-40,-14},{-36,-14}}, color={105,44,133}));
        annotation (
           Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                   100,100}}), graphics={Text(
@@ -12178,7 +12305,7 @@ Connector with one flow signal of type Real.
           vessel(redeclare package stateOfMatter =
                 Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
-          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7,
+          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-07,
           ExternalPressure=101325.0144354)
           annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
 
