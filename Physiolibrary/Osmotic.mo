@@ -773,8 +773,7 @@ package Osmotic "Please use 'Chemical' library instead!"
     protected
       Types.Osmolarity o "Current osmolarity";
     public
-      Types.RealIO.TemperatureInput osmolarity(start=Osmolarity)=o if
-                                                               useOsmolarityInput
+      Types.RealIO.OsmolarityInput osmolarity(start=Osm)=o if  useOsmolarityInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     initial equation
