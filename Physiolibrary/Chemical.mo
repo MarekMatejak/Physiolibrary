@@ -240,8 +240,8 @@ package Chemical "Please use 'Chemical' library instead!"
             points={{-84,40},{-90,40},{-90,-6},{-94,-6}}, color={0,0,127}));
       connect(elasticVessel1.volume, substance1.solutionVolume) annotation (
           Line(points={{76,40},{72,40},{72,-6},{66,-6}}, color={0,0,127}));
-      connect(flowMeasure.volumeFlow, advectionStream.solutionFlow) annotation
-        (Line(points={{30,38},{10,38},{10,-3},{-10,-3}}, color={0,0,127}));
+      connect(flowMeasure.volumeFlow, advectionStream.solutionFlow) annotation (
+         Line(points={{30,38},{10,38},{10,-3},{-10,-3}}, color={0,0,127}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
@@ -253,7 +253,7 @@ package Chemical "Please use 'Chemical' library instead!"
 </html>"),
         experiment(StopTime=20));
     end TwoConcentrationCompartments;
-	
+
     package Hemoglobin "Hemoglobin blood gases binding"
       model Allosteric_Hemoglobin_MWC "Monod,Wyman,Changeux (1965)"
       extends Modelica.Icons.Example;
@@ -4314,7 +4314,7 @@ package Chemical "Please use 'Chemical' library instead!"
         <p>Filip Jezek, Charles University, Prague, Czech Republic </p>
         </html>"));
     end AdvectionStream;
-	
+
     model SolutePump "Prescribed solute flow"
       extends Interfaces.OnePort;
       extends Interfaces.ConditionalSoluteFlow;

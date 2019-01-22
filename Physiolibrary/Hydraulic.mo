@@ -1435,8 +1435,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
      extends SteadyStates.Interfaces.SteadyState(
-                                        state_start=volume_start, storeUnit=
-          "ml");
+                                        state_start=volume_start);
       Interfaces.HydraulicPort_a
                            q_in
                             annotation (Placement(
@@ -1631,8 +1630,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model Inertia "Inertia of the volumetric flow"
       extends SteadyStates.Interfaces.SteadyState(
-                                         state_start=volumeFlow_start,
-        storeUnit="ml/min");
+                                         state_start=volumeFlow_start);
       extends Interfaces.OnePort;
       extends Icons.Inertance;
       parameter Types.VolumeFlowRate volumeFlow_start=0.3

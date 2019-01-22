@@ -1125,92 +1125,27 @@ package SteadyStates "Dynamic Simulation / Steady State"
       "Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option."
       //allow to switch between dynamic mode 'der(y)=x' and steady-state mode 'der(y)=0'
 
-      replaceable package Utilities = Types.FilesUtilities(directoryName=dirName)
-                                                                      constrainedby
-        Types.Utilities "How to store or load the values"
-                     annotation (Dialog(group="Functions to read or store",tab="IO"));
-
       parameter Types.SimulationType  Simulation=Types.SimulationType.NormalInit
         "Dynamic with Initialization or Steady State"
-        annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
-
-      parameter Boolean isDependent = false
-        "=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc."
         annotation (Evaluate=true, HideResult=true, Dialog(group="Simulation",tab="Equilibrium"));
 
       parameter Real state_start "State start or init value"
        annotation (HideResult=true,Dialog(enable=false,group="Initialization", tab="IO"));
 
-      Real state(start=if LOAD_STARTS then Utilities.readReal(stateName, storeUnit) else
-     state_start, stateSelect=StateSelect.prefer)
+      Real state(start= state_start, stateSelect=StateSelect.prefer)
         "This state must be connected in inherited class definition"
         annotation (HideResult=true);
       Real change "Dynamic change of state value per minute" annotation (HideResult=true);
-
-      constant String dirName = "io" "Directory name to save and load values"
-        annotation (HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-      parameter String storeUnit="" "Unit in Utilities input/output function"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-      parameter String stateName=getInstanceName()
-        "Name in Utilities input/output function"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-      parameter Boolean LOAD_STARTS = false "Load start value of state"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-      parameter Boolean SAVE_RESULTS = false "Save final state values"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-      parameter Boolean SAVE_COMPARISON = false
-        "Compare final state values with original values"
-         annotation (Evaluate=true, HideResult=true, Dialog(group="Value I/O",tab="IO"));
-
-    protected
-      parameter Real defaultValue(fixed=false) "Default value of state.";
-      parameter Real initialValue(fixed=false) "Initial value of state.";
 
     initial equation
 
       if Simulation == Types.SimulationType.NormalInit then
         state = state_start;
-      elseif Simulation == Types.SimulationType.ReadInit then
-        state = Utilities.readReal(stateName, storeUnit);
-      elseif Simulation == Types.SimulationType.InitSteadyState and not isDependent then
-        der(state)=0;  //here it have the same meaning as "change = 0", because of equation "der(state) = change"
       end if;
 
-      initialValue = state; //in causality such as initialValue:=state
-      if SAVE_COMPARISON then
-        defaultValue = Utilities.readReal(stateName, storeUnit);
-      else
-        defaultValue = Modelica.Constants.N_A;
-      end if;
     equation
 
-      when terminal() then
-        if SAVE_RESULTS then
-          Utilities.writeReal(
-            stateName,
-            state,
-            storeUnit);
-        end if;
-        if SAVE_COMPARISON then
-          Utilities.writeComparison(
-            stateName,
-            defaultValue,
-            initialValue,
-            state,
-            storeUnit);
-        end if;
-      end when;
-
-      if Simulation <> Types.SimulationType.SteadyState then
         der(state) = change;
-      elseif not isDependent then   /*** this test and equation exclusion could be done automatically, if the solver will be so smart that it removes all this dependent equations from the total equilibrated system. The most probable form of this dependent equation in equilibrium setting is (0 = 0). ***/
-         change = 0;
-      end if;
 
       annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
