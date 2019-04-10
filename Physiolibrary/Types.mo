@@ -6481,7 +6481,6 @@ The Real output y is a constant signal:
   type SimulationType = enumeration(
       NoInit "Use start values only as a guess of state values",
       NormalInit "Initialization by start values",
-      ReadInit "Initialization by function Utilities.readReal('state name')",
       InitSteadyState
         "Initialization in Steady State (initial derivations are zeros)",
       SteadyState "Steady State = Derivations are zeros during simulation")
