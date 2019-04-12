@@ -250,6 +250,10 @@ defineUnitConversion("m3/s", "l/day", 1e3*60*60*24);
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);
 defineUnitConversion("kg/m3", "kg/l", 1e-3);
 // defineUnitConversion("kg/m3", "g/cm3", 1e-3);
+defineUnitConversion("kg/m3", "pg/ml", 1e+9);
+defineUnitConversion("kg/m3", "g/ml", 1e-3);
+defineUnitConversion("kg/m3", "g/l", 1);
+defineUnitConversion("kg/m3", "g/dl", 1e-1);
 
 //Mass flow rate
 defineUnitConversion("kg/s", "kg/min", 60);
@@ -330,4 +334,7 @@ defineUnitConversion("1", "%",100);
 // defineDefaultDisplayUnit("s", "min");
 // defineDefaultDisplayUnit("C", "meq");
 // defineDefaultDisplayUnit("V", "mV");
+
+
+
 
