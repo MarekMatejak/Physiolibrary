@@ -16,7 +16,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         ZeroPressureVolume(displayUnit="l") = 0.00085,
         Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08)
         annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
-      Components.Conductor resistance(Conductance(displayUnit="l/(mmHg.min)") = 6.2755151845753e-09)
+      Components.Conductor resistance(Conductance(displayUnit="ml/(mmHg.min)")=
+             6.2755151845753e-9)
         annotation (Placement(transformation(extent={{-4,-84},{16,-64}})));
       Components.ElasticVessel
                      veins(
@@ -485,7 +486,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           volume_start=0.000373)
           annotation (Placement(transformation(extent={{-40,28},{-20,48}})));
         Physiolibrary.Types.Constants.HydraulicComplianceConst CAP(k=
-              2.2576853432954e-08)
+              2.2576853432954e-8)
           annotation (Placement(transformation(extent={{-50,56},{-36,70}})));
         Physiolibrary.Types.Constants.VolumeConst V0AP(k=0.000327)
           annotation (Placement(transformation(extent={{-66,44},{-52,58}})));
@@ -501,7 +502,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           volume_start=0.000704)
           annotation (Placement(transformation(extent={{42,28},{62,48}})));
         Physiolibrary.Types.Constants.HydraulicComplianceConst CVP(k=
-              2.250184727537e-07)
+              2.250184727537e-7)
           annotation (Placement(transformation(extent={{36,60},{50,74}})));
         Physiolibrary.Types.Constants.VolumeConst V0VP(k=0.000435)
           annotation (Placement(transformation(extent={{20,48},{34,62}})));
@@ -511,7 +512,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           volume_start=0.003922)
           annotation (Placement(transformation(extent={{-46,-70},{-26,-50}})));
         Physiolibrary.Types.Constants.HydraulicComplianceConst CVS(k=
-              1.5001231516913e-06)
+              1.5001231516913e-6)
           annotation (Placement(transformation(extent={{-52,-42},{-38,-28}})));
         Physiolibrary.Types.Constants.VolumeConst V0VS(k=0.002845)
           annotation (Placement(transformation(extent={{-74,-54},{-60,-40}})));
@@ -527,7 +528,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           volume_start=0.000672)
           annotation (Placement(transformation(extent={{36,-70},{56,-50}})));
         Physiolibrary.Types.Constants.HydraulicComplianceConst CAS(k=
-              1.1250923637685e-08)
+              1.1250923637685e-8)
           annotation (Placement(transformation(extent={{30,-38},{44,-24}})));
         Physiolibrary.Types.Constants.VolumeConst V0AS(k=0.000529)
           annotation (Placement(transformation(extent={{14,-50},{28,-36}})));
@@ -571,7 +572,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             points={{52,38},{74,38},{74,4.44089e-16}},
             thickness=1));
         connect(leftHeart.outflow, SystemicArteries.q_in) annotation (Line(
-            points={{52,0},{52,-60},{46,-60}},
+            points={{57.28,1.2},{57.28,-60},{46,-60}},
             thickness=1));
         connect(SystemicArteries.q_in, TotalSystemicResistance.q_in)
           annotation (Line(
@@ -594,7 +595,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             points={{29.75,-43},{38,-43},{38,-52}},
             color={0,0,127}));
         connect(rightHeart.outflow, PulmonaryArteries.q_in) annotation (Line(
-            points={{-48,3},{-48,38},{-30,38}},
+            points={{-53.76,4.56},{-53.76,38},{-30,38}},
             thickness=1));
         annotation ( Documentation(info="<html>
 <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it. </p>
@@ -775,7 +776,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             useComplianceInput=true,
           useExternalPressureInput=true,
           volume_start=0.00018,
-          ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
+          ZeroPressureVolume=7e-5)                                      annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
             Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
                                                                annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
@@ -783,9 +784,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
                                                                      annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
-          volume_start=2.1e-05,
-          ZeroPressureVolume=2e-05,
-          Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
+          volume_start=2.1e-5,
+          ZeroPressureVolume=2e-5,
+          Compliance(displayUnit="ml/mmHg") = 6.7505541826109e-10)       annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
         Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
           volume_start=0.000637,
           ZeroPressureVolume=0.0006,
