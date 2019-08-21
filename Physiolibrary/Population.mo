@@ -8,7 +8,7 @@ package Population
     model PredatorPrey "Lotka–Volterra equations"
       extends Modelica.Icons.Example;
 
-      Components.Population predator(population_start=2)
+      Components.Population predator(population_start=2000000)
         annotation (Placement(transformation(extent={{-8,42},{12,62}})));
       Components.Reproduction reproduction2(useChangePerMemberInput=true)
         annotation (Placement(transformation(extent={{-52,42},{-32,62}})));
@@ -18,7 +18,7 @@ package Population
         annotation (Placement(transformation(extent={{-56,-40},{-36,-20}})));
       Components.Mortality mortality1(useChangePerMemberInput=true)
         annotation (Placement(transformation(extent={{32,-40},{52,-20}})));
-      Components.Population prey(population_start=1)
+      Components.Population prey(population_start=1000000)
         annotation (Placement(transformation(extent={{-12,-40},{8,-20}})));
       Types.Constants.PopulationChangePerMemberConst
                                             preyMortality(LifeTime(displayUnit=
