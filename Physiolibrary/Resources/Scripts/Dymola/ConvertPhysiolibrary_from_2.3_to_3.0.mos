@@ -1,0 +1,13 @@
+// Convert from Physiolibrary 2.2.* to Physiolibrary 2.3.*
+
+// clear
+convertClear();
+
+convertClass("Physiolibrary.Blocks.Math.Exponentiation","Physiolibrary.Blocks.Math.Power")
+
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","q_in","q_in[1]");
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","ImpermeableSolutes","ImpermeableSolutes[1]");
+convertModifiers("Physiolibrary.Osmotic.Components.OsmoticCell",{"ImpermeableSolutes"}  , {"ImpermeableSolutes={%ImpermeableSolutes%}"}, true);
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","impermeableSolutes","impermeableSolutes[1]");
+
+
