@@ -404,7 +404,8 @@ package Osmotic "Please use 'Chemical' library instead!"
         cond=perm;
       end if;
 
-      q_in.q = perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+      q_in.q =   perm * ( (-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)));
+               //if((-po + q_out.o*(Modelica.Constants.R*to)) - (-pi + q_in.o*(Modelica.Constants.R*ti)) <=0) then 0 else
 
       opi = q_in.o*(Modelica.Constants.R*ti);
       opo = q_out.o*(Modelica.Constants.R*to);
@@ -773,7 +774,7 @@ package Osmotic "Please use 'Chemical' library instead!"
     protected
       Types.Osmolarity o "Current osmolarity";
     public
-      Types.RealIO.OsmolarityInput osmolarity(start=Osm)=o if  useOsmolarityInput
+      Types.RealIO.OsmolarityInput osmolarity(start=Osm)=o if useOsmolarityInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
     initial equation
