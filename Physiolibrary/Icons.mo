@@ -1188,7 +1188,7 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
-                    Bitmap(extent={{-160,-100},{152,100}}, fileName=
+                    Bitmap(extent={{-100,-100},{100,100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/perfusion.png")}));
   end PerfusionOD;
 
@@ -1196,7 +1196,7 @@ package Icons "Icons for physiological models"
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={
-                    Bitmap(extent={{-160,-100},{160,100}}, fileName=
+                    Bitmap(extent={{-100,-100},{100,100}}, fileName=
                 "modelica://Physiolibrary/Resources/Icons/perfusion2.png")}));
   end PerfusionDO;
 

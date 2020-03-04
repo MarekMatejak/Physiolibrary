@@ -3280,8 +3280,7 @@ package Chemical "Please use 'Chemical' library instead!"
       extends SteadyStates.Interfaces.SteadyState(
       state(nominal=NominalSolute),
       change(nominal=NominalSolute/60),
-      state_start=solute_start,
-      storeUnit="mmol");
+      state_start=solute_start);
 
       parameter Types.AmountOfSubstance solute_start(nominal=NominalSolute) = 1e-8
         "Initial solute amount in compartment"
@@ -4221,6 +4220,7 @@ package Chemical "Please use 'Chemical' library instead!"
        parameter Real diffusion_coefficient(unit="m2/s", quantity="Mass diffusivity coefficient") = 0 "diffusion coefficient. Default = 0";
        Modelica.SIunits.Area area_tube_crosssection=3.14*(d/2)^2
       "crosssection tube area";
+      Physiolibrary.Types.Volume volume_total = area_tube_crosssection * length;
        Physiolibrary.Types.Velocity v=q/area_tube_crosssection
       "velocity of the flow in m/s";
        Physiolibrary.Types.Concentration c[N];
