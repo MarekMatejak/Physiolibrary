@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "Modelica library for Physiology (version 2.3.2-beta)"
+package Physiolibrary "Modelica library for Physiology (version 2.4.0)"
  extends Modelica.Icons.Package;
 
 
@@ -111,6 +111,22 @@ package Physiolibrary "Modelica library for Physiology (version 2.3.2-beta)"
 
   package ReleaseNotes "Release notes"
     extends Modelica.Icons.ReleaseNotes;
+
+  class Version_2_4_0 "Version 2.4.0 (Feb. 19, 2020)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><span style=\"color: #333333;\">Remove support for steady states, as it was affecting complex systems</span></li>
+<li><span style=\"color: #333333;\">Added some new types</span></li>
+<li><span style=\"color: #333333;\">Added AdvectionStream</span></li>
+<li><span style=\"color: #333333;\">Fix:</span></li>
+<li><ul>
+<li><span style=\"color: #333333;\">Osmotic source input</span></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_4_0;
 
   class Version_2_3_1 "Version 2.3.1 (Sep. 15, 2015)"
     extends Modelica.Icons.ReleaseNotes;
@@ -406,12 +422,12 @@ https://github.com/xogeny/impact/blob/master/resources/docs/modelica2015/paper/i
   end UsersGuide;
 
   annotation (preferredView="info",
-version="2.3.2-beta",
+version="2.4.0",
 versionBuild=1,
-versionDate="2015-09-15",
-dateModified = "2015-09-15 12:49:00Z",
+versionDate="2020-02-19",
+dateModified = "2020-03-20 12:49:00Z",
 revisionId="",
-uses(Modelica(version="3.2.2")),
+uses(Modelica(version="3.2.3")),
 conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
   from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
