@@ -76,14 +76,15 @@ package Population
       extends Modelica.Icons.Example;
       Components.Population population(population_start=1)
         annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
-      Components.Population population1
+      Components.Population population1(population_start=0)
         annotation (Placement(transformation(extent={{20,20},{40,40}})));
-      Components.Population population2
+      Components.Population population2(population_start=0)
         annotation (Placement(transformation(extent={{20,-20},{40,0}})));
       Components.StreamWithDivider streamWithDivider(
-        change(displayUnit="1/s") = 1,
+        LifeTime(displayUnit="s") = 1,
         num_outflows=2,
-        ratios={0.33})
+        ratios={1/3},
+        limitFlow_max(displayUnit="1/s") = 0.5)
         annotation (Placement(transformation(extent={{-14,0},{6,20}})));
     equation
       connect(streamWithDivider.port_b[1], population1.port) annotation (Line(
@@ -103,7 +104,7 @@ package Population
     end testChangeDivider;
 
     package dev
-      model Covid_SEIRS
+      model Covid_SEIRS "A simple model replicating the Python implementation in https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296 "
 
         Physiolibrary.Population.Components.Population Susceptible(population_start=1)
           "Susceptible population"
@@ -205,8 +206,8 @@ package Population
       end Covid_SEIRS;
 
       model Covid_SEIRS_Ext
-        extends Covid_SEIRS(streamWithDivider(num_outflows=2, ratios={0.01}),
-            streamWithDivider1(num_outflows=2, ratios={0}));
+        extends Covid_SEIRS(streamWithDivider(num_outflows=2, ratios={1 - 0.1}),
+            streamWithDivider1(num_outflows=2, ratios={1 - 0.05}));
 
         Physiolibrary.Population.Components.Population admittance
           annotation (Placement(transformation(extent={{34,-10},{54,10}})));
@@ -236,7 +237,8 @@ package Population
           annotation (Placement(transformation(extent={{14,10},{-6,-10}})));
         HospitalCapacityLimit hospitalCapacityLimit(LifeTime(displayUnit="s") = 0.1,
           t_hospital_stay=t_hospital_stay,
-            hospitalLimit=0.01)
+            hospitalLimit=0.01,
+          k_att=1000000.0)
           annotation (Placement(transformation(extent={{-22,-30},{-2,-10}})));
         Components.Population Hospitalized
           annotation (Placement(transformation(extent={{-46,-10},{-26,10}})));
@@ -299,7 +301,10 @@ package Population
           annotation (Line(points={{-73,-12},{-65.2,-12}}, color={0,0,127}));
         annotation (Documentation(info="<html>
 <p>As modelled in <a href=\"https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296\">https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296</a></p>
-</html>"));
+</html>"), experiment(
+            StopTime=100,
+            Tolerance=1e-09,
+            __Dymola_Algorithm="Dassl"));
       end Covid_SEIRS_Ext;
 
       model HospitalCapacityLimit
@@ -320,10 +325,13 @@ package Population
         parameter Types.Time t_hospital_stay;
 
       parameter Types.Population hospitalLimit = 1e9;
-
+      parameter Real k_att = 1000 "attentuation factor";
+      Real overflow = (population - hospitalLimit);
+      Types.PopulationChange limitedFlow;
       equation
-        admissionPerMember = if population < hospitalLimit then (
-          changePerPopulationMember*population) else population/t_hospital_stay;
+        limitedFlow = changePerPopulationMember*population/(1 + k_att*max(overflow, 0));
+        admissionPerMember = if overflow < 0 then (
+          changePerPopulationMember*population) else limitedFlow;
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)));
       end HospitalCapacityLimit;
@@ -492,14 +500,15 @@ package Population
     //   Types.PopulationChange sum_b =  sum(changes) "Sum of all outflows";
       parameter Integer num_outflows = 2 "number of outgoing flows";
       parameter Types.Fraction ratios[num_outflows - 1] = {0.5} "division of flows. The last one is given automatically, so that it sums up to one";
-
+      parameter Types.PopulationChangePerMember limitFlow_max = Modelica.Constants.inf "Maximal flow limitation";
+      Types.PopulationChange limitedChange = min(port_a.population*changePerPopulationMember, limitFlow_max) "Already limited flow";
     equation
 
       for i in 1:num_outflows - 1 loop
-        port_b[i].change = - port_a.population*changePerPopulationMember*ratios[i];
+        port_b[i].change = - limitedChange*ratios[i];
       end for;
 
-      port_b[end].change = - port_a.population*changePerPopulationMember*(1 - sum(ratios));
+      port_b[end].change = - limitedChange*(1 - sum(ratios));
 
       port_a.change + sum(port_b[:].change) = 0;
 
