@@ -1434,8 +1434,8 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
      extends Icons.ElasticBalloon;
-     extends SteadyStates.Interfaces.SteadyState(
-                                        state_start=volume_start);
+    //  extends SteadyStates.Interfaces.SteadyState(
+    //                                     state_start=volume_start);
       Interfaces.HydraulicPort_a
                            q_in
                             annotation (Placement(
@@ -1485,7 +1485,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
             rotation=270,
             origin={80,80})));
 
-      Types.RealIO.VolumeOutput volume      annotation (Placement(transformation(
+      Types.RealIO.VolumeOutput volume(start = volume_start, fixed = true)      annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
             rotation=270,
             origin={0,-100}), iconTransformation(
@@ -1522,8 +1522,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       //Collapsing state: the max function prevents the zero or negative input to logarithm, the logarithm brings more negative pressure for smaller volume
       //However this collapsing is limited with numerical precission, which is reached relatively soon.
 
-      state = volume; // der(volume) =  q_in.q;
-      change = q_in.q;
+      der(volume) =  q_in.q;
      // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
