@@ -1651,6 +1651,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model IdealValve
       extends Interfaces.OnePort;
+      parameter Boolean useChatteringProtection = false;
+      parameter Physiolibrary.Types.Time chatteringProtectionTime = 0 "Minimal period of time, in which a closed valve stays closed";
+      Physiolibrary.Types.Time lastChange(start = 0);
        Boolean open(start=true) "Switching state";
        Real passableVariable(start=0, final unit="1")
         "Auxiliary variable for actual position on the ideal diode characteristic";
@@ -1689,7 +1692,22 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         gon = _Gon;
         goff = _Goff;
       end if;
-      open = passableVariable > Modelica.Constants.eps;
+      when change(open) then
+        lastChange = time;
+      end when;
+
+      if not useChatteringProtection then
+        open = passableVariable > Modelica.Constants.eps;
+      else
+        if pre(lastChange) + chatteringProtectionTime > time then
+          // under protection
+          open = pre(open);
+        else
+          // protection expired
+          open = passableVariable > Modelica.Constants.eps;
+        end if;
+      end if;
+
       dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
       volumeFlowRate = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
