@@ -230,7 +230,10 @@ defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);  /
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.day)", (1e+6)*(133.322387415)*60*60*24); //osmotic permeability
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/ml", (1e-6)/(133.322387415)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
-defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
+defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));  //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(MPa.s)/m3", (1e-6));  //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(dyn.s)/cm5", (1e-5));  //hydraulic resistance
+
 defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //hydraulic compliance
 defineUnitConversion("m3/Pa", "l/mmHg", (1e+3)*(133.322387415));
 defineUnitConversion("Pa/m3", "mmHg/ml", 1/((1e+6)*(133.322387415)));  //hydraulic elastance
