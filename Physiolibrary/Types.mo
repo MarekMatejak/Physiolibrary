@@ -4227,6 +4227,8 @@ This icon is designed for a <b>signal bus</b> connector.
 
   end TissueBusConnector;
 
+  type Area = Modelica.SIunits.Area (displayUnit="cm2",nominal=1e-6);
+  type Length = Modelica.SIunits.Length (displayUnit="cm",nominal=1e-3);
   type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
   type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
   type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
