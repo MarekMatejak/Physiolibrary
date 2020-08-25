@@ -359,9 +359,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       connect(leftHeart.q_out,arteries. q_in) annotation (Line(
           points={{36,16},{44,16},{44,-36},{24,-36}},
           thickness=1));
-      connect(pressureMeasure.q_in,rightHeart. q_in) annotation (Line(
-          points={{-72,30},{-72,18},{-56,18}},
-          thickness=1));
       connect(pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in)
         annotation (Line(
           points={{-2,30},{-4,30},{-4,60},{32,60},{32,84},{14,84}},
@@ -393,9 +390,6 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       connect(LNormalCO.y, leftStarling.yBase) annotation (Line(
           points={{21,46},{26,46},{26,34}},
           color={0,0,127}));
-      connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
-          points={{-72,30},{-72,18}},
-          thickness=1));
       connect(rightHeart.solutionFlow, rightStarling.y) annotation (Line(
           points={{-46,25},{-46,28},{-46,28}},
           color={0,0,127}));
@@ -408,6 +402,10 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       connect(pressureMeasure1.pressure, leftStarling.u) annotation (Line(
           points={{8,32},{18,32}},
           color={0,0,127}));
+      connect(pressureMeasure.q_in, rightAtrium.q_in) annotation (Line(
+          points={{-72,30},{-72,18}},
+          color={0,0,0},
+          thickness=1));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Text(
               extent={{-82,-80},{80,-100}},
@@ -1523,7 +1521,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       //However this collapsing is limited with numerical precission, which is reached relatively soon.
 
       der(volume) =  q_in.q;
-     // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
+      assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!", AssertionLevel.warning);
      annotation (
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                 100,100}}), graphics={Text(
@@ -1569,8 +1567,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Boolean useHeightInput = false "=true, if height input is used"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.Height H=0
-        "Height of hydrostatic column if useHeightInput=false"
-        annotation (Dialog(enable=not useFlowInput));
+        "Height of hydrostatic column if useHeightInput=false";
 
       Types.RealIO.HeightInput height(start=H)=h if useHeightInput
         "Vertical distance between top and bottom connector"
@@ -1651,7 +1648,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
 
     model IdealValve
       extends Interfaces.OnePort;
-      parameter Boolean useChatteringProtection = false;
+      parameter Boolean useChatteringProtection = false annotation(Evaluate = true);
       parameter Physiolibrary.Types.Time chatteringProtectionTime = 0 "Minimal period of time, in which a closed valve stays closed";
       Physiolibrary.Types.Time lastChange(start = 0);
        Boolean open(start=true) "Switching state";
@@ -1692,7 +1689,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
         gon = _Gon;
         goff = _Goff;
       end if;
-      when change(open) then
+      when useChatteringProtection and change(open) then
         lastChange = time;
       end when;
 
@@ -1846,9 +1843,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     end Reabsorption;
 
     model ElasticMembrane "Interaction between internal and external cavities"
-     extends SteadyStates.Interfaces.SteadyState(
-                                        state_start=volume_start, storeUnit=
-          "ml");
+     // extends SteadyStates.Interfaces.SteadyState(state_start=volume_start);
      extends Icons.InternalElasticBalloon;
       Interfaces.HydraulicPort_a
                            q_int "Internal space"
@@ -1870,9 +1865,9 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       q_int.q + q_ext.q = 0;
       q_int.pressure = (stressedVolume/Compliance) + q_ext.pressure;
       stressedVolume = max(volume-zeroPressureVolume,0);
-      state = volume; // der(volume) =  q_int.q;
-      change = q_int.q;
-      // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
+      der(volume) =  q_int.q;
+
+      assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!", AssertionLevel.warning);
       annotation (        Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>

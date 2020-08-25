@@ -263,8 +263,7 @@ package Osmotic "Please use 'Chemical' library instead!"
     model OsmoticCell "Solvent container"
       extends Icons.OsmoticCell;
       extends SteadyStates.Interfaces.SteadyState(
-                                         state_start=volume_start, storeUnit=
-          "mOsm/l");
+                                         state_start=volume_start);
 
       parameter Integer NumberOfMembraneTypes=1
         "Membrane type is determined by membrane permeabilities for substances.";

@@ -283,9 +283,9 @@ package Thermal
 
     model HeatAccumulation "Accumulating of heat to substance"
       extends Icons.HeatAccumulation;
-      extends SteadyStates.Interfaces.SteadyState(
-                                         state_start=relativeHeat_start, storeUnit=
-          "kcal");
+    //   extends SteadyStates.Interfaces.SteadyState(
+    //                                      state_start=relativeHeat_start, storeUnit=
+    //       "kcal");
       Interfaces.HeatPort_b
                        q_in "Heat inflow/outflow connector"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -331,8 +331,8 @@ package Thermal
       q_in.T=NormalBodyTemperature + relativeHeat/(m*SpecificHeat);
       T = q_in.T;
 
-      state = relativeHeat;  // der(relativeHeat)=q_in.q
-      change = q_in.Q_flow;
+      der(relativeHeat)=q_in.Q_flow;
+
       annotation (Documentation(revisions="<html>
 <p><i>2009-2010</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
