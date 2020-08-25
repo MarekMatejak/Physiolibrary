@@ -1361,10 +1361,10 @@ package Chemical "Please use 'Chemical' library instead!"
           pKc=fill(pKcD, 4),
           pKh=fill(pKhD, 4),
           isDependent=true,
-          dH_HbuANH2(displayUnit="kJ/mol") = fill(dH_HbuDANH2, 4),
-          dHz(displayUnit="kJ/mol") = fill(dHzD, 4),
-          dHc(displayUnit="kJ/mol") = fill(dHcD, 4),
-          dHh(displayUnit="kJ/mol") = fill(dHhD, 4),
+          dH_HbuANH2(each displayUnit="kJ/mol") = fill(dH_HbuDANH2, 4),
+          dHz(each displayUnit="kJ/mol") = fill(dHzD, 4),
+          dHc(each displayUnit="kJ/mol") = fill(dHcD, 4),
+          dHh(each displayUnit="kJ/mol") = fill(dHhD, 4),
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,78},{-4,98}})));
@@ -1378,19 +1378,19 @@ package Chemical "Please use 'Chemical' library instead!"
           pKh=cat(    1,
                       fill(pKhD, 3),
                       fill(pKhO, 1)),
-          dH_HbuANH2(displayUnit="kJ/mol") = cat(
+          dH_HbuANH2(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dH_HbuDANH2, 3),
                     fill(dH_HbuDANH2 - dHo, 1)),
-          dHz(displayUnit="kJ/mol") = cat(
+          dHz(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHzD, 3),
                     fill(dHzO, 1)),
-          dHc(displayUnit="kJ/mol") = cat(
+          dHc(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHcD, 3),
                     fill(dHcO, 1)),
-          dHh(displayUnit="kJ/mol") = cat(
+          dHh(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHhD, 3),
                     fill(dHhO, 1)),
@@ -1407,19 +1407,19 @@ package Chemical "Please use 'Chemical' library instead!"
           pKh=cat(    1,
                       fill(pKhD, 2),
                       fill(pKhO, 2)),
-          dH_HbuANH2(displayUnit="kJ/mol") = cat(
+          dH_HbuANH2(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dH_HbuDANH2, 2),
                     fill(dH_HbuDANH2 - dHo, 2)),
-          dHz(displayUnit="kJ/mol") = cat(
+          dHz(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHzD, 2),
                     fill(dHzO, 2)),
-          dHc(displayUnit="kJ/mol") = cat(
+          dHc(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHcD, 2),
                     fill(dHcO, 2)),
-          dHh(displayUnit="kJ/mol") = cat(
+          dHh(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHhD, 2),
                     fill(dHhO, 2)),
@@ -1436,19 +1436,19 @@ package Chemical "Please use 'Chemical' library instead!"
           pKh=cat(    1,
                       fill(pKhD, 1),
                       fill(pKhO, 3)),
-          dH_HbuANH2(displayUnit="kJ/mol") = cat(
+          dH_HbuANH2(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dH_HbuDANH2, 1),
                     fill(dH_HbuDANH2 - dHo, 3)),
-          dHz(displayUnit="kJ/mol") = cat(
+          dHz(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHzD, 1),
                     fill(dHzO, 3)),
-          dHc(displayUnit="kJ/mol") = cat(
+          dHc(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHcD, 1),
                     fill(dHcO, 3)),
-          dHh(displayUnit="kJ/mol") = cat(
+          dHh(each displayUnit="kJ/mol") = cat(
                     1,
                     fill(dHhD, 1),
                     fill(dHhO, 3)),
@@ -1459,10 +1459,10 @@ package Chemical "Please use 'Chemical' library instead!"
           pKz=fill(pKzO, 4),
           pKc=fill(pKcO, 4),
           pKh=fill(pKhO, 4),
-          dH_HbuANH2(displayUnit="kJ/mol") = fill(dH_HbuDANH2 - dHo, 4),
-          dHz(displayUnit="kJ/mol") = fill(dHzO, 4),
-          dHc(displayUnit="kJ/mol") = fill(dHcO, 4),
-          dHh(displayUnit="kJ/mol") = fill(dHhO, 4),
+          dH_HbuANH2(each displayUnit="kJ/mol") = fill(dH_HbuDANH2 - dHo, 4),
+          dHz(each displayUnit="kJ/mol") = fill(dHzO, 4),
+          dHc(each displayUnit="kJ/mol") = fill(dHcO, 4),
+          dHh(each displayUnit="kJ/mol") = fill(dHhO, 4),
           storeState=storeResults,
           loadStarts=loadStarts)
           annotation (Placement(transformation(extent={{-24,-88},{-4,-68}})));
