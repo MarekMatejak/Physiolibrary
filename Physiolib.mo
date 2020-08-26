@@ -1733,7 +1733,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         extends Modelica.Icons.RotationalSensor;
         extends Interfaces.PartialSubstanceSensor;
 
-        parameter Modelica.SIunits.AmountOfSubstance AmountOfSolutionPer1kgOfSolvent = 55.508
+        parameter Modelica.SIunits.AmountOfSubstance AmountOfSolutionPer1kgOfSolvent = 1
         "Amount of all particles in the solution per one kilogram of solvent";
 
          Modelica.Blocks.Interfaces.RealOutput molality(final unit="mol/kg")
@@ -2745,6 +2745,35 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 <p>Marek Matejak, marek@matfyz.cz </p>
 </html>"));
       end Buffer;
+
+      model SubstanceMassAdapter
+        "Substance flow from mass port to substance port"
+
+        extends Interfaces.PartialSubstanceSensor;
+
+        parameter Real AmountOfSolutionPer1kgOfSolvent = 1
+        "Amount of all particles in the solution per one kilogram of solvent";
+
+        Interfaces.SubstanceMassPort_a port_m "Substance mass fraction port"
+          annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+
+        Modelica.SIunits.AmountOfSubstance ns;
+        Modelica.SIunits.Mass ms, mT;
+      equation
+
+        0=(port_a.q + port_m.m_flow/substanceData.MolarWeight);
+
+
+
+        x=ns / amountOfSolution;
+        port_m.x_mass = ms / mT;
+
+
+        ns*substanceData.MolarWeight = ms;
+        mT*AmountOfSolutionPer1kgOfSolvent = amountOfSolution;
+
+
+      end SubstanceMassAdapter;
     end Sources;
 
     package Interfaces "Chemical interfaces"
@@ -11422,9 +11451,9 @@ type Substances = enumeration(
          parameter Boolean useSubstances = false
           "=true, if substance ports are used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
+                                               // false
 
-        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC + 1] if
-                                                                      useSubstances
+        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC] if useSubstances
           annotation (Placement(transformation(extent={{-104,-40},{-84,40}})));
 
         Types.Pressure p "Relative pressure inside";
@@ -11482,7 +11511,7 @@ type Substances = enumeration(
 
         connect(substance.port_m, fluidAdapter_D.substances[1:Medium.nC-1]) annotation (Line(points={
                 {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
-        connect(substance.port_a, substances) annotation (Line(points={{-54,-14},{-50,
+        connect(substance.port_a, substances[1:Medium.nC-1]) annotation (Line(points={{-54,-14},{-50,
                 -14},{-50,0},{-94,0}},      color={158,66,200}));
         connect(liquidWater.solution, vessel.solution) annotation (Line(points={{-62,-58},
                 {-62,-98},{60,-98}}, color={127,127,0}));
@@ -12287,7 +12316,7 @@ Connector with one flow signal of type Real.
         Physiolib.Fluid.Components.ElasticVessel arteries(
           fluidAdapter_D(solution(T(start=310.15))),
           mass_start(displayUnit="kg") = 1,
-          nHydraulicPorts=2,
+          nHydraulicPorts=3,
           vessel(redeclare package stateOfMatter =
                 Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-8,
@@ -12305,7 +12334,8 @@ Connector with one flow signal of type Real.
           vessel(redeclare package stateOfMatter =
                 Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
-          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-07,
+          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7,
+          useExternalPressureInput=false,
           ExternalPressure=101325.0144354)
           annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
 
@@ -12314,16 +12344,18 @@ Connector with one flow signal of type Real.
           period=60/75,
           amplitude=3.3e-1)
           annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
+        Modelica.Fluid.Pipes.StaticPipe pipe
+          annotation (Placement(transformation(extent={{40,4},{60,24}})));
       equation
         connect(pulse.y, heart.solutionFlow) annotation (Line(
             points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-33}},
             color={0,0,127}));
         connect(heart.q_out, arteries.q_in[1]) annotation (Line(
-            points={{14,-40},{45.7,-40},{45.7,-72.7}},
+            points={{14,-40},{45.7,-40},{45.7,-72.2667}},
             color={127,0,0},
             thickness=0.5));
         connect(resistance.q_out, arteries.q_in[2]) annotation (Line(
-            points={{18,-80},{30,-80},{30,-75.3},{45.7,-75.3}},
+            points={{18,-80},{30,-80},{30,-74},{45.7,-74}},
             color={127,0,0},
             thickness=0.5));
         connect(veins.q_in[1], heart.q_in) annotation (Line(
@@ -12334,6 +12366,12 @@ Connector with one flow signal of type Real.
             points={{-32.3,-75.3},{-18,-75.3},{-18,-80},{-2,-80}},
             color={127,0,0},
             thickness=0.5));
+        connect(heart.q_out, pipe.port_a) annotation (Line(
+            points={{14,-40},{26,-40},{26,14},{40,14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pipe.port_b, arteries.q_in[3]) annotation (Line(points={{60,14},
+                {86,14},{86,-75.7333},{45.7,-75.7333}}, color={0,127,255}));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics={                          Text(
                 extent={{-40,-12},{80,-22}},
@@ -20986,7 +21024,7 @@ input <i>u</i>:
 
   package Examples
     model DialysisMembrane
-      import             Physiolib;
+      import Physiolib;
       // import SystemModelingInModelica.Interfaces;
      // import SystemModelingInModelica;
 
@@ -21059,13 +21097,22 @@ input <i>u</i>:
       Physiolib.Chemical.Components.Membrane membrane[BloodPlasma.nC](KC=KC)
         annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
       Fluid.Components.ElasticVessel elasticVessel(useSubstances=true,
-          nHydraulicPorts=2) annotation (Placement(transformation(
+          nHydraulicPorts=5) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-68,-4})));
       Fluid.Components.ElasticVessel elasticVessel1(useSubstances=true,
           nHydraulicPorts=2)
         annotation (Placement(transformation(extent={{66,-14},{86,6}})));
+      Modelica.Fluid.Sensors.TraceSubstances traceSubstance(redeclare package
+          Medium = BloodPlasma, substanceName="CO2")
+        annotation (Placement(transformation(extent={{-42,30},{-22,50}})));
+      Modelica.Fluid.Sensors.MassFractions massFraction
+        annotation (Placement(transformation(extent={{-38,68},{-18,88}})));
+      Modelica.Fluid.Sensors.Pressure pressure
+        annotation (Placement(transformation(extent={{-76,54},{-56,74}})));
+      Modelica.Fluid.Sensors.Density density
+        annotation (Placement(transformation(extent={{-78,24},{-58,44}})));
     protected
       parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
       parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
@@ -21081,10 +21128,11 @@ input <i>u</i>:
       end for;
       connect(dialysate_in, dialysate_pipe.port_a)
         annotation (Line(points={{60,100},{94,100},{94,58}}, color={0,127,255}));
-      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,
-              -48},{-82,-48},{-82,-5.3},{-67.7,-5.3}}, color={0,127,255}));
-      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},{
-              -86,100},{-86,-4},{-67.7,-4},{-67.7,-2.7}}, color={0,127,255}));
+      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,-48},
+              {-82,-48},{-82,-6.08},{-67.7,-6.08}},    color={0,127,255}));
+      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},
+              {-86,100},{-86,-4},{-67.7,-4},{-67.7,-5.04}},
+                                                          color={0,127,255}));
       connect(membrane.port_b, elasticVessel1.substances)
         annotation (Line(points={{12,-4},{66.6,-4}}, color={158,66,200}));
       connect(elasticVessel1.q_in[1], dialysate_pipe.port_b) annotation (Line(
@@ -21095,6 +21143,14 @@ input <i>u</i>:
               {76,-100},{76,-30},{75.7,-30},{75.7,-5.3}}, color={0,127,255}));
       connect(elasticVessel.substances, membrane.port_a) annotation (Line(points={{-58.6,
               -4},{-8,-4}},                    color={158,66,200}));
+      connect(traceSubstance.port, blood_out) annotation (Line(points={{-32,30},
+              {-46,30},{-46,100},{-60,100}}, color={0,127,255}));
+      connect(pressure.port, elasticVessel.q_in[3]) annotation (Line(points={{
+              -66,54},{-86,54},{-86,-4},{-67.7,-4}}, color={0,127,255}));
+      connect(density.port, elasticVessel.q_in[4]) annotation (Line(points={{
+              -68,24},{-86,24},{-86,-2.96},{-67.7,-2.96}}, color={0,127,255}));
+      connect(massFraction.port, elasticVessel.q_in[5]) annotation (Line(points=
+             {{-28,68},{-86,68},{-86,-1.92},{-67.7,-1.92}}, color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
               Rectangle(
               extent={{-100,100},{0,-100}},
@@ -21135,7 +21191,7 @@ input <i>u</i>:
       parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 23998.0297347 "Initial blood pressure";
       parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 78660.20857485 "Initial dialysate pressure";
 
-      parameter Modelica.SIunits.VolumeFlowRate ExpectedBloodFlow(displayUnit="ml/min") = 5e-06;
+      parameter Modelica.SIunits.VolumeFlowRate ExpectedBloodFlow(displayUnit="ml/min") = 5000;
 
       DialysisMembrane                                            dialysis[N](
         each InitialPlasma=PlasmaSubstances,
@@ -21193,9 +21249,8 @@ input <i>u</i>:
         redeclare package Medium = Dialysate,
         p=InitialDialysatePressure,
         use_p_in=true,
-        T=310.15,
-        C=DialysateSubstances)
-                  annotation (Placement(transformation(
+        C=DialysateSubstances,
+        T=310.15) annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={48,46})));
@@ -21239,6 +21294,160 @@ input <i>u</i>:
             coordinateSystem(preserveAspectRatio=false)),
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
+
+    model DialysisMembrane2
+      import Physiolib;
+      // import SystemModelingInModelica.Interfaces;
+     // import SystemModelingInModelica;
+
+      replaceable package BloodPlasma =
+          Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+          "Medium model of blood plasma"
+         annotation (choicesAllMatching=true);
+
+      replaceable package Dialysate =
+          Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+          "Medium model of dialysate"
+         annotation (choicesAllMatching=true);
+        //  SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+
+     parameter Modelica.SIunits.Length Length(displayUnit="mm")=0.02 "Length of each pipe";
+     parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
+     parameter Integer NParallel=50 "Number of paralel pipes";
+
+     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nC](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
+
+     parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nC](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
+     parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nC](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
+
+     parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 0 "Initial relative blood pressure";
+     parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 0 "Initial relative dialysate pressure";
+     parameter Modelica.SIunits.Pressure AmbientPressure(displayUnit="mmHg") = 101325.0144354 "Ambient pressure";
+
+     parameter Modelica.SIunits.Temperature InitialTemperature = 273.15 + 37 "Initial temperature";
+
+     /*parameter Modelica.SIunits.VolumeFlowRate WaterClearance(displayUnit="ml/min")= 1e-06 "Water clearance";
+ parameter Modelica.SIunits.VolumeFlowRate NaClearance(displayUnit="ml/min")= 1e-06 "Sodium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate BicClearance(displayUnit="ml/min")= 1e-06 "Bicarbonate clearance";
+ parameter Modelica.SIunits.VolumeFlowRate KClearance(displayUnit="ml/min")= 1e-06 "Potasium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate GluClearance(displayUnit="ml/min")= 1e-06 "Glucose clearance";
+ parameter Modelica.SIunits.VolumeFlowRate UreaClearance(displayUnit="ml/min")= 1e-06 "Urea clearance";
+ parameter Modelica.SIunits.VolumeFlowRate ClClearance(displayUnit="ml/min")= 1e-06 "Chloride clearance";
+ parameter Modelica.SIunits.VolumeFlowRate CaClearance(displayUnit="ml/min")= 1e-06 "Calcium clearance";
+ parameter Modelica.SIunits.VolumeFlowRate MgClearance(displayUnit="ml/min")= 1e-06 "Magnesium clearance";
+*/
+
+      Modelica.Fluid.Pipes.StaticPipe blood_pipe(
+        redeclare package Medium = BloodPlasma,
+        nParallel=NParallel,
+        length=Length,
+        diameter=Diameter) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={-94,-58})));
+      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
+            BloodPlasma)
+        annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
+            BloodPlasma)
+        annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
+
+      Fluid.Components.ElasticVessel elasticVessel(useSubstances=true,
+          nHydraulicPorts=2) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-68,-4})));
+    protected
+      parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
+      parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
+      parameter Real KC[BloodPlasma.nC] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
+    equation
+      connect(blood_pipe.port_a, blood_in)
+        annotation (Line(points={{-94,-68},{-94,-100},{-60,-100}}, color={0,127,255}));
+
+
+      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,
+              -48},{-82,-48},{-82,-5.3},{-67.7,-5.3}}, color={0,127,255}));
+      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},{
+              -86,100},{-86,-4},{-67.7,-4},{-67.7,-2.7}}, color={0,127,255}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+              Rectangle(
+              extent={{-100,100},{0,-100}},
+              lineColor={255,255,0},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.VerticalCylinder), Rectangle(
+              extent={{0,100},{100,-100}},
+              lineColor={255,255,0},
+              fillPattern=FillPattern.VerticalCylinder,
+              fillColor={28,108,200})}), Diagram(coordinateSystem(
+              preserveAspectRatio=false)));
+    end DialysisMembrane2;
+
+    model Glomerulus
+      replaceable package Medium =
+          Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+          "Medium model of blood plasma and filtrate"
+         annotation (choicesAllMatching=true);
+
+
+      Fluid.Sources.UnlimitedVolume unlimitedVolume
+        annotation (Placement(transformation(extent={{-90,16},{-70,36}})));
+      Fluid.Components.Pump GFR
+        annotation (Placement(transformation(extent={{70,16},{90,36}})));
+      Fluid.Sources.UnlimitedVolume unlimitedVolume1
+        annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
+      Chemical.Components.FluidAdapter_C fluidAdapter_C(nFluidPorts=1) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-54,26})));
+      Chemical.Components.FluidAdapter_C fluidAdapter_C1(nFluidPorts=1)
+        annotation (Placement(transformation(extent={{44,16},{64,36}})));
+      Chemical.Components.Membrane membrane[Medium.nC]
+        annotation (Placement(transformation(extent={{-12,16},{8,36}})));
+      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter[Medium.nC](
+          substanceData=medium.substanceData)
+        annotation (Placement(transformation(extent={{-40,16},{-20,36}})));
+      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter1[Meduim.nC](
+          substanceData=Medium.substanceData) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={24,26})));
+      Chemical.Components.Solution solution
+        annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
+    equation
+      connect(unlimitedVolume.y, fluidAdapter_C.fluidPorts[1]) annotation (Line(
+          points={{-70,26},{-64,26}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(unlimitedVolume1.y, GFR.q_out) annotation (Line(
+          points={{86,-12},{94,-12},{94,26},{90,26}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(GFR.q_in, fluidAdapter_C1.fluidPorts[1]) annotation (Line(
+          points={{70,26},{64,26}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(substanceMassAdapter.port_m, fluidAdapter_C.substances)
+        annotation (Line(points={{-40,26},{-44,26}}, color={105,44,133}));
+      connect(substanceMassAdapter.port_a, membrane.port_a)
+        annotation (Line(points={{-20,26},{-12,26}}, color={158,66,200}));
+      connect(substanceMassAdapter1.port_m, fluidAdapter_C1.substances)
+        annotation (Line(points={{34,26},{44,26}}, color={105,44,133}));
+      connect(membrane.port_b, substanceMassAdapter1.port_a)
+        annotation (Line(points={{8,26},{14,26}}, color={158,66,200}));
+      connect(fluidAdapter_C.solution, solution.solution) annotation (Line(
+            points={{-50,29},{-50,-98},{60,-98}}, color={127,127,0}));
+      connect(fluidAdapter_C1.solution, solution.solution) annotation (Line(
+            points={{50,23},{50,-98},{60,-98}}, color={127,127,0}));
+      connect(substanceMassAdapter[1].solution, solution.solution) annotation (
+          Line(points={{-36,16},{-36,-98},{60,-98},{60,-98}}, color={127,127,0}));
+      connect(substanceMassAdapter1[1].solution, solution.solution) annotation (
+         Line(points={{30,36},{30,-98},{60,-98}}, color={127,127,0}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Glomerulus;
   end Examples;
 
   annotation (
