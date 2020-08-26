@@ -1232,8 +1232,8 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
         outer Modelica.Fluid.System system "System wide properties";
 
-        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C
-        "Medium model"   annotation (choicesAllMatching=true);
+        replaceable package Medium = Chemical.Examples.Media.StandardWater_C
+        "Medium model"   annotation (choicesAllMatching=true);               //.SimpleBodyFluid_C
 
         package StateOfMatter = Medium.stateOfMatter
         "State of matter of each chemical substance" annotation (choicesAllMatching = true);
@@ -2035,7 +2035,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       model PureSubstance "Constant source of pure substance"
         extends Interfaces.PartialSubstance;
 
-        outer Modelica.Fluid.System system "System wide properties";
+
 
         parameter Modelica.SIunits.Temperature Temperature=system.T_ambient "Temperature";
         parameter Modelica.SIunits.Pressure Pressure=system.p_ambient "Pressure";
@@ -2045,6 +2045,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         "Ionic strength";
         parameter Real OtherProperties[stateOfMatter.OtherPropertiesCount]=zeros(stateOfMatter.OtherPropertiesCount)
         "Other extensive properties of the solution";
+
 
       equation
         x = 1;
@@ -2096,8 +2097,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       "Ideal gas substance with defined partial pressure"
         extends Interfaces.PartialSubstance(redeclare package stateOfMatter =
               Interfaces.IdealGas);
-
-        outer Modelica.Fluid.System system "System wide properties";
 
         parameter Boolean usePartialPressureInput = false
         "=true, if fixed partial pressure is from input instead of parameter"
@@ -2189,8 +2188,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       model ExternalMolality "Constant source of substance molality"
         extends Interfaces.PartialSubstance;
 
-        outer Modelica.Fluid.System system "System wide properties";
-
          parameter Real Molality(final unit="mol/kg") = 1e-8
         "Fixed molality of the substance if useMolalityInput=false"
           annotation (HideResult=true, Dialog(enable=not useMolalityInput));
@@ -2273,7 +2270,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       model ExternalConcentration "Constant source of molar concentration"
          extends Interfaces.PartialSubstance;
 
-         outer Modelica.Fluid.System system "System wide properties";
 
          parameter Real MolarConcentration(final unit="mol/m3", displayUnit="mol/l") = 1e-8
         "Fixed molarity of the substance if useMolarityInput=false"
@@ -2356,7 +2352,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       model ExternalMoleFraction "Constant source of substance mole fraction"
            extends Interfaces.PartialSubstance;
 
-         outer Modelica.Fluid.System system "System wide properties";
 
          parameter Modelica.SIunits.MoleFraction MoleFraction = 1e-8
         "Fixed mole fraction of the substance if useMoleFractionInput=false"
@@ -2984,6 +2979,8 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         "Activity of the substance (mole-fraction based)";
 
       protected
+        outer Modelica.Fluid.System system "System wide properties";
+
         Modelica.SIunits.ActivityCoefficient gamma
         "Activity coefficient of the substance";
 
@@ -5275,7 +5272,7 @@ Modelica source.
         package SimpleBodyFluid_C
         extends Modelica.Media.Water.StandardWater(
            extraPropertiesNames={"Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others","H2O"},
-           singleState=true, T_default=310.15, X_default=ones(nX));
+           singleState=true, T_default=310.15, X_default=ones(nX), C_default={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6,913});
 
          replaceable package stateOfMatter =
                                 Chemical.Interfaces.Incompressible constrainedby
@@ -5284,7 +5281,6 @@ Modelica source.
            annotation (choicesAllMatching = true);
 
         // Provide medium constants here
-        constant Modelica.SIunits.Concentration C_default[nC-1]={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6}; //50769,
         constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
         constant Modelica.SIunits.Density default_density=1000; //50769,
 
@@ -5335,7 +5331,7 @@ type Substances = enumeration(
         package StandardWater_C
         extends Modelica.Media.Water.StandardWater(
            extraPropertiesNames={"H2O"},
-           singleState=true, T_default=310.15, X_default=ones(nX));
+           singleState=true, T_default=310.15, X_default=ones(nX),  C_default={1000});
 
          replaceable package stateOfMatter =
                                 Chemical.Interfaces.Incompressible
@@ -5344,7 +5340,6 @@ type Substances = enumeration(
            annotation (choicesAllMatching = true);
 
         // Provide medium constants here
-        constant Real C_default[nC]={1000};
         constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
 
         /*
@@ -5362,7 +5357,7 @@ type Substances = enumeration(
         package EthanolInWater_C
         extends Modelica.Media.Water.StandardWater(
            extraPropertiesNames={"H2O","C2H5OH"},
-           singleState=true, T_default=310.15, X_default=ones(nX));
+           singleState=true, T_default=310.15, X_default=ones(nX), C_default={500,500});
 
          replaceable package stateOfMatter =
                                 Chemical.Interfaces.Incompressible
@@ -5371,8 +5366,8 @@ type Substances = enumeration(
            annotation (choicesAllMatching = true);
 
         // Provide medium constants here
-        constant Real C_default[nC]={500,500};
         constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
+        constant Modelica.SIunits.Density default_density=1000;
 
         /*
 type Substances = enumeration(
@@ -11341,8 +11336,10 @@ type Substances = enumeration(
           "Mass start value" annotation (Dialog(group="Initialization"));
                                                     //e-8                            //default = 1e-5 g
         parameter Physiolib.Types.Concentration concentration_start[Medium.nC]=
-        cat(1, Medium.C_default, {(density_start - Medium.substanceData.MolarWeight[1:Medium.nC-1]*Medium.C_default)/Medium.substanceData.MolarWeight[Medium.nC]})
+           Medium.C_default
           "Initial molar concentrations" annotation (Dialog(group="Initialization"));
+       // cat(1, Medium.C_default, {(density_start - Medium.substanceData.MolarWeight[1:Medium.nC-1]*Medium.C_default)/Medium.substanceData.MolarWeight[Medium.nC]})
+
            //= cat(1, q, {4});        // Vector append OK, result is {1, 2, 3, 4}
 
          parameter Boolean useV0Input = false
@@ -12316,7 +12313,7 @@ Connector with one flow signal of type Real.
         Physiolib.Fluid.Components.ElasticVessel arteries(
           fluidAdapter_D(solution(T(start=310.15))),
           mass_start(displayUnit="kg") = 1,
-          nHydraulicPorts=3,
+          nHydraulicPorts=2,
           vessel(redeclare package stateOfMatter =
                 Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-8,
@@ -12344,18 +12341,16 @@ Connector with one flow signal of type Real.
           period=60/75,
           amplitude=3.3e-1)
           annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
-        Modelica.Fluid.Pipes.StaticPipe pipe
-          annotation (Placement(transformation(extent={{40,4},{60,24}})));
       equation
         connect(pulse.y, heart.solutionFlow) annotation (Line(
             points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-33}},
             color={0,0,127}));
         connect(heart.q_out, arteries.q_in[1]) annotation (Line(
-            points={{14,-40},{45.7,-40},{45.7,-72.2667}},
+            points={{14,-40},{45.7,-40},{45.7,-72.7}},
             color={127,0,0},
             thickness=0.5));
         connect(resistance.q_out, arteries.q_in[2]) annotation (Line(
-            points={{18,-80},{30,-80},{30,-74},{45.7,-74}},
+            points={{18,-80},{30,-80},{30,-75.3},{45.7,-75.3}},
             color={127,0,0},
             thickness=0.5));
         connect(veins.q_in[1], heart.q_in) annotation (Line(
@@ -12366,12 +12361,6 @@ Connector with one flow signal of type Real.
             points={{-32.3,-75.3},{-18,-75.3},{-18,-80},{-2,-80}},
             color={127,0,0},
             thickness=0.5));
-        connect(heart.q_out, pipe.port_a) annotation (Line(
-            points={{14,-40},{26,-40},{26,14},{40,14}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(pipe.port_b, arteries.q_in[3]) annotation (Line(points={{60,14},
-                {86,14},{86,-75.7333},{45.7,-75.7333}}, color={0,127,255}));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics={                          Text(
                 extent={{-40,-12},{80,-22}},
@@ -21096,22 +21085,20 @@ input <i>u</i>:
 
       Physiolib.Chemical.Components.Membrane membrane[BloodPlasma.nC](KC=KC)
         annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
-      Fluid.Components.ElasticVessel elasticVessel(useSubstances=true,
-          nHydraulicPorts=5) annotation (Placement(transformation(
+      Fluid.Components.ElasticVessel elasticVessel(
+        redeclare package Medium = BloodPlasma,    useSubstances=true,
+          nHydraulicPorts=4) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-68,-4})));
       Fluid.Components.ElasticVessel elasticVessel1(useSubstances=true,
           nHydraulicPorts=2)
         annotation (Placement(transformation(extent={{66,-14},{86,6}})));
-      Modelica.Fluid.Sensors.TraceSubstances traceSubstance(redeclare package
-          Medium = BloodPlasma, substanceName="CO2")
-        annotation (Placement(transformation(extent={{-42,30},{-22,50}})));
-      Modelica.Fluid.Sensors.MassFractions massFraction
-        annotation (Placement(transformation(extent={{-38,68},{-18,88}})));
-      Modelica.Fluid.Sensors.Pressure pressure
+      Modelica.Fluid.Sensors.Pressure pressure(redeclare package Medium =
+            BloodPlasma)
         annotation (Placement(transformation(extent={{-76,54},{-56,74}})));
-      Modelica.Fluid.Sensors.Density density
+      Modelica.Fluid.Sensors.Density density(redeclare package Medium =
+            BloodPlasma)
         annotation (Placement(transformation(extent={{-78,24},{-58,44}})));
     protected
       parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
@@ -21129,9 +21116,9 @@ input <i>u</i>:
       connect(dialysate_in, dialysate_pipe.port_a)
         annotation (Line(points={{60,100},{94,100},{94,58}}, color={0,127,255}));
       connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,-48},
-              {-82,-48},{-82,-6.08},{-67.7,-6.08}},    color={0,127,255}));
+              {-82,-48},{-82,-5.95},{-67.7,-5.95}},    color={0,127,255}));
       connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},
-              {-86,100},{-86,-4},{-67.7,-4},{-67.7,-5.04}},
+              {-86,100},{-86,-4},{-67.7,-4},{-67.7,-4.65}},
                                                           color={0,127,255}));
       connect(membrane.port_b, elasticVessel1.substances)
         annotation (Line(points={{12,-4},{66.6,-4}}, color={158,66,200}));
@@ -21143,14 +21130,10 @@ input <i>u</i>:
               {76,-100},{76,-30},{75.7,-30},{75.7,-5.3}}, color={0,127,255}));
       connect(elasticVessel.substances, membrane.port_a) annotation (Line(points={{-58.6,
               -4},{-8,-4}},                    color={158,66,200}));
-      connect(traceSubstance.port, blood_out) annotation (Line(points={{-32,30},
-              {-46,30},{-46,100},{-60,100}}, color={0,127,255}));
-      connect(pressure.port, elasticVessel.q_in[3]) annotation (Line(points={{
-              -66,54},{-86,54},{-86,-4},{-67.7,-4}}, color={0,127,255}));
-      connect(density.port, elasticVessel.q_in[4]) annotation (Line(points={{
-              -68,24},{-86,24},{-86,-2.96},{-67.7,-2.96}}, color={0,127,255}));
-      connect(massFraction.port, elasticVessel.q_in[5]) annotation (Line(points=
-             {{-28,68},{-86,68},{-86,-1.92},{-67.7,-1.92}}, color={0,127,255}));
+      connect(pressure.port, elasticVessel.q_in[3]) annotation (Line(points={{-66,54},
+              {-86,54},{-86,-3.35},{-67.7,-3.35}},   color={0,127,255}));
+      connect(density.port, elasticVessel.q_in[4]) annotation (Line(points={{-68,24},
+              {-86,24},{-86,-2.05},{-67.7,-2.05}},         color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
               Rectangle(
               extent={{-100,100},{0,-100}},
@@ -21396,19 +21379,21 @@ input <i>u</i>:
         annotation (Placement(transformation(extent={{70,16},{90,36}})));
       Fluid.Sources.UnlimitedVolume unlimitedVolume1
         annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
-      Chemical.Components.FluidAdapter_C fluidAdapter_C(nFluidPorts=1) annotation (
+      Chemical.Components.FluidAdapter_C fluidAdapter_C(redeclare package Medium =
+            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C,                                                                        nFluidPorts=1) annotation (
           Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-54,26})));
-      Chemical.Components.FluidAdapter_C fluidAdapter_C1(nFluidPorts=1)
+      Chemical.Components.FluidAdapter_C fluidAdapter_C1(redeclare package Medium =
+            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C,                                                                         nFluidPorts=1)
         annotation (Placement(transformation(extent={{44,16},{64,36}})));
-      Chemical.Components.Membrane membrane[Medium.nC]
+      Chemical.Components.Membrane membrane[Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C.nC]
         annotation (Placement(transformation(extent={{-12,16},{8,36}})));
-      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter[Medium.nC](
-          substanceData=medium.substanceData)
+      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter[Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C.nC](
+          substanceData=Medium.substanceData)
         annotation (Placement(transformation(extent={{-40,16},{-20,36}})));
-      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter1[Meduim.nC](
+      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter1[Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C.nC](
           substanceData=Medium.substanceData) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -21416,6 +21401,8 @@ input <i>u</i>:
             origin={24,26})));
       Chemical.Components.Solution solution
         annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
+      inner Modelica.Fluid.System system(T_ambient=310.15)
+        annotation (Placement(transformation(extent={{-48,60},{-28,80}})));
     equation
       connect(unlimitedVolume.y, fluidAdapter_C.fluidPorts[1]) annotation (Line(
           points={{-70,26},{-64,26}},
@@ -21456,11 +21443,11 @@ version="0.1",
 versionBuild=1,
 versionDate="2017-10-21",
 dateModified = "2017-10-21 17:14:41Z",
-uses(Modelica(version="3.2.2"),
+uses(
   Documentation(revisions="<html>
 <p>Copyright (c) 2017-2018, Marek Matej&aacute;k </p>
 <p>All rights reserved. </p>
-</html>")),
+</html>"), Modelica(version="3.2.3")),
     Documentation(info="<html>
 <p>Initial release for testing.</p>
 </html>"));
