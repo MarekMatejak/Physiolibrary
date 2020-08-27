@@ -1567,7 +1567,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
       parameter Boolean useHeightInput = false "=true, if height input is used"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
       parameter Types.Height H=0
-        "Height of hydrostatic column if useHeightInput=false";
+        "Height of hydrostatic column if useHeightInput=false" annotation (Dialog(enable=not useHeightInput));
 
       Types.RealIO.HeightInput height(start=H)=h if useHeightInput
         "Vertical distance between top and bottom connector"
