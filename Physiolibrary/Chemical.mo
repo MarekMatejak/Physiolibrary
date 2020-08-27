@@ -4358,7 +4358,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
       parameter Types.Fraction Dilution=1
         "Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false"
-        annotation (Dialog(enable=not useSolventFlow));
+        annotation (Dialog(enable=not useDilutionInput));
 
       Types.RealIO.FractionInput dilution(start=Dilution)= d if useDilutionInput
         "Fraction of final undilutes solution"
