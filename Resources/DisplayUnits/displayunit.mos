@@ -255,6 +255,7 @@ defineUnitConversion("Pa.s2/kg", "mmHg.s2/g", (1/133.322387415)*(1e-3));
 defineUnitConversion("N/m2","bar",1/1e5);
 
 // Volume Flow Rate
+defineUnitConversion("m3/s", "l/s", 1e3);
 defineUnitConversion("m3/s", "l/min", 1e3*60);
 defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
 defineUnitConversion("m3/s", "l/day", 1e3*60*60*24);

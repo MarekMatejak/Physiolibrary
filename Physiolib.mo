@@ -1232,8 +1232,11 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
         outer Modelica.Fluid.System system "System wide properties";
 
-        replaceable package Medium = Chemical.Examples.Media.StandardWater_C
-        "Medium model"   annotation (choicesAllMatching=true);               //.SimpleBodyFluid_C
+        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+        "Medium model"   annotation (choicesAllMatching=true);               //= Chemical.Examples.Media.SimpleAir_C
+        //Chemical.Examples.Media.StandardWater_C                            //Chemical.Examples.Media.SimpleAir_C
+                                     //Chemical.Examples.Media.StandardWater_C
+                                                                             //.SimpleBodyFluid_C
 
         package StateOfMatter = Medium.stateOfMatter
         "State of matter of each chemical substance" annotation (choicesAllMatching = true);
@@ -2964,7 +2967,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       SubstancePort_a port_a "The substance"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-        replaceable package stateOfMatter = Incompressible                    constrainedby
+        replaceable package stateOfMatter =
           StateOfMatter
         "Substance model to translate data into substance properties"
            annotation (choicesAllMatching = true);
@@ -3179,6 +3182,22 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 
        constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
+
+       replaceable function density
+        "Return density of the substance in the solution"
+          extends Modelica.Icons.Function;
+          input SubstanceData substanceData "Data record of substance";
+          input Modelica.SIunits.Temperature T=298.15 "Temperature";
+          input Modelica.SIunits.Pressure p=100000 "Pressure";
+          input Modelica.SIunits.ElectricPotential v=0
+          "Electric potential of the substance";
+          input Modelica.SIunits.MoleFraction I=0
+          "Ionic strengh (mole fraction based)";
+          input Real r[OtherPropertiesCount]=zeros(OtherPropertiesCount)
+          "Other extensive properties of the solution";
+          output Modelica.SIunits.Density density "Density";
+       end density;
+
 
        replaceable function activityCoefficient
         "Return activity coefficient of the substance in the solution"
@@ -3460,6 +3479,12 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
          constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
 
+       redeclare function extends density
+        "Return density of the substance in the solution"
+       algorithm
+           density := substanceData.MolarWeight * p / (Modelica.Constants.R * T);
+       end density;
+
        redeclare function extends activityCoefficient
         "Return activity coefficient of the substance in the solution"
        algorithm
@@ -3551,6 +3576,12 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 <p>Marek Matejak, marek@matfyz.cz </p>
 </html>"));
        end SubstanceData;
+
+       redeclare function extends density
+       "Return density of the substance in the solution"
+       algorithm
+          density := substanceData.MolarWeight * p / (Modelica.Constants.R * T);
+       end density;
 
        constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
@@ -3696,6 +3727,12 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
        constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
 
+       redeclare function extends density
+        "Return density of the substance in the solution"
+       algorithm
+           density := substanceData.density;
+       end density;
+
        redeclare function extends activityCoefficient
         "Return activity coefficient of the substance in the solution"
        algorithm
@@ -3823,8 +3860,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         "Mole-fraction based ionic strength of the substance (fictive flow to calculate total extensive property in solution as sum from all substances)";
 
         //suport for structural properties
-        replaceable package stateOfMatter = Incompressible                    constrainedby
-          StateOfMatter
+        replaceable package stateOfMatter = StateOfMatter
         "Substance model to translate data into substance properties"
            annotation (choicesAllMatching = true);
 
@@ -5266,6 +5302,17 @@ Modelica source.
           S2 = Chemical.Interfaces.IdealGasShomate.molarEntropyPure(
             Chemical.Examples.Substances.Oxygen_gas_Shomate_200_5000(), T);
         end OxygenGasOnTemperature;
+
+        record Nitrogen_gas "N2(g)"
+         extends Chemical.Interfaces.IdealGas.SubstanceData(
+            MolarWeight=0.0280134,
+            DfH=0,
+            DfG=0,
+            Cp=29.1,
+            References={
+                "http://www.vias.org/genchem/standard_enthalpies_table.html", "https://webbook.nist.gov/cgi/cbook.cgi?ID=C7727379&Type=JANAFG&Plot=on"});
+          annotation (preferredView = "info");
+        end Nitrogen_gas;
       end Substances;
 
       package Media
@@ -5381,6 +5428,97 @@ type Substances = enumeration(
         annotation (choicesAllMatching = true);
 
         end EthanolInWater_C;
+
+        package SimpleAir_C
+          extends Modelica.Media.Air.SimpleAir(
+           extraPropertiesNames={"O2","CO2","H2O","Others"},
+           T_default=310.15, X_default=ones(nX), C_default={21,0.04,2,76.96});
+
+         /* extends Modelica.Media.IdealGases.Common.MixtureGasNasa(
+     mediumName="MoistAir",
+     data={
+       Modelica.Media.IdealGases.Common.SingleGasesData.O2,
+       Modelica.Media.IdealGases.Common.SingleGasesData.CO2,
+       Modelica.Media.IdealGases.Common.SingleGasesData.H2O,
+       Modelica.Media.IdealGases.Common.SingleGasesData.Air},
+     fluidConstants={
+       Modelica.Media.IdealGases.Common.FluidData.O2,
+       Modelica.Media.IdealGases.Common.FluidData.CO2,
+       Modelica.Media.IdealGases.Common.FluidData.H2O,
+       Modelica.Media.IdealGases.Common.FluidData.N2},
+     substanceNames = {
+       "O2",
+       "CO2",
+       "H2O",
+       "Others"},
+     reference_X={
+       0.21,
+       0.0004,
+       0.02,
+       0.7696},
+     extraPropertiesNames={
+       "O2",
+       "CO2",
+       "H2O",
+       "Others"},
+     T_default=310.15,
+     X_default={
+       0.21,
+       0.0004,
+       0.02,
+       0.7696},
+     C_default={
+       21,
+       0.04,
+       2,
+       76.96});
+
+*/
+
+         replaceable package stateOfMatter =
+                                Chemical.Interfaces.IdealGas constrainedby
+            Chemical.Interfaces.StateOfMatter
+          "Substance model to translate data into substance properties"
+           annotation (choicesAllMatching = true);
+        // Provide medium constants here
+        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
+        constant Modelica.SIunits.Density default_density=1.14;
+
+          constant stateOfMatter.SubstanceData substanceData[nC] = {
+          Chemical.Examples.Substances.Oxygen_gas(),
+          Chemical.Examples.Substances.CarbonDioxide_gas(),
+          Chemical.Examples.Substances.Water_gas(),
+          Chemical.Examples.Substances.Nitrogen_gas()}
+        "Definition of the substances"
+        annotation (choicesAllMatching = true);
+
+
+
+        end SimpleAir_C;
+
+        package SimpleO2Gas_C
+          extends Modelica.Media.Air.SimpleAir(
+           extraPropertiesNames={"O2"},
+           T_default=310.15, X_default=ones(nX), C_default={1.14});
+
+
+         replaceable package stateOfMatter =
+                                Chemical.Interfaces.IdealGas constrainedby
+            Chemical.Interfaces.StateOfMatter
+          "Substance model to translate data into substance properties"
+           annotation (choicesAllMatching = true);
+        // Provide medium constants here
+        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
+        constant Modelica.SIunits.Density default_density=1.14;
+
+          constant stateOfMatter.SubstanceData substanceData[nC] = {
+          Chemical.Examples.Substances.Oxygen_gas()}
+        "Definition of the substances"
+        annotation (choicesAllMatching = true);
+
+
+
+        end SimpleO2Gas_C;
       end Media;
 
       model SimpleReaction
@@ -11244,6 +11382,67 @@ type Substances = enumeration(
 <p>Demonstration of compatibility with FluidPort from Modelica Standard Library.</p>
 </html>"));
       end FluidAdapter2_0;
+
+      model FluidAdapterGas
+       extends Modelica.Icons.Example;
+
+       package Medium = Chemical.Examples.Media.SimpleO2Gas_C;
+
+        inner Modelica.Fluid.System system
+          annotation (Placement(transformation(extent={{-82,66},{-62,86}})));
+        Components.FluidAdapter_C        fluidConversion1(
+          substanceData={Substances.Oxygen_gas()},
+          redeclare package Medium = Medium,
+          nFluidPorts=1)
+          annotation (Placement(transformation(extent={{-50,-2},{-30,18}})));
+        Chemical.Components.Solution leftSolution(redeclare package
+            stateOfMatter =
+              Interfaces.IdealGas, BasePressure=110000)
+          annotation (Placement(transformation(extent={{-96,-20},{-26,40}})));
+        Components.Substance O2_left(
+          redeclare package stateOfMatter = Interfaces.IdealGas,
+          substanceData=Substances.Oxygen_gas(),
+          amountOfSubstance_start=3)
+          annotation (Placement(transformation(extent={{-80,-2},{-60,18}})));
+        Chemical.Components.Solution rightSolution(redeclare package
+            stateOfMatter =
+              Interfaces.IdealGas, temperature_start=299.15)
+          annotation (Placement(transformation(extent={{24,-20},{98,42}})));
+        Components.Substance O2_right(
+          redeclare package stateOfMatter = Interfaces.IdealGas,
+          substanceData=Substances.Oxygen_gas(),
+          amountOfSubstance_start=1)
+          annotation (Placement(transformation(extent={{84,-2},{64,18}})));
+        Components.FluidAdapter_C        fluidConversion2(
+          substanceData={Substances.Oxygen_gas()},
+          redeclare package Medium = Medium,
+          nFluidPorts=1)
+          annotation (Placement(transformation(extent={{56,-2},{36,18}})));
+        Modelica.Fluid.Pipes.StaticPipe pipe1(
+          length=1,
+          diameter=0.005,
+          redeclare package Medium = Medium)
+          annotation (Placement(transformation(extent={{-10,-2},{10,18}})));
+      equation
+        connect(fluidConversion1.solution, leftSolution.solution) annotation (Line(
+              points={{-44,5},{-44,-8},{-40,-8},{-40,-19.4}}, color={127,127,0}));
+        connect(O2_left.solution, leftSolution.solution) annotation (Line(
+              points={{-76,-2},{-76,-8},{-40,-8},{-40,-19.4}}, color={127,127,0}));
+        connect(fluidConversion2.solution, rightSolution.solution) annotation (Line(
+              points={{50,5},{50,-8},{80,-8},{80,-20},{83.2,-20},{83.2,-19.38}},
+              color={127,127,0}));
+        connect(O2_right.solution, rightSolution.solution) annotation (Line(
+              points={{80,-2},{80,-19.38},{83.2,-19.38}}, color={127,127,0}));
+        connect(fluidConversion1.fluidPorts[1], pipe1.port_a) annotation (Line(points=
+               {{-30,8},{-20,8},{-20,8},{-10,8}}, color={0,127,255}));
+        connect(pipe1.port_b, fluidConversion2.fluidPorts[1])
+          annotation (Line(points={{10,8},{36,8}}, color={0,127,255}));
+        connect(O2_left.port_m, fluidConversion1.substances[1]) annotation (
+            Line(points={{-59.8,-2},{-54,-2},{-54,8},{-50,8}}, color={0,0,0}));
+        connect(fluidConversion2.substances[1], O2_right.port_m) annotation (
+            Line(points={{56,8},{60,8},{60,-2},{63.8,-2}}, color={0,0,0}));
+        annotation (    experiment(StopTime=31));
+      end FluidAdapterGas;
     end Examples;
     annotation (
   preferredView="info",
@@ -11316,8 +11515,9 @@ type Substances = enumeration(
        //       volume_start, storeUnit="ml");
 
         replaceable package Medium =
-            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+            Modelica.Media.Interfaces.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
+            //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
         parameter Integer nHydraulicPorts=0 "Number of hydraulic ports"
           annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
@@ -11432,7 +11632,9 @@ type Substances = enumeration(
 
 
         parameter Modelica.SIunits.Density ro_T = MM * concentration_start;
-        parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.substanceData.density) * n_start;
+        parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.stateOfMatter.density(Medium.substanceData))  * n_start;
+
+        //parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.substanceData.density) * n_start;
 
         parameter Modelica.SIunits.Concentration conc_start[Medium.nC] = n_start ./ V_T;
 
@@ -11440,7 +11642,7 @@ type Substances = enumeration(
 
       public
         Chemical.Components.Substance2 substance[Medium.nC - 1](
-          redeclare package stateOfMatter = Chemical.Interfaces.Incompressible,
+          redeclare package stateOfMatter = Medium.stateOfMatter,
           substanceData=Medium.substanceData[1:Medium.nC - 1],
           amountOfSubstance_start=n_start[1:Medium.nC - 1])
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
@@ -11974,8 +12176,9 @@ Connector with one flow signal of type Real.
 
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
-            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+            Modelica.Media.Interfaces.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
+            //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
 
         FluidPort_a q_in(redeclare package Medium = Medium) "Inflow"
@@ -12033,7 +12236,7 @@ Connector with one flow signal of type Real.
       extends Modelica.Icons.SensorsPackage;
       model FlowMeasure "Volumetric flow between ports"
         extends Physiolib.Fluid.Interfaces.OnePort;
-        //extends Icons.FlowMeasure;
+       // extends Icons.FlowMeasure;
         extends Modelica.Icons.RotationalSensor;
 
         Physiolib.Types.RealIO.MassFlowRateOutput massFlow
@@ -12044,9 +12247,28 @@ Connector with one flow signal of type Real.
               extent={{-20,-20},{20,20}},
               rotation=90,
               origin={0,120})));
+
+        Physiolib.Types.VolumeFlowRate volumeInflowRate,volumeOutflowRate;
+
+      protected
+        Medium.ThermodynamicState state_inflow "state for medium inflowing through q_in";
+        Medium.ThermodynamicState state_outflow "state for medium outflowing through q_out";
+
+        Modelica.SIunits.Density density_inflow, density_outflow;
       equation
+
         q_out.p = q_in.p;
         massFlow = q_in.m_flow;
+
+        // medium states
+        state_inflow = Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow));
+        state_outflow = Medium.setState_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow));
+
+        density_inflow = Medium.density(state_inflow);
+        density_outflow = Medium.density(state_outflow);
+
+        volumeInflowRate = massFlow/density_inflow;
+        volumeOutflowRate = massFlow/density_outflow;
         annotation (
           Documentation(revisions="<html>
 <p><i>2009-2018</i></p>
@@ -12054,12 +12276,6 @@ Connector with one flow signal of type Real.
 </html>"),       Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}),
                                graphics={
-              Line(
-                points={{-60,80},{80,80},{62,60}},
-                color={0,0,255}),
-              Line(
-                points={{62,100},{80,80}},
-                color={0,0,255}),
               Text(
                 extent={{-25,-11},{34,-70}},
                 lineColor={0,0,0},
@@ -12070,8 +12286,10 @@ Connector with one flow signal of type Real.
         extends Physiolib.Icons.PressureMeasure;
 
         replaceable package Medium =
-          Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C "Medium model"
+          Modelica.Media.Interfaces.PartialMedium
+          "Medium model"
           annotation (choicesAllMatching=true);
+          //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
         outer Modelica.Fluid.System system "System wide properties";
 
@@ -12079,7 +12297,9 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
         Physiolib.Types.RealIO.PressureOutput pressure "Pressure"
           annotation (Placement(transformation(extent={{40,-60},{80,-20}})));
+
       equation
+
         pressure = q_in.p - system.p_ambient;
         q_in.m_flow = 0;
 
@@ -12162,8 +12382,9 @@ Connector with one flow signal of type Real.
         model UnlimitedVolume "Prescribed pressure at port"
 
           replaceable package Medium =
-              Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+              Modelica.Media.Interfaces.PartialMedium
           "Medium model"   annotation (choicesAllMatching=true);
+              //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
           outer Modelica.Fluid.System system "System wide properties";
 
@@ -12178,7 +12399,7 @@ Connector with one flow signal of type Real.
           Physiolib.Types.RealIO.PressureInput pressure(start=P)=p if
           usePressureInput "Pressure"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-        Physiolib.Fluid.Interfaces.FluidPort_a y
+          Physiolib.Fluid.Interfaces.FluidPort_a y(redeclare package Medium = Medium)
           "PressureFlow output connectors"
           annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
@@ -12304,6 +12525,78 @@ Connector with one flow signal of type Real.
     package Examples
       "Examples that demonstrate usage of the Pressure flow components"
     extends Modelica.Icons.ExamplesPackage;
+
+      model MinimalRespiration "Minimal respiration model"
+        extends Modelica.Icons.Example;
+
+        import Modelica.SIunits.*;
+
+
+        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
+        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+
+        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+
+        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
+        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
+              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
+
+        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
+          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
+
+        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
+
+        Physiolib.Fluid.Components.ElasticVessel lungs(
+          mass_start=1.6,
+          ZeroPressureVolume=ResidualVolume,
+          Compliance=TotalCompliance,
+          useExternalPressureInput=true,
+          nHydraulicPorts=2) "Lungs"
+          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
+        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure "Lungs pressure"
+          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
+        inner Modelica.Fluid.System system "External environment setting"
+          annotation (Placement(transformation(extent={{60,66},{80,86}})));
+        Physiolib.Fluid.Components.Conductor pathways(Conductance=
+              TotalConductance) "Lungs pathways"
+          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
+        Physiolib.Fluid.Sources.UnlimitedVolume environment "External environment"
+          annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
+        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure "Lungs pathway airflow"
+          annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
+      equation
+        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
+          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
+        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
+          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
+        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
+            points={{40,-10},{40,-10.7},{-6.3,-10.7}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
+            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
+            points={{-82,-14},{-58,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_in, environment.y) annotation (Line(
+            points={{-102,-14},{-138,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
+                  {100,100}})),                                        Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
+          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+          Documentation(info="<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+      end MinimalRespiration;
 
       model MinimalCirculation
         "Minimal circulation models driven by cardiac output"
@@ -13827,6 +14120,173 @@ Connector with one flow signal of type Real.
 </html>"));
       end MeursModel2011;
 
+      model MinimalRespirationAir "Minimal respiration model"
+        extends Modelica.Icons.Example;
+
+        import Modelica.SIunits.*;
+
+        replaceable package Air = Physiolib.Chemical.Examples.Media.SimpleAir_C;
+
+        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
+        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+
+        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+
+        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
+        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
+              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
+
+        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
+          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
+
+        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
+
+        Physiolib.Fluid.Components.ElasticVessel lungs(
+          redeclare package Medium = Air,
+          mass_start=1.6,
+          ZeroPressureVolume=ResidualVolume,
+          Compliance=TotalCompliance,
+          useExternalPressureInput=true,
+          nHydraulicPorts=2) "Lungs"
+          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
+
+        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
+          redeclare package Medium = Air) "Lungs pressure"
+          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
+
+        inner Modelica.Fluid.System system "External environment setting"
+          annotation (Placement(transformation(extent={{60,66},{80,86}})));
+
+        Physiolib.Fluid.Components.Conductor pathways(
+          redeclare package Medium = Air,
+              Conductance=TotalConductance) "Lungs pathways"
+          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
+
+        Physiolib.Fluid.Sources.UnlimitedVolume environment(
+          redeclare package Medium = Air)    "External environment"
+          annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
+
+        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(
+          redeclare package Medium = Air) "Lungs pathway airflow"
+          annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
+
+      equation
+        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
+          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
+        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
+            points={{40,-10},{40,-10.7},{-6.3,-10.7}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
+            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
+            points={{-82,-14},{-58,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_in, environment.y) annotation (Line(
+            points={{-102,-14},{-138,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
+          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
+                  {100,100}})),                                        Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
+          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+          Documentation(info="<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+      end MinimalRespirationAir;
+
+      model MinimalRespirationAir2 "Minimal respiration model"
+        extends Modelica.Icons.Example;
+
+        import Modelica.SIunits.*;
+
+        replaceable package Air = Physiolib.Chemical.Examples.Media.SimpleAir_C;
+
+        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
+        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+
+        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+
+        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
+        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
+              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
+
+        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
+          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
+
+        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
+
+        Physiolib.Fluid.Components.ElasticVessel lungs(
+          redeclare package Medium = Air,
+          mass_start=1.6,
+          ZeroPressureVolume=ResidualVolume,
+          Compliance=TotalCompliance,
+          useExternalPressureInput=true,
+          nHydraulicPorts=2) "Lungs"
+          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
+
+        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
+          redeclare package Medium = Air) "Lungs pressure"
+          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
+
+        inner Modelica.Fluid.System system "External environment setting"
+          annotation (Placement(transformation(extent={{60,66},{80,86}})));
+
+        Physiolib.Fluid.Components.Conductor pathways(
+          redeclare package Medium = Air,
+              Conductance=TotalConductance) "Lungs pathways"
+          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
+
+        Physiolib.Fluid.Sources.UnlimitedVolume environment(
+          redeclare package Medium = Air)    "External environment"
+          annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
+
+        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(
+          redeclare package Medium = Air) "Lungs pathway airflow"
+          annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
+
+      equation
+        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
+          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
+        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
+          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
+        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
+            points={{40,-10},{40,-10.7},{-6.3,-10.7}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
+            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
+            points={{-82,-14},{-58,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(airflowMeasure.q_in, environment.y) annotation (Line(
+            points={{-102,-14},{-138,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
+                  {100,100}})),                                        Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
+          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+          Documentation(info="<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+      end MinimalRespirationAir2;
     end Examples;
   end Fluid;
 
