@@ -11480,11 +11480,22 @@ type Substances = enumeration(
               origin={0,60})));
       protected
          Physiolib.Types.HydraulicConductance c;
+
+         Modelica.SIunits.Density density;//, density_outflow;
       equation
+
         if not useConductanceInput then
           c=Conductance;
         end if;
-        q_in.m_flow = c * (q_in.p - q_out.p);
+        q_in.m_flow = (c * (q_in.p  - q_out.p)) * density;
+
+
+        // medium density
+        density = if ((q_in.p  - q_out.p) >=0)  then
+         Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
+         else
+         Medium.density(Medium.setState_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow)));
+
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                   -100,-100},{100,100}}),
                          graphics={Text(
@@ -11529,8 +11540,8 @@ type Substances = enumeration(
               rotation=180,
               origin={-3,0})));
 
-        parameter Physiolib.Types.Density density_start=Medium.default_density
-          "Density start value" annotation (Dialog(group="Initialization"));
+       // parameter Physiolib.Types.Density density_start=Medium.default_density
+       //   "Density start value" annotation (Dialog(group="Initialization"));
 
         parameter Physiolib.Types.Mass mass_start=1
           "Mass start value" annotation (Dialog(group="Initialization"));
@@ -11708,10 +11719,17 @@ type Substances = enumeration(
         connect(vessel.fluidMass, mass) annotation (Line(points={{100,-80},{110,-80}},
                           color={0,0,127}));
 
-        connect(substance.port_m, fluidAdapter_D.substances[1:Medium.nC-1]) annotation (Line(points={
+        for i in 1:Medium.nC-1 loop
+          connect(substance[i].port_m, fluidAdapter_D.substances[i]) annotation (Line(points={
                 {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
-        connect(substance.port_a, substances[1:Medium.nC-1]) annotation (Line(points={{-54,-14},{-50,
+          connect(substance[i].port_a, substances[i]) annotation (Line(points={{-54,-14},{-50,
                 -14},{-50,0},{-94,0}},      color={158,66,200}));
+        end for;
+
+      //  connect(substance.port_m, fluidAdapter_D.substances[1:Medium.nC-1]) annotation (Line(points={
+      //          {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
+      //  connect(substance.port_a, substances[1:Medium.nC-1]) annotation (Line(points={{-54,-14},{-50,
+      //          -14},{-50,0},{-94,0}},      color={158,66,200}));
         connect(liquidWater.solution, vessel.solution) annotation (Line(points={{-62,-58},
                 {-62,-98},{60,-98}}, color={127,127,0}));
         connect(substances[Medium.nC], liquidWater.port_a) annotation (Line(points={{-94,0},{-42,
@@ -12046,6 +12064,49 @@ type Substances = enumeration(
 </html>"));
       end Reabsorption;
 
+      model VolumeConductor
+        "Hydraulic resistor, where conductance=1/resistance"
+       extends Physiolib.Fluid.Interfaces.OnePort;
+
+       extends Physiolib.Icons.HydraulicResistor;
+
+        parameter Boolean useConductanceInput = false
+          "=true, if external conductance value is used"
+          annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
+
+        parameter Physiolib.Types.HydraulicConductance Conductance=0
+          "Hydraulic conductance if useConductanceInput=false"
+          annotation (Dialog(enable=not useConductanceInput));
+
+        Physiolib.Types.RealIO.HydraulicConductanceInput cond(start=
+              Conductance)=c if useConductanceInput annotation (Placement(
+              transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={0,60})));
+      protected
+         Physiolib.Types.HydraulicConductance c;
+      equation
+        if not useConductanceInput then
+          c=Conductance;
+        end if;
+        q_in.m_flow = c * (q_in.p - q_out.p);
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                  -100,-100},{100,100}}),
+                         graphics={Text(
+                extent={{-220,-40},{200,-80}},
+                lineColor={127,0,0},
+                fillColor={58,117,175},
+                fillPattern=FillPattern.Solid,
+                textString="%name")}),
+          Documentation(revisions="<html>
+<p><i>2017-2018</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>",   info="<html>
+<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
+</html>"));
+      end VolumeConductor;
     end Components;
 
     package Interfaces
@@ -14127,13 +14188,16 @@ Connector with one flow signal of type Real.
 
         replaceable package Air = Physiolib.Chemical.Examples.Media.SimpleAir_C;
 
-        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
-        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+        parameter Frequency RespirationRate=0.2                        "Respiration rate";
+        parameter Volume ResidualVolume=0.0013                    "Lungs residual volume";
 
-        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+        parameter Volume FunctionalResidualCapacity=0.00231                    "Functional residual capacity";
+        parameter Physiolib.Types.HydraulicConductance TotalConductance=
+            5.0004105056377e-06                                                                                           "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance=
+            6.0004926067653e-07                                                                                  "Total lungs compliance";
 
-        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmin=-1000                      "Relative external lungs pressure minimum caused by respiratory muscles";
         parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
         parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
               system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
@@ -14146,8 +14210,8 @@ Connector with one flow signal of type Real.
 
         Physiolib.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Air,
-          mass_start=1.6,
-          ZeroPressureVolume=ResidualVolume,
+          mass_start=0.0133,
+          ZeroPressureVolume=FunctionalResidualCapacity,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
           nHydraulicPorts=2) "Lungs"
@@ -14157,7 +14221,8 @@ Connector with one flow signal of type Real.
           redeclare package Medium = Air) "Lungs pressure"
           annotation (Placement(transformation(extent={{34,-14},{54,6}})));
 
-        inner Modelica.Fluid.System system "External environment setting"
+        inner Modelica.Fluid.System system(T_ambient=310.15)
+                                           "Human body system setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
         Physiolib.Fluid.Components.Conductor pathways(
@@ -14166,13 +14231,19 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
 
         Physiolib.Fluid.Sources.UnlimitedVolume environment(
-          redeclare package Medium = Air)    "External environment"
+          redeclare package Medium = Air, T=263.15)
+                                             "External environment"
           annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
 
         Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(
           redeclare package Medium = Air) "Lungs pathway airflow"
           annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
 
+        Modelica.Blocks.Sources.Sine sine(
+          amplitude=(Pmax - Pmin)/2,
+          freqHz=RespirationRate,
+          offset=system.p_ambient + (Pmax + Pmin)/2)
+          annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
       equation
         connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
           annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
@@ -14192,8 +14263,8 @@ Connector with one flow signal of type Real.
             points={{-102,-14},{-138,-14}},
             color={127,0,0},
             thickness=0.5));
-        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
-          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
+        connect(sine.y, lungs.externalPressure)
+          annotation (Line(points={{-59,34},{2,34},{2,-2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
                   {100,100}})),                                        Diagram(
               coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
@@ -14204,20 +14275,24 @@ Connector with one flow signal of type Real.
 </html>"));
       end MinimalRespirationAir;
 
-      model MinimalRespirationAir2 "Minimal respiration model"
+      model MinimalRespirationIncompressibleMedium
+        "Minimal respiration model"
         extends Modelica.Icons.Example;
 
         import Modelica.SIunits.*;
 
-        replaceable package Air = Physiolib.Chemical.Examples.Media.SimpleAir_C;
+        replaceable package Air =
+            Physiolib.Chemical.Examples.Media.StandardWater_C;
 
-        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
-        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+        parameter Frequency RespirationRate=0.2                        "Respiration rate";
+        parameter Volume ResidualVolume=0.0013                    "Lungs residual volume";
 
-        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+        parameter Physiolib.Types.HydraulicConductance TotalConductance=
+            5.0004105056377e-06                                                                                              "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance=
+            6.0004926067653e-07                                                                                  "Total lungs compliance";
 
-        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmin=-1000                      "Relative external lungs pressure minimum caused by respiratory muscles";
         parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
         parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
               system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
@@ -14230,7 +14305,7 @@ Connector with one flow signal of type Real.
 
         Physiolib.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Air,
-          mass_start=1.6,
+          mass_start=1.4,
           ZeroPressureVolume=ResidualVolume,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
@@ -14257,11 +14332,14 @@ Connector with one flow signal of type Real.
           redeclare package Medium = Air) "Lungs pathway airflow"
           annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
 
+        Modelica.Blocks.Sources.Sine sine(
+          amplitude=(Pmax - Pmin)/2,
+          freqHz=RespirationRate,
+          offset=system.p_ambient + (Pmax + Pmin)/2)
+          annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
       equation
         connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
           annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
-        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
-          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
         connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
             points={{40,-10},{40,-10.7},{-6.3,-10.7}},
             color={127,0,0},
@@ -14278,6 +14356,8 @@ Connector with one flow signal of type Real.
             points={{-102,-14},{-138,-14}},
             color={127,0,0},
             thickness=0.5));
+        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
+          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
                   {100,100}})),                                        Diagram(
               coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
@@ -14286,7 +14366,7 @@ Connector with one flow signal of type Real.
 <p>References:</p>
 <p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
 </html>"));
-      end MinimalRespirationAir2;
+      end MinimalRespirationIncompressibleMedium;
     end Examples;
   end Fluid;
 
@@ -20507,8 +20587,8 @@ constructed by the signals connected to this bus.
     type pH =       Real(final quantity="pH",final unit="1",final displayUnit="1", nominal=7, min=0, max=14);
     type OsmoticPermeability = Real(final quantity="OsmoticPermeability",final unit="m3/(Pa.s)", displayUnit="ml/(mmHg.min)", nominal=(1e-6)/((133.322387415)*60), min=0);
     type DiffusionPermeability = Real(final quantity="DiffusionPermeability", final unit="m3/s", displayUnit="ml/min", nominal=(1e-6)/60, min=0);
-    type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="kg/(Pa.s)", displayUnit="g/(mmHg.min)", nominal=(1e-3)/((133.322387415)*60), min=0);
-    type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/kg", displayUnit="(mmHg.min)/g", nominal=(1e+3)*(133.322387415)*60, min=0);
+    type HydraulicConductance = Real(final quantity="HydraulicConductance",final unit="m3/(Pa.s)", displayUnit="l/(mmHg.min)", nominal=(1e-3)/((133.322387415)*60), min=0);
+    type HydraulicResistance = Real(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/l", nominal=(1e+3)*(133.322387415)*60, min=0);
     type HydraulicCompliance =  Real(final quantity="HydraulicCompliance",final unit="m3/Pa", displayUnit="ml/mmHg", nominal=(1e-6)/(133.322387415));
     type HydraulicElastance = Real(final quantity="HydraulicElastance",final unit="Pa/m3", displayUnit="mmHg/ml", nominal=(133.322387415)/(1e-6));
     type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/kg", displayUnit="mmHg.min2/g", nominal=((133.322387415)*(60^2)/(1e-3)));
