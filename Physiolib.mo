@@ -14188,17 +14188,17 @@ Connector with one flow signal of type Real.
 
         replaceable package Air = Physiolib.Chemical.Examples.Media.SimpleAir_C;
 
-        parameter Frequency RespirationRate=0.2                        "Respiration rate";
-        parameter Volume ResidualVolume=0.0013                    "Lungs residual volume";
+        parameter Frequency RespirationRate(displayUnit="1/min")=0.2                                             "Respiration rate";
+        parameter Volume ResidualVolume(displayUnit="l")=0.0013                                     "Lungs residual volume";
 
-        parameter Volume FunctionalResidualCapacity=0.00231                    "Functional residual capacity";
-        parameter Physiolib.Types.HydraulicConductance TotalConductance=
-            5.0004105056377e-06                                                                                           "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance=
-            6.0004926067653e-07                                                                                  "Total lungs compliance";
+        parameter Volume FunctionalResidualCapacity(displayUnit="l")=0.00231                                     "Functional residual capacity";
+        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="l/(mmHg.min)")=
+           5.0004105056377e-06                                                                                            "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=
+           6.0004926067653e-07                                                                                   "Total lungs compliance";
 
-        parameter Pressure Pmin=-1000                      "Relative external lungs pressure minimum caused by respiratory muscles";
-        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
+        parameter Pressure Pmin(displayUnit="kPa")=-1000                        "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="kPa")=0     "Relative external lungs pressure maximum";
         parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
               system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
 
@@ -14368,6 +14368,55 @@ Connector with one flow signal of type Real.
 </html>"));
       end MinimalRespirationIncompressibleMedium;
     end Examples;
+
+    package ComplianceModels
+      "Flow models for vessel compliances - Pressure-Volume relation"
+      extends Modelica.Icons.Package;
+          partial model PartialComplianceModel
+            "Base class for compliance models"
+            import Modelica.SIunits.*;
+
+            Volume volume "current volume";
+            Pressure pressure "current pressure";
+
+            annotation (Documentation(info="<html>
+<p>
+This partial model defines a common interface for compliance models as pressure-volume relationship in elastic compartement.
+</p>
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics={Line(
+                points={{-80,-50},{-80,50},{80,-50},{80,50}},
+                color={0,0,255},
+                thickness=1), Text(
+                extent={{-40,-50},{40,-90}},
+                textString="%name")}));
+          end PartialComplianceModel;
+
+      model LinearCompliance "Linear compliance model"
+        extends PartialComplianceModel;
+
+      equation
+
+        annotation (Documentation(info="<html>
+<p>
+This model defines a simple linear pressure - volume relationship.
+</p>
+</html>"));
+      end LinearCompliance;
+
+      model LungsCompliance "Lungs compliance model"
+        extends PartialComplianceModel;
+
+      equation
+
+        annotation (Documentation(info="<html>
+<p>
+This model defines a simple lungs pressure-volume relationship.
+https://pulse.kitware.com/_respiratory_methodology.html
+</p>
+</html>"));
+      end LungsCompliance;
+    end ComplianceModels;
   end Fluid;
 
   package Thermal
