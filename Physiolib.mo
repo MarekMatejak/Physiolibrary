@@ -1383,6 +1383,21 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         extends Physiolib.Chemical.Interfaces.PartialSolutionWithInputs(T(start=
                 temperature_start), p(start=ExternalPressure));
 
+         parameter Physiolib.Types.HydraulicCompliance Compliance=1e+3
+          "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false"
+          annotation (Dialog(enable=not useComplianceInput));
+
+         parameter Physiolib.Types.Volume FunctionalResidualCapacity = 1e-11 "Zero pressure volume for linear compliance model. Maximal fluid volume, that does not generate pressure if useV0Input=false"
+          annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
+
+          parameter Physiolib.Types.AbsolutePressure ExternalPressure=101325
+          "External absolute pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
+          annotation (Dialog(enable=not useExternalPressureInput));
+
+
+         parameter Physiolib.Types.Volume ResidualVolume = 1e-9  "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model";
+
+
 
          Physiolib.Types.Volume excessVolume
           "Additional fluid volume, that generate pressure";
@@ -1391,12 +1406,8 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "=true, if zero-pressure-fluid_volume input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-         parameter Physiolib.Types.Volume ZeroPressureVolume=1e-11
-          "Maximal fluid volume, that does not generate pressure if useV0Input=false"
-          annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
 
-         parameter Physiolib.Types.Volume CollapsingPressureVolume=1e-9
-          "Maximal fluid volume, which generate negative collapsing pressure"; //default = 1e-6 ml
+
 
          Physiolib.Types.RealIO.VolumeInput zeroPressureVolume(start=
               ZeroPressureVolume)=zpv if useV0Input annotation (Placement(
@@ -1410,9 +1421,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         parameter Boolean useComplianceInput = false
           "=true, if compliance input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.HydraulicCompliance Compliance=1e+3
-          "Compliance if useComplianceInput=false"
-          annotation (Dialog(enable=not useComplianceInput));
+
 
         Physiolib.Types.RealIO.HydraulicComplianceInput compliance(start=
               Compliance)=c if useComplianceInput annotation (Placement(
@@ -1426,9 +1435,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         parameter Boolean useExternalPressureInput = false
           "=true, if external pressure input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.AbsolutePressure ExternalPressure=101325
-          "External absolute pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
-          annotation (Dialog(enable=not useExternalPressureInput));
+
         parameter Physiolib.Types.Pressure MinimalCollapsingPressure=0;
         Physiolib.Types.RealIO.PressureInput externalPressure(start=
               ExternalPressure)=ep if useExternalPressureInput annotation (
@@ -1451,12 +1458,35 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 
         Physiolib.Types.Pressure relative_pressure "Relative pressure inside";
 
+
+
+
+        parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs"
+           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Computational model"));
+
+
+         parameter Physiolib.Types.Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance"
+           annotation (Dialog(enable=useSigmoidCompliance));
+         parameter Physiolib.Types.Volume BaseTidalVolume = 0.000543 "Base value of tidal volume"
+           annotation (Dialog(enable=useSigmoidCompliance));
+
+
+
+
+
+
       protected
         Physiolib.Types.Volume zpv;
         Physiolib.Types.Pressure ep;
         Physiolib.Types.HydraulicCompliance c;
+
         parameter Physiolib.Types.Pressure a=MinimalCollapsingPressure/log(
             Modelica.Constants.eps);
+
+        parameter Physiolib.Types.Volume BaseMeanVolume = FunctionalResidualCapacity + BaseTidalVolume/2  "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
+        Physiolib.Types.Pressure d_sigmoid = (BaseMeanVolume-ResidualVolume) * (VitalCapacity-(BaseMeanVolume-ResidualVolume)) / (c*VitalCapacity);
+        Physiolib.Types.Pressure c_sigmoid = (BaseMeanVolume-FunctionalResidualCapacity)/c + d_sigmoid*log((VitalCapacity/(BaseMeanVolume-ResidualVolume) - 1));
+
 
 
       //initial equation
@@ -1465,7 +1495,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 
         //elastic compartment
         if not useV0Input then
-          zpv=ZeroPressureVolume;
+          zpv=FunctionalResidualCapacity;
         end if;
         if not useComplianceInput then
           c=Compliance;
@@ -1478,11 +1508,23 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         relative_pressure = p - ep;
 
         p =
-          smooth(0,
-            if noEvent(volume>CollapsingPressureVolume) then
-              (excessVolume/c + ep)
-            else
-              (a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)) + ep));
+        if ( not useSigmoidCompliance) then
+              smooth(0,
+                if noEvent(volume>ResidualVolume) then
+                  (excessVolume/c + ep)
+                else
+                  (a*log(max(Modelica.Constants.eps,volume/ResidualVolume)))) + ep
+                else   -d_sigmoid*log((VitalCapacity/(volume-ResidualVolume))-1)+c_sigmoid + ep;
+
+
+        /*
+    smooth(0,
+      if noEvent(volume>CollapsingPressureVolume) then 
+        (excessVolume/c + ep)
+      else 
+        (a*log(max(Modelica.Constants.eps,volume/CollapsingPressureVolume)) + ep));
+*/
+
 
         workFromEnvironment = -p*der(volume);
                             //  (((der(excessMass)*c-excessMass*der(c))/(c*c)) + der(ep))*volume +
@@ -5317,61 +5359,37 @@ Modelica source.
 
       package Media
         package SimpleBodyFluid_C
+
         extends Modelica.Media.Water.StandardWater(
            extraPropertiesNames={"Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others","H2O"},
            singleState=true, T_default=310.15, X_default=ones(nX), C_default={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6,913});
 
          replaceable package stateOfMatter =
-                                Chemical.Interfaces.Incompressible constrainedby
-            Chemical.Interfaces.StateOfMatter
+                                Chemical.Interfaces.Incompressible
+            constrainedby Chemical.Interfaces.StateOfMatter
           "Substance model to translate data into substance properties"
            annotation (choicesAllMatching = true);
 
         // Provide medium constants here
         constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
-        constant Modelica.SIunits.Density default_density=1000; //50769,
+        constant Modelica.SIunits.Density default_density=1000;
 
 
-
-        /*
-type Substances = enumeration(
-  
-      Na "Sodium",
-      Bic
-         "Bicarbonate",
-      K  "Potassium",
-      Glu
-         "Glucose",
-      Urea
-         "Urea",
-      Cl "Chloride",
-      Ca "Calcium",
-      Mg "Magnesium",
-      Alb
-         "Albumin",
-      Glb
-         "Globulins",
-      Others
-      "Unknown uncharged non-permeble substances",
-      H2O
-         "Water",);
-*/
           constant stateOfMatter.SubstanceData substanceData[nC] = {
           Chemical.Examples.Substances.Sodium_aqueous(),
-          Chemical.Examples.Substances.Bicarbonate_aqueous(),
-          Chemical.Examples.Substances.Potassium_aqueous(),
-          Chemical.Examples.Substances.Glucose_solid(),
-          Chemical.Examples.Substances.Urea_aqueous(),
-          Chemical.Examples.Substances.Chloride_aqueous(),
-          Chemical.Examples.Substances.Calcium_aqueous(),
-          Chemical.Examples.Substances.Magnesium_aqueous(),
-          Chemical.Examples.Substances.Albumin_aqueous(),
-          Chemical.Examples.Substances.Globulins_aqueous(),
-          Chemical.Examples.Substances.Water_liquid(),
-          Chemical.Examples.Substances.Water_liquid()}
+                Chemical.Examples.Substances.Bicarbonate_aqueous(),
+                Chemical.Examples.Substances.Potassium_aqueous(),
+                Chemical.Examples.Substances.Glucose_solid(),
+                Chemical.Examples.Substances.Urea_aqueous(),
+                Chemical.Examples.Substances.Chloride_aqueous(),
+                Chemical.Examples.Substances.Calcium_aqueous(),
+                Chemical.Examples.Substances.Magnesium_aqueous(),
+                Chemical.Examples.Substances.Albumin_aqueous(),
+                Chemical.Examples.Substances.Globulins_aqueous(),
+                Chemical.Examples.Substances.Water_liquid(),
+                Chemical.Examples.Substances.Water_liquid()}
         "Definition of the substances"
         annotation (choicesAllMatching = true);
-
 
         end SimpleBodyFluid_C;
 
@@ -11526,9 +11544,11 @@ type Substances = enumeration(
        //       volume_start, storeUnit="ml");
 
         replaceable package Medium =
-            Modelica.Media.Interfaces.PartialMedium
+             Modelica.Media.Interfaces.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
-            //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+       // Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+
+           // Modelica.Media.Interfaces.PartialMedium
 
         parameter Integer nHydraulicPorts=0 "Number of hydraulic ports"
           annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
@@ -11595,6 +11615,17 @@ type Substances = enumeration(
         parameter Physiolib.Types.AbsolutePressure ExternalPressure=101325
           "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
           annotation (Dialog(enable=not useExternalPressureInput));
+
+        parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs"
+           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Computational model"));
+
+
+         parameter Physiolib.Types.Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance"
+           annotation (Dialog(enable=useSigmoidCompliance));
+         parameter Physiolib.Types.Volume BaseTidalVolume = 0.000543 "Base value of tidal volume"
+           annotation (Dialog(enable=useSigmoidCompliance));
+
+
         parameter Physiolib.Types.AbsolutePressure MinimalCollapsingPressure=10;
         Physiolib.Types.RealIO.PressureInput externalPressure(start=
               ExternalPressure) if useExternalPressureInput annotation (
@@ -11628,11 +11659,14 @@ type Substances = enumeration(
           useComplianceInput=useComplianceInput,
           useExternalPressureInput=useExternalPressureInput,
           stateOfMatter=Medium.stateOfMatter,
-          ZeroPressureVolume=ZeroPressureVolume,
-          CollapsingPressureVolume=CollapsingPressureVolume,
+          FunctionalResidualCapacity=ZeroPressureVolume,
+          ResidualVolume=CollapsingPressureVolume,
           Compliance=Compliance,
           ExternalPressure=ExternalPressure,
-          MinimalCollapsingPressure=MinimalCollapsingPressure)
+          MinimalCollapsingPressure=MinimalCollapsingPressure,
+          useSigmoidCompliance=useSigmoidCompliance,
+          VitalCapacity=VitalCapacity,
+          BaseTidalVolume=BaseTidalVolume)
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
       //protected
@@ -11751,6 +11785,8 @@ type Substances = enumeration(
 <li>Otherwise external pressure is presented as pressure inside ElasticVessel.</li>
 </ul>
 <p><br><img src=\"modelica://Physiolib/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p>useSigmoid :</p>
+<p><img src=\"modelica://Physiolib/../../kitware/_/sigmoidPV.png\"/></p>
 </html>"));
       end ElasticVessel;
 
@@ -14368,55 +14404,6 @@ Connector with one flow signal of type Real.
 </html>"));
       end MinimalRespirationIncompressibleMedium;
     end Examples;
-
-    package ComplianceModels
-      "Flow models for vessel compliances - Pressure-Volume relation"
-      extends Modelica.Icons.Package;
-          partial model PartialComplianceModel
-            "Base class for compliance models"
-            import Modelica.SIunits.*;
-
-            Volume volume "current volume";
-            Pressure pressure "current pressure";
-
-            annotation (Documentation(info="<html>
-<p>
-This partial model defines a common interface for compliance models as pressure-volume relationship in elastic compartement.
-</p>
-</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics={Line(
-                points={{-80,-50},{-80,50},{80,-50},{80,50}},
-                color={0,0,255},
-                thickness=1), Text(
-                extent={{-40,-50},{40,-90}},
-                textString="%name")}));
-          end PartialComplianceModel;
-
-      model LinearCompliance "Linear compliance model"
-        extends PartialComplianceModel;
-
-      equation
-
-        annotation (Documentation(info="<html>
-<p>
-This model defines a simple linear pressure - volume relationship.
-</p>
-</html>"));
-      end LinearCompliance;
-
-      model LungsCompliance "Lungs compliance model"
-        extends PartialComplianceModel;
-
-      equation
-
-        annotation (Documentation(info="<html>
-<p>
-This model defines a simple lungs pressure-volume relationship.
-https://pulse.kitware.com/_respiratory_methodology.html
-</p>
-</html>"));
-      end LungsCompliance;
-    end ComplianceModels;
   end Fluid;
 
   package Thermal
