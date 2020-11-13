@@ -1232,7 +1232,8 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
         outer Modelica.Fluid.System system "System wide properties";
 
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+        replaceable package Medium = Interfaces.PartialMedium_C constrainedby
+          Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);               //= Chemical.Examples.Media.SimpleAir_C
         //Chemical.Examples.Media.StandardWater_C                            //Chemical.Examples.Media.SimpleAir_C
                                      //Chemical.Examples.Media.StandardWater_C
@@ -3009,8 +3010,8 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       SubstancePort_a port_a "The substance"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-        replaceable package stateOfMatter =
-          StateOfMatter
+        replaceable package stateOfMatter = Incompressible
+           constrainedby StateOfMatter
         "Substance model to translate data into substance properties"
            annotation (choicesAllMatching = true);
 
@@ -3188,7 +3189,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 
       partial package StateOfMatter "Abstract package for all state of matters"
 
-       replaceable partial record SubstanceData
+       replaceable record SubstanceData
           "Definition data of the chemical substance"
 
          parameter Modelica.SIunits.MolarMass MolarWeight(displayUnit="kDa") = 0.01801528
@@ -3225,7 +3226,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
        constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
 
-       replaceable function density
+       replaceable partial function density
         "Return density of the substance in the solution"
           extends Modelica.Icons.Function;
           input SubstanceData substanceData "Data record of substance";
@@ -3238,6 +3239,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           input Real r[OtherPropertiesCount]=zeros(OtherPropertiesCount)
           "Other extensive properties of the solution";
           output Modelica.SIunits.Density density "Density";
+
        end density;
 
 
@@ -3254,6 +3256,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           input Real r[OtherPropertiesCount]=zeros(OtherPropertiesCount)
           "Other extensive properties of the solution";
           output Real activityCoefficient "Activity Coefficient";
+
        end activityCoefficient;
 
        replaceable function chargeNumberOfIon
@@ -3270,6 +3273,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "Other extensive properties of the solution";
           output Modelica.SIunits.ChargeNumberOfIon chargeNumberOfIon
           "Charge number of ion";
+
        end chargeNumberOfIon;
 
        replaceable function molarEnthalpyElectroneutral
@@ -3286,6 +3290,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarEnthalpy molarEnthalpyElectroneutral
           "Molar enthalpy";
+
        end molarEnthalpyElectroneutral;
 
        function molarEnthalpy
@@ -3320,6 +3325,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarEntropy molarEntropyPure
           "Molar entropy of the pure substance";
+
        end molarEntropyPure;
 
         function molarEntropy "Molar entropy of the substance in the solution"
@@ -3392,6 +3398,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           input Real r[OtherPropertiesCount]=zeros(OtherPropertiesCount)
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarMass molarMass "Molar mass";
+
        end molarMass;
 
        replaceable function molarVolumePure "Molar volume of the pure substance"
@@ -3406,6 +3413,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           input Real r[OtherPropertiesCount]=zeros(OtherPropertiesCount)
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarVolume molarVolumePure "Molar volume";
+
        end molarVolumePure;
 
        function molarVolumeExcess
@@ -3468,6 +3476,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarHeatCapacity molarHeatCapacityCp
           "Molar heat capacity at constant pressure";
+
        end molarHeatCapacityCp;
 
         replaceable function molarHeatCapacityCv
@@ -3484,6 +3493,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
           "Other extensive properties of the solution";
           output Modelica.SIunits.MolarHeatCapacity molarHeatCapacityCv
           "Molar heat capacity at constant volume";
+
         end molarHeatCapacityCv;
 
         replaceable function otherPropertiesPerSubstance
@@ -4259,259 +4269,6 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
 
       end ConditionalKinetics;
 
-      package SimpleChemicalMedium
-      "Mixture of chemical substances as homogenous solution in one state of matter"
-        extends Modelica.Media.Interfaces.PartialMedium(
-          substanceNames={"H2O(l)"},
-          final mediumName="ChemicalSolution",
-          final singleState=false,
-          final reducedX=false,
-          final fixedX=false,
-          Temperature(
-            min=273,
-            max=450,
-            start=298));
-
-        replaceable package stateOfMatter =
-                                Interfaces.Incompressible  constrainedby
-          Interfaces.StateOfMatter
-        "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
-
-        // Provide medium constants here
-        constant stateOfMatter.SubstanceData substanceData[nS] = {Examples.Substances.Water_liquid()}
-        "Definition of the substances"
-           annotation (choicesAllMatching = true);
-
-        // Simplified properties - default values are for water 25degC from Modelica.Media.CompressibleLiquids.LinearWater_pT_Ambient
-        constant DynamicViscosity eta_const = 8.9e-4 "Constant dynamic viscosity";
-
-        redeclare model extends BaseProperties(final standardOrderComponents=true)
-        "Base properties of medium"
-
-         input Modelica.SIunits.ElectricPotential v=0
-          "Electric potential of the solution";
-         input Modelica.SIunits.MoleFraction I=0
-          "Ionic strengh (mole fraction based)";
-
-         Modelica.SIunits.MolarMass molarMass[nS] "Molar mass";
-         Modelica.SIunits.MolarVolume molarVolume[nS] "Molar volume";
-         Modelica.SIunits.MolarEnthalpy molarEnthalpy[nS] "Molar enthalpy";
-         Modelica.SIunits.MolarHeatCapacity molarHeatCapacity[nS]
-          "Molar heat capacity";
-
-         SpecificHeatCapacity Cp "Specific heat capacity at constant pressure";
-        equation
-
-          molarMass = stateOfMatter.molarMass(substanceData,T,p,v,I);
-          molarVolume = stateOfMatter.molarVolume(substanceData,T,p,v,I);
-          molarEnthalpy = stateOfMatter.molarEnthalpy(substanceData,T,p,v,I);
-          molarHeatCapacity = stateOfMatter.molarHeatCapacityCp(substanceData,T,p,v,I);
-
-          MM = sum( molarMass ./ X);  // sum(MMj*nj)/sum(nj)
-          d = 1 / sum( molarVolume .* X ./ molarMass);  //sum(MMj*nj)/sum(Vmj*nj), where xj=nj/nT, sum(Xj)=1
-          Cp = sum( molarHeatCapacity .* X ./ molarMass); //sum(cpj*nj)/sum(MMj*nj)
-          h = sum( molarEnthalpy .* X ./ molarMass); //sum(Hmj*nj)/sum(MMj*nj)
-          u = h - p/d;
-          R = Modelica.Constants.R/MM;
-          state.p = p;
-          state.T = T;
-          state.X = X;
-          state.v = v; //electric potential
-          state.I = I; //ionic strength
-        end BaseProperties;
-
-        redeclare record ThermodynamicState
-        "A selection of variables that uniquely defines the thermodynamic state"
-          extends Modelica.Icons.Record;
-          AbsolutePressure p "Absolute pressure of medium";
-          Temperature T "Temperature of medium";
-
-          Modelica.SIunits.MassFraction X[nS] "Mass fractions";
-
-          Modelica.SIunits.ElectricPotential v
-          "Electric potential of the solution";
-          Modelica.SIunits.MoleFraction I "Ionic strengh (mole fraction based)";
-          annotation (Documentation(info="<html>
-
-</html>"));
-        end ThermodynamicState;
-
-        redeclare function setState_pTX
-        "Return thermodynamic state from p, T, and X or Xi"
-        extends Modelica.Icons.Function;
-        input AbsolutePressure p "Pressure";
-        input Temperature T "Temperature";
-        input MassFraction X[:]=reference_X "Mass fractions";
-        input Modelica.SIunits.ElectricPotential v=0
-          "Electric potential of the solution";
-        input Modelica.SIunits.MoleFraction I=0
-          "Ionic strengh (mole fraction based)";
-          //  input stateOfMatter.SubstanceData substanceData[nS] = substanceData       "Constant data of substances";
-        output ThermodynamicState state "Thermodynamic state record";
-        algorithm
-          state := ThermodynamicState(p=p, T=T, X=X, v=v, I=I);
-          annotation (Documentation(info="<html>
-
-</html>"));
-        end setState_pTX;
-
-        redeclare function setState_phX
-        "Return thermodynamic state from p, h, and X or Xi"
-          extends Modelica.Icons.Function;
-          input AbsolutePressure p "Pressure";
-          input SpecificEnthalpy h "Specific enthalpy";
-          input MassFraction X[nS]=reference_X "Mass fractions";
-          input Modelica.SIunits.ElectricPotential v=0
-          "Electric potential of the solution";
-          input Modelica.SIunits.MoleFraction I=0
-          "Ionic strengh (mole fraction based)";
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData     "Constant data of substances";
-          output ThermodynamicState state "Thermodynamic state record";
-        protected
-         Modelica.SIunits.MolarMass molarMass[nS] "Molar mass";
-         Modelica.SIunits.MolarEnthalpy molarEnthalpyT0[nS]
-          "Molar enthalpy at temperature T0";
-         Modelica.SIunits.MolarHeatCapacity molarHeatCapacity[nS]
-          "Molar heat capacity";
-
-         SpecificHeatCapacity Cp "Specific heat capacity at constant pressure";
-         Modelica.SIunits.SpecificEnthalpy hT0
-          "Molar enthalpy of solution at temperature T0";
-         constant Temperature T0=298;
-        algorithm
-          molarMass := stateOfMatter.molarMass(substanceData,T0,p,v,I);
-          molarEnthalpyT0 :=stateOfMatter.molarEnthalpy(
-              substanceData,
-              T0,
-              p,
-              v,
-              I);
-          hT0 := sum(molarEnthalpyT0 .* X ./ molarMass);
-          molarHeatCapacity := stateOfMatter.molarHeatCapacityCp(substanceData,T0,p,v,I);
-          Cp := sum( molarHeatCapacity .* X ./ molarMass);
-          state := ThermodynamicState(p=p, T=T0 + (h-hT0)/Cp, X=X, v=v, I=I);
-        end setState_phX;
-
-        //TODO: make model of dynamic viscosity from substance properties!!!
-        redeclare function extends dynamicViscosity
-        "Return constant dynamic viscosity"
-        algorithm
-          eta := eta_const;
-        end dynamicViscosity;
-
-        redeclare function extends pressure "Return pressure"
-
-        algorithm
-          p := state.p;
-        end pressure;
-
-        redeclare function extends temperature "Return temperature"
-
-        algorithm
-          T := state.T;
-        end temperature;
-
-        redeclare function extends density "Return density"
-          //  input stateOfMatter.SubstanceData substanceData[nS] = substanceData       "Constant data of substances";
-        protected
-         Modelica.SIunits.MolarMass molarMass[nS] "Molar mass";
-         Modelica.SIunits.MolarVolume molarVolume[nS] "Molar volume";
-        algorithm
-          molarMass := stateOfMatter.molarMass(substanceData,state.T,state.p,state.v,state.I);
-          molarVolume := stateOfMatter.molarVolume(substanceData,state.T,state.p,state.v,state.I);
-
-          d := 1 / sum( molarVolume .* state.X ./ molarMass); //sum(MMj*nj)/sum(Vmj*nj), where xj=nj/nT, sum(Xj)=1
-
-        end density;
-
-        redeclare function extends specificEnthalpy "Return specific enthalpy"
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData       "Constant data of substances";
-        algorithm
-          h := sum( stateOfMatter.molarEnthalpy(substanceData,state.T,state.p,state.v,state.I) .* state.X ./ stateOfMatter.molarMass(substanceData,state.T,state.p,state.v,state.I));
-        end specificEnthalpy;
-
-        redeclare function extends specificEntropy
-        "Return the specific entropy from the thermodynamic state"
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData     "Constant data of substances";
-        protected
-         Modelica.SIunits.MolarMass molarMass[nS] "Molar mass";
-         Modelica.SIunits.MolarEntropy molarEntropy[nS] "Molar entropies";
-         Modelica.SIunits.MoleFraction x[nS] "Mole fractions";
-         Modelica.SIunits.ChemicalPotential electrochemicalPotential[nS]
-          "electrochemical potentials";
-        algorithm
-          molarMass := stateOfMatter.molarMass(substanceData,state.T,state.p,state.v,state.I);
-
-          x := (state.X ./ molarMass) / sum(state.X ./ molarMass);
-          electrochemicalPotential :=
-            stateOfMatter.electroChemicalPotentialPure(substanceData,state.T,state.p,state.v,state.I) +
-            Modelica.Constants.R * state.T * log(x.*stateOfMatter.activityCoefficient(substanceData,state.T,state.p,state.v,state.I))
-            + Modelica.Constants.F * state.v * stateOfMatter.chargeNumberOfIon(substanceData,state.T,state.p,state.v,state.I);
-
-          molarEntropy := stateOfMatter.molarEntropy(electrochemicalPotential,substanceData,state.T,state.p,state.v,state.I);
-
-          s := sum( molarEntropy .* state.X ./ molarMass);
-        end specificEntropy;
-
-        redeclare function extends specificInternalEnergy
-        "Return the specific internal energy from the thermodynamic state"
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData     "Constant data of substances";
-        algorithm
-          u := specificEnthalpy(state) - state.p/density(state);
-        end specificInternalEnergy;
-
-        redeclare function extends specificGibbsEnergy
-        "Return specific Gibbs energy from the thermodynamic state"
-          extends Modelica.Icons.Function;
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData
-        //    "Constant data of substances";
-        algorithm
-          g := specificEnthalpy(state) - state.T*specificEntropy(state);
-        end specificGibbsEnergy;
-
-        redeclare function extends specificHelmholtzEnergy
-        "Return specific Helmholtz energy from the thermodynamic state"
-          extends Modelica.Icons.Function;
-        algorithm
-          f := specificInternalEnergy(state) - state.T*specificEntropy(state);
-        end specificHelmholtzEnergy;
-
-        redeclare function extends specificHeatCapacityCp
-        "Return specific heat capacity at constant pressure"
-          //    input stateOfMatter.SubstanceData substanceData[nS] = substanceData
-          //     "Constant data of substances";
-        algorithm
-          cp := sum( stateOfMatter.molarHeatCapacityCp(substanceData,state.T,state.p,state.v,state.I) .* state.X ./ stateOfMatter.molarMass(substanceData,state.T,state.p,state.v,state.I));
-
-          annotation (Documentation(info="<html>
-
-</html>"));
-        end specificHeatCapacityCp;
-
-        redeclare function extends specificHeatCapacityCv
-        "Return specific heat capacity at constant volume"
-         // input stateOfMatter.SubstanceData substanceData[nS] = substanceData
-           // "Constant data of substances";
-        algorithm
-          cv := sum( stateOfMatter.molarHeatCapacityCv(substanceData,state.T,state.p,state.v,state.I) .* state.X ./ stateOfMatter.molarMass(substanceData,state.T,state.p,state.v,state.I));
-
-          annotation (Documentation(info="<html>
-
-</html>"));
-        end specificHeatCapacityCv;
-
-        annotation (Documentation(info="<HTML>
-<p>
-This package is a <b>template</b> for <b>new medium</b> models. For a new
-medium model just make a copy of this package, remove the
-\"partial\" keyword from the package and provide
-the information that is requested in the comments of the
-Modelica source.
-</p>
-</HTML>"));
-      end SimpleChemicalMedium;
-
       connector SubstanceMassPort
 
         Modelica.SIunits.MassFraction x_mass
@@ -4704,6 +4461,24 @@ Modelica source.
 <p>Marek Matejak, marek@matfyz.cz </p>
 </html>"));
       end SubstanceMolarityPort_b;
+
+      partial package PartialMedium_C
+
+      extends Modelica.Media.Interfaces.PartialMedium;
+
+      replaceable package stateOfMatter =
+                              Chemical.Interfaces.Incompressible
+          constrainedby Chemical.Interfaces.StateOfMatter
+        "Substance model to translate data into substance properties"
+         annotation (choicesAllMatching = true);
+        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
+        constant Modelica.SIunits.Density default_density = 1000;
+
+        constant stateOfMatter.SubstanceData substanceData[nC]
+      "Definition of the substances"
+      annotation (choicesAllMatching = true);
+
+      end PartialMedium_C;
     end Interfaces;
 
     package Icons "Icons for chemical models"
@@ -4798,7 +4573,7 @@ Modelica source.
           extends Modelica.Icons.Package;
 
         record Silver_solid "Ag(s)"
-         extends Chemical.Interfaces.Incompressible.SubstanceData(
+          extends Chemical.Interfaces.Incompressible.SubstanceData(
             MolarWeight=0.1078682,
             z=0,
             DfH=0,
@@ -5364,19 +5139,24 @@ Modelica source.
            extraPropertiesNames={"Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others","H2O"},
            singleState=true, T_default=310.15, X_default=ones(nX), C_default={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6,913});
 
-         replaceable package stateOfMatter =
-                                Chemical.Interfaces.Incompressible
-            constrainedby Chemical.Interfaces.StateOfMatter
-          "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
 
-        // Provide medium constants here
-        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
-        constant Modelica.SIunits.Density default_density=1000;
-
-
-          constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Sodium_aqueous(),
+        extends Interfaces.PartialMedium_C(
+           ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+           mediumName = "WaterIF97",
+           substanceNames = {"water"},
+           fixedX = true,
+           reference_p(start = 50e5),
+           reference_T(start = 500),
+           p_default(start = 50e5),
+           h_default(start = 1.0e5),
+           extraPropertiesNames={"Na","Bic","K","Glu","Urea","Cl","Ca","Mg","Alb","Glb","Others","H2O"},
+           singleState=true,
+           T_default(start = 500)=310.15,
+           X_default=ones(nX),
+           default_density=1000,
+           C_default={135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6,913},
+           substanceData = {
+                Chemical.Examples.Substances.Sodium_aqueous(),
                 Chemical.Examples.Substances.Bicarbonate_aqueous(),
                 Chemical.Examples.Substances.Potassium_aqueous(),
                 Chemical.Examples.Substances.Glucose_solid(),
@@ -5387,9 +5167,10 @@ Modelica source.
                 Chemical.Examples.Substances.Albumin_aqueous(),
                 Chemical.Examples.Substances.Globulins_aqueous(),
                 Chemical.Examples.Substances.Water_liquid(),
-                Chemical.Examples.Substances.Water_liquid()}
-        "Definition of the substances"
-        annotation (choicesAllMatching = true);
+                Chemical.Examples.Substances.Water_liquid()});
+
+
+
 
         end SimpleBodyFluid_C;
 
@@ -5398,24 +5179,25 @@ Modelica source.
            extraPropertiesNames={"H2O"},
            singleState=true, T_default=310.15, X_default=ones(nX),  C_default={1000});
 
-         replaceable package stateOfMatter =
-                                Chemical.Interfaces.Incompressible
-            constrainedby Chemical.Interfaces.StateOfMatter
-          "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
+        extends Interfaces.PartialMedium_C(
+           redeclare package stateOfMatter = Chemical.Interfaces.Incompressible,
+           ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+           mediumName = "WaterIF97",
+           substanceNames = {"water"},
+           fixedX = true,
+           reference_p(start = 50e5),
+           reference_T(start = 500),
+           p_default(start = 50e5),
+           h_default(start = 1.0e5),
+           extraPropertiesNames={"H2O"},
+           singleState=true, T_default(start=500)=310.15, X_default=ones(nX),  C_default={1000},
+           substanceData = {
+                Chemical.Examples.Substances.Water_liquid()});
 
-        // Provide medium constants here
-        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
 
-        /*
-type Substances = enumeration(
-      H2O
-         "Water");
-*/
-          constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Water_liquid()}
-        "Definition of the substances"
-        annotation (choicesAllMatching = true);
+
+
+
 
         end StandardWater_C;
 
@@ -5424,26 +5206,23 @@ type Substances = enumeration(
            extraPropertiesNames={"H2O","C2H5OH"},
            singleState=true, T_default=310.15, X_default=ones(nX), C_default={500,500});
 
-         replaceable package stateOfMatter =
-                                Chemical.Interfaces.Incompressible
-            constrainedby Chemical.Interfaces.StateOfMatter
-          "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
 
-        // Provide medium constants here
-        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
-        constant Modelica.SIunits.Density default_density=1000;
+        extends Interfaces.PartialMedium_C(
+           redeclare package stateOfMatter = Chemical.Interfaces.Incompressible,
+           ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+           mediumName = "WaterIF97",
+           substanceNames = {"water"},
+           fixedX = true,
+           reference_p(start = 50e5),
+           reference_T(start = 500),
+           p_default(start = 50e5),
+           h_default(start = 1.0e5),
+           extraPropertiesNames={"H2O","C2H5OH"},
+           singleState=true, T_default(start=500)=310.15, X_default=ones(nX), C_default={500,500},
+           substanceData = {
+                Chemical.Examples.Substances.Water_liquid(),
+                Chemical.Examples.Substances.Ethanol_liquid()});
 
-        /*
-type Substances = enumeration(
-      H2O "Water",
-      C2H5OH "Ethanol");
-*/
-          constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Water_liquid(),
-          Chemical.Examples.Substances.Ethanol_liquid()}
-        "Definition of the substances"
-        annotation (choicesAllMatching = true);
 
         end EthanolInWater_C;
 
@@ -5452,88 +5231,54 @@ type Substances = enumeration(
            extraPropertiesNames={"O2","CO2","H2O","Others"},
            T_default=310.15, X_default=ones(nX), C_default={21,0.04,2,76.96});
 
-         /* extends Modelica.Media.IdealGases.Common.MixtureGasNasa(
-     mediumName="MoistAir",
-     data={
-       Modelica.Media.IdealGases.Common.SingleGasesData.O2,
-       Modelica.Media.IdealGases.Common.SingleGasesData.CO2,
-       Modelica.Media.IdealGases.Common.SingleGasesData.H2O,
-       Modelica.Media.IdealGases.Common.SingleGasesData.Air},
-     fluidConstants={
-       Modelica.Media.IdealGases.Common.FluidData.O2,
-       Modelica.Media.IdealGases.Common.FluidData.CO2,
-       Modelica.Media.IdealGases.Common.FluidData.H2O,
-       Modelica.Media.IdealGases.Common.FluidData.N2},
-     substanceNames = {
-       "O2",
-       "CO2",
-       "H2O",
-       "Others"},
-     reference_X={
-       0.21,
-       0.0004,
-       0.02,
-       0.7696},
-     extraPropertiesNames={
-       "O2",
-       "CO2",
-       "H2O",
-       "Others"},
-     T_default=310.15,
-     X_default={
-       0.21,
-       0.0004,
-       0.02,
-       0.7696},
-     C_default={
-       21,
-       0.04,
-       2,
-       76.96});
 
-*/
+        extends Interfaces.PartialMedium_C(
+           redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+           ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pT,
+           mediumName = "SimpleAir",
+           substanceNames = {mediumName},
+           singleState=false,
+           fixedX = true,
+           reference_p(start = 1.e5),
+           reference_T(start = 288.15),
+           p_default(start = 1.e5),
+           extraPropertiesNames={"O2","CO2","H2O","Others"},
+           T_default=310.15, X_default=ones(nX), C_default={21,0.04,2,76.96},
+           default_density=1.14,
+           substanceData = {
+              Chemical.Examples.Substances.Oxygen_gas(),
+              Chemical.Examples.Substances.CarbonDioxide_gas(),
+              Chemical.Examples.Substances.Water_gas(),
+              Chemical.Examples.Substances.Nitrogen_gas()});
 
-         replaceable package stateOfMatter =
-                                Chemical.Interfaces.IdealGas constrainedby
-            Chemical.Interfaces.StateOfMatter
-          "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
-        // Provide medium constants here
-        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
-        constant Modelica.SIunits.Density default_density=1.14;
 
-          constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Oxygen_gas(),
-          Chemical.Examples.Substances.CarbonDioxide_gas(),
-          Chemical.Examples.Substances.Water_gas(),
-          Chemical.Examples.Substances.Nitrogen_gas()}
-        "Definition of the substances"
-        annotation (choicesAllMatching = true);
+
 
 
 
         end SimpleAir_C;
 
         package SimpleO2Gas_C
-          extends Modelica.Media.Air.SimpleAir(
+        extends Modelica.Media.Air.SimpleAir(
            extraPropertiesNames={"O2"},
            T_default=310.15, X_default=ones(nX), C_default={1.14});
 
 
-         replaceable package stateOfMatter =
-                                Chemical.Interfaces.IdealGas constrainedby
-            Chemical.Interfaces.StateOfMatter
-          "Substance model to translate data into substance properties"
-           annotation (choicesAllMatching = true);
-        // Provide medium constants here
-        constant Modelica.SIunits.MassFraction Xi_default[nXi]=ones(nXi);
-        constant Modelica.SIunits.Density default_density=1.14;
-
-          constant stateOfMatter.SubstanceData substanceData[nC] = {
-          Chemical.Examples.Substances.Oxygen_gas()}
-        "Definition of the substances"
-        annotation (choicesAllMatching = true);
-
+        extends Interfaces.PartialMedium_C(
+           redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+           ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pT,
+           mediumName = "SimpleAir",
+           substanceNames = {mediumName},
+           singleState=false,
+           fixedX = true,
+           reference_p(start = 1.e5),
+           reference_T(start = 288.15),
+           p_default(start = 1.e5),
+           extraPropertiesNames={"O2"},
+           T_default=310.15, X_default=ones(nX), C_default={1.14},
+           default_density=1.14,
+           substanceData = {
+                Chemical.Examples.Substances.Oxygen_gas()});
 
 
         end SimpleO2Gas_C;
@@ -11544,11 +11289,10 @@ type Substances = enumeration(
        //       volume_start, storeUnit="ml");
 
         replaceable package Medium =
-             Modelica.Media.Interfaces.PartialMedium
+             Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
-       // Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
-           // Modelica.Media.Interfaces.PartialMedium
 
         parameter Integer nHydraulicPorts=0 "Number of hydraulic ports"
           annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
@@ -11560,8 +11304,6 @@ type Substances = enumeration(
               rotation=180,
               origin={-3,0})));
 
-       // parameter Physiolib.Types.Density density_start=Medium.default_density
-       //   "Density start value" annotation (Dialog(group="Initialization"));
 
         parameter Physiolib.Types.Mass mass_start=1
           "Mass start value" annotation (Dialog(group="Initialization"));
@@ -11670,7 +11412,7 @@ type Substances = enumeration(
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
       //protected
-        parameter Modelica.SIunits.MolarMass MM[Medium.nC] = Medium.substanceData.MolarWeight;
+        parameter Modelica.SIunits.MolarMass MM[Medium.nC] = Medium.substanceData.MolarWeight.*ones(Medium.nC);
         parameter Modelica.SIunits.MoleFraction x_start[Medium.nC] = concentration_start ./ (concentration_start*ones(Medium.nC));
         parameter Modelica.SIunits.AmountOfSubstance nt_start = mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
         parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nC] = nt_start * x_start;
@@ -11686,10 +11428,10 @@ type Substances = enumeration(
 
 
       public
-        Chemical.Components.Substance2 substance[Medium.nC - 1](
+        Chemical.Components.Substance2 substance[max(0,Medium.nC - 1)](
           redeclare package stateOfMatter = Medium.stateOfMatter,
-          substanceData=Medium.substanceData[1:Medium.nC - 1],
-          amountOfSubstance_start=n_start[1:Medium.nC - 1])
+          substanceData=Medium.substanceData[1:max(0,Medium.nC - 1)],
+          amountOfSubstance_start=n_start[1:max(0,Medium.nC - 1)])
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
 
          parameter Boolean useSubstances = false
@@ -11802,7 +11544,8 @@ type Substances = enumeration(
         extends Physiolib.Icons.HydrostaticGradient;
 
         replaceable package Medium =
-            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+            Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         Physiolib.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium = Medium) "Top site" annotation (
@@ -12008,7 +11751,8 @@ type Substances = enumeration(
         extends Physiolib.Icons.Reabsorption;
 
         replaceable package Medium =
-            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+          Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         Physiolib.Fluid.Interfaces.FluidPort_a Inflow(redeclare package Medium = Medium)
@@ -12100,56 +11844,12 @@ type Substances = enumeration(
 </html>"));
       end Reabsorption;
 
-      model VolumeConductor
-        "Hydraulic resistor, where conductance=1/resistance"
-       extends Physiolib.Fluid.Interfaces.OnePort;
-
-       extends Physiolib.Icons.HydraulicResistor;
-
-        parameter Boolean useConductanceInput = false
-          "=true, if external conductance value is used"
-          annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-
-        parameter Physiolib.Types.HydraulicConductance Conductance=0
-          "Hydraulic conductance if useConductanceInput=false"
-          annotation (Dialog(enable=not useConductanceInput));
-
-        Physiolib.Types.RealIO.HydraulicConductanceInput cond(start=
-              Conductance)=c if useConductanceInput annotation (Placement(
-              transformation(
-              extent={{-20,-20},{20,20}},
-              rotation=270,
-              origin={0,60})));
-      protected
-         Physiolib.Types.HydraulicConductance c;
-      equation
-        if not useConductanceInput then
-          c=Conductance;
-        end if;
-        q_in.m_flow = c * (q_in.p - q_out.p);
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
-                  -100,-100},{100,100}}),
-                         graphics={Text(
-                extent={{-220,-40},{200,-80}},
-                lineColor={127,0,0},
-                fillColor={58,117,175},
-                fillPattern=FillPattern.Solid,
-                textString="%name")}),
-          Documentation(revisions="<html>
-<p><i>2017-2018</i></p>
-<p>Marek Matejak, http://www.physiolib.com </p>
-<p>All rights reserved. </p>
-</html>",   info="<html>
-<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
-</html>"));
-      end VolumeConductor;
     end Components;
 
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-            package Medium =
-                     Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C);
+            package Medium = Physiolib.Chemical.Interfaces.PartialMedium_C);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -12273,7 +11973,8 @@ Connector with one flow signal of type Real.
 
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
-            Modelica.Media.Interfaces.PartialMedium
+           Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
 
@@ -12383,10 +12084,11 @@ Connector with one flow signal of type Real.
         extends Physiolib.Icons.PressureMeasure;
 
         replaceable package Medium =
-          Modelica.Media.Interfaces.PartialMedium
+          Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
           "Medium model"
           annotation (choicesAllMatching=true);
-          //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+
 
         outer Modelica.Fluid.System system "System wide properties";
 
@@ -12479,9 +12181,10 @@ Connector with one flow signal of type Real.
         model UnlimitedVolume "Prescribed pressure at port"
 
           replaceable package Medium =
-              Modelica.Media.Interfaces.PartialMedium
+              Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
           "Medium model"   annotation (choicesAllMatching=true);
-              //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+
 
           outer Modelica.Fluid.System system "System wide properties";
 
@@ -12508,7 +12211,7 @@ Connector with one flow signal of type Real.
 
       protected
           Physiolib.Types.Pressure p;
-          parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
+          parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T)) "Fluid enthalphy";
         equation
           if not usePressureInput then
             p=P;
@@ -12558,7 +12261,8 @@ Connector with one flow signal of type Real.
         extends Physiolib.Fluid.Interfaces.ConditionalSolutionFlow;
 
         replaceable package Medium =
-            Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+          Physiolib.Chemical.Interfaces.PartialMedium_C constrainedby
+          Physiolib.Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -12628,6 +12332,7 @@ Connector with one flow signal of type Real.
 
         import Modelica.SIunits.*;
 
+        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
 
         parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
         parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
@@ -12647,22 +12352,27 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
 
         Physiolib.Fluid.Components.ElasticVessel lungs(
+          redeclare package Medium = Medium,
           mass_start=1.6,
           ZeroPressureVolume=ResidualVolume,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
           nHydraulicPorts=2) "Lungs"
           annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
-        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure "Lungs pressure"
+        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
+            package Medium = Medium)                                 "Lungs pressure"
           annotation (Placement(transformation(extent={{34,-14},{54,6}})));
         inner Modelica.Fluid.System system "External environment setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
-        Physiolib.Fluid.Components.Conductor pathways(Conductance=
+        Physiolib.Fluid.Components.Conductor pathways(redeclare package Medium =
+              Medium,                                 Conductance=
               TotalConductance) "Lungs pathways"
           annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
-        Physiolib.Fluid.Sources.UnlimitedVolume environment "External environment"
+        Physiolib.Fluid.Sources.UnlimitedVolume environment(redeclare package Medium =
+              Medium)    "External environment"
           annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
-        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure "Lungs pathway airflow"
+        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(redeclare package Medium =
+              Medium)   "Lungs pathway airflow"
           annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
       equation
         connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
@@ -12698,28 +12408,29 @@ Connector with one flow signal of type Real.
       model MinimalCirculation
         "Minimal circulation models driven by cardiac output"
          extends Modelica.Icons.Example;
-        Physiolib.Fluid.Components.Pump heart(useSolutionFlowInput=true)
+
+        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
+
+        Physiolib.Fluid.Components.Pump heart(redeclare package Medium = Medium,
+                                              useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
-        Physiolib.Fluid.Components.ElasticVessel arteries(
+        Physiolib.Fluid.Components.ElasticVessel arteries(redeclare package Medium = Medium,
           fluidAdapter_D(solution(T(start=310.15))),
           mass_start(displayUnit="kg") = 1,
           nHydraulicPorts=2,
-          vessel(redeclare package stateOfMatter =
-                Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-8,
           ExternalPressure(displayUnit="mmHg") = 101325.0144354,
           ZeroPressureVolume(displayUnit="ml") = 0.00085)
           annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
 
-        Physiolib.Fluid.Components.Conductor resistance(Conductance(displayUnit="g/(mmHg.min)")=
+        Physiolib.Fluid.Components.Conductor resistance(redeclare package Medium = Medium,
+            Conductance(displayUnit="g/(mmHg.min)")=
                6.2755151845753e-6)
           annotation (Placement(transformation(extent={{-2,-90},{18,-70}})));
-        Physiolib.Fluid.Components.ElasticVessel veins(
+        Physiolib.Fluid.Components.ElasticVessel veins(redeclare package Medium = Medium,
           fluidAdapter_D(solution(T(start=310.15))),
           mass_start(displayUnit="kg") = 3.2,
           nHydraulicPorts=2,
-          vessel(redeclare package stateOfMatter =
-                Physiolib.Chemical.Interfaces.Incompressible, temperature_start=310.15),
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
           Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7,
           useExternalPressureInput=false,
