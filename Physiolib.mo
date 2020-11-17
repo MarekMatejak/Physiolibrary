@@ -1514,7 +1514,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
                 if noEvent(volume>ResidualVolume) then
                   (excessVolume/c + ep)
                 else
-                  (a*log(max(Modelica.Constants.eps,volume/ResidualVolume)))) + ep
+                  (a*log(max(Modelica.Constants.eps,volume/ResidualVolume)) + ep))
                 else   -d_sigmoid*log((VitalCapacity/(volume-ResidualVolume))-1)+c_sigmoid + ep;
 
 
@@ -3010,7 +3010,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
       SubstancePort_a port_a "The substance"
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-        replaceable package stateOfMatter = Incompressible
+        replaceable package stateOfMatter = StateOfMatter
            constrainedby StateOfMatter
         "Substance model to translate data into substance properties"
            annotation (choicesAllMatching = true);
@@ -3226,7 +3226,7 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
        constant Integer OtherPropertiesCount=integer(0)
         "Number of other extensive properties";
 
-       replaceable partial function density
+       replaceable function density
         "Return density of the substance in the solution"
           extends Modelica.Icons.Function;
           input SubstanceData substanceData "Data record of substance";
@@ -11442,13 +11442,13 @@ of the modeller. Increase nFuildPorts to add an additional fluidPort.
         Chemical.Interfaces.SubstancePorts_a substances[Medium.nC] if useSubstances
           annotation (Placement(transformation(extent={{-104,-40},{-84,40}})));
 
-        Types.Pressure p "Relative pressure inside";
+        Types.Pressure relative_pressure "Relative (to external pressure) pressure inside";
         Chemical.Components.LiquidWater liquidWater(mass_start=n_start[Medium.nC]*Medium.substanceData[Medium.nC].MolarWeight)
           annotation (Placement(transformation(extent={{-66,-58},{-46,-38}})));
       equation
 
 
-        p = vessel.relative_pressure;
+        relative_pressure = vessel.relative_pressure;
 
         if useV0Input then
           connect(zeroPressureVolume,vessel.zeroPressureVolume);
@@ -12336,9 +12336,14 @@ Connector with one flow signal of type Real.
 
         parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
         parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+        parameter Volume FunctionalResidualCapacity = 0.00231 "Zero pressure volume for linear compliance model";
+        parameter Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance";
+        parameter Volume BaseTidalVolume = 0.000543 "Base value of tidal volume";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance = 0.000543/1000 "Compliance e.g. TidalVolume/TidalPressureGradient";
+
 
         parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+        //parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
 
         parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
         parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
@@ -12353,23 +12358,29 @@ Connector with one flow signal of type Real.
 
         Physiolib.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Medium,
-          mass_start=1.6,
-          ZeroPressureVolume=ResidualVolume,
+          mass_start(displayUnit="kg") = 2.32,
+          ZeroPressureVolume=FunctionalResidualCapacity,
+          CollapsingPressureVolume=ResidualVolume,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
+          useSigmoidCompliance=true,
+          VitalCapacity=VitalCapacity,
+          BaseTidalVolume=BaseTidalVolume,
           nHydraulicPorts=2) "Lungs"
           annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
         Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
             package Medium = Medium)                                 "Lungs pressure"
           annotation (Placement(transformation(extent={{34,-14},{54,6}})));
-        inner Modelica.Fluid.System system "External environment setting"
+        inner Modelica.Fluid.System system(T_ambient=310.15)
+                                           "External environment setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
         Physiolib.Fluid.Components.Conductor pathways(redeclare package Medium =
               Medium,                                 Conductance=
               TotalConductance) "Lungs pathways"
           annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
         Physiolib.Fluid.Sources.UnlimitedVolume environment(redeclare package Medium =
-              Medium)    "External environment"
+              Medium, T=298.15)
+                         "External environment"
           annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
         Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(redeclare package Medium =
               Medium)   "Lungs pathway airflow"
@@ -13946,8 +13957,13 @@ Connector with one flow signal of type Real.
 
         parameter Pressure Pmin(displayUnit="kPa")=-1000                        "Relative external lungs pressure minimum caused by respiratory muscles";
         parameter Pressure Pmax(displayUnit="kPa")=0     "Relative external lungs pressure maximum";
-        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
-              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
+        parameter Real RespiratoryMusclePressureCycle[:,3] = {
+              {0,system.p_ambient + Pmax,0},
+              {3/8,system.p_ambient + Pmin,0},
+              {1,system.p_ambient + Pmax,0},
+              {1+(1-3/8),system.p_ambient + Pmin,0},
+              {2,system.p_ambient + Pmax,0}}
+                "Absolute external lungs pressure during respiration cycle (0,1)";
 
         Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
           annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
@@ -13972,13 +13988,8 @@ Connector with one flow signal of type Real.
                                            "Human body system setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-        Physiolib.Fluid.Components.Conductor pathways(
-          redeclare package Medium = Air,
-              Conductance=TotalConductance) "Lungs pathways"
-          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
-
         Physiolib.Fluid.Sources.UnlimitedVolume environment(
-          redeclare package Medium = Air, T=263.15)
+          redeclare package Medium = Air, T=298.15)
                                              "External environment"
           annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
 
@@ -13991,27 +14002,48 @@ Connector with one flow signal of type Real.
           freqHz=RespirationRate,
           offset=system.p_ambient + (Pmax + Pmin)/2)
           annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
+        Components.Resistor resistor(
+           redeclare package Medium = Air,
+           Resistance(displayUnit="(cmH2O.s)/l") = 147099.75)
+          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
+        Modelica.Blocks.Sources.Trapezoid trapezoid(
+          rising=1/(2*RespirationRate),
+          width=0,
+          falling=1/(2*RespirationRate),
+          period=1/(RespirationRate))
+          annotation (Placement(transformation(extent={{-152,62},{-132,82}})));
+
+          Real r,alpha;
+
+        Modelica.Blocks.Sources.Sine sine1(
+          amplitude=0.5,
+          freqHz=RespirationRate,
+          offset=1)
+          annotation (Placement(transformation(extent={{-124,44},{-104,64}})));
       equation
-        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
-          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
+         r = sqrt(respiratoryMusclePressureCycle.val*respiratoryMusclePressureCycle.val + respiratoryMusclePressureCycle.u*respiratoryMusclePressureCycle.u);
+         alpha = atan2(respiratoryMusclePressureCycle.u,respiratoryMusclePressureCycle.val);
+
         connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
             points={{40,-10},{40,-10.7},{-6.3,-10.7}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
-            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
-            points={{-82,-14},{-58,-14}},
             color={127,0,0},
             thickness=0.5));
         connect(airflowMeasure.q_in, environment.y) annotation (Line(
             points={{-102,-14},{-138,-14}},
             color={127,0,0},
             thickness=0.5));
+        connect(airflowMeasure.q_out, resistor.q_in) annotation (Line(
+            points={{-82,-14},{-58,-14}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistor.q_out, lungs.q_in[2]) annotation (Line(
+            points={{-38,-14},{-24,-14},{-24,-13.3},{-6.3,-13.3}},
+            color={127,0,0},
+            thickness=0.5));
         connect(sine.y, lungs.externalPressure)
           annotation (Line(points={{-59,34},{2,34},{2,-2}}, color={0,0,127}));
+        connect(sine1.y, respiratoryMusclePressureCycle.u) annotation (Line(
+              points={{-103,54},{-68,54},{-68,70},{-34,70}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
                   {100,100}})),                                        Diagram(
               coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
@@ -14114,6 +14146,66 @@ Connector with one flow signal of type Real.
 <p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
 </html>"));
       end MinimalRespirationIncompressibleMedium;
+
+      model MinimalRespiration1 "Minimal respiration model"
+        extends Modelica.Icons.Example;
+
+        import Modelica.SIunits.*;
+
+        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
+
+        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
+        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
+        parameter Volume FunctionalResidualCapacity = 0.00231 "Zero pressure volume for linear compliance model";
+        parameter Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance";
+        parameter Volume BaseTidalVolume = 0.000543 "Base value of tidal volume";
+        parameter Physiolib.Types.HydraulicCompliance TotalCompliance = 0.000543/1000 "Compliance e.g. TidalVolume/TidalPressureGradient";
+
+        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
+       // parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
+
+        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
+        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
+              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
+
+        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
+          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
+
+        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
+
+        Physiolib.Fluid.Components.ElasticVessel lungs(
+          redeclare package Medium = Medium,
+          mass_start=1.6,
+          ZeroPressureVolume=FunctionalResidualCapacity,
+          Compliance=TotalCompliance,
+          useExternalPressureInput=true,
+          nHydraulicPorts=1) "Lungs"
+          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
+        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
+            package Medium = Medium)                                 "Lungs pressure"
+          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
+        inner Modelica.Fluid.System system "External environment setting"
+          annotation (Placement(transformation(extent={{60,66},{80,86}})));
+      equation
+        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
+          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
+        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
+          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
+        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
+            points={{40,-10},{40,-12},{-6.3,-12}},
+            color={127,0,0},
+            thickness=0.5));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
+                  {100,100}})),                                        Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
+          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+          Documentation(info="<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+      end MinimalRespiration1;
     end Examples;
   end Fluid;
 
@@ -20813,10 +20905,13 @@ input <i>u</i>:
       extends Modelica.Icons.Package;
      function Spline "Cubic spline interpolation function"
 
+
           input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
           input Real[:,4] a
           "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
+
           input Real xVal "input value of x to calculate y value"; //vstupni hodnota
+
 
           output Real yVal "y value at xVal";
      //     output Real outExtra;
@@ -20862,7 +20957,8 @@ input <i>u</i>:
               end if;
            end if;
        //    outExtra := xVal + yVal;
-            annotation (Documentation(revisions="<html>
+          annotation(derivative(noDerivative=x,noDerivative=a) = Spline_der,
+                        Documentation(revisions="<html>
 <p>author: Ondrej Vacek</p>
 </html>"));
      end Spline;
@@ -20912,7 +21008,7 @@ input <i>u</i>:
      end SplineCoefficients;
 
           model Curve
-        "2D natural cubic interpolation spline defined with (x,y,slope) points"
+            "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
                parameter Real x[:] = fill(Modelica.Constants.N_A,1)
           "x coordinations of interpolating points";
@@ -20967,6 +21063,72 @@ input <i>u</i>:
                 smooth=Smooth.Bezier,
                 arrow={Arrow.None,Arrow.Filled})}));
           end Curve;
+
+     function Spline_der
+       "Derivative of Cubic spline interpolation function"
+
+          input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
+          input Real[:,4] a
+          "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
+
+          input Real xVal "input value of x to calculate y value"; //vstupni hodnota
+
+          input Real xVal_der;
+
+          output Real yVal_der "derivative y at xVal";
+
+      protected
+        Integer index "index of segment";
+        Integer n "number of interpolating points";
+
+     algorithm
+            // Najdi interval, ve kterem se nachazi xVal
+
+            if (xVal <= x[1]) then //kdyz je hodnota xVal pred prvnim uzlovym bodem
+
+              //yVal := xVal * a[1,3] + a[1,4]; //pocitam primku
+              yVal_der := xVal_der * a[1,3];
+
+            else
+              n := size(x,1); //pocet uzlovych bodu
+              if (xVal>=x[n]) then //kdyz je hodnota xVal za poslednim uzlovym bodem
+
+                 //yVal := xVal * a[n+1,3] + a[n+1,4];  //pocitam primku
+                 yVal_der := xVal_der * a[n+1,3];
+
+            else
+              index := 2;
+              while  xVal > x[index] and index < n loop
+                index:=index+1;
+              end while;
+              //yVal := ((a[index,1]*xVal + a[index,2])*xVal + a[index,3])*xVal + a[index,4];
+
+              yVal_der := ( (a[index,1]*xVal_der) * xVal +
+                            (a[index,1]*xVal + a[index,2]) * xVal_der)        * xVal +
+                          ( (a[index,1]*xVal + a[index,2])*xVal + a[index,3]) * xVal_der;
+
+              /*
+         x1:=x[index-1];
+         x2:=x[index];
+         y1:=y[index-1];
+         y2:=y[index];
+         slope1:=slope[index-1];
+         slope2:=slope[index];
+
+         a1:=-(-x2*slope2 - x2*slope1 + slope2*x1 + slope1*x1 + 2*y2 - 2*y1)/(x2 - x1)^3;
+         a2:=(-x2^2*slope2-2*x2^2*slope1-3*x2*y1+x2*slope1*x1+3*x2*y2-x2*slope2*x1-3*y1*x1+slope1*x1^2+3*y2*x1+2*slope2*x1^2)/(x2-x1)^3;
+         a3:=-(-slope1*x2^3-2*x2^2*slope2*x1-x2^2*slope1*x1+x2*slope2*x1^2+2*x2*slope1*x1^2+6*x2*x1*y2-6*x2*x1*y1+slope2*x1^3)/(x2-x1)^3;
+         a4:=(-slope1*x2^3*x1+y1*x2^3-slope2*x1^2*x2^2+slope1*x1^2*x2^2-3*y1*x2^2*x1+3*y2*x1^2*x2+slope2*x1^3*x2-y2*x1^3)/(x2-x1)^3;
+
+         yVal :=a1*(xVal)^3 + a2*(xVal)^2 + a3*(xVal) + a4;
+         */
+              end if;
+           end if;
+       //    outExtra := xVal + yVal;
+            annotation (Documentation(revisions="<html>
+<p>author: Ondrej Vacek</p>
+</html>"));
+     end Spline_der;
     end Interpolation;
 
     package Factors "Multiplication Effects"
@@ -21292,6 +21454,96 @@ input <i>u</i>:
 </html>"));
       end SplineLagOrZero;
     end Factors;
+
+    package Source
+          model PeriodicCurveSource
+            "Periodic signal source as 2D natural cubic interpolation spline defined with (x,y,slope) points on scaled preriod interval (0,1)"
+
+            import Modelica.Constants.pi;
+
+               parameter Real x[:] = fill(Modelica.Constants.N_A,1)
+          "x coordinations of interpolating points";
+               parameter Real y[:] = fill(Modelica.Constants.N_A,1)
+          "y coordinations of interpolating points";
+               parameter Real slope[:] = fill(Modelica.Constants.N_A,1)
+          "slopes at interpolating points";
+
+               parameter Real[:,3] data = transpose({x,y,slope})
+          "Array of interpolating points as {x,y,slope}";
+
+              parameter Real Xscale = 1 "conversion scale to SI unit of x values";
+              parameter Real Yscale = 1 "conversion scale to SI unit of y values";
+
+               Physiolib.Types.RealIO.FrequencyInput frequence
+                            annotation (Placement(transformation(extent={{-120,
+                  -20},{-80,20}})));
+               Modelica.Blocks.Interfaces.RealOutput val
+                               annotation (Placement(transformation(extent={{80,-20},
+                  {120,20}})));
+
+      protected
+              parameter Real a[:,:] = Interpolation.SplineCoefficients(
+                                                          data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
+                         "cubic polynom coefficients of curve segments between interpolating points";
+
+              parameter Integer nu = 4*9*25;
+              parameter Real curve[nu] = { Physiolib.Blocks.Interpolation.Spline(data[:, 1], a, i/(nu-1)) for i in 0:nu-1};
+
+              parameter Integer nfi = div(nu,2)+1;
+              constant Complex I(re=0, im=1);
+              Complex complexValue;
+
+              parameter Complex c[nfi] = FFT(curve, nfi) "Fourier series coefficients";
+
+
+
+          equation
+
+            complexValue = sum( c[j] * Modelica.ComplexMath.exp(2*pi*I*(j-1)*time*frequence) for j in 1:nfi);  //Inverse Fourier transformation
+
+            val = complexValue.re;
+
+
+             annotation ( Icon(coordinateSystem(
+                preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+              graphics={
+              Rectangle(
+                extent={{-100,100},{100,-100}},
+                lineColor={0,0,127},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid),
+              Line(
+                points={{-70,-76},{-20,-48},{0,12},{34,62},{76,72}},
+                color={0,0,127},
+                smooth=Smooth.Bezier),
+              Line(
+                points={{-48,-82},{-48,90},{-48,90}},
+                color={0,0,127},
+                smooth=Smooth.Bezier,
+                arrow={Arrow.None,Arrow.Filled}),
+              Line(
+                points={{-72,-74},{68,-74},{68,-74}},
+                color={0,0,127},
+                smooth=Smooth.Bezier,
+                arrow={Arrow.None,Arrow.Filled})}));
+          end PeriodicCurveSource;
+
+      function FFT "Get fourier series coeficient"
+        import Modelica.Constants.pi;
+        input Real f[:] "equidistant-sampled function";
+        input Integer nfi = div(size(f,1),2)+1 "";
+        output Complex c[nfi] "Fourier series coeficient";
+      protected
+        Real Ai[nfi] "FFT amplitudes of interested frequency points";
+        Real Phii[nfi] "FFT phases of interested frequency points";
+        Integer info "Information flag from FFT computation; = 0: FFT successfully computed";
+      algorithm
+        (info,Ai,Phii) :=  Modelica.Math.FastFourierTransform.realFFT(f, nfi);
+        for j in 1:nfi loop
+           c[j] :=  Complex(re=Ai[j]*cos(Phii[j]*(pi/180)),im=Ai[j]*sin(Phii[j]*(pi/180)));
+        end for;
+      end FFT;
+    end Source;
     annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, marek@matfyz.cz </p>
 <p>All rights reserved. </p>

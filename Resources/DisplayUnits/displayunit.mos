@@ -227,8 +227,11 @@ defineUnitConversion("Pa", "Torr", 760/101325);
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.s)", (1e+6)*(133.322387415)); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);  //hydraulic conductance
+defineUnitConversion("m3/(Pa.s)", "l/(cmH2O.s)", (1e+3)*(98.0665)); //hydraulic resistance 
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.day)", (1e+6)*(133.322387415)*60*60*24); //osmotic permeability
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/ml", (1e-6)/(133.322387415)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/l", (1e-3)/(133.322387415)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(cmH2O.s)/l", (1e-3)/(98.0665)); //hydraulic resistance 
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
 defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //hydraulic compliance
