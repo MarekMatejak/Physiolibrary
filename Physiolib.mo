@@ -12327,95 +12327,6 @@ Connector with one flow signal of type Real.
       "Examples that demonstrate usage of the Pressure flow components"
     extends Modelica.Icons.ExamplesPackage;
 
-      model MinimalRespiration "Minimal respiration model"
-        extends Modelica.Icons.Example;
-
-        import Modelica.SIunits.*;
-
-        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
-
-        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
-        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
-        parameter Volume FunctionalResidualCapacity = 0.00231 "Zero pressure volume for linear compliance model";
-        parameter Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance";
-        parameter Volume BaseTidalVolume = 0.000543 "Base value of tidal volume";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance = 0.000543/1000 "Compliance e.g. TidalVolume/TidalPressureGradient";
-
-
-        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
-        //parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
-
-        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
-        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
-        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
-              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
-
-        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
-          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
-
-        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
-          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
-
-        Physiolib.Fluid.Components.ElasticVessel lungs(
-          redeclare package Medium = Medium,
-          mass_start(displayUnit="kg") = 2.32,
-          ZeroPressureVolume=FunctionalResidualCapacity,
-          CollapsingPressureVolume=ResidualVolume,
-          Compliance=TotalCompliance,
-          useExternalPressureInput=true,
-          useSigmoidCompliance=true,
-          VitalCapacity=VitalCapacity,
-          BaseTidalVolume=BaseTidalVolume,
-          nHydraulicPorts=2) "Lungs"
-          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
-        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
-            package Medium = Medium)                                 "Lungs pressure"
-          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
-        inner Modelica.Fluid.System system(T_ambient=310.15)
-                                           "External environment setting"
-          annotation (Placement(transformation(extent={{60,66},{80,86}})));
-        Physiolib.Fluid.Components.Conductor pathways(redeclare package Medium =
-              Medium,                                 Conductance=
-              TotalConductance) "Lungs pathways"
-          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
-        Physiolib.Fluid.Sources.UnlimitedVolume environment(redeclare package Medium =
-              Medium, T=298.15)
-                         "External environment"
-          annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
-        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(redeclare package Medium =
-              Medium)   "Lungs pathway airflow"
-          annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
-      equation
-        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
-          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
-        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
-          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
-        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
-            points={{40,-10},{40,-10.7},{-6.3,-10.7}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
-            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
-            points={{-82,-14},{-58,-14}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(airflowMeasure.q_in, environment.y) annotation (Line(
-            points={{-102,-14},{-138,-14}},
-            color={127,0,0},
-            thickness=0.5));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
-                  {100,100}})),                                        Diagram(
-              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
-          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
-          Documentation(info="<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
-</html>"));
-      end MinimalRespiration;
-
       model MinimalCirculation
         "Minimal circulation models driven by cardiac output"
          extends Modelica.Icons.Example;
@@ -13939,7 +13850,7 @@ Connector with one flow signal of type Real.
 </html>"));
       end MeursModel2011;
 
-      model MinimalRespirationAir "Minimal respiration model"
+      model MinimalRespiration "Minimal respiration model"
         extends Modelica.Icons.Example;
 
         import Modelica.SIunits.*;
@@ -13950,8 +13861,8 @@ Connector with one flow signal of type Real.
         parameter Volume ResidualVolume(displayUnit="l")=0.0013                                     "Lungs residual volume";
 
         parameter Volume FunctionalResidualCapacity(displayUnit="l")=0.00231                                     "Functional residual capacity";
-        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="l/(mmHg.min)")=
-           5.0004105056377e-06                                                                                            "Total lungs pathways conductance";
+        parameter Physiolib.Types.HydraulicResistance TotalResistance(displayUnit="(cmH2O.s)/l")=
+           147099.75                                                                                            "Total lungs pathways conductance";
         parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=
            6.0004926067653e-07                                                                                   "Total lungs compliance";
 
@@ -13960,36 +13871,38 @@ Connector with one flow signal of type Real.
         parameter Real RespiratoryMusclePressureCycle[:,3] = {
               {0,system.p_ambient + Pmax,0},
               {3/8,system.p_ambient + Pmin,0},
-              {1,system.p_ambient + Pmax,0},
-              {1+(1-3/8),system.p_ambient + Pmin,0},
-              {2,system.p_ambient + Pmax,0}}
-                "Absolute external lungs pressure during respiration cycle (0,1)";
+              {1,system.p_ambient + Pmax,0}}
+                "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
 
-        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
-          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
+        parameter Temperature CoreTemperature(displayUnit="degC") = 310.15 "body temperature";
+        parameter Temperature EnvironmentTemperature(displayUnit="degC") = 298.15 "external air temperature";
 
-        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+        parameter Volume LungsAirVolume_initial = FunctionalResidualCapacity;
+
+        parameter Density d = Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature));
+
+        Blocks.Source.PeriodicCurveSource    respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
           annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
 
         Physiolib.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Air,
-          mass_start=0.0133,
+          mass_start=LungsAirVolume_initial*Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature)),
           ZeroPressureVolume=FunctionalResidualCapacity,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
           nHydraulicPorts=2) "Lungs"
-          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
+          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));                                        //0.0133,
 
         Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
           redeclare package Medium = Air) "Lungs pressure"
           annotation (Placement(transformation(extent={{34,-14},{54,6}})));
 
-        inner Modelica.Fluid.System system(T_ambient=310.15)
+        inner Modelica.Fluid.System system(T_ambient=CoreTemperature)
                                            "Human body system setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
         Physiolib.Fluid.Sources.UnlimitedVolume environment(
-          redeclare package Medium = Air, T=298.15)
+          redeclare package Medium = Air, T=EnvironmentTemperature)
                                              "External environment"
           annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
 
@@ -13997,32 +13910,14 @@ Connector with one flow signal of type Real.
           redeclare package Medium = Air) "Lungs pathway airflow"
           annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
 
-        Modelica.Blocks.Sources.Sine sine(
-          amplitude=(Pmax - Pmin)/2,
-          freqHz=RespirationRate,
-          offset=system.p_ambient + (Pmax + Pmin)/2)
-          annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
         Components.Resistor resistor(
            redeclare package Medium = Air,
-           Resistance(displayUnit="(cmH2O.s)/l") = 147099.75)
+           Resistance = TotalResistance)
           annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
-        Modelica.Blocks.Sources.Trapezoid trapezoid(
-          rising=1/(2*RespirationRate),
-          width=0,
-          falling=1/(2*RespirationRate),
-          period=1/(RespirationRate))
-          annotation (Placement(transformation(extent={{-152,62},{-132,82}})));
 
-          Real r,alpha;
-
-        Modelica.Blocks.Sources.Sine sine1(
-          amplitude=0.5,
-          freqHz=RespirationRate,
-          offset=1)
-          annotation (Placement(transformation(extent={{-124,44},{-104,64}})));
+        Types.Constants.FrequencyConst frequency(k=RespirationRate)
+          annotation (Placement(transformation(extent={{-98,68},{-90,76}})));
       equation
-         r = sqrt(respiratoryMusclePressureCycle.val*respiratoryMusclePressureCycle.val + respiratoryMusclePressureCycle.u*respiratoryMusclePressureCycle.u);
-         alpha = atan2(respiratoryMusclePressureCycle.u,respiratoryMusclePressureCycle.val);
 
         connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
             points={{40,-10},{40,-10.7},{-6.3,-10.7}},
@@ -14040,101 +13935,8 @@ Connector with one flow signal of type Real.
             points={{-38,-14},{-24,-14},{-24,-13.3},{-6.3,-13.3}},
             color={127,0,0},
             thickness=0.5));
-        connect(sine.y, lungs.externalPressure)
-          annotation (Line(points={{-59,34},{2,34},{2,-2}}, color={0,0,127}));
-        connect(sine1.y, respiratoryMusclePressureCycle.u) annotation (Line(
-              points={{-103,54},{-68,54},{-68,70},{-34,70}}, color={0,0,127}));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
-                  {100,100}})),                                        Diagram(
-              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
-          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
-          Documentation(info="<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
-</html>"));
-      end MinimalRespirationAir;
-
-      model MinimalRespirationIncompressibleMedium
-        "Minimal respiration model"
-        extends Modelica.Icons.Example;
-
-        import Modelica.SIunits.*;
-
-        replaceable package Air =
-            Physiolib.Chemical.Examples.Media.StandardWater_C;
-
-        parameter Frequency RespirationRate=0.2                        "Respiration rate";
-        parameter Volume ResidualVolume=0.0013                    "Lungs residual volume";
-
-        parameter Physiolib.Types.HydraulicConductance TotalConductance=
-            5.0004105056377e-06                                                                                              "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance=
-            6.0004926067653e-07                                                                                  "Total lungs compliance";
-
-        parameter Pressure Pmin=-1000                      "Relative external lungs pressure minimum caused by respiratory muscles";
-        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
-        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
-              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
-
-        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
-          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
-
-        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
-          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
-
-        Physiolib.Fluid.Components.ElasticVessel lungs(
-          redeclare package Medium = Air,
-          mass_start=1.4,
-          ZeroPressureVolume=ResidualVolume,
-          Compliance=TotalCompliance,
-          useExternalPressureInput=true,
-          nHydraulicPorts=2) "Lungs"
-          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
-
-        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
-          redeclare package Medium = Air) "Lungs pressure"
-          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
-
-        inner Modelica.Fluid.System system "External environment setting"
-          annotation (Placement(transformation(extent={{60,66},{80,86}})));
-
-        Physiolib.Fluid.Components.Conductor pathways(
-          redeclare package Medium = Air,
-              Conductance=TotalConductance) "Lungs pathways"
-          annotation (Placement(transformation(extent={{-58,-24},{-38,-4}})));
-
-        Physiolib.Fluid.Sources.UnlimitedVolume environment(
-          redeclare package Medium = Air)    "External environment"
-          annotation (Placement(transformation(extent={{-158,-24},{-138,-4}})));
-
-        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(
-          redeclare package Medium = Air) "Lungs pathway airflow"
-          annotation (Placement(transformation(extent={{-102,-24},{-82,-4}})));
-
-        Modelica.Blocks.Sources.Sine sine(
-          amplitude=(Pmax - Pmin)/2,
-          freqHz=RespirationRate,
-          offset=system.p_ambient + (Pmax + Pmin)/2)
-          annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
-      equation
-        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
-          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
-        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
-            points={{40,-10},{40,-10.7},{-6.3,-10.7}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(pathways.q_out, lungs.q_in[2]) annotation (Line(
-            points={{-38,-14},{-38,-13.3},{-6.3,-13.3}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(airflowMeasure.q_out, pathways.q_in) annotation (Line(
-            points={{-82,-14},{-58,-14}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(airflowMeasure.q_in, environment.y) annotation (Line(
-            points={{-102,-14},{-138,-14}},
-            color={127,0,0},
-            thickness=0.5));
+        connect(frequency.y, respiratoryMusclePressureCycle.frequence)
+          annotation (Line(points={{-89,72},{-60,72},{-60,70},{-34,70}}, color={0,0,127}));
         connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
           annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
@@ -14145,67 +13947,8 @@ Connector with one flow signal of type Real.
 <p>References:</p>
 <p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
 </html>"));
-      end MinimalRespirationIncompressibleMedium;
+      end MinimalRespiration;
 
-      model MinimalRespiration1 "Minimal respiration model"
-        extends Modelica.Icons.Example;
-
-        import Modelica.SIunits.*;
-
-        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
-
-        parameter Frequency RespirationRate(displayUnit="1/min") = 0.2 "Respiration rate";
-        parameter Volume ResidualVolume(displayUnit="l") = 0.0013 "Lungs residual volume";
-        parameter Volume FunctionalResidualCapacity = 0.00231 "Zero pressure volume for linear compliance model";
-        parameter Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance";
-        parameter Volume BaseTidalVolume = 0.000543 "Base value of tidal volume";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance = 0.000543/1000 "Compliance e.g. TidalVolume/TidalPressureGradient";
-
-        parameter Physiolib.Types.HydraulicConductance TotalConductance(displayUnit="kg/(mmHg.min)") = 0.00012501026264094 "Total lungs pathways conductance";
-       // parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
-
-        parameter Pressure Pmin(displayUnit="cmH2O")=-1000 "Relative external lungs pressure minimum caused by respiratory muscles";
-        parameter Pressure Pmax(displayUnit="cmH2O") = 0 "Relative external lungs pressure maximum";
-        parameter Real RespiratoryMusclePressureCycle[:,3] = {{0,system.p_ambient + Pmax,-1},{3/8,
-              system.p_ambient + Pmin,0},{1,system.p_ambient + Pmax,0}} "Absolute external lungs pressure during respiration cycle (0,1)";
-
-        Modelica.Blocks.Sources.SawTooth respiratoryMuscleCycle(period=1/RespirationRate) "Time to relative position in respiratory cycle (0,1)"
-          annotation (Placement(transformation(extent={{-78,60},{-58,80}})));
-
-        Physiolib.Blocks.Interpolation.Curve respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
-          annotation (Placement(transformation(extent={{-34,60},{-14,80}})));
-
-        Physiolib.Fluid.Components.ElasticVessel lungs(
-          redeclare package Medium = Medium,
-          mass_start=1.6,
-          ZeroPressureVolume=FunctionalResidualCapacity,
-          Compliance=TotalCompliance,
-          useExternalPressureInput=true,
-          nHydraulicPorts=1) "Lungs"
-          annotation (Placement(transformation(extent={{-16,-22},{4,-2}})));
-        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
-            package Medium = Medium)                                 "Lungs pressure"
-          annotation (Placement(transformation(extent={{34,-14},{54,6}})));
-        inner Modelica.Fluid.System system "External environment setting"
-          annotation (Placement(transformation(extent={{60,66},{80,86}})));
-      equation
-        connect(respiratoryMuscleCycle.y, respiratoryMusclePressureCycle.u)
-          annotation (Line(points={{-57,70},{-34,70}}, color={0,0,127}));
-        connect(respiratoryMusclePressureCycle.val, lungs.externalPressure)
-          annotation (Line(points={{-14,70},{2,70},{2,-2}}, color={0,0,127}));
-        connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (Line(
-            points={{40,-10},{40,-12},{-6.3,-12}},
-            color={127,0,0},
-            thickness=0.5));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},
-                  {100,100}})),                                        Diagram(
-              coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{100,100}})),
-          experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
-          Documentation(info="<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
-</html>"));
-      end MinimalRespiration1;
     end Examples;
   end Fluid;
 
@@ -21499,7 +21242,7 @@ input <i>u</i>:
 
           equation
 
-            complexValue = sum( c[j] * Modelica.ComplexMath.exp(2*pi*I*(j-1)*time*frequence) for j in 1:nfi);  //Inverse Fourier transformation
+            complexValue = sum( c[j+1] * Modelica.ComplexMath.exp(2*pi*I*j*time*frequence) for j in 0:nfi-1);  //Inverse Fourier transformation
 
             val = complexValue.re;
 
