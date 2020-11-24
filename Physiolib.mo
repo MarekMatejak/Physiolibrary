@@ -97,20 +97,15 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       protected
          Physiolib.Types.HydraulicConductance c;
 
-         Modelica.SIunits.Density density;//, density_outflow;
+
       equation
 
         if not useConductanceInput then
           c=Conductance;
         end if;
-        q_in.m_flow = (c * (q_in.p  - q_out.p)) * density;
 
+        volumeFlowRate = (c * (q_in.p  - q_out.p));
 
-        // medium density
-        density = if ((q_in.p  - q_out.p) >=0)  then
-         Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
-         else
-         Medium.density(Medium.setState_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow)));
 
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                   -100,-100},{100,100}}),
@@ -141,10 +136,11 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
        //extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
        //       volume_start, storeUnit="ml");
 
-        replaceable package Medium =
-             Chemical.Interfaces.PartialMedium_C           constrainedby
+        replaceable package Medium =  Chemical.Examples.Media.StandardWater_C   constrainedby
           Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
+
+        outer Modelica.Fluid.System system "System wide properties";
 
 
         parameter Integer nHydraulicPorts=0 "Number of hydraulic ports"
@@ -177,7 +173,8 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
           annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
 
           parameter Physiolib.Types.Volume CollapsingPressureVolume=1e-12
-          "Maximal volume, which generate negative collapsing pressure"; //default = 1e-6 ml
+          "Maximal volume, which generate negative collapsing pressure"
+          annotation (Dialog(tab="Advanced")); //default = 1e-6 ml
 
          Physiolib.Types.RealIO.VolumeInput zeroPressureVolume(start=
               ZeroPressureVolume) if useV0Input annotation (Placement(
@@ -207,21 +204,19 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         parameter Boolean useExternalPressureInput = false
           "=true, if external pressure input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.AbsolutePressure ExternalPressure=101325
-          "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
-          annotation (Dialog(enable=not useExternalPressureInput));
 
         parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs"
-           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Computational model"));
+           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Computational model", tab="Advanced"));
 
 
-         parameter Physiolib.Types.Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance"
-           annotation (Dialog(enable=useSigmoidCompliance));
-         parameter Physiolib.Types.Volume BaseTidalVolume = 0.000543 "Base value of tidal volume"
-           annotation (Dialog(enable=useSigmoidCompliance));
+         parameter Physiolib.Types.Volume VitalCapacity=0.00493    "Relative volume capacity if useSigmoidCompliance"
+           annotation (Dialog(enable=useSigmoidCompliance,tab="Advanced"));
+         parameter Physiolib.Types.Volume BaseTidalVolume=0.000543   "Base value of tidal volume"
+           annotation (Dialog(enable=useSigmoidCompliance,tab="Advanced"));
 
 
-        parameter Physiolib.Types.AbsolutePressure MinimalCollapsingPressure=10;
+        parameter Physiolib.Types.AbsolutePressure MinimalCollapsingPressure=10
+          annotation (Dialog(tab="Advanced"));
         Physiolib.Types.RealIO.PressureInput externalPressure(start=
               ExternalPressure) if useExternalPressureInput annotation (
             Placement(transformation(
@@ -242,6 +237,10 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
               origin={60,-100})));
 
       protected
+        parameter Physiolib.Types.AbsolutePressure ExternalPressure=system.p_ambient
+          "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
+          annotation (Dialog(enable=not useExternalPressureInput));
+
         parameter Physiolib.Types.Pressure a=MinimalCollapsingPressure/log(
             Modelica.Constants.eps);
 
@@ -261,10 +260,10 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
           MinimalCollapsingPressure=MinimalCollapsingPressure,
           useSigmoidCompliance=useSigmoidCompliance,
           VitalCapacity=VitalCapacity,
-          BaseTidalVolume=BaseTidalVolume) annotation (Placement(transformation(
-                extent={{-100,-100},{100,100}})));
+          BaseTidalVolume=BaseTidalVolume)
+          annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
-      //protected
+      protected
         parameter Modelica.SIunits.MolarMass MM[Medium.nC] = Medium.substanceData.MolarWeight.*ones(Medium.nC);
         parameter Modelica.SIunits.MoleFraction x_start[Medium.nC] = concentration_start ./ (concentration_start*ones(Medium.nC));
         parameter Modelica.SIunits.AmountOfSubstance nt_start = mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
@@ -284,7 +283,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         Chemical.Components.Substance substance[Medium.nC](
           redeclare package stateOfMatter = Medium.stateOfMatter,
           substanceData=Medium.substanceData,
-          use_mass_start=false,
+          each use_mass_start=false,
           amountOfSubstance_start=n_start)
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
 
@@ -381,7 +380,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       model ElasticVesselElastance
         extends Physiolib.Fluid.Components.ElasticVessel(final Compliance=1/
               Elastance);
-        parameter Physiolib.Types.HydraulicElastance Elastance = 1
+        parameter Physiolib.Types.HydraulicElastance Elastance=1
           "Elastance if useComplianceInput=false" annotation (Dialog(enable=not useComplianceInput));
       end ElasticVesselElastance;
 
@@ -390,7 +389,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         extends Physiolib.Icons.HydrostaticGradient;
 
         replaceable package Medium =
-            Chemical.Interfaces.PartialMedium_C           constrainedby
+            Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -532,7 +531,10 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         Physiolib.Types.HydraulicConductance goff;
         constant Physiolib.Types.Pressure unitPressure=1;
         constant Physiolib.Types.MassFlowRate unitFlow=1;
+
+        Modelica.SIunits.Density density;
       equation
+
         if not useLimitationInputs then
           gon = _Gon;
           goff = _Goff;
@@ -540,6 +542,13 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         open = passableVariable > Modelica.Constants.eps;
         dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
         massFlowRate = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
+
+        // medium density
+        density = if ((q_in.p  - q_out.p) >=0)  then
+         Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
+         else
+         Medium.density(Medium.setState_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow)));
+
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}),
                                graphics={
@@ -597,7 +606,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         extends Physiolib.Icons.Reabsorption;
 
         replaceable package Medium =
-          Chemical.Interfaces.PartialMedium_C           constrainedby
+          Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -695,7 +704,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-            package Medium = Chemical.Interfaces.PartialMedium_C);
+            package Medium = Chemical.Examples.Media.StandardWater_C);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -819,7 +828,7 @@ Connector with one flow signal of type Real.
 
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
-           Chemical.Interfaces.PartialMedium_C           constrainedby
+           Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
@@ -830,7 +839,12 @@ Connector with one flow signal of type Real.
         FluidPort_b q_out(redeclare package Medium = Medium) "Outflow"
           annotation (Placement(transformation(extent={{86,-14},{114,14}})));
          Physiolib.Types.MassFlowRate massFlowRate "Mass flow";
+
+         Physiolib.Types.VolumeFlowRate volumeFlowRate "Volume flow";
+
          Physiolib.Types.Pressure dp "Pressure gradient";
+
+         Modelica.SIunits.Density density;//, density_outflow;
       equation
         q_in.m_flow + q_out.m_flow = 0;
         massFlowRate = q_in.m_flow;
@@ -843,6 +857,14 @@ Connector with one flow signal of type Real.
         q_out.h_outflow = inStream(q_in.h_outflow);
         q_out.Xi_outflow = inStream(q_in.Xi_outflow);
         q_out.C_outflow = inStream(q_in.C_outflow);
+
+        volumeFlowRate*density  = massFlowRate;
+
+         // medium density
+        density = if (q_in.m_flow >=0)  then
+         Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
+         else
+         Medium.density(Medium.setState_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow)));
       end OnePort;
 
       partial model ConditionalSolutionFlow
@@ -930,7 +952,7 @@ Connector with one flow signal of type Real.
         extends Physiolib.Icons.PressureMeasure;
 
         replaceable package Medium =
-          Chemical.Interfaces.PartialMedium_C           constrainedby
+          Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
           "Medium model"
           annotation (choicesAllMatching=true);
@@ -966,7 +988,7 @@ Connector with one flow signal of type Real.
         extends Physiolib.Fluid.Interfaces.ConditionalSolutionFlow;
 
         replaceable package Medium =
-            Chemical.Examples.Media.SimpleBodyFluid_C
+            Chemical.Examples.Media.StandardWater_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -1027,7 +1049,7 @@ Connector with one flow signal of type Real.
         model UnlimitedVolume "Prescribed pressure at port"
 
           replaceable package Medium =
-              Chemical.Interfaces.PartialMedium_C           constrainedby
+              Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
           "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1107,7 +1129,7 @@ Connector with one flow signal of type Real.
         extends Physiolib.Fluid.Interfaces.ConditionalSolutionFlow;
 
         replaceable package Medium =
-          Chemical.Interfaces.PartialMedium_C           constrainedby
+          Chemical.Examples.Media.StandardWater_C           constrainedby
           Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1177,62 +1199,71 @@ Connector with one flow signal of type Real.
         "Minimal circulation models driven by cardiac output"
          extends Modelica.Icons.Example;
 
-        replaceable package Medium = Chemical.Examples.Media.SimpleBodyFluid_C;
 
-        Physiolib.Fluid.Components.Pump heart(redeclare package Medium = Medium,
-                                              useSolutionFlowInput=true)
-          annotation (Placement(transformation(extent={{-6,-50},{14,-30}})));
-        Physiolib.Fluid.Components.ElasticVessel arteries(redeclare package Medium = Medium,
-          fluidAdapter_D(solution(T(start=310.15))),
+
+        Physiolib.Fluid.Components.Pump heart(useSolutionFlowInput=true)
+          annotation (Placement(transformation(extent={{-20,60},{0,80}})));
+        Physiolib.Fluid.Components.ElasticVessel arteries(
           mass_start(displayUnit="kg") = 1,
-          nHydraulicPorts=2,
-          Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-8,
-          ExternalPressure(displayUnit="mmHg") = 101325.0144354,
+          nHydraulicPorts=3,
+          Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08,
+          ExternalPressure(displayUnit="mmHg") = system.p_ambient,
           ZeroPressureVolume(displayUnit="ml") = 0.00085)
-          annotation (Placement(transformation(extent={{36,-84},{56,-64}})));
+          annotation (Placement(transformation(extent={{54,40},{74,60}})));
 
-        Physiolib.Fluid.Components.Conductor resistance(redeclare package Medium = Medium,
-            Conductance(displayUnit="g/(mmHg.min)")=
-               6.2755151845753e-6)
-          annotation (Placement(transformation(extent={{-2,-90},{18,-70}})));
-        Physiolib.Fluid.Components.ElasticVessel veins(redeclare package Medium = Medium,
-          fluidAdapter_D(solution(T(start=310.15))),
+        Physiolib.Fluid.Components.ElasticVessel veins(
           mass_start(displayUnit="kg") = 3.2,
           nHydraulicPorts=2,
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
-          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7,
+          Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-07,
           useExternalPressureInput=false,
-          ExternalPressure=101325.0144354)
-          annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
+          ExternalPressure=system.p_ambient)
+          annotation (Placement(transformation(extent={{-58,40},{-38,60}})));
 
         Modelica.Blocks.Sources.Pulse pulse(
           width=25,
           period=60/75,
           amplitude=3.3e-1)
           annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
+        Sensors.PressureMeasure pressureMeasure
+          annotation (Placement(transformation(extent={{82,68},{102,88}})));
+        Sensors.FlowMeasure flowMeasure
+          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={22,32})));
+        Components.Conductor resistance(Conductance=6.2755151845753e-09)
+          annotation (Placement(transformation(extent={{-18,22},{2,42}})));
       equation
         connect(pulse.y, heart.solutionFlow) annotation (Line(
-            points={{-73,84},{-62,84},{-62,-26},{4,-26},{4,-33}},
+            points={{-73,84},{-10,84},{-10,77}},
             color={0,0,127}));
-        connect(heart.q_out, arteries.q_in[1]) annotation (Line(
-            points={{14,-40},{45.7,-40},{45.7,-72.7}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(resistance.q_out, arteries.q_in[2]) annotation (Line(
-            points={{18,-80},{30,-80},{30,-75.3},{45.7,-75.3}},
-            color={127,0,0},
-            thickness=0.5));
         connect(veins.q_in[1], heart.q_in) annotation (Line(
-            points={{-32.3,-72.7},{-32,-72.7},{-32,-40},{-6,-40}},
+            points={{-48.3,51.3},{-46,51.3},{-46,70},{-20,70}},
             color={127,0,0},
             thickness=0.5));
-        connect(veins.q_in[2], resistance.q_in) annotation (Line(
-            points={{-32.3,-75.3},{-18,-75.3},{-18,-80},{-2,-80}},
+        connect(pressureMeasure.q_in, arteries.q_in[1]) annotation (Line(
+            points={{88,72},{88,51.7333},{63.7,51.7333}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistance.q_in, veins.q_in[2]) annotation (Line(
+            points={{-18,32},{-32,32},{-32,48.7},{-48.3,48.7}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(heart.q_out, arteries.q_in[2]) annotation (Line(
+            points={{0,70},{63.7,70},{63.7,50}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistance.q_out, flowMeasure.q_out) annotation (Line(
+            points={{2,32},{12,32}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(flowMeasure.q_in, arteries.q_in[3]) annotation (Line(
+            points={{32,32},{38,32},{38,48.2667},{63.7,48.2667}},
             color={127,0,0},
             thickness=0.5));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics={                          Text(
-                extent={{-40,-12},{80,-22}},
+                extent={{-54,98},{66,88}},
                 lineColor={175,175,175},
                 textString="Minimal circulation driven by cardiac output")}),
             Documentation(revisions="<html>
@@ -1244,15 +1275,14 @@ Connector with one flow signal of type Real.
       model Windkessel_2element "Two-element Windkessel model"
         extends Modelica.Icons.Example;
         Physiolib.Fluid.Components.ElasticVessel arteries(
-          ZeroPressureVolume(displayUnit="ml") = 0.85e-3,
+          ZeroPressureVolume(displayUnit="ml") = 0.00085,
           mass_start(displayUnit="kg") = 0.97,
-          nHydraulicPorts=2,
-          redeclare package Medium = Chemical.Examples.Media.SimpleBodyFluid_C,
-          Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-8)
+          nHydraulicPorts=3,
+          Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08)
           annotation (Placement(transformation(extent={{-12,38},{8,58}})));
 
         Physiolib.Fluid.Components.Conductor resistance(useConductanceInput=false,
-            Conductance(displayUnit="g/(mmHg.s)") = 8.1006650191331e-6)
+            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1264,19 +1294,33 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
         Sources.UnlimitedVolume unlimitedVolume
           annotation (Placement(transformation(extent={{-56,0},{-36,20}})));
+        Sensors.PressureMeasure pressureMeasure
+          annotation (Placement(transformation(extent={{50,56},{70,76}})));
+        Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={-2,10})));
       equation
         connect(arteries.q_in[1], resistance.q_in) annotation (Line(
-            points={{-2.3,49.3},{18,49.3},{18,44}},
+            points={{-2.3,49.7333},{18,49.7333},{18,44}},
             color={127,0,0},
             thickness=0.5));
         connect(pulses.massflowrate, unlimitedPump.solutionFlow) annotation (
             Line(points={{-61,68},{-38,68},{-38,55}}, color={0,0,127}));
         connect(unlimitedPump.q_out, arteries.q_in[2]) annotation (Line(
-            points={{-28,48},{-16,48},{-16,46.7},{-2.3,46.7}},
+            points={{-28,48},{-16,48},{-16,48},{-2.3,48}},
             color={127,0,0},
             thickness=0.5));
-        connect(unlimitedVolume.y, resistance.q_out) annotation (Line(
-            points={{-36,10},{20,10},{20,24},{18,24}},
+        connect(arteries.q_in[3], pressureMeasure.q_in) annotation (Line(
+            points={{-2.3,46.2667},{-2,46.2667},{-2,60},{56,60}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistance.q_out, flowMeasure.q_in) annotation (Line(
+            points={{18,24},{18,10},{8,10}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(flowMeasure.q_out, unlimitedVolume.y) annotation (Line(
+            points={{-12,10},{-36,10}},
             color={127,0,0},
             thickness=0.5));
         annotation (
@@ -1309,13 +1353,13 @@ Connector with one flow signal of type Real.
         Physiolib.Fluid.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
         Physiolib.Fluid.Components.ElasticVessel arteries(
-          ZeroPressureVolume(displayUnit="l") = 0.85e-3,
+          ZeroPressureVolume(displayUnit="l") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08,
           mass_start(displayUnit="kg") = 0.97,
-          nHydraulicPorts=2)
+          nHydraulicPorts=3)
           annotation (Placement(transformation(extent={{16,38},{36,58}})));
         Physiolib.Fluid.Components.Conductor resistance(useConductanceInput=false,
-            Conductance(displayUnit="g/(mmHg.s)") = 8.1006650191331e-06)
+            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1328,13 +1372,16 @@ Connector with one flow signal of type Real.
           HR(displayUnit="1/min") = 1.2)
           annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
         Physiolib.Fluid.Components.Conductor impedance(useConductanceInput=false,
-            Conductance(displayUnit="g/(mmHg.s)") = 1.5001231516913e-03)
+            Conductance(displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 origin={-6,50})));
+        Sensors.PressureMeasure pressureMeasure
+          annotation (Placement(transformation(extent={{58,66},{78,86}})));
+        Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={12,20})));
       equation
-        connect(resistance.q_out, veins.y) annotation (Line(
-            points={{50,24},{50,20},{-30,20}},
-            thickness=1));
         connect(pulses.massflowrate, heart.solutionFlow) annotation (Line(
             points={{-45,68},{-40,68},{-40,55}},
             color={0,0,127}));
@@ -1342,11 +1389,23 @@ Connector with one flow signal of type Real.
             points={{-30,48},{-24,48},{-24,50},{-16,50}},
             thickness=1));
         connect(impedance.q_out, arteries.q_in[1]) annotation (Line(
-            points={{4,50},{16,50},{16,49.3},{25.7,49.3}},
+            points={{4,50},{16,50},{16,49.7333},{25.7,49.7333}},
             color={127,0,0},
             thickness=0.5));
         connect(arteries.q_in[2], resistance.q_in) annotation (Line(
-            points={{25.7,46.7},{50,46.7},{50,44}},
+            points={{25.7,48},{50,48},{50,44}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistance.q_out, flowMeasure.q_in) annotation (Line(
+            points={{50,24},{50,20},{22,20}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(flowMeasure.q_out, veins.y) annotation (Line(
+            points={{2,20},{-30,20}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pressureMeasure.q_in, arteries.q_in[3]) annotation (Line(
+            points={{64,70},{26,70},{26,46.2667},{25.7,46.2667}},
             color={127,0,0},
             thickness=0.5));
         annotation (
@@ -1375,13 +1434,13 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
         Physiolib.Fluid.Components.ElasticVessel arteries(
           mass_start(displayUnit="kg") = 0.97,
-          nHydraulicPorts=3,
+          nHydraulicPorts=4,
           ZeroPressureVolume(displayUnit="ml") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-8,
           useSubstances=false)
           annotation (Placement(transformation(extent={{16,38},{36,58}})));
         Physiolib.Fluid.Components.Conductor resistance(useConductanceInput=false,
-            Conductance(displayUnit="g/(mmHg.s)") = 8.1006650191331e-06)
+            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1392,17 +1451,20 @@ Connector with one flow signal of type Real.
                0.424, HR=1.2)
           annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
         Physiolib.Fluid.Components.Conductor impedance(useConductanceInput=false,
-            Conductance(displayUnit="g/(mmHg.s)") = 1.5001231516913e-03)
+            Conductance(displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                 origin={-6,48})));
         Physiolib.Fluid.Components.Inertia inertia(I(displayUnit="mmHg.s2/g")=
                666.611937075, massFlow_start(displayUnit="kg/min")=
             0.083333333333333)
           annotation (Placement(transformation(extent={{-16,56},{4,76}})));
+        Sensors.PressureMeasure pressureMeasure
+          annotation (Placement(transformation(extent={{62,64},{82,84}})));
+        Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={14,20})));
       equation
-        connect(resistance.q_out, veins.y) annotation (Line(
-            points={{48,24},{48,20},{-30,20}},
-            thickness=1));
         connect(pulses.massflowrate, heart.solutionFlow) annotation (Line(
             points={{-45,68},{-40,68},{-40,55}},
             color={0,0,127}));
@@ -1413,15 +1475,27 @@ Connector with one flow signal of type Real.
             points={{-30,48},{-26,48},{-26,66},{-16,66}},
             thickness=1));
         connect(inertia.q_out, arteries.q_in[1]) annotation (Line(
-            points={{4,66},{16,66},{16,49.7333},{25.7,49.7333}},
+            points={{4,66},{16,66},{16,49.95},{25.7,49.95}},
             color={127,0,0},
             thickness=0.5));
         connect(impedance.q_out, arteries.q_in[2]) annotation (Line(
-            points={{4,48},{16,48},{16,48},{25.7,48}},
+            points={{4,48},{16,48},{16,48.65},{25.7,48.65}},
             color={127,0,0},
             thickness=0.5));
         connect(arteries.q_in[3], resistance.q_in) annotation (Line(
-            points={{25.7,46.2667},{48,46.2667},{48,44}},
+            points={{25.7,47.35},{48,47.35},{48,44}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pressureMeasure.q_in, arteries.q_in[4]) annotation (Line(
+            points={{68,68},{25.7,68},{25.7,46.05}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistance.q_out, flowMeasure.q_in) annotation (Line(
+            points={{48,24},{48,20},{24,20}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(flowMeasure.q_out, veins.y) annotation (Line(
+            points={{4,20},{-30,20}},
             color={127,0,0},
             thickness=0.5));
         annotation (
@@ -1460,11 +1534,12 @@ Connector with one flow signal of type Real.
           Compliance(displayUnit="ml/mmHg") = 3.6002955640592e-8)
           annotation (Placement(transformation(extent={{-62,74},{-42,94}})));
         Hydraulic.Components.Conductor
-                 pulmonary(Conductance(displayUnit="kg/(mmHg.min)") = 4.1665920538226e-05)
+                 pulmonary(Conductance(displayUnit="l/(mmHg.min)") =
+            4.1665920538226e-08)
           annotation (Placement(transformation(extent={{-30,74},{-10,94}})));
         Hydraulic.Components.ElasticVessel arteries(
           mass_start(displayUnit="kg") = 0.85,
-          nHydraulicPorts=4,
+          nHydraulicPorts=5,
           ZeroPressureVolume(displayUnit="ml") = 0.000495,
           Compliance(displayUnit="ml/mmHg") = 2.6627185942521e-8)
           annotation (Placement(transformation(extent={{14,-46},{34,-26}})));
@@ -1475,7 +1550,8 @@ Connector with one flow signal of type Real.
           Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7)
           annotation (Placement(transformation(extent={{-64,-46},{-44,-26}})));
         Hydraulic.Components.Conductor
-                 nonMuscle(Conductance(displayUnit="kg/(mmHg.min)") = 3.5627924852669e-06)
+                 nonMuscle(Conductance(displayUnit="l/(mmHg.min)") =
+            3.5627924852669e-09)
           annotation (Placement(transformation(extent={{-24,-46},{-4,-26}})));
         Hydraulic.Sensors.PressureMeasure pressureMeasure
           annotation (Placement(transformation(extent={{-78,26},{-58,46}})));
@@ -1492,13 +1568,16 @@ Connector with one flow signal of type Real.
                 "kg/min") = 0.083333333333333)
           annotation (Placement(transformation(extent={{12,42},{20,50}})));
         Hydraulic.Components.Conductor
-                 kidney(Conductance(displayUnit="kg/(mmHg.min)") = 1.4126159678427e-06)
+                 kidney(Conductance(displayUnit="l/(mmHg.min)") =
+            1.4126159678427e-09)
           annotation (Placement(transformation(extent={{-24,-64},{-4,-44}})));
         Hydraulic.Components.Conductor
-                 muscle(Conductance(displayUnit="kg/(mmHg.min)") = 1.3001067314658e-06)
+                 muscle(Conductance(displayUnit="l/(mmHg.min)") =
+            1.3001067314658e-09)
           annotation (Placement(transformation(extent={{-24,-28},{-4,-8}})));
         Hydraulic.Components.Conductor
-                 largeVeins(Conductance(displayUnit="kg/(mmHg.min)") = 1.6888886482791e-04)
+                 largeVeins(Conductance(displayUnit="l/(mmHg.min)") =
+            1.6888886482791e-07)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-84,-8})));
@@ -1520,6 +1599,8 @@ Connector with one flow signal of type Real.
           annotation (Placement(transformation(extent={{16,22},{36,42}})));
         inner Modelica.Fluid.System system
           annotation (Placement(transformation(extent={{68,62},{88,82}})));
+        Hydraulic.Sensors.PressureMeasure MeanArterialPressure "MAP"
+          annotation (Placement(transformation(extent={{74,-34},{94,-14}})));
       equation
         connect(RNormalCO.y, rightStarling.yBase) annotation (Line(
             points={{-51,44},{-46,44},{-46,34}},
@@ -1565,19 +1646,19 @@ Connector with one flow signal of type Real.
             color={127,0,0},
             thickness=0.5));
         connect(leftHeart.q_out, arteries.q_in[1]) annotation (Line(
-            points={{36,16},{54,16},{54,-34.05},{23.7,-34.05}},
+            points={{36,16},{54,16},{54,-33.92},{23.7,-33.92}},
             color={127,0,0},
             thickness=0.5));
         connect(muscle.q_out, arteries.q_in[2]) annotation (Line(
-            points={{-4,-18},{10,-18},{10,-35.35},{23.7,-35.35}},
+            points={{-4,-18},{10,-18},{10,-34.96},{23.7,-34.96}},
             color={127,0,0},
             thickness=0.5));
         connect(nonMuscle.q_out, arteries.q_in[3]) annotation (Line(
-            points={{-4,-36},{10,-36},{10,-36.65},{23.7,-36.65}},
+            points={{-4,-36},{10,-36},{10,-36},{23.7,-36}},
             color={127,0,0},
             thickness=0.5));
         connect(kidney.q_out, arteries.q_in[4]) annotation (Line(
-            points={{-4,-54},{10,-54},{10,-37.95},{23.7,-37.95}},
+            points={{-4,-54},{10,-54},{10,-37.04},{23.7,-37.04}},
             color={127,0,0},
             thickness=0.5));
         connect(muscle.q_in, veins.q_in[1]) annotation (Line(
@@ -1606,6 +1687,10 @@ Connector with one flow signal of type Real.
             thickness=0.5));
         connect(rightAtrium.q_in[3], pressureMeasure.q_in) annotation (Line(
             points={{-72.3,16.2667},{-72,16.2667},{-72,30}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(arteries.q_in[5], MeanArterialPressure.q_in) annotation (Line(
+            points={{23.7,-38.08},{80,-38.08},{80,-30}},
             color={127,0,0},
             thickness=0.5));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1684,7 +1769,8 @@ Connector with one flow signal of type Real.
             nHydraulicPorts=2,
             mass_start=0.373)
             annotation (Placement(transformation(extent={{-40,28},{-20,48}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CAP(k=2.2576853432954e-8)
+          Physiolib.Types.Constants.HydraulicComplianceConst CAP(k=
+                2.2576853432954e-08)
             annotation (Placement(transformation(extent={{-50,56},{-36,70}})));
           Physiolib.Types.Constants.VolumeConst V0AP(k=0.000327)
             annotation (Placement(transformation(extent={{-66,44},{-52,58}})));
@@ -1692,7 +1778,7 @@ Connector with one flow signal of type Real.
               useConductanceInput=true)
             annotation (Placement(transformation(extent={{-2,28},{18,48}})));
           Physiolib.Types.Constants.HydraulicResistanceToConductanceConst RP(k(
-                displayUnit="(Pa.s)/kg") = 9332.56711905)
+                displayUnit="(mmHg.s)/l") = 9332567.11905)
             annotation (Placement(transformation(extent={{-6,60},{6,70}})));
           Physiolib.Fluid.Components.ElasticVessel PulmonaryVeins(
             useV0Input=true,
@@ -1719,7 +1805,7 @@ Connector with one flow signal of type Real.
               useConductanceInput=true)
             annotation (Placement(transformation(extent={{16,-70},{-4,-50}})));
           Physiolib.Types.Constants.HydraulicResistanceToConductanceConst RT(k(
-                displayUnit="(Pa.s)/kg") = 133322.387415)
+                displayUnit="(mmHg.s)/l") = 133322387.415)
             annotation (Placement(transformation(extent={{-14,-50},{-4,-40}})));
           Physiolib.Fluid.Components.ElasticVessel SystemicArteries(
             useV0Input=true,
@@ -1727,15 +1813,18 @@ Connector with one flow signal of type Real.
             nHydraulicPorts=3,
             mass_start=0.672)
             annotation (Placement(transformation(extent={{36,-70},{56,-50}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CAS(k=1.1250923637685e-8)
+          Physiolib.Types.Constants.HydraulicComplianceConst CAS(k=
+                1.1250923637685e-08)
             annotation (Placement(transformation(extent={{30,-38},{44,-24}})));
           Physiolib.Types.Constants.VolumeConst V0AS(k=0.000529)
             annotation (Placement(transformation(extent={{14,-50},{28,-36}})));
-          replaceable Parts.HeartPump rightHeart(StarlingSlope(displayUnit="g/(mmHg.s)")=
-                 0.00012503526469347) constrainedby Parts.HeartInterface
+          replaceable Parts.HeartPump rightHeart(StarlingSlope(displayUnit=
+                  "ml/(mmHg.s)") = 1.2503526469347e-07)
+                                      constrainedby Parts.HeartInterface
             annotation (Placement(transformation(extent={{-72,-10},{-48,16}})));
-          replaceable Parts.HeartPump leftHeart(StarlingSlope(displayUnit="g/(Pa.s)")=
-                 7.5006157584566e-5) constrainedby Parts.HeartInterface
+          replaceable Parts.HeartPump leftHeart(StarlingSlope(displayUnit=
+                  "ml/(mmHg.s)") = 7.5006157584566e-08)
+                                     constrainedby Parts.HeartInterface
             annotation (Placement(transformation(extent={{74,-10},{52,10}})));
           inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354)
@@ -1774,7 +1863,7 @@ Connector with one flow signal of type Real.
               points={{29.75,-43},{38,-43},{38,-50}},
               color={0,0,127}));
           connect(rightHeart.q_out, PulmonaryArteries.q_in[1]) annotation (Line(
-              points={{-53.76,4.56},{-40,4.56},{-40,39.3},{-30.3,39.3}},
+              points={{-48,3},{-40,3},{-40,39.3},{-30.3,39.3}},
               color={127,0,0},
               thickness=0.5));
           connect(PulmonaryArteries.q_in[2], TotalPulmonaryResistance.q_in)
@@ -1792,7 +1881,8 @@ Connector with one flow signal of type Real.
               color={127,0,0},
               thickness=0.5));
           connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (Line(
-              points={{57.28,1.2},{50,1.2},{50,-58.2667},{45.7,-58.2667}},
+              points={{52,2.22045e-16},{50,2.22045e-16},{50,-58.2667},{45.7,
+                  -58.2667}},
               color={127,0,0},
               thickness=0.5));
           connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in)
@@ -1855,9 +1945,14 @@ Connector with one flow signal of type Real.
             extends Physiolib.Fluid.Interfaces.OnePort;
 
             parameter Physiolib.Types.HydraulicConductance StarlingSlope;
+
+             Modelica.SIunits.Density density;
           equation
-            q_in.m_flow = StarlingSlope*(q_in.p-system.p_ambient);
-            annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={
+             q_in.m_flow = StarlingSlope*(q_in.p-system.p_ambient)*density;
+
+             // medium density
+            density = Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
+             annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={
                       {-100,-100},{100,100}}), graphics={Polygon(
                             points={{32,-34},{24,-24},{18,-10},{18,-8},{22,22},{
                       24,24},{34,40},{30,70},{26,82},{-22,100},{-26,42},{-26,40},
@@ -1871,6 +1966,7 @@ Connector with one flow signal of type Real.
                             fillColor={255,170,170},
                             fillPattern=FillPattern.Solid,
                             textString="%name")}));
+
           end HeartPump;
 
           model PulsatileHeartPump "Heart as pump, which flowrate is determined
@@ -1935,102 +2031,106 @@ Connector with one flow signal of type Real.
                                   extends Physiolib.Icons.CardioVascular;
 
           Physiolib.Fluid.Components.Conductor RPulmonaryVeins(
-              useConductanceInput=false, Conductance(displayUnit="kg/(Pa.s)")=
-                 7.425609600872e-03) annotation (Placement(transformation(
+              useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")
+               = 7.425609600872e-08) annotation (Placement(transformation(
                   origin={-220,60}, extent={{15,-15},{-15,15}})));
           Physiolib.Fluid.Components.Inertia pulmonaryVeinsInertia(
-              massFlow_start(displayUnit="kg/s") = 2.225e-02, I(displayUnit="Pa.s2/kg")=
-                 410.6329532382) annotation (Placement(transformation(origin={-278,
+              massFlow_start(displayUnit="kg/s") = 0.02225, I(displayUnit=
+                  "mmHg.s2/g") = 410.6329532382)
+                                 annotation (Placement(transformation(origin={-278,
                     60}, extent={{15,-15},{-15,15}})));
           Physiolib.Fluid.Components.Conductor RPulmonaryArtery(
-              useConductanceInput=false, Conductance(displayUnit="kg/(Pa.s)")=
-                 2.2216823876548e-04) annotation (Placement(transformation(
+              useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")
+               = 2.2216823876548e-07) annotation (Placement(transformation(
                   origin={200,58}, extent={{17.5,-17.5},{-17.5,17.5}})));
           Physiolib.Fluid.Components.Inertia pulmonaryArterialInertia(
-              massFlow_start(displayUnit="g/min") = 7.3233333333333e-04, I(
-                displayUnit="mmHg.s2/g") = 99.99179056125) annotation (
-              Placement(transformation(origin={158,58}, extent={{15,-15},{-15,15}})));
+              massFlow_start(displayUnit="g/min") = 0.00073233333333333, I(
+                displayUnit="mmHg.s2/g") = 99.99179056125)              annotation (
+              Placement(transformation(origin={156,58}, extent={{15,-15},{-15,15}})));
           Physiolib.Fluid.Components.ElasticVessel pulmonaryVeins(
             useComplianceInput=false,
-            mass_start(displayUnit="g") = 0.6597,
+            mass_start=0.6597,
             nHydraulicPorts=2,
             ZeroPressureVolume=0.0001,
-            Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-7)
+            Compliance=3.5027875591992e-07)
             annotation (Placement(transformation(origin={-279,-3}, extent={{-15,
                     -15},{15,15}})));
           Physiolib.Fluid.Components.IdealValve mitralValve(useLimitationInputs=
-               false, _Gon(displayUnit="g/(mmHg.s)") = 1.9996641612045e-03)
+               false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
             annotation (Placement(transformation(origin={-243,-3}, extent={{-15,
                     -15},{15,15}})));
           Physiolib.Fluid.Components.ElasticVessel leftVentricle(
             useComplianceInput=true,
             useExternalPressureInput=true,
-            nHydraulicPorts=2,
+            nHydraulicPorts=3,
             mass_start=0.2097,
-            ZeroPressureVolume=9e-5)
+            ZeroPressureVolume=9e-05)
                                     annotation (Placement(transformation(
                   origin={-209,-3}, extent={{-15,-15},{15,15}})));
           Physiolib.Fluid.Components.Conductor RLeftMyo(useConductanceInput=false,
-              Conductance(displayUnit="kg/(Pa.s)") = 9.3757696980707e-05)
+              Conductance=9.3757696980707e-08)
             annotation (Placement(transformation(origin={-181,-3}, extent={{-15,
                     -15},{15,15}})));
-          Physiolib.Fluid.Components.IdealValve aorticValve(_Gon(displayUnit="g/(mmHg.s)")=
-                 1.9996641612045e-03, useLimitationInputs=false) annotation (
+          Physiolib.Fluid.Components.IdealValve aorticValve(_Gon(displayUnit=
+                  "ml/(mmHg.s)") = 1.9996641612045e-06,
+                                      useLimitationInputs=false) annotation (
               Placement(transformation(origin={-143,-3}, extent={{-15,-15},{15,15}})));
           Physiolib.Fluid.Components.ElasticVessel aorta(
-            nHydraulicPorts=2,
-            Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-9,
+            nHydraulicPorts=3,
+            Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-09,
             mass_start=0.046,
-            ZeroPressureVolume=3e-5)
+            ZeroPressureVolume=3e-05)
             annotation (Placement(transformation(origin={-111,-3}, extent={{-15,
                     -15},{15,15}})));
           Physiolib.Fluid.Components.Conductor Raorta(useConductanceInput=false,
-              Conductance(displayUnit="kg/(Pa.s)") = 1.1108411938274e-04)
+              Conductance=1.1108411938274e-07)
             annotation (Placement(transformation(origin={-79,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.Inertia aorticInertia(massFlow_start(
-                displayUnit="kg/s") = 1.0385e-02, I(displayUnit="Pa.s2/kg") = 109.99096961737)
+                displayUnit="kg/min") = 0.010385, I(displayUnit="mmHg.s2/g") =
+              109.99096961738)
             annotation (Placement(transformation(origin={-37,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.ElasticVessel arteries(
-            nHydraulicPorts=2,
-            Compliance(displayUnit="ml/mmHg") = 1.0950899007347e-8,
+            nHydraulicPorts=3,
+            Compliance=1.0950899007347e-08,
             mass_start=0.805,
             ZeroPressureVolume=0.0007)
             annotation (Placement(transformation(origin={-1,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.Conductor RSystemic(useConductanceInput=false,
-              Conductance(displayUnit="kg/(Pa.s)") = 7.5006157584566e-06)
+              Conductance=7.5006157584566e-09)
             annotation (Placement(transformation(origin={31,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.Inertia systemicInertia(massFlow_start(
-                displayUnit="kg/s") = 7.935e-02, I(displayUnit="Pa.s2/kg") = 479.960594694)
+                displayUnit="kg/min") = 0.07935, I=479.960594694)
             annotation (Placement(transformation(origin={75,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.IdealValve tricuspidValve(
-              useLimitationInputs=false, _Gon(displayUnit="g/(mmHg.s)") = 1.9996641612045e-03)
+              useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") =
+              1.9996641612045e-06)
             annotation (Placement(transformation(origin={137,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.ElasticVessel rightVentricle(
             useComplianceInput=true,
             useExternalPressureInput=true,
-            nHydraulicPorts=2,
+            nHydraulicPorts=3,
             mass_start=0.18,
-            ZeroPressureVolume=7e-5)
+            ZeroPressureVolume=7e-05)
                                     annotation (Placement(transformation(
                   origin={171,-3}, extent={{-15,-15},{15,15}})));
           Physiolib.Fluid.Components.Conductor RRightMyo(useConductanceInput=false,
-              Conductance(displayUnit="kg/(Pa.s)") = 4.2858518443821e-04)
+              Conductance=4.2858518443821e-07)
             annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},
                     {15,15}})));
-          Physiolib.Fluid.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
-                 "g/(mmHg.s)") = 1.9996641612045e-03, useLimitationInputs=false)
-            annotation (Placement(transformation(origin={245,-3}, extent={{-15,-15},
+          Physiolib.Fluid.Components.IdealValve pulmonaryValve(_Gon(displayUnit
+                ="ml/(mmHg.s)") = 1.9996641612045e-06,                                     useLimitationInputs=false)
+            annotation (Placement(transformation(origin={243,-3}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.ElasticVessel pulmonaryArtery(
             nHydraulicPorts=2,
             mass_start=0.021,
-            ZeroPressureVolume=2e-5,
+            ZeroPressureVolume=2e-05,
             Compliance(displayUnit="ml/mmHg") = 6.7505541826109e-10)
                                                                   annotation (
               Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
@@ -2038,13 +2138,13 @@ Connector with one flow signal of type Real.
             nHydraulicPorts=2,
             mass_start=0.637,
             ZeroPressureVolume=0.0006,
-            Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-8)
+            Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)
             annotation (Placement(transformation(origin={124,58}, extent={{-15,-15},
                     {15,15}})));
           Physiolib.Fluid.Components.ElasticVessel veins(
             mass_start(displayUnit="g") = 2.443,
             nHydraulicPorts=2,
-            Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-7,
+            Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
             ZeroPressureVolume=0.00237)
             annotation (Placement(transformation(origin={105,-3}, extent={{-15,-15},
                     {15,15}})));
@@ -2064,6 +2164,14 @@ Connector with one flow signal of type Real.
           inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354)
             annotation (Placement(transformation(extent={{-94,70},{-74,90}})));
+          Sensors.PressureMeasure arteriesPressure
+            annotation (Placement(transformation(extent={{26,-72},{46,-52}})));
+          Sensors.PressureMeasure rightVentriclePressure annotation (Placement(
+                transformation(extent={{182,-68},{202,-48}})));
+          Sensors.PressureMeasure leftVentriclePressure annotation (Placement(
+                transformation(extent={{-206,-72},{-186,-52}})));
+          Sensors.PressureMeasure aortaPressure annotation (Placement(
+                transformation(extent={{-108,-68},{-88,-48}})));
         equation
           connect(Raorta.q_out, aorticInertia.q_in) annotation (Line(
               points={{-64,-3},{-52,-3}},
@@ -2094,11 +2202,11 @@ Connector with one flow signal of type Real.
               points={{-241.75,36},{-34,36},{-34,35.6},{165.4,35.6}},
               color={0,0,127}));
           connect(RRightMyo.q_out, pulmonaryValve.q_in) annotation (Line(
-              points={{222,-3},{230,-3}},
+              points={{222,-3},{228,-3}},
               thickness=1));
           connect(RPulmonaryArtery.q_out, pulmonaryArterialInertia.q_in)
             annotation (Line(
-              points={{182.5,58},{173,58}},
+              points={{182.5,58},{171,58}},
               thickness=1));
           connect(RPulmonaryVeins.q_out, pulmonaryVeinsInertia.q_in) annotation (
               Line(
@@ -2114,7 +2222,7 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(pulmonaryArterioles.q_in[2], pulmonaryArterialInertia.q_out)
             annotation (Line(
-              points={{123.55,56.05},{133,56.05},{133,58},{143,58}},
+              points={{123.55,56.05},{133,56.05},{133,58},{141,58}},
               color={127,0,0},
               thickness=0.5));
           connect(RPulmonaryArtery.q_in, pulmonaryArtery.q_in[1]) annotation (
@@ -2124,16 +2232,16 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(pulmonaryArtery.q_in[2], pulmonaryValve.q_out) annotation (
               Line(
-              points={{242.55,55.05},{292,55.05},{292,-3},{260,-3}},
+              points={{242.55,55.05},{292,55.05},{292,-3},{258,-3}},
               color={127,0,0},
               thickness=0.5));
           connect(tricuspidValve.q_out, rightVentricle.q_in[1]) annotation (
               Line(
-              points={{152,-3},{162,-3},{162,-1.05},{170.55,-1.05}},
+              points={{152,-3},{162,-3},{162,-0.4},{170.55,-0.4}},
               color={127,0,0},
               thickness=0.5));
           connect(RRightMyo.q_in, rightVentricle.q_in[2]) annotation (Line(
-              points={{192,-3},{181,-3},{181,-4.95},{170.55,-4.95}},
+              points={{192,-3},{181,-3},{181,-3},{170.55,-3}},
               color={127,0,0},
               thickness=0.5));
           connect(tricuspidValve.q_in, veins.q_in[1]) annotation (Line(
@@ -2145,27 +2253,27 @@ Connector with one flow signal of type Real.
               color={127,0,0},
               thickness=0.5));
           connect(RSystemic.q_in, arteries.q_in[1]) annotation (Line(
-              points={{16,-3},{8,-3},{8,-1.05},{-1.45,-1.05}},
+              points={{16,-3},{8,-3},{8,-0.4},{-1.45,-0.4}},
               color={127,0,0},
               thickness=0.5));
           connect(aorticInertia.q_out, arteries.q_in[2]) annotation (Line(
-              points={{-22,-3},{-11,-3},{-11,-4.95},{-1.45,-4.95}},
+              points={{-22,-3},{-11,-3},{-11,-3},{-1.45,-3}},
               color={127,0,0},
               thickness=0.5));
           connect(Raorta.q_in, aorta.q_in[1]) annotation (Line(
-              points={{-94,-3},{-104,-3},{-104,-1.05},{-111.45,-1.05}},
+              points={{-94,-3},{-104,-3},{-104,-0.4},{-111.45,-0.4}},
               color={127,0,0},
               thickness=0.5));
           connect(aorticValve.q_out, aorta.q_in[2]) annotation (Line(
-              points={{-128,-3},{-120,-3},{-120,-4.95},{-111.45,-4.95}},
+              points={{-128,-3},{-120,-3},{-120,-3},{-111.45,-3}},
               color={127,0,0},
               thickness=0.5));
           connect(mitralValve.q_out, leftVentricle.q_in[1]) annotation (Line(
-              points={{-228,-3},{-220,-3},{-220,-1.05},{-209.45,-1.05}},
+              points={{-228,-3},{-220,-3},{-220,-0.4},{-209.45,-0.4}},
               color={127,0,0},
               thickness=0.5));
           connect(leftVentricle.q_in[2], RLeftMyo.q_in) annotation (Line(
-              points={{-209.45,-4.95},{-203.725,-4.95},{-203.725,-3},{-196,-3}},
+              points={{-209.45,-3},{-203.725,-3},{-203.725,-3},{-196,-3}},
               color={127,0,0},
               thickness=0.5));
 
@@ -2179,6 +2287,24 @@ Connector with one flow signal of type Real.
               color={127,0,0},
               thickness=0.5));
 
+          connect(arteriesPressure.q_in, arteries.q_in[3]) annotation (Line(
+              points={{32,-68},{32,-69},{-1.45,-69},{-1.45,-5.6}},
+              color={127,0,0},
+              thickness=0.5));
+          connect(rightVentricle.q_in[3], rightVentriclePressure.q_in)
+            annotation (Line(
+              points={{170.55,-5.6},{170.55,-64},{188,-64}},
+              color={127,0,0},
+              thickness=0.5));
+          connect(leftVentricle.q_in[3], leftVentriclePressure.q_in)
+            annotation (Line(
+              points={{-209.45,-5.6},{-209.45,-68},{-200,-68}},
+              color={127,0,0},
+              thickness=0.5));
+          connect(aortaPressure.q_in, aorta.q_in[3]) annotation (Line(
+              points={{-102,-64},{-112,-64},{-112,-5.6},{-111.45,-5.6}},
+              color={127,0,0},
+              thickness=0.5));
           annotation(Diagram(coordinateSystem(extent={{-350,-100},{400,100}},      preserveAspectRatio=false,  grid = {2, 2})),
                                                                                                                               Icon(coordinateSystem(extent={{-350,
                     -100},{400,100}},                                                                                                    preserveAspectRatio = true, grid = {2, 2})),
@@ -10576,7 +10702,7 @@ uses(
 <p>Copyright (c) 2017-2018, Marek Matej&aacute;k </p>
 <p>All rights reserved. </p>
 </html>"), Modelica(version="3.2.3"),
-      Chemical(version="1.2.0")),
+      Chemical(version="1.3.0")),
     Documentation(info="<html>
 <p>Initial release for testing.</p>
 </html>"));
