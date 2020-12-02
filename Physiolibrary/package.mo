@@ -1,31 +1,282 @@
-﻿within ;
-package Physiolib "Library of Physiological componentsl models (version 0.1)"
+within ;
+package Physiolibrary "System biology - integrative physiological and pathophysiological modelling library (version 3.0)"
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
 
-  class Overview "Overview"
-    extends Modelica.Icons.Information;
+    class Overview "Overview of Physiolibrary"
+        extends Modelica.Icons.Information;
 
-   annotation (Documentation(info="<html>
-<p>Under construction..</p>
+       annotation (Documentation(info="<html>
+<p>ThePhysiolibrary consists of the following main sub-libraries: </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<td><p align=\"center\"><b>Library Components</b></p></td>
+<td><p align=\"center\"><b>Description</b></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Hydraulic.png\"/></p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Fluid\">Fluid</a></p><p>The main usage of the hydraulic domain in human physiology is modeling of the cardio-vascular system. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for incompressible water, at normal liquid-water temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of hydraulic resistance, hydrostatic pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic vessels.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Thermal.png\"/></p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Thermal\">Thermal</a></p><p>For the human body to function optimally, it is critical to hold the core temperature at 35&ndash;39&deg;C. A fever of 41&deg;C for more than a short period of time causes brain damage. If the core temperature falls below 10&deg;C, the heart stops. As in the hydraulic domain, the thermal domain is simplified to these conditions. </p><p>In the Thermal package extends the package Modelica.Thermal.HeatTransfer from Modelica Standard Library 3.2 (MSL), where the connector is composed of temperature and heat flow. The main blocks in Thermal are: Conductor, IdealRadiator and HeatAccumulation. The heat conductor conducts the heat from the source, such us muscles or metabolically active tissue, to its surrounding. IdealRadiator delivers heat to tissues by blood circulation. HeatAccumulation plays a role in accumulating thermal energy in each tissue mass driven by its heat capacity. We recommend to use this block instead of Modelica.Thermal.HeatTransfer.HeatCapacitor to have possibility of variable mass amount or to have a support for calculation of steady state. </p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Population.png\"/></p></td>
+<td valign=\"middle\"><p><a href=\"modelica://Physiolibrary.Population\">Population</a></p><p>Population models are based on increasing and decreasing of average number of population members. The number of population member is a nonflow variable in connectors and flow variable is the change of population members. The growth or differentiation of cells can be modeled as stream from one population component to another, where each population component could be defined by selected age, type, function or wathever..</p><p>Even the domain is integer, all is modeled by real numbers. </p></td>
+</tr>
+</table>
 </html>"));
-  end Overview;
+    end Overview;
 
   class Connectors "Connectors"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
-<p>Under construction ..</p>
+<p>The Physiolibrary defines the most important <b>elementary connectors</b> in various domains. If any possible, a user should utilize these connectors in order that components from the Physiolibrary and from other libraries can be combined without problems. The following elementary connectors are defined (the meaning of potential, flow, and stream variables is explained in section &quot;Connector Equations&quot; below): </p>
+<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\"><tr>
+<td valign=\"top\"><p><b>domain</b></p></td>
+<td valign=\"top\"><p><b>potential</b></p><p>variables</p></td>
+<td valign=\"top\"><p><b>flow</b></p><p>variables</p></td>
+<td valign=\"top\"><p><b>stream</b></p><p>variables</p></td>
+<td valign=\"top\"><p><b>connector definition</b></p></td>
+<td valign=\"top\"><p><b>icons</b></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><b>hydraulic (fluid)</b></p></td>
+<td valign=\"top\"><p>absolute pressure</p></td>
+<td valign=\"top\"><p>mass flow</p></td>
+<td valign=\"top\"><p>enthalpy, substances concentrations</p></td>
+<td valign=\"top\"><p><br><br><br><a href=\"modelica://Modelica.Fluid.Interfaces\">Modelica.Fluid.Interfaces</a> </p><p>FluidPort, FluidPort_a, FluidPort_b</p>
+<p><a href=\"Fluid.Interfaces\">Fluid.Interfaces</a> </p><p>FluidPort, FluidPort_a, FluidPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/FluidPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><b>thermal</b></p></td>
+<td valign=\"top\"><p>temperature</p></td>
+<td valign=\"top\"><p>heat flow rate</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><br><br><br><br><br><a href=\"modelica://Modelica.Thermal.HeatTransfer.Interfaces\">Modelica.Thermal.HeatTransfer.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p><p><a href=\"Thermal.Interfaces\">Thermal.Interfaces</a> </p><p>HeatPort, HeatPort_a, HeatPort_b</p></td>
+<td valign=\"top\"><p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ThermalPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><b>population</b></p></td>
+<td valign=\"top\"><p>the number</p><p>of population members</p></td>
+<td valign=\"top\"><p>change </p><p>of the number of population members</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><br><br><br><br><br><a href=\"Population.Interfaces\">Population.Interfaces</a> </p><p>PopulationPort, PopulationPort_a, PopulationPort_b</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/PopulationPorts.png\"/></p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><b>block</b></p><p>diagram</p></td>
+<td valign=\"top\"><p>Real unit-typed variables</p></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"></td>
+<td valign=\"top\"><p><br><br><br><br><br><br><br><br><br><br><a href=\"Types.RealIO\">Types.RealIO</a> </p><p>EnergyInput, EnergyOutput, TimeInput, TimeOutput, MassInput, MassOutput, MassFlowRateInput, MassFlowRateOutput, HeightInput, HeightOutput, AccelerationInput, AccelerationOutput, PressureInput, PressureOutput, VolumeInput, VolumeOutput, VolumeFlowRateInput, VolumeFlowRateOutput, ConcentrationInput, ConcentrationOutput, OsmolarityInput, OsmolarityOutput, AmountOfSubstanceInput, AmountOfSubstanceOutput, MolarFlowRateInput, MolarFlowRateOutput, DiffusionPermeabilityInput, DiffusionPermeabilityOutput, HeatInput, HeatOutput, TemperatureInput, TemperatureOutput, HeatFlowRateInput, HeatFlowRateOutput, ThermalConductanceInput, ThermalConductanceOutput, ElectricCurrentInput, ElectricCurrentOutput, ElectricChargeInput, ElectricChargeOutput, ElectricPotentialInput, ElectricPotentialOutput, FractionInput, FractionOutput, FrequencyInput, FrequencyOutput, OsmoticPermeabilityInput, OsmoticPermeabilityOutput, HydraulicConductanceInput, HydraulicConductanceOutput, HydraulicComplianceInput, HydraulicComplianceOutput, HydraulicInertanceInput, HydraulicInertanceOutput, GasSolubilityInput, GasSolubilityOutput, DensityInput, SpecificEnergyInput, SpecificEnergyOutput, SpecificHeatCapacityInput, SpecificHeatCapacityOutput</p></td>
+<td valign=\"top\"><p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/Signals.png\"/></p></td>
+</tr>
+</table>
+<p><br><br><br><br><br><br><br>In all domains, usually 2 connectors are defined. The variable declarations are <b>identical</b>, only the icons are different in order that it is easy to distinguish connectors of the same domain that are attached at the same component. </p>
 </html>"));
   end Connectors;
 
   package ReleaseNotes "Release notes"
+  class Version_3_0_0 "Version 3.0 (Nov. 26, 2020)"
     extends Modelica.Icons.ReleaseNotes;
 
-   annotation (Documentation(info="<html>
-<p>This section summarizes the changes that have been performed on the Physiolib. </p>
+     annotation (Documentation(info="<html>
+<ul>
+<li>using Chemical 1.3 instead of Physiolibrary.Chemical and Physiolibrary.Osmotic</li>
+<li>support of Modelica.Fluid and Modelica.Media concept instead of Physiolibrary.Hydraulic</li>
+</ul>
 </html>"));
+  end Version_3_0_0;
+    extends Modelica.Icons.ReleaseNotes;
 
+  class Version_2_3_1 "Version 2.3.1 (Sep. 15, 2015)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li>Change of license to <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD</a>: </li>
+<li><ul>
+<li><font style=\"color: #333333; \">no additional restricions</font></li>
+<li><font style=\"color: #333333; \">supported decentralized development</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">External pressure of elastic vessel compartment.</font></li>
+</ul></li>
+<li>New example of pulsative blood circulation by Willem van Meurs 2011</li>
+<li>Support of [Physiomodel 1.0.0] (https://github.com/physiology/Physiomodel/releases/tag/v1.0.0)</li>
+</ul>
+</html>"));
+  end Version_2_3_1;
+
+  class Version_2_3_0 "Version 2.3.0 (Feb. 16, 2015)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">Population domain for population models of organisms, cells,..</font></li>
+<li><font style=\"color: #333333; \">cardiovascular models as example of Hydraulic domain</font></li>
+<li><font style=\"color: #333333; \">components: osmotic reabsorption, ideal osmotic flow filtration</font></li>
+<li><font style=\"color: #333333; \">display units: umol/min,nmol/min,pmol/min,l/day</font></li>
+<li><font style=\"color: #333333; \">icons: heart ventricle icon, microcirculation, population</font></li>
+<li><font style=\"color: #333333; \">blocks: 1(one) as constant, energy per mass, DegradationGain, FractionGain</font></li>
+<li><font style=\"color: #333333; \">installation to System Modeler script (Resources/Install)</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">OsmoticCell with more possible membrane type interfaces</font></li>
+<li><font style=\"color: #333333; \">factors: dissabling option and with decadic logarith</font></li>
+<li><font style=\"color: #333333; \">redefinition of unmeasurables physical quantities</font></li>
+<li><font style=\"color: #333333; \">manipulation with initial input and final output values of variables</font></li>
+<li><font style=\"color: #333333; \">units of heart starling slopes in CardiovascularSystem_GCG</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">units Torr with capital 'T' (from name - Evangelista Torricelli)</font></li>
+<li><font style=\"color: #333333; \">Blocks.Math.Exponentiation to Blocks.Math.Power</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_3_0;
+
+  class Version_2_2_0 "Version 2.2.0 (Sep. 06, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">read/write of values in non-SI units</font></li>
+<li><font style=\"color: #333333; \">outflow/inflow sources</font></li>
+<li><font style=\"color: #333333; \">chemical internal heats</font></li>
+<li><font style=\"color: #333333; \">passive fluxes through membranes</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">collapsing ElasticVessel at negative sucking pressures</font></li>
+<li><font style=\"color: #333333; \">concentrations are always per volume of whole solution</font></li>
+<li><font style=\"color: #333333; \">determining of Dymola installation folder</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">actualFlow, actualConc, .. in sensors</font></li>
+<li><font style=\"color: #333333; \">FlowConcentrationMeasure to IncrementalFlowConcentrationMeasure</font></li>
+<li><font style=\"color: #333333; \">thermal OutStream to MassOutflow</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_2_0;
+
+  class Version_2_1_1 "Version 2.1.1 (May. 02, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">compoment HydraulicComponents.IdealValve for modeling aortic, pulmonary, triscupid and mitral valve</font></li>
+<li><font style=\"color: #333333; \">types pH, VolumeDensityOfCharge</font></li>
+<li><font style=\"color: #333333; \">examples: Osmotic.Examples.CelebrospinalFluid, Hydraulic.Examples.Windkessel and Hydraulic.Example.MinimalCirculation</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li>role of hydraulic pressure in Osmotic.Components.Membrane</li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_1_1;
+
+  class Version_2_1 "Version 2.1 (Feb. 28, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<ul>
+<li><font style=\"color: #333333; \">Upgrade to MSL 3.2.1 (still compatible with MSL 3.2)</font></li>
+<li><font style=\"color: #333333; \">New:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">constants HydraulicResistanceConst, HydraulicElastanceConst and HydraulicElastanceToComplianceConst and type HydraulicElastance</font></li>
+<li><font style=\"color: #333333; \">display units for hydraulic resistance/conductance/compliance/elastance, for gas solubility</font></li>
+<li><font style=\"color: #333333; \">steady state component ElectricChargeConservationLaw</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Rename:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">HydraulicResistanceConst to HydraulicResistanceToConductanceConst</font></li>
+</ul></li>
+<li><font style=\"color: #333333; \">Fix:</font></li>
+<li><ul>
+<li><font style=\"color: #333333; \">gas solution in liquid with corrected GasSolubility type</font></li>
+<li><font style=\"color: #333333; \">bidirectional stream flows</font></li>
+<li><font style=\"color: #333333; \">steady state example of dissolved oxygen</font></li>
+<li><font style=\"color: #333333; \">installation batch file for Dymola in Windows</font></li>
+<li><font style=\"color: #333333; \">references in overview (user&apos;s guide)</font></li>
+</ul></li>
+</ul>
+</html>"));
+  end Version_2_1;
+
+  class Version_2_0 "Version 2.0 (Jan. 26, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Renamed classes</font></li>
+<li>Conditional inputs to blocks</li>
+<li>Removed Mixed package</li>
+<li>Rebuilt steady states</li>
+<li><font style=\"color: #333333; \">New icons and examples</font></li>
+</ul></p>
+</html>"));
+  end Version_2_0;
+
+  class Version_1_2 "Version 1.2 (Jan 15, 2014)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}</font></li>
+<li><font style=\"color: #333333; \">New icons</font></li>
+<li><font style=\"color: #333333; \">Thermal: Relative heat energy to normal body temperature (37degC)</font></li>
+<li><font style=\"color: #333333; \">New examples: Guyton-Coleman-Granger cardiovascular model, Coleman thermal energy transfers</font></li>
+</ul></p>
+</html>"));
+  end Version_1_2;
+
+  class Version_1_1 "Version 1.1 (Dec. 30, 2013)"
+    extends Modelica.Icons.ReleaseNotes;
+
+     annotation (Documentation(info="<html>
+<p><ul>
+<li><font style=\"color: #333333; \">Heat connector compatibility between Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)</font></li>
+<li><font style=\"color: #333333; \">Some English language corrections</font></li>
+<li><font style=\"color: #333333; \">Hydrostatic pressure patch</font></li>
+<li><font style=\"color: #333333; \">New examples</font></li>
+</ul></p>
+</html>"));
+  end Version_1_1;
+
+  class Version_1_0 "Version 1.0.0 (Dec. 09, 2013)"
+    extends Modelica.Icons.ReleaseNotes;
+
+  annotation (Documentation(info="<html>
+<p><ul>
+<li>migration to GITHub https://github.com/MarekMatejak/Physiolibrary from http://patf-biokyb.lf1.cuni.cz/repos/Modelica/Physiolibrary svn repository, commit 4947 </li>
+<li><font style=\"color: #333333; \">The library uses the Modelica Standard Library (MSL) version 3.2.</font></li>
+<li><font style=\"color: #333333; \">Contains nice physiological icons.</font></li>
+<li><font style=\"color: #333333; \">Support for physiological units: min,kcal,mmHg,ml,mEq,..</font></li>
+<li><font style=\"color: #333333; \">Base blocks for chemical, hydraulical, osmotic, thermal or mixed domains</font></li>
+<li><font style=\"color: #333333; \">Support of equilibrated systems</font></li>
+<li><font style=\"color: #333333; \">Support for expandable inputs/outputs/tests lists</font></li>
+</ul></p>
+</html>"));
+  end Version_1_0;
+   annotation (Documentation(info="<html>
+<p>This section summarizes the changes that have been performed on the Physiolibrary. </p>
+</html>"));
   end ReleaseNotes;
 
   class Contact "Contact"
@@ -40,18 +291,42 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
   end Contact;
 
+  class License "BSD 3-Clause License"
+       extends Modelica.Icons.Information;
+      annotation (Documentation(info="<html>
+<p>All files in this directory (Physiolibrary) and in all subdirectories, especially all files that build package &quot;Physiolibrary&quot; are licensed by Marek Matejak under the <a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD 3-Clause License</a> (with exception of files &quot;Resources/*&quot;). </p>
+<p><b>Licensor:</b></p>
+<p>Marek Matej&aacute;k,</p>
+<p>Hviezdoslavova 632/41,</p>
+<p>916 01 Star&aacute; Tur&aacute;, </p>
+<p>Slovak Republic,</p>
+<p>email: marek@matfyz.cz</p>
+<p><b><span style=\"color: #008000;\">Organization: </span></b></p>
+<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,</p>
+<p>U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
+<p><b>Copyright notices of the files:</b></p>
+<p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague</p>
+<p><br>All rights reserved. </p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
+<p>1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </p>
+<p>2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </p>
+<p>3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</html>"));
+  end License;
+
   class NewRelease "Publishing new release"
     extends Modelica.Icons.Information;
 
    annotation (Documentation(info="<html>
 <p><br>New release must be numbered by Semantic Versioning 2.0.0, see <a href=\"http://semver.org/\">semver.org</a>. </p>
-<p><br>If minor version, then the conversion script must be written and connected with package Physiolib using &quot;annotation(conversion(from(version=..)))&quot;! </p>
+<p><br>If minor version, then the conversion script must be written and connected with package Physiolibrary using &quot;annotation(conversion(from(version=..)))&quot;! </p>
 <p><br>To clean the code from dummy annotations try to use script <a href=\"https://github.com/dietmarw/trimtrailingwhitespaces\">ttws</a>. </p>
 <p>To check english spelling try to use <a href=\"https://github.com/vlajos/misspell_fixer\">missspell_fixer</a>.</p>
 <p><br>Update version number to &quot;X.Y.Z&quot;: </p>
 <ul>
-<li>At package Physiolib annotation: (version=&quot;X.Y.Z&quot;) together with &quot;versionBuild&quot;, &quot;versionDate&quot; and &quot;dateModified&quot; attribute </li>
-<li>At file &quot;./Physiolib/libraryinfo.mos&quot; </li>
+<li>At package Physiolibrary annotation: (version=&quot;X.Y.Z&quot;) together with &quot;versionBuild&quot;, &quot;versionDate&quot; and &quot;dateModified&quot; attribute </li>
+<li>At file &quot;./Physiolibrary/libraryinfo.mos&quot; </li>
 </ul>
 <p><br>Update release notes: </p>
 <ul>
@@ -67,36 +342,62 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 </html>"));
   end NewRelease;
   annotation (DocumentationClass=true, Documentation(info="<html>
-<p>Package <b>Physiolib </b>is a modelica package for physiology<b> </b>that is developed from <b>Physiolibrary</b> and <b>Chemical library</b> modelica implementation, see <a href=\"http://www.physiolib.com\">http://www.physiolib.com</a>. </p>
+<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
+<p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Fluid\">Fluid</a></p></td>
+<td valign=\"top\"><p>Library of hydraulic domain. For modeling of cardiovascular system.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Thermal\">Thermal</a></p></td>
+<td valign=\"top\"><p>Library of termoregulation support. As extension of Modelica.Thermal.HeatTransfer.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Population\">Population</a></p></td>
+<td valign=\"top\"><p>Library for population models such as predator-prey or cells population.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Icons\">Icons</a></p></td>
+<td valign=\"top\"><p>Icons</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Types\">Types</a></p></td>
+<td valign=\"top\"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
+</tr>
+<tr>
+<td valign=\"top\"><p><a href=\"modelica://Physiolibrary.Blocks\">Blocks</a></p></td>
+<td valign=\"top\"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+</tr>
+</table>
 </html>"));
   end UsersGuide;
+
  extends Modelica.Icons.Package;
 
-  package Fluid
+  package Fluid "Physiological fluids with static and dynamic properties"
     package Components
       extends Modelica.Icons.Package;
       model Conductor "Hydraulic resistor, where conductance=1/resistance"
-       extends Physiolib.Fluid.Interfaces.OnePort;
+       extends Physiolibrary.Fluid.Interfaces.OnePort;
 
-       extends Physiolib.Icons.HydraulicResistor;
+       extends Physiolibrary.Icons.HydraulicResistor;
 
         parameter Boolean useConductanceInput = false
           "=true, if external conductance value is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.HydraulicConductance Conductance=0
+        parameter Physiolibrary.Types.HydraulicConductance Conductance=0
           "Hydraulic conductance if useConductanceInput=false"
           annotation (Dialog(enable=not useConductanceInput));
 
-        Physiolib.Types.RealIO.HydraulicConductanceInput cond(start=
+        Physiolibrary.Types.RealIO.HydraulicConductanceInput cond(start=
               Conductance)=c if useConductanceInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={0,60})));
-      protected
-         Physiolib.Types.HydraulicConductance c;
-
+    protected
+         Physiolibrary.Types.HydraulicConductance c;
 
       equation
 
@@ -105,7 +406,6 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         end if;
 
         volumeFlowRate = (c * (q_in.p  - q_out.p));
-
 
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                   -100,-100},{100,100}}),
@@ -125,58 +425,54 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       end Conductor;
 
       model Resistor
-        extends Physiolib.Fluid.Components.Conductor(final Conductance=1/
+        extends Physiolibrary.Fluid.Components.Conductor(final Conductance=1/
               Resistance);
-        parameter Physiolib.Types.HydraulicResistance Resistance
+        parameter Physiolibrary.Types.HydraulicResistance Resistance
           "Hydraulic conductance if useConductanceInput=false";
       end Resistor;
 
       model ElasticVessel "Elastic container for blood vessels, bladder, lumens"
-       extends Physiolib.Icons.ElasticBalloon;
-       //extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
+       extends Physiolibrary.Icons.ElasticBalloon;
+       //extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
        //       volume_start, storeUnit="ml");
 
         replaceable package Medium =  Chemical.Examples.Media.StandardWater_C   constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
 
-
         parameter Integer nHydraulicPorts=0 "Number of hydraulic ports"
           annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
 
-        Physiolib.Fluid.Interfaces.FluidPorts_a q_in[nHydraulicPorts](redeclare
-            package Medium = Medium) annotation (Placement(transformation(extent={{-6,
-                  -42},{14,14}}), iconTransformation(
+        Physiolibrary.Fluid.Interfaces.FluidPorts_a q_in[nHydraulicPorts](
+            redeclare package Medium = Medium) annotation (Placement(
+              transformation(extent={{-6,-42},{14,14}}), iconTransformation(
               extent={{-7,-26},{7,26}},
               rotation=180,
               origin={-3,0})));
 
-
-        parameter Physiolib.Types.Mass mass_start=1
-          "Mass start value" annotation (Dialog(group="Initialization"));
+        parameter Physiolibrary.Types.Mass mass_start=1 "Mass start value"
+          annotation (Dialog(group="Initialization"));
                                                     //e-8                            //default = 1e-5 g
-        parameter Physiolib.Types.Concentration concentration_start[Medium.nC]=
-           Medium.C_default
-          "Initial molar concentrations" annotation (Dialog(group="Initialization"));
-       // cat(1, Medium.C_default, {(density_start - Medium.substanceData.MolarWeight[1:Medium.nC-1]*Medium.C_default)/Medium.substanceData.MolarWeight[Medium.nC]})
+        parameter Physiolibrary.Types.Concentration concentration_start[Medium.nCS]=
+          Medium.concentration(state=Medium.setState_pTX(system.p_ambient,system.T_ambient), Xi=Medium.X_default, C=Medium.C_default) "Initial molar concentrations"
+          annotation (Dialog(group="Initialization"));
 
-           //= cat(1, q, {4});        // Vector append OK, result is {1, 2, 3, 4}
 
          parameter Boolean useV0Input = false
           "=true, if zero-pressure-mass input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-         parameter Physiolib.Types.Volume ZeroPressureVolume=1e-11
+         parameter Physiolibrary.Types.Volume ZeroPressureVolume=1e-11
           "Maximal volume, that does not generate pressure if useM0Input=false"
           annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
 
-          parameter Physiolib.Types.Volume CollapsingPressureVolume=1e-12
+          parameter Physiolibrary.Types.Volume CollapsingPressureVolume=1e-12
           "Maximal volume, which generate negative collapsing pressure"
           annotation (Dialog(tab="Advanced")); //default = 1e-6 ml
 
-         Physiolib.Types.RealIO.VolumeInput zeroPressureVolume(start=
+         Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=
               ZeroPressureVolume) if useV0Input annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
@@ -188,11 +484,11 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         parameter Boolean useComplianceInput = false
           "=true, if compliance input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.HydraulicCompliance Compliance=1
+        parameter Physiolibrary.Types.HydraulicCompliance Compliance=1
           "Compliance if useComplianceInput=false"
           annotation (Dialog(enable=not useComplianceInput));
 
-        Physiolib.Types.RealIO.HydraulicComplianceInput compliance(start=
+        Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=
               Compliance) if useComplianceInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
@@ -208,7 +504,6 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs"
            annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Computational model", tab="Advanced"));
 
-
         parameter Boolean useHeatPort = false
           "=true, if heat port is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
@@ -217,15 +512,17 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
           "=true, if electrical port is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-         parameter Physiolib.Types.Volume VitalCapacity=0.00493    "Relative volume capacity if useSigmoidCompliance"
-           annotation (Dialog(enable=useSigmoidCompliance,tab="Advanced"));
-         parameter Physiolib.Types.Volume BaseTidalVolume=0.000543   "Base value of tidal volume"
-           annotation (Dialog(enable=useSigmoidCompliance,tab="Advanced"));
+         parameter Physiolibrary.Types.Volume VitalCapacity=0.00493
+          "Relative volume capacity if useSigmoidCompliance"
+          annotation (Dialog(enable=useSigmoidCompliance, tab="Advanced"));
+         parameter Physiolibrary.Types.Volume BaseTidalVolume=0.000543
+          "Base value of tidal volume"
+          annotation (Dialog(enable=useSigmoidCompliance, tab="Advanced"));
 
-
-        parameter Physiolib.Types.AbsolutePressure MinimalCollapsingPressure=10
+        parameter Physiolibrary.Types.AbsolutePressure MinimalCollapsingPressure(
+          displayUnit="Pa")=10
           annotation (Dialog(tab="Advanced"));
-        Physiolib.Types.RealIO.PressureInput externalPressure(start=
+        Physiolibrary.Types.RealIO.PressureInput externalPressure(start=
               ExternalPressure) if useExternalPressureInput annotation (
             Placement(transformation(
               extent={{-20,-20},{20,20}},
@@ -235,24 +532,25 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
               rotation=270,
               origin={80,100})));
 
-        Physiolib.Types.RealIO.MassOutput mass annotation (Placement(
+        Physiolibrary.Types.RealIO.MassOutput mass annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=0,
-              origin={110,-80}),iconTransformation(
+              origin={110,-80}), iconTransformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={60,-100})));
 
-      protected
-        parameter Physiolib.Types.AbsolutePressure ExternalPressure=system.p_ambient
-          "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
-          annotation (Dialog(enable=not useExternalPressureInput));
 
-        parameter Physiolib.Types.Pressure a=MinimalCollapsingPressure/log(
+        parameter Physiolibrary.Types.AbsolutePressure ExternalPressure=system.p_ambient
+          "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
+          annotation (Dialog(enable=not useExternalPressureInput, tab="Advanced"));
+
+    protected
+        parameter Physiolibrary.Types.Pressure a=MinimalCollapsingPressure/log(
             Modelica.Constants.eps);
 
-      public
+    public
         Chemical.Components.FluidAdapter_C fluidAdapter_D(nFluidPorts=
               nHydraulicPorts, redeclare package Medium = Medium)
           annotation (Placement(transformation(extent={{-36,-24},{-16,-4}})));
@@ -273,24 +571,18 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
           BaseTidalVolume=BaseTidalVolume)
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
-      protected
-        parameter Modelica.SIunits.MolarMass MM[Medium.nC] = Medium.substanceData.MolarWeight.*ones(Medium.nC);
-        parameter Modelica.SIunits.MoleFraction x_start[Medium.nC] = concentration_start ./ (concentration_start*ones(Medium.nC));
+    protected
+        parameter Modelica.SIunits.MolarMass MM[Medium.nCS] = Medium.stateOfMatter.molarMass(Medium.substanceData);
+        parameter Modelica.SIunits.MoleFraction x_start[Medium.nCS] = concentration_start ./ (concentration_start*ones(Medium.nCS));
         parameter Modelica.SIunits.AmountOfSubstance nt_start = mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
-        parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nC] = nt_start * x_start;
+        parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nCS] = nt_start * x_start;
 
-
-        parameter Modelica.SIunits.Density ro_T = MM * concentration_start;
         parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.stateOfMatter.density(Medium.substanceData))  * n_start;
 
-        //parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.substanceData.density) * n_start;
+        parameter Modelica.SIunits.Concentration conc_start[Medium.nCS] = n_start ./ V_T;
 
-        parameter Modelica.SIunits.Concentration conc_start[Medium.nC] = n_start ./ V_T;
-
-
-
-      public
-        Chemical.Components.Substance substance[Medium.nC](
+    public
+        Chemical.Components.Substance substance[Medium.nCS](
           redeclare package stateOfMatter = Medium.stateOfMatter,
           substanceData=Medium.substanceData,
           each use_mass_start=false,
@@ -302,7 +594,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
                                                // false
 
-        Chemical.Interfaces.SubstancePorts_a substances[Medium.nC] if useSubstances
+        Chemical.Interfaces.SubstancePorts_a substances[Medium.nCS] if useSubstances
           annotation (Placement(transformation(extent={{-104,-40},{-84,40}})));
 
         Types.Pressure relative_pressure "Relative (to external pressure) pressure inside";
@@ -357,7 +649,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
        // assert(volume>=-Modelica.Constants.eps,"Collapsing of vessels are not supported!");
         connect(q_in,fluidAdapter_D. fluidPorts)
           annotation (Line(points={{4,-14},{-16,-14}}, color={238,46,47}));
-        for i in 1:Medium.nC loop
+        for i in 1:Medium.nCS loop
           connect(vessel.solution, substance[i].solution) annotation (Line(points=
                {{60,-98},{-70,-98},{-70,-24}}, color={127,127,0}));
         end for;
@@ -366,7 +658,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         connect(vessel.fluidMass, mass) annotation (Line(points={{100,-80},{110,-80}},
                           color={0,0,127}));
 
-        for i in 1:Medium.nC loop
+        for i in 1:Medium.nCS loop
           connect(substance[i].port_m, fluidAdapter_D.substances[i]) annotation (Line(points={
                 {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
           connect(substance[i].port_a, substances[i]) annotation (Line(points={{-54,-14},{-50,
@@ -391,56 +683,57 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 <li>Decreasing volume below CollapsingPressureVolume (V00) generate negative pressure (lower than external pressure) logarithmicaly dependent on volume.</li>
 <li>Otherwise external pressure is presented as pressure inside ElasticVessel.</li>
 </ul>
-<p><br><img src=\"modelica://Physiolib/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
 <p>useSigmoid :</p>
-<p><img src=\"modelica://Physiolib/../../kitware/_/sigmoidPV.png\"/></p>
+<p><img src=\"modelica://Physiolibrary/../../kitware/_/sigmoidPV.png\"/></p>
 </html>"));
       end ElasticVessel;
 
       model ElasticVesselElastance
-        extends Physiolib.Fluid.Components.ElasticVessel(final Compliance=1/
-              Elastance);
-        parameter Physiolib.Types.HydraulicElastance Elastance=1
-          "Elastance if useComplianceInput=false" annotation (Dialog(enable=not useComplianceInput));
+        extends Physiolibrary.Fluid.Components.ElasticVessel(final Compliance=1
+              /Elastance);
+        parameter Physiolibrary.Types.HydraulicElastance Elastance=1
+          "Elastance if useComplianceInput=false"
+          annotation (Dialog(enable=not useComplianceInput));
       end ElasticVesselElastance;
 
       model HydrostaticColumn
         "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
-        extends Physiolib.Icons.HydrostaticGradient;
+        extends Physiolibrary.Icons.HydrostaticGradient;
         extends Interfaces.OnePort_UpDown;
 
         replaceable package Medium =
             Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
 
         parameter Boolean useHeightInput = false "=true, if height input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.Height H=0
+        parameter Physiolibrary.Types.Height H=0
           "Height of hydrostatic column if useHeightInput=false"
           annotation (Dialog(enable=not useHeightInput));
 
-        Physiolib.Types.RealIO.HeightInput height(start=H)=h if
+        Physiolibrary.Types.RealIO.HeightInput height(start=H)=h if
           useHeightInput "Vertical distance between top and bottom connector"
           annotation (Placement(transformation(extent={{-20,-20},{20,20}},
                 origin={-110,0}), iconTransformation(extent={{-130,-20},{-90,20}})));
         parameter Boolean usePumpEffect = false
           "=true, if musce pump effect is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        Physiolib.Types.RealIO.FractionInput pumpEffect(start=PumpEffect)=
+        Physiolibrary.Types.RealIO.FractionInput pumpEffect(start=PumpEffect)=
           pe if usePumpEffect annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={0,100})));
-      protected
-        parameter Physiolib.Types.Fraction PumpEffect=1
+    protected
+        parameter Physiolibrary.Types.Fraction PumpEffect=1
           "Pump effect if usePumpEffect=false"
           annotation (Dialog(enable=not usePumpEffect));
-      protected
-        Physiolib.Types.Fraction pe;
-        Physiolib.Types.Height h;
+    protected
+        Physiolibrary.Types.Fraction pe;
+        Physiolibrary.Types.Height h;
       equation
         if not useHeightInput then
           h=H;
@@ -461,14 +754,13 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       end HydrostaticColumn;
 
       model Inertia "Inertia of the volumetric flow"
-        extends Physiolib.Fluid.Interfaces.OnePort(q_in(
-                                                   m_flow(     start=0)));
-        extends Physiolib.Icons.Inertance;
-        parameter Physiolib.Types.MassFlowRate massFlow_start=0.3
+        extends Physiolibrary.Fluid.Interfaces.OnePort(q_in(m_flow(start=0)));
+        extends Physiolibrary.Icons.Inertance;
+        parameter Physiolibrary.Types.MassFlowRate massFlow_start=0.3
           "Volumetric flow start value"
           annotation (Dialog(group="Initialization"));                                                           //5 l/min is normal volumetric flow in aorta
 
-        parameter Physiolib.Types.HydraulicInertance I "Inertance";
+        parameter Physiolibrary.Types.HydraulicInertance I "Inertance";
 
       equation
         I*der(q_in.m_flow) = (q_in.p - q_out.p);
@@ -482,47 +774,47 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
       model IdealValve
         extends Icons.IdealValve;
-        extends Physiolib.Fluid.Interfaces.OnePort;
+        extends Physiolibrary.Fluid.Interfaces.OnePort;
          Boolean open(start=true) "Switching state";
          Real passableVariable(start=0, final unit="1")
           "Auxiliary variable for actual position on the ideal diode characteristic";
         /*  = 0: knee point
       < 0: below knee point, diode locking
       > 0: above knee point, diode conducting */
-        parameter Physiolib.Types.HydraulicConductance _Gon(
+        parameter Physiolibrary.Types.HydraulicConductance _Gon(
           final min=0,
           displayUnit="l/(mmHg.min)")=1.2501026264094e-02
           "Forward state-on conductance (open valve conductance)"
           annotation (Dialog(enable=not useLimitationInputs)); //= the same as resistance 1e-5 mmHg/(l/min)
-        parameter Physiolib.Types.HydraulicConductance _Goff(
+        parameter Physiolibrary.Types.HydraulicConductance _Goff(
           final min=0,
           displayUnit="l/(mmHg.min)")=1.2501026264094e-12
           "Backward state-off conductance (closed valve conductance)"
           annotation (Dialog(enable=not useLimitationInputs)); //= 1e-5 (l/min)/mmHg
-        parameter Physiolib.Types.Pressure Pknee(final min=0)=0
+        parameter Physiolibrary.Types.Pressure Pknee(final min=0)=0
           "Forward threshold pressure";
         parameter Boolean useLimitationInputs = false
           "=true, if Gon and Goff are from inputs"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        Physiolib.Types.RealIO.HydraulicConductanceInput Gon(start=_Gon)=
+        Physiolibrary.Types.RealIO.HydraulicConductanceInput Gon(start=_Gon)=
           gon if useLimitationInputs
           "open valve conductance = infinity for ideal case" annotation (
             Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={-60,100})));
-        Physiolib.Types.RealIO.HydraulicConductanceInput Goff(start=_Goff)=
+        Physiolibrary.Types.RealIO.HydraulicConductanceInput Goff(start=_Goff)=
           goff if useLimitationInputs
           "closed valve conductance = zero for ideal case" annotation (
             Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={60,100})));
-      protected
-        Physiolib.Types.HydraulicConductance gon;
-        Physiolib.Types.HydraulicConductance goff;
-        constant Physiolib.Types.Pressure unitPressure=1;
-        constant Physiolib.Types.VolumeFlowRate unitFlow=1;
+    protected
+        Physiolibrary.Types.HydraulicConductance gon;
+        Physiolibrary.Types.HydraulicConductance goff;
+        constant Physiolibrary.Types.Pressure unitPressure=1;
+        constant Physiolibrary.Types.VolumeFlowRate unitFlow=1;
 
       equation
 
@@ -533,7 +825,6 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
         open = passableVariable > Modelica.Constants.eps;
         dp = (passableVariable*unitFlow)*(if open then 1/gon else 1) + Pknee;
         volumeFlowRate = (passableVariable*unitPressure)*(if open then 1 else goff) + goff*Pknee;
-
 
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}),
@@ -551,15 +842,15 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       end IdealValve;
 
       model IdealValveResistance
-        extends Physiolib.Fluid.Components.IdealValve(final _Gon=1/_Ron);
-        parameter Physiolib.Types.HydraulicResistance _Ron = 79.993432449
+        extends Physiolibrary.Fluid.Components.IdealValve(final _Gon=1/_Ron);
+        parameter Physiolibrary.Types.HydraulicResistance _Ron=79.993432449
           "forward state resistance";
       end IdealValveResistance;
 
       model MassPump "Prescribed mass flow"
         extends Icons.Pump;
-        extends Physiolib.Fluid.Interfaces.OnePort;
-        extends Physiolib.Fluid.Interfaces.ConditionalMassFlow;
+        extends Physiolibrary.Fluid.Interfaces.OnePort;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
       equation
         massFlowRate = q;
        annotation (
@@ -589,8 +880,8 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 
       model VolumePump "Prescribed mass flow"
         extends Icons.Pump;
-        extends Physiolib.Fluid.Interfaces.OnePort;
-        extends Physiolib.Fluid.Interfaces.ConditionalVolumeFlow;
+        extends Physiolibrary.Fluid.Interfaces.OnePort;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
       equation
         volumeFlowRate = q;
        annotation (
@@ -619,37 +910,41 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
       end VolumePump;
 
       model Reabsorption "Divide inflow to outflow and reabsorption"
-        import Physiolib;
-        extends Physiolib.Icons.Reabsorption;
+        import Physiolibrary;
+        extends Physiolibrary.Icons.Reabsorption;
 
         replaceable package Medium =
           Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
-        Physiolib.Fluid.Interfaces.FluidPort_a Inflow(redeclare package Medium = Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package Medium =
+                                                                                 Medium)
           annotation (Placement(transformation(extent={{-114,26},{-86,54}})));
-        Physiolib.Fluid.Interfaces.FluidPort_b Outflow(redeclare package Medium = Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package Medium =
+                                                                                  Medium)
           annotation (Placement(transformation(extent={{86,26},{114,54}})));
-        Physiolib.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare package Medium = Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare
+          package
+          Medium =                                                                     Medium)
           annotation (Placement(transformation(extent={{-14,-114},{14,-86}})));
-        Physiolib.Types.RealIO.FractionInput FractReab
+        Physiolibrary.Types.RealIO.FractionInput FractReab
           annotation (Placement(transformation(extent={{-100,-60},{-60,-20}})));
         parameter Boolean useExternalOutflowMin = false
           "=true, if minimal outflow is garanted"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolib.Types.MassFlowRate OutflowMin=0
+        parameter Physiolibrary.Types.MassFlowRate OutflowMin=0
           "Minimal outflow if useExternalOutflowMin=false"
           annotation (Dialog(enable=not useExternalOutflowMin));
 
-        Physiolib.Types.RealIO.MassFlowRateInput outflowMin(start=
+        Physiolibrary.Types.RealIO.MassFlowRateInput outflowMin(start=
               OutflowMin)=om if useExternalOutflowMin annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={40,80})));
-      protected
-         Physiolib.Types.MassFlowRate om;
+    protected
+         Physiolibrary.Types.MassFlowRate om;
       equation
         if not useExternalOutflowMin then
           om = OutflowMin;
@@ -707,11 +1002,11 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
 <p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
 <p>If useOutflowMin=false then the next schema is used.</p>
 <p><ul>
-<li><img src=\"modelica://Physiolib/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
 </ul></p>
 <p><br/>If  useOutflowMin=true then the extended schema is used:</p>
 <p><ul>
-<li><img src=\"modelica://Physiolib/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
 </ul></p>
 </html>"));
       end Reabsorption;
@@ -721,7 +1016,7 @@ package Physiolib "Library of Physiological componentsl models (version 0.1)"
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-            package Medium = Chemical.Examples.Media.StandardWater_C);
+          package Medium =   Chemical.Examples.Media.StandardWater_C);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -846,20 +1141,19 @@ Connector with one flow signal of type Real.
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
            Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
-            //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
-
+            //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
         FluidPort_a q_in(redeclare package Medium = Medium) "Inflow"
           annotation (Placement(transformation(extent={{-114,-14},{-86,14}})));
         FluidPort_b q_out(redeclare package Medium = Medium) "Outflow"
           annotation (Placement(transformation(extent={{86,-14},{114,14}})));
-         Physiolib.Types.MassFlowRate massFlowRate "Mass flow";
+         Physiolibrary.Types.MassFlowRate massFlowRate "Mass flow";
 
-         Physiolib.Types.VolumeFlowRate volumeFlowRate "Volume flow";
+         Physiolibrary.Types.VolumeFlowRate volumeFlowRate "Volume flow";
 
-         Physiolib.Types.Pressure dp "Pressure gradient";
+         Physiolibrary.Types.Pressure dp "Pressure gradient";
 
          Modelica.SIunits.Density density;//, density_outflow;
       equation
@@ -887,23 +1181,24 @@ Connector with one flow signal of type Real.
       partial model OnePort_UpDown "OnePort with different position of connectors"
        replaceable package Medium =
            Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
-            //Physiolib.Chemical.Examples.Media.SimpleBodyFluid_C
+            //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package
+          Medium =   Medium) "Top site" annotation (Placement(transformation(
+                extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
+                  {114,54}})));
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
+          Medium =   Medium) "Bottom site" annotation (Placement(transformation(
+                extent={{84,-56},{112,-28}}), iconTransformation(extent={{84,-56},
+                  {112,-28}})));
 
-        Physiolib.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium = Medium) "Top site" annotation (
-            Placement(transformation(extent={{86,26},{114,54}}),
-              iconTransformation(extent={{86,26},{114,54}})));
-        Physiolib.Fluid.Interfaces.FluidPort_a q_down(redeclare package Medium = Medium) "Bottom site" annotation (
-           Placement(transformation(extent={{84,-56},{112,-28}}),
-              iconTransformation(extent={{84,-56},{112,-28}})));
+         Physiolibrary.Types.MassFlowRate massFlowRate "Mass flow";
 
-         Physiolib.Types.MassFlowRate massFlowRate "Mass flow";
+         Physiolibrary.Types.VolumeFlowRate volumeFlowRate "Volume flow";
 
-         Physiolib.Types.VolumeFlowRate volumeFlowRate "Volume flow";
-
-         Physiolib.Types.Pressure dp "Pressure gradient";
+         Physiolibrary.Types.Pressure dp "Pressure gradient";
 
          Modelica.SIunits.Density density;
       equation
@@ -927,7 +1222,6 @@ Connector with one flow signal of type Real.
          else
          Medium.density(Medium.setState_phX(q_down.p, inStream(q_down.h_outflow), inStream(q_down.Xi_outflow)));
 
-
        annotation (
           Documentation(revisions="<html>
 <p><i>2017-2018</i></p>
@@ -944,12 +1238,12 @@ Connector with one flow signal of type Real.
           "=true, if solution flow input is used instead of parameter SolutionFlow"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.MassFlowRate SolutionFlow=0
-          "Mass flow of solution if useSolutionFlowInput=false"
-          annotation (HideResult=not useSolutionFlowInput, Dialog(enable=not
+        parameter Physiolibrary.Types.MassFlowRate SolutionFlow=0
+          "Mass flow of solution if useSolutionFlowInput=false" annotation (
+            HideResult=not useSolutionFlowInput, Dialog(enable=not
                 useSolutionFlowInput));
 
-        Physiolib.Types.RealIO.MassFlowRateInput solutionFlow(start=
+        Physiolibrary.Types.RealIO.MassFlowRateInput solutionFlow(start=
               SolutionFlow)=q if useSolutionFlowInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
@@ -959,7 +1253,7 @@ Connector with one flow signal of type Real.
               rotation=270,
               origin={0,70})));
 
-        Physiolib.Types.MassFlowRate q "Current solution flow";
+        Physiolibrary.Types.MassFlowRate q "Current solution flow";
       equation
         if not useSolutionFlowInput then
           q = SolutionFlow;
@@ -974,12 +1268,12 @@ Connector with one flow signal of type Real.
           "=true, if solution flow input is used instead of parameter SolutionFlow"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.VolumeFlowRate SolutionFlow=0
-          "Mass flow of solution if useSolutionFlowInput=false"
-          annotation (HideResult=not useSolutionFlowInput, Dialog(enable=not
+        parameter Physiolibrary.Types.VolumeFlowRate SolutionFlow=0
+          "Mass flow of solution if useSolutionFlowInput=false" annotation (
+            HideResult=not useSolutionFlowInput, Dialog(enable=not
                 useSolutionFlowInput));
 
-        Physiolib.Types.RealIO.VolumeFlowRateInput solutionFlow(start=
+        Physiolibrary.Types.RealIO.VolumeFlowRateInput solutionFlow(start=
               SolutionFlow)=q if useSolutionFlowInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
@@ -989,7 +1283,7 @@ Connector with one flow signal of type Real.
               rotation=270,
               origin={0,70})));
 
-        Physiolib.Types.VolumeFlowRate q "Current solution flow";
+        Physiolibrary.Types.VolumeFlowRate q "Current solution flow";
       equation
         if not useSolutionFlowInput then
           q = SolutionFlow;
@@ -1001,11 +1295,11 @@ Connector with one flow signal of type Real.
     package Sensors
       extends Modelica.Icons.SensorsPackage;
       model FlowMeasure "Volumetric flow between ports"
-        extends Physiolib.Fluid.Interfaces.OnePort;
+        extends Physiolibrary.Fluid.Interfaces.OnePort;
        // extends Icons.FlowMeasure;
         extends Modelica.Icons.RotationalSensor;
 
-        Physiolib.Types.RealIO.MassFlowRateOutput massFlow
+        Physiolibrary.Types.RealIO.MassFlowRateOutput massFlow
           "Actual mass flow rate" annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
@@ -1014,9 +1308,10 @@ Connector with one flow signal of type Real.
               rotation=90,
               origin={0,120})));
 
-        Physiolib.Types.VolumeFlowRate volumeInflowRate,volumeOutflowRate;
+        Physiolibrary.Types.VolumeFlowRate volumeInflowRate;
+        Physiolibrary.Types.VolumeFlowRate volumeOutflowRate;
 
-      protected
+    protected
         Medium.ThermodynamicState state_inflow "state for medium inflowing through q_in";
         Medium.ThermodynamicState state_outflow "state for medium outflowing through q_out";
 
@@ -1049,20 +1344,20 @@ Connector with one flow signal of type Real.
       end FlowMeasure;
 
       model PressureMeasure "Hydraulic pressure at port"
-        extends Physiolib.Icons.PressureMeasure;
+        extends Physiolibrary.Icons.PressureMeasure;
 
         replaceable package Medium =
           Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
           "Medium model"
           annotation (choicesAllMatching=true);
 
-
         outer Modelica.Fluid.System system "System wide properties";
 
-        Physiolib.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium=Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
+          Medium =   Medium)
           annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
-        Physiolib.Types.RealIO.PressureOutput pressure "Pressure"
+        Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
           annotation (Placement(transformation(extent={{40,-60},{80,-20}})));
 
       equation
@@ -1086,7 +1381,7 @@ Connector with one flow signal of type Real.
       extends Modelica.Icons.SourcesPackage;
       model MassInflowSource
         "Prescribed mass flow rate at port with unlimited mass"
-        extends Physiolib.Fluid.Interfaces.ConditionalMassFlow;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
         replaceable package Medium =
             Chemical.Examples.Media.StandardWater_C
@@ -1096,14 +1391,15 @@ Connector with one flow signal of type Real.
 
         parameter Types.Temperature T = system.T_ambient "Fluid temperature";
 
-        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.Xi_default "Mass fractions of fluid";
+        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.X_default[1:Medium.nXi] "Mass fractions of fluid";
         parameter Real C[Medium.nC]=Medium.C_default "Extra properties of fluid";
 
-        Physiolib.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium=Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
+          Medium =   Medium)
           annotation (Placement(transformation(extent={{86,-14},{114,14}})));
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
-      protected
+    protected
         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
       equation
         q_out.m_flow = - q;
@@ -1149,7 +1445,7 @@ Connector with one flow signal of type Real.
 
       model VolumeInflowSource
         "Prescribed volume flow rate at port with unlimited mass"
-        extends Physiolib.Fluid.Interfaces.ConditionalVolumeFlow;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
         replaceable package Medium =
             Chemical.Examples.Media.StandardWater_C
@@ -1159,14 +1455,15 @@ Connector with one flow signal of type Real.
 
         parameter Types.Temperature T = system.T_ambient "Fluid temperature";
 
-        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.Xi_default "Mass fractions of fluid";
+        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.X_default[1:Medium.nXi] "Mass fractions of fluid";
         parameter Real C[Medium.nC]=Medium.C_default "Extra properties of fluid";
 
-        Physiolib.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium=Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
+          Medium =   Medium)
           annotation (Placement(transformation(extent={{86,-14},{114,14}})));
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
-      protected
+    protected
         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
 
        Modelica.SIunits.Density density;
@@ -1221,7 +1518,7 @@ Connector with one flow signal of type Real.
 
           replaceable package Medium =
               Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
           "Medium model"   annotation (choicesAllMatching=true);
 
           outer Modelica.Fluid.System system "System wide properties";
@@ -1230,24 +1527,24 @@ Connector with one flow signal of type Real.
           "=true, if pressure input is used"
             annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-          parameter Physiolib.Types.Pressure P=system.p_ambient
+          parameter Physiolibrary.Types.Pressure P=system.p_ambient
           "Hydraulic pressure if usePressureInput=false"
           annotation (Dialog(enable=not usePressureInput));
 
-          Physiolib.Types.RealIO.PressureInput pressure(start=P)=p if
+          Physiolibrary.Types.RealIO.PressureInput pressure(start=P)=p if
           usePressureInput "Pressure"
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-          Physiolib.Fluid.Interfaces.FluidPort_a y(redeclare package Medium = Medium)
-          "PressureFlow output connectors"
+          Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium =
+              Medium) "PressureFlow output connectors"
           annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
           parameter Types.Temperature T = system.T_ambient "Fluid temperature";
 
-          parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.Xi_default "Mass fractions of fluid";
+          parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.X_default[1:Medium.nXi] "Mass fractions of fluid";
           parameter Real C[Medium.nC]=Medium.C_default "Extra properties of fluid";
 
-      protected
-          Physiolib.Types.Pressure p;
+    protected
+          Physiolibrary.Types.Pressure p;
           parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T)) "Fluid enthalphy";
         equation
           if not usePressureInput then
@@ -1295,27 +1592,28 @@ Connector with one flow signal of type Real.
         end PressureSource;
 
       model MassOutflowSource "Prescribed flow at port with unlimited mass storage"
-        extends Physiolib.Fluid.Interfaces.ConditionalMassFlow;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
         replaceable package Medium =
           Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
 
-        Physiolib.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium=Medium) annotation (Placement(
-              transformation(extent={{-114,-14},{-86,14}}), iconTransformation(
-                extent={{-114,-14},{-86,14}})));
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
+          Medium =   Medium) annotation (Placement(transformation(extent={{-114,
+                  -14},{-86,14}}), iconTransformation(extent={{-114,-14},{-86,
+                  14}})));
 
         parameter Types.Temperature T = system.T_ambient "Fluid temperature";
 
-        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.Xi_default "Mass fractions of fluid";
+        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.X_default[1:Medium.nXi] "Mass fractions of fluid";
         parameter Real C[Medium.nC]=Medium.C_default "Extra properties of fluid";
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
 
-      protected
+    protected
          parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
       equation
         q_in.m_flow = q;
@@ -1361,27 +1659,28 @@ Connector with one flow signal of type Real.
 
       model VolumeOutflowSource
         "Prescribed flow at port with unlimited mass storage"
-        extends Physiolib.Fluid.Interfaces.ConditionalVolumeFlow;
+        extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
         replaceable package Medium =
           Chemical.Examples.Media.StandardWater_C           constrainedby
-          Chemical.Interfaces.PartialMedium_C
+        Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
 
-        Physiolib.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium=Medium) annotation (Placement(
-              transformation(extent={{-114,-14},{-86,14}}), iconTransformation(
-                extent={{-114,-14},{-86,14}})));
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
+          Medium =   Medium) annotation (Placement(transformation(extent={{-114,
+                  -14},{-86,14}}), iconTransformation(extent={{-114,-14},{-86,
+                  14}})));
 
         parameter Types.Temperature T = system.T_ambient "Fluid temperature";
 
-        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.Xi_default "Mass fractions of fluid";
+        parameter Modelica.SIunits.MassFraction X[Medium.nXi]=Medium.X_default[1:Medium.nXi] "Mass fractions of fluid";
         parameter Real C[Medium.nC]=Medium.C_default "Extra properties of fluid";
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
 
-      protected
+    protected
          parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
          Modelica.SIunits.Density density;
       equation
@@ -1438,18 +1737,16 @@ Connector with one flow signal of type Real.
         "Minimal circulation models driven by cardiac output"
          extends Modelica.Icons.Example;
 
-
-
-        Physiolib.Fluid.Components.MassPump heart(useSolutionFlowInput=true)
+        Physiolibrary.Fluid.Components.MassPump heart(useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{-20,60},{0,80}})));
-        Physiolib.Fluid.Components.ElasticVessel arteries(
+        Physiolibrary.Fluid.Components.ElasticVessel arteries(
           mass_start(displayUnit="kg") = 1,
           nHydraulicPorts=3,
           Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08,
           ZeroPressureVolume(displayUnit="ml") = 0.00085)
           annotation (Placement(transformation(extent={{54,40},{74,60}})));
 
-        Physiolib.Fluid.Components.ElasticVessel veins(
+        Physiolibrary.Fluid.Components.ElasticVessel veins(
           mass_start(displayUnit="kg") = 3.2,
           nHydraulicPorts=2,
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
@@ -1510,16 +1807,16 @@ Connector with one flow signal of type Real.
 
       model Windkessel_2element "Two-element Windkessel model"
         extends Modelica.Icons.Example;
-        Physiolib.Fluid.Components.ElasticVessel arteries(
+        Physiolibrary.Fluid.Components.ElasticVessel arteries(
           ZeroPressureVolume(displayUnit="ml") = 0.00085,
           mass_start(displayUnit="kg") = 0.97,
           nHydraulicPorts=3,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08)
           annotation (Placement(transformation(extent={{-12,38},{8,58}})));
 
-        Physiolib.Fluid.Components.Conductor resistance(
-            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
-          annotation (Placement(transformation(
+        Physiolibrary.Fluid.Components.Conductor resistance(Conductance(
+              displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09) annotation (
+            Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={18,34})));
@@ -1586,31 +1883,31 @@ Connector with one flow signal of type Real.
 
       model Windkessel_3element "Three-element windkessel model"
         extends Modelica.Icons.Example;
-        Physiolib.Fluid.Sources.MassInflowSource heart(useSolutionFlowInput=true)
+        Physiolibrary.Fluid.Sources.MassInflowSource heart(useSolutionFlowInput=
+             true)
           annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
-        Physiolib.Fluid.Components.ElasticVessel arteries(
+        Physiolibrary.Fluid.Components.ElasticVessel arteries(
           ZeroPressureVolume(displayUnit="l") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08,
           mass_start(displayUnit="kg") = 0.97,
           nHydraulicPorts=3)
           annotation (Placement(transformation(extent={{16,38},{36,58}})));
-        Physiolib.Fluid.Components.Conductor resistance(
-            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
-          annotation (Placement(transformation(
+        Physiolibrary.Fluid.Components.Conductor resistance(Conductance(
+              displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09) annotation (
+            Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={50,34})));
-        Physiolib.Fluid.Sources.PressureSource veins annotation (Placement(
+        Physiolibrary.Fluid.Sources.PressureSource veins annotation (Placement(
               transformation(extent={{-10,-10},{10,10}}, origin={-40,20})));
         Utilities.Pulses pulses(
           QP(displayUnit="kg/s") = 0.424,
           TD1(displayUnit="s"),
           HR(displayUnit="1/min") = 1.2)
           annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
-        Physiolib.Fluid.Components.Conductor impedance(
-            Conductance(displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06)
-          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-                origin={-6,50})));
+        Physiolibrary.Fluid.Components.Conductor impedance(Conductance(
+              displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06) annotation (
+            Placement(transformation(extent={{-10,-10},{10,10}}, origin={-6,50})));
         Sensors.PressureMeasure pressureMeasure
           annotation (Placement(transformation(extent={{58,66},{78,86}})));
         Sensors.FlowMeasure flowMeasure annotation (Placement(transformation(
@@ -1666,32 +1963,32 @@ Connector with one flow signal of type Real.
 
       model Windkessel_4element "Four-element windkessel model"
         extends Modelica.Icons.Example;
-        Physiolib.Fluid.Sources.MassInflowSource heart(useSolutionFlowInput=true)
+        Physiolibrary.Fluid.Sources.MassInflowSource heart(useSolutionFlowInput=
+             true)
           annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
-        Physiolib.Fluid.Components.ElasticVessel arteries(
+        Physiolibrary.Fluid.Components.ElasticVessel arteries(
           mass_start(displayUnit="kg") = 0.97,
           nHydraulicPorts=4,
           ZeroPressureVolume(displayUnit="ml") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-8)
           annotation (Placement(transformation(extent={{16,38},{36,58}})));
-        Physiolib.Fluid.Components.Conductor resistance(
-            Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
-          annotation (Placement(transformation(
+        Physiolibrary.Fluid.Components.Conductor resistance(Conductance(
+              displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09) annotation (
+            Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={48,34})));
-        Physiolib.Fluid.Sources.PressureSource veins annotation (Placement(
+        Physiolibrary.Fluid.Sources.PressureSource veins annotation (Placement(
               transformation(extent={{-10,-10},{10,10}}, origin={-40,20})));
         Utilities.Pulses pulses(QP(displayUnit="kg/s")=
                0.424, HR=1.2)
           annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
-        Physiolib.Fluid.Components.Conductor impedance(
-            Conductance(displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06)
-          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-                origin={-6,48})));
-        Physiolib.Fluid.Components.Inertia inertia(I(displayUnit="mmHg.s2/g")=
-               666.611937075, massFlow_start(displayUnit="kg/min")=
-            0.083333333333333)
+        Physiolibrary.Fluid.Components.Conductor impedance(Conductance(
+              displayUnit="ml/(mmHg.s)") = 1.5001231516913e-06) annotation (
+            Placement(transformation(extent={{-10,-10},{10,10}}, origin={-6,48})));
+        Physiolibrary.Fluid.Components.Inertia inertia(I(displayUnit=
+                "mmHg.s2/g") = 666.611937075, massFlow_start(displayUnit=
+                "kg/min") = 0.083333333333333)
           annotation (Placement(transformation(extent={{-16,56},{4,76}})));
         Sensors.PressureMeasure pressureMeasure
           annotation (Placement(transformation(extent={{62,64},{82,84}})));
@@ -1755,7 +2052,7 @@ Connector with one flow signal of type Real.
       model CardiovascularSystem_GCG
         "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
          extends Modelica.Icons.Example;
-         import Hydraulic = Physiolib.Fluid;
+         import Hydraulic = Physiolibrary.Fluid;
         Hydraulic.Components.ElasticVessel pulmonaryVeinsAndLeftAtrium(
           mass_start(displayUnit="kg") = 0.4,
           nHydraulicPorts=3,
@@ -1769,7 +2066,7 @@ Connector with one flow signal of type Real.
           Compliance(displayUnit="ml/mmHg") = 3.6002955640592e-8)
           annotation (Placement(transformation(extent={{-62,74},{-42,94}})));
         Hydraulic.Components.Conductor
-                 pulmonary(Conductance(displayUnit="l/(mmHg.min)") =
+                 pulmonary(Conductance(displayUnit="l/(mmHg.min)")=
             4.1665920538226e-08)
           annotation (Placement(transformation(extent={{-30,74},{-10,94}})));
         Hydraulic.Components.ElasticVessel arteries(
@@ -1785,33 +2082,33 @@ Connector with one flow signal of type Real.
           Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7)
           annotation (Placement(transformation(extent={{-64,-46},{-44,-26}})));
         Hydraulic.Components.Conductor
-                 nonMuscle(Conductance(displayUnit="l/(mmHg.min)") =
+                 nonMuscle(Conductance(displayUnit="l/(mmHg.min)")=
             3.5627924852669e-09)
           annotation (Placement(transformation(extent={{-24,-46},{-4,-26}})));
         Hydraulic.Sensors.PressureMeasure pressureMeasure
           annotation (Placement(transformation(extent={{-78,26},{-58,46}})));
         Hydraulic.Components.MassPump rightHeart(useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{-56,8},{-36,28}})));
-        Physiolib.Types.Constants.MassFlowRateConst RNormalCO(k(displayUnit=
-                "kg/min") = 0.083333333333333)
+        Physiolibrary.Types.Constants.MassFlowRateConst RNormalCO(k(displayUnit=
+               "kg/min") = 0.083333333333333)
           annotation (Placement(transformation(extent={{-60,40},{-52,48}})));
         Hydraulic.Sensors.PressureMeasure pressureMeasure1
           annotation (Placement(transformation(extent={{-8,26},{12,46}})));
         Hydraulic.Components.MassPump leftHeart(useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{16,6},{36,26}})));
-        Physiolib.Types.Constants.MassFlowRateConst LNormalCO(k(displayUnit=
-                "kg/min") = 0.083333333333333)
+        Physiolibrary.Types.Constants.MassFlowRateConst LNormalCO(k(displayUnit=
+               "kg/min") = 0.083333333333333)
           annotation (Placement(transformation(extent={{12,42},{20,50}})));
         Hydraulic.Components.Conductor
-                 kidney(Conductance(displayUnit="l/(mmHg.min)") =
+                 kidney(Conductance(displayUnit="l/(mmHg.min)")=
             1.4126159678427e-09)
           annotation (Placement(transformation(extent={{-24,-64},{-4,-44}})));
         Hydraulic.Components.Conductor
-                 muscle(Conductance(displayUnit="l/(mmHg.min)") =
+                 muscle(Conductance(displayUnit="l/(mmHg.min)")=
             1.3001067314658e-09)
           annotation (Placement(transformation(extent={{-24,-28},{-4,-8}})));
         Hydraulic.Components.Conductor
-                 largeVeins(Conductance(displayUnit="l/(mmHg.min)") =
+                 largeVeins(Conductance(displayUnit="l/(mmHg.min)")=
             1.6888886482791e-07)
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               rotation=270,
@@ -1822,12 +2119,12 @@ Connector with one flow signal of type Real.
           ZeroPressureVolume(displayUnit="ml") = 0.0001,
           Compliance(displayUnit="ml/mmHg") = 3.7503078792283e-8)
           annotation (Placement(transformation(extent={{-82,8},{-62,28}})));
-        Physiolib.Blocks.Factors.Spline rightStarling(data={{-6,0,0},{-3,
+        Physiolibrary.Blocks.Factors.Spline rightStarling(data={{-6,0,0},{-3,
               0.15,0.104},{-1,0.52,0.48},{2,1.96,0.48},{4,2.42,0.123},{8,2.7,0}},
             Xscale=101325/760)
           "At filling pressure 0mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
           annotation (Placement(transformation(extent={{-56,22},{-36,42}})));
-        Physiolib.Blocks.Factors.Spline leftStarling(data={{-4,0,0},{-1,
+        Physiolibrary.Blocks.Factors.Spline leftStarling(data={{-4,0,0},{-1,
               0.72,0.29},{0,1.01,0.29},{3,1.88,0.218333},{10,2.7,0}}, Xscale=
               101325/760)
           "At filling pressure -0.0029mmHg (because external thorax pressure is -4mmHg) is normal cardiac output (effect=1)."
@@ -1948,8 +2245,8 @@ Connector with one flow signal of type Real.
       extends Modelica.Icons.UtilitiesPackage;
 
         model Pulses "example pulse flow generator"
-          import Physiolib.Types.*;
-          Physiolib.Types.RealIO.MassFlowRateOutput massflowrate
+          import Physiolibrary.Types.*;
+          Physiolibrary.Types.RealIO.MassFlowRateOutput massflowrate
             annotation (Placement(transformation(extent={{80,-10},{100,10}}),
                 iconTransformation(extent={{80,-10},{100,10}})));
           discrete Time T0 "beginning of cardiac cycle";
@@ -1997,61 +2294,62 @@ Connector with one flow signal of type Real.
         "models of cardiovascular system used in www.physiome.cz/atlas"
         extends Modelica.Icons.ExamplesPackage;
         model NonPulsatileCirculation
-          extends Physiolib.Icons.CardioVascular;
-          Physiolib.Fluid.Components.ElasticVessel PulmonaryArteries(
+          extends Physiolibrary.Icons.CardioVascular;
+          Physiolibrary.Fluid.Components.ElasticVessel PulmonaryArteries(
             useV0Input=true,
             useComplianceInput=true,
             nHydraulicPorts=2,
             mass_start=0.373)
             annotation (Placement(transformation(extent={{-40,28},{-20,48}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CAP(k=
+          Physiolibrary.Types.Constants.HydraulicComplianceConst CAP(k=
                 2.2576853432954e-08)
             annotation (Placement(transformation(extent={{-50,56},{-36,70}})));
-          Physiolib.Types.Constants.VolumeConst V0AP(k=0.000327)
+          Physiolibrary.Types.Constants.VolumeConst V0AP(k=0.000327)
             annotation (Placement(transformation(extent={{-66,44},{-52,58}})));
-          Physiolib.Fluid.Components.Conductor TotalPulmonaryResistance(
+          Physiolibrary.Fluid.Components.Conductor TotalPulmonaryResistance(
               useConductanceInput=true)
             annotation (Placement(transformation(extent={{-2,28},{18,48}})));
-          Physiolib.Types.Constants.HydraulicResistanceToConductanceConst RP(k(
+          Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst RP(k(
                 displayUnit="(mmHg.s)/l") = 9332567.11905)
             annotation (Placement(transformation(extent={{-6,60},{6,70}})));
-          Physiolib.Fluid.Components.ElasticVessel PulmonaryVeins(
+          Physiolibrary.Fluid.Components.ElasticVessel PulmonaryVeins(
             useV0Input=true,
             useComplianceInput=true,
             mass_start=0.704,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{42,28},{62,48}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CVP(k=2.250184727537e-7)
+          Physiolibrary.Types.Constants.HydraulicComplianceConst CVP(k=
+                2.250184727537e-7)
             annotation (Placement(transformation(extent={{36,60},{50,74}})));
-          Physiolib.Types.Constants.VolumeConst V0VP(k=0.000435)
+          Physiolibrary.Types.Constants.VolumeConst V0VP(k=0.000435)
             annotation (Placement(transformation(extent={{20,48},{34,62}})));
-          Physiolib.Fluid.Components.ElasticVessel SystemicVeins(
+          Physiolibrary.Fluid.Components.ElasticVessel SystemicVeins(
             useV0Input=true,
             useComplianceInput=true,
             mass_start=3.922,
-            nHydraulicPorts=2)
-                              annotation (Placement(transformation(extent={
-                    {-46,-70},{-26,-50}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CVS(k=1.5001231516913e-6)
-            annotation (Placement(transformation(extent={{-52,-42},{-38,-28}})));
-          Physiolib.Types.Constants.VolumeConst V0VS(k=0.002845)
+            nHydraulicPorts=2) annotation (Placement(transformation(extent={{-46,
+                    -70},{-26,-50}})));
+          Physiolibrary.Types.Constants.HydraulicComplianceConst CVS(k=
+                1.5001231516913e-6) annotation (Placement(transformation(extent=
+                   {{-52,-42},{-38,-28}})));
+          Physiolibrary.Types.Constants.VolumeConst V0VS(k=0.002845)
             annotation (Placement(transformation(extent={{-74,-54},{-60,-40}})));
-          Physiolib.Fluid.Components.Conductor TotalSystemicResistance(
+          Physiolibrary.Fluid.Components.Conductor TotalSystemicResistance(
               useConductanceInput=true)
             annotation (Placement(transformation(extent={{16,-70},{-4,-50}})));
-          Physiolib.Types.Constants.HydraulicResistanceToConductanceConst RT(k(
+          Physiolibrary.Types.Constants.HydraulicResistanceToConductanceConst RT(k(
                 displayUnit="(mmHg.s)/l") = 133322387.415)
             annotation (Placement(transformation(extent={{-14,-50},{-4,-40}})));
-          Physiolib.Fluid.Components.ElasticVessel SystemicArteries(
+          Physiolibrary.Fluid.Components.ElasticVessel SystemicArteries(
             useV0Input=true,
             useComplianceInput=true,
             nHydraulicPorts=3,
             mass_start=0.672)
             annotation (Placement(transformation(extent={{36,-70},{56,-50}})));
-          Physiolib.Types.Constants.HydraulicComplianceConst CAS(k=
+          Physiolibrary.Types.Constants.HydraulicComplianceConst CAS(k=
                 1.1250923637685e-08)
             annotation (Placement(transformation(extent={{30,-38},{44,-24}})));
-          Physiolib.Types.Constants.VolumeConst V0AS(k=0.000529)
+          Physiolibrary.Types.Constants.VolumeConst V0AS(k=0.000529)
             annotation (Placement(transformation(extent={{14,-50},{28,-36}})));
           replaceable Parts.HeartPump rightHeart(StarlingSlope(displayUnit=
                   "ml/(mmHg.s)") = 1.2503526469347e-07)
@@ -2117,7 +2415,7 @@ Connector with one flow signal of type Real.
               thickness=0.5));
           connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (Line(
               points={{52,2.22045e-16},{50,2.22045e-16},{50,-58.2667},{45.7,
-                  -58.2667}},
+                -58.2667}},
               color={127,0,0},
               thickness=0.5));
           connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in)
@@ -2177,16 +2475,14 @@ Connector with one flow signal of type Real.
 
             outer Modelica.Fluid.System system "System wide properties";
 
-            extends Physiolib.Fluid.Interfaces.OnePort;
+            extends Physiolibrary.Fluid.Interfaces.OnePort;
 
-            parameter Physiolib.Types.HydraulicConductance StarlingSlope;
+            parameter Physiolibrary.Types.HydraulicConductance StarlingSlope;
 
-             Modelica.SIunits.Density density;
+
           equation
              q_in.m_flow = StarlingSlope*(q_in.p-system.p_ambient)*density;
 
-             // medium density
-            density = Medium.density(Medium.setState_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)))
              annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={
                       {-100,-100},{100,100}}), graphics={Polygon(
                             points={{32,-34},{24,-24},{18,-10},{18,-8},{22,22},{
@@ -2201,22 +2497,22 @@ Connector with one flow signal of type Real.
                             fillColor={255,170,170},
                             fillPattern=FillPattern.Solid,
                             textString="%name")}));
-
           end HeartPump;
 
           model PulsatileHeartPump "Heart as pump, which flowrate is determined
   by the StarlingSlope and filling pressure."
             extends HeartInterface;
 
-            Physiolib.Fluid.Interfaces.FluidPort_a q_in annotation (Placement(
-                  transformation(extent={{-64,0},{-44,20}}), iconTransformation(
-                    extent={{-110,-10},{-90,10}})));
-            Physiolib.Fluid.Interfaces.FluidPort_b q_out annotation (
+            Physiolibrary.Fluid.Interfaces.FluidPort_a q_in annotation (
+                Placement(transformation(extent={{-64,0},{-44,20}}),
+                  iconTransformation(extent={{-110,-10},{-90,10}})));
+            Physiolibrary.Fluid.Interfaces.FluidPort_b q_out annotation (
                 Placement(transformation(extent={{42,2},{62,22}}),
                   iconTransformation(extent={{42,2},{62,22}})));
             Utilities.Pulses pulses
               annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-            Physiolib.Fluid.Components.MassPump pump(useSolutionFlowInput=true)
+            Physiolibrary.Fluid.Components.MassPump pump(useSolutionFlowInput=
+                  true)
               annotation (Placement(transformation(extent={{-14,2},{6,22}})));
 
           equation
@@ -2263,120 +2559,112 @@ Connector with one flow signal of type Real.
 
         model PulsatileCirculation
           "Model of cardiovascular system with pulsatile dynamic"
-                                  extends Physiolib.Icons.CardioVascular;
+                                  extends Physiolibrary.Icons.CardioVascular;
 
-          Physiolib.Fluid.Components.Conductor RPulmonaryVeins(
-               Conductance(displayUnit="ml/(mmHg.s)") = 7.425609600872e-08)
-                                     annotation (Placement(transformation(
-                  origin={-220,60}, extent={{15,-15},{-15,15}})));
-          Physiolib.Fluid.Components.Inertia pulmonaryVeinsInertia(massFlow_start(
-                displayUnit="kg/s") = 0.02225, I(displayUnit="mmHg.s2/g") = 410.6329532382)
-                                 annotation (Placement(transformation(origin={-278,
-                    60}, extent={{15,-15},{-15,15}})));
-          Physiolib.Fluid.Components.Conductor RPulmonaryArtery(
-              Conductance(displayUnit="ml/(mmHg.s)") = 2.2216823876548e-07)
-                                      annotation (Placement(transformation(
-                  origin={200,58}, extent={{17.5,-17.5},{-17.5,17.5}})));
-          Physiolib.Fluid.Components.Inertia pulmonaryArterialInertia(massFlow_start(
-                displayUnit="g/min") = 0.00073233333333333, I(displayUnit="mmHg.s2/g")=
-                 99.99179056125)                                        annotation (
-              Placement(transformation(origin={156,58}, extent={{15,-15},{-15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel pulmonaryVeins(
+          Physiolibrary.Fluid.Components.Conductor RPulmonaryVeins(Conductance(
+                displayUnit="ml/(mmHg.s)") = 7.425609600872e-08) annotation (
+              Placement(transformation(origin={-220,60}, extent={{15,-15},{-15,
+                    15}})));
+          Physiolibrary.Fluid.Components.Inertia pulmonaryVeinsInertia(
+              massFlow_start(displayUnit="kg/s") = 0.02225, I(displayUnit=
+                  "mmHg.s2/g") = 410.6329532382) annotation (Placement(
+                transformation(origin={-278,60}, extent={{15,-15},{-15,15}})));
+          Physiolibrary.Fluid.Components.Conductor RPulmonaryArtery(Conductance(
+                displayUnit="ml/(mmHg.s)") = 2.2216823876548e-07) annotation (
+              Placement(transformation(origin={200,58}, extent={{17.5,-17.5},{-17.5,
+                    17.5}})));
+          Physiolibrary.Fluid.Components.Inertia pulmonaryArterialInertia(
+              massFlow_start(displayUnit="g/min") = 0.00073233333333333, I(
+                displayUnit="mmHg.s2/g") = 99.99179056125) annotation (
+              Placement(transformation(origin={156,58}, extent={{15,-15},{-15,
+                    15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel pulmonaryVeins(
             mass_start=0.6597,
             nHydraulicPorts=2,
             ZeroPressureVolume=0.0001,
-            Compliance=3.5027875591992e-07)
-            annotation (Placement(transformation(origin={-279,-3}, extent={{-15,
-                    -15},{15,15}})));
-          Physiolib.Fluid.Components.IdealValve mitralValve( _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-            annotation (Placement(transformation(origin={-243,-3}, extent={{-15,
-                    -15},{15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel leftVentricle(
+            Compliance=3.5027875591992e-07) annotation (Placement(
+                transformation(origin={-279,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.IdealValve mitralValve(_Gon(
+                displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06) annotation (
+              Placement(transformation(origin={-243,-3}, extent={{-15,-15},{15,
+                    15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel leftVentricle(
             useComplianceInput=true,
             useExternalPressureInput=true,
             nHydraulicPorts=3,
             mass_start=0.2097,
-            ZeroPressureVolume=9e-05)
-                                    annotation (Placement(transformation(
+            ZeroPressureVolume=9e-05) annotation (Placement(transformation(
                   origin={-209,-3}, extent={{-15,-15},{15,15}})));
-          Physiolib.Fluid.Components.Conductor RLeftMyo(
-              Conductance=9.3757696980707e-08)
-            annotation (Placement(transformation(origin={-181,-3}, extent={{-15,
-                    -15},{15,15}})));
-          Physiolib.Fluid.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-                 1.9996641612045e-06) annotation (
-              Placement(transformation(origin={-143,-3}, extent={{-15,-15},{15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel aorta(
+          Physiolibrary.Fluid.Components.Conductor RLeftMyo(Conductance=
+                9.3757696980707e-08) annotation (Placement(transformation(
+                  origin={-181,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.IdealValve aorticValve(_Gon(
+                displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06) annotation (
+              Placement(transformation(origin={-143,-3}, extent={{-15,-15},{15,
+                    15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel aorta(
             nHydraulicPorts=3,
             Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-09,
             mass_start=0.046,
-            ZeroPressureVolume=3e-05)
-            annotation (Placement(transformation(origin={-111,-3}, extent={{-15,
-                    -15},{15,15}})));
-          Physiolib.Fluid.Components.Conductor Raorta(
-              Conductance=1.1108411938274e-07)
-            annotation (Placement(transformation(origin={-79,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.Inertia aorticInertia(massFlow_start(displayUnit="kg/min")=
-                 0.010385, I(displayUnit="mmHg.s2/g") = 109.99096961738)
-            annotation (Placement(transformation(origin={-37,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel arteries(
+            ZeroPressureVolume=3e-05) annotation (Placement(transformation(
+                  origin={-111,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.Conductor Raorta(Conductance=
+                1.1108411938274e-07) annotation (Placement(transformation(
+                  origin={-79,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.Inertia aorticInertia(massFlow_start(
+                displayUnit="kg/min") = 0.010385, I(displayUnit="mmHg.s2/g")=
+              109.99096961738) annotation (Placement(transformation(origin={-37,
+                    -3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel arteries(
             nHydraulicPorts=3,
             Compliance=1.0950899007347e-08,
             mass_start=0.805,
-            ZeroPressureVolume=0.0007)
-            annotation (Placement(transformation(origin={-1,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.Conductor RSystemic(
-              Conductance=7.5006157584566e-09)
-            annotation (Placement(transformation(origin={31,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.Inertia systemicInertia(massFlow_start(displayUnit=
-                 "kg/min") = 0.07935, I=479.960594694)
-            annotation (Placement(transformation(origin={75,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.IdealValve tricuspidValve(
-               _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-            annotation (Placement(transformation(origin={137,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel rightVentricle(
+            ZeroPressureVolume=0.0007) annotation (Placement(transformation(
+                  origin={-1,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.Conductor RSystemic(Conductance=
+                7.5006157584566e-09) annotation (Placement(transformation(
+                  origin={31,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.Inertia systemicInertia(massFlow_start(
+                displayUnit="kg/min") = 0.07935, I=479.960594694) annotation (
+              Placement(transformation(origin={75,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.IdealValve tricuspidValve(_Gon(
+                displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06) annotation (
+              Placement(transformation(origin={137,-3}, extent={{-15,-15},{15,
+                    15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel rightVentricle(
             useComplianceInput=true,
             useExternalPressureInput=true,
             nHydraulicPorts=3,
             mass_start=0.18,
-            ZeroPressureVolume=7e-05)
-                                    annotation (Placement(transformation(
+            ZeroPressureVolume=7e-05) annotation (Placement(transformation(
                   origin={171,-3}, extent={{-15,-15},{15,15}})));
-          Physiolib.Fluid.Components.Conductor RRightMyo(
-              Conductance=4.2858518443821e-07)
-            annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.IdealValve pulmonaryValve(_Gon(displayUnit="ml/(mmHg.s)")=
-                 1.9996641612045e-06)
-            annotation (Placement(transformation(origin={243,-3}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel pulmonaryArtery(
+          Physiolibrary.Fluid.Components.Conductor RRightMyo(Conductance=
+                4.2858518443821e-07) annotation (Placement(transformation(
+                  origin={207,-3}, extent={{-15,-15},{15,15}})));
+          Physiolibrary.Fluid.Components.IdealValve pulmonaryValve(_Gon(
+                displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06) annotation (
+              Placement(transformation(origin={243,-3}, extent={{-15,-15},{15,
+                    15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel pulmonaryArtery(
             nHydraulicPorts=2,
             mass_start=0.021,
             ZeroPressureVolume=2e-05,
             Compliance(displayUnit="ml/mmHg") = 6.7505541826109e-10)
-                                                                  annotation (
-              Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel pulmonaryArterioles(
+            annotation (Placement(transformation(origin={243,57}, extent={{-15,
+                    -15},{15,15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel pulmonaryArterioles(
             nHydraulicPorts=2,
             mass_start=0.637,
             ZeroPressureVolume=0.0006,
             Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)
-            annotation (Placement(transformation(origin={124,58}, extent={{-15,-15},
-                    {15,15}})));
-          Physiolib.Fluid.Components.ElasticVessel veins(
+            annotation (Placement(transformation(origin={124,58}, extent={{-15,
+                    -15},{15,15}})));
+          Physiolibrary.Fluid.Components.ElasticVessel veins(
             mass_start(displayUnit="g") = 2.443,
             nHydraulicPorts=2,
             Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
-            ZeroPressureVolume=0.00237)
-            annotation (Placement(transformation(origin={105,-3}, extent={{-15,-15},
-                    {15,15}})));
+            ZeroPressureVolume=0.00237) annotation (Placement(transformation(
+                  origin={105,-3}, extent={{-15,-15},{15,15}})));
           Parts.TimeVaryingElastance timeVaryingElastanceLeft(
             Ed(displayUnit="mmHg/ml") = 13332238.7415,
             Es(displayUnit="mmHg/ml") = 183318282.69563,
@@ -2387,9 +2675,9 @@ Connector with one flow signal of type Real.
             Es(displayUnit="mmHg/ml") = 43729743.0721,
             Pi0(displayUnit="mmHg") = 3199.73729796)
             annotation (Placement(transformation(extent={{164,18},{184,38}})));
-          Physiolib.Types.Constants.FrequencyConst heartRate(k(displayUnit=
-                  "Hz") = 1.2)
-            annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
+          Physiolibrary.Types.Constants.FrequencyConst heartRate(k(displayUnit=
+                  "Hz") = 1.2) annotation (Placement(transformation(extent={{-262,
+                    30},{-244,42}})));
           inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354)
             annotation (Placement(transformation(extent={{-94,70},{-74,90}})));
@@ -2554,34 +2842,35 @@ Connector with one flow signal of type Real.
 
             outer Modelica.Fluid.System system "System wide properties";
 
-
-            parameter Physiolib.Types.HydraulicElastance Ed
+            parameter Physiolibrary.Types.HydraulicElastance Ed
               "elastance of diastole";
-            parameter Physiolib.Types.HydraulicElastance Es
+            parameter Physiolibrary.Types.HydraulicElastance Es
               "elastance of systole";
-            parameter Physiolib.Types.Pressure Pi0 "peak isovolumic pressure";
-            Physiolib.Types.Time tm
+            parameter Physiolibrary.Types.Pressure Pi0
+              "peak isovolumic pressure";
+            Physiolibrary.Types.Time tm
               "relative time from the beginning of cardiac cycle";
-            discrete Physiolib.Types.Time HP "heart period";
-            discrete Physiolib.Types.Time t0
+            discrete Physiolibrary.Types.Time HP "heart period";
+            discrete Physiolibrary.Types.Time t0
               "time of beginning of the cardiac cycle";
-            discrete Physiolib.Types.Time ts "duration of systole";
+            discrete Physiolibrary.Types.Time ts "duration of systole";
             Real a;
-            Physiolib.Types.RealIO.HydraulicComplianceOutput C
-              annotation (Placement(transformation(extent={{-4,-102},{16,-82}}),
+            Physiolibrary.Types.RealIO.HydraulicComplianceOutput C annotation (
+                Placement(transformation(extent={{-4,-102},{16,-82}}),
                   iconTransformation(
                   extent={{-10,-10},{10,10}},
                   rotation=270,
                   origin={0,-90})));
-                  Physiolib.Types.HydraulicElastance E;
-            Physiolib.Types.RealIO.PressureOutput Pi annotation (Placement(
-                  transformation(extent={{-72,-100},{-52,-80}}), iconTransformation(
+                  Physiolibrary.Types.HydraulicElastance E;
+            Physiolibrary.Types.RealIO.PressureOutput Pi annotation (Placement(
+                  transformation(extent={{-72,-100},{-52,-80}}),
+                  iconTransformation(
                   extent={{-10,-10},{10,10}},
                   rotation=270,
                   origin={70,-90})));
-            Physiolib.Types.RealIO.FrequencyInput HR "heart rate" annotation (Placement(
-                  transformation(extent={{-106,56},{-66,96}}), iconTransformation(extent={
-                      {-106,56},{-66,96}})));
+            Physiolibrary.Types.RealIO.FrequencyInput HR "heart rate"
+              annotation (Placement(transformation(extent={{-106,56},{-66,96}}),
+                  iconTransformation(extent={{-106,56},{-66,96}})));
           equation
             tm = time - pre(t0);
             if (tm<pre(ts)) then
@@ -2638,22 +2927,24 @@ Connector with one flow signal of type Real.
           extends Modelica.Icons.UtilitiesPackage;
           model AtrialElastance
             extends HeartIntervals;
-            Physiolib.Types.RealIO.HydraulicComplianceOutput Ct "compliance" annotation(Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -20}, {138, 18}})));
-            Physiolib.Types.HydraulicElastance Et "elasticity";
-            parameter Physiolib.Types.HydraulicElastance EMIN
+            Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct
+              "compliance" annotation (Placement(transformation(extent={{100,-10},
+                      {120,10}}), iconTransformation(extent={{100,-20},{138,18}})));
+            Physiolibrary.Types.HydraulicElastance Et "elasticity";
+            parameter Physiolibrary.Types.HydraulicElastance EMIN
               "Diastolic elastance";
           parameter Boolean useEs_extInput = false
               "=true, if external elastance/compliance value is used"
               annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-            parameter Physiolib.Types.HydraulicElastance EMAX
-              "Maximum systolic elastance"         annotation (Dialog(enable=not useEs_extInput));
-          Physiolib.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/Ees)=1/es_int if useEs_extInput
-             annotation (
-                Placement(transformation(extent={{60,60},{100,100}}), iconTransformation(
-                  extent={{-20,-20},{20,20}},
-                  origin={-80,80})));
-          protected
-             Physiolib.Types.HydraulicElastance es_int;
+            parameter Physiolibrary.Types.HydraulicElastance EMAX
+              "Maximum systolic elastance"
+              annotation (Dialog(enable=not useEs_extInput));
+          Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
+                  Ees)=1/es_int if useEs_extInput annotation (Placement(
+                  transformation(extent={{60,60},{100,100}}),
+                  iconTransformation(extent={{-20,-20},{20,20}}, origin={-80,80})));
+        protected
+             Physiolibrary.Types.HydraulicElastance es_int;
           equation
             if not useEs_extInput then
               es_int=EMAX;
@@ -2677,13 +2968,17 @@ Connector with one flow signal of type Real.
 
           model VentricularElastance
             extends HeartIntervals;
-            Physiolib.Types.RealIO.HydraulicComplianceOutput Ct
-              "ventricular elasticity"                                                       annotation(Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, 4}, {138, 42}})));
+            Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct
+              "ventricular elasticity" annotation (Placement(transformation(
+                    extent={{100,-10},{120,10}}), iconTransformation(extent={{
+                      100,4},{138,42}})));
             Modelica.Blocks.Interfaces.RealOutput Et0
               "normalized ventricular elasticity (0..1)"                                         annotation(Placement(transformation(extent = {{100, -24}, {120, -4}}), iconTransformation(extent = {{100, -40}, {138, -2}})));
-            Physiolib.Types.RealIO.TimeOutput HeartInterval "eapsed time" annotation(Placement(transformation(extent = {{102, -42}, {122, -22}}), iconTransformation(extent = {{100, -98}, {138, -60}})));
-            Physiolib.Types.HydraulicElastance Et;
-            parameter Physiolib.Types.HydraulicElastance EMIN
+            Physiolibrary.Types.RealIO.TimeOutput HeartInterval "eapsed time"
+              annotation (Placement(transformation(extent={{102,-42},{122,-22}}),
+                  iconTransformation(extent={{100,-98},{138,-60}})));
+            Physiolibrary.Types.HydraulicElastance Et;
+            parameter Physiolibrary.Types.HydraulicElastance EMIN
               "Diastolic elastance ";
             constant Real Kn = 0.57923032735652;
             //Kn is always = 0.5792303273565197
@@ -2693,15 +2988,15 @@ Connector with one flow signal of type Real.
           parameter Boolean useEs_extInput = false
               "=true, if external elastance/compliance value is used"
               annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-            parameter Physiolib.Types.HydraulicElastance EMAX
-              "Maximum systolic elastance"         annotation (Dialog(enable=not useEs_extInput));
-          Physiolib.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/EMAX)=1/es_int if useEs_extInput
-             annotation (
-                Placement(transformation(extent={{60,60},{100,100}}), iconTransformation(
-                  extent={{-20,-20},{20,20}},
-                  origin={-80,80})));
-          protected
-             Physiolib.Types.HydraulicElastance es_int;
+            parameter Physiolibrary.Types.HydraulicElastance EMAX
+              "Maximum systolic elastance"
+              annotation (Dialog(enable=not useEs_extInput));
+          Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
+                  EMAX)=1/es_int if useEs_extInput annotation (Placement(
+                  transformation(extent={{60,60},{100,100}}),
+                  iconTransformation(extent={{-20,-20},{20,20}}, origin={-80,80})));
+        protected
+             Physiolibrary.Types.HydraulicElastance es_int;
           equation
             if not useEs_extInput then
               es_int=EMAX;
@@ -2728,12 +3023,19 @@ Connector with one flow signal of type Real.
           end VentricularElastance;
 
           model HeartIntervals
-            discrete Physiolib.Types.Time Tas, T0, Tvs;
-            parameter Physiolib.Types.Time Tav(displayUnit = "s") = 0.01
+            discrete Physiolibrary.Types.Time Tas;
+            discrete Physiolibrary.Types.Time T0;
+            discrete Physiolibrary.Types.Time Tvs;
+            parameter Physiolibrary.Types.Time Tav(displayUnit="s")=0.01
               "atrioventricular delay";
             discrete Modelica.SIunits.Time HP(start = 0) "heart period";
             Boolean b(start = false);
-            Physiolib.Types.RealIO.FrequencyInput HR(start = 1.2) "heart rate" annotation(Placement(transformation(extent = {{-12, 68}, {28, 108}}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80})));
+            Physiolibrary.Types.RealIO.FrequencyInput HR(start=1.2)
+              "heart rate" annotation (Placement(transformation(extent={{-12,68},
+                      {28,108}}), iconTransformation(
+                  extent={{-20,-20},{20,20}},
+                  rotation=270,
+                  origin={0,80})));
           equation
             b = time - pre(T0) >= pre(HP) "true if new pulse occurs";
             when {initial(), b} then
@@ -2748,52 +3050,52 @@ Connector with one flow signal of type Real.
         end Parts;
 
         model HemodynamicsMeurs_flatNorm
-        extends Physiolib.Icons.CardioVascular;
-          Physiolib.Fluid.Components.ElasticVesselElastance Epa(
+        extends Physiolibrary.Icons.CardioVascular;
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Epa(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
             mass_start=0.106,
             ZeroPressureVolume=5e-05,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             Elastance=31064116.267695,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{-94,84},{-66,112}})));
-          Physiolib.Fluid.Components.Resistor Rpp(useConductanceInput=false,
+          Physiolibrary.Fluid.Components.Resistor Rpp(useConductanceInput=false,
               Resistance(displayUnit="(mmHg.s)/ml") = 14665462.61565)
             annotation (Placement(transformation(extent={{-56,85},{-22,111}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Epv(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Epv(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
             mass_start=0.518,
             ZeroPressureVolume=0.35e-3,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             Elastance=6066168.6273825,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{-10,84},{24,112}})));
-          Physiolib.Fluid.Components.Resistor Rlain(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 399967.162245)
+          Physiolibrary.Fluid.Components.Resistor Rlain(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 399967.162245)
             annotation (Placement(transformation(extent={{26,86},{56,110}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance LeftAtrium(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance LeftAtrium(
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
             mass_start=9.31e-02,
             ZeroPressureVolume=3e-05,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{74,50},{102,78}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance LeftVentricle(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance LeftVentricle(
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
             mass_start=0.144,
             ZeroPressureVolume=6e-05,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{150,50},{178,78}})));
-          Physiolib.Fluid.Components.IdealValveResistance AorticValve(
+          Physiolibrary.Fluid.Components.IdealValveResistance AorticValve(
             _Goff(displayUnit="g/(mmHg.s)") = 0,
             useLimitationInputs=false,
             _Ron(displayUnit="(mmHg.s)/ml") = 1066579.09932)
@@ -2806,23 +3108,22 @@ Connector with one flow signal of type Real.
           Parts.VentricularElastance LVentricularElastance(EMIN=11999014.86735,
               EMAX=533289549.66)
             annotation (Placement(transformation(extent={{164,88},{200,120}})));
-          Physiolib.Fluid.Components.IdealValveResistance MitralValve(
+          Physiolibrary.Fluid.Components.IdealValveResistance MitralValve(
             useLimitationInputs=false,
             _Goff(displayUnit="g/(mmHg.s)") = 0,
-            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
-                                                            annotation (
+            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
               Placement(transformation(origin={127,64}, extent={{-13,12},{13,-12}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Eitha(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Eitha(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=3,
             mass_start=0.204,
             ZeroPressureVolume=0.00014,
             Elastance=190651014.00345)
             annotation (Placement(transformation(extent={{168,6},{190,28}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Eetha(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Eetha(
             mass_start(displayUnit="g") = 0.526,
             useV0Input=false,
             useExternalPressureInput=false,
@@ -2831,24 +3132,25 @@ Connector with one flow signal of type Real.
             Elastance=74127247.40274,
             nHydraulicPorts=3)
             annotation (Placement(transformation(extent={{56,4},{82,30}})));
-          Physiolib.Fluid.Components.Inertia inertia(I(displayUnit="mmHg.s2/g")=
-                 93.3256711905, massFlow_start(displayUnit="g/min") = 2.1666666666667e-02)
-            annotation (Placement(transformation(
+          Physiolibrary.Fluid.Components.Inertia inertia(I(displayUnit=
+                  "mmHg.s2/g") = 93.3256711905, massFlow_start(displayUnit=
+                  "g/min") = 2.1666666666667e-02) annotation (Placement(
+                transformation(
                 extent={{-11,-11},{11,11}},
                 rotation=180,
                 origin={141,17})));
-          Physiolib.Fluid.Components.Resistor Retha(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 7999343.2449)
+          Physiolibrary.Fluid.Components.Resistor Retha(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 7999343.2449)
             annotation (Placement(transformation(extent={{90,6},{112,28}})));
-          Physiolib.Fluid.Components.Resistor Rsart(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 106657909.932)
+          Physiolibrary.Fluid.Components.Resistor Rsart(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 106657909.932)
             annotation (Placement(transformation(extent={{14,-13},{-14,13}},
                   origin={24,19})));
-          Physiolib.Fluid.Components.Resistor Rsven(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 26664477.483)
-                                                                   annotation (
-             Placement(transformation(extent={{14,-13},{-14,13}}, origin={-60,17})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Est(
+          Physiolibrary.Fluid.Components.Resistor Rsven(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 26664477.483)
+            annotation (Placement(transformation(extent={{14,-13},{-14,13}},
+                  origin={-60,17})));
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Est(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
@@ -2857,23 +3159,23 @@ Connector with one flow signal of type Real.
             Elastance=34930465.50273,
             nHydraulicPorts=3)
             annotation (Placement(transformation(extent={{-28,6},{-4,28}})));
-          Physiolib.Fluid.Components.Resistor Rethv(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 11999014.86735)
+          Physiolibrary.Fluid.Components.Resistor Rethv(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 11999014.86735)
             annotation (Placement(transformation(extent={{-120,4},{-146,30}})));
-          Physiolib.Fluid.Components.Resistor Rrain(useConductanceInput=false,
-              Resistance(displayUnit="(mmHg.s)/ml") = 399967.162245)
+          Physiolibrary.Fluid.Components.Resistor Rrain(useConductanceInput=
+                false, Resistance(displayUnit="(mmHg.s)/ml") = 399967.162245)
             annotation (Placement(transformation(extent={{-208,4},{-236,30}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Eithv(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Eithv(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
             mass_start=1.48,
             ZeroPressureVolume=1.19e-3,
-            ExternalPressure=101325-533.28954966,
+            ExternalPressure=101325 - 533.28954966,
             Elastance=2426467.450953,
             nHydraulicPorts=3)
             annotation (Placement(transformation(extent={{-194,4},{-166,30}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance Eethv(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance Eethv(
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
@@ -2882,29 +3184,28 @@ Connector with one flow signal of type Real.
             Elastance=2253148.3473135,
             nHydraulicPorts=3)
             annotation (Placement(transformation(extent={{-108,4},{-82,30}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance RightAtrium(
+          Physiolibrary.Fluid.Components.ElasticVesselElastance RightAtrium(
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
             mass_start=0.135,
             ZeroPressureVolume=3e-05,
-            ExternalPressure=101325-533.28954966,
-            nHydraulicPorts=2)                    annotation (Placement(
-                transformation(extent={{-242,44},{-214,72}})));
-          Physiolib.Fluid.Components.ElasticVesselElastance RightVentricle(
+            ExternalPressure=101325 - 533.28954966,
+            nHydraulicPorts=2) annotation (Placement(transformation(extent={{-242,
+                    44},{-214,72}})));
+          Physiolibrary.Fluid.Components.ElasticVesselElastance RightVentricle(
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
             mass_start=0.131,
             ZeroPressureVolume=4e-05,
-            ExternalPressure=101325-533.28954966,
-            nHydraulicPorts=2)                    annotation (Placement(
-                transformation(extent={{-170,42},{-140,72}})));
-          Physiolib.Fluid.Components.IdealValveResistance PulmonaryValve(
+            ExternalPressure=101325 - 533.28954966,
+            nHydraulicPorts=2) annotation (Placement(transformation(extent={{-170,
+                    42},{-140,72}})));
+          Physiolibrary.Fluid.Components.IdealValveResistance PulmonaryValve(
             _Goff(displayUnit="g/(mmHg.s)") = 0,
             useLimitationInputs=false,
-            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
-                                                            annotation (
+            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
               Placement(transformation(extent={{-132,70},{-106,44}})));
           Parts.AtrialElastance RAtrialElastance(EMIN=6666119.37075, EMAX=
                 19998358.11225)
@@ -2912,13 +3213,14 @@ Connector with one flow signal of type Real.
           Parts.VentricularElastance RVentricularElastance(EMIN=7599376.082655,
               EMAX=65327969.83335)
             annotation (Placement(transformation(extent={{-180,88},{-150,122}})));
-          Physiolib.Fluid.Components.IdealValveResistance TricuspidValve(
+          Physiolibrary.Fluid.Components.IdealValveResistance TricuspidValve(
             _Goff=0,
             useLimitationInputs=false,
-            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
-                                                            annotation (
+            _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
               Placement(transformation(origin={-189,58}, extent={{-13,12},{13,-12}})));
-          replaceable Physiolib.Types.Constants.FrequencyConst HeartRate(k(displayUnit = "1/min") = 1.2) annotation(Placement(transformation(origin = {-243, 128.5}, extent = {{-11, -6.5}, {11, 6.5}})));
+          replaceable Physiolibrary.Types.Constants.FrequencyConst HeartRate(k(
+                displayUnit="1/min") = 1.2) annotation (Placement(
+                transformation(origin={-243,128.5}, extent={{-11,-6.5},{11,6.5}})));
           inner Modelica.Fluid.System system(p_ambient(displayUnit="mmHg")=
               101325.0144354, T_ambient=310.15)
             annotation (Placement(transformation(extent={{-48,144},{-28,164}})));
@@ -3094,10 +3396,11 @@ Connector with one flow signal of type Real.
         parameter Volume ResidualVolume(displayUnit="l")=0.0013                                     "Lungs residual volume";
 
         parameter Volume FunctionalResidualCapacity(displayUnit="l")=0.00231                                     "Functional residual capacity";
-        parameter Physiolib.Types.HydraulicResistance TotalResistance(displayUnit="(cmH2O.s)/l")=
-           147099.75                                                                                            "Total lungs pathways conductance";
-        parameter Physiolib.Types.HydraulicCompliance TotalCompliance(displayUnit="ml/mmHg")=
-           6.0004926067653e-07                                                                                   "Total lungs compliance";
+        parameter Physiolibrary.Types.HydraulicResistance TotalResistance(
+            displayUnit="(cmH2O.s)/l")=147099.75
+          "Total lungs pathways conductance";
+        parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(
+            displayUnit="ml/mmHg")=6.0004926067653e-07 "Total lungs compliance";
 
         parameter Pressure Pmin(displayUnit="kPa")=-1000                        "Relative external lungs pressure minimum caused by respiratory muscles";
         parameter Pressure Pmax(displayUnit="kPa")=0     "Relative external lungs pressure maximum";
@@ -3117,30 +3420,31 @@ Connector with one flow signal of type Real.
         Blocks.Source.PeriodicCurveSource    respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
           annotation (Placement(transformation(extent={{18,54},{38,74}})));
 
-        Physiolib.Fluid.Components.ElasticVessel lungs(
+        Physiolibrary.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Air,
-          mass_start=LungsAirVolume_initial*Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature)),
+          mass_start=LungsAirVolume_initial*Air.density(Air.setState_pTX(system.p_ambient
+               + Pmax, CoreTemperature)),
           ZeroPressureVolume=FunctionalResidualCapacity,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
           nHydraulicPorts=2) "Lungs"
           annotation (Placement(transformation(extent={{36,-28},{56,-8}})));                                        //0.0133,
 
-        Physiolib.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
-          redeclare package Medium = Air) "Lungs pressure"
+        Physiolibrary.Fluid.Sensors.PressureMeasure lungsPressureMeasure(
+            redeclare package Medium = Air) "Lungs pressure"
           annotation (Placement(transformation(extent={{70,-20},{90,0}})));
 
         inner Modelica.Fluid.System system(T_ambient=CoreTemperature)
                                            "Human body system setting"
           annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-        Physiolib.Fluid.Sources.PressureSource environment(
-          redeclare package Medium = Air,
-          T=EnvironmentTemperature) "External environment"
+        Physiolibrary.Fluid.Sources.PressureSource environment(redeclare
+          package Medium =   Air, T=EnvironmentTemperature)
+          "External environment"
           annotation (Placement(transformation(extent={{-76,-30},{-56,-10}})));
 
-        Physiolib.Fluid.Sensors.FlowMeasure airflowMeasure(
-          redeclare package Medium = Air) "Lungs pathway airflow"
+        Physiolibrary.Fluid.Sensors.FlowMeasure airflowMeasure(redeclare
+          package Medium =   Air) "Lungs pathway airflow"
           annotation (Placement(transformation(extent={{-40,-30},{-20,-10}})));
 
         Components.Resistor resistor(
@@ -3261,7 +3565,7 @@ Connector with one flow signal of type Real.
       end MuscleHeat;
 
       model ThermalBody_QHP
-        import Physiolib;
+        import Physiolibrary;
         extends Modelica.Icons.Example;
         Thermal.Components.HeatAccumulation core(SpecificHeat=3475.044, Weight=
               10.75)
@@ -3456,22 +3760,23 @@ Connector with one flow signal of type Real.
       extends Modelica.Icons.Package;
 
       model HeatAccumulation "Accumulating of heat to substance"
-        extends Physiolib.Icons.HeatAccumulation;
-      //  extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
+        extends Physiolibrary.Icons.HeatAccumulation;
+      //  extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
       //        relativeHeat_start, storeUnit="kcal");
         Interfaces.HeatPort_b
                          q_in "Heat inflow/outflow connector"
           annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
-        parameter Physiolib.Types.Heat relativeHeat_start=0
+        parameter Physiolibrary.Types.Heat relativeHeat_start=0
           "Heat start value = weight*(initialTemperature - 37degC)*specificHeat"
           annotation (Dialog(group="Initialization"));
 
-        parameter Physiolib.Types.SpecificHeatCapacity SpecificHeat=4186.8
+        parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
           "Mass specific heat";
-        Physiolib.Types.Temperature T "Current temperature";
+        Physiolibrary.Types.Temperature T "Current temperature";
 
-        Physiolib.Types.RealIO.HeatOutput relativeHeat( start=relativeHeat_start)
+        Physiolibrary.Types.RealIO.HeatOutput relativeHeat(start=
+              relativeHeat_start)
           "Current accumulated heat = weight*(T - 37degC)*specificHeat"
           annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
@@ -3482,20 +3787,20 @@ Connector with one flow signal of type Real.
               origin={60,-100})));                                           //nominal=1
        //absoluteHeat =  weight*310.15*specificHeat + relativeHeat
 
-        constant Physiolib.Types.Temperature NormalBodyTemperature=310.15
+        constant Physiolibrary.Types.Temperature NormalBodyTemperature=310.15
           "Shift of absolute zero temperature to normal body values";
 
         parameter Boolean useMassInput = false "=true, if mass input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.Mass Weight=1
+        parameter Physiolibrary.Types.Mass Weight=1
           "Total mass weight if useMassInput=false"
           annotation (Dialog(enable=not useMassInput));
-        Physiolib.Types.RealIO.MassInput weight(start=Weight)=m if
+        Physiolibrary.Types.RealIO.MassInput weight(start=Weight)=m if
           useMassInput "Weight of mass, where the heat are accumulated"
           annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
-      protected
-        Physiolib.Types.Mass m;
+    protected
+        Physiolibrary.Types.Mass m;
 
       equation
         if not useMassInput then
@@ -3512,7 +3817,7 @@ Connector with one flow signal of type Real.
 <p><i>2009-2018</i></p>
 <p>Marek Matejak, marek@matfyz.cz </p>
 </html>",   info="<html>
-<p>The &quot;HeatAccumulation&quot; library class models heat accumulation in Physiolib. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &quot;relativeHeat&quot;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
+<p>The &quot;HeatAccumulation&quot; library class models heat accumulation in Physiolibrary. This class has one thermal connector with temperature and heat flow. Heat energy is accumulated inside the class, stored in the variable &quot;relativeHeat&quot;. This value is relative to normal body temperature of 37 &deg;C; a positive value therefore indicates an internal temperature above 37 &deg;C, while a negative value indicates temperature below 37 &deg;C. Of course the particular value of temperature depends on the mass and specific heat of the instance.</p>
 </html>"),Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                   100,100}}),
                graphics={
@@ -3525,9 +3830,9 @@ Connector with one flow signal of type Real.
       model IdealRadiator
         "Closed circiut radiator, where outflowed = ambient temperature"
         extends Interfaces.ConditionalMassFlow;
-        extends Physiolib.Icons.Radiator;
+        extends Physiolibrary.Icons.Radiator;
 
-        parameter Physiolib.Types.SpecificHeatCapacity SpecificHeat=3851.856
+        parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=3851.856
           "Specific heat of flow circuit medium";  //default heat capacity of blood is used as 0.92 kcal/(degC.kg)
 
         Thermal.Interfaces.HeatPort_a q_in
@@ -3559,25 +3864,25 @@ Connector with one flow signal of type Real.
 
       model Conductor "Heat resistor"
        extends Interfaces.OnePort;
-       extends Physiolib.Icons.Resistor;
+       extends Physiolibrary.Icons.Resistor;
 
         parameter Boolean useConductanceInput = false
           "=true, if external conductance value is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.ThermalConductance Conductance=0
+        parameter Physiolibrary.Types.ThermalConductance Conductance=0
           "Thermal conductance if useConductanceInput=false"
           annotation (Dialog(enable=not useConductanceInput));
 
-        Physiolib.Types.RealIO.ThermalConductanceInput conductance(start=
+        Physiolibrary.Types.RealIO.ThermalConductanceInput conductance(start=
               Conductance)=c if useConductanceInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={0,40})));
 
-      protected
-         Physiolib.Types.ThermalConductance c;
+    protected
+         Physiolibrary.Types.ThermalConductance c;
       equation
         if not useConductanceInput then
           c=Conductance;
@@ -3597,7 +3902,7 @@ Connector with one flow signal of type Real.
         extends Interfaces.OnePort;
         extends Interfaces.ConditionalMassFlow;
 
-        parameter Physiolib.Types.SpecificHeatCapacity SpecificHeat
+        parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat
           "Of flow circuit medium";
 
       equation
@@ -3661,7 +3966,7 @@ Connector with one flow signal of type Real.
           "=true, if fixed temperature is from input instead of parameter"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-         parameter Physiolib.Types.Temperature T=0
+         parameter Physiolibrary.Types.Temperature T=0
           "Fixed temperature at port if useTemperatureInput=false"
           annotation (Dialog(enable=not useTemperatureInput));
 
@@ -3669,7 +3974,7 @@ Connector with one flow signal of type Real.
           "=true, if there is no flow at port in steady state"
           annotation (Dialog(group="Simulation",tab="Equilibrium"));
       /*
-  parameter Physiolib.Types.SimulationType Simulation=Physiolib.Types.SimulationType.NormalInit
+  parameter Physiolibrary.Types.SimulationType Simulation=Physiolibrary.Types.SimulationType.NormalInit
     "If in equilibrium, then zero-flow equation is added."
     annotation (Dialog(group="Simulation", tab="Equilibrium"));
     */
@@ -3677,15 +3982,15 @@ Connector with one flow signal of type Real.
         Interfaces.HeatPort_b       port annotation (Placement(transformation(extent={{90,-10},
                   {110,10}})));
 
-      protected
-        Physiolib.Types.Temperature t "Current temperature";
-      public
-        Physiolib.Types.RealIO.TemperatureInput temperature(start=T)=t if
+    protected
+        Physiolibrary.Types.Temperature t "Current temperature";
+    public
+        Physiolibrary.Types.RealIO.TemperatureInput temperature(start=T)=t if
           useTemperatureInput
           annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
       /*
 initial equation 
-  if isIsolatedInSteadyState and (Simulation == Physiolib.Types.SimulationType.InitSteadyState) then
+  if isIsolatedInSteadyState and (Simulation == Physiolibrary.Types.SimulationType.InitSteadyState) then
     port.Q_flow = 0;
   end if;
 */
@@ -3696,7 +4001,7 @@ initial equation
 
         port.T = t;
       /*
-  if isIsolatedInSteadyState and (Simulation == Physiolib.Types.SimulationType.SteadyState) then
+  if isIsolatedInSteadyState and (Simulation == Physiolibrary.Types.SimulationType.SteadyState) then
       port.Q_flow = 0;
   end if;
 */
@@ -3750,9 +4055,9 @@ i.e., it defines a fixed temperature as a boundary condition.
         Interfaces.HeatPort_a
                          q_in "flow circuit"     annotation (Placement(
               transformation(extent={{-110,-10},{-90,10}})));
-        parameter Physiolib.Types.SpecificEnergy VaporizationHeat=0
+        parameter Physiolibrary.Types.SpecificEnergy VaporizationHeat=0
           "Used for whole outflow stream";                                            // or 2428344 for water vaporization
-        parameter Physiolib.Types.SpecificHeatCapacity SpecificHeat=4186.8
+        parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
           "Of outflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
       equation
@@ -3790,9 +4095,9 @@ i.e., it defines a fixed temperature as a boundary condition.
                          q_out "flow circuit"     annotation (Placement(
               transformation(extent={{90,-10},{110,10}}), iconTransformation(
                 extent={{90,-10},{110,10}})));
-        parameter Physiolib.Types.SpecificEnergy dH=0
+        parameter Physiolibrary.Types.SpecificEnergy dH=0
           "Enthalpy of incoming substance (i.e. enthalpy of solvation)";                                            // or 2428344 for water vaporization
-        parameter Physiolib.Types.SpecificHeatCapacity SpecificHeat=4186.8
+        parameter Physiolibrary.Types.SpecificHeatCapacity SpecificHeat=4186.8
           "Of inflowing medium";  //default heat capacity of water is 1 kcal/(degC.kg)
 
       equation
@@ -3894,17 +4199,17 @@ i.e., it defines a fixed temperature as a boundary condition.
           "=true, if mass flow input is used instead of parameter MassFlow"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.MassFlowRate MassFlow=0
+        parameter Physiolibrary.Types.MassFlowRate MassFlow=0
           "Mass flow if useMassFlowInput=false"
           annotation (Dialog(enable=not useMassFlowInput));
 
-        Physiolib.Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if
+        Physiolibrary.Types.RealIO.MassFlowRateInput massFlow(start=MassFlow)=q if
              useMassFlowInput annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={-80,70})));
 
-        Physiolib.Types.MassFlowRate q "Current mass flow";
+        Physiolibrary.Types.MassFlowRate q "Current mass flow";
       equation
         if not useMassFlowInput then
           q = MassFlow;
@@ -3919,11 +4224,11 @@ i.e., it defines a fixed temperature as a boundary condition.
           "=true, if temperature input is used instead of parameter T"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.Temperature T=0
+        parameter Physiolibrary.Types.Temperature T=0
           "Temperature if useTemperatureInput=false"
           annotation (Dialog(enable=not useTemperatureInput));
 
-        Physiolib.Types.RealIO.TemperatureInput t(start=T)=temperature if
+        Physiolibrary.Types.RealIO.TemperatureInput t(start=T)=temperature if
           useTemperatureInput annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
@@ -3932,7 +4237,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               rotation=270,
               origin={0,70})));
 
-        Physiolib.Types.Temperature temperature "Current temperature";
+        Physiolibrary.Types.Temperature temperature "Current temperature";
       equation
         if not useTemperatureInput then
           temperature = T;
@@ -3952,7 +4257,7 @@ i.e., it defines a fixed temperature as a boundary condition.
     package Examples "Examples that demonstrate usage of the Population models"
        extends Modelica.Icons.ExamplesPackage;
 
-      model PredatorPrey "Lotka–Volterra equations"
+      model PredatorPrey "LotkaVolterra equations"
         extends Modelica.Icons.Example;
 
         Components.Population predator(population_start=2)
@@ -3967,15 +4272,15 @@ i.e., it defines a fixed temperature as a boundary condition.
           annotation (Placement(transformation(extent={{32,-40},{52,-20}})));
         Components.Population prey(population_start=1)
           annotation (Placement(transformation(extent={{-12,-40},{8,-20}})));
-        Physiolib.Types.Constants.PopulationChangePerMemberConst preyMortality(LifeTime(
+        Physiolibrary.Types.Constants.PopulationChangePerMemberConst preyMortality(LifeTime(
               displayUnit="s") = 1)
           annotation (Placement(transformation(extent={{28,-4},{36,4}})));
-        Physiolib.Blocks.Factors.Normalization predatorEffect
+        Physiolibrary.Blocks.Factors.Normalization predatorEffect
           annotation (Placement(transformation(extent={{52,-24},{32,-4}})));
-        Physiolib.Types.Constants.PopulationChangePerMemberConst predatorReproduction(LifeTime(
+        Physiolibrary.Types.Constants.PopulationChangePerMemberConst predatorReproduction(LifeTime(
               displayUnit="s") = 1)
           annotation (Placement(transformation(extent={{-56,80},{-48,88}})));
-        Physiolib.Blocks.Factors.Normalization preyEffekt
+        Physiolibrary.Blocks.Factors.Normalization preyEffekt
           annotation (Placement(transformation(extent={{-52,60},{-32,80}})));
       equation
         connect(preyMortality.y, predatorEffect.yBase) annotation (Line(
@@ -4021,22 +4326,22 @@ i.e., it defines a fixed temperature as a boundary condition.
     package Components
       extends Modelica.Icons.Package;
       model Population
-        extends Physiolib.Icons.Population;
-      /*  extends Physiolib.SteadyStates.Interfaces.SteadyState(
+        extends Physiolibrary.Icons.Population;
+      /*  extends Physiolibrary.SteadyStates.Interfaces.SteadyState(
     state(nominal=NominalPopulation),
     change(nominal=NominalPopulationChange),
     state_start=population_start,
     storeUnit="1");
 */
-        parameter Physiolib.Types.Population population_start(nominal=
+        parameter Physiolibrary.Types.Population population_start(nominal=
               NominalPopulation)=1e-8 "Initial population size in compartment"
           annotation (HideResult=true, Dialog(group="Initialization"));
 
-        parameter Physiolib.Types.Population NominalPopulation=1
+        parameter Physiolibrary.Types.Population NominalPopulation=1
           "Numerical scale. Default is 1, but for huge amount of cells it should be any number in the appropriate numerical order of typical amount."
           annotation (HideResult=true, Dialog(tab="Solver", group=
                 "Numerical support of very huge populations"));
-        parameter Physiolib.Types.PopulationChange NominalPopulationChange=1/(60*60*
+        parameter Physiolibrary.Types.PopulationChange NominalPopulationChange=1/(60*60*
             24)
           "Numerical scale. Default change is 1 individual per day, but for much faster or much slower chnages should be different."
           annotation (HideResult=true, Dialog(tab="Solver", group=
@@ -4046,9 +4351,10 @@ i.e., it defines a fixed temperature as a boundary condition.
                 extent={{-10,-10},{10,10}}), iconTransformation(extent={{-10,-10},{10,
                   10}})));
 
-        Physiolib.Types.RealIO.PopulationOutput population(start = population_start,nominal=
-              NominalPopulation) annotation (Placement(transformation(extent={{
-                  46,-102},{66,-82}}), iconTransformation(
+        Physiolibrary.Types.RealIO.PopulationOutput population(start=
+              population_start, nominal=NominalPopulation) annotation (
+            Placement(transformation(extent={{46,-102},{66,-82}}),
+              iconTransformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={60,-100})));
@@ -4242,9 +4548,9 @@ i.e., it defines a fixed temperature as a boundary condition.
       extends Modelica.Icons.InterfacesPackage;
       connector PopulationPort
         "Average number of population members and their change"
-        Physiolib.Types.Population population
+        Physiolibrary.Types.Population population
           "Average number of population individuals";
-        flow Physiolib.Types.PopulationChange change
+        flow Physiolibrary.Types.PopulationChange change
           "Average population change = change of population individuals";
         annotation (Documentation(revisions="<html>
 <p><i>2014-2018</i></p>
@@ -4338,11 +4644,11 @@ Connector with one flow signal of type Real.
           "=true, if real input connector is used instead of parameter PopulationChange"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.PopulationChange PopulationChange=0
+        parameter Physiolibrary.Types.PopulationChange PopulationChange=0
           "Population change if useChangeInput=false" annotation (HideResult=
               not useChangeInput, Dialog(enable=not useChangeInput));
 
-        Physiolib.Types.RealIO.PopulationChangeInput populationChange(start=
+        Physiolibrary.Types.RealIO.PopulationChangeInput populationChange(start=
               PopulationChange)=change if useChangeInput annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
@@ -4352,7 +4658,7 @@ Connector with one flow signal of type Real.
               rotation=270,
               origin={0,40})));
 
-        Physiolib.Types.PopulationChange change "Current population change";
+        Physiolibrary.Types.PopulationChange change "Current population change";
       equation
         if not useChangeInput then
           change = PopulationChange;
@@ -4367,12 +4673,12 @@ Connector with one flow signal of type Real.
           "=true, if real input connector is used instead of parameter LifeTime"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-        parameter Physiolib.Types.Time LifeTime=1e-8
+        parameter Physiolibrary.Types.Time LifeTime=1e-8
           "Mean life time for population (=1.44*halftime) if useChangePerMember=false"
           annotation (HideResult=not useChangePerMemberInput, Dialog(enable=
                 not useChangePerMemberInput));
 
-        Physiolib.Types.RealIO.PopulationChangePerMemberInput changePerMember(start=1/
+        Physiolibrary.Types.RealIO.PopulationChangePerMemberInput changePerMember(start=1/
               LifeTime)=changePerPopulationMember if useChangePerMemberInput
           annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
@@ -4382,7 +4688,7 @@ Connector with one flow signal of type Real.
               rotation=270,
               origin={0,40})));
 
-        Physiolib.Types.PopulationChangePerMember changePerPopulationMember
+        Physiolibrary.Types.PopulationChangePerMember changePerPopulationMember
           "Current population change per individual";
       equation
         if not useChangePerMemberInput then
@@ -4405,91 +4711,91 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-98},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/golem.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/golem.png")}));
     end Golem;
 
     class CardioVascular
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/csv.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/csv.png")}));
     end CardioVascular;
 
     class Water
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/indexVoda.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/indexVoda.png")}));
     end Water;
 
     class Electrolytes
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/electrolytes.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/electrolytes.png")}));
     end Electrolytes;
 
     class Proteins
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-98,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/protein.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/protein.png")}));
     end Proteins;
 
     class Gases
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/gases.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/gases.png")}));
     end Gases;
 
     class NutrientsMetabolism
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/vyziva.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/vyziva.png")}));
     end NutrientsMetabolism;
 
     class Heat
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/ohen.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/ohen.png")}));
     end Heat;
 
     class Hormones
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/hormony.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/hormony.png")}));
     end Hormones;
 
     class Nerves
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/nervyNeuron.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/nervyNeuron.png")}));
     end Nerves;
 
     class Setup
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/setup.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/setup.png")}));
     end Setup;
 
     class Status
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-98,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/tissueFitness.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/tissueFitness.png")}));
     end Status;
 
     class SkeletalMuscle
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-70,-80},{40,92}},
-                fileName="modelica://Physiolib/Resources/Icons/sval.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/sval.png")}));
     end SkeletalMuscle;
 
     class Bone
@@ -4500,77 +4806,77 @@ Connector with one flow signal of type Real.
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               pattern=LinePattern.None), Bitmap(extent={{-88,-84},{52,96}},
-                fileName="modelica://Physiolib/Resources/Icons/bone.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/bone.png")}));
     end Bone;
 
     class OtherTissue
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-74,-94},{48,60}},
-                fileName="modelica://Physiolib/Resources/Icons/pojivovaTkan.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/pojivovaTkan.png")}));
     end OtherTissue;
 
     class RespiratoryMuscle
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-66,-86},{44,86}},
-                fileName="modelica://Physiolib/Resources/Icons/respiracniSvaly.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/respiracniSvaly.png")}));
     end RespiratoryMuscle;
 
     class Fat
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-84,-68},{38,86}},
-                fileName="modelica://Physiolib/Resources/Icons/tukovaBunka.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/tukovaBunka.png")}));
     end Fat;
 
     class Skin
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-74,-84},{48,56}},
-                fileName="modelica://Physiolib/Resources/Icons/skin.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/skin.png")}));
     end Skin;
 
     class Brain
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-78,-92},{44,62}},
-                fileName="modelica://Physiolib/Resources/Icons/brain.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/brain.png")}));
     end Brain;
 
     class GITract
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-80,-80},{42,74}},
-                fileName="modelica://Physiolib/Resources/Icons/traviciTrakt.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/traviciTrakt.png")}));
     end GITract;
 
     class LeftHeart
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}),        graphics={Bitmap(extent={{-96,-100},{24,100}},
-                fileName="modelica://Physiolib/Resources/Icons/srdceLeva.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/srdceLeva.png")}));
     end LeftHeart;
 
     class RightHeart
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}),       graphics={Bitmap(extent={{-26,-100},{92,66}},
-                fileName="modelica://Physiolib/Resources/Icons/srdceprava.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/srdceprava.png")}));
     end RightHeart;
 
     class Liver
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-84,-100},{86,34}},
-                fileName="modelica://Physiolib/Resources/Icons/jatra.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/jatra.png")}));
     end Liver;
 
     class Kidney
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-92,-88},{40,86}},
-                fileName="modelica://Physiolib/Resources/Icons/kidney.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/kidney.png")}));
     end Kidney;
 
     class Bladder
@@ -4581,58 +4887,58 @@ Connector with one flow signal of type Real.
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               pattern=LinePattern.None), Bitmap(extent={{-92,-88},{40,86}},
-                fileName="modelica://Physiolib/Resources/Icons/mocovyMechyr.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/mocovyMechyr.png")}));
     end Bladder;
 
     class GILumen
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/traviciTrakt2.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/traviciTrakt2.png")}));
     end GILumen;
 
     class ThyroidGland
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-92,-88},{40,86}},
-                fileName="modelica://Physiolib/Resources/Icons/stitnaZlaza.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/stitnaZlaza.png")}));
     end ThyroidGland;
 
     class Pancreas
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/pankreas.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/pankreas.png")}));
     end Pancreas;
 
     class AdrenalGland
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/nadledviny.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/nadledviny.png")}));
     end AdrenalGland;
 
     class Lungs
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-70,-80},{40,92}},
-                fileName="modelica://Physiolib/Resources/Icons/plice.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/plice.png")}));
     end Lungs;
 
     class Tissues
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=true,  extent={{-100,
                 -100},{100,100}}), graphics={
-            Bitmap(extent={{-46,26},{32,98}}, fileName="modelica://Physiolib/Resources/Icons/bone.png"),
-            Bitmap(extent={{-62,-92},{50,-10}}, fileName="modelica://Physiolib/Resources/Icons/skin.png"),
-            Bitmap(extent={{-38,-20},{64,90}}, fileName="modelica://Physiolib/Resources/Icons/sval.png"),
+            Bitmap(extent={{-46,26},{32,98}}, fileName="modelica://Physiolibrary/Resources/Icons/bone.png"),
+            Bitmap(extent={{-62,-92},{50,-10}}, fileName="modelica://Physiolibrary/Resources/Icons/skin.png"),
+            Bitmap(extent={{-38,-20},{64,90}}, fileName="modelica://Physiolibrary/Resources/Icons/sval.png"),
             Bitmap(extent={{-10,-56},{102,36}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/traviciTrakt.png"),
+                  "modelica://Physiolibrary/Resources/Icons/traviciTrakt.png"),
             Text(
               extent={{64,-66},{94,-96}},
               lineColor={0,0,0},
               textString="..."),
-            Bitmap(extent={{-98,-30},{-24,36}}, fileName="modelica://Physiolib/Resources/Icons/brain.png")}));
+            Bitmap(extent={{-98,-30},{-24,36}}, fileName="modelica://Physiolibrary/Resources/Icons/brain.png")}));
 
     end Tissues;
 
@@ -4640,49 +4946,49 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-70,-80},{40,92}},
-                fileName="modelica://Physiolib/Resources/Icons/peritoneum.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/peritoneum.png")}));
     end Peritoneum;
 
     class Plasma
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-70,-80},{40,92}},
-                fileName="modelica://Physiolib/Resources/Icons/plazma.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/plazma.png")}));
     end Plasma;
 
     class Hypophysis
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/hypofyza.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/hypofyza.png")}));
     end Hypophysis;
 
     class Heart
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/heart.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/heart.png")}));
     end Heart;
 
     class SweatGland
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/potniZlaza.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/potniZlaza.png")}));
     end SweatGland;
 
     class Cell
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/OsmothicCell.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
     end Cell;
 
     package HeatLib
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-82},{76,44}},
-                fileName="modelica://Physiolib/Resources/Icons/ohen.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/ohen.png")}));
 
     end HeatLib;
 
@@ -4690,7 +4996,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,40},{72,-96}},
-                fileName="modelica://Physiolib/Resources/Icons/tissueFitness.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/tissueFitness.png")}));
 
     end StatusLib;
 
@@ -4698,7 +5004,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,42}},
-                fileName="modelica://Physiolib/Resources/Icons/nervyNeuron.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/nervyNeuron.png")}));
 
      end NervesLib;
 
@@ -4706,7 +5012,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-98,-100},{80,40}},
-                fileName="modelica://Physiolib/Resources/Icons/vyziva.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/vyziva.png")}));
 
     end NutrientsMetabolismLib;
 
@@ -4714,14 +5020,14 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-98},{78,42}},
-                fileName="modelica://Physiolib/Resources/Icons/O2.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/O2.png")}));
     end OxygenLib;
 
     package ProteinsLib
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-98,-98},{76,42}},
-                fileName="modelica://Physiolib/Resources/Icons/protein.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/protein.png")}));
 
     end ProteinsLib;
 
@@ -4729,7 +5035,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-94,-98},{72,44}},
-                fileName="modelica://Physiolib/Resources/Icons/setup.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/setup.png")}));
 
     end SetupLib;
 
@@ -4737,7 +5043,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-100},{76,42}},
-                fileName="modelica://Physiolib/Resources/Icons/csv.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/csv.png")}));
 
     end CardioVascularLib;
 
@@ -4745,7 +5051,7 @@ Connector with one flow signal of type Real.
      extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-90,-84},{72,42}},
-                fileName="modelica://Physiolib/Resources/Icons/indexVoda.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/indexVoda.png")}));
 
     end WaterLib;
 
@@ -4753,7 +5059,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,42}},
-                fileName="modelica://Physiolib/Resources/Icons/Kidney.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/Kidney.png")}));
 
      end KidneyLib;
 
@@ -4761,7 +5067,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-78,-94},{64,38}},
-                fileName="modelica://Physiolib/Resources/Icons/electrolytes.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/electrolytes.png")}));
 
     end ElectrolytesLib;
 
@@ -4769,7 +5075,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-88,-82},{66,34}},
-                fileName="modelica://Physiolib/Resources/Icons/gases.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/gases.png")}));
 
     end GasesLib;
 
@@ -4777,7 +5083,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-98},{78,42}},
-                fileName="modelica://Physiolib/Resources/Icons/golem.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/golem.png")}));
     end GolemLib;
 
     package BaseLib
@@ -4788,7 +5094,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-88,-88},{74,30}},
-                fileName="modelica://Physiolib/Resources/Icons/hormony.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/hormony.png")}));
 
     end HormonesLib;
 
@@ -4796,7 +5102,7 @@ Connector with one flow signal of type Real.
       extends BaseLib;
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-96,-96},{72,42}},
-                fileName="modelica://Physiolib/Resources/Icons/sympatetickeNervy.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/sympatetickeNervy.png")}));
 
      end AutonomicControlLib;
 
@@ -4820,14 +5126,14 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/Lymph.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/Lymph.png")}));
     end Lymph;
 
     class RespiratoryCenter
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/respiracniCentrum.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/respiracniCentrum.png")}));
     end RespiratoryCenter;
 
     class Oxygen
@@ -4835,7 +5141,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/O2.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/O2.png")}));
     end Oxygen;
 
     class CarbonDioxide
@@ -4843,7 +5149,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/prvkyCO2.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/prvkyCO2.png")}));
     end CarbonDioxide;
 
     class AcidBase
@@ -4851,21 +5157,21 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/acidobaze.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/acidobaze.png")}));
     end AcidBase;
 
     class Ventilation
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/dychani.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/dychani.png")}));
     end Ventilation;
 
     class PeripheralChemoreceptors
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/baroreflex.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/baroreflex.png")}));
     end PeripheralChemoreceptors;
 
     class HeatCore
@@ -4873,7 +5179,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
                 -100,-100},{100,100}}), graphics={Bitmap(extent={{-100,100},{
                   100,-100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/torzo2.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/torzo2.png")}));
     end HeatCore;
 
     class Glycogen
@@ -4886,7 +5192,7 @@ Connector with one flow signal of type Real.
               fillPattern=FillPattern.Solid,
               pattern=LinePattern.None),     Bitmap(extent={{-100,-100},{100,100}},
                           fileName=
-                  "modelica://Physiolib/Resources/Icons/glykogen.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/glykogen.png")}));
     end Glycogen;
 
     class Lipids
@@ -4894,7 +5200,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/FattyAcid.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/FattyAcid.png")}));
     end Lipids;
 
     class KetoAcids
@@ -4902,21 +5208,21 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/KetoAcid.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/KetoAcid.png")}));
     end KetoAcids;
 
     class Glucose
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                   100}}, fileName="modelica://Physiolib/Resources/Icons/glucose.png")}));
+                   100}}, fileName="modelica://Physiolibrary/Resources/Icons/glucose.png")}));
     end Glucose;
 
     class Lactate
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                   100}}, fileName="modelica://Physiolib/Resources/Icons/Lactate.png")}));
+                   100}}, fileName="modelica://Physiolibrary/Resources/Icons/Lactate.png")}));
     end Lactate;
 
     class AminoAcids
@@ -4924,14 +5230,14 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/AminoAcid.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/AminoAcid.png")}));
     end AminoAcids;
 
     class Urea
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                   100}}, fileName="modelica://Physiolib/Resources/Icons/Urea.png")}));
+                   100}}, fileName="modelica://Physiolibrary/Resources/Icons/Urea.png")}));
     end Urea;
 
     class MetabolismPart
@@ -4939,7 +5245,7 @@ Connector with one flow signal of type Real.
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,120}}),
             graphics={             Bitmap(extent={{28,120},{98,44}}, fileName=
-                 "modelica://Physiolib/Resources/Icons/ohen.png")}));
+                 "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
     end MetabolismPart;
 
     class CellularMetabolism
@@ -4947,7 +5253,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/cellularMetabolism.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/cellularMetabolism.png")}));
     end CellularMetabolism;
 
     class FemaleSex
@@ -4955,7 +5261,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/hormonesFemaleSex.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/hormonesFemaleSex.png")}));
     end FemaleSex;
 
     class Barroreceptor
@@ -4963,14 +5269,14 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/baroreflex.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/baroreflex.png")}));
     end Barroreceptor;
 
     class NervusVagus
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                   100}}, fileName="modelica://Physiolib/Resources/Icons/vagus.png")}));
+                   100}}, fileName="modelica://Physiolibrary/Resources/Icons/vagus.png")}));
     end NervusVagus;
 
     class SympatheticNerves
@@ -4978,21 +5284,21 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                    100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/sympatetickeNervy.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/sympatetickeNervy.png")}));
     end SympatheticNerves;
 
     class PhysicalExercise
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                   100}}, fileName="modelica://Physiolib/Resources/Icons/cviceni.png")}));
+                   100}}, fileName="modelica://Physiolibrary/Resources/Icons/cviceni.png")}));
     end PhysicalExercise;
 
     class SinoatrialNode
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/SANode.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/SANode.png")}));
     end SinoatrialNode;
 
     block StatusNormal
@@ -5000,7 +5306,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaNormal.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaNormal.png")}));
     end StatusNormal;
 
     block StatusConfused
@@ -5008,7 +5314,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaZmateni.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaZmateni.png")}));
     end StatusConfused;
 
     block StatusImpaired
@@ -5016,7 +5322,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaVaznejsiStav.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaVaznejsiStav.png")}));
     end StatusImpaired;
 
     block StatusNotBreathing
@@ -5024,7 +5330,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaNedychaSam.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaNedychaSam.png")}));
     end StatusNotBreathing;
 
     block StatusComatose
@@ -5032,7 +5338,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaKoma.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaKoma.png")}));
     end StatusComatose;
 
     block StatusMayBeDead
@@ -5040,7 +5346,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaSkoroMrtvy.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaSkoroMrtvy.png")}));
     end StatusMayBeDead;
 
     block StatusIsReallyDead
@@ -5048,7 +5354,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/siluetaMrtvy.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/siluetaMrtvy.png")}));
     end StatusIsReallyDead;
 
     class SkeletalMuscleAcidity
@@ -5056,28 +5362,28 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/kyselostVeSvalech.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/kyselostVeSvalech.png")}));
     end SkeletalMuscleAcidity;
 
     class Sodium
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/Na.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/Na.png")}));
     end Sodium;
 
     class Potassium
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/K.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/K.png")}));
     end Potassium;
 
     class Phosphate
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/fosfat.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/fosfat.png")}));
     end Phosphate;
 
     class Sulphate
@@ -5085,21 +5391,21 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/sulfat02.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/sulfat02.png")}));
     end Sulphate;
 
     class Amonium
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/NH4.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/NH4.png")}));
     end Amonium;
 
     class Chloride
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/Cl.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/Cl.png")}));
     end Chloride;
 
     class LungShunt
@@ -5107,7 +5413,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/lungBloodFlow.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/lungBloodFlow.png")}));
     end LungShunt;
 
     class Hydrostatics
@@ -5115,28 +5421,28 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/pressureMeassure.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/pressureMeassure.png")}));
     end Hydrostatics;
 
     class UpperTorso
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/torzo1.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/torzo1.png")}));
     end UpperTorso;
 
     class MiddleTorso
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/torzo2.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/torzo2.png")}));
     end MiddleTorso;
 
     class LowerTorso
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
-                  100}}, fileName="modelica://Physiolib/Resources/Icons/torzo3.png")}));
+                  100}}, fileName="modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
     end LowerTorso;
 
     class RedCells
@@ -5144,7 +5450,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/cervenaKrvinka.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/cervenaKrvinka.png")}));
     end RedCells;
 
     class SystemicCirculation
@@ -5152,7 +5458,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/krevniRecisteSiluetacloveka.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/krevniRecisteSiluetacloveka.png")}));
     end SystemicCirculation;
 
     class PulmonaryCirculation
@@ -5160,7 +5466,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/krevniRecistePlice.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/krevniRecistePlice.png")}));
     end PulmonaryCirculation;
 
     class Blood
@@ -5168,7 +5474,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/bloodProperties.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/bloodProperties.png")}));
     end Blood;
 
     class BaseFactorIcon0
@@ -5364,7 +5670,7 @@ Connector with one flow signal of type Real.
     partial class Diffusion
 
       annotation (Icon(graphics={Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/diffusion.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/diffusion.png")}));
 
     end Diffusion;
 
@@ -5373,7 +5679,7 @@ Connector with one flow signal of type Real.
         annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/Concentration.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/Concentration.png")}));
     end Substance;
 
     class Speciation
@@ -5381,7 +5687,7 @@ Connector with one flow signal of type Real.
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/Speciation.png"), Text(
+                  "modelica://Physiolibrary/Resources/Icons/Speciation.png"), Text(
               extent={{-182,-84},{60,-118}},
               lineColor={0,0,255},
               textString="%name")}));
@@ -5391,7 +5697,7 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/molarFlowMeassure.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/molarFlowMeassure.png")}));
     end MolarFlowMeasure;
 
     class GasSolubility
@@ -5399,7 +5705,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/GasSolubility.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/GasSolubility.png")}));
     end GasSolubility;
 
     class Reabsorption
@@ -5407,7 +5713,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/reabsorption.svg")}));
+                  "modelica://Physiolibrary/Resources/Icons/reabsorption.svg")}));
     end Reabsorption;
 
     class Reabsorption2
@@ -5415,13 +5721,13 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/reabsorption.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/reabsorption.png")}));
     end Reabsorption2;
 
     class Dilution
 
       annotation (Icon(graphics={     Bitmap(extent={{-100,-101},{100,101}},
-                fileName="modelica://Physiolib/Resources/Icons/dilution.png",
+                fileName="modelica://Physiolibrary/Resources/Icons/dilution.png",
               origin={0,33},
               rotation=270)}));
     end Dilution;
@@ -5429,7 +5735,7 @@ Connector with one flow signal of type Real.
     class ElasticBalloon
 
     annotation (Icon(graphics={     Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/elastic_vessel.svg")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/elastic_vessel.svg")}));
     end ElasticBalloon;
 
     class BloodElasticCompartment
@@ -5437,7 +5743,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/elastickyKompartment.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/elastickyKompartment.png")}));
     end BloodElasticCompartment;
 
     class BloodSequesteredCompartment
@@ -5445,13 +5751,13 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,
                   100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/sequerestedVolume.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/sequerestedVolume.png")}));
     end BloodSequesteredCompartment;
 
     partial class HydraulicResistor
 
     annotation (Icon(graphics={    Bitmap(extent={{-120,-42},{120,44}},
-                fileName="modelica://Physiolib/Resources/Icons/resistor.svg")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/resistor.svg")}));
     end HydraulicResistor;
 
     class FlowMeasure
@@ -5459,21 +5765,21 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                                       Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/flowMeassure.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/flowMeassure.png")}));
     end FlowMeasure;
 
     class Membrane
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/membrane.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/membrane.png")}));
     end Membrane;
 
     class PressureMeasure
 
       annotation ( Icon(graphics={Bitmap(extent={
                   {-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/pressureMeassure.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/pressureMeassure.png")}));
     end PressureMeasure;
 
     class InternalElasticBalloon
@@ -5481,7 +5787,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/elastic_membrane.svg")}));
+                  "modelica://Physiolibrary/Resources/Icons/elastic_membrane.svg")}));
     end InternalElasticBalloon;
 
     class Inertance
@@ -5489,14 +5795,14 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/inertia.svg")}));
+                  "modelica://Physiolibrary/Resources/Icons/inertia.svg")}));
     end Inertance;
 
     class HydrostaticGradient
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics={Bitmap(extent={{-100,-100},{102,100}},
-                fileName="modelica://Physiolib/Resources/Icons/hydrostatic_column.svg")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/hydrostatic_column.svg")}));
 
     end HydrostaticGradient;
 
@@ -5504,7 +5810,7 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/Radiator.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/Radiator.png")}));
     end Radiator;
 
     class MichaelisMenten
@@ -5512,7 +5818,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-80,-84},{86,26}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/MichaelisMenten.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/MichaelisMenten.png")}));
     end MichaelisMenten;
 
     class HeatAccumulation
@@ -5520,7 +5826,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/HeatAccumulation.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/HeatAccumulation.png")}));
     end HeatAccumulation;
 
     class OsmoticCell
@@ -5528,14 +5834,14 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/OsmothicCell.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
     end OsmoticCell;
 
     class IdealGas
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/IdealGas.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/IdealGas.png")}));
     end IdealGas;
 
     class PartialPressure
@@ -5543,7 +5849,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/PartialPressure.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/PartialPressure.png")}));
     end PartialPressure;
 
     class ConservationLaw
@@ -5569,17 +5875,17 @@ Connector with one flow signal of type Real.
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
                 {100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/Nefron.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/Nefron.png")}));
     end Nephron;
 
     class Torso
 
       annotation (Icon(graphics={            Bitmap(extent={{-28,58},{28,98}},
-                          fileName="modelica://Physiolib/Resources/Icons/torzo1.png"),
+                          fileName="modelica://Physiolibrary/Resources/Icons/torzo1.png"),
                                              Bitmap(extent={{-40,-24},{40,56}},
-                          fileName="modelica://Physiolib/Resources/Icons/torzo2.png"),
+                          fileName="modelica://Physiolibrary/Resources/Icons/torzo2.png"),
                                              Bitmap(extent={{-40,-98},{40,-18}},
-                          fileName="modelica://Physiolib/Resources/Icons/torzo3.png")}));
+                          fileName="modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
     end Torso;
 
     class PerfusionOD
@@ -5587,7 +5893,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-160,-100},{152,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/perfusion.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/perfusion.png")}));
     end PerfusionOD;
 
     class PerfusionDO
@@ -5595,7 +5901,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-160,-100},{160,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/perfusion2.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/perfusion2.png")}));
     end PerfusionDO;
 
     class CollapsingVessel
@@ -5603,7 +5909,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/kolaps.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/kolaps.png")}));
     end CollapsingVessel;
 
     class PeripheralCirculation
@@ -5611,7 +5917,7 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/krevniReciste.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/krevniReciste.png")}));
     end PeripheralCirculation;
 
     class HeartVentricle
@@ -5619,14 +5925,14 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={
                       Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolib/Resources/Icons/komoraSrdce.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/komoraSrdce.png")}));
     end HeartVentricle;
 
     class Population
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/Populace.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/Populace.png")}));
     end Population;
 
     class FlowFiltration
@@ -5634,26 +5940,26 @@ Connector with one flow signal of type Real.
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-74},{100,100}},
                 fileName=
-                  "modelica://Physiolib/Resources/Icons/flowFiltration.png")}));
+                  "modelica://Physiolibrary/Resources/Icons/flowFiltration.png")}));
     end FlowFiltration;
 
     class Microcirculation
 
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-100,-98},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/microcirculation.png")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/microcirculation.png")}));
     end Microcirculation;
 
     class IdealValve
 
     annotation (Icon(graphics={     Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/ideal_valve.svg")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/ideal_valve.svg")}));
     end IdealValve;
 
     class Pump
 
     annotation (Icon(graphics={     Bitmap(extent={{-100,-100},{100,100}},
-                fileName="modelica://Physiolib/Resources/Icons/pump.svg")}));
+                fileName="modelica://Physiolibrary/Resources/Icons/pump.svg")}));
     end Pump;
     annotation (Documentation(revisions=""));
   end Icons;
@@ -5670,7 +5976,7 @@ Connector with one flow signal of type Real.
       extends Modelica.Icons.Information;
 
      annotation (Documentation(info="<html>
-<p>Definition of new type (&quot;QuantityX&quot;) in Physiolib:</p>
+<p>Definition of new type (&quot;QuantityX&quot;) in Physiolibrary:</p>
 <ul>
 <li>Define base type Types.QuantityX with SI units in &quot;final unit&quot;, default display units and nominal (e.g. value of one display unit at SI units). </li>
 </ul>
@@ -5684,7 +5990,7 @@ Connector with one flow signal of type Real.
 </html>"));
     end NewType;
     annotation (DocumentationClass=true, Documentation(info="<html>
-<p>Package <b>Physiolib</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
+<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href=\"http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod\">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
 <p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
 <table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
 <td valign=\"top\"><p>Types </p></td>
@@ -6771,7 +7077,7 @@ Connector with one flow signal of type Real.
     end VolumeConst;
 
     block DeprecatedUntypedConstant
-        "Deprecated Untyped Constant for automatic conversion from initial versions of Physiolib"
+        "Deprecated Untyped Constant for automatic conversion from initial versions of Physiolibrary"
       extends Modelica.Icons.ObsoleteModel;
      parameter Real k "Untyped constant output value";
      parameter String varName="";
@@ -8795,7 +9101,7 @@ Connector with one flow signal of type Real.
   </p>
   </html>"));
       connector VolumeDensityOfChargeInput =           input
-          VolumeDensityOfCharge "input VolumeDensityOfCharge as connector"
+        VolumeDensityOfCharge   "input VolumeDensityOfCharge as connector"
         annotation (defaultComponentName="volumeDensityOfCharge",
         Icon(graphics={Polygon(
                 points={{-100,100},{100,0},{-100,-100},{-100,100}},
@@ -8820,7 +9126,7 @@ Connector with one flow signal of type Real.
     </p>
     </html>"));
       connector VolumeDensityOfChargeOutput =           output
-          VolumeDensityOfCharge "output VolumeDensityOfCharge as connector"
+        VolumeDensityOfCharge   "output VolumeDensityOfCharge as connector"
         annotation (defaultComponentName="volumeDensityOfCharge",
         Icon(coordinateSystem(
               preserveAspectRatio=true,
@@ -9428,7 +9734,7 @@ constructed by the signals connected to this bus.
     package Math "Modelica.Math extension"
       extends Modelica.Icons.Package;
       model Integrator "Integrator with support of steady state calculation."
-       // extends Physiolib.SteadyStates.Interfaces.SteadyState(state_start=
+       // extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
        //       y_start, state(nominal=NominalValue));
 
         parameter Real k=1 "Integrator gain";
@@ -9511,7 +9817,7 @@ This is discussed in the description of package
           block Add "u + parameter"
 
             parameter Real k(start=1) "value added to input signal";
-      public
+    public
             Modelica.Blocks.Interfaces.RealInput u "Input signal connector"
               annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
             Modelica.Blocks.Interfaces.RealOutput y "Output signal connector"
@@ -9587,7 +9893,7 @@ This is discussed in the description of package
             Modelica.Blocks.Interfaces.RealInput exponent annotation (Placement(
                   transformation(extent={{-120,-80},{-80,-40}})));
 
-      protected
+    protected
             Real b "Current exponential base";
           equation
             if not useBaseInput then
@@ -9717,7 +10023,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           block Parts "Divide the input value by weights"
             extends Modelica.Blocks.Interfaces.SIMO;
             parameter Real w[nout]=ones(nout) "Optional: weight coefficients";
-      protected
+    protected
            Real coef;
            Real weight[nout];
           equation
@@ -9746,7 +10052,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           end Parts;
 
           block HomotopyStrongComponentBreaker
-        "Break the strong component in normalized signal with independent default constant value"
+      "Break the strong component in normalized signal with independent default constant value"
             extends Modelica.Blocks.Interfaces.SISO;
             parameter Real defaultValue=1;
             parameter Real defaultSlope=0;
@@ -9782,11 +10088,11 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
           end HomotopyStrongComponentBreaker;
 
           block DegradationGain
-        "Output the degradation flow from HalfTime and the amount as the input signal"
+      "Output the degradation flow from HalfTime and the amount as the input signal"
 
-            parameter Physiolib.Types.Time HalfTime
+            parameter Physiolibrary.Types.Time HalfTime
           "Half time to compute degradation from amount or mass";
-      public
+    public
             Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
                 Placement(transformation(extent={{-140,-20},{-100,20}})));
             Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
@@ -9831,9 +10137,9 @@ input <i>u</i>:
 
           block FractionGain "Output the fraction of the input signal"
 
-            parameter Physiolib.Types.Fraction f
+            parameter Physiolibrary.Types.Fraction f
           "Half time to compute degradation from amount or mass";
-      public
+    public
             Modelica.Blocks.Interfaces.RealInput u "Input signal connector" annotation (
                 Placement(transformation(extent={{-140,-20},{-100,20}})));
             Modelica.Blocks.Interfaces.RealOutput y "Output signal connector" annotation (
@@ -9881,17 +10187,15 @@ input <i>u</i>:
       extends Modelica.Icons.Package;
      function Spline "Cubic spline interpolation function"
 
-
           input Real[:] x "x coordinations of interpolating points"; //souradnice x souradnice uzlovych bodu
           input Real[:,4] a
           "cubic polynom coefficients of curve segments between interpolating points";                   //parametry kubiky
 
           input Real xVal "input value of x to calculate y value"; //vstupni hodnota
 
-
           output Real yVal "y value at xVal";
      //     output Real outExtra;
-      protected
+    protected
         Integer index "index of segment";
         Integer n "number of interpolating points";
 
@@ -9948,7 +10252,7 @@ input <i>u</i>:
           output Real[size(x,1)+1,4] a
           "cubic polynom coefficients of curve segments between interpolating points";                               //pocet hodnot ctyrech parametru kubiky je o jeden vic nez pocet bodu
 
-      protected
+    protected
         Integer n "number of interpolating points";
         Integer i "index of segment";
 
@@ -10006,7 +10310,7 @@ input <i>u</i>:
                                annotation (Placement(transformation(extent={{80,-20},
                   {120,20}})));
 
-      protected
+    protected
               parameter Real a[:,:] = SplineCoefficients( data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
           "cubic polynom coefficients of curve segments between interpolating points";
 
@@ -10053,7 +10357,7 @@ input <i>u</i>:
 
           output Real yVal_der "derivative y at xVal";
 
-      protected
+    protected
         Integer index "index of segment";
         Integer n "number of interpolating points";
 
@@ -10110,7 +10414,7 @@ input <i>u</i>:
     package Factors "Multiplication Effects"
       extends Modelica.Icons.Package;
       model Normalization "effect = u/NormalValue"
-       extends Physiolib.Icons.BaseFactorIcon;
+       extends Physiolibrary.Icons.BaseFactorIcon;
 
        parameter Real NormalValue=1
           "Normal value of u, because y=(u/NormalValue)*yBase.";
@@ -10121,7 +10425,7 @@ input <i>u</i>:
                     annotation (Placement(transformation(extent={{-100,-20},{-60,
                   20}})));
 
-        Physiolib.Types.Fraction effect;
+        Physiolibrary.Types.Fraction effect;
       equation
         effect = if enabled then u/NormalValue else 1;
         y=effect*yBase;
@@ -10134,18 +10438,18 @@ input <i>u</i>:
       end Normalization;
 
       model DamagedFraction "effect = 1 - DamagedAreaFraction"
-       extends Physiolib.Icons.BaseFactorIcon;
+       extends Physiolibrary.Icons.BaseFactorIcon;
 
-       parameter Physiolib.Types.Fraction DamagedAreaFraction=0;
+       parameter Physiolibrary.Types.Fraction DamagedAreaFraction=0;
 
-        Physiolib.Types.Fraction effect;
+        Physiolibrary.Types.Fraction effect;
       equation
         effect = 1-DamagedAreaFraction;
         y=yBase*effect;
       end DamagedFraction;
 
       model Spline "effect = spline(data,u)"
-       extends Physiolib.Icons.BaseFactorIcon4;
+       extends Physiolibrary.Icons.BaseFactorIcon4;
        Modelica.Blocks.Interfaces.RealInput u(nominal=Xscale)
                     annotation (Placement(transformation(extent={{-100,-20},{-60,
                   20}})));
@@ -10160,10 +10464,10 @@ input <i>u</i>:
        parameter Boolean UsePositiveLog10 = false
           "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
 
-        Physiolib.Types.Fraction effect
+        Physiolibrary.Types.Fraction effect
           "Multiplication coeffecient for yBase to reach y";
 
-      protected
+    protected
           parameter Real a[:,:] = if enabled then Interpolation.SplineCoefficients(
                                                             data[:, 1],data[:, 2]*Yscale,data[:, 3]*Yscale) else zeros(1,1)
           "Cubic polynom coefficients of curve segments between interpolating points";
@@ -10180,14 +10484,14 @@ input <i>u</i>:
       end Spline;
 
       model LagSpline "Adapt the input signal before interpolation"
-       extends Physiolib.Icons.BaseFactorIcon5;
+       extends Physiolibrary.Icons.BaseFactorIcon5;
        Modelica.Blocks.Interfaces.RealInput u
                     annotation (Placement(transformation(extent={{-100,-20},{-60,
                   20}})));
 
        parameter Boolean enabled=true "disabled => y=yBase";
 
-       parameter Physiolib.Types.Time HalfTime(displayUnit="min") = 1;
+       parameter Physiolibrary.Types.Time HalfTime(displayUnit="min")=1;
                                                          //=3462.468;
 
        parameter Real initialValue = 1 "as u/Xscale";
@@ -10211,7 +10515,7 @@ input <i>u</i>:
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-38,68})));
-        Physiolib.Types.Fraction effect;
+        Physiolibrary.Types.Fraction effect;
         Spline spline(
           data=data,
           Xscale=Xscale,
@@ -10250,14 +10554,14 @@ input <i>u</i>:
       end LagSpline;
 
       model SplineLag "Adapt the effect after interpolation"
-       extends Physiolib.Icons.BaseFactorIcon3;
+       extends Physiolibrary.Icons.BaseFactorIcon3;
        Modelica.Blocks.Interfaces.RealInput u
                     annotation (Placement(transformation(extent={{-100,-20},{-60,
                   20}})));
 
        parameter Boolean enabled=true "disabled => y=yBase";
 
-       parameter Physiolib.Types.Time HalfTime(displayUnit="d")=1;
+       parameter Physiolibrary.Types.Time HalfTime(displayUnit="d")=1;
                                                       //Tau(unit="day");
 
        parameter String stateName=getInstanceName()
@@ -10286,14 +10590,14 @@ input <i>u</i>:
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-26,44})));
-        Physiolib.Types.Fraction effect;
+        Physiolibrary.Types.Fraction effect;
         Spline spline(
           data=data,
           Xscale=Xscale,
           UsePositiveLog10=UsePositiveLog10,
           enabled=enabled)
           annotation (Placement(transformation(extent={{-36,56},{-16,76}})));
-        Physiolib.Types.Constants.FractionConst fraction(k(displayUnit="1")=
+        Physiolibrary.Types.Constants.FractionConst fraction(k(displayUnit="1")=
                1)
           annotation (Placement(transformation(extent={{-44,82},{-36,90}})));
       equation
@@ -10330,14 +10634,14 @@ input <i>u</i>:
       end SplineLag;
 
       model SplineLagOrZero "LagSpline if not Failed"
-       extends Physiolib.Icons.BaseFactorIcon2;
+       extends Physiolibrary.Icons.BaseFactorIcon2;
        Modelica.Blocks.Interfaces.RealInput u
                     annotation (Placement(transformation(extent={{-120,-40},{-80,
                   0}}), iconTransformation(extent={{-120,-40},{-80,0}})));
 
        parameter Boolean enabled=true "disabled => y=yBase";
 
-       parameter Physiolib.Types.Time HalfTime(displayUnit="d")=1;
+       parameter Physiolibrary.Types.Time HalfTime(displayUnit="d")=1;
        parameter Real[:,3] data= {{0,0,0}};
 
        parameter String stateName=getInstanceName()
@@ -10376,10 +10680,10 @@ input <i>u</i>:
                                               Failed
                             annotation (Placement(transformation(extent={{-120,20},{-80,
                   60}})));
-         Physiolib.Types.Fraction effect;
+         Physiolibrary.Types.Fraction effect;
         Modelica.Blocks.Logical.Switch switch2
           annotation (Placement(transformation(extent={{-24,90},{-4,70}})));
-        Physiolib.Types.Constants.OneConst One
+        Physiolibrary.Types.Constants.OneConst One
           annotation (Placement(transformation(extent={{-60,78},{-40,98}})));
         Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=enabled)
           annotation (Placement(transformation(extent={{-96,62},{-76,82}})));
@@ -10450,20 +10754,20 @@ input <i>u</i>:
               parameter Real Xscale = 1 "conversion scale to SI unit of x values";
               parameter Real Yscale = 1 "conversion scale to SI unit of y values";
 
-               Physiolib.Types.RealIO.FrequencyInput frequence
-                            annotation (Placement(transformation(extent={{-120,
-                  -20},{-80,20}})));
+               Physiolibrary.Types.RealIO.FrequencyInput frequence
+          annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
                Modelica.Blocks.Interfaces.RealOutput val
                                annotation (Placement(transformation(extent={{80,-20},
                   {120,20}})));
 
-      protected
+    protected
               parameter Real a[:,:] = Interpolation.SplineCoefficients(
                                                           data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
                          "cubic polynom coefficients of curve segments between interpolating points";
 
               parameter Integer nu = 4*9*25;
-              parameter Real curve[nu] = { Physiolib.Blocks.Interpolation.Spline(data[:, 1], a, i/(nu-1)) for i in 0:nu-1};
+              parameter Real curve[nu] = { Physiolibrary.Blocks.Interpolation.Spline(
+                                                                                 data[:, 1], a, i/(nu-1)) for i in 0:nu-1};
 
               parameter Integer nfi = div(nu,2)+1;
               constant Complex I(re=0, im=1);
@@ -10471,14 +10775,11 @@ input <i>u</i>:
 
               parameter Complex c[nfi] = FFT(curve, nfi) "Fourier series coefficients";
 
-
-
           equation
 
             complexValue = sum( c[j+1] * Modelica.ComplexMath.exp(2*pi*I*j*time*frequence) for j in 0:nfi-1);  //Inverse Fourier transformation
 
             val = complexValue.re;
-
 
              annotation ( Icon(coordinateSystem(
                 preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
@@ -10509,7 +10810,7 @@ input <i>u</i>:
         input Real f[:] "equidistant-sampled function";
         input Integer nfi = div(size(f,1),2)+1 "";
         output Complex c[nfi] "Fourier series coeficient";
-      protected
+    protected
         Real Ai[nfi] "FFT amplitudes of interested frequency points";
         Real Phii[nfi] "FFT phases of interested frequency points";
         Integer info "Information flag from FFT computation; = 0: FFT successfully computed";
@@ -10526,9 +10827,9 @@ input <i>u</i>:
 </html>"));
   end Blocks;
 
-  package Examples
+  package Examples "Integrative examples of Physiolibrary cross-domain usage"
     model DialysisMembrane
-      import Physiolib;
+      import Physiolibrary;
       // import SystemModelingInModelica.Interfaces;
      // import SystemModelingInModelica;
 
@@ -10541,16 +10842,16 @@ input <i>u</i>:
           Chemical.Examples.Media.SimpleBodyFluid_C
           "Medium model of dialysate"
          annotation (choicesAllMatching=true);
-        //  SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+        //  SystemModelingInModelica.UsingPhysiolibrary.Interfaces.Dialysate
 
      parameter Modelica.SIunits.Length Length(displayUnit="mm")=0.02 "Length of each pipe";
      parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
      parameter Integer NParallel=50 "Number of paralel pipes";
 
-     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nC](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
+     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nCS](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
 
-     parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nC](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
-     parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nC](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
+     parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nCS](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
+     parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nCS](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
 
      parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 0 "Initial relative blood pressure";
      parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 0 "Initial relative dialysate pressure";
@@ -10577,14 +10878,14 @@ input <i>u</i>:
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={-94,-58})));
-      Modelica.Fluid.Pipes.StaticPipe dialysate_pipe(
-        redeclare package Medium = Dialysate,
-        length=Length,
-        diameter=Diameter,
-        nParallel=NParallel) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={94,48})));
+      Modelica.Fluid.Pipes.StaticPipe dialysatePipe(
+      redeclare package Medium = Dialysate,
+      length=Length,
+      diameter=Diameter,
+      nParallel=NParallel) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=270,
+          origin={94,48})));
       Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
@@ -10598,27 +10899,30 @@ input <i>u</i>:
           Medium =                                                                   Dialysate)
         annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
 
-      Chemical.Components.Membrane membrane[BloodPlasma.nC](KC=KC)
+      Chemical.Components.Membrane membrane[BloodPlasma.nCS](KC=KC)
         annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
-      Fluid.Components.ElasticVessel elasticVessel(
-        redeclare package Medium = BloodPlasma,    useSubstances=true,
-          nHydraulicPorts=4) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-68,-4})));
-      Fluid.Components.ElasticVessel elasticVessel1(useSubstances=true,
-          nHydraulicPorts=2)
-        annotation (Placement(transformation(extent={{66,-14},{86,6}})));
+      Fluid.Components.ElasticVessel bloodVessel(
+      redeclare package Medium = BloodPlasma,
+      useSubstances=true,
+      nHydraulicPorts=4) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=180,
+          origin={-68,-4})));
+      Fluid.Components.ElasticVessel dialysateVessel(
+      redeclare package Medium = Dialysate,
+      useSubstances=true,
+        nHydraulicPorts=2)
+      annotation (Placement(transformation(extent={{66,-14},{86,6}})));
       Modelica.Fluid.Sensors.Pressure pressure(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-76,54},{-56,74}})));
       Modelica.Fluid.Sensors.Density density(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-78,24},{-58,44}})));
-    protected
+  protected
       parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
       parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
-      parameter Real KC[BloodPlasma.nC] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
+      parameter Real KC[BloodPlasma.nCS] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
     equation
       connect(blood_pipe.port_a, blood_in)
         annotation (Line(points={{-94,-68},{-94,-100},{-60,-100}}, color={0,127,255}));
@@ -10628,27 +10932,27 @@ input <i>u</i>:
 
       for s in 1:Dialysate.nXi loop
       end for;
-      connect(dialysate_in, dialysate_pipe.port_a)
-        annotation (Line(points={{60,100},{94,100},{94,58}}, color={0,127,255}));
-      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,-48},
-              {-82,-48},{-82,-5.95},{-67.7,-5.95}},    color={0,127,255}));
-      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},
-              {-86,100},{-86,-4},{-67.7,-4},{-67.7,-4.65}},
-                                                          color={0,127,255}));
-      connect(membrane.port_b, elasticVessel1.substances)
-        annotation (Line(points={{12,-4},{66.6,-4}}, color={158,66,200}));
-      connect(elasticVessel1.q_in[1], dialysate_pipe.port_b) annotation (Line(
-          points={{75.7,-2.7},{94,-2.7},{94,38}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(dialysate_out, elasticVessel1.q_in[2]) annotation (Line(points={{60,-100},
-              {76,-100},{76,-30},{75.7,-30},{75.7,-5.3}}, color={0,127,255}));
-      connect(elasticVessel.substances, membrane.port_a) annotation (Line(points={{-58.6,
-              -4},{-8,-4}},                    color={158,66,200}));
-      connect(pressure.port, elasticVessel.q_in[3]) annotation (Line(points={{-66,54},
-              {-86,54},{-86,-3.35},{-67.7,-3.35}},   color={0,127,255}));
-      connect(density.port, elasticVessel.q_in[4]) annotation (Line(points={{-68,24},
-              {-86,24},{-86,-2.05},{-67.7,-2.05}},         color={0,127,255}));
+    connect(dialysate_in, dialysatePipe.port_a)
+      annotation (Line(points={{60,100},{94,100},{94,58}}, color={0,127,255}));
+    connect(blood_pipe.port_b, bloodVessel.q_in[1]) annotation (Line(points={{-94,
+            -48},{-82,-48},{-82,-5.95},{-67.7,-5.95}}, color={0,127,255}));
+    connect(blood_out, bloodVessel.q_in[2]) annotation (Line(points={{-60,100},
+            {-86,100},{-86,-4},{-67.7,-4},{-67.7,-4.65}}, color={0,127,255}));
+    connect(membrane.port_b, dialysateVessel.substances)
+      annotation (Line(points={{12,-4},{66.6,-4}}, color={158,66,200}));
+    connect(dialysateVessel.q_in[1], dialysatePipe.port_b) annotation (Line(
+        points={{75.7,-2.7},{94,-2.7},{94,38}},
+        color={127,0,0},
+        thickness=0.5));
+    connect(dialysate_out, dialysateVessel.q_in[2]) annotation (Line(points={{
+            60,-100},{76,-100},{76,-30},{75.7,-30},{75.7,-5.3}}, color={0,127,
+            255}));
+    connect(bloodVessel.substances, membrane.port_a)
+      annotation (Line(points={{-58.6,-4},{-8,-4}}, color={158,66,200}));
+    connect(pressure.port, bloodVessel.q_in[3]) annotation (Line(points={{-66,
+            54},{-86,54},{-86,-3.35},{-67.7,-3.35}}, color={0,127,255}));
+    connect(density.port, bloodVessel.q_in[4]) annotation (Line(points={{-68,24},
+            {-86,24},{-86,-2.05},{-67.7,-2.05}}, color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
               Rectangle(
               extent={{-100,100},{0,-100}},
@@ -10669,22 +10973,22 @@ input <i>u</i>:
           Chemical.Examples.Media.SimpleBodyFluid_C
           "Medium model of blood plasma"
          annotation (choicesAllMatching=true);
-         // SystemModelingInModelica.UsingPhysiolib.Interfaces.BloodPlasma
+         // SystemModelingInModelica.UsingPhysiolibrary.Interfaces.BloodPlasma
 
       replaceable package Dialysate =
           Chemical.Examples.Media.SimpleBodyFluid_C
           "Medium model of dialysate"
          annotation (choicesAllMatching=true);
-         // SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+         // SystemModelingInModelica.UsingPhysiolibrary.Interfaces.Dialysate
 
       parameter Integer N=10 "Number of parts";
 
       parameter Modelica.SIunits.Concentration PlasmaSubstances[
         BloodPlasma.nC](each displayUnit="mmol/l")=
-         {1000,135,24,5,5,30,106,1.5,0.5,0.7,0.8,1e-6};
+         {135,24,5,5,  30,106,1.5,0.5, 0.7, 0.8,1e-6,913};
       parameter Modelica.SIunits.Concentration DialysateSubstances[
         Dialysate.nC](each displayUnit="mmol/l")=
-         {1000,138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6};
+         {138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6,913};
 
       parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 23998.0297347 "Initial blood pressure";
       parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 78660.20857485 "Initial dialysate pressure";
@@ -10708,13 +11012,13 @@ input <i>u</i>:
                                                         //{InitialBloodPressure - (i/N)*(InitialBloodPressure-Interfaces.BloodPlasma.p_default) for i in 1:N},
                                                                 //{InitialDialysatePressure - ((N-i+1)/N)*(InitialDialysatePressure-Interfaces.Dialysate.p_default) for i in 1:N},
       Modelica.Fluid.Sources.FixedBoundary blood_output(nPorts=1, redeclare
-          package Medium = BloodPlasma,
+        package   Medium = BloodPlasma,
         use_T=true,
         C=PlasmaSubstances,
         T=310.15)
         annotation (Placement(transformation(extent={{-50,36},{-30,56}})));
       Modelica.Fluid.Sources.FixedBoundary dialysate_output(nPorts=1, redeclare
-          package Medium = Dialysate,
+        package   Medium = Dialysate,
         T=310.15,
         C=DialysateSubstances)
         annotation (Placement(transformation(extent={{94,-84},{74,-64}})));
@@ -10794,7 +11098,7 @@ input <i>u</i>:
     end Dialysis;
 
     model DialysisMembrane2
-      import Physiolib;
+      import Physiolibrary;
       // import SystemModelingInModelica.Interfaces;
      // import SystemModelingInModelica;
 
@@ -10807,7 +11111,7 @@ input <i>u</i>:
           Chemical.Examples.Media.SimpleBodyFluid_C
           "Medium model of dialysate"
          annotation (choicesAllMatching=true);
-        //  SystemModelingInModelica.UsingPhysiolib.Interfaces.Dialysate
+        //  SystemModelingInModelica.UsingPhysiolibrary.Interfaces.Dialysate
 
      parameter Modelica.SIunits.Length Length(displayUnit="mm")=0.02 "Length of each pipe";
      parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
@@ -10855,14 +11159,13 @@ input <i>u</i>:
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-68,-4})));
-    protected
+  protected
       parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
       parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
       parameter Real KC[BloodPlasma.nC] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
     equation
       connect(blood_pipe.port_a, blood_in)
         annotation (Line(points={{-94,-68},{-94,-100},{-60,-100}}, color={0,127,255}));
-
 
       connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,
               -48},{-82,-48},{-82,-5.3},{-67.7,-5.3}}, color={0,127,255}));
@@ -10881,90 +11184,54 @@ input <i>u</i>:
               preserveAspectRatio=false)));
     end DialysisMembrane2;
 
-    model Glomerulus
-      replaceable package Medium =
-          Chemical.Examples.Media.SimpleBodyFluid_C
-          "Medium model of blood plasma and filtrate"
-         annotation (choicesAllMatching=true);
-
-
-      Fluid.Sources.PressureSource unlimitedVolume
-        annotation (Placement(transformation(extent={{-90,16},{-70,36}})));
-      Fluid.Components.MassPump GFR
-        annotation (Placement(transformation(extent={{70,16},{90,36}})));
-      Fluid.Sources.PressureSource unlimitedVolume1
-        annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
-      Chemical.Components.FluidAdapter_C fluidAdapter_C(redeclare package
-          Medium = Chemical.Examples.Media.SimpleBodyFluid_C, nFluidPorts=1)
-        annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-54,26})));
-      Chemical.Components.FluidAdapter_C fluidAdapter_C1(redeclare package
-          Medium = Chemical.Examples.Media.SimpleBodyFluid_C, nFluidPorts=1)
-        annotation (Placement(transformation(extent={{44,16},{64,36}})));
-      Chemical.Components.Membrane membrane[Chemical.Examples.Media.SimpleBodyFluid_C.nC]
-        annotation (Placement(transformation(extent={{-12,16},{8,36}})));
-      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter[Chemical.Examples.Media.SimpleBodyFluid_C.nC](
-         substanceData=Medium.substanceData)
-        annotation (Placement(transformation(extent={{-40,16},{-20,36}})));
-      Chemical.Sources.SubstanceMassAdapter substanceMassAdapter1[Chemical.Examples.Media.SimpleBodyFluid_C.nC](
-         substanceData=Medium.substanceData) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={24,26})));
-      Chemical.Components.Solution solution
-        annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
-      inner Modelica.Fluid.System system(T_ambient=310.15)
-        annotation (Placement(transformation(extent={{-48,60},{-28,80}})));
-    equation
-      connect(unlimitedVolume.y, fluidAdapter_C.fluidPorts[1]) annotation (Line(
-          points={{-70,26},{-64,26}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(unlimitedVolume1.y, GFR.q_out) annotation (Line(
-          points={{86,-12},{94,-12},{94,26},{90,26}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(GFR.q_in, fluidAdapter_C1.fluidPorts[1]) annotation (Line(
-          points={{70,26},{64,26}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(substanceMassAdapter.port_m, fluidAdapter_C.substances)
-        annotation (Line(points={{-40,26},{-44,26}}, color={105,44,133}));
-      connect(substanceMassAdapter.port_a, membrane.port_a)
-        annotation (Line(points={{-20,26},{-12,26}}, color={158,66,200}));
-      connect(substanceMassAdapter1.port_m, fluidAdapter_C1.substances)
-        annotation (Line(points={{34,26},{44,26}}, color={105,44,133}));
-      connect(membrane.port_b, substanceMassAdapter1.port_a)
-        annotation (Line(points={{8,26},{14,26}}, color={158,66,200}));
-      connect(fluidAdapter_C.solution, solution.solution) annotation (Line(
-            points={{-50,29},{-50,-98},{60,-98}}, color={127,127,0}));
-      connect(fluidAdapter_C1.solution, solution.solution) annotation (Line(
-            points={{50,23},{50,-98},{60,-98}}, color={127,127,0}));
-      connect(substanceMassAdapter[1].solution, solution.solution) annotation (
-          Line(points={{-36,16},{-36,-98},{60,-98},{60,-98}}, color={127,127,0}));
-      connect(substanceMassAdapter1[1].solution, solution.solution) annotation (
-         Line(points={{30,36},{30,-98},{60,-98}}, color={127,127,0}));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Glomerulus;
   end Examples;
 
   annotation (
 preferredView="info",
-version="0.1",
+version="3.0.0",
 versionBuild=1,
-versionDate="2017-10-21",
-dateModified = "2017-10-21 17:14:41Z",
+versionDate="2020-11-26",
+dateModified = "2020-11-26 17:14:41Z",
 uses(
   Documentation(revisions="<html>
-<p>Copyright (c) 2017-2018, Marek Matej&aacute;k </p>
+<p>Copyright (c) 2017-2020, Marek Matej&aacute;k </p>
 <p>All rights reserved. </p>
 </html>"), Modelica(version="3.2.3"),
-      Chemical(version="1.3.0")),
-    Documentation(info="<html>
-<p>Initial release for testing.</p>
+      Chemical(version="1.3.0"),
+      Complex(version="3.2.3")),
+    conversion(
+  from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
+  from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
+  from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.3.mos"),
+  from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.3.mos"),
+  from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.3.mos"),
+  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.3.mos"),
+  from(version="2.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
+  from(version="2.1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
+  from(version="2.1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
+  from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
+  from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_2.3.mos"),
+    noneFromVersion="2.3.1"),
+  Documentation(revisions="<html>
+<p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague </p>
+<p>All rights reserved. </p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
+<ol>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ol>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</html>", info="<html>
+<ul>
+<li>Web pages: <a href=\"http://www.physiolibrary.org\">www.physiolibrary.org</a></li>
+<li><a href=\"modelica://Physiolibrary.UsersGuide.Overview\">Overview</a></li>
+<li><a href=\"modelica://Physiolibrary.UsersGuide.Connectors\">Connectors</a></li>
+<li><a href=\"modelica://Physiolibrary.UsersGuide.Contact\">Contact</a> </li>
+</ul>
+<p><br>The origin of this Modelica Physiolibrary was in the first version of our HumMod Golem Edition model implementation, where it was called HumMod.Library. As the successors of Guyton&apos;s Medical Physiology School write, the original HumMod model is &ldquo;The best, most complete, mathematical model of human physiology ever created&rdquo;.</p>
+<p>We are also developing many types of smaller physiological models for use in medical education, so it was essential to separate this library from our HumMod Modelica implementation. This separation improves the quality of the next HumMod release and provides a useful Modelica library to modelers in this bioscience.</p>
+<p>The library contains only carefully-chosen elementary physiological laws, which are the basis of more complex physiological processes.</p>
+<p><br>Physiology is a very progressive discipline, that examines how the living body works. And it is no surprise that all processes in the human body are driven by physical laws of nature. The great challenge is to marry old empirical experiments with the &ldquo;new&rdquo; physical principles. Many teams and projects in the word deal with this formalization of physiology, for example: Physiome, SBML, EuroPhysiome, VPH, CellML etc. It is our hope that this library helps this unflagging effort of physiologists to exactly describe the processes.</p>
 </html>"));
-end Physiolib;
+end Physiolibrary;
