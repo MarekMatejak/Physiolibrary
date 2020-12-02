@@ -436,9 +436,10 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
        //extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
        //       volume_start, storeUnit="ml");
 
-        replaceable package Medium =  Chemical.Examples.Media.StandardWater_C   constrainedby
-        Chemical.Interfaces.PartialMedium_C
-        "Medium model"   annotation (choicesAllMatching=true);
+        replaceable package Medium = Chemical.Examples.Media.StandardWater_C
+         constrainedby Chemical.Interfaces.PartialMedium_C
+        "Medium model"   annotation (choicesAllMatching=true);               // Chemical.Examples.Media.SimpleAir
+                                                                        //StandardWater_C
 
         outer Modelica.Fluid.System system "System wide properties";
 
@@ -2174,7 +2175,7 @@ Connector with one flow signal of type Real.
         connect(pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in[3])
           annotation (Line(
             points={{-2,30},{-12,30},{-12,60},{36,60},{36,84},{13.7,84},{13.7,
-                82.2667}},
+              82.2667}},
             color={127,0,0},
             thickness=0.5));
         connect(leftHeart.q_out, arteries.q_in[1]) annotation (Line(
@@ -3390,7 +3391,7 @@ Connector with one flow signal of type Real.
 
         import Modelica.SIunits.*;
 
-        replaceable package Air = Chemical.Examples.Media.SimpleAir_C;
+        replaceable package Air = Chemical.Examples.Media.SimpleAir;
 
         parameter Frequency RespirationRate(displayUnit="1/min")=0.2                                             "Respiration rate";
         parameter Volume ResidualVolume(displayUnit="l")=0.0013                                     "Lungs residual volume";
@@ -6588,7 +6589,7 @@ Connector with one flow signal of type Real.
 
      parameter Types.HydraulicResistance k "Hydraulic resistance";
           Modelica.Blocks.Interfaces.RealOutput
-                                            y(final quantity="HydraulicConductance",final unit="(Pa.s)/kg", displayUnit="(mmHg.min)/g", nominal=(1e+6)*(133.322387415)*60)
+                                            y(final quantity="HydraulicConductance",final unit="(Pa.s)/m3", displayUnit="(mmHg.min)/ml", nominal=(1e+6)*(133.322387415)*60)
           "HydraulicResistance constant"
         annotation (Placement(transformation(extent={{40,-10},{60,10}}),
                     iconTransformation(extent={{40,-10},{60,10}})));
@@ -11096,93 +11097,6 @@ input <i>u</i>:
             coordinateSystem(preserveAspectRatio=false)),
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
-
-    model DialysisMembrane2
-      import Physiolibrary;
-      // import SystemModelingInModelica.Interfaces;
-     // import SystemModelingInModelica;
-
-      replaceable package BloodPlasma =
-          Chemical.Examples.Media.SimpleBodyFluid_C
-          "Medium model of blood plasma"
-         annotation (choicesAllMatching=true);
-
-      replaceable package Dialysate =
-          Chemical.Examples.Media.SimpleBodyFluid_C
-          "Medium model of dialysate"
-         annotation (choicesAllMatching=true);
-        //  SystemModelingInModelica.UsingPhysiolibrary.Interfaces.Dialysate
-
-     parameter Modelica.SIunits.Length Length(displayUnit="mm")=0.02 "Length of each pipe";
-     parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
-     parameter Integer NParallel=50 "Number of paralel pipes";
-
-     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nC](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
-
-     parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nC](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
-     parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nC](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
-
-     parameter Modelica.SIunits.Pressure InitialBloodPressure(displayUnit="mmHg") = 0 "Initial relative blood pressure";
-     parameter Modelica.SIunits.Pressure InitialDialysatePressure(displayUnit="mmHg") = 0 "Initial relative dialysate pressure";
-     parameter Modelica.SIunits.Pressure AmbientPressure(displayUnit="mmHg") = 101325.0144354 "Ambient pressure";
-
-     parameter Modelica.SIunits.Temperature InitialTemperature = 273.15 + 37 "Initial temperature";
-
-     /*parameter Modelica.SIunits.VolumeFlowRate WaterClearance(displayUnit="ml/min")= 1e-06 "Water clearance";
- parameter Modelica.SIunits.VolumeFlowRate NaClearance(displayUnit="ml/min")= 1e-06 "Sodium clearance";
- parameter Modelica.SIunits.VolumeFlowRate BicClearance(displayUnit="ml/min")= 1e-06 "Bicarbonate clearance";
- parameter Modelica.SIunits.VolumeFlowRate KClearance(displayUnit="ml/min")= 1e-06 "Potasium clearance";
- parameter Modelica.SIunits.VolumeFlowRate GluClearance(displayUnit="ml/min")= 1e-06 "Glucose clearance";
- parameter Modelica.SIunits.VolumeFlowRate UreaClearance(displayUnit="ml/min")= 1e-06 "Urea clearance";
- parameter Modelica.SIunits.VolumeFlowRate ClClearance(displayUnit="ml/min")= 1e-06 "Chloride clearance";
- parameter Modelica.SIunits.VolumeFlowRate CaClearance(displayUnit="ml/min")= 1e-06 "Calcium clearance";
- parameter Modelica.SIunits.VolumeFlowRate MgClearance(displayUnit="ml/min")= 1e-06 "Magnesium clearance";
-*/
-
-      Modelica.Fluid.Pipes.StaticPipe blood_pipe(
-        redeclare package Medium = BloodPlasma,
-        nParallel=NParallel,
-        length=Length,
-        diameter=Diameter) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-94,-58})));
-      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
-            BloodPlasma)
-        annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
-            BloodPlasma)
-        annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
-
-      Fluid.Components.ElasticVessel elasticVessel(useSubstances=true,
-          nHydraulicPorts=2) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-68,-4})));
-  protected
-      parameter Modelica.SIunits.Volume InitialVolume=Length*Modelica.Constants.pi*(Diameter/2)^2 "Initial volume";
-      parameter Real tn = sum(InitialPlasma) "total amount of substances in one liter";
-      parameter Real KC[BloodPlasma.nC] = Clearances ./ ((Modelica.Constants.R * InitialTemperature/tn) * InitialPlasma) "kinetics coefficients for membrane permeabilities";
-    equation
-      connect(blood_pipe.port_a, blood_in)
-        annotation (Line(points={{-94,-68},{-94,-100},{-60,-100}}, color={0,127,255}));
-
-      connect(blood_pipe.port_b, elasticVessel.q_in[1]) annotation (Line(points={{-94,
-              -48},{-82,-48},{-82,-5.3},{-67.7,-5.3}}, color={0,127,255}));
-      connect(blood_out, elasticVessel.q_in[2]) annotation (Line(points={{-60,100},{
-              -86,100},{-86,-4},{-67.7,-4},{-67.7,-2.7}}, color={0,127,255}));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-              Rectangle(
-              extent={{-100,100},{0,-100}},
-              lineColor={255,255,0},
-              fillColor={238,46,47},
-              fillPattern=FillPattern.VerticalCylinder), Rectangle(
-              extent={{0,100},{100,-100}},
-              lineColor={255,255,0},
-              fillPattern=FillPattern.VerticalCylinder,
-              fillColor={28,108,200})}), Diagram(coordinateSystem(
-              preserveAspectRatio=false)));
-    end DialysisMembrane2;
 
   end Examples;
 
