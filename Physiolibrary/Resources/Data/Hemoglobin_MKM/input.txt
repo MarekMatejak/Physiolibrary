@@ -1,0 +1,241 @@
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH3[1]
+207.35 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH3[2]
+207.35 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH3[3]
+207.35 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH3[4]
+207.35 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH3[1]
+389.318 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH3[2]
+389.318 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH3[3]
+389.318 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH3[4]
+389.318 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH2[1]
+68.0933 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH2[2]
+68.0933 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH2[3]
+68.0933 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NH2[4]
+68.0933 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH2[1]
+127.851 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH2[2]
+127.851 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH2[3]
+127.851 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NH2[4]
+127.851 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NHCOO[1]
+71.6244 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NHCOO[2]
+71.6244 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NHCOO[3]
+71.6244 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_A_NHCOO[4]
+71.6244 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NHCOO[1]
+134.481 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NHCOO[2]
+134.481 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NHCOO[3]
+134.481 mmol
+Hemoglobin_MKM_Adair.Hb0.Hbu_AH_NHCOO[4]
+134.481 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH3[1]
+0.265958 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH3[2]
+0.265958 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH3[3]
+0.265958 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH3[4]
+0.413082 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH3[1]
+0.499359 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH3[2]
+0.499359 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH3[3]
+0.499359 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH3[4]
+0.181818 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH2[1]
+0.0873399 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH2[2]
+0.0873399 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH2[3]
+0.0873399 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NH2[4]
+0.409672 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH2[1]
+0.163988 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH2[2]
+0.163988 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH2[3]
+0.163988 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NH2[4]
+0.180317 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NHCOO[1]
+0.091869 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NHCOO[2]
+0.091869 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NHCOO[3]
+0.091869 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_A_NHCOO[4]
+0.066741 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NHCOO[1]
+0.172492 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NHCOO[2]
+0.172492 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NHCOO[3]
+0.172492 mmol
+Hemoglobin_MKM_Adair.Hb1.Hbu_AH_NHCOO[4]
+0.029376 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH3[1]
+0.00016235 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH3[2]
+0.00016235 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH3[3]
+0.00025216 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH3[4]
+0.00025216 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH3[1]
+0.000304827 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH3[2]
+0.000304827 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH3[3]
+0.000110988 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH3[4]
+0.000110988 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH2[1]
+5.33154e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH2[2]
+5.33154e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH2[3]
+0.000250079 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NH2[4]
+0.000250079 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH2[1]
+0.000100104 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH2[2]
+0.000100104 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH2[3]
+0.000110072 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NH2[4]
+0.000110072 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NHCOO[1]
+5.60802e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NHCOO[2]
+5.60802e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NHCOO[3]
+4.07412e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_A_NHCOO[4]
+4.07412e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NHCOO[1]
+0.000105295 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NHCOO[2]
+0.000105295 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NHCOO[3]
+1.79322e-005 mmol
+Hemoglobin_MKM_Adair.Hb2.Hbu_AH_NHCOO[4]
+1.79322e-005 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH3[1]
+7.89297e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH3[2]
+1.22592e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH3[3]
+1.22592e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH3[4]
+1.22592e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH3[1]
+1.48197e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH3[2]
+5.3959e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH3[3]
+5.3959e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH3[4]
+5.3959e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH2[1]
+2.59203e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH2[2]
+1.2158e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH2[3]
+1.2158e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NH2[4]
+1.2158e-007 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH2[1]
+4.86676e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH2[2]
+5.35136e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH2[3]
+5.35136e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NH2[4]
+5.35136e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NHCOO[1]
+2.72645e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NHCOO[2]
+1.98071e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NHCOO[3]
+1.98071e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_A_NHCOO[4]
+1.98071e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NHCOO[1]
+5.11914e-008 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NHCOO[2]
+8.71807e-009 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NHCOO[3]
+8.71807e-009 mmol
+Hemoglobin_MKM_Adair.Hb3.Hbu_AH_NHCOO[4]
+8.71807e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH3[1]
+1.74085e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH3[2]
+1.74085e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH3[3]
+1.74085e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH3[4]
+1.74085e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH3[1]
+7.66232e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH3[2]
+7.66232e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH3[3]
+7.66232e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH3[4]
+7.66232e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH2[1]
+1.72647e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH2[2]
+1.72647e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH2[3]
+1.72647e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NH2[4]
+1.72647e-008 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH2[1]
+7.59907e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH2[2]
+7.59907e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH2[3]
+7.59907e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NH2[4]
+7.59907e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NHCOO[1]
+2.81266e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NHCOO[2]
+2.81266e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NHCOO[3]
+2.81266e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_A_NHCOO[4]
+2.81266e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[1]
+1.23799e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[2]
+1.23799e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[3]
+1.23799e-009 mmol
+Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[4]
+1.23799e-009 mmol
+

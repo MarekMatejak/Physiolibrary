@@ -1,0 +1,46 @@
+// Convert from Physiolibrary 2.1.* to Physiolibrary 2.3.*
+
+// clear
+convertClear();
+
+convertElement("Physiolibrary.Chemical.Components.Substance","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.ChemicalReaction","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Degradation","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Clearance","useSolventFlow","useSolutionFlowInput");
+convertElement("Physiolibrary.Chemical.Components.Clearance","solventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.Components.Speciation","solventVolume","solutionVolume");
+convertElement("Physiolibrary.Chemical.Components.Speciation","NumberOfSubunitTypes","NumberOfSubunits");
+convertElement("Physiolibrary.Chemical.Components.Speciation","totalSubunitAmount","amountOfSubunit");
+convertElement("Physiolibrary.Chemical.Components.Speciation","totalSubsystemAmount","amount");
+convertElement("Physiolibrary.Chemical.Components.Speciation","subunitSpecies","specificSubunitForm");
+convertElement("Physiolibrary.Chemical.Components.Speciation","species","specificForm");
+
+convertClass("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","Physiolibrary.Chemical.Sensors.IncrementalFlowConcentrationMeasure")
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","solventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","SolventFlow","solutionFlow");
+convertElement("Physiolibrary.Chemical.Sensors.MolarFlowMeasure","actualFlow","molarFlowRate");
+convertElement("Physiolibrary.Chemical.Sensors.ConcentrationMeasure","actualConc","concentration");
+convertElement("Physiolibrary.Chemical.Sensors.FlowConcentrationMeasure","Conc","concentration");
+
+convertClass("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","Physiolibrary.Chemical.Interfaces.ConditionalVolume")
+convertElement("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","NormalSolventVolume","NormalVolume");
+convertElement("Physiolibrary.Chemical.Interfaces.ConditionalSolventVolume","solventVolume","solutionVolume");
+
+
+convertElement("Physiolibrary.Hydraulic.Sensors.FlowMeasure","actualFlow","volumeFlow");
+convertElement("Physiolibrary.Hydraulic.Sensors.PressureMeasure","actualPressure","pressure");
+
+
+convertClass("Physiolibrary.Thermal.Components.HeatOutstream","Physiolibrary.Thermal.Sources.MassOutflow")
+convertElement("Physiolibrary.Thermal.Sources.UnlimitedHeat","q_in","port");
+
+
+convertElement("Physiolibrary.Osmotic.Sensors.FlowMeasure","actualFlow","volumeFlowRate");
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","q_in","q_in[1]");
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","ImpermeableSolutes","ImpermeableSolutes[1]");
+convertModifiers("Physiolibrary.Osmotic.Components.OsmoticCell",{"ImpermeableSolutes"}  , {"ImpermeableSolutes={%ImpermeableSolutes%}"}, true);
+convertElement("Physiolibrary.Osmotic.Components.OsmoticCell","impermeableSolutes","impermeableSolutes[1]");
+
+convertClass("Physiolibrary.Blocks.Math.Exponentiation","Physiolibrary.Blocks.Math.Power")
+
+

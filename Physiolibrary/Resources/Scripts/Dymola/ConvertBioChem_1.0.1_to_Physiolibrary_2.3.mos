@@ -1,0 +1,108 @@
+// Convert from BioChem 1.0.1 to Physiolibrary 2.2
+
+// clear
+convertClear();
+
+
+
+convertClass("BioChem.Compartments.Compartment","")
+
+convertClass("BioChem.Interfaces.Nodes.SubstanceConnector","Physiolibrary.Chemical.Interfaces.ChemicalPort_a")
+convertElement("BioChem.Interfaces.Nodes.SubstanceConnector","c","conc")
+convertElement("BioChem.Interfaces.Nodes.SubstanceConnector","r","q")
+
+
+convertElement("BioChem.Interfaces.Reactions.Basics.OneSubstrate","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.OneSubstrateReversible","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoSubstrates","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoSubstratesReversible","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoSubstrates","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoSubstratesReversible","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstrates","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstratesReversible","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstrates","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstratesReversible","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstrates","s3","substrates[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeSubstratesReversible","s3","substrates[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstrates","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstratesReversible","s1","substrates[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstrates","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstratesReversible","s2","substrates[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstrates","s3","substrates[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstratesReversible","s3","substrates[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstrates","s4","substrates[4]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourSubstratesReversible","s4","substrates[4]")
+convertElement("BioChem.Interfaces.Reactions.Basics.MultipleSubstrates","dimS","nS")
+convertElement("BioChem.Interfaces.Reactions.Basics.MultipleSubstrates","s","substrates")
+
+convertElement("BioChem.Interfaces.Reactions.Basics.OneProduct","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.OneProductReversible","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoProducts","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoProductsReversible","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoProducts","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.TwoProductsReversible","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProducts","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProductsReversible","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProducts","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProductsReversible","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProducts","p3","products[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.ThreeProductsReversible","p3","products[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProducts","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProductsReversible","p1","products[1]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProducts","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProductsReversible","p2","products[2]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProducts","p3","products[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProductsReversible","p3","products[3]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProducts","p4","products[4]")
+convertElement("BioChem.Interfaces.Reactions.Basics.FourProductsReversible","p4","products[4]")
+convertElement("BioChem.Interfaces.Reactions.Basics.MultipleProducts","dimP","nP")
+convertElement("BioChem.Interfaces.Reactions.Basics.MultipleProducts","p","products")
+
+
+
+convertClass("BioChem.Substances.Substance","Physiolibrary.Chemical.Components.Substance")
+convertElement("BioChem.Substances.Substance","n1","q_out")
+convertElement("BioChem.Substances.Substance","c.start","solute_start")
+convertModifiers("BioChem.Substances.Substance",{"c.start"},{"solute_start=%c.start%"}, true);
+convertElement("BioChem.Substances.Substance","solventVolume","solutionVolume");
+
+convertClass("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","k1","kf")
+convertModifiers("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui", fill("",0)  , {"K=Modelica.Constants.inf"}, true);
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","s1","substrates[1]")
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniUni.Uui","p1","products[1]")
+
+
+convertClass("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","k1","kf")
+convertModifiers("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi", fill("",0)  , {"K=Modelica.Constants.inf", "nP=2"}, true);
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","s1","substrates[1]")
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","p1","products[1]")
+convertElement("BioChem.Reactions.MassAction.Irreversible.UniBi.Ubi","p2","products[2]")
+
+
+convertClass("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","k1","kf")
+convertModifiers("BioChem.Reactions.MassAction.Reversible.UniUni.Uur",{"k1","k2"}  , {"kf=%k1%", "K=%k1%/%k2%"}, true);
+convertModifiers("BioChem.Reactions.MassAction.Reversible.UniUni.Uur",{"k1","k2=0"}  , {"kf=%k1%", "K=Modelica.Constants.inf"}, true);
+convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","s1","substrates[1]")
+convertElement("BioChem.Reactions.MassAction.Reversible.UniUni.Uur","p1","products[1]")
+
+
+convertClass("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","k1","kf")
+convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Bur", {"k1","k2"}  , {"kf=%k1%", "K=%k1%/%k2%"}, true);
+convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Bur", fill("",0)  , {"nS=2"}, true);
+convertElement("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","s1","substrates[1]")
+convertElement("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","s2","substrates[2]")
+convertElement("BioChem.Reactions.MassAction.Reversible.BiUni.Bur","p1","products[1]")
+
+
+convertClass("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","Physiolibrary.Chemical.Components.ChemicalReaction")
+convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","k1","kf")
+convertModifiers("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr",{"k1","k2"}  , {"kf=%k1%","K=%k1%/%k2%"}, true);
+convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Ubr", fill("",0)  , {"nP=2"}, true);
+convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","s1","substrates[1]")
+convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p1","products[1]")
+convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p2","products[2]")
+

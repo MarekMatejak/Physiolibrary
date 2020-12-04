@@ -453,8 +453,13 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
               rotation=180,
               origin={-3,0})));
 
-        parameter Physiolibrary.Types.Mass mass_start=1 "Mass start value"
-          annotation (Dialog(group="Initialization"));
+        parameter Physiolibrary.Types.Volume volume_start(displayUnit="l")=0.001
+                                                            "Volume start value"
+           annotation (Dialog(group="Initialization"));
+
+       /* parameter Physiolibrary.Types.Mass mass_start=1 "Mass start value"
+     annotation (Dialog(group="Initialization"));
+ */
                                                     //e-8                            //default = 1e-5 g
         parameter Physiolibrary.Types.Concentration concentration_start[Medium.nCS]=
           Medium.concentration(state=Medium.setState_pTX(system.p_ambient,system.T_ambient), Xi=Medium.X_default[1:Medium.nXi], C=Medium.C_default) "Initial molar concentrations"
@@ -474,7 +479,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           annotation (Dialog(tab="Advanced")); //default = 1e-6 ml
 
          Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=
-              ZeroPressureVolume) if useV0Input annotation (Placement(
+              ZeroPressureVolume) = zpv if useV0Input annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
@@ -533,7 +538,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
               rotation=270,
               origin={80,100})));
 
-        Physiolibrary.Types.RealIO.MassOutput mass annotation (Placement(
+         Types.RealIO.VolumeOutput volume      annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=0,
@@ -551,6 +556,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         parameter Physiolibrary.Types.Pressure a=MinimalCollapsingPressure/log(
             Modelica.Constants.eps);
 
+        Physiolibrary.Types.Volume zpv;
     public
         Chemical.Components.FluidAdapter_C fluidAdapter_D(nFluidPorts=
               nHydraulicPorts, redeclare package Medium = Medium)
@@ -573,14 +579,16 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
     protected
+        parameter Modelica.SIunits.MolarVolume MV[Medium.nCS] = Medium.stateOfMatter.molarVolume(Medium.substanceData,T=system.T_ambient,p=system.p_ambient);
         parameter Modelica.SIunits.MolarMass MM[Medium.nCS] = Medium.stateOfMatter.molarMass(Medium.substanceData);
+
         parameter Modelica.SIunits.MoleFraction x_start[Medium.nCS] = concentration_start ./ (concentration_start*ones(Medium.nCS));
-        parameter Modelica.SIunits.AmountOfSubstance nt_start = mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
+        parameter Modelica.SIunits.AmountOfSubstance nt_start = volume_start/(MV*x_start); //mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
         parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nCS] = nt_start * x_start;
 
-        parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.stateOfMatter.density(Medium.substanceData))  * n_start;
+       // parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.stateOfMatter.density(Medium.substanceData))  * n_start;
 
-        parameter Modelica.SIunits.Concentration conc_start[Medium.nCS] = n_start ./ V_T;
+       // parameter Modelica.SIunits.Concentration conc_start[Medium.nCS] = n_start ./ V_T;
 
     public
         Chemical.Components.Substance substance[Medium.nCS](
@@ -616,6 +624,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
         if useV0Input then
           connect(zeroPressureVolume,vessel.zeroPressureVolume);
+        else
+          zpv = ZeroPressureVolume;
         end if;
         if useComplianceInput then
           connect(compliance,vessel.compliance);
@@ -624,6 +634,10 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           connect(externalPressure,vessel.externalPressure);
         end if;
         if useSubstances then
+           for i in 1:Medium.nCS loop
+               connect(substance[i].port_a, substances[i]) annotation (Line(points={{-54,-14},{-50,
+                -14},{-50,0},{-94,0}},      color={158,66,200}));
+           end for;
         end if;
         /* 
   excessVolume = max( 0, volume - zpv);
@@ -656,14 +670,14 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         end for;
         connect(fluidAdapter_D.solution, vessel.solution) annotation (Line(
               points={{-30,-17},{-30,-98},{60,-98}}, color={127,127,0}));
-        connect(vessel.fluidMass, mass) annotation (Line(points={{100,-80},{110,-80}},
+        connect(vessel.fluidVolume, volume) annotation (Line(points={{100,-80},{110,-80}},
                           color={0,0,127}));
 
         for i in 1:Medium.nCS loop
           connect(substance[i].port_m, fluidAdapter_D.substances[i]) annotation (Line(points={
                 {-53.8,-24},{-44,-24},{-44,-14},{-36,-14}}, color={105,44,133}));
-          connect(substance[i].port_a, substances[i]) annotation (Line(points={{-54,-14},{-50,
-                -14},{-50,0},{-94,0}},      color={158,66,200}));
+        //  connect(substance[i].port_a, substances[i]) annotation (Line(points={{-54,-14},{-50,
+        //        -14},{-50,0},{-94,0}},      color={158,66,200}));
         end for;
 
       //  connect(substance.port_m, fluidAdapter_D.substances[1:Medium.nC-1]) annotation (Line(points={
@@ -844,7 +858,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
       model IdealValveResistance
         extends Physiolibrary.Fluid.Components.IdealValve(final _Gon=1/_Ron);
-        parameter Physiolibrary.Types.HydraulicResistance _Ron=79.993432449
+        parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit=
+            "(mmHg.min)/ml")=79.993432449
           "forward state resistance";
       end IdealValveResistance;
 
@@ -933,18 +948,19 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         parameter Boolean useExternalOutflowMin = false
           "=true, if minimal outflow is garanted"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-        parameter Physiolibrary.Types.MassFlowRate OutflowMin=0
+        parameter Physiolibrary.Types.VolumeFlowRate OutflowMin=0
           "Minimal outflow if useExternalOutflowMin=false"
           annotation (Dialog(enable=not useExternalOutflowMin));
 
-        Physiolibrary.Types.RealIO.MassFlowRateInput outflowMin(start=
+        Physiolibrary.Types.RealIO.VolumeFlowRateInput outflowMin(start=
               OutflowMin)=om if useExternalOutflowMin annotation (Placement(
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={40,80})));
     protected
-         Physiolibrary.Types.MassFlowRate om;
+         Physiolibrary.Types.VolumeFlowRate om;
+         Physiolibrary.Types.Density density;
       equation
         if not useExternalOutflowMin then
           om = OutflowMin;
@@ -952,7 +968,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         Inflow.p = Outflow.p;
         0 = Inflow.m_flow + Outflow.m_flow + Reabsorption.m_flow;
        // assert(Inflow.q>=-Modelica.Constants.eps,"Only one directional flow is supported!");
-        Reabsorption.m_flow = -max(0,FractReab*(Inflow.m_flow-om));
+        Reabsorption.m_flow = -max(0,FractReab*(Inflow.m_flow-om*density));
+        density = Medium.density(Medium.setState_phX(Inflow.p,inStream(Inflow.h_outflow),inStream(Inflow.Xi_outflow)));
 
       //Solve streams variable as in connection of all three connectors:
         0=Inflow.m_flow * Inflow.h_outflow
@@ -1027,8 +1044,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         der(volume) =  q_in.m_flow/density;
         // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
 
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics
-            ={                          Text(
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+                                        Text(
                 extent={{-238,-140},{240,-100}},
                 lineColor={127,0,0},
                 textString="%name")}),                                 Diagram(
@@ -1043,8 +1060,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-          replaceable package
-                  Medium =   Chemical.Examples.Media.StandardWater_C);
+          replaceable package Medium =
+                             Chemical.Examples.Media.StandardWater_C);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -1768,14 +1785,14 @@ Connector with one flow signal of type Real.
         Physiolibrary.Fluid.Components.MassPump heart(useSolutionFlowInput=true)
           annotation (Placement(transformation(extent={{-20,60},{0,80}})));
         Physiolibrary.Fluid.Components.ElasticVessel arteries(
-          mass_start(displayUnit="kg") = 1,
+          volume_start(displayUnit="l") = 1e-3,
           nHydraulicPorts=3,
           Compliance(displayUnit="ml/mmHg") = 1.1625954425608e-08,
           ZeroPressureVolume(displayUnit="ml") = 0.00085)
           annotation (Placement(transformation(extent={{54,40},{74,60}})));
 
         Physiolibrary.Fluid.Components.ElasticVessel veins(
-          mass_start(displayUnit="kg") = 3.2,
+          volume_start(displayUnit="l") = 3.2e-3,
           nHydraulicPorts=2,
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
           Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-07)
@@ -1837,7 +1854,7 @@ Connector with one flow signal of type Real.
         extends Modelica.Icons.Example;
         Physiolibrary.Fluid.Components.ElasticVessel arteries(
           ZeroPressureVolume(displayUnit="ml") = 0.00085,
-          mass_start(displayUnit="kg") = 0.97,
+          volume_start(displayUnit="l") = 0.97e-3,
           nHydraulicPorts=3,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08)
           annotation (Placement(transformation(extent={{-12,38},{8,58}})));
@@ -1917,7 +1934,7 @@ Connector with one flow signal of type Real.
         Physiolibrary.Fluid.Components.ElasticVessel arteries(
           ZeroPressureVolume(displayUnit="l") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-08,
-          mass_start(displayUnit="kg") = 0.97,
+          volume_start(displayUnit="l") = 0.97e-3,
           nHydraulicPorts=3)
           annotation (Placement(transformation(extent={{16,38},{36,58}})));
         Physiolibrary.Fluid.Components.Conductor resistance(Conductance(
@@ -1995,7 +2012,7 @@ Connector with one flow signal of type Real.
              true)
           annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
         Physiolibrary.Fluid.Components.ElasticVessel arteries(
-          mass_start(displayUnit="kg") = 0.97,
+          volume_start(displayUnit="l") = 0.97e-3,
           nHydraulicPorts=4,
           ZeroPressureVolume(displayUnit="ml") = 0.00085,
           Compliance(displayUnit="ml/mmHg") = 1.0500862061839e-8)
@@ -2082,13 +2099,13 @@ Connector with one flow signal of type Real.
          extends Modelica.Icons.Example;
          import Hydraulic = Physiolibrary.Fluid;
         Hydraulic.Components.ElasticVessel pulmonaryVeinsAndLeftAtrium(
-          mass_start(displayUnit="kg") = 0.4,
+          volume_start = 0.4e-3,
           nHydraulicPorts=3,
           ZeroPressureVolume(displayUnit="ml") = 0.0004,
           Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-8)
           annotation (Placement(transformation(extent={{4,74},{24,94}})));
         Hydraulic.Components.ElasticVessel pulmonaryArteries(
-          mass_start(displayUnit="kg") = 0.38,
+          volume_start = 0.38e-3,
           nHydraulicPorts=2,
           ZeroPressureVolume(displayUnit="ml") = 0.00030625,
           Compliance(displayUnit="ml/mmHg") = 3.6002955640592e-8)
@@ -2098,13 +2115,13 @@ Connector with one flow signal of type Real.
             4.1665920538226e-08)
           annotation (Placement(transformation(extent={{-30,74},{-10,94}})));
         Hydraulic.Components.ElasticVessel arteries(
-          mass_start(displayUnit="kg") = 0.85,
+          volume_start = 0.85e-3,
           nHydraulicPorts=5,
           ZeroPressureVolume(displayUnit="ml") = 0.000495,
           Compliance(displayUnit="ml/mmHg") = 2.6627185942521e-8)
           annotation (Placement(transformation(extent={{14,-46},{34,-26}})));
         Hydraulic.Components.ElasticVessel veins(
-          mass_start(displayUnit="kg") = 3.25,
+          volume_start = 3.25e-3,
           nHydraulicPorts=4,
           ZeroPressureVolume(displayUnit="ml") = 0.00295,
           Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-7)
@@ -2142,7 +2159,7 @@ Connector with one flow signal of type Real.
               rotation=270,
               origin={-84,-8})));
         Hydraulic.Components.ElasticVessel rightAtrium(
-          mass_start(displayUnit="kg") = 0.1,
+          volume_start = 0.1e-3,
           nHydraulicPorts=3,
           ZeroPressureVolume(displayUnit="ml") = 0.0001,
           Compliance(displayUnit="ml/mmHg") = 3.7503078792283e-8)
@@ -2327,7 +2344,7 @@ Connector with one flow signal of type Real.
             useV0Input=true,
             useComplianceInput=true,
             nHydraulicPorts=2,
-            mass_start=0.373)
+            volume_start=0.373e-3)
             annotation (Placement(transformation(extent={{-40,28},{-20,48}})));
           Physiolibrary.Types.Constants.HydraulicComplianceConst CAP(k=
                 2.2576853432954e-08)
@@ -2343,7 +2360,7 @@ Connector with one flow signal of type Real.
           Physiolibrary.Fluid.Components.ElasticVessel PulmonaryVeins(
             useV0Input=true,
             useComplianceInput=true,
-            mass_start=0.704,
+            volume_start=0.704e-3,
             nHydraulicPorts=2)
             annotation (Placement(transformation(extent={{42,28},{62,48}})));
           Physiolibrary.Types.Constants.HydraulicComplianceConst CVP(k=
@@ -2354,7 +2371,7 @@ Connector with one flow signal of type Real.
           Physiolibrary.Fluid.Components.ElasticVessel SystemicVeins(
             useV0Input=true,
             useComplianceInput=true,
-            mass_start=3.922,
+            volume_start=3.922e-3,
             nHydraulicPorts=2) annotation (Placement(transformation(extent={{-46,
                     -70},{-26,-50}})));
           Physiolibrary.Types.Constants.HydraulicComplianceConst CVS(k=
@@ -2372,7 +2389,7 @@ Connector with one flow signal of type Real.
             useV0Input=true,
             useComplianceInput=true,
             nHydraulicPorts=3,
-            mass_start=0.672)
+            volume_start=0.672e-3)
             annotation (Placement(transformation(extent={{36,-70},{56,-50}})));
           Physiolibrary.Types.Constants.HydraulicComplianceConst CAS(k=
                 1.1250923637685e-08)
@@ -2483,8 +2500,8 @@ Connector with one flow signal of type Real.
             redeclare Parts.PulsatileHeartPump leftHeart(pulses(QP=
                    0.338)),
             CAS(k=7.2755972857029e-9),
-            SystemicArteries(mass_start=0.603),
-            SystemicVeins(mass_start=3.991));
+            SystemicArteries(volume_start=0.603e-3),
+            SystemicVeins(volume_start=3.991e-3));
 
           annotation ( Documentation(info="<html>
 <p>Extension of the model of cardiovascular system with pulsatile dynamics</p>
@@ -2607,7 +2624,7 @@ Connector with one flow signal of type Real.
               Placement(transformation(origin={156,58}, extent={{15,-15},{-15,
                     15}})));
           Physiolibrary.Fluid.Components.ElasticVessel pulmonaryVeins(
-            mass_start=0.6597,
+            volume_start=0.6597e-3,
             nHydraulicPorts=2,
             ZeroPressureVolume=0.0001,
             Compliance=3.5027875591992e-07) annotation (Placement(
@@ -2620,7 +2637,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useExternalPressureInput=true,
             nHydraulicPorts=3,
-            mass_start=0.2097,
+            volume_start=0.2097e-3,
             ZeroPressureVolume=9e-05) annotation (Placement(transformation(
                   origin={-209,-3}, extent={{-15,-15},{15,15}})));
           Physiolibrary.Fluid.Components.Conductor RLeftMyo(Conductance=
@@ -2633,7 +2650,7 @@ Connector with one flow signal of type Real.
           Physiolibrary.Fluid.Components.ElasticVessel aorta(
             nHydraulicPorts=3,
             Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-09,
-            mass_start=0.046,
+            volume_start=0.046e-3,
             ZeroPressureVolume=3e-05) annotation (Placement(transformation(
                   origin={-111,-3}, extent={{-15,-15},{15,15}})));
           Physiolibrary.Fluid.Components.Conductor Raorta(Conductance=
@@ -2646,7 +2663,7 @@ Connector with one flow signal of type Real.
           Physiolibrary.Fluid.Components.ElasticVessel arteries(
             nHydraulicPorts=3,
             Compliance=1.0950899007347e-08,
-            mass_start=0.805,
+            volume_start=0.805e-3,
             ZeroPressureVolume=0.0007) annotation (Placement(transformation(
                   origin={-1,-3}, extent={{-15,-15},{15,15}})));
           Physiolibrary.Fluid.Components.Conductor RSystemic(Conductance=
@@ -2663,7 +2680,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useExternalPressureInput=true,
             nHydraulicPorts=3,
-            mass_start=0.18,
+            volume_start=0.18e-3,
             ZeroPressureVolume=7e-05) annotation (Placement(transformation(
                   origin={171,-3}, extent={{-15,-15},{15,15}})));
           Physiolibrary.Fluid.Components.Conductor RRightMyo(Conductance=
@@ -2675,20 +2692,20 @@ Connector with one flow signal of type Real.
                     15}})));
           Physiolibrary.Fluid.Components.ElasticVessel pulmonaryArtery(
             nHydraulicPorts=2,
-            mass_start=0.021,
+            volume_start=0.021e-3,
             ZeroPressureVolume=2e-05,
             Compliance(displayUnit="ml/mmHg") = 6.7505541826109e-10)
             annotation (Placement(transformation(origin={243,57}, extent={{-15,
                     -15},{15,15}})));
           Physiolibrary.Fluid.Components.ElasticVessel pulmonaryArterioles(
             nHydraulicPorts=2,
-            mass_start=0.637,
+            volume_start=0.637e-3,
             ZeroPressureVolume=0.0006,
             Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)
             annotation (Placement(transformation(origin={124,58}, extent={{-15,
                     -15},{15,15}})));
           Physiolibrary.Fluid.Components.ElasticVessel veins(
-            mass_start(displayUnit="g") = 2.443,
+            volume_start=2.443e-3,
             nHydraulicPorts=2,
             Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
             ZeroPressureVolume=0.00237) annotation (Placement(transformation(
@@ -3082,7 +3099,7 @@ Connector with one flow signal of type Real.
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            mass_start=0.106,
+            volume_start=0.106e-3,
             ZeroPressureVolume=5e-05,
             ExternalPressure=101325 - 533.28954966,
             Elastance=31064116.267695,
@@ -3095,7 +3112,7 @@ Connector with one flow signal of type Real.
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            mass_start=0.518,
+            volume_start=0.518e-3,
             ZeroPressureVolume=0.35e-3,
             ExternalPressure=101325 - 533.28954966,
             Elastance=6066168.6273825,
@@ -3108,7 +3125,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
-            mass_start=9.31e-02,
+            volume_start=9.31e-05,
             ZeroPressureVolume=3e-05,
             ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2)
@@ -3117,7 +3134,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
-            mass_start=0.144,
+            volume_start=0.144e-3,
             ZeroPressureVolume=6e-05,
             ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2)
@@ -3146,12 +3163,12 @@ Connector with one flow signal of type Real.
             useComplianceInput=false,
             ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=3,
-            mass_start=0.204,
+            volume_start=0.204e-3,
             ZeroPressureVolume=0.00014,
             Elastance=190651014.00345)
             annotation (Placement(transformation(extent={{168,6},{190,28}})));
           Physiolibrary.Fluid.Components.ElasticVesselElastance Eetha(
-            mass_start(displayUnit="g") = 0.526,
+            volume_start=0.526e-3,
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
@@ -3181,7 +3198,7 @@ Connector with one flow signal of type Real.
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            mass_start=0.283,
+            volume_start=0.283e-3,
             ZeroPressureVolume=0.185e-3,
             Elastance=34930465.50273,
             nHydraulicPorts=3)
@@ -3196,7 +3213,7 @@ Connector with one flow signal of type Real.
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            mass_start=1.48,
+            volume_start=1.48e-3,
             ZeroPressureVolume=1.19e-3,
             ExternalPressure=101325 - 533.28954966,
             Elastance=2426467.450953,
@@ -3206,7 +3223,7 @@ Connector with one flow signal of type Real.
             useV0Input=false,
             useExternalPressureInput=false,
             useComplianceInput=false,
-            mass_start=1.53,
+            volume_start=1.53e-3,
             ZeroPressureVolume=1e-3,
             Elastance=2253148.3473135,
             nHydraulicPorts=3)
@@ -3215,7 +3232,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
-            mass_start=0.135,
+            volume_start=0.135e-3,
             ZeroPressureVolume=3e-05,
             ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2) annotation (Placement(transformation(extent={{-242,
@@ -3224,7 +3241,7 @@ Connector with one flow signal of type Real.
             useComplianceInput=true,
             useV0Input=false,
             useExternalPressureInput=false,
-            mass_start=0.131,
+            volume_start=0.131e-3,
             ZeroPressureVolume=4e-05,
             ExternalPressure=101325 - 533.28954966,
             nHydraulicPorts=2) annotation (Placement(transformation(extent={{-170,
@@ -3450,8 +3467,7 @@ Connector with one flow signal of type Real.
 
         Physiolibrary.Fluid.Components.ElasticVessel lungs(
           redeclare package Medium = Air,
-          mass_start=LungsAirVolume_initial*Air.density(Air.setState_pTX(system.p_ambient
-               + Pmax, CoreTemperature)),
+          volume_start=LungsAirVolume_initial,
           ZeroPressureVolume=FunctionalResidualCapacity,
           Compliance=TotalCompliance,
           useExternalPressureInput=true,
@@ -11124,7 +11140,6 @@ input <i>u</i>:
             coordinateSystem(preserveAspectRatio=false)),
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
-
   end Examples;
 
   annotation (
@@ -11143,16 +11158,18 @@ uses(
     conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
   from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
-  from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_2.3.mos"),
-  from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_2.3.mos"),
-  from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_2.3.mos"),
-  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_2.3.mos"),
-  from(version="2.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
-  from(version="2.1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
-  from(version="2.1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
-  from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_2.3.mos"),
-  from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_2.3.mos"),
-    noneFromVersion="2.3.1"),
+  from(version="1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_3.0.mos"),
+  from(version="1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_3.0.mos"),
+  from(version="1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_3.0.mos"),
+  from(version="2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_3.0.mos"),
+  from(version="2.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos"),
+  from(version="2.1.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos"),
+  from(version="2.1.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos"),
+  from(version="2.1.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos"),
+  from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_3.0.mos"),
+  from(version="2.3.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
+  from(version="2.3.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
+  from(version="2.3.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos")),
   Documentation(revisions="<html>
 <p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>
