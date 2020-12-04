@@ -1,5 +1,5 @@
 within ;
-package Physiolibrary "System biology - integrative physiological and pathophysiological modelling library (version 3.0)"
+package Physiolibrary "System biology, integrative physiology and pathophysiology modelling library (version 3.0)"
   package UsersGuide "User's Guide"
     extends Modelica.Icons.Information;
 
@@ -457,7 +457,7 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
           annotation (Dialog(group="Initialization"));
                                                     //e-8                            //default = 1e-5 g
         parameter Physiolibrary.Types.Concentration concentration_start[Medium.nCS]=
-          Medium.concentration(state=Medium.setState_pTX(system.p_ambient,system.T_ambient), Xi=Medium.X_default, C=Medium.C_default) "Initial molar concentrations"
+          Medium.concentration(state=Medium.setState_pTX(system.p_ambient,system.T_ambient), Xi=Medium.X_default[1:Medium.nXi], C=Medium.C_default) "Initial molar concentrations"
           annotation (Dialog(group="Initialization"));
 
 
@@ -470,7 +470,7 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
           annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
 
           parameter Physiolibrary.Types.Volume CollapsingPressureVolume=1e-12
-          "Maximal volume, which generate negative collapsing pressure"
+          "Maximal volume, which generate negative collapsing pressure (Residual Volume)"
           annotation (Dialog(tab="Advanced")); //default = 1e-6 ml
 
          Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=
@@ -673,7 +673,7 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
        annotation (
           Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{
                   100,100}}), graphics={Text(
-                extent={{-318,-140},{160,-100}},
+                extent={{-340,-160},{340,-120}},
                 lineColor={127,0,0},
                 textString="%name")}),         Documentation(revisions="<html>
 <p><i>2017-2018</i>Marek Matejak, http://www.physiolib.com</p>
@@ -919,15 +919,14 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package Medium =
-                                                                                 Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package
+          Medium =                                                               Medium)
           annotation (Placement(transformation(extent={{-114,26},{-86,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package Medium =
-                                                                                  Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package
+          Medium =                                                                Medium)
           annotation (Placement(transformation(extent={{86,26},{114,54}})));
         Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare
-          package
-          Medium =                                                                     Medium)
+          package Medium =                                                             Medium)
           annotation (Placement(transformation(extent={{-14,-114},{14,-86}})));
         Physiolibrary.Types.RealIO.FractionInput FractReab
           annotation (Placement(transformation(extent={{-100,-60},{-60,-20}})));
@@ -1012,12 +1011,40 @@ package Physiolibrary "System biology - integrative physiological and pathophysi
 </html>"));
       end Reabsorption;
 
+      model ElasticMembrane
+        extends Interfaces.OnePort;
+        extends Physiolibrary.Icons.InternalElasticBalloon;
+       parameter Types.HydraulicCompliance Compliance "Compliance";
+       parameter Types.Volume ZeroPressureVolume=0
+          "Maximal volume, that does not generate pressure";
+
+       Types.Volume volume;
+       Types.Volume stressedVolume;
+
+      equation
+        q_in.p = (stressedVolume/Compliance) + q_out.p;
+        stressedVolume = max(volume-ZeroPressureVolume,0);
+        der(volume) =  q_in.m_flow/density;
+        // assert(volume>=-Modelica.Constants.eps,"Totally collapsed compartments are not supported!");
+
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics
+            ={                          Text(
+                extent={{-238,-140},{240,-100}},
+                lineColor={127,0,0},
+                textString="%name")}),                                 Diagram(
+              coordinateSystem(preserveAspectRatio=false)),
+                            Documentation(revisions="<html>
+<p><i>2009-2020</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+      end ElasticMembrane;
     end Components;
 
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-          package Medium =   Chemical.Examples.Media.StandardWater_C);
+          replaceable package
+                  Medium =   Chemical.Examples.Media.StandardWater_C);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -1367,8 +1394,8 @@ Connector with one flow signal of type Real.
         q_in.m_flow = 0;
 
         q_in.h_outflow = 0;
-        q_in.Xi_outflow = zeros(q_in.Medium.nXi);
-        q_in.C_outflow = zeros(q_in.Medium.nC);
+        q_in.Xi_outflow = zeros(Medium.nXi);
+        q_in.C_outflow = zeros(Medium.nC);
 
        annotation (
           Documentation(revisions="<html>
@@ -2940,8 +2967,7 @@ Connector with one flow signal of type Real.
             parameter Physiolibrary.Types.HydraulicElastance EMAX
               "Maximum systolic elastance"
               annotation (Dialog(enable=not useEs_extInput));
-          Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
-                  Ees)=1/es_int if useEs_extInput annotation (Placement(
+          Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext=1/es_int if useEs_extInput annotation (Placement(
                   transformation(extent={{60,60},{100,100}}),
                   iconTransformation(extent={{-20,-20},{20,20}}, origin={-80,80})));
         protected
@@ -3391,7 +3417,7 @@ Connector with one flow signal of type Real.
 
         import Modelica.SIunits.*;
 
-        replaceable package Air = Chemical.Examples.Media.SimpleAir;
+        replaceable package Air = Chemical.Examples.Media.SimpleAir_C;
 
         parameter Frequency RespirationRate(displayUnit="1/min")=0.2                                             "Respiration rate";
         parameter Volume ResidualVolume(displayUnit="l")=0.0013                                     "Lungs residual volume";
@@ -3418,7 +3444,8 @@ Connector with one flow signal of type Real.
 
         parameter Density d = Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature));
 
-        Blocks.Source.PeriodicCurveSource    respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
+        Blocks.Source.PeriodicCurveSource    respiratoryMusclePressureCycle(data=RespiratoryMusclePressureCycle)
+        "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
           annotation (Placement(transformation(extent={{18,54},{38,74}})));
 
         Physiolibrary.Fluid.Components.ElasticVessel lungs(
@@ -9724,7 +9751,6 @@ constructed by the signals connected to this bus.
       "Average change of population individuals";
     type PopulationChangePerMember = Real (final quantity="PopulationChangePerMember", final unit="1/s", displayUnit="1/d")
       "Average change per population individual";
-
     annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2017-2018, Marek Matej&aacute;k, http://www.physiolib.com </p>
 </html>"));
@@ -10761,12 +10787,13 @@ input <i>u</i>:
                                annotation (Placement(transformation(extent={{80,-20},
                   {120,20}})));
 
+              parameter Integer nu = 4*9*25;
     protected
               parameter Real a[:,:] = Interpolation.SplineCoefficients(
                                                           data[:, 1]*Xscale,data[:, 2]*Yscale,data[:, 3]*Yscale/Xscale)
                          "cubic polynom coefficients of curve segments between interpolating points";
 
-              parameter Integer nu = 4*9*25;
+
               parameter Real curve[nu] = { Physiolibrary.Blocks.Interpolation.Spline(
                                                                                  data[:, 1], a, i/(nu-1)) for i in 0:nu-1};
 
@@ -10894,10 +10921,10 @@ input <i>u</i>:
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
       Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
-          Medium =                                                                  Dialysate)
+        Medium =                                                                    Dialysate)
         annotation (Placement(transformation(extent={{50,110},{70,90}})));
       Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package
-          Medium =                                                                   Dialysate)
+        Medium =                                                                     Dialysate)
         annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
 
       Chemical.Components.Membrane membrane[BloodPlasma.nCS](KC=KC)
@@ -11013,13 +11040,13 @@ input <i>u</i>:
                                                         //{InitialBloodPressure - (i/N)*(InitialBloodPressure-Interfaces.BloodPlasma.p_default) for i in 1:N},
                                                                 //{InitialDialysatePressure - ((N-i+1)/N)*(InitialDialysatePressure-Interfaces.Dialysate.p_default) for i in 1:N},
       Modelica.Fluid.Sources.FixedBoundary blood_output(nPorts=1, redeclare
-        package   Medium = BloodPlasma,
+        package Medium =   BloodPlasma,
         use_T=true,
         C=PlasmaSubstances,
         T=310.15)
         annotation (Placement(transformation(extent={{-50,36},{-30,56}})));
       Modelica.Fluid.Sources.FixedBoundary dialysate_output(nPorts=1, redeclare
-        package   Medium = Dialysate,
+        package Medium =   Dialysate,
         T=310.15,
         C=DialysateSubstances)
         annotation (Placement(transformation(extent={{94,-84},{74,-64}})));
@@ -11111,8 +11138,8 @@ uses(
 <p>Copyright (c) 2017-2020, Marek Matej&aacute;k </p>
 <p>All rights reserved. </p>
 </html>"), Modelica(version="3.2.3"),
-      Chemical(version="1.3.0"),
-      Complex(version="3.2.3")),
+      Complex(version="3.2.3"),
+    Chemical(version="1.3.1")),
     conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
   from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
