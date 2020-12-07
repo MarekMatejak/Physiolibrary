@@ -453,16 +453,21 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
               rotation=180,
               origin={-3,0})));
 
+
         parameter Physiolibrary.Types.Volume volume_start(displayUnit="l")=0.001
                                                             "Volume start value"
            annotation (Dialog(group="Initialization"));
+
+        parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=volume_start*Medium.density(state_ambient) "Mass start value";
 
        /* parameter Physiolibrary.Types.Mass mass_start=1 "Mass start value"
      annotation (Dialog(group="Initialization"));
  */
                                                     //e-8                            //default = 1e-5 g
+        parameter Medium.ThermodynamicState state_ambient = Medium.setState_pTX(system.p_ambient,system.T_ambient);
+
         parameter Physiolibrary.Types.Concentration concentration_start[Medium.nCS]=
-          Medium.concentration(state=Medium.setState_pTX(system.p_ambient,system.T_ambient), Xi=Medium.X_default[1:Medium.nXi], C=Medium.C_default) "Initial molar concentrations"
+          Medium.concentration(state=state_ambient, Xi=Medium.X_default[1:Medium.nXi], C=Medium.C_default) "Initial molar concentrations [mol/kg] (amount of substance of base molecules per total mass of solution)"
           annotation (Dialog(group="Initialization"));
 
 
@@ -578,14 +583,19 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           BaseTidalVolume=BaseTidalVolume)
           annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
 
+        //TODO: initialization per mass, not amount of substance (e.g. problem with self-clustering)
+
     protected
-        parameter Modelica.SIunits.MolarVolume MV[Medium.nCS] = Medium.stateOfMatter.molarVolume(Medium.substanceData,T=system.T_ambient,p=system.p_ambient);
         parameter Modelica.SIunits.MolarMass MM[Medium.nCS] = Medium.stateOfMatter.molarMass(Medium.substanceData);
+        parameter Modelica.SIunits.MassFraction x_mass_start[Medium.nCS] = concentration_start .* MM;
+        parameter Modelica.SIunits.Mass m_start[Medium.nCS] = mass_start * x_mass_start;
 
-        parameter Modelica.SIunits.MoleFraction x_start[Medium.nCS] = concentration_start ./ (concentration_start*ones(Medium.nCS));
-        parameter Modelica.SIunits.AmountOfSubstance nt_start = volume_start/(MV*x_start); //mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
-        parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nCS] = nt_start * x_start;
-
+      /*  parameter Modelica.SIunits.MolarVolume MV[Medium.nCS] = Medium.stateOfMatter.molarVolume(Medium.substanceData,T=system.T_ambient,p=system.p_ambient);
+ 
+  parameter Modelica.SIunits.MoleFraction x_start[Medium.nCS] = concentration_start ./ (concentration_start*ones(Medium.nCS));
+  parameter Modelica.SIunits.AmountOfSubstance nt_start = volume_start/(MV*x_start); //mass_start / (MM*x_start);   // sum_i(n[i] * MM[i]) = nt * sum_i( x[i] * MM[i]) = m,
+  parameter Modelica.SIunits.AmountOfSubstance n_start[Medium.nCS] = nt_start * x_start;
+*/
        // parameter Modelica.SIunits.Volume V_T =  (MM ./ Medium.stateOfMatter.density(Medium.substanceData))  * n_start;
 
        // parameter Modelica.SIunits.Concentration conc_start[Medium.nCS] = n_start ./ V_T;
@@ -594,8 +604,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         Chemical.Components.Substance substance[Medium.nCS](
           redeclare package stateOfMatter = Medium.stateOfMatter,
           substanceData=Medium.substanceData,
-          each use_mass_start=false,
-          amountOfSubstance_start=n_start)
+          each use_mass_start=true,
+          amountOfSubstance_start=m_start)
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
 
          parameter Boolean useSubstances = false

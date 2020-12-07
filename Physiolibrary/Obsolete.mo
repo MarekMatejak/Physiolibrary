@@ -4997,8 +4997,8 @@ on the model behaviour.
               0.286*0.15)}) "cerebro-spinal fluid"
           annotation (Placement(transformation(extent={{-76,-6},{-56,14}})));
         Physiolibrary.Obsolete.ObsoleteOsmotic.Components.Membrane choroid_plexus(
-            useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")
-             = 1.9966916949595e-12) "choroid plexus"
+            useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")=
+               1.9966916949595e-12) "choroid plexus"
           annotation (Placement(transformation(extent={{-16,-6},{-36,14}})));
         Physiolibrary.Fluid.Components.ElasticVessel CSF_hydraulic(
           volume_start=0.00015,
@@ -5030,8 +5030,8 @@ on the model behaviour.
               rotation=180,
               origin={82,86})));
         Physiolibrary.Obsolete.ObsoleteOsmotic.Components.Membrane arachnoid_villi(
-            useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")
-             = 1.1285648710641e-11) "choroid plexus"
+            useHydraulicPressureInputs=true, cond(displayUnit="ml/(mmHg.day)")=
+               1.1285648710641e-11) "choroid plexus"
           annotation (Placement(transformation(extent={{-36,46},{-16,66}})));
         Physiolibrary.Fluid.Components.VolumePump arachnoid_villi_hydraulic(
             useSolutionFlowInput=true)
@@ -10030,7 +10030,8 @@ The Real output y is a constant signal:
         SteadyState "Steady State = Derivations are zeros during simulation")
       "Initialization or Steady state options (to determine model type before simulating)"
         annotation (Evaluate=true);
-    annotation (Documentation(revisions="<html>
+    type VolumetricHydraulicInertance = Real(final quantity="HydraulicInertance",final unit="Pa.s2/m3", displayUnit="mmHg.min2/ml", nominal=((133.322387415)*(60^2)/(1e-6)));
+     annotation (Documentation(revisions="<html>
 <p>Copyright (c) 2008-2015, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>
 <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>

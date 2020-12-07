@@ -6,6 +6,7 @@ convertClear();
 
 
 convertClass("Physiolibrary.Hydraulic.Components.Pump","Physiolibrary.Fluid.Components.VolumePump");
+convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedVolume","Physiolibrary.Fluid.Sources.PressureSource");
 convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedPump","Physiolibrary.Fluid.Sources.VolumeInflowSource");
 convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedOutflowPump","Physiolibrary.Fluid.Sources.VolumeOutflowSource");
 convertClass("Physiolibrary.Hydraulic.Interfaces.HydraulicPort","Physiolibrary.Fluid.Interfaces.FluidPort");
@@ -48,9 +49,26 @@ convertClass("Physiolibrary.Hydraulic.Components.Reabsorption","Physiolibrary.Fl
 convertClass("Physiolibrary.Hydraulic.Components.ElasticMembrane","Physiolibrary.Fluid.Components.ElasticMembrane");
 convertClass("Physiolibrary.Hydraulic.Sensors.FlowMeasure","Physiolibrary.Fluid.Sensors.FlowMeasure");
 convertClass("Physiolibrary.Hydraulic.Sensors.PressureMeasure","Physiolibrary.Fluid.Sensors.PressureMeasure");
-convertClass("Physiolibrary.Hydraulic.Sources.PressureSource","Physiolibrary.Fluid.Sources.PressureSource");
+
 
 convertClass("Physiolibrary.Hydraulic","Physiolibrary.Fluid");
-convertClass("Physiolibrary.Chemical","Physiolibrary.Obsolete.Chemical");
-convertClass("Physiolibrary.Osmotic","Physiolibrary.Obsolete.Osmotic");
+convertClass("Physiolibrary.Chemical","Physiolibrary.Obsolete.ObsoleteChemical");
+convertClass("Physiolibrary.Osmotic","Physiolibrary.Obsolete.ObsoleteOsmotic");
+convertClass("Physiolibrary.SteadyState","Physiolibrary.Obsolete.SteadyState");
+convertClass("Physiolibrary.Types.ScaleConstant","Physiolibrary.Obsolete.ObsoleteTypes.ScaleConstant");
+convertClass("Physiolibrary.Types.IO_Bus","Physiolibrary.Obsolete.ObsoleteTypes.IO_Bus");
+convertClass("Physiolibrary.Types.TorsoBusConnector","Physiolibrary.Obsolete.ObsoleteTypes.TorsoBusConnector");
+convertClass("Physiolibrary.Types.TissueBusConnector","Physiolibrary.Obsolete.ObsoleteTypes.TissueBusConnector");
+convertClass("Physiolibrary.Types.AbstractReal","Physiolibrary.Obsolete.ObsoleteTypes.AbstractReal");
+convertClass("Physiolibrary.Types.RealTypeInputParameters","Physiolibrary.Obsolete.ObsoleteTypes.RealTypeInputParameters");
+convertClass("Physiolibrary.Types.RealExtension","Physiolibrary.Obsolete.ObsoleteTypes.RealExtension");
+convertClass("Physiolibrary.Types.RealTypes","Physiolibrary.Obsolete.ObsoleteTypes.RealTypes");
+convertClass("Physiolibrary.Types.AbstractBoolean","Physiolibrary.Obsolete.ObsoleteTypes.AbstractBoolean");
+convertClass("Physiolibrary.Types.FilesUtilities","Physiolibrary.Obsolete.ObsoleteTypes.FilesUtilities");
+convertClass("Physiolibrary.Types.BooleanExtension","Physiolibrary.Obsolete.ObsoleteTypes.BooleanExtension");
+convertClass("Physiolibrary.Types.Utilities","Physiolibrary.Obsolete.ObsoleteTypes.Utilities");
+convertClass("Physiolibrary.Types.ZeroUtilities","Physiolibrary.Obsolete.ObsoleteTypes.ZeroUtilities");
+convertClass("Physiolibrary.Types.SimulationType","Physiolibrary.Obsolete.ObsoleteTypes.SimulationType");
+
+convertClass("Physiolibrary.Types.HydraulicInertance","Physiolibrary.Obsolete.ObsoleteTypes.VolumetricHydraulicInertance");
 
