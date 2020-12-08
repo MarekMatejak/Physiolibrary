@@ -436,7 +436,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
        //extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
        //       volume_start, storeUnit="ml");
 
-        replaceable package Medium = Chemical.Examples.Media.StandardWater_C
+        replaceable package Medium = Chemical.Examples.Media.SimpleWater
          constrainedby Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);               // Chemical.Examples.Media.SimpleAir
                                                                         //StandardWater_C
@@ -572,7 +572,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           useV0Input=useV0Input,
           useComplianceInput=useComplianceInput,
           useExternalPressureInput=useExternalPressureInput,
-          stateOfMatter=Medium.stateOfMatter,
+          redeclare package stateOfMatter=Medium.stateOfMatter,
           FunctionalResidualCapacity=ZeroPressureVolume,
           ResidualVolume=CollapsingPressureVolume,
           Compliance=Compliance,
@@ -728,7 +728,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         extends Interfaces.OnePort_UpDown;
 
         replaceable package Medium =
-            Chemical.Examples.Media.StandardWater_C           constrainedby
+            Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -940,7 +940,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         extends Physiolibrary.Icons.Reabsorption;
 
         replaceable package Medium =
-          Chemical.Examples.Media.StandardWater_C           constrainedby
+          Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1071,7 +1071,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
       extends Modelica.Icons.InterfacesPackage;
       connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
           replaceable package Medium =
-                             Chemical.Examples.Media.StandardWater_C);
+                             Chemical.Examples.Media.SimpleWater);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
         annotation (defaultComponentName="port_a",
@@ -1195,7 +1195,7 @@ Connector with one flow signal of type Real.
 
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
-           Chemical.Examples.Media.StandardWater_C           constrainedby
+           Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
@@ -1235,7 +1235,7 @@ Connector with one flow signal of type Real.
 
       partial model OnePort_UpDown "OnePort with different position of connectors"
        replaceable package Medium =
-           Chemical.Examples.Media.StandardWater_C           constrainedby
+           Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
@@ -1402,7 +1402,7 @@ Connector with one flow signal of type Real.
         extends Physiolibrary.Icons.PressureMeasure;
 
         replaceable package Medium =
-          Chemical.Examples.Media.StandardWater_C           constrainedby
+          Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
           "Medium model"
           annotation (choicesAllMatching=true);
@@ -1439,7 +1439,7 @@ Connector with one flow signal of type Real.
         extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
         replaceable package Medium =
-            Chemical.Examples.Media.StandardWater_C
+            Chemical.Examples.Media.SimpleWater
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -1455,7 +1455,7 @@ Connector with one flow signal of type Real.
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
     protected
-        parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
+        parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T,X)) "Fluid enthalphy";
       equation
         q_out.m_flow = - q;
 
@@ -1503,7 +1503,7 @@ Connector with one flow signal of type Real.
         extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
         replaceable package Medium =
-            Chemical.Examples.Media.StandardWater_C
+            Chemical.Examples.Media.SimpleWater
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -1519,7 +1519,7 @@ Connector with one flow signal of type Real.
 
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
     protected
-        parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
+        parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T,X)) "Fluid enthalphy";
 
        Modelica.SIunits.Density density;
 
@@ -1572,7 +1572,7 @@ Connector with one flow signal of type Real.
         model PressureSource "Prescribed pressure at port with unlimited mass"
 
           replaceable package Medium =
-              Chemical.Examples.Media.StandardWater_C           constrainedby
+              Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
           "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1650,7 +1650,7 @@ Connector with one flow signal of type Real.
         extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
         replaceable package Medium =
-          Chemical.Examples.Media.StandardWater_C           constrainedby
+          Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1669,7 +1669,7 @@ Connector with one flow signal of type Real.
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
 
     protected
-         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
+         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T,X)) "Fluid enthalphy";
       equation
         q_in.m_flow = q;
 
@@ -1717,7 +1717,7 @@ Connector with one flow signal of type Real.
         extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
         replaceable package Medium =
-          Chemical.Examples.Media.StandardWater_C           constrainedby
+          Chemical.Examples.Media.SimpleWater           constrainedby
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
@@ -1736,7 +1736,7 @@ Connector with one flow signal of type Real.
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
 
     protected
-         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy_pT(P,T) "Fluid enthalphy";
+         parameter Modelica.SIunits.SpecificEnthalpy h=Medium.specificEnthalpy(Medium.setState_pTX(P,T,X)) "Fluid enthalphy";
          Modelica.SIunits.Density density;
       equation
         q_in.m_flow = q*density;
