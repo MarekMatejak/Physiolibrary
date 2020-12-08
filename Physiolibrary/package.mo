@@ -587,7 +587,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
     protected
         parameter Modelica.SIunits.MolarMass MM[Medium.nCS] = Medium.stateOfMatter.molarMass(Medium.substanceData);
-        parameter Modelica.SIunits.MassFraction x_mass_start[Medium.nCS] = concentration_start .* MM;
+        parameter Modelica.SIunits.MassFraction x_mass_start[Medium.nCS] = concentration_start .* MM / (concentration_start * MM);
         parameter Modelica.SIunits.Mass m_start[Medium.nCS] = mass_start * x_mass_start;
 
       /*  parameter Modelica.SIunits.MolarVolume MV[Medium.nCS] = Medium.stateOfMatter.molarVolume(Medium.substanceData,T=system.T_ambient,p=system.p_ambient);
@@ -605,7 +605,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           redeclare package stateOfMatter = Medium.stateOfMatter,
           substanceData=Medium.substanceData,
           each use_mass_start=true,
-          amountOfSubstance_start=m_start)
+          mass_start=m_start)
           annotation (Placement(transformation(extent={{-74,-24},{-54,-4}})));
 
          parameter Boolean useSubstances = false
