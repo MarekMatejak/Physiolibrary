@@ -11157,13 +11157,9 @@ version="3.0.0",
 versionBuild=1,
 versionDate="2020-11-26",
 dateModified = "2020-11-26 17:14:41Z",
-uses(
-  Documentation(revisions="<html>
-<p>Copyright (c) 2017-2020, Marek Matej&aacute;k </p>
-<p>All rights reserved. </p>
-</html>"), Modelica(version="3.2.3"),
-      Complex(version="3.2.3"),
-    Chemical(version="1.3.1")),
+uses(Modelica(version="3.2.3"),
+     Complex(version="3.2.3"),
+     Chemical(version="1.3.1")),
     conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos"),
   from(version="0.4980", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos"),
