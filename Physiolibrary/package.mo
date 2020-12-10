@@ -1199,6 +1199,8 @@ Connector with one flow signal of type Real.
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
+        outer Modelica.Fluid.System system "System wide properties";
+
         FluidPort_a q_in(redeclare package Medium = Medium) "Inflow"
           annotation (Placement(transformation(extent={{-114,-14},{-86,14}})));
         FluidPort_b q_out(redeclare package Medium = Medium) "Outflow"
@@ -1209,7 +1211,7 @@ Connector with one flow signal of type Real.
 
          Physiolibrary.Types.Pressure dp "Pressure gradient";
 
-         Modelica.SIunits.Density density;//, density_outflow;
+         Modelica.SIunits.Density density(start=Medium.density(Medium.setState_pTX(system.p_ambient, system.T_ambient, Medium.reference_X)));//, density_outflow;
       equation
         q_in.m_flow + q_out.m_flow = 0;
         massFlowRate = q_in.m_flow;
