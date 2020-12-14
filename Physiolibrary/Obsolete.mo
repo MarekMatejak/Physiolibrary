@@ -5004,7 +5004,7 @@ on the model behaviour.
           volume_start=0.00015,
           ZeroPressureVolume=0.000145,
           Compliance=2.250184727537e-09,
-          nHydraulicPorts=3)             "cerebro-spinal fluid"
+          nPorts=3) "cerebro-spinal fluid"
           annotation (Placement(transformation(extent={{-96,-32},{-76,-12}})));
         Physiolibrary.Fluid.Components.VolumePump choroid_plexus_hydraulic(
             useSolutionFlowInput=true) annotation (Placement(transformation(
@@ -5050,8 +5050,9 @@ on the model behaviour.
               rotation=270,
               origin={96,0})));
         Physiolibrary.Fluid.Components.ElasticVessel choroidPlexusCapilaries(
-            volume_start=1.4e-05, Compliance=3.7503078792283e-09,
-          nHydraulicPorts=4)
+          volume_start=1.4e-05,
+          Compliance=3.7503078792283e-09,
+          nPorts=4)
           annotation (Placement(transformation(extent={{56,-32},{76,-12}})));
         Physiolibrary.Fluid.Components.Conductor conductor1(Conductance=8.750718384866e-11)
           annotation (Placement(transformation(
