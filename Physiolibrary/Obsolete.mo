@@ -6632,7 +6632,8 @@ Connector with one flow signal of type Real.
         "Allosteric hemoglobin model implemented by Speciation blocks"
         import Physiolibrary.Obsolete.ObsoleteChemical;
 
-       extends Physiolibrary.Obsolete.ObsoleteChemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
+       extends
+          Physiolibrary.Obsolete.ObsoleteChemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
 
       end Allosteric_Hemoglobin2_MWC;
 
