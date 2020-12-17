@@ -32,7 +32,7 @@ package Obsolete
         annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=1e-007));
+</html>"));
       end SimpleReaction;
 
       model SimpleReaction2
@@ -63,7 +63,7 @@ package Obsolete
         annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=1e-009));
+</html>"));
       end SimpleReaction2;
 
       model ExothermicReaction
@@ -105,7 +105,7 @@ package Obsolete
         annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=5));
+</html>"));
       end ExothermicReaction;
 
       model MichaelisMenten "Basic enzyme kinetics"
@@ -180,7 +180,7 @@ package Obsolete
             annotation ( Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),experiment(StopTime=1));
+</html>"));
       end MichaelisMenten;
 
       package Hemoglobin "Hemoglobin blood gases binding"
@@ -625,10 +625,7 @@ package Obsolete
           connect(clock.y,O2_in_air. partialPressure) annotation (Line(
               points={{-73,54},{-66,54},{-66,34}},
               color={0,0,127}));
-          annotation (          experiment(
-              StopTime=15000,
-              Tolerance=1e-014,
-              __Dymola_Algorithm="Euler"),                  Documentation(info="<html>
+          annotation (   Documentation(info="<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>[1] Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
 <p><br>In short it is about binding oxygen to hemoglobin.</p>
@@ -943,10 +940,6 @@ package Obsolete
                   fillColor={255,181,181},
                   fillPattern=FillPattern.Solid,
                   pattern=LinePattern.None)}),
-            experiment(
-              StopTime=15000,
-              Tolerance=1e-014,
-              __Dymola_Algorithm="Euler"),
             Documentation(revisions=
                           "<html>
 <p><i>2013</i></p>
@@ -1655,10 +1648,7 @@ package Obsolete
               points={{76,82},{68,82},{68,72}},
               color={107,45,134},
               thickness=1));
-          annotation (          experiment(
-              StopTime=15000,
-              Tolerance=1e-014,
-              __Dymola_Algorithm="Euler"), Documentation(info="<html>
+          annotation (           Documentation(info="<html>
 <p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
 
 <p>[1] Mateják M, Kulhánek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
@@ -2270,10 +2260,7 @@ package Obsolete
                 points={{-6,-64},{-10,-64},{-10,8},{6,8}},
                 color={107,45,134},
                 thickness=1));
-            annotation (            experiment(
-                StopTime=18000,
-                Tolerance=1e-014,
-                __Dymola_Algorithm="Euler"), Documentation(revisions=
+            annotation (             Documentation(revisions=
                           "<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -2415,7 +2402,7 @@ package Obsolete
             connect(deoxyhemoglobin.protonation, protonation) annotation (Line(
                 points={{-20,-67},{-20,-66},{78,-66}},
                 color={0,0,127}));
-            annotation (            experiment(StopTime=1.3), Documentation(revisions=
+            annotation (             Documentation(revisions=
                           "<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -2503,10 +2490,7 @@ package Obsolete
                 points={{80,22},{80,-22.6},{77.8,-22.6}},
                 color={0,0,127}));
             annotation (
-              experiment(
-                StopTime=1.1,
-                Tolerance=1e-014,
-                __Dymola_Algorithm="Euler"), Documentation(info=
+               Documentation(info=
                      "<html>
 <p>[1] Siggaard-Andersen O. Oxygen-Linked Hydrogen Ion Binding of Human Hemoglobin. Effects of Carbon Dioxide and 2, 3-Diphosphoglycerate I. Studies on Erythrolysate. Scandinavian Journal of Clinical &AMP; Laboratory Investigation 1971;27:351-60.</p>
 </html>"));
@@ -2606,7 +2590,7 @@ package Obsolete
 </html>",        revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),  experiment(StopTime=2e-006, __Dymola_Algorithm="Euler"));
+</html>"));
         end WaterSelfIonization;
 
         model CarbonDioxideInWater "CO2 as alone acid-base buffer"
@@ -2730,7 +2714,7 @@ package Obsolete
 </html>",        revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),  experiment(StopTime=0.02, __Dymola_Algorithm="Euler"));
+</html>"));
         end CarbonDioxideInWater;
 
         model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
@@ -2822,10 +2806,7 @@ package Obsolete
 <p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
 <p><br>Data and model is described in</p>
 <p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-</html>"),  experiment(
-              StopTime=0.0235,
-              __Dymola_fixedstepsize=5e-005,
-              __Dymola_Algorithm="Euler"));
+</html>"));
         end AlbuminTitration;
 
         model Phosphate
@@ -2963,7 +2944,7 @@ package Obsolete
 </html>",        revisions="<html>
 <p><i>2014</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),  experiment(StopTime=0.05));
+</html>"));
         end Phosphate;
 
         class Develop
@@ -3138,10 +3119,7 @@ package Obsolete
 <p>The titration slope der(pH)/der(SID)=185 1/(mol/L) at pH=7.4 and tAlb=0.66 mmol/l.</p>
 <p><br>Data and model is described in</p>
 <p><font style=\"color: #222222; \">Jame Figge: Role of non-volatile weak acids (albumin, phosphate and citrate). In: Stewart&apos;s Textbook of Acid-Base, 2nd Edition, John A. Kellum, Paul WG Elbers editors, &nbsp;AcidBase org, 2009, pp. 216-232.</font></p>
-</html>"),    experiment(
-                StopTime=0.0235,
-                __Dymola_fixedstepsize=5e-005,
-                __Dymola_Algorithm="Euler"));
+</html>"));
           end PlasmaAcidBase;
 
           model ErythrocyteAcidBase
@@ -4226,7 +4204,7 @@ package Obsolete
 
         parameter Types.Fraction Dilution=1
           "Concentration ratio after per before dilution (0..no solutes, 1..no dilution) if useDilutionInput=false"
-          annotation (Dialog(enable=not useSolventFlow));
+          annotation (Dialog(enable=not useDilutionInput));
 
         Types.RealIO.FractionInput dilution(start=Dilution) = d if
                                                                   useDilutionInput
@@ -4981,7 +4959,6 @@ on the model behaviour.
                 points={{-98,8},{98,8}},
                 color={135,135,135},
                 thickness=1)}),
-          experiment(StopTime=60),
           Documentation(revisions=
                           "<html>
 <p><i>2013</i></p>
@@ -5172,7 +5149,6 @@ on the model behaviour.
                 points={{-50,-54},{-72,-30}},
                 color={215,215,215},
                 arrow={Arrow.None,Arrow.Filled})}),
-          experiment(StopTime=86400),
           Documentation(revisions=
                           "<html>
 <p><i>2013</i></p>
@@ -5944,8 +5920,7 @@ Connector with one flow signal of type Real.
         annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-       experiment(StopTime=1));
+</html>"));
       end SimpleReaction_in_Equilibrium;
 
       model SimpleReaction_NormalInit
@@ -5991,8 +5966,7 @@ Connector with one flow signal of type Real.
         annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-       experiment(StopTime=1e-008));
+</html>"));
       end SimpleReaction_NormalInit;
 
       model SimpleReaction_InitSteadyState
@@ -6038,8 +6012,7 @@ Connector with one flow signal of type Real.
         annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),
-       experiment(StopTime=1e-008));
+</html>"));
       end SimpleReaction_InitSteadyState;
 
       model SimpleReaction2_in_Equilibrium
@@ -6107,7 +6080,7 @@ Connector with one flow signal of type Real.
         annotation (Documentation(revisions="<html>
 <p><i>2013</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"),   experiment(StopTime=1));
+</html>"));
       end SimpleReaction2_in_Equilibrium;
 
       model O2_in_water
@@ -6168,7 +6141,7 @@ Connector with one flow signal of type Real.
           annotation (Line(
             points={{-36,-18},{-30,-18},{-30,70}},
             color={191,0,0}));
-        annotation (        experiment(StopTime=100), Documentation(info=
+        annotation (         Documentation(info=
                      "<html>
 <p>Partial pressure of oxygen in air is the air pressure multiplied by the fraction of the oxygen in air. Oxygen solubility</p>
 </html>",   revisions="<html>
@@ -6610,7 +6583,7 @@ Connector with one flow signal of type Real.
         connect(T4.solute, tHb.u[10]) annotation (Line(
             points={{50,-92},{50,-98},{64,-98},{64,-64.1},{71,-64.1}},
             color={0,0,127}));
-        annotation (        experiment(StopTime=10000), Documentation(info=
+        annotation (         Documentation(info=
                      "<html>
 <p>To understand the model is necessary to study the principles of MWC allosteric transitions first published by </p>
 <p>Monod,Wyman,Changeux (1965). &QUOT;On the nature of allosteric transitions: a plausible model.&QUOT; Journal of molecular biology 12(1): 88-118.</p>
@@ -6673,7 +6646,7 @@ Connector with one flow signal of type Real.
                                                                     annotation (Line(
             points={{50,-64},{50,-85},{70,-85}},
             color={0,0,127}));
-        annotation (experiment(StopTime=1));
+        annotation ();
       end Cells_SteadyState;
     end Examples;
 
@@ -7377,7 +7350,7 @@ Connector with one flow signal of type Real.
           gasSATP=0.040339548059044,
           gasNIST=0.041571199502531)
           annotation (Placement(transformation(extent={{-14,8},{6,28}})));
-        annotation (experiment(StopTime=1),
+        annotation (
        Documentation(info="<html>
 <p>If your environment fully support the physiological units, then the user dialog of setting parameters should display only values &QUOT;1&QUOT; of physiological unit.</p>
 </html>"));
@@ -7430,7 +7403,7 @@ Connector with one flow signal of type Real.
               string="%second",
               index=1,
               extent={{6,3},{6,3}}));
-          annotation (experiment(StopTime=1));
+          annotation ();
         end Variables;
 
         model Test
