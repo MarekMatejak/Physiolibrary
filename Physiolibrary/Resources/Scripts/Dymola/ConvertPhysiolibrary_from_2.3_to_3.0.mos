@@ -8,6 +8,8 @@ convertElement("Physiolibrary.Hydraulic.Components.Resistor","useConductanceInpu
 convertElement("Physiolibrary.Hydraulic.Components.IdealValveResistance","useLimitationInputs","useResistanceInputs")
 convertElement("Physiolibrary.Hydraulic.Components.ElasticVesselElastance","useComplianceInput","useElastanceInput")
 convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance"},"volume","fluidVolume")
+convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance"},"CollapsingPressureVolume","ResidualVolume")
+
 
 convertModifiers("Physiolibrary.Fluid.Components.IdealValveResistance",  {"_Goff<>0"}  , {"_Roff=1/%_Goff%"});
 convertModifiers("Physiolibrary.Fluid.Components.IdealValveResistance",  {"_Goff=0"}  , {"_Roff=Modelica.Constants.inf"});
