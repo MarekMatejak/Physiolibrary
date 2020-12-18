@@ -263,6 +263,9 @@ defineUnitConversion("m3/s", "l/s", 1e3);
 defineUnitConversion("m3/s", "l/min", 1e3*60);
 defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
 defineUnitConversion("m3/s", "l/day", 1e3*60*60*24);
+defineUnitConversion("m3/s", "l/h", 1e3*3600);
+defineUnitConversion("m3/s", "m3/h", 3600);
+
 
 // Density
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);
@@ -287,7 +290,10 @@ defineUnitConversion("N", "kN", 1e-3);
 defineUnitConversion("N", "MN", 1e-6);
 
 // Work, Energy
+defineUnitConversion("J", "Wh", 1/3600);
 defineUnitConversion("J", "kWh", 1/3600/1000);
+defineUnitConversion("1/J", "1/kWh", 3.6e6);
+defineUnitConversion("1/J", "1/MWh", 3.6e9);
 defineUnitConversion("J", "mJ", 1000);
 defineUnitConversion("J", "kJ", 1e-3);
 defineUnitConversion("J", "MJ", 1e-6);
@@ -308,10 +314,24 @@ defineUnitConversion("V", "kV", 0.001);
 defineUnitConversion("A", "mA", 1000);
 defineUnitConversion("A", "kA", 0.001);
 defineUnitConversion("A", "meq/min", (1000/(9.64853399*10^4))*60 );
+// Current density
+defineUnitConversion("A/m2", "A/cm2", 1e-4);
 
 // Capacitance
 defineUnitConversion("F", "uF", 1e6);
 
+// Charge
+defineUnitConversion("C", "As", 1);
+defineUnitConversion("C", "Ah", 1/3600);
+defineUnitConversion("C", "mAh", 1000/3600);
+
+// Reactive power
+defineUnitConversion("var", "kvar", 1e-3);
+defineUnitConversion("var", "Mvar", 1e-6);
+
+// Apparent power 
+defineUnitConversion("VA", "kVA", 1e-3);
+defineUnitConversion("VA", "MVA", 1e-6);
 // Leakage
 defineUnitConversion("m3/(s.Pa)","l/(min.bar)",6e9);
 
@@ -325,6 +345,23 @@ defineUnitConversion("m2/s", "mm2/s",1e6);
 defineUnitConversion("1/K", "ppm/K",1e6);
 
 defineUnitConversion("1", "%",100);
+// Fuel consumption
+defineUnitConversion("cl/km", "l/100km", 1, 0)
+defineUnitConversion("cl/km", "mpg", 0, 454.609/1.609344)
+defineUnitConversion("cl/km", "mpgUS", 0, 378.5411784/1.609344)
+
+// For Rectification and Chemical engineering
+defineUnitConversion("mol/s", "mol/h", 3600);
+defineUnitConversion("J/(mol.K)", "J/(kmol.K)", 1000);
+defineUnitConversion("s/m", "h/m", 1/3600);
+defineUnitConversion("W/(m2.K)", "kW/(m2.K)", 1e-3);
+defineUnitConversion("m2/s", "m2/h", 3600);
+
+// Surface-area-to-volume ratio (for reactivity in chemical reactions)
+defineUnitConversion("m2/m3", "1/m", 1);
+
+// various
+defineUnitConversion("1", "%", 100);
 
 // -------------------------------------------------------------------
 // The default display unit used by Dymola (until another display unit
@@ -348,4 +385,6 @@ defineUnitConversion("1", "%",100);
 // defineDefaultDisplayUnit("s", "min");
 // defineDefaultDisplayUnit("C", "meq");
 // defineDefaultDisplayUnit("V", "mV");
+// defineDefaultDisplayUnit("m/s", "km/h");
+
 

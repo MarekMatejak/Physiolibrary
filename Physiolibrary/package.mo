@@ -784,12 +784,10 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         final useLimitationInputs=false, GenerateConductanceConnection = false);
 
         parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit=
-            "(mmHg.min)/ml")=Modelica.Constants.small
+            "(mmHg.min)/l")=79.993432449
           "forward state resistance"
           annotation (Dialog(enable=not useResistanceInputs));
-        parameter Physiolibrary.Types.HydraulicResistance _Roff(
-          final min=0,
-          displayUnit="(mmHg.min)/l")=Modelica.Constants.inf
+        parameter Physiolibrary.Types.HydraulicResistance _Roff=799934324490
           "Backward state-off resistance (closed valve resistance)"
           annotation (Dialog(enable=not useResistanceInputs));
 
@@ -3862,8 +3860,8 @@ Connector with one flow signal of type Real.
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={78,60})));
-      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow foodHeatIntake(Q_flow
-          =0)   annotation (Placement(transformation(
+      Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow foodHeatIntake(Q_flow=
+           0)   annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={78,-38})));
@@ -9867,8 +9865,8 @@ Connector with one flow signal of type Real.
         grid={2,2},
         initialScale=0.2), graphics={
         Polygon(points={{-40,25},{40,25},{50,15},{40,-20},{30,-25},{-30,-25},{-40,
-       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},fillPattern=
-               FillPattern.Solid),
+       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},fillPattern
+              =FillPattern.Solid),
         Ellipse(extent={{-32.5,7.5},{-27.5,12.5}},lineColor={0,0,0},fillColor={0,0,
                0},fillPattern=FillPattern.Solid),
         Ellipse(extent={{-2.5,12.5},{2.5,7.5}},lineColor={0,0,0},fillColor={0,0,0},
@@ -9950,6 +9948,10 @@ Connector with one flow signal of type Real.
        "Average change of population individuals";
      type PopulationChangePerMember = Real (final quantity="PopulationChangePerMember", final unit="1/s", displayUnit="1/d")
        "Average change per population individual";
+     type Area = Modelica.SIunits.Area (displayUnit="cm2",nominal=1e-4)
+    "Type for area";
+     type Length = Modelica.SIunits.Length (displayUnit="cm",nominal=1e-2)
+    "Type for length and radius";
      annotation (Documentation(revisions="<html>
         <p>Copyright (c) 2017-2018, Marek Matej&aacute;k, http://www.physiolib.com </p>
         </html>"));
@@ -11100,11 +11102,11 @@ input <i>u</i>:
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={94,48})));
-      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium
-        =   BloodPlasma)
+      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
+            BloodPlasma)
         annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium
-        =   BloodPlasma)
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
+            BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
       Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
         Medium =                                                                    Dialysate)
@@ -11302,10 +11304,10 @@ input <i>u</i>:
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
   end Examples;
-
+      //noneFromVersion="3.0.0"
   annotation (
 preferredView="info",
-version="3.0.0-alpha1",
+version="3.1.0",
 versionDate="2020-12-17",
 dateModified = "2020-12-17 17:14:41Z",
 uses(Modelica(version="3.2.3"),
@@ -11326,7 +11328,7 @@ uses(Modelica(version="3.2.3"),
   from(version="2.3.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
   from(version="2.3.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
   from(version="2.3.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
-      noneFromVersion="3.0.0"),
+  from(version="3.0.0", script="modelica://Physiolibrary/Resources/Scripts/ConvertFromPhysiolibrary_3.0.0.mos")),
   Documentation(revisions="<html>
 <p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>
