@@ -1170,8 +1170,8 @@ Connector with one flow signal of type Real.
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package
-          Medium =   Medium) "Top site" annotation (Placement(transformation(
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium
+          =          Medium) "Top site" annotation (Placement(transformation(
                 extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
                   {114,54}})));
         Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
@@ -1750,9 +1750,8 @@ Connector with one flow signal of type Real.
            Physiolibrary.Types.RealIO.PressureInput pressure(start=P)=p if
            usePressureInput "Pressure"
            annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package
-          Medium =
-               Medium) "PressureFlow output connectors"
+           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium
+          =    Medium) "PressureFlow output connectors"
            annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
            parameter Types.Temperature T = system.T_ambient "Fluid temperature";
@@ -6136,6 +6135,109 @@ Connector with one flow signal of type Real.
      annotation (Icon(graphics={     Bitmap(extent={{-100,-100},{100,100}},
               fileName="modelica://Physiolibrary/Resources/Icons/pump.svg")}));
      end Pump;
+
+     model Arteries
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(
+                   extent={{-87.243,-87.3037},{87.243,87.3037}},
+                   fileName=
+                "modelica://Physiolibrary/Resources/Icons/Arteries.png",
+               origin={4.25124,18.8661},
+                   rotation=75)}), Diagram(coordinateSystem(preserveAspectRatio=
+                 false)));
+
+     end Arteries;
+
+     class Atrium
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Atrium.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+     end Atrium;
+
+     class Cardio
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Cardio.png"),Bitmap(
+               extent={{-50,-38},{52,62}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Cross.png")}), Diagram(
+             coordinateSystem(preserveAspectRatio=false)));
+     end Cardio;
+
+     class ECMO
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/ECMO.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+     end ECMO;
+
+     class Heart_detailed
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Heart_detailed.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+     end Heart_detailed;
+
+     class O2
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/O2.png")}), Diagram(
+             coordinateSystem(preserveAspectRatio=false)));
+     end O2;
+
+     class Screw
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(
+               extent={{-100,-100},{100,100}},
+                   fileName="modelica://Physiolibrary/Resources/Icons/Screw.png",
+               origin={2,-4},
+               rotation=90)}), Diagram(coordinateSystem(preserveAspectRatio=
+                 false)));
+     end Screw;
+
+     class Settings
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Settings.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+     end Settings;
+
+       class Valve
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Valve.png")}), Diagram(
+             coordinateSystem(preserveAspectRatio=false)));
+       end Valve;
+
+       class Ventricle
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(extent={{-100,-100},{100,100}}, fileName=
+                "modelica://Physiolibrary/Resources/Icons/Ventricle.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+       end Ventricle;
+
+       class Vessels
+
+       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+               Bitmap(
+               extent={{-130.465,-88.1195},{130.465,88.1195}},
+               origin={0.99971,8.9994},
+               rotation=-68,
+                   fileName=
+                "modelica://Physiolibrary/Resources/Icons/Vessels.png")}),
+           Diagram(coordinateSystem(preserveAspectRatio=false)));
+
+       end Vessels;
      annotation (Documentation(revisions=""));
    end Icons;
 
@@ -11105,8 +11207,8 @@ input <i>u</i>:
       Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
-            BloodPlasma)
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium
+        =   BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
       Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
         Medium =                                                                    Dialysate)
@@ -11304,10 +11406,10 @@ input <i>u</i>:
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
   end Examples;
-      //noneFromVersion="3.0.0"
+
   annotation (
 preferredView="info",
-version="3.1.0",
+version="3.0.0-alpha2",
 versionDate="2020-12-17",
 dateModified = "2020-12-17 17:14:41Z",
 uses(Modelica(version="3.2.3"),
@@ -11327,8 +11429,7 @@ uses(Modelica(version="3.2.3"),
   from(version="2.2.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_3.0.mos"),
   from(version="2.3.0", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
   from(version="2.3.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
-  from(version="2.3.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos"),
-  from(version="3.0.0", script="modelica://Physiolibrary/Resources/Scripts/ConvertFromPhysiolibrary_3.0.0.mos")),
+  from(version="2.3.2", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos")),
   Documentation(revisions="<html>
 <p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague </p>
 <p>All rights reserved. </p>
