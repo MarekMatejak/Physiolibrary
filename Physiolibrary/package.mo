@@ -1459,7 +1459,7 @@ Connector with one flow signal of type Real.
        end FlowMeasure;
 
        model PressureMeasure "Hydraulic pressure at port"
-      extends Physiolibrary.Icons.PressureMeasure;
+         extends Physiolibrary.Icons.PressureMeasure;
 
          replaceable package Medium =
              Chemical.Media.Water_Incompressible           constrainedby
@@ -1467,28 +1467,31 @@ Connector with one flow signal of type Real.
              "Medium model"
              annotation (choicesAllMatching=true);
 
-      outer Modelica.Fluid.System system "System wide properties";
+         outer Modelica.Fluid.System system "System wide properties";
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium
-          = Medium)
+         parameter Boolean GetAbsolutePressure = false "if false then output pressure is relative to ambient pressure"
+            annotation(Evaluate=true, choices(checkBox=true));
+
+         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
+            Medium)
         annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
-      Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
+         Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
         annotation (Placement(transformation(extent={{40,-60},{80,-20}})));
 
        equation
 
-      pressure = q_in.p - system.p_ambient;
-      q_in.m_flow = 0;
+         pressure = q_in.p - (if GetAbsolutePressure then 0 else system.p_ambient);
+         q_in.m_flow = 0;
 
-      q_in.h_outflow = 0;
-      q_in.Xi_outflow = zeros(Medium.nXi);
-      q_in.C_outflow = zeros(Medium.nC);
+         q_in.h_outflow = 0;
+         q_in.Xi_outflow = zeros(Medium.nXi);
+         q_in.C_outflow = zeros(Medium.nC);
 
         annotation (Documentation(revisions=
                             "<html>
-	<p><i>2009-2018</i></p>
-	<p>Marek Matejak, marek@matfyz.cz </p>
-	</html>"));
+        <p><i>2009-2018</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"));
        end PressureMeasure;
 
        model MassFractions "Ideal one port mass fraction sensor"
