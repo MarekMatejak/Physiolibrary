@@ -530,7 +530,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
 
          parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs"
-           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(tab="Advanced",group="Pressure-Volume relationship"));
+           annotation(Evaluate=true, choices(checkBox=true),Dialog(tab="Advanced",group="Pressure-Volume relationship"));
 
          parameter Modelica.SIunits.Volume VitalCapacity = 0.00493  "Relative volume capacity if useSigmoidCompliance"
            annotation (Dialog(enable=useSigmoidCompliance,tab="Advanced", group="Pressure-Volume relationship"));
@@ -555,6 +555,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
          Modelica.SIunits.Pressure d_sigmoid = (BaseMeanVolume-ResidualVolume) * (VitalCapacity-(BaseMeanVolume-ResidualVolume)) / (c*VitalCapacity);
          Modelica.SIunits.Pressure c_sigmoid = (BaseMeanVolume-ZeroPressureVolume)/c + d_sigmoid*log((VitalCapacity/(BaseMeanVolume-ResidualVolume) - 1));
 
+          Modelica.SIunits.Pressure relative_pressure;
       equation
 
         //elastic compartment
@@ -570,10 +571,12 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
         excessVolume = max( 0, volume - zpv);
 
+        relative_pressure = pressure - ep;
+
         pressure = if (not useSigmoidCompliance) then smooth(0, if noEvent(volume >
           ResidualVolume) then (excessVolume/c + ep) else (a*log(max(Modelica.Constants.eps,
-          volume/ResidualVolume)) + ep)) else -d_sigmoid*log((VitalCapacity/(volume -
-          ResidualVolume)) - 1) + c_sigmoid + ep;
+          volume/ResidualVolume)) + ep)) else (-d_sigmoid*log((VitalCapacity/(volume -
+          ResidualVolume)) - 1) + c_sigmoid + ep);
 
 
 
@@ -1170,8 +1173,8 @@ Connector with one flow signal of type Real.
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium
-          =          Medium) "Top site" annotation (Placement(transformation(
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium =
+                     Medium) "Top site" annotation (Placement(transformation(
                 extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
                   {114,54}})));
         Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
@@ -1284,8 +1287,8 @@ Connector with one flow signal of type Real.
        partial model Accumulation
         "Accumulation of substances and heat without pressure relation"
          extends Chemical.Interfaces.PartialSolutionWithHeatPort(
-                                                          redeclare package
-          stateOfMatter =    Medium.stateOfMatter);
+             pressure(start=system.p_ambient),            redeclare package
+             stateOfMatter = Medium.stateOfMatter);
 
          replaceable package Medium = Chemical.Media.Water_Incompressible
            constrainedby Chemical.Interfaces.PartialMedium_C "Medium model" annotation (
@@ -1299,8 +1302,8 @@ Connector with one flow signal of type Real.
            annotation (Evaluate=true, Dialog(connectorSizing=true, group="Ports"));
 
         Interfaces.FluidPorts_a                     q_in[nPorts](redeclare
-          package Medium =
-                      Medium) annotation (Placement(transformation(extent={{-10,-28},{10,
+          package
+             Medium = Medium) annotation (Placement(transformation(extent={{-10,-28},{10,
                    28}}), iconTransformation(
        extent={{-7,-26},{7,26}},
        rotation=180,
@@ -1337,7 +1340,7 @@ Connector with one flow signal of type Real.
 
 
        Chemical.Components.FluidAdapter fluidAdapter_D(nFluidPorts=nPorts, redeclare
-          package Medium =    Medium)
+          package    Medium = Medium)
            annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
 
         Chemical.Components.Substance substance[Medium.nCS](
@@ -1495,37 +1498,48 @@ Connector with one flow signal of type Real.
        end PressureMeasure;
 
        model MassFractions "Ideal one port mass fraction sensor"
-      extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(
+         extends
+              Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(
                                                                    redeclare
-          package Medium = Chemical.Media.Water_Incompressible);
-      extends Modelica.Icons.RotationalSensor;
-      parameter String substanceName="CO2" "Name of mass fraction";
+          replaceable package
+                  Medium = Chemical.Media.Water_Incompressible);
+         extends
+              Modelica.Icons.RotationalSensor;
+         parameter String substanceName="CO2" "Name of mass fraction";
 
-      Modelica.Blocks.Interfaces.RealOutput Xi "Mass fraction in port medium"
+         Modelica.Blocks.Interfaces.RealOutput Xi "Mass fraction in port medium"
         annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 
+        Modelica.SIunits.MoleFraction x "mole fraction";
+        Modelica.SIunits.Pressure p "partial pressure (only for gasseous solution at 101325 Pa)";
+
     protected
-      parameter Integer ind(fixed=false)
+         parameter Integer ind(fixed=false)
         "Index of species in vector of independent mass fractions";
-      Medium.MassFraction XiVec[Medium.nCS]
+         Medium.MassFraction XiVec[Medium.nCS]
         "Mass fraction vector, needed because indexed argument for the operator inStream is not supported";
-      Medium.ThermodynamicState state=Medium.setState_phX(port.p, inStream(port.h_outflow));
+         Medium.ThermodynamicState state=Medium.setState_phX(port.p, inStream(port.h_outflow));
 
        initial algorithm
-      ind := -1;
-      for i in 1:Medium.nXi loop
+         ind := -1;
+         for
+          i in 1:Medium.nXi loop
         if (Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i],
             substanceName)) then
           ind := i;
         end if;
-      end for;
-      assert(ind > 0, "Mass fraction '" + substanceName +
+         end for;
+         assert(ind > 0, "Mass fraction '" + substanceName +
         "' is not present in medium '"
          + Medium.mediumName + "'.\n"
          + "Check sensor parameter and medium model.");
        equation
-      XiVec = Medium.x_mass(inStream(port.Xi_outflow), inStream(port.C_outflow));
-      Xi = XiVec[ind];
+         XiVec = Medium.x_mass(inStream(port.Xi_outflow), inStream(port.C_outflow));
+         Xi = XiVec[ind];
+
+         x = Xi/Medium.stateOfMatter.molarMass(Medium.substanceData[ind]) / (XiVec * (ones(Medium.nCS)./Medium.stateOfMatter.molarMass(Medium.substanceData)));
+         p = 101325*x;
+
        annotation (defaultComponentName="massFraction",
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                 100,100}}), graphics={
@@ -1535,15 +1549,15 @@ Connector with one flow signal of type Real.
         Line(points={{70,0},{100,0}}, color={0,0,127})}),
         Documentation(info=
                      "<html>
-	<p>
-	This component monitors the mass fraction contained in the fluid passing its port.
-	The sensor is ideal, i.e., it does not influence the fluid.
-	</p>
-	</html>",       revisions="<html>
-	<ul>
-	<li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
-	</ul>
-	</html>"));
+        <p>
+        This component monitors the mass fraction contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        </html>",       revisions="<html>
+        <ul>
+        <li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
+        </ul>
+        </html>"));
        end MassFractions;
      /*
 	  model MolarConcentrations "Ideal one port molarity sensor"
@@ -1753,8 +1767,8 @@ Connector with one flow signal of type Real.
            Physiolibrary.Types.RealIO.PressureInput pressure(start=P)=p if
            usePressureInput "Pressure"
            annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium
-          =    Medium) "PressureFlow output connectors"
+           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium =
+               Medium) "PressureFlow output connectors"
            annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
            parameter Types.Temperature T = system.T_ambient "Fluid temperature";
@@ -9970,8 +9984,8 @@ Connector with one flow signal of type Real.
         grid={2,2},
         initialScale=0.2), graphics={
         Polygon(points={{-40,25},{40,25},{50,15},{40,-20},{30,-25},{-30,-25},{-40,
-       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},fillPattern
-              =FillPattern.Solid),
+       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},fillPattern=
+               FillPattern.Solid),
         Ellipse(extent={{-32.5,7.5},{-27.5,12.5}},lineColor={0,0,0},fillColor={0,0,
                0},fillPattern=FillPattern.Solid),
         Ellipse(extent={{-2.5,12.5},{2.5,7.5}},lineColor={0,0,0},fillColor={0,0,0},
@@ -11210,8 +11224,8 @@ input <i>u</i>:
       Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium
-        =   BloodPlasma)
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
+            BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
       Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
         Medium =                                                                    Dialysate)

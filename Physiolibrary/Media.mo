@@ -63,7 +63,7 @@ package Media
       1/d = (X./stateOfMatter.molarMass(substanceData)) * stateOfMatter.molarVolume(substanceData,T=T,p=p);
       h = (X./stateOfMatter.molarMass(substanceData)) * stateOfMatter.molarEnthalpy(substanceData,T=T,p=p);
       u = h - p/d;
-      1/MM = (X./stateOfMatter.molarMass(substanceData)) * ones(nS);
+      MM = (ones(nCS)*X) / ((X./substanceData.MolarWeight) * ones(nCS));
       R = 8.3144/MM;
       state.p = p;
       state.T = T;
@@ -103,7 +103,7 @@ package Media
       "Return thermodynamic state as function of p, h and composition X or Xi"
       input Modelica.SIunits.ElectricPotential v=0;
     protected
-      MolarMass MM = 1/(X*(ones(nCS)./stateOfMatter.molarMass(substanceData)));
+      MolarMass MM = (ones(nCS)*X) / ((X./substanceData.MolarWeight) * ones(nCS));
     algorithm
       state.p :=p;
       state.T := stateOfMatter.solution_temperature(substanceData,h*MM,X./stateOfMatter.molarMass(substanceData),p);
