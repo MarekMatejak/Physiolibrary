@@ -8,7 +8,7 @@ package Media
     "Glb","Others","H2O"},
       final singleState=true,
       final reducedX=false,
-      final fixedX=true,
+      final fixedX=false,
       ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       reference_X = x_default,
       reference_T = 310.15,
