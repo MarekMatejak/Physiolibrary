@@ -1367,8 +1367,6 @@ Connector with one flow signal of type Real.
            end for;
          end if;
 
-        workFromEnvironment =-pressure*volume_der;// - pressure_der*volume;
-
         for i in 1:Medium.nCS loop
            connect(
            substance[i].port_m,fluidAdapter_D.substances[i]) annotation (Line(points={{
@@ -1522,13 +1520,23 @@ Connector with one flow signal of type Real.
 
        initial algorithm
          ind := -1;
-         for
-          i in 1:Medium.nXi loop
-        if (Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i],
-            substanceName)) then
-          ind := i;
-        end if;
-         end for;
+         if Medium.nCS == 1 and Modelica.Utilities.Strings.isEqual(Medium.mediumName, substanceName) then
+           ind :=1;
+         elseif Medium.nC == Medium.nCS then
+           for i in 1:Medium.nC loop
+            if (Modelica.Utilities.Strings.isEqual(Medium.extraPropertiesNames[i],
+                substanceName)) then
+                    ind := i;
+            end if;
+           end for;
+         else
+           for i in 1:Medium.nXi loop
+            if (Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i],
+                substanceName)) then
+                    ind := i;
+            end if;
+           end for;
+         end if;
          assert(ind > 0, "Mass fraction '" + substanceName +
         "' is not present in medium '"
          + Medium.mediumName + "'.\n"
