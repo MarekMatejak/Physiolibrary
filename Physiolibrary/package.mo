@@ -790,7 +790,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
             "(mmHg.min)/l")=79.993432449
           "forward state resistance"
           annotation (Dialog(enable=not useResistanceInputs));
-        parameter Physiolibrary.Types.HydraulicResistance _Roff=799934324490
+        parameter Physiolibrary.Types.HydraulicResistance _Roff=799934324490.0
           "Backward state-off resistance (closed valve resistance)"
           annotation (Dialog(enable=not useResistanceInputs));
 
