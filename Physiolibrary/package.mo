@@ -375,6 +375,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
  extends Modelica.Icons.Package;
 
   package Fluid "Physiological fluids with static and dynamic properties"
+    extends Modelica.Icons.Package;
     package Components
       extends Modelica.Icons.Package;
       model Conductor "Hydraulic resistor, where conductance=1/resistance"
@@ -11171,6 +11172,7 @@ input <i>u</i>:
    end Blocks;
 
   package Examples "Integrative examples of Physiolibrary cross-domain usage"
+    extends Modelica.Icons.ExamplesPackage;
     model DialysisMembrane
       import Physiolibrary;
       // import SystemModelingInModelica.Interfaces;
