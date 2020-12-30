@@ -11200,7 +11200,7 @@ input <i>u</i>:
      parameter Modelica.SIunits.Length Diameter(displayUnit="mm")=0.0002 "Diameter of each pipe";
      parameter Integer NParallel=50 "Number of paralel pipes";
 
-     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nCS](displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
+     parameter Modelica.SIunits.VolumeFlowRate Clearances[BloodPlasma.nCS](each displayUnit="ml/min")= {1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0} "clearances";
 
      parameter Modelica.SIunits.Concentration InitialPlasma[BloodPlasma.nCS](each displayUnit="mmol/l") = { 51523, 135, 24, 5, 5, 30, 105, 1.5, 0.5, 0.7, 0.8, 1e-6} "Initial blood plasma concentrations";
      parameter Modelica.SIunits.Concentration InitialDialysate[Dialysate.nCS](each displayUnit="mmol/l") = { 51523, 138, 32, 3, 5, 1e-6, 111,   1e-6,   1e-6,   1e-6,   1e-6, 1e-6} "Initial dialysate contentrations";
