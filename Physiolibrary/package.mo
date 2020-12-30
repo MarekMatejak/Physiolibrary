@@ -2777,10 +2777,19 @@ Connector with one flow signal of type Real.
 \t  by the StarlingSlope and filling pressure."
                extends HeartInterface;
 
-               Physiolibrary.Fluid.Interfaces.FluidPort_a q_in annotation (Placement(
+               replaceable package Medium =
+                  Chemical.Media.Water_Incompressible           constrainedby
+            Chemical.Interfaces.PartialMedium_C
+               "Medium model"   annotation (choicesAllMatching=true);
+
+               Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare
+              package                                                            Medium =
+                Chemical.Media.Water_Incompressible)                                                                           annotation (Placement(
                 transformation(extent={{-64,0},{-44,20}}),
               iconTransformation(extent={{-110,-10},{-90,10}})));
-               Physiolibrary.Fluid.Interfaces.FluidPort_b q_out annotation (Placement(
+               Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare
+              package                                                             Medium =
+                Chemical.Media.Water_Incompressible)                                                                            annotation (Placement(
                 transformation(extent={{42,2},{62,22}}),
               iconTransformation(extent={{42,2},{62,22}})));
                Utilities.Pulses pulses
