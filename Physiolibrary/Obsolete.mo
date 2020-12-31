@@ -1,5 +1,7 @@
 ﻿within Physiolibrary;
 package Obsolete
+  extends Modelica.Icons.Package;
+  extends Modelica.Icons.ObsoleteModel;
   package ObsoleteChemical "Obsolete, please use 'Chemical' library instead!"
    extends Modelica.Icons.Package;
     package Examples
