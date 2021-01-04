@@ -1,5 +1,7 @@
 ﻿within Physiolibrary;
 package Obsolete
+  extends Modelica.Icons.Package;
+  extends Modelica.Icons.ObsoleteModel;
   package ObsoleteChemical "Obsolete, please use 'Chemical' library instead!"
    extends Modelica.Icons.Package;
     package Examples
@@ -7348,7 +7350,7 @@ Connector with one flow signal of type Real.
           osmoticPermeability=1.2501026264094e-10,
           diffusionPermeability=1.6666666666667e-08,
           hydraulicConductance=1.2501026264094e-10,
-          hydraulicInertance=479960594694,
+          hydraulicInertance=479960594694.0,
           gasSolubility=2.4789568751177,
           gasSATP=0.040339548059044,
           gasNIST=0.041571199502531)

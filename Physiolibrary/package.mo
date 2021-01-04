@@ -375,6 +375,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
  extends Modelica.Icons.Package;
 
   package Fluid "Physiological fluids with static and dynamic properties"
+    extends Modelica.Icons.Package;
     package Components
       extends Modelica.Icons.Package;
       model Conductor "Hydraulic resistor, where conductance=1/resistance"
@@ -808,7 +809,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
             "(mmHg.min)/l")=79.993432449
           "forward state resistance"
           annotation (Dialog(enable=not useResistanceInputs));
-        parameter Physiolibrary.Types.HydraulicResistance _Roff=799934324490
+        parameter Physiolibrary.Types.HydraulicResistance _Roff=799934324490.0
           "Backward state-off resistance (closed valve resistance)"
           annotation (Dialog(enable=not useResistanceInputs));
 
@@ -11565,6 +11566,7 @@ input <i>u</i>:
    end Blocks;
 
   package Examples "Integrative examples of Physiolibrary cross-domain usage"
+    extends Modelica.Icons.ExamplesPackage;
     model DialysisMembrane
       import Physiolibrary;
       // import SystemModelingInModelica.Interfaces;

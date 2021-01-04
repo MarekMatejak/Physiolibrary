@@ -1,6 +1,6 @@
 within Physiolibrary;
 package Media
-
+  extends Modelica.Icons.Package;
   package SimpleBodyFluid "Simplified Human body fluid"
     extends Modelica.Media.Interfaces.PartialMedium(
       final mediumName="SimpleBodyFluid (Physiolibrary)",
