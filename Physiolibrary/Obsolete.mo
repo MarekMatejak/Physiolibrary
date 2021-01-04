@@ -349,7 +349,7 @@ package Obsolete
           Components.Substance oxygen_unbound(solute_start=0.000001*
                 7.875647668393782383419689119171e-5, Simulation=ObsoleteTypes.SimulationType.SteadyState)
             annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
-          Modelica.Blocks.Sources.Clock clock(offset=10)
+          Modelica.Blocks.Sources.ContinuousClock clock(offset=10)
             annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
           Sources.UnlimitedGasStorage O2_in_air(
             Simulation=ObsoleteTypes.SimulationType.SteadyState,
@@ -721,7 +721,7 @@ package Obsolete
           Components.Substance oxygen_unbound(Simulation=ObsoleteTypes.SimulationType.SteadyState,
               solute_start=0.000001*7.875647668393782383419689119171e-5)
             annotation (Placement(transformation(extent={{-2,6},{18,26}})));
-          Modelica.Blocks.Sources.Clock clock(offset=10)
+          Modelica.Blocks.Sources.ContinuousClock clock(offset=10)
             annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
           Modelica.Blocks.Math.Add add[4] annotation (Placement(transformation(
                 extent={{-4,-4},{4,4}},
@@ -1440,8 +1440,9 @@ package Obsolete
           Components.Substance oxygen_unbound(Simulation=ObsoleteTypes.SimulationType.SteadyState,
               solute_start=1e-08)
             annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
-          Modelica.Blocks.Sources.Clock clock(offset=10)
-            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+          Modelica.Blocks.Sources.ContinuousClock clock(offset=10)
+            annotation (Placement(transformation(
+                extent={{-10,-10},{10,10}},
                 rotation=270,
                 origin={-84,70})));
           Sources.UnlimitedGasStorage oxygen_in_air(
@@ -2187,8 +2188,9 @@ package Obsolete
             Components.Substance oxygen_unbound(Simulation=ObsoleteTypes.SimulationType.SteadyState,
                 solute_start=0.000001*7.875647668393782383419689119171e-5)
               annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-            Modelica.Blocks.Sources.Clock clock(offset=1e-06)
-              annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
+            Modelica.Blocks.Sources.ContinuousClock clock(offset=1e-06)
+              annotation (Placement(transformation(extent={{-40,74},{-20,
+                      94}})));
             Sources.UnlimitedGasStorage oxygen_in_air(
               Simulation=ObsoleteTypes.SimulationType.SteadyState,
               usePartialPressureInput=true,
@@ -2300,7 +2302,7 @@ package Obsolete
             Components.Substance oxygen_unbound(Simulation=ObsoleteTypes.SimulationType.SteadyState,
                 solute_start=0.000001*7.875647668393782383419689119171e-5)
               annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-            Modelica.Blocks.Sources.Clock clock(offset=6.7)
+            Modelica.Blocks.Sources.ContinuousClock clock(offset=6.7)
               annotation (Placement(transformation(extent={{30,34},{50,54}})));
             Sources.UnlimitedGasStorage oxygen_in_air(
               Simulation=ObsoleteTypes.SimulationType.SteadyState,
@@ -2537,7 +2539,7 @@ package Obsolete
             n=3,
             Total(displayUnit="mol") = 1/0.018) "total water concentration"
             annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
-          Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
+          Modelica.Blocks.Sources.ContinuousClock SID(offset=-1e-6)
             "strong ions difference with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{52,74},{72,94}})));
           Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F,  y(unit="C"))
@@ -2645,7 +2647,7 @@ package Obsolete
                 extent={{-10,-10},{10,10}},
                 rotation=180,
                 origin={80,-74})));
-          Modelica.Blocks.Sources.Clock SID(offset=-0.01)
+          Modelica.Blocks.Sources.ContinuousClock SID(offset=-0.01)
             "strong ions difference with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{54,74},{74,94}})));
         equation
@@ -2746,7 +2748,7 @@ package Obsolete
                 extent={{-10,-10},{10,10}},
                 rotation=180,
                 origin={80,-74})));
-          Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
+          Modelica.Blocks.Sources.ContinuousClock SID(offset=-0.0832)
             "strong ions difference with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{54,76},{74,96}})));
 
@@ -2818,7 +2820,7 @@ package Obsolete
           Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
             annotation (Placement(transformation(extent={{64,-20},{84,0}})));
 
-          Modelica.Blocks.Sources.Clock SID(offset=0)
+          Modelica.Blocks.Sources.ContinuousClock SID(offset=0)
             "strong ions difference with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{44,74},{64,94}})));
 
@@ -2979,7 +2981,7 @@ package Obsolete
                   extent={{-8,-8},{8,8}},
                   rotation=180,
                   origin={78,-70})));
-            Modelica.Blocks.Sources.Clock SID_less_Cl(offset=-0.0832)
+            Modelica.Blocks.Sources.ContinuousClock SID_less_Cl(offset=-0.0832)
               "strong ions difference without chloride with respect to albumin charge shift"
               annotation (Placement(transformation(extent={{68,-42},{88,-22}})));
 
@@ -3324,17 +3326,17 @@ package Obsolete
           nS]=ones(nS) "Stoichiometric reaction coefficient for substrates"
           annotation (HideResult=true, Dialog(group="Substrates", tab=
                 "Reaction type"));
-        parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
-          "Activity coefficients of substrates"
-          annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
+        parameter Modelica.Units.SI.ActivityCoefficient as[nS]=ones(nS)
+          "Activity coefficients of substrates" annotation (HideResult=
+              true, Dialog(group="Substrates", tab="Reaction type"));
 
         parameter Types.StoichiometricNumber p[
           nP]=ones(nP) "Stoichiometric reaction coefficients for products"
           annotation (HideResult=true, Dialog(group="Products", tab=
                 "Reaction type"));
-         parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
-          "Activity coefficients of products"
-          annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
+        parameter Modelica.Units.SI.ActivityCoefficient ap[nP]=ones(nP)
+          "Activity coefficients of products" annotation (HideResult=true,
+            Dialog(group="Products", tab="Reaction type"));
 
        extends
           Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalHeatPort;
@@ -4323,7 +4325,7 @@ package Obsolete
       model MolarFlowMeasure "Measure of molar flow"
         extends Interfaces.OnePort;
         //extends Icons.MolarFlowMeasure;
-        extends Modelica.Icons.RotationalSensor;
+        extends Modelica.Icons.RoundSensor;
 
         Types.RealIO.MolarFlowRateOutput molarFlowRate annotation (
             Placement(transformation(
@@ -4351,7 +4353,7 @@ package Obsolete
       end MolarFlowMeasure;
 
       model ConcentrationMeasure "Measure of molar concentration"
-        extends Modelica.Icons.RotationalSensor;
+        extends Modelica.Icons.RoundSensor;
 
         Interfaces.ChemicalPort_a q_in "For measure only" annotation (Placement(
               transformation(extent={{-10,-10},{10,10}}), iconTransformation(
@@ -4384,7 +4386,7 @@ package Obsolete
 
       model IncrementalFlowConcentrationMeasure
         "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
-        extends Modelica.Icons.RotationalSensor;
+        extends Modelica.Icons.RoundSensor;
 
         extends Fluid.Interfaces.ConditionalVolumeFlow;
 
@@ -5583,7 +5585,7 @@ on the model behaviour.
       extends Modelica.Icons.SensorsPackage;
       model FlowMeasure "Measurement of flux through semipermeable membrane"
         extends Interfaces.OnePort;
-        extends Modelica.Icons.RotationalSensor;
+        extends Modelica.Icons.RoundSensor;
         //extends Icons.FlowMeasure;
 
         Types.RealIO.VolumeFlowRateOutput volumeFlowRate
@@ -6095,13 +6097,14 @@ Connector with one flow signal of type Real.
           solute_start=0.000001*7.875647668393782383419689119171e-5,
           isDependent=true)
           annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
-        Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
-          annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
+        Modelica.Blocks.Sources.ContinuousClock oxygenPartialPressure(
+            offset=1e-06) annotation (Placement(transformation(extent={{-80,
+                  60},{-60,80}})));
         Modelica.Blocks.Sources.Sine temperature(
           amplitude=10,
-          freqHz=1/60,
-          offset=310.15)
-          annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
+          f=1/60,
+          offset=310.15) annotation (Placement(transformation(extent={{-94,
+                  -28},{-74,-8}})));
         Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
           prescribedTemperature
           annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
@@ -6295,7 +6298,7 @@ Connector with one flow signal of type Real.
         ObsoleteChemical.Components.Substance oxygen_unbound(solute_start=0.000001*
               7.875647668393782383419689119171e-5, Simulation=ObsoleteTypes.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
-        Modelica.Blocks.Sources.Clock clock(offset=60)
+        Modelica.Blocks.Sources.ContinuousClock clock(offset=60)
           annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
         SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
           n=10,
