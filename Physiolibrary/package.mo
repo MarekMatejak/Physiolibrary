@@ -593,7 +593,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         relative_pressure = pressure - ep;
 
         pressure = if (not useSigmoidCompliance) then smooth(0, if noEvent(volume >
-          ResidualVolume) then (excessVolume/c + ep) else (a*log(max(Modelica.Constants.eps,
+          ResidualVolume) then (excessVolume/c + ep) else (-a*log(max(Modelica.Constants.eps,
           volume/ResidualVolume)) + ep)) else (-d_sigmoid*log((VitalCapacity/(volume -
           ResidualVolume)) - 1) + c_sigmoid + ep);
 
@@ -1199,8 +1199,7 @@ Connector with one flow signal of type Real.
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package
-                                                                          Medium =
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium =
                      Medium) "Top site" annotation (Placement(transformation(
                 extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
                   {114,54}})));
@@ -1490,7 +1489,11 @@ Connector with one flow signal of type Real.
 
          volume = mass/density;
 
-         density = Medium.density(Medium.setState_phX(pressure,enthalpy/mass,massFractions));
+         if EnthalpyNotUsed then
+            density = Medium.density(Medium.setState_pTX(pressure,system.T_ambient,massFractions));
+         else
+            density = Medium.density(Medium.setState_phX(pressure,enthalpy/mass,massFractions));
+         end if;
 
 
          for i in 1:nPorts loop
@@ -1585,8 +1588,8 @@ Connector with one flow signal of type Real.
          parameter Boolean GetAbsolutePressure = false "if false then output pressure is relative to ambient pressure"
             annotation(Evaluate=true, choices(checkBox=true));
 
-         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare
-          package                                                          Medium =
+         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
+                                                                           Medium =
             Medium)
         annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
          Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
@@ -1893,8 +1896,7 @@ Connector with one flow signal of type Real.
            Physiolibrary.Types.RealIO.PressureInput pressure(start=P)=p if
            usePressureInput "Pressure"
            annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package
-                                                                          Medium =
+           Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium =
                Medium) "PressureFlow output connectors"
            annotation (Placement(transformation(extent={{84,-16},{116,16}})));
 
@@ -4455,8 +4457,8 @@ Connector with one flow signal of type Real.
 	      port.Q_flow = 0;
 	  end if;
 	*/
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent
-              ={{-100,
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent=
+               {{-100,
                 -100},{100,100}}),
           graphics={
         Text(extent={{-150,150},{150,110}},textString="%name",lineColor={0,0,
@@ -4863,8 +4865,8 @@ Connector with one flow signal of type Real.
       port_a.change = if (changePerPopulationMember > 0) then
         changePerPopulationMember*port_a.population else
         changePerPopulationMember*port_b.population;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent
-              ={{-100,
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent=
+               {{-100,
                 -100},{100,100}}), graphics={
         Rectangle(extent={{-100,-50},{100,50}},lineColor={0,0,127},fillColor={
               255,255,255},fillPattern=FillPattern.Solid,rotation=360),
@@ -4880,8 +4882,8 @@ Connector with one flow signal of type Real.
 
        equation
       port_a.change = change;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent
-              ={{-100,
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent=
+               {{-100,
                 -100},{100,100}}), graphics={
         Rectangle(extent={{-100,-50},{100,50}},lineColor={0,127,127},fillColor=
               {255,255,255},fillPattern=FillPattern.Solid,rotation=360),
@@ -4921,8 +4923,8 @@ Connector with one flow signal of type Real.
            iconTransformation(extent={{-110,-10},{-90,10}})));
        equation
       port_a.change = change;
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent
-              ={{-100,
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent=
+               {{-100,
                 -100},{100,100}}), graphics={
         Rectangle(extent={{-100,-52},{100,48}},lineColor={0,127,127},fillColor=
               {255,255,255},fillPattern=FillPattern.Solid,rotation=360),
@@ -10352,7 +10354,8 @@ Connector with one flow signal of type Real.
         grid={2,2},
         initialScale=0.2), graphics={
         Polygon(points={{-40,25},{40,25},{50,15},{40,-20},{30,-25},{-30,-25},{-40,
-       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},fillPattern=
+       -20},{-50,15},{-40,25}},lineColor={0,0,0},fillColor={0,0,255},
+              fillPattern=
                FillPattern.Solid),
         Ellipse(extent={{-32.5,7.5},{-27.5,12.5}},lineColor={0,0,0},fillColor={0,0,
                0},fillPattern=FillPattern.Solid),
@@ -11665,8 +11668,8 @@ input <i>u</i>:
         Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
-      Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare
-        package Medium =                                                            Dialysate)
+      Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
+                Medium =                                                            Dialysate)
         annotation (Placement(transformation(extent={{50,110},{70,90}})));
       Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare
         package Medium =                                                             Dialysate)
