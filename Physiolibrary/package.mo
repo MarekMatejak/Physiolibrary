@@ -453,8 +453,6 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         "Elastic compartment as chemical solution envelop"
         extends Physiolibrary.Icons.ElasticBalloon;
 
-
-
         extends Physiolibrary.Fluid.Interfaces.Accumulation;
 
          parameter Real Compliance(unit="m3/Pa")=1e+3
@@ -510,9 +508,6 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           "=true, if external pressure input is used"
           annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="Conditional inputs"));
 
-      parameter Modelica.Units.SI.Pressure MinimalCollapsingPressure=0
-        annotation (Dialog(tab="Advanced", group=
-              "Pressure-Volume relationship"));
 
          Modelica.Blocks.Interfaces.RealInput
                 externalPressure(unit="Pa", start=
@@ -561,8 +556,6 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
       Modelica.Units.SI.Pressure ep;
          Real c(unit="m3/Pa");
 
-      parameter Modelica.Units.SI.Pressure a=MinimalCollapsingPressure/
-          log(Modelica.Constants.eps);
 
       parameter Modelica.Units.SI.Volume BaseMeanVolume=
           ZeroPressureVolume + BaseTidalVolume/2
@@ -593,7 +586,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         relative_pressure = pressure - ep;
 
         pressure = if (not useSigmoidCompliance) then smooth(0, if noEvent(volume >
-          ResidualVolume) then (excessVolume/c + ep) else (-a*log(max(Modelica.Constants.eps,
+          ResidualVolume) then (excessVolume/c + ep) else ((-ep/log(Modelica.Constants.eps))*log(max(Modelica.Constants.eps,
           volume/ResidualVolume)) + ep)) else (-d_sigmoid*log((VitalCapacity/(volume -
           ResidualVolume)) - 1) + c_sigmoid + ep);
 
@@ -909,16 +902,14 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         Chemical.Interfaces.PartialMedium_C
         "Medium model"   annotation (choicesAllMatching=true);
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare
-          package
+        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package
           Medium =                                                               Medium)
           annotation (Placement(transformation(extent={{-114,26},{-86,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare
-          package
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package
           Medium =                                                                Medium)
           annotation (Placement(transformation(extent={{86,26},{114,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare
-          package Medium =                                                             Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare package
+                  Medium =                                                             Medium)
           annotation (Placement(transformation(extent={{-14,-114},{14,-86}})));
         Physiolibrary.Types.RealIO.FractionInput FractReab
           annotation (Placement(transformation(extent={{-100,-60},{-60,-20}})));
@@ -1009,8 +1000,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
-      connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare
-          replaceable package Medium =
+      connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare replaceable package
+                              Medium =
             Chemical.Media.Water_Incompressible);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
@@ -1203,8 +1194,7 @@ Connector with one flow signal of type Real.
                      Medium) "Top site" annotation (Placement(transformation(
                 extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
                   {114,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare
-          package
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
           Medium =   Medium) "Bottom site" annotation (Placement(transformation(
                 extent={{84,-56},{112,-28}}), iconTransformation(extent={{84,-56},
                   {112,-28}})));
@@ -1346,37 +1336,11 @@ Connector with one flow signal of type Real.
    q = molarFlows,
    h_outflow = molarEnthalpies)*/
 
-        ChemicalSolution_phXvI chemicalSolution(
+        Medium.ChemicalSolution chemicalSolution(
            p=pressure, h=enthalpy/mass, X=massFractions, EnthalpyNotUsed=EnthalpyNotUsed) if
                 useSubstances;
 
-        model ChemicalSolution_phXvI
-          Chemical.Interfaces.SubstancePorts_a substances[Medium.nCS];
-          input Modelica.Units.SI.Pressure p "pressure";
-          input Modelica.Units.SI.SpecificEnthalpy h "specific enthalpy";
-          input Modelica.Units.SI.MassFraction X[Medium.nCS] "mass fractions of substances";
-          input Modelica.Units.SI.ElectricPotential v=0 "electric potential";
-          input Modelica.Units.SI.MoleFraction I=0 "mole fraction based ionic strength";
-          output Types.Temperature T "temperature";
-          Types.RealIO.MolarFlowRateOutput molarFlows[Medium.nCS] "molar flows of substances";
-          Types.RealIO.MolarEnthalpyOutput actualStreamMolarEnthalpies[Medium.nCS] "molar enthalpies in streams";
 
-          parameter Boolean EnthalpyNotUsed=false annotation (
-          Evaluate=true,
-          HideResult=true,
-          choices(checkBox=true),
-          Dialog(tab="Advanced", group="Performance"));
-      protected
-          Medium.ThermodynamicState state = Medium.setState_phX(p,h,X);
-        equation
-          T = state.T;
-          actualStreamMolarEnthalpies =
-            if EnthalpyNotUsed then zeros(Medium.nCS)
-            else actualStream(substances.h_outflow);
-          substances.u = Medium.electrochemicalPotentials_pTXvI(p,T,X,v,I);
-          substances.h_outflow = Medium.molarEnthalpies_pTvI(p,T,v,I);
-          molarFlows = substances.q;
-        end ChemicalSolution_phXvI;
 
 
 
@@ -1422,7 +1386,7 @@ Connector with one flow signal of type Real.
               parameter Medium.ThermodynamicState state_ambient = Medium.setState_pTX(system.p_ambient,system.T_ambient,Medium.X_default);
 
         parameter Modelica.Units.SI.MolarMass MM[Medium.nCS]=
-            Medium.stateOfMatter.molarMass(Medium.substanceData);
+            Medium.molarMasses();
         parameter Modelica.Units.SI.MassFraction x_mass_start[Medium.nCS]=
             concentration_start .* MM/(concentration_start*MM);
         parameter Modelica.Units.SI.Mass m_start[Medium.nCS]=mass_start*
@@ -1463,16 +1427,14 @@ Connector with one flow signal of type Real.
           connect(substances,chemicalSolution.substances);
           connect(chemicalSolution.molarFlows,molarFlows);
           connect(chemicalSolution.actualStreamMolarEnthalpies,molarEnthalpies);
-
         else
           molarFlows = zeros(Medium.nCS);
           molarEnthalpies = zeros(Medium.nCS); // not used
-
         end if;
 
         der(substanceMasses) =
             q_in.m_flow * xx_mass
-         +  molarFlows .* Medium.stateOfMatter.molarMass(Medium.substanceData);
+         +  molarFlows .* Medium.molarMasses();
 
 
 
@@ -1588,8 +1550,7 @@ Connector with one flow signal of type Real.
          parameter Boolean GetAbsolutePressure = false "if false then output pressure is relative to ambient pressure"
             annotation(Evaluate=true, choices(checkBox=true));
 
-         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-                                                                           Medium =
+         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
             Medium)
         annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
          Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure"
@@ -1614,8 +1575,7 @@ Connector with one flow signal of type Real.
        model MassFractions "Ideal one port mass fraction sensor"
          extends
               Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(
-                                                                   redeclare
-          replaceable package
+                                                                   redeclare replaceable package
                   Medium = Chemical.Media.Water_Incompressible);
          extends
               Modelica.Icons.RoundSensor;
@@ -1742,8 +1702,7 @@ Connector with one flow signal of type Real.
 
      package Sources
        extends Modelica.Icons.SourcesPackage;
-       model MassInflowSource
-      "Prescribed mass flow rate at port with unlimited mass"
+       model MassInflowSource "Prescribed mass flow rate at port with unlimited mass"
       extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
          replaceable package Medium =
@@ -1804,8 +1763,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end MassInflowSource;
 
-       model VolumeInflowSource
-      "Prescribed volume flow rate at port with unlimited mass"
+       model VolumeInflowSource "Prescribed volume flow rate at port with unlimited mass"
       extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
          replaceable package Medium =
@@ -2022,8 +1980,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end MassOutflowSource;
 
-       model VolumeOutflowSource
-      "Prescribed flow at port with unlimited mass storage"
+       model VolumeOutflowSource "Prescribed flow at port with unlimited mass storage"
       extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
          replaceable package Medium =
@@ -2099,8 +2056,7 @@ Connector with one flow signal of type Real.
        "Examples that demonstrate usage of the Pressure flow components"
      extends Modelica.Icons.ExamplesPackage;
 
-       model MinimalCirculation
-      "Minimal circulation models driven by cardiac output"
+       model MinimalCirculation "Minimal circulation models driven by cardiac output"
       extends Modelica.Icons.Example;
 
       Physiolibrary.Fluid.Components.MassPump heart(useSolutionFlowInput=
@@ -2282,7 +2238,8 @@ Connector with one flow signal of type Real.
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={50,34})));
-      Physiolibrary.Fluid.Sources.PressureSource veins annotation (
+      Physiolibrary.Fluid.Sources.PressureSource veins
+        annotation (
           Placement(
         transformation(extent={{-10,-10},{10,10}}, origin={-40,20})));
       Utilities.Pulses pulses(
@@ -2370,7 +2327,8 @@ Connector with one flow signal of type Real.
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={48,34})));
-      Physiolibrary.Fluid.Sources.PressureSource veins annotation (
+      Physiolibrary.Fluid.Sources.PressureSource veins
+        annotation (
           Placement(
         transformation(extent={{-10,-10},{10,10}}, origin={-40,20})));
       Utilities.Pulses pulses(QP(displayUnit="kg/s") =
@@ -2451,8 +2409,7 @@ Connector with one flow signal of type Real.
 	</html>"),experiment(StopTime=5));
        end Windkessel_4element;
 
-       model CardiovascularSystem_GCG
-      "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
+       model CardiovascularSystem_GCG "Cardiovascular part of Guyton-Coleman-Granger's model from 1972"
       extends Modelica.Icons.Example;
       import Hydraulic = Physiolibrary.Fluid;
        Hydraulic.Components.ElasticVessel pulmonaryVeinsAndLeftAtrium(
@@ -2707,8 +2664,7 @@ Connector with one flow signal of type Real.
          end Pulses;
        end Utilities;
 
-       package Kofranek2014
-      "models of cardiovascular system used in www.physiome.cz/atlas"
+       package Kofranek2014 "models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
          model NonPulsatileCirculation
              extends Physiolibrary.Icons.CardioVascular;
@@ -2852,7 +2808,8 @@ Connector with one flow signal of type Real.
             Line(
               points={{-2.75,-45},{-2.75,-44.5},{6,-44.5},{6,-54}}, color={0,0,
                 127}));
-        connect(RP.y, TotalPulmonaryResistance.resistance) annotation (
+        connect(RP.y, TotalPulmonaryResistance.resistance)
+          annotation (
             Line(
               points={{1.5,65},{1.5,65.5},{8,65.5},{8,44}}, color={0,0,127}));
              annotation ( Documentation(info="<html>
@@ -2926,13 +2883,11 @@ Connector with one flow signal of type Real.
             Chemical.Interfaces.PartialMedium_C
                "Medium model"   annotation (choicesAllMatching=true);
 
-               Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare
-              package                                                            Medium =
+               Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
                 Chemical.Media.Water_Incompressible)                                                                           annotation (Placement(
                 transformation(extent={{-64,0},{-44,20}}),
               iconTransformation(extent={{-110,-10},{-90,10}})));
-               Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare
-              package                                                             Medium =
+               Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
                 Chemical.Media.Water_Incompressible)                                                                            annotation (Placement(
                 transformation(extent={{42,2},{62,22}}),
               iconTransformation(extent={{42,2},{62,22}})));
@@ -2978,8 +2933,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end Kofranek2014;
 
-       package Fernandez2013
-      "Model of CVS introduced by Fernandez de Canete et al. 2013"
+       package Fernandez2013 "Model of CVS introduced by Fernandez de Canete et al. 2013"
       extends Modelica.Icons.ExamplesPackage;
 
          model PulsatileCirculation
@@ -3343,8 +3297,7 @@ Connector with one flow signal of type Real.
          end Parts;
        end Fernandez2013;
 
-       package MeursModel2011
-      "models of cardiovascular system used in www.physiome.cz/atlas"
+       package MeursModel2011 "models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
          package Parts "Utility components used by package KofranekModels2013"
              extends Modelica.Icons.UtilitiesPackage;
@@ -3846,8 +3799,7 @@ Connector with one flow signal of type Real.
          "Human body system setting"
         annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare
-          package
+         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
           Medium = Air, T=EnvironmentTemperature) "External environment"
         annotation (Placement(transformation(extent={{-76,-30},{-56,-10}})));
 
@@ -3879,11 +3831,13 @@ Connector with one flow signal of type Real.
          connect(
           respiratoryMusclePressureCycle.val, lungs.externalPressure)
         annotation (Line(points={{38,64},{52,64},{52,-9}}, color={0,0,127}));
-      connect(environment.y, flowMeasure.q_in) annotation (Line(
+      connect(environment.y, flowMeasure.q_in)
+        annotation (Line(
           points={{-56,-20},{-40,-20}},
           color={127,0,0},
           thickness=0.5));
-      connect(flowMeasure.q_out, resistor.q_in) annotation (Line(
+      connect(flowMeasure.q_out, resistor.q_in)
+        annotation (Line(
           points={{-20,-20},{-6,-20}},
           color={127,0,0},
           thickness=0.5));
@@ -4277,8 +4231,7 @@ Connector with one flow signal of type Real.
         Text(extent={{-80,100},{220,140}},textString="%name",lineColor={0,0,255})}));
        end HeatAccumulation;
 
-       model IdealRadiator
-      "Closed circiut radiator, where outflowed = ambient temperature"
+       model IdealRadiator "Closed circiut radiator, where outflowed = ambient temperature"
       extends Interfaces.ConditionalMassFlow;
       extends Physiolibrary.Icons.Radiator;
 
@@ -4485,8 +4438,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end UnlimitedHeat;
 
-       model MassOutflow
-      "One-directional outflow of heated mass with enthalpy (vaporization heat)"
+       model MassOutflow "One-directional outflow of heated mass with enthalpy (vaporization heat)"
       extends Interfaces.ConditionalMassFlow;
 
       Interfaces.HeatPort_a q_in "flow circuit"
@@ -4518,8 +4470,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end MassOutflow;
 
-       model MassInflow
-      "One-directional inflow of heated mass with enthalpy (heat of solvation)"
+       model MassInflow "One-directional inflow of heated mass with enthalpy (heat of solvation)"
       extends Interfaces.ConditionalMassFlow;
       extends Interfaces.ConditionalTemperature;
 
@@ -4623,8 +4574,7 @@ Connector with one flow signal of type Real.
 	</html>"));
        end OnePort;
 
-       partial model ConditionalMassFlow
-      "Input of mass flow vs. parametric mass flow"
+       partial model ConditionalMassFlow "Input of mass flow vs. parametric mass flow"
 
       parameter Boolean useMassFlowInput=false
         "=true, if mass flow input is used instead of parameter MassFlow"
@@ -4653,8 +4603,7 @@ Connector with one flow signal of type Real.
 
        end ConditionalMassFlow;
 
-       partial model ConditionalTemperature
-      "Input of temperature vs. parametric temperature"
+       partial model ConditionalTemperature "Input of temperature vs. parametric temperature"
 
       parameter Boolean useTemperatureInput=false
         "=true, if temperature input is used instead of parameter T"
@@ -4937,8 +4886,7 @@ Connector with one flow signal of type Real.
 
      package Interfaces
        extends Modelica.Icons.InterfacesPackage;
-       connector PopulationPort
-      "Average number of population members and their change"
+       connector PopulationPort "Average number of population members and their change"
       Physiolibrary.Types.Population population
         "Average number of population individuals";
       flow Physiolibrary.Types.PopulationChange change
@@ -5018,8 +4966,7 @@ Connector with one flow signal of type Real.
 
        end PopulationPort_b;
 
-       partial model OnePort
-      "Partial change of population between two ports without its accumulation"
+       partial model OnePort "Partial change of population between two ports without its accumulation"
 
       PopulationPort_b port_b
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -5029,8 +4976,7 @@ Connector with one flow signal of type Real.
       port_a.change + port_b.change = 0;
        end OnePort;
 
-       partial model ConditionalChange
-      "Input of population change vs. parametric constant change"
+       partial model ConditionalChange "Input of population change vs. parametric constant change"
 
       parameter Boolean useChangeInput=false
         "=true, if real input connector is used instead of parameter PopulationChange"
@@ -8195,8 +8141,7 @@ Connector with one flow signal of type Real.
             Connector with one input signal of type DiffusionMembranePermeability.
             </p>
             </html>"));
-       connector DiffusionPermeabilityOutput = output
-        DiffusionPermeability
+       connector DiffusionPermeabilityOutput = output DiffusionPermeability
          "output DiffusionPermeability as connector" annotation (
          defaultComponentName="diffusionmembranepermeability",
          Icon(coordinateSystem(
@@ -9843,8 +9788,7 @@ Connector with one flow signal of type Real.
           Connector with one output signal of type pH.
           </p>
           </html>"));
-       connector VolumeDensityOfChargeInput =           input
-        VolumeDensityOfCharge
+       connector VolumeDensityOfChargeInput =           input VolumeDensityOfCharge
          "input VolumeDensityOfCharge as connector" annotation (
          defaultComponentName="volumeDensityOfCharge",
          Icon(graphics={Polygon(
@@ -9868,8 +9812,8 @@ Connector with one flow signal of type Real.
             Connector with one input signal of type VolumeDensityOfCharge.
             </p>
             </html>"));
-       connector VolumeDensityOfChargeOutput =           output
-        VolumeDensityOfCharge    "output VolumeDensityOfCharge as connector"
+       connector VolumeDensityOfChargeOutput =           output VolumeDensityOfCharge
+                                 "output VolumeDensityOfCharge as connector"
          annotation (
          defaultComponentName="volumeDensityOfCharge",
          Icon(coordinateSystem(
@@ -11671,8 +11615,8 @@ input <i>u</i>:
       Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
                 Medium =                                                            Dialysate)
         annotation (Placement(transformation(extent={{50,110},{70,90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare
-        package Medium =                                                             Dialysate)
+      Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package
+                Medium =                                                             Dialysate)
         annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
 
       Chemical.Components.Membrane membrane[BloodPlasma.nCS](each EnthalpyNotUsed=true, KC=

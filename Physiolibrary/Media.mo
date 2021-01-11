@@ -96,6 +96,12 @@ package Media
 </html>"));
     end ThermodynamicState;
 
+    replaceable function molarMasses
+     output Modelica.Units.SI.MolarMass molarMasses[nCS];
+    algorithm
+      molarMasses := stateOfMatter.molarMass(substanceData);
+    end molarMasses;
+
     redeclare function extends setState_pTX
       "Return thermodynamic state as function of p, T and composition X or Xi"
       input Modelica.Units.SI.ElectricPotential v=0;
