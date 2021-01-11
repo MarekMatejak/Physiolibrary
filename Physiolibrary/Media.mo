@@ -69,6 +69,52 @@ package Media
       Chemical.Substances.Water_liquid()}
        "Definition of the substances";
 
+    replaceable model ChemicalSolution
+      Chemical.Interfaces.SubstancePorts_a substances[nCS];
+      input Modelica.Units.SI.Pressure p "pressure";
+      input Modelica.Units.SI.SpecificEnthalpy h "specific enthalpy";
+      input Modelica.Units.SI.MassFraction X[nCS] "mass fractions of substances";
+      input Modelica.Units.SI.ElectricPotential v=0 "electric potential";
+      input Modelica.Units.SI.MoleFraction I=0 "mole fraction based ionic strength";
+
+      Modelica.Blocks.Interfaces.RealOutput molarFlows[nCS](each unit="mol/s") "molar flows of substances";
+      Modelica.Blocks.Interfaces.RealOutput actualStreamMolarEnthalpies[nCS](each unit="J/mol")
+        "molar enthalpies in streams";
+
+      parameter Boolean EnthalpyNotUsed=false annotation (
+        Evaluate=true,
+        HideResult=true,
+        choices(checkBox=true),
+        Dialog(tab="Advanced", group="Performance"));
+
+      Modelica.Blocks.Interfaces.RealOutput T "temperature";
+    protected
+      ThermodynamicState state=setState_phX(
+            p,
+            h,
+            X);
+    equation
+      T = state.T;
+
+      actualStreamMolarEnthalpies = if EnthalpyNotUsed then zeros(nCS) else actualStream(substances.h_outflow)
+        "molar enthalpy in stream";
+
+      substances.u = electrochemicalPotentials_pTXvI(
+          p,
+          T,
+          X,
+          v,
+          I);
+
+      substances.h_outflow = molarEnthalpies_pTvI(
+          p,
+          T,
+          v,
+          I);
+
+      molarFlows = substances.q;
+    end ChemicalSolution;
+
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
@@ -303,5 +349,4 @@ package Media
 
 
   end SimpleBodyFluid;
-
 end Media;

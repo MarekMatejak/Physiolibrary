@@ -645,8 +645,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         extends Interfaces.OnePort_UpDown;
 
         replaceable package Medium =
-            Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+            Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -898,18 +897,17 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         extends Physiolibrary.Icons.Reabsorption;
 
         replaceable package Medium =
-          Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+          Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
 
-        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package
-          Medium =                                                               Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package Medium =
+                                                                                 Medium)
           annotation (Placement(transformation(extent={{-114,26},{-86,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package
-          Medium =                                                                Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Outflow(redeclare package Medium =
+                                                                                  Medium)
           annotation (Placement(transformation(extent={{86,26},{114,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare package
-                  Medium =                                                             Medium)
+        Physiolibrary.Fluid.Interfaces.FluidPort_b Reabsorption(redeclare package Medium =
+                                                                                       Medium)
           annotation (Placement(transformation(extent={{-14,-114},{14,-86}})));
         Physiolibrary.Types.RealIO.FractionInput FractReab
           annotation (Placement(transformation(extent={{-100,-60},{-60,-20}})));
@@ -1000,8 +998,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
     package Interfaces
       extends Modelica.Icons.InterfacesPackage;
-      connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare replaceable package
-                              Medium =
+      connector FluidPort = Modelica.Fluid.Interfaces.FluidPort (redeclare replaceable package Medium =
             Chemical.Media.Water_Incompressible);
       connector FluidPort_a "Hydraulical inflow connector"
         extends FluidPort;
@@ -1126,8 +1123,7 @@ Connector with one flow signal of type Real.
 
       partial model OnePort "Hydraulical OnePort"
         replaceable package Medium =
-           Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+           Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
 
 
@@ -1185,8 +1181,7 @@ Connector with one flow signal of type Real.
 
       partial model OnePort_UpDown "OnePort with different position of connectors"
        replaceable package Medium =
-           Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+           Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
         "Medium model"   annotation (choicesAllMatching=true);
             //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
 
@@ -1194,8 +1189,8 @@ Connector with one flow signal of type Real.
                      Medium) "Top site" annotation (Placement(transformation(
                 extent={{86,26},{114,54}}), iconTransformation(extent={{86,26},
                   {114,54}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
-          Medium =   Medium) "Bottom site" annotation (Placement(transformation(
+        Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package Medium =
+                     Medium) "Bottom site" annotation (Placement(transformation(
                 extent={{84,-56},{112,-28}}), iconTransformation(extent={{84,-56},
                   {112,-28}})));
 
@@ -1304,7 +1299,7 @@ Connector with one flow signal of type Real.
       partial model Accumulation
 
         replaceable package Medium = Chemical.Media.Water_Incompressible
-          constrainedby Chemical.Interfaces.PartialMedium_C "Medium model"
+          constrainedby Chemical.Media.PartialMedium        "Medium model"
           annotation (choicesAllMatching=true);
 
         outer Modelica.Fluid.System system "System wide properties";
@@ -1399,8 +1394,7 @@ Connector with one flow signal of type Real.
         Physiolibrary.Types.Pressure pressure;
         Physiolibrary.Types.Enthalpy enthalpy;
         Physiolibrary.Types.Mass mass;
-        Physiolibrary.Types.Mass substanceMasses[Medium.nCS](stateSelect=if
-                                                                           (not useSubstances) then StateSelect.prefer else StateSelect.default,  start = m_start);
+        Physiolibrary.Types.Mass substanceMasses[Medium.nCS]( start = m_start);
         Physiolibrary.Types.MassFraction massFractions[Medium.nCS];
         Physiolibrary.Types.MassFraction xx_mass[nPorts,Medium.nCS] "Substance mass fraction per fluid port";
 
@@ -1540,8 +1534,7 @@ Connector with one flow signal of type Real.
          extends Physiolibrary.Icons.PressureMeasure;
 
          replaceable package Medium =
-             Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+             Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
              "Medium model"
              annotation (choicesAllMatching=true);
 
@@ -1573,12 +1566,10 @@ Connector with one flow signal of type Real.
        end PressureMeasure;
 
        model MassFractions "Ideal one port mass fraction sensor"
-         extends
-              Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(
-                                                                   redeclare replaceable package
-                  Medium = Chemical.Media.Water_Incompressible);
-         extends
-              Modelica.Icons.RoundSensor;
+         extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(
+                                                                   redeclare replaceable package Medium
+          =                Chemical.Media.Water_Incompressible);
+         extends Modelica.Icons.RoundSensor;
          parameter String substanceName="CO2" "Name of mass fraction";
 
          Modelica.Blocks.Interfaces.RealOutput Xi "Mass fraction in port medium"
@@ -1718,8 +1709,7 @@ Connector with one flow signal of type Real.
       parameter Real C[Medium.nC]=Medium.C_default
         "Extra properties of fluid";
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
-          Medium =
+      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
             Medium)
         annotation (Placement(transformation(extent={{86,-14},{114,14}})));
 
@@ -1779,8 +1769,7 @@ Connector with one flow signal of type Real.
       parameter Real C[Medium.nC]=Medium.C_default
         "Extra properties of fluid";
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
-          Medium =
+      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
             Medium)
         annotation (Placement(transformation(extent={{86,-14},{114,14}})));
 
@@ -1837,8 +1826,7 @@ Connector with one flow signal of type Real.
        model PressureSource "Prescribed pressure at port with unlimited mass"
 
            replaceable package Medium =
-               Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+               Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
            "Medium model"   annotation (choicesAllMatching=true);
 
            outer Modelica.Fluid.System system "System wide properties";
@@ -1920,14 +1908,12 @@ Connector with one flow signal of type Real.
       extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
 
          replaceable package Medium =
-             Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+             Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
            "Medium model"   annotation (choicesAllMatching=true);
 
       outer Modelica.Fluid.System system "System wide properties";
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-          Medium =
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
             Medium) annotation (Placement(transformation(extent={{-114,-14},{-86,
                 14}}), iconTransformation(extent={{-114,-14},{-86,14}})));
 
@@ -1984,14 +1970,12 @@ Connector with one flow signal of type Real.
       extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
 
          replaceable package Medium =
-             Chemical.Media.Water_Incompressible           constrainedby
-        Chemical.Interfaces.PartialMedium_C
+             Chemical.Media.Water_Incompressible           constrainedby Chemical.Media.PartialMedium
            "Medium model"   annotation (choicesAllMatching=true);
 
       outer Modelica.Fluid.System system "System wide properties";
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-          Medium =
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
             Medium) annotation (Placement(transformation(extent={{-114,-14},{-86,
                 14}}), iconTransformation(extent={{-114,-14},{-86,14}})));
 
@@ -2880,7 +2864,7 @@ Connector with one flow signal of type Real.
 
                replaceable package Medium =
                   Chemical.Media.Water_Incompressible           constrainedby
-            Chemical.Interfaces.PartialMedium_C
+            Chemical.Media.PartialMedium
                "Medium model"   annotation (choicesAllMatching=true);
 
                Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
@@ -3647,8 +3631,7 @@ Connector with one flow signal of type Real.
                  color={127,0,0},
                  thickness=0.5));
              connect(Est.q_in[1], Rsart.q_out) annotation (Line(
-                 points={{-16.12,18.9067},{-3.18,18.9067},{-3.18,19},{10,
-                19}},
+                 points={{-16.12,18.9067},{-3.18,18.9067},{-3.18,19},{10,19}},
                  color={127,0,0},
                  thickness=0.5));
              connect(Est.q_in[2], Rsven.q_in) annotation (Line(
@@ -3664,8 +3647,7 @@ Connector with one flow signal of type Real.
                  color={127,0,0},
                  thickness=0.5));
              connect(Rethv.q_out, Eithv.q_in[1]) annotation (Line(
-                 points={{-146,17},{-164,17},{-164,19.2533},{-180.14,
-                19.2533}},
+                 points={{-146,17},{-164,17},{-164,19.2533},{-180.14,19.2533}},
                  color={127,0,0},
                  thickness=0.5));
              connect(Rrain.q_in, Eithv.q_in[2]) annotation (Line(
@@ -3673,8 +3655,7 @@ Connector with one flow signal of type Real.
                  color={127,0,0},
                  thickness=0.5));
              connect(EithaPressure.q_in, Eitha.q_in[3]) annotation (Line(
-                 points={{182,-50},{180,-50},{180,15.0933},{178.89,
-                15.0933}},
+                 points={{182,-50},{180,-50},{180,15.0933},{178.89,15.0933}},
                  color={127,0,0},
                  thickness=0.5));
              connect(EethaPressure.q_in, Eetha.q_in[3]) annotation (Line(
@@ -3729,12 +3710,12 @@ Connector with one flow signal of type Real.
        end MeursModel2011;
 
        model MinimalRespiration "Minimal respiration model"
-         extends
-              Modelica.Icons.Example;
+         extends Modelica.Icons.Example;
 
          import Modelica.Units.SI.*;
 
-         replaceable package Air = Chemical.Media.Air_MixtureGasNasa; //Chemical.Media.SimpleAir_C;
+         replaceable package Air = Chemical.Media.SimpleAir_C;
+        // Chemical.Media.Air_MixtureGasNasa;
 
          parameter Frequency RespirationRate(displayUnit="1/min") = 0.2
         "Respiration rate";
@@ -3799,8 +3780,8 @@ Connector with one flow signal of type Real.
          "Human body system setting"
         annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-          Medium = Air, T=EnvironmentTemperature) "External environment"
+         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package Medium =
+                   Air, T=EnvironmentTemperature) "External environment"
         annotation (Placement(transformation(extent={{-76,-30},{-56,-10}})));
 
          Components.Resistor resistor(redeclare package Medium = Air,
@@ -3811,7 +3792,7 @@ Connector with one flow signal of type Real.
 
          Types.Constants.FrequencyConst frequency(k=RespirationRate)
         annotation (Placement(transformation(extent={{-46,62},{-38,70}})));
-      Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air)
+         Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air)
         annotation (Placement(transformation(extent={{-40,-30},{-20,-10}})));
        equation
 
@@ -3831,12 +3812,14 @@ Connector with one flow signal of type Real.
          connect(
           respiratoryMusclePressureCycle.val, lungs.externalPressure)
         annotation (Line(points={{38,64},{52,64},{52,-9}}, color={0,0,127}));
-      connect(environment.y, flowMeasure.q_in)
+         connect(
+              environment.y, flowMeasure.q_in)
         annotation (Line(
           points={{-56,-20},{-40,-20}},
           color={127,0,0},
           thickness=0.5));
-      connect(flowMeasure.q_out, resistor.q_in)
+         connect(
+              flowMeasure.q_out, resistor.q_in)
         annotation (Line(
           points={{-20,-20},{-6,-20}},
           color={127,0,0},
@@ -10419,7 +10402,6 @@ Connector with one flow signal of type Real.
        "Type for length and radius";
      type Enthalpy = Modelica.Units.SI.Enthalpy(displayUnit="kcal", nominal=4186.8) "Heat energy";
      type MolarEnthalpy = Modelica.Units.SI.MolarEnthalpy(displayUnit="kcal/mol", nominal=4186.8) "Heat energy of substance";
-
      annotation (Documentation(revisions="<html>
         <p>Copyright (c) 2017-2018, Marek Matej&aacute;k, http://www.physiolib.com </p>
         </html>"));
@@ -11604,19 +11586,15 @@ input <i>u</i>:
       rotation=270,
       origin={94,48})));
       */
-      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package
-        Medium =
+      Modelica.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package
-        Medium =
+      Modelica.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
             BloodPlasma)
         annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
-      Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
-                Medium =                                                            Dialysate)
+      Modelica.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package Medium = Dialysate)
         annotation (Placement(transformation(extent={{50,110},{70,90}})));
-      Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package
-                Medium =                                                             Dialysate)
+      Modelica.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package Medium = Dialysate)
         annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
 
       Chemical.Components.Membrane membrane[BloodPlasma.nCS](each EnthalpyNotUsed=true, KC=
@@ -11764,15 +11742,13 @@ input <i>u</i>:
       Fluid.Sources.PressureSource blood_input(redeclare package Medium =
             BloodPlasma,                       usePressureInput=true)
         annotation (Placement(transformation(extent={{-16,-84},{4,-64}})));
-      Fluid.Sources.PressureSource pressureSource1(redeclare package
-        Medium =
+      Fluid.Sources.PressureSource pressureSource1(redeclare package Medium =
             Dialysate, usePressureInput=true)    annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={50,54})));
-      Fluid.Sources.PressureSource dialysate_output(redeclare package
-        Medium =
+      Fluid.Sources.PressureSource dialysate_output(redeclare package Medium =
             Dialysate)                            annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -11828,12 +11804,11 @@ input <i>u</i>:
             coordinateSystem(preserveAspectRatio=false)),
         experiment(StopTime=60, Tolerance=1e-005));
     end Dialysis;
-
   end Examples;
 
   annotation (
 preferredView="info",
-version="3.0.0-alpha3",
+version="3.0.0-alpha4",
 versionDate="2020-12-17",
 dateModified = "2020-12-17 17:14:41Z",
 uses(
