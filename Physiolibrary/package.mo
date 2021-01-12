@@ -2152,7 +2152,7 @@ Connector with one flow signal of type Real.
        equation
       connect(
           arteries.q_in[1], resistance.q_in) annotation (Line(
-          points={{-2.3,49.7333},{18,49.7333},{18,44}},
+          points={{-2.1,49.7333},{18,49.7333},{18,44}},
           color={127,0,0},
           thickness=0.5));
       connect(
@@ -2160,12 +2160,12 @@ Connector with one flow signal of type Real.
             points={{-61,68},{-38,68},{-38,55}}, color={0,0,127}));
       connect(
           unlimitedPump.q_out, arteries.q_in[2]) annotation (Line(
-          points={{-28,48},{-16,48},{-16,48},{-2.3,48}},
+          points={{-28,48},{-16,48},{-16,48},{-2.1,48}},
           color={127,0,0},
           thickness=0.5));
       connect(
           arteries.q_in[3], pressureMeasure.q_in) annotation (Line(
-          points={{-2.3,46.2667},{-2,46.2667},{-2,60},{56,60}},
+          points={{-2.1,46.2667},{-2,46.2667},{-2,60},{56,60}},
           color={127,0,0},
           thickness=0.5));
       connect(
@@ -2249,12 +2249,12 @@ Connector with one flow signal of type Real.
               48},{-24,50},{-16,50}}, thickness=1));
       connect(
           impedance.q_out, arteries.q_in[1]) annotation (Line(
-          points={{4,50},{16,50},{16,49.7333},{25.7,49.7333}},
+          points={{4,50},{16,50},{16,49.7333},{25.9,49.7333}},
           color={127,0,0},
           thickness=0.5));
       connect(
           arteries.q_in[2], resistance.q_in) annotation (Line(
-          points={{25.7,48},{50,48},{50,44}},
+          points={{25.9,48},{50,48},{50,44}},
           color={127,0,0},
           thickness=0.5));
       connect(
@@ -2269,7 +2269,7 @@ Connector with one flow signal of type Real.
           thickness=0.5));
       connect(
           pressureMeasure.q_in, arteries.q_in[3]) annotation (Line(
-          points={{64,70},{26,70},{26,46.2667},{25.7,46.2667}},
+          points={{64,70},{26,70},{26,46.2667},{25.9,46.2667}},
           color={127,0,0},
           thickness=0.5));
       annotation (
@@ -2344,22 +2344,22 @@ Connector with one flow signal of type Real.
               {-26,66},{-16,66}}, thickness=1));
       connect(
           inertia.q_out, arteries.q_in[1]) annotation (Line(
-          points={{4,66},{16,66},{16,49.95},{25.7,49.95}},
+          points={{4,66},{16,66},{16,49.95},{25.9,49.95}},
           color={127,0,0},
           thickness=0.5));
       connect(
           impedance.q_out, arteries.q_in[2]) annotation (Line(
-          points={{4,48},{16,48},{16,48.65},{25.7,48.65}},
+          points={{4,48},{16,48},{16,48.65},{25.9,48.65}},
           color={127,0,0},
           thickness=0.5));
       connect(
           arteries.q_in[3], resistance.q_in) annotation (Line(
-          points={{25.7,47.35},{48,47.35},{48,44}},
+          points={{25.9,47.35},{48,47.35},{48,44}},
           color={127,0,0},
           thickness=0.5));
       connect(
           pressureMeasure.q_in, arteries.q_in[4]) annotation (Line(
-          points={{68,68},{25.7,68},{25.7,46.05}},
+          points={{68,68},{25.9,68},{25.9,46.05}},
           color={127,0,0},
           thickness=0.5));
       connect(
@@ -2517,8 +2517,7 @@ Connector with one flow signal of type Real.
       connect(
           pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in[3])
         annotation (Line(
-          points={{-2,30},{-12,30},{-12,60},{36,60},{36,84},{13.9,84},{13.9,
-              82.2667}},
+          points={{-2,30},{-12,30},{-12,60},{36,60},{36,84},{13.9,84},{13.9,82.2667}},
           color={127,0,0},
           thickness=0.5));
       connect(
@@ -2764,8 +2763,7 @@ Connector with one flow signal of type Real.
                  color={127,0,0},
                  thickness=0.5));
              connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (Line(
-                 points={{52,2.22045e-16},{50,2.22045e-16},{50,-58.2667},{45.9,
-                -58.2667}},
+                 points={{52,2.22045e-16},{50,2.22045e-16},{50,-58.2667},{45.9,-58.2667}},
                  color={127,0,0},
                  thickness=0.5));
              connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in)
@@ -3861,8 +3859,10 @@ Connector with one flow signal of type Real.
         annotation (Placement(transformation(extent={{-40,-20},{-20,0}})));
       Chemical.Components.GasSolubility gasSolubility2
         annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData=Chemical.Substances.Oxygen_gas(),
-          PartialPressure(displayUnit="mmHg") = 13332.2387415)
+      Chemical.Sources.ExternalIdealGasSubstance O2(
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        usePartialPressureInput=true,
+        PartialPressure(displayUnit="mmHg") = 13332.2387415)
         annotation (Placement(transformation(extent={{-96,18},{-76,38}})));
       Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData=Chemical.Substances.CarbonDioxide_gas(),
           PartialPressure(displayUnit="mmHg") = 4666.283559525)
@@ -11878,7 +11878,7 @@ dateModified = "2020-12-17 17:14:41Z",
 uses(
     Modelica(version="4.0.0"),
     Complex(version="4.0.0"),
-    Chemical(version="1.4.0-alpha3")),
+    Chemical(version="1.4.0-alpha4")),
     conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos",
       to="3.0.0-alpha2"),
