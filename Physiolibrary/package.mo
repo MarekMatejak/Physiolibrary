@@ -1349,7 +1349,7 @@ Connector with one flow signal of type Real.
               group="Initialization"));
 
         parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=
-          volume_start*Medium.density(state_ambient) "Mass start value"
+          volume_start*Medium.density_pTX(system.p_ambient,system.T_ambient,Medium.X_default) "Mass start value"
           annotation (Dialog(enable=use_mass_start, group="Initialization"));
 
 
@@ -1358,7 +1358,7 @@ Connector with one flow signal of type Real.
             state=state_ambient,
             Xi=Medium.X_default[1:Medium.nXi],
             C=Medium.C_default)
-          "Initial molar concentrations [mol/kg] (amount of substance of base molecules per total mass of solution)"
+          "Initial molar concentrations [mmol/L] (amount of substance of base molecules per total volume of solution)"
           annotation (Dialog(group="Initialization"));
 
         parameter Boolean EnthalpyNotUsed=false annotation (
@@ -1378,12 +1378,12 @@ Connector with one flow signal of type Real.
                 extent={{-62,-104},{-58,-100}})));
 
     protected
-              parameter Medium.ThermodynamicState state_ambient = Medium.setState_pTX(system.p_ambient,system.T_ambient,Medium.X_default);
+        parameter Medium.ThermodynamicState state_ambient = Medium.setState_pTX(system.p_ambient,system.T_ambient,Medium.X_default);
 
         parameter Modelica.Units.SI.MolarMass MM[Medium.nCS]=
             Medium.molarMasses();
         parameter Modelica.Units.SI.MassFraction x_mass_start[Medium.nCS]=
-            concentration_start .* MM/(concentration_start*MM);
+            concentration_start .* MM / Medium.density_pTX(system.p_ambient,system.T_ambient,Medium.X_default);
         parameter Modelica.Units.SI.Mass m_start[Medium.nCS]=mass_start*
             x_mass_start;
 
@@ -1393,7 +1393,7 @@ Connector with one flow signal of type Real.
 
         Physiolibrary.Types.Pressure pressure;
         Physiolibrary.Types.Enthalpy enthalpy;
-        Physiolibrary.Types.Mass mass;
+        Physiolibrary.Types.Mass mass( start = mass_start);
         Physiolibrary.Types.Mass substanceMasses[Medium.nCS]( start = m_start);
         Physiolibrary.Types.MassFraction massFractions[Medium.nCS];
         Physiolibrary.Types.MassFraction xx_mass[nPorts,Medium.nCS] "Substance mass fraction per fluid port";
@@ -1430,9 +1430,8 @@ Connector with one flow signal of type Real.
             q_in.m_flow * xx_mass
          +  molarFlows .* Medium.molarMasses();
 
+        der(mass) = ones(nPorts) * q_in.m_flow  + (molarFlows * Medium.molarMasses());
 
-
-        mass = sum(substanceMasses);
         massFractions = substanceMasses ./ mass;
 
        if EnthalpyNotUsed then
@@ -1446,9 +1445,9 @@ Connector with one flow signal of type Real.
          volume = mass/density;
 
          if EnthalpyNotUsed then
-            density = Medium.density(Medium.setState_pTX(pressure,system.T_ambient,massFractions));
+            density = Medium.density_pTX(pressure,system.T_ambient,massFractions);
          else
-            density = Medium.density(Medium.setState_phX(pressure,enthalpy/mass,massFractions));
+            density = Medium.density_phX(pressure,enthalpy/mass,massFractions);
          end if;
 
 
@@ -3837,6 +3836,65 @@ Connector with one flow signal of type Real.
         </html>"));
        end MinimalRespiration;
 
+       model BloodGasesEquilibrium
+         extends Modelica.Icons.Example;
+
+         import Modelica.Units.SI.*;
+
+         replaceable package Air = Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
+         replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen;
+
+         inner Modelica.Fluid.System system(T_ambient=310.15)
+                                            "Human body system setting"
+           annotation (Placement(transformation(extent={{60,66},{80,86}})));
+
+         Physiolibrary.Fluid.Components.ElasticVessel blood(
+           redeclare package Medium = Blood,
+           useSubstances=true,
+        use_mass_start=true,
+        mass_start=1,
+        EnthalpyNotUsed=true,
+           Compliance=1) annotation (Placement(transformation(extent={{-4,-52},{16,-32}})));
+      Chemical.Components.GasSolubility gasSolubility
+        annotation (Placement(transformation(extent={{-58,-20},{-38,0}})));
+      Chemical.Components.GasSolubility gasSolubility1
+        annotation (Placement(transformation(extent={{-40,-20},{-20,0}})));
+      Chemical.Components.GasSolubility gasSolubility2
+        annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
+      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData=Chemical.Substances.Oxygen_gas(),
+          PartialPressure(displayUnit="mmHg") = 13332.2387415)
+        annotation (Placement(transformation(extent={{-96,18},{-76,38}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData=Chemical.Substances.CarbonDioxide_gas(),
+          PartialPressure(displayUnit="mmHg") = 4666.283559525)
+        annotation (Placement(transformation(extent={{-70,52},{-50,72}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData=Chemical.Substances.CarbonMonoxide_gas(),
+          PartialPressure(displayUnit="mmHg") = 0.000133322387415) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={28,34})));
+       equation
+
+      connect(gasSolubility.liquid_port, blood.substances[2])
+        annotation (Line(points={{-48,-20},{-48,-42},{-4,-42}}, color={158,66,200}));
+      connect(gasSolubility1.liquid_port, blood.substances[3])
+        annotation (Line(points={{-30,-20},{-30,-48},{-4,-48},{-4,-42}}, color={158,66,200}));
+      connect(O2.port_a, gasSolubility.gas_port)
+        annotation (Line(points={{-76,28},{-48,28},{-48,0}}, color={158,66,200}));
+      connect(CO2.port_a, gasSolubility1.gas_port)
+        annotation (Line(points={{-50,62},{-30,62},{-30,0}}, color={158,66,200}));
+      connect(CO.port_a, gasSolubility2.gas_port)
+        annotation (Line(points={{18,34},{-12,34},{-12,0}}, color={158,66,200}));
+      connect(gasSolubility2.liquid_port, blood.substances[4])
+        annotation (Line(points={{-12,-20},{-12,-42},{-4,-42}}, color={158,66,200}));
+         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                   {100,100}})),                                        Diagram(
+               coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+           experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+           Documentation(info="<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+       end BloodGasesEquilibrium;
      end Examples;
   end Fluid;
 
@@ -10339,6 +10397,10 @@ Connector with one flow signal of type Real.
                                             displayUnit="ml", nominal=1e-6, min=0, max=Modelica.Constants.inf);
      type VolumeFlowRate = Modelica.Units.SI.VolumeFlowRate (
                                                            displayUnit="ml/min", nominal=(1e-6)/60);
+     type VolumeFraction = Modelica.Units.SI.VolumeFraction (
+                                                       nominal=1e-2, min=ModelicaServices.Machine.small, max=Modelica.Constants.inf);
+     type MoleFraction = Modelica.Units.SI.MoleFraction (
+                                                       nominal=1e-2, min=ModelicaServices.Machine.small, max=Modelica.Constants.inf);
      replaceable type Concentration = Modelica.Units.SI.Concentration(displayUnit="mmol/l", min=ModelicaServices.Machine.small, max=Modelica.Constants.inf) constrainedby Real;
      replaceable type AmountOfSubstance =
       Modelica.Units.SI.AmountOfSubstance (                                   displayUnit="mmol", min=0, max=Modelica.Constants.inf) constrainedby Real;
@@ -10388,6 +10450,8 @@ Connector with one flow signal of type Real.
      type HydraulicInertance =  Real(final quantity="HydraulicInertance",final unit="Pa.s2/kg", displayUnit="mmHg.min2/g", nominal=((133.322387415)*(60^2)/(1e-3)));
      type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
        "Gas solubility in liquid";
+     type GasSolubilityPa = Real(final quantity="GasSolubilityPa", final unit="(mol/m3)/Pa", nominal=1e-4, min=0)
+       "Gas solubility in liquid by partial pressure";
      type StoichiometricNumber = Modelica.Units.SI.StoichiometricNumber;// Integer(final quantity="StoichiometricNumber", min=1);
 
      type Population = Real (final quantity="Population", final unit="1", displayUnit="1", min=0)

@@ -349,4 +349,253 @@ package Media
 
 
   end SimpleBodyFluid;
+
+  package BloodBySiggaardAndersen
+    "Blood for gases transport"
+    extends Chemical.Media.Water_Incompressible(
+      nCS=12,
+      extraPropertiesNames={"RBC",    "O2",   "CO2",    "CO",   "Hb","MetHb","HbF","Alb","Glb", "PO4","DPG","SID"},
+      C_default =           {0.44, 8.16865, 21.2679, 1.512e-6,   8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67});
+
+    redeclare model ChemicalSolution
+      Chemical.Interfaces.SubstancePorts_a substances[nCS]
+        annotation (Placement(transformation(extent={{-110,-42},{-90,38}})));
+      input Modelica.Units.SI.Pressure p "pressure";
+      input Modelica.Units.SI.SpecificEnthalpy h "specific enthalpy";
+      input Modelica.Units.SI.MassFraction X[nCS] "mass fractions of substances";
+      input Modelica.Units.SI.ElectricPotential v=0 "electric potential";
+      input Modelica.Units.SI.MoleFraction I=0 "mole fraction based ionic strength";
+
+      Modelica.Blocks.Interfaces.RealOutput molarFlows[nCS](each unit="mol/s") "molar flows of substances";
+      Modelica.Blocks.Interfaces.RealOutput actualStreamMolarEnthalpies[nCS](each unit="J/mol")
+        "molar enthalpies in streams";
+
+      parameter Boolean EnthalpyNotUsed=false annotation (
+        Evaluate=true,
+        HideResult=true,
+        choices(checkBox=true),
+        Dialog(tab="Advanced", group="Performance"));
+
+      Modelica.Blocks.Interfaces.RealOutput T "temperature";
+
+    protected
+      Real C[nCS] = (X ./ molarMasses()) .*  density_pTX(p,T,X);
+
+      ThermodynamicState state;
+      BloodGases bloodGases(p=p,T=310.15,C=C);
+      Modelica.Units.SI.MoleFraction aO2,aCO2,aCO;
+      Modelica.Units.SI.ChemicalPotential uO2,uCO2,uCO;
+      constant Chemical.Interfaces.IdealGas.SubstanceData O2=Chemical.Substances.Oxygen_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO2=Chemical.Substances.CarbonDioxide_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO=Chemical.Substances.CarbonMonoxide_gas();
+
+    equation
+      if (EnthalpyNotUsed) then
+        state = setState_pTX(p,T,X);
+        T=310.15;
+      else
+        state = setState_phX(p,h,X);
+        T=state.T;
+      end if;
+
+      actualStreamMolarEnthalpies = if EnthalpyNotUsed then zeros(nCS) else actualStream(substances.h_outflow)
+        "molar enthalpy in stream";
+
+      aO2 = bloodGases.pO2/p;
+      aCO2 = bloodGases.pCO2/p;
+      aCO = bloodGases.pCO/p;
+
+      uO2 = Modelica.Constants.R*T*log(aO2)
+            + Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(O2,T,p,v,I);
+      uCO2 = Modelica.Constants.R*T*log(aCO2)
+            + Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(CO2,T,p,v,I);
+      uCO = Modelica.Constants.R*T*log(aCO)
+            + Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(CO,T,p,v,I);
+
+      substances.u = {0,  uO2, uCO2,  uCO,   0,  0,    0,   0,  0,    0,    0,   0};
+
+      substances.h_outflow = zeros(nCS);
+
+      molarFlows = substances.q;
+    end ChemicalSolution;
+
+    redeclare function molarMasses
+     output Modelica.Units.SI.MolarMass molarMasses[nCS];
+    algorithm
+                      // "RBC",  "O2", "CO2",  "CO",     "Hb",   "MetHb",    "HbF",  "Alb", "Glb", "PO4", "DPG", "SID"},
+      molarMasses :=    { 1098, 0.032, 0.044, 0.059, 65.494/4,  65.494/4, 65.494/4, 66.463,     1, 0.095, 0.266, 0.031}
+        "1. density of red cells; 
+       2.-8. and 10.-11. molar masses of substances;
+       9. conversion from g/L to kg/m3 for globulins;
+       12. average molar mass of strong ions";
+
+    end molarMasses;
+
+    model BloodGases
+        input Real C[12]=
+        {0.44, 8.16865, 21.2679, 1.512e-6,   8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67}
+        "Volume, amount of substance or mass of substance per total volume of solution";
+
+        input Modelica.Units.SI.Pressure p = 101325 "Pressure";
+        input Modelica.Units.SI.Temperature T = 310.15 "Temperature";
+        input Modelica.Units.SI.ElectricPotential electricPotential=0 "Electric potential";
+        input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0 "Mole-fraction based ionic strength";
+        output Modelica.Units.SI.Pressure pO2(start = 101325*87/760) "Oxygen partial pressure";
+        output Modelica.Units.SI.Pressure pCO2(start = 101325*40/760) "Carbon dioxide partial pressure";
+        output Modelica.Units.SI.Pressure pCO(start = 1e-5) "Carbon monoxide partial pressure";
+
+    protected
+        Physiolibrary.Types.VolumeFraction Hct=C[1] "haematocrit";
+        Physiolibrary.Types.Concentration tO2=C[2] "oxygen content per volume of blood",
+             tCO2=C[3] "carbon dioxide content per volume of blood",
+             tCO=C[4] "carbon monoxide content per volume of blood",
+             tHb=C[5] "haemoglobin content per volume of blood";
+        Physiolibrary.Types.MoleFraction  FMetHb=C[6]/C[5] "fraction of metheamoglobin",
+             FHbF=C[7]/C[5] "fraction of foetalheamoglobin";
+        Physiolibrary.Types.Concentration  ctHb_ery=C[5]/C[1] "haemoglobin concentration in red cells",
+             tAlb=C[8] "albumin concentration in blood plasma";
+        Physiolibrary.Types.MassConcentration tGlb=C[9] "globulin concentration in blood plasma";
+        Physiolibrary.Types.Concentration tPO4=C[10] "inorganic phosphates concentration in blood plasma",
+             cDPG=C[11] "DPG concentration in blood plasma",
+             SID=C[12] "strong ion difference of blood";
+
+        constant Physiolibrary.Types.Temperature T0 = 273.15+37 "normal temperature";
+        constant Physiolibrary.Types.pH pH0 = 7.4 "normal pH";
+        constant Physiolibrary.Types.pH pH_ery0 = 7.19 "normal pH in erythrocyte";
+        constant Physiolibrary.Types.Pressure pCO20 = (40/760)*101325 "normal CO2 partial pressure";
+
+        Physiolibrary.Types.Concentration NSIDP, NSIDE, NSID, BEox, cdCO2;
+        Physiolibrary.Types.pH pH,pH_ery;
+
+        Physiolibrary.Types.GasSolubilityPa aCO2N = 0.00023 "solubility of CO2 in blood plasma at 37 degC";
+        Physiolibrary.Types.GasSolubilityPa aCO2 = 0.00023 * 10^(-0.0092*(T-310.15)) "solubility of CO2 in blood plasma";
+        Physiolibrary.Types.GasSolubilityPa aCO2_ery( displayUnit="mmol/l/mmHg")=0.000195 "solubility 0.23 (mmol/l)/kPa at 25degC";
+        Physiolibrary.Types.GasSolubilityPa aO2= exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*0.00042*(T - T0)^2)/1000
+                                                                          "oxygen solubility in blood";
+        Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2 "carbon monoxide solubility in blood";
+
+        Real pK = 6.1 + (-0.0026)*(T-310.15) "Henderson-Hasselbalch";
+        Real pK_ery = 6.125 - log10(1+10^(pH_ery-7.84-0.06*sO2));
+
+        parameter Real pKa1=2.1, pKa2=6.8, pKa3=12.7 "H2PO4 dissociation";
+
+        parameter Real betaOxyHb = 3.1 "buffer value for oxygenated Hb without CO2";
+        parameter Real pIo=7.13  "isoelectric pH for oxygenated Hb without CO2";
+
+        parameter Real pKzD=7.73 "pKa for NH3+ end of deoxygenated haemoglobin chain";
+        parameter Real pKzO=7.25 "pKa for NH3+ end of oxygenated haemoglobin chain";
+        parameter Real pKcD=7.54 "10^(pH-pKcR) is the dissociation constatnt for HbNH2 + CO2 <-> HbNHCOO- + H+ ";
+        parameter Real pKcO=8.35 "10^(pH-pKcO) is the dissociation constatnt for O2HbNH2 + CO2 <-> O2HbNHCOO- + H+ ";
+        parameter Real pKhD=7.52 "10^(pH-pKhD) is the dissociation constatnt for HbAH <-> HbA- + H+ ";
+        parameter Real pKhO=6.89 "10^(pH-pKhO) is the dissociation constatnt for O2HbAH <-> O2HbA- + H+ ";
+
+       Physiolibrary.Types.Concentration cdCO2N;
+       Physiolibrary.Types.Fraction sCO2N,fzcON;
+
+      Physiolibrary.Types.Concentration beta, cHCO3(start=24.524);
+
+      Physiolibrary.Types.Fraction sO2CO(start=0.962774);
+      Physiolibrary.Types.Fraction sCO(start=1.8089495e-07), sO2, FCOHb;
+      Physiolibrary.Types.Concentration ceHb "effective hemoglobin";
+
+      Physiolibrary.Types.Concentration tCO2_P( displayUnit="mmol/l");
+      Physiolibrary.Types.Concentration tCO2_ery( displayUnit="mmol/l");
+
+    equation
+        cdCO2N = aCO2N * pCO20 "free disolved CO2 concentration at pCO2=40mmHg and T=37degC";
+
+        NSIDP = -(tAlb*66.463)*( 0.123 * pH0 - 0.631)
+                - tGlb*(2.5/28)
+                - tPO4*(10^(pKa2-pH0)+2+3*10^(pH0-pKa3))/(10^(pKa1+pKa2-2*pH0)+10^(pKa2-pH0)+1+10^(pH0-pKa3))
+                - cdCO2N*10^(pH0-pK) "strong ion difference of blood plasma at pH=7.4, pCO2=40mmHg, T=37degC and sO2=1";
+
+        fzcON = 1/(1+ 10^(pKzO-pH_ery0) + cdCO2N * 10^(pH_ery0-pKcO)) "fraction of heamoglobin units with HN2 form of amino-terminus at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+        sCO2N = 10^(pH_ery0-pKcO) * fzcON * cdCO2N "CO2 saturation of hemoglobin amino-termini at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+        NSIDE = - cdCO2N*10^(pH_ery0-pK)
+                - ctHb_ery*(betaOxyHb * (pH_ery0-pIo) +  sCO2N*(1+2*10^(pKzO-pH_ery0))/(1+10^(pKzO-pH_ery0)) + 0.82)
+                "strong ion difference of red cells at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+
+        NSID = Hct * NSIDE + (1-Hct) * NSIDP "strong ion difference of blood at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+
+        BEox = (-SID) - NSID "base excess of oxygenated blood";
+
+        beta = 2.3*tHb + 8*tAlb + 0.075*tGlb + 0.309*tPO4 "buffer value of blood";
+
+        pH = pH0 + (1/beta)*(((BEox + 0.3*(1-sO2CO))/(1-tHb/43)) - (cHCO3-24.5)) "Van Slyke";
+        pH_ery = 7.19 + 0.77*(pH-7.4) + 0.035*(1-sO2);
+
+        sO2CO = getsO2CO( pH, pO2, pCO2, pCO, T, tHb,cDPG, FMetHb, FHbF);
+
+        sCO*(pO2 + 218*pCO)= 218*sO2CO* (pCO);
+        FCOHb= sCO*(1-FMetHb);
+        tCO = aCO*pCO + FCOHb*tHb;
+
+        ceHb =  tHb * (1-FCOHb-FMetHb);
+        sO2 = (sO2CO*(tHb*(1-FMetHb)) - tHb*FCOHb)/ceHb;
+        tO2 = aO2*pO2 + ceHb*sO2;
+
+      cdCO2 = aCO2*pCO2;
+      cdCO2 * 10^(pH-pK) = cHCO3;
+
+      tCO2_P = cHCO3 + cdCO2;
+      tCO2_ery=aCO2_ery*pCO2*(1+10^(pH_ery-pK_ery));
+      tCO2 = tCO2_ery*Hct + tCO2_P*(1-Hct);
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(
+              preserveAspectRatio=false)));
+    end BloodGases;
+
+    function getsO2CO
+        input Real pH, pO2, pCO2, pCO, T, tHb, cDPG, FMetHb, FHbF;
+        output Real sO2CO;
+    protected
+       constant Physiolibrary.Types.Temperature T0 = 273.15+37 "normal temperature";
+        constant Physiolibrary.Types.pH pH0 = 7.4 "normal pH";
+        constant Physiolibrary.Types.pH pH_ery0 = 7.19 "normal pH in erythrocyte";
+        constant Physiolibrary.Types.Pressure pCO20 = (40/760)*101325 "normal CO2 partial pressure";
+
+        parameter Physiolibrary.Types.Concentration cDPG0 = 5
+        "normal DPG,used by a";
+        parameter Real dadcDPG0 = 0.3 "used by a";
+        parameter Real dadcDPGxHbF = -0.1 "or perhabs -0.125";
+        parameter Real dadpH = -0.88 "used by a";
+        parameter Real dadlnpCO2 = 0.048 "used by a";
+        parameter Real dadxMetHb = -0.7 "used by a";
+        parameter Real dadxHbF = -0.25 "used by a";
+
+        Real aO2, cdO2;
+        Physiolibrary.Types.Fraction sO2;
+        Physiolibrary.Types.Pressure pO2CO;
+        Physiolibrary.Types.Concentration cO2Hb;
+        Physiolibrary.Types.Fraction sCO;
+        Physiolibrary.Types.Concentration ceHb;
+        Real a;
+        Real k;
+        Real x;
+        Real y;
+        Real h;
+        Physiolibrary.Types.Fraction FCOHb;
+    algorithm
+
+        a:=dadpH*(pH-pH0)+dadlnpCO2*log(max(1e-15+1e-22*pCO2,pCO2/pCO20)) +dadxMetHb*FMetHb+(dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
+        k:=0.5342857;
+        h:=3.5 + a;
+
+        pO2CO:= pO2 + 218*pCO;
+        x:=log(pO2CO/7000) - a - 0.055*(T-T0);
+        y:=1.8747+x+h*tanh(k*x);
+
+        sO2CO:= exp(y)/(1+exp(y));
+
+    end getsO2CO;
+    annotation (Documentation(info="<html>
+<p>
+This package is a <strong>template</strong> for <strong>new medium</strong> models. For a new
+medium model just make a copy of this package, remove the
+\"partial\" keyword from the package and provide
+the information that is requested in the comments of the
+Modelica source.
+</p>
+</html>"));
+  end BloodBySiggaardAndersen;
 end Media;
