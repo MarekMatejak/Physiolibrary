@@ -3285,7 +3285,8 @@ package Obsolete
         Types.MolarFlowRate rr
           "Reaction molar flow rate";
 
-        extends Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalVolume;
+        extends
+          Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalVolume;
 
         parameter Boolean useDissociationConstantInput = false
           "=true, if external dissociation ratio is used"
@@ -3339,7 +3340,8 @@ package Obsolete
           "Activity coefficients of products" annotation (HideResult=true,
             Dialog(group="Products", tab="Reaction type"));
 
-       extends Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalHeatPort;
+       extends
+          Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalHeatPort;
 
         parameter Types.Temperature TK=298.15
           "Base temperature"
@@ -6608,7 +6610,8 @@ Connector with one flow signal of type Real.
         "Allosteric hemoglobin model implemented by Speciation blocks"
         import Physiolibrary.Obsolete.ObsoleteChemical;
 
-       extends Physiolibrary.Obsolete.ObsoleteChemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
+       extends
+          Physiolibrary.Obsolete.ObsoleteChemical.Examples.Hemoglobin.Allosteric_Hemoglobin2_MWC;
 
       end Allosteric_Hemoglobin2_MWC;
 
@@ -7538,7 +7541,8 @@ Connector with one flow signal of type Real.
         package T = PhysiolibTypesRealTypes;
 
         replaceable block BooleanVariable =
-          BooleanExtension.Parameter constrainedby Physiolibrary.Obsolete.ObsoleteTypes.AbstractBoolean;
+          BooleanExtension.Parameter constrainedby
+          Physiolibrary.Obsolete.ObsoleteTypes.AbstractBoolean;
 
         Physiolibrary.Types.BusConnector busConnector annotation (Placement(transformation(extent={{
                   80,-12},{100,8}}), iconTransformation(extent={{-10,-10},{10,10}})));
@@ -8947,7 +8951,8 @@ The Real output y is a constant signal:
       extends Modelica.Icons.BasesPackage;
       import Physiolibrary;
 
-        replaceable block Variable = RealExtension.Parameter constrainedby AbstractReal;
+        replaceable block Variable = RealExtension.Parameter constrainedby
+        AbstractReal;
 
         block Energy = Variable(redeclare type T=Types.Energy, storeUnit="kcal");
         block Time = Variable(redeclare type T=Types.Time, storeUnit="min");
