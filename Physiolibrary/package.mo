@@ -1348,7 +1348,8 @@ Connector with one flow signal of type Real.
 
 
         Medium.ChemicalSolution chemicalSolution(
-           p=pressure, h=enthalpy/mass, X=massFractions, i=i, EnthalpyNotUsed=EnthalpyNotUsed) if
+           p=pressure, h=enthalpy/mass, X=if
+                                            (not Medium.reducedX) then massFractions else cat(1,massFractions,{1-sum(massFractions)}), i=i, EnthalpyNotUsed=EnthalpyNotUsed) if
                 useSubstances;
 
 
@@ -4241,6 +4242,7 @@ as signal.
         redeclare package Medium = Air,
         use_mass_start=false,
         volume_start=LungsAirVolume_initial,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
         EnthalpyNotUsed=false,
         ZeroPressureVolume=FunctionalResidualCapacity,
         Compliance=TotalCompliance,
@@ -4332,6 +4334,7 @@ as signal.
            useSubstances=true,
         use_mass_start=true,
         mass_start=1,
+        massFractions_start=Blood.reference_X[1:Blood.nS - 1],
         EnthalpyNotUsed=false,
            Compliance=1,
         nPorts=2)        annotation (Placement(transformation(extent={{-4,-52},{16,-32}})));
@@ -5440,7 +5443,8 @@ as signal.
          Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(
            redeclare package Medium = Air,
            useSubstances=true,
-           volume_start=0.0001,
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
            useThermalPort=true,
            Compliance=TotalCompliance/100,
            ZeroPressureVolume(displayUnit="ml") = 0.0001,
