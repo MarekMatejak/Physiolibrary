@@ -3285,8 +3285,7 @@ package Obsolete
         Types.MolarFlowRate rr
           "Reaction molar flow rate";
 
-        extends
-          Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalVolume;
+        extends Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalVolume;
 
         parameter Boolean useDissociationConstantInput = false
           "=true, if external dissociation ratio is used"
@@ -3340,8 +3339,7 @@ package Obsolete
           "Activity coefficients of products" annotation (HideResult=true,
             Dialog(group="Products", tab="Reaction type"));
 
-       extends
-          Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalHeatPort;
+       extends Physiolibrary.Obsolete.ObsoleteChemical.Interfaces.ConditionalHeatPort;
 
         parameter Types.Temperature TK=298.15
           "Base temperature"
