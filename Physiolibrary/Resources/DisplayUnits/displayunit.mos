@@ -34,7 +34,7 @@ defineUnitConversion("1", "Gu", 1 );   // Glodblatt unit: for renin 1Gu = 1 ng A
 defineUnitConversion("1/m3", "Gu/l", 1e-3 );
 defineUnitConversion("1/s", "Gu/min", 60 );
 defineUnitConversion("J", "cal/Gu", 1/4.1868 );
-//Be carefull - most of the following substances still do not have precisely measured molar amount of international unit !!!
+//Be careful - most of the following substances still do not have precisely measured molar amount of international unit !!!
 //Following estimations are from some purified preparations:
 //1 IU (Insulin) = 38.46 ug = 6.622 nmol  (5.808 kDa, WHO Expert Committee on Biological Standardisation (1987). 37th Report. WHO Tech Rep Ser No 760, pg.25)
 //defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 );
