@@ -233,7 +233,7 @@ defineUnitConversion("mol2.s-1.J-1", "mol2.min-1.kJ-1", 1e3*60 ); //permeability
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.day)", (1e+6)*(133.322387415)*60*60*24); //osmotic permeability
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/ml", (1e-6)/(133.322387415)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/l", (1e-3)/(133.322387415)); //hydraulic resistance
-defineUnitConversion("(Pa.s)/m3", "(cmH2O.s)/l", (1e-3)/(98.0665)); //hydraulic resistance 
+defineUnitConversion("(Pa.s)/m3", "(cmH2O.s)/l", (1e-3)/(98.0665)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
 defineUnitConversion("m3/Pa", "l/cmH2O", (1e+3)*(98.0665));  //hydraulic compliance
@@ -331,7 +331,7 @@ defineUnitConversion("C", "mAh", 1000/3600);
 defineUnitConversion("var", "kvar", 1e-3);
 defineUnitConversion("var", "Mvar", 1e-6);
 
-// Apparent power 
+// Apparent power
 defineUnitConversion("VA", "kVA", 1e-3);
 defineUnitConversion("VA", "MVA", 1e-6);
 // Leakage
@@ -388,5 +388,3 @@ defineUnitConversion("1", "%", 100);
 // defineDefaultDisplayUnit("C", "meq");
 // defineDefaultDisplayUnit("V", "mV");
 // defineDefaultDisplayUnit("m/s", "km/h");
-
-

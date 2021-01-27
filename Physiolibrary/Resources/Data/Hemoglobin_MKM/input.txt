@@ -238,4 +238,3 @@ Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[3]
 1.23799e-009 mmol
 Hemoglobin_MKM_Adair.Hb4.Hbu_AH_NHCOO[4]
 1.23799e-009 mmol
-

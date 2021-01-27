@@ -88,4 +88,3 @@ convertClass("Physiolibrary.Types.ZeroUtilities","Physiolibrary.Obsolete.Obsolet
 convertClass("Physiolibrary.Types.SimulationType","Physiolibrary.Obsolete.ObsoleteTypes.SimulationType");
 
 convertClass("Physiolibrary.Types.HydraulicInertance","Physiolibrary.Obsolete.ObsoleteTypes.VolumetricHydraulicInertance");
-

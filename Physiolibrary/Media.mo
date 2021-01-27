@@ -155,6 +155,10 @@ medium model just make a copy of this package, remove the
 the information that is requested in the comments of the
 Modelica source.
 </p>
+</html>", revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
 </html>"));
   end Water;
 
@@ -331,7 +335,11 @@ Modelica source.
       end density_pTC;
 
 
-      annotation ();
+      annotation (Documentation(revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
     end Air;
 
   package BloodBySiggaardAndersen
@@ -759,6 +767,10 @@ http://www.siggaard-andersen.dk
 <br>
 Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin equilibrium with oxygen, carbon dioxide and hydrogen ion activity. Scandinavian Journal of Clinical and Laboratory Investigation, vol. 75, pp. 113-120, 2015/02/17 2015. (DOI:10.3109/00365513.2014.984320)
 </p>
+</html>", revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
 </html>"));
   end BloodBySiggaardAndersen;
 
@@ -1015,6 +1027,11 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       d:=c*MMb;
     end density_pTC;
 
+    annotation (Documentation(revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
   end BodyFluid;
 
   model check_Medium
@@ -1121,6 +1138,11 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         output Modelica.Units.SI.Density d "Density";
       end density_pTC;
 
+      annotation (Documentation(revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
     end PartialMedium;
   end Interfaces;
 end Media;
