@@ -4969,7 +4969,9 @@ on the model behaviour.
       end Cell;
 
       model CerebrospinalFluid
-      extends Modelica.Icons.Example;
+        extends Modelica.Icons.Example;
+
+        outer Modelica.Fluid.System system;
 
         Physiolibrary.Obsolete.ObsoleteOsmotic.Components.OsmoticCell CSF_osmotic(
             volume_start(displayUnit="ml") = 0.00015, ImpermeableSolutes={(
@@ -5003,7 +5005,7 @@ on the model behaviour.
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={46,32})));
-        Physiolibrary.Fluid.Sources.PressureSource veins(P=0) annotation (
+        Physiolibrary.Fluid.Sources.PressureSource veins      annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
@@ -5017,7 +5019,8 @@ on the model behaviour.
           annotation (Placement(transformation(extent={{-2,96},{18,76}})));
         Physiolibrary.Obsolete.ObsoleteOsmotic.Sensors.FlowMeasure flowMeasure1
           annotation (Placement(transformation(extent={{-2,66},{18,46}})));
-        Physiolibrary.Fluid.Sources.PressureSource arteries(P=12665.626804425)
+        Physiolibrary.Fluid.Sources.PressureSource arteries(pressure_start=system.p_ambient +
+              12665.626804425)
           annotation (Placement(transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
@@ -5105,36 +5108,36 @@ on the model behaviour.
             color={0,0,127}));
         connect(choroid_plexus_hydraulic.q_out, CSF_hydraulic.q_in[1])
           annotation (Line(
-            points={{-2,-22},{-44,-22},{-44,-20.2667},{-86.3,-20.2667}},
+            points={{-2,-22},{-44,-22},{-44,-20.2667},{-86.1,-20.2667}},
             color={127,0,0},
             thickness=0.5));
         connect(CSF_hydraulic.q_in[2], pressureMeasure.q_in) annotation (Line(
-            points={{-86.3,-22},{-86.3,23},{-84,23},{-84,68}},
+            points={{-86.1,-22},{-86.1,23},{-84,23},{-84,68}},
             color={127,0,0},
             thickness=0.5));
         connect(CSF_hydraulic.q_in[3], arachnoid_villi_hydraulic.q_in)
           annotation (Line(
-            points={{-86.3,-23.7333},{-94,-23.7333},{-94,86},{-2,86}},
+            points={{-86.1,-23.7333},{-94,-23.7333},{-94,86},{-2,86}},
             color={127,0,0},
             thickness=0.5));
         connect(choroidPlexusCapilaries.q_in[1], choroid_plexus_hydraulic.q_in)
           annotation (Line(
-            points={{65.7,-20.05},{42,-20.05},{42,-22},{18,-22}},
+            points={{65.9,-20.05},{42,-20.05},{42,-22},{18,-22}},
             color={127,0,0},
             thickness=0.5));
         connect(choroidPlexusCapilaries.q_in[2], pressureMeasure2.q_in)
           annotation (Line(
-            points={{65.7,-21.35},{60,-21.35},{60,-18},{56,-18}},
+            points={{65.9,-21.35},{60,-21.35},{60,-18},{56,-18}},
             color={127,0,0},
             thickness=0.5));
         connect(conductor1.q_in, choroidPlexusCapilaries.q_in[3]) annotation (
             Line(
-            points={{66,40},{66,8},{66,-22.65},{65.7,-22.65}},
+            points={{66,40},{66,8},{66,-22.65},{65.9,-22.65}},
             color={127,0,0},
             thickness=0.5));
         connect(conductor.q_out, choroidPlexusCapilaries.q_in[4]) annotation (
             Line(
-            points={{96,-10},{96,-23.95},{65.7,-23.95}},
+            points={{96,-10},{96,-23.95},{65.9,-23.95}},
             color={127,0,0},
             thickness=0.5));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

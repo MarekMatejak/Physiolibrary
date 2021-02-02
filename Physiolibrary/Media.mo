@@ -3,6 +3,7 @@ package Media
   extends Modelica.Icons.Package;
   package Water "Incompressible water with constant heat capacity"
     extends Interfaces.PartialMedium(
+      zb = stateOfMatter.chargeNumberOfIon(substanceData),
       MMb = stateOfMatter.molarMassOfBaseMolecule(substanceData),
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       final mediumName="Water",
@@ -165,6 +166,7 @@ Modelica source.
     package Air
 
       extends Interfaces.PartialMedium(
+         zb = stateOfMatter.chargeNumberOfIon(substanceData),
          MMb = substanceData.MolarWeight,
          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
          reducedX = false,
@@ -329,7 +331,17 @@ Modelica source.
       redeclare function extends density_pTC
     protected
         Modelica.Units.SI.SpecificVolume sV[nS]=stateOfMatter.specificVolume(substanceData);
-        Modelica.Units.SI.Concentration c[nS]=cat(1,concentrations,{(1-(concentrations*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])});
+        Modelica.Units.SI.Concentration c_electroneutral[nS-1]=
+          if
+            (size(concentrations,1)==nS-2) then
+                  cat(1,concentrations[1:nS-2],{-(concentrations[1:nS-2]*zb[1:nS-2])})
+          else concentrations[1:nS-1];
+        Modelica.Units.SI.Concentration c[nS]=
+          if
+            (size(concentrations,1)<nS) then
+            cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+          else
+            concentrations;
       algorithm
         d:=c*MMb;
       end density_pTC;
@@ -345,12 +357,12 @@ Modelica source.
   package BloodBySiggaardAndersen
     "Blood for gases transport"
     extends Interfaces.PartialMedium(
-      MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266, 0.031, 0.018},
+      zb = {   0,     0,     0,     0,        0,        0,        0,      0, 0,     0,     0,    -1,     1,     0},
+      MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266, 0.031, 0.001, 0.018},
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       reducedX=false,
       singleState=true,
-      final substanceNames={"RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG","SID",
-          "Others"},
+      final substanceNames={"RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG","SID","H+","Others"},
       reference_X=cat(
           1,
           Conc .* C2X,
@@ -367,10 +379,13 @@ Modelica source.
         nominal=310.15));
 
   protected
-    constant Real Conc[nS - 1]={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,
+    constant Real C[nS - 2]={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,
         5.4,37.67};
 
-    constant Real C2X[nS - 1]= MMb[1:nS-1] ./ density_pTC(reference_p, reference_T, Conc);
+   constant Modelica.Units.SI.Concentration Conc[nS - 1]=
+      cat(1,C,{-C*zb[1:nS-2]}) "Default concentrations of substance base molecules except water";
+
+    constant Real C2X[nS - 1]= MMb[1:nS-1] ./ density_pTC(reference_p, reference_T, C);
 
     constant SpecificHeatCapacity _cp=3490 "specific heat capacity of blood";
 
@@ -470,7 +485,8 @@ Modelica source.
         "Carbon dioxide partial pressure";
       output Modelica.Units.SI.Pressure pCO(start=1e-5)
         "Carbon monoxide partial pressure";
-
+      output Physiolibrary.Types.pH pH
+        "Blood plasma acidity";
     protected
       Physiolibrary.Types.VolumeFraction Hct=C[1] "haematocrit";
       Physiolibrary.Types.Concentration tO2=C[2] "oxygen content per volume of blood";
@@ -504,7 +520,7 @@ Modelica source.
       Physiolibrary.Types.Concentration NSID;
       Physiolibrary.Types.Concentration BEox;
       Physiolibrary.Types.Concentration cdCO2;
-      Physiolibrary.Types.pH pH;
+
       Physiolibrary.Types.pH pH_ery;
 
       Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
@@ -558,23 +574,23 @@ Modelica source.
     equation
       cdCO2N = aCO2N*pCO20 "free disolved CO2 concentration at pCO2=40mmHg and T=37degC";
 
-      NSIDP = -(tAlb*66.463)*(0.123*pH0 - 0.631) - tGlb*(2.5/28) - tPO4*(10^(pKa2 - pH0) +
+      NSIDP = -(-(tAlb*66.463)*(0.123*pH0 - 0.631) - tGlb*(2.5/28) - tPO4*(10^(pKa2 - pH0) +
         2 + 3*10^(pH0 - pKa3))/(10^(pKa1 + pKa2 - 2*pH0) + 10^(pKa2 - pH0) + 1 + 10^(pH0 -
-        pKa3)) - cdCO2N*10^(pH0 - pK)
+        pKa3)) - cdCO2N*10^(pH0 - pK))
         "strong ion difference of blood plasma at pH=7.4, pCO2=40mmHg, T=37degC and sO2=1";
 
       fzcON = 1/(1 + 10^(pKzO - pH_ery0) + cdCO2N*10^(pH_ery0 - pKcO))
         "fraction of heamoglobin units with HN2 form of amino-terminus at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
       sCO2N = 10^(pH_ery0 - pKcO)*fzcON*cdCO2N
         "CO2 saturation of hemoglobin amino-termini at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
-      NSIDE = -cdCO2N*10^(pH_ery0 - pK) - ctHb_ery*(betaOxyHb*(pH_ery0 - pIo) + sCO2N*(1 +
-        2*10^(pKzO - pH_ery0))/(1 + 10^(pKzO - pH_ery0)) + 0.82)
+      NSIDE = -(-cdCO2N*10^(pH_ery0 - pK) - ctHb_ery*(betaOxyHb*(pH_ery0 - pIo) + sCO2N*(1 +
+        2*10^(pKzO - pH_ery0))/(1 + 10^(pKzO - pH_ery0)) + 0.82))
         "strong ion difference of red cells at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
 
       NSID = Hct*NSIDE + (1 - Hct)*NSIDP
         "strong ion difference of blood at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
 
-      BEox = (-SID) - NSID "base excess of oxygenated blood";
+      BEox = NSID - SID "base excess of oxygenated blood";
 
       beta = 2.3*tHb + 8*tAlb + 0.075*tGlb + 0.309*tPO4 "buffer value of blood";
 
@@ -628,18 +644,23 @@ Modelica source.
       Modelica.Units.SI.MoleFraction aO2;
       Modelica.Units.SI.MoleFraction aCO2;
       Modelica.Units.SI.MoleFraction aCO;
+      Modelica.Units.SI.MoleFraction aH_plus;
       Modelica.Units.SI.ChemicalPotential uO2;
       Modelica.Units.SI.ChemicalPotential uCO2;
       Modelica.Units.SI.ChemicalPotential uCO;
+      Modelica.Units.SI.ChemicalPotential uH_plus;
       Modelica.Units.SI.MolarEnthalpy hO2;
       Modelica.Units.SI.MolarEnthalpy hCO2;
       Modelica.Units.SI.MolarEnthalpy hCO;
+      Modelica.Units.SI.MolarEnthalpy hH_plus;
       constant Chemical.Interfaces.IdealGas.SubstanceData O2=
           Chemical.Substances.Oxygen_gas();
       constant Chemical.Interfaces.IdealGas.SubstanceData CO2=
           Chemical.Substances.CarbonDioxide_gas();
       constant Chemical.Interfaces.IdealGas.SubstanceData CO=
           Chemical.Substances.CarbonMonoxide_gas();
+      constant Chemical.Interfaces.Incompressible.SubstanceData H_plus=
+          Chemical.Substances.Proton_aqueous();
 
     equation
       v=0 "electric potential is not used without external flows of charge";
@@ -664,6 +685,7 @@ Modelica source.
       aO2 = bloodGases.pO2/p;
       aCO2 = bloodGases.pCO2/p;
       aCO = bloodGases.pCO/p;
+      aH_plus = 10^(-bloodGases.pH);
 
       uO2 = Modelica.Constants.R*T*log(aO2) +
         Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
@@ -682,6 +704,13 @@ Modelica source.
       uCO = Modelica.Constants.R*T*log(aCO) +
         Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
           CO,
+          T,
+          p,
+          v,
+          I);
+      uH_plus = Modelica.Constants.R*T*log(aH_plus) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          H_plus,
           T,
           p,
           v,
@@ -705,10 +734,17 @@ Modelica source.
           p,
           v,
           I);
+      hH_plus = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          H_plus,
+          T,
+          p,
+          v,
+          I);
 
-      substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,0};
 
-      substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,0};
+      substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,uH_plus,0};
+
+      substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,hH_plus,0};
 
       massFlows = substances.q .* MMb;
     end ChemicalSolution;
@@ -776,6 +812,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 
   package BodyFluid "Simplified Human body fluid"
     extends Interfaces.PartialMedium(
+      zb=stateOfMatter.chargeNumberOfIon(substanceData),
       MMb=stateOfMatter.molarMassOfBaseMolecule(substanceData),
       mediumName="SimpleBodyFluid (Physiolibrary)",
       substanceNames={"Na","HCO3-","K","Glu","Urea","Cl","Ca","Mg","Alb",
@@ -1022,7 +1059,17 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
     redeclare function extends density_pTC
     protected
       Modelica.Units.SI.SpecificVolume sV[nS]=stateOfMatter.specificVolume(substanceData);
-      Modelica.Units.SI.Concentration c[nS]=cat(1,concentrations,{(1-(concentrations*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])});
+      Modelica.Units.SI.Concentration c_electroneutral[nS-1]=
+        if
+          (size(concentrations,1)==nS-2) then
+                cat(1,concentrations[1:nS-2],{-(concentrations[1:nS-2]*zb[1:nS-2])})
+        else concentrations[1:nS-1];
+      Modelica.Units.SI.Concentration c[nS]=
+        if
+          (size(concentrations,1)<nS) then
+          cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+        else
+          concentrations;
     algorithm
       d:=c*MMb;
     end density_pTC;
@@ -1042,6 +1089,8 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
      //BodyFluid;
      //BloodBySiggaardAndersen;
      //Water;
+
+
 
 
     //constants
@@ -1126,6 +1175,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 
       end ChemicalSolution;
 
+      constant Modelica.Units.SI.ChargeNumberOfIon zb[nS] "Charge number of base molecules";
       constant Modelica.Units.SI.MolarMass MMb[nS] "Molar mass of base molecules";
       /*Be carefull: it could be different from molar mass of substance in solution */
 
@@ -1133,7 +1183,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         "Density at defined total amount of solvents base molecules per total volume"
         input Modelica.Units.SI.Pressure p "Pressure";
         input Modelica.Units.SI.Temperature T "Temperature";
-        input Modelica.Units.SI.Concentration concentrations[nS-1] "Total amount of base molecules per total volume";
+        input Modelica.Units.SI.Concentration concentrations[:] "Total amount of base molecules per total volume (size can be nS-2 with electroneutrality and substance specificVolume usage, nS-1 with specificVolume usage or nS for all substances";
         /*Be carefull: it could be different from concentration of substance in solution */
         output Modelica.Units.SI.Density d "Density";
       end density_pTC;

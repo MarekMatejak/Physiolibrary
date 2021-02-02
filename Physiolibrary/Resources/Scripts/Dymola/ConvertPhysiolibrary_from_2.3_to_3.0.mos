@@ -4,6 +4,9 @@
 convertClear();
 
 
+convertElement("Physiolibrary.Hydraulic.Sources.PressureSource","P","pressure_start")
+convertElement("Physiolibrary.Hydraulic.Sources.PressureSource","T","temperature_start")
+
 convertElement("Physiolibrary.Hydraulic.Components.Resistor","useConductanceInput","useResistanceInput")
 convertElement("Physiolibrary.Hydraulic.Components.IdealValveResistance","useLimitationInputs","useResistanceInputs")
 convertElement("Physiolibrary.Hydraulic.Components.ElasticVesselElastance","useComplianceInput","useElastanceInput")
