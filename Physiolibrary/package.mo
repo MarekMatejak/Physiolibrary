@@ -1013,65 +1013,9 @@ parameter Modelica.Units.SI.Pressure c_sigmoid_initial=(BaseMeanVolume -
 </html>"));
       end Reabsorption;
 
-      model StreamSubstances
-        replaceable package Medium =
-           Media.Water                                   constrainedby
-        Media.Interfaces.PartialMedium
-        "Medium model"   annotation (choicesAllMatching=true);
-
-
-        outer Modelica.Fluid.System system "System wide properties";
-
-        FluidPort_a q_in(redeclare package Medium = Medium) "Inflow"
-          annotation (Placement(transformation(extent={{-114,-14},{-86,14}})));
-        FluidPort_b q_out(redeclare package Medium = Medium) "Outflow"
-          annotation (Placement(transformation(extent={{86,-14},{114,14}})));
-         Physiolibrary.Types.MassFlowRate massFlowRate "Mass flow";
-
-         Physiolibrary.Types.VolumeFlowRate volumeFlowRate "Volume flow";
-
-         Physiolibrary.Types.Pressure dp "Pressure gradient";
-
-         Modelica.Units.SI.Density density(start=Medium.density_pTX(
-                  system.p_ambient,
-                  system.T_ambient,
-                  Medium.reference_X));                                                                                                     //, density_outflow;
-
-         parameter Boolean EnthalpyNotUsed = false
-          annotation(Evaluate=true, HideResult=true, choices(checkBox=true), Dialog(tab="Advanced", group="Performance"));
-      equation
-        q_in.m_flow + q_out.m_flow = 0;
-        massFlowRate = q_in.m_flow;
-        dp = q_in.p - q_out.p;
-
-
-        q_in.Xi_outflow = inStream(q_out.Xi_outflow);
-        q_in.C_outflow = inStream(q_out.C_outflow);
-
-
-        q_out.Xi_outflow = inStream(q_in.Xi_outflow);
-        q_out.C_outflow = inStream(q_in.C_outflow);
-
-        volumeFlowRate*density  = massFlowRate;
-
-        if
-          ( EnthalpyNotUsed) then
-          q_in.h_outflow = Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
-          q_out.h_outflow = Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
-          density = Medium.density_pTX(q_in.p, system.T_ambient, Medium.reference_X);
-        else
-          q_in.h_outflow = inStream(q_out.h_outflow);
-          q_out.h_outflow = inStream(q_in.h_outflow);
-
-          // medium density
-          density = if (q_in.m_flow >= 0)  then
-           Medium.density_phX(q_in.p, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow))
-          else
-           Medium.density_phX(q_out.p, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow));
-        end if;
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
-      end StreamSubstances;
+    annotation (Documentation(info="<html>
+<p>Main components for physiological fluid modeling.</p>
+</html>"));
     end Components;
 
     package Interfaces
@@ -5854,15 +5798,15 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            for i in 1:NT loop
              connect(
                 tissueUnit[i].q_in, systemicArteries.q_in[3]) annotation (Line(
-            points={{13.6611,-195.21},{28,-195.21},{28,-196},{42.1,-196},{42.1,
+              points={{13.6611,-195.21},{28,-195.21},{28,-196},{42.1,-196},{42.1,
                   -197.733}},
-            color={127,0,0},
-            thickness=0.5));
+              color={127,0,0},
+              thickness=0.5));
              connect(
                 tissueUnit[i].q_out, systemicVeins.q_in[3]) annotation (Line(
-            points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-197.733}},
-            color={127,0,0},
-            thickness=0.5));
+              points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-197.733}},
+              color={127,0,0},
+              thickness=0.5));
            end for;
 
         connect(respiratoryCenter.deadSpaceVentilation, deadSpaceVentilation.solutionFlow)
@@ -5884,13 +5828,14 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            extends Physiolibrary.Icons.SystemicCirculation;
 
            parameter Types.MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)
-                                                        "Tissue consumption of O2 by metabolism";
+          "Tissue consumption of O2 by metabolism";
            parameter Types.MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)
-                                                                 "Tissue production of CO2 by metabolism";
+          "Tissue production of CO2 by metabolism";
            parameter Types.HydraulicConductance Conductance=1.250102626409427e-07*((1/
-            20))                                                                "Tissue blood flow conductance";
+            20)) "Tissue blood flow conductance";
 
-           parameter Types.Fraction ArteriesViensResistanceRatio=(7/8)   "Ratio between arteries and veins resistance";
+           parameter Types.Fraction ArteriesViensResistanceRatio=(7/8)
+          "Ratio between arteries and veins resistance";
 
            Components.Resistor systemicArteriesResistance(redeclare package Medium = Blood,
                Resistance=(1/Conductance)*ArteriesViensResistanceRatio) annotation (Placement(transformation(
@@ -6380,6 +6325,9 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          end RespiratoryCenter;
        end BloodGasesTransport;
      end Examples;
+  annotation (Documentation(info="<html>
+<p>The main usage of this fluid domain is modeling of the cardio-vascular, respiratory and lymhpatic system in human physiology. And because there are no extreme thermodynamic conditions, the system can be really simple &mdash;it is only necessary to model conditions for ideal gases, for incompressible liquids, at normal liquid temperatures and with relative pressure 5-20kPa. This boring thermodynamic state leads to the very simple blocks of resistance,  pressure, volumetric flow, inertia and finally the block of blood accumulation in elastic comparments.</p>
+</html>"));
   end Fluid;
 
    package Thermal
