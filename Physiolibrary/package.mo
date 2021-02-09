@@ -5148,8 +5148,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium =
-               Air,
+         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium
+          =    Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftBronchiResistance)
            annotation (Placement(transformation(extent={{-252,24},{-232,44}})));
@@ -5175,8 +5175,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          Physiolibrary.Types.Constants.PressureConst ambient_pressure(k=
                IntrathoraxPressure)
            annotation (Placement(transformation(extent={{84,44},{74,52}})));
-         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium =
-               Air,
+         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium
+          =    Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=RightBronchiResistance)
            annotation (Placement(transformation(extent={{-252,-54},{-232,-34}})));
@@ -5246,8 +5246,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftAlveoliResistance)
            annotation (Placement(transformation(extent={{-210,24},{-190,44}})));
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
-               Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
+          =    Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -5616,8 +5616,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
-               Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
+          =    Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -14319,7 +14319,7 @@ input <i>u</i>:
 
   annotation (
 preferredView="info",
-version="3.0.0-alpha9",
+version="3.0.0-alpha10",
 versionDate="2021-01-27",
 dateModified = "2021-01-27 10:14:41Z",
 uses(
