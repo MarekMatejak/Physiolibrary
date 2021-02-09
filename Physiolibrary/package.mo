@@ -2121,8 +2121,8 @@ as signal.
            annotation (choicesAllMatching=true);
 
          Physiolibrary.Fluid.Interfaces.FluidPort_a referenceFluidPort(redeclare
-          package
-             Medium = Medium)
+          package Medium =
+                      Medium)
            annotation (Placement(transformation(extent={{-10,-108},{10,-88}})));
 
          Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(
@@ -2197,6 +2197,103 @@ as signal.
                   162,29,33})}),                                        Diagram(
                coordinateSystem(preserveAspectRatio=false)));
        end BloodGasesMeasurement;
+
+       model Power "Power as pressure multiplied by volumetric flow between ports"
+         extends Physiolibrary.Fluid.Interfaces.OnePort;
+         extends Modelica.Icons.RoundSensor;
+
+         Physiolibrary.Types.RealIO.PowerOutput power
+        "Actual power" annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=270,
+        origin={0,-60}), iconTransformation(
+        extent={{-20,-20},{20,20}},
+        rotation=90,
+        origin={0,120})));
+
+       equation
+
+         q_out.p = q_in.p;
+         power = q_in.p*volumeFlowRate;
+
+         annotation (Documentation(revisions=
+                            "<html>
+        <p><i>2009-2018</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),       Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),
+           graphics={
+        Text( extent={{-25,-11},{34,-70}},
+              lineColor={0,0,0},
+              textString="V'")}));
+       end Power;
+
+       model Sphygmomanometer
+         "Systolic, diastolic and mean pressure measurement with latency of measurement time"
+         extends Physiolibrary.Icons.PressureMeasure;
+
+         parameter Physiolibrary.Types.Time MeasurementTime = 2 "Measurement time period";
+
+
+         replaceable package Medium =
+             Media.Water                                   constrainedby
+        Media.Interfaces.PartialMedium
+             "Medium model"
+             annotation (choicesAllMatching=true);
+
+         outer Modelica.Fluid.System system "System wide properties";
+
+
+         Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{-60,-80},{-20,-40}})));
+         Physiolibrary.Types.RealIO.PressureOutput diastolic "Diastolic pressure"
+        annotation (Placement(transformation(extent={{40,-60},{80,-20}})));
+         Types.RealIO.PressureOutput systolic "Systolic pressure"
+           annotation (Placement(transformation(extent={{40,0},{80,40}})));
+         Types.RealIO.PressureOutput mean "Mean pressure"
+           annotation (Placement(transformation(extent={{40,-30},{80,10}})));
+
+    protected
+         Boolean b;
+         discrete Physiolibrary.Types.Time t0;
+         discrete Physiolibrary.Types.Pressure  systolicMeassured, diastolicMeassured, meanMeasured;
+         Physiolibrary.Types.Pressure pressure, diastolicRunning, systolicRunning, pressureInt;
+
+       equation
+         diastolic = diastolicMeassured;
+         systolic = systolicMeassured;
+         mean = meanMeasured;
+
+         der(diastolicRunning) = if pressure < diastolicRunning then min(0, der(pressure)) else 0;
+         der(systolicRunning) = if pressure > systolicRunning  then max(0, der(pressure)) else 0;
+         der(pressureInt) = pressure;
+
+         b = time - pre( t0) >= MeasurementTime;
+         when {initial(), b} then
+            t0 = time;
+            diastolicMeassured = pre( diastolicRunning);
+            systolicMeassured = pre( systolicRunning);
+            meanMeasured = pre(pressureInt)/MeasurementTime;
+            reinit( diastolicRunning, pressure);
+            reinit( systolicRunning, pressure);
+            reinit( pressureInt, 0);
+         end when;
+
+
+         pressure = q_in.p - system.p_ambient;
+         q_in.m_flow = 0;
+
+         q_in.h_outflow = 0;
+         q_in.Xi_outflow = zeros(Medium.nXi);
+         q_in.C_outflow = zeros(Medium.nC);
+
+        annotation (Documentation(revisions=
+                            "<html>
+        <p><i>2009-2018</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"));
+       end Sphygmomanometer;
      end Sensors;
 
      package Sources
@@ -3589,7 +3686,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  Placement(transformation(origin={-143,-3}, extent={{-15,-15},{15,
                 15}})));
            Physiolibrary.Fluid.Components.ElasticVessel aorta(
-             nPorts=3,
+             nPorts=4,
              Compliance(displayUnit="ml/mmHg") = 1.6501354668604e-09,
              volume_start=0.046e-3,
              ZeroPressureVolume=3e-05) annotation (Placement(transformation(origin=
@@ -3672,7 +3769,9 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              Sensors.PressureMeasure leftVentriclePressure
                annotation (Placement(transformation(extent={{-206,-72},{-186,-52}})));
              Sensors.PressureMeasure aortaPressure
-               annotation (Placement(transformation(extent={{-108,-68},{-88,-48}})));
+               annotation (Placement(transformation(extent={{-106,-60},{-86,-40}})));
+        Sensors.Sphygmomanometer sphygmomanometer
+          annotation (Placement(transformation(extent={{-108,-90},{-88,-70}})));
          equation
              connect(Raorta.q_out, aorticInertia.q_in) annotation (Line(
                  points={{-64,-3},{-52,-3}},
@@ -3762,11 +3861,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  color={127,0,0},
                  thickness=0.5));
              connect(Raorta.q_in, aorta.q_in[1]) annotation (Line(
-                 points={{-94,-3},{-104,-3},{-104,-0.4},{-111.15,-0.4}},
+                 points={{-94,-3},{-104,-3},{-104,-0.075},{-111.15,-0.075}},
                  color={127,0,0},
                  thickness=0.5));
              connect(aorticValve.q_out, aorta.q_in[2]) annotation (Line(
-                 points={{-128,-3},{-120,-3},{-120,-3},{-111.15,-3}},
+                 points={{-128,-3},{-120,-3},{-120,-2.025},{-111.15,-2.025}},
                  color={127,0,0},
                  thickness=0.5));
              connect(mitralValve.q_out, leftVentricle.q_in[1]) annotation (Line(
@@ -3801,9 +3900,13 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  color={127,0,0},
                  thickness=0.5));
              connect(aortaPressure.q_in, aorta.q_in[3]) annotation (Line(
-                 points={{-102,-64},{-112,-64},{-112,-5.6},{-111.15,-5.6}},
+                 points={{-100,-56},{-112,-56},{-112,-3.975},{-111.15,-3.975}},
                  color={127,0,0},
                  thickness=0.5));
+        connect(aorta.q_in[4], sphygmomanometer.q_in) annotation (Line(
+            points={{-111.15,-5.925},{-111.15,-86},{-102,-86}},
+            color={127,0,0},
+            thickness=0.5));
              annotation(Diagram(coordinateSystem(extent={{-350,-100},{400,100}},      preserveAspectRatio=false,  grid = {2, 2})),
                                Icon(coordinateSystem(extent={{-350,
                 -100},{400,100}},                                                                                                    preserveAspectRatio = true, grid = {2, 2})),
@@ -4094,11 +4197,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
                  Placement(transformation(origin={127,64}, extent={{-13,12},{13,-12}})));
            Physiolibrary.Fluid.Components.ElasticVesselElastance Eitha(
-             ExternalPressure=101325 - 533.28954966,
-             nPorts=3,
-             volume_start=0.204e-3,
+          ExternalPressure=101325 - 533.28954966,
+             nPorts=4,
+          volume_start=0.0002,
              ZeroPressureVolume=0.00014,
-             Elastance=190651014.00345)
+          Elastance=190651014.00345)
              annotation (Placement(transformation(extent={{168,6},{190,28}})));
            Physiolibrary.Fluid.Components.ElasticVesselElastance Eetha(
              volume_start=0.526e-3,
@@ -4179,7 +4282,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  101325.0144354, T_ambient=310.15)
                annotation (Placement(transformation(extent={{-48,144},{-28,164}})));
              Sensors.PressureMeasure EithaPressure annotation (Placement(
-            transformation(extent={{176,-54},{196,-34}})));
+            transformation(extent={{190,-36},{210,-16}})));
              Sensors.PressureMeasure EethaPressure
                annotation (Placement(transformation(extent={{78,-56},{98,-36}})));
              Sensors.PressureMeasure EstPressure
@@ -4188,6 +4291,32 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
             transformation(extent={{-92,-52},{-72,-32}})));
              Sensors.PressureMeasure EithvPressure annotation (Placement(
             transformation(extent={{-166,-54},{-146,-34}})));
+        Sensors.Power power annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-96,72})));
+        Sensors.Power power1 annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-254,36})));
+        Modelica.Blocks.Math.Mean rightHeartPower(f(displayUnit="1/min") = 1.2)
+          annotation (Placement(transformation(extent={{-214,-66},{-194,-46}})));
+        Modelica.Blocks.Math.Feedback feedback
+          annotation (Placement(transformation(extent={{-264,-46},{-244,-66}})));
+        Sensors.Power power2 annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={70,82})));
+        Sensors.Power power3 annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={224,38})));
+        Modelica.Blocks.Math.Mean leftHeartPower(f(displayUnit="1/min") = 1.2)
+          annotation (Placement(transformation(extent={{186,-110},{206,-90}})));
+        Modelica.Blocks.Math.Feedback feedback1
+          annotation (Placement(transformation(extent={{136,-110},{156,-90}})));
+        Sensors.Sphygmomanometer arterialPressure(MeasurementTime(displayUnit="s") =
+            60/72) annotation (Placement(transformation(extent={{198,-66},{218,-46}})));
          equation
              connect(Retha.q_out, inertia.q_out) annotation (Line(
                  points={{112,17},{130,17}},
@@ -4200,12 +4329,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              connect(LVentricularElastance.HR, HeartRate.y) annotation (Line(
                  points={{182,116.8},{182,128.5},{-229.25,128.5}},
                  color={0,0,127}));
-             connect(Rrain.q_out, RightAtrium.q_in[1]) annotation (Line(
-                 points={{-236,17},{-254,17},{-254,59.82},{-228.14,59.82}},
-                 color={127,0,0},
-                 thickness=0.5));
-             connect(RightAtrium.q_in[2], TricuspidValve.q_in) annotation (Line(
-                 points={{-228.14,56.18},{-214,56.18},{-214,58},{-202,58}},
+             connect(RightAtrium.q_in[1], TricuspidValve.q_in) annotation (Line(
+                 points={{-228.14,59.82},{-214,59.82},{-214,58},{-202,58}},
                  color={127,0,0},
                  thickness=0.5));
              connect(TricuspidValve.q_out, RightVentricle.q_in[1]) annotation (
@@ -4218,12 +4343,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  color={127,0,0},
                  thickness=0.5));
 
-             connect(PulmonaryValve.q_out, Epa.q_in[1]) annotation (Line(
-                 points={{-106,57},{-94,57},{-94,99.82},{-80.14,99.82}},
-                 color={127,0,0},
-                 thickness=0.5));
-             connect(Epa.q_in[2], Rpp.q_in) annotation (Line(
-                 points={{-80.14,96.18},{-68,96.18},{-68,98},{-56,98}},
+             connect(Epa.q_in[1], Rpp.q_in) annotation (Line(
+                 points={{-80.14,99.82},{-68,99.82},{-68,98},{-56,98}},
                  color={127,0,0},
                  thickness=0.5));
              connect(Rpp.q_out, Epv.q_in[1]) annotation (Line(
@@ -4234,12 +4355,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  points={{2.83,96.18},{16,96.18},{16,98},{26,98}},
                  color={127,0,0},
                  thickness=0.5));
-             connect(Rlain.q_out, LeftAtrium.q_in[1]) annotation (Line(
-                 points={{56,98},{70,98},{70,65.82},{87.86,65.82}},
-                 color={127,0,0},
-                 thickness=0.5));
-             connect(LeftAtrium.q_in[2], MitralValve.q_in) annotation (Line(
-                 points={{87.86,62.18},{102,62.18},{102,64},{114,64}},
+             connect(LeftAtrium.q_in[1], MitralValve.q_in) annotation (Line(
+                 points={{87.86,65.82},{102,65.82},{102,64},{114,64}},
                  color={127,0,0},
                  thickness=0.5));
              connect(MitralValve.q_out, LeftVentricle.q_in[1]) annotation (Line(
@@ -4250,12 +4367,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  points={{163.86,62.18},{172,62.18},{172,64},{184,64}},
                  color={127,0,0},
                  thickness=0.5));
-             connect(AorticValve.q_out, Eitha.q_in[1]) annotation (Line(
-                 points={{208,64},{224,64},{224,18.9067},{178.89,18.9067}},
-                 color={127,0,0},
-                 thickness=0.5));
-             connect(inertia.q_in, Eitha.q_in[2]) annotation (Line(
-                 points={{152,17},{164,17},{164,17},{178.89,17}},
+             connect(inertia.q_in, Eitha.q_in[1]) annotation (Line(
+                 points={{152,17},{164,17},{164,19.145},{178.89,19.145}},
                  color={127,0,0},
                  thickness=0.5));
              connect(Retha.q_in, Eetha.q_in[1]) annotation (Line(
@@ -4290,8 +4403,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  points={{-208,17},{-194,17},{-194,17},{-180.14,17}},
                  color={127,0,0},
                  thickness=0.5));
-             connect(EithaPressure.q_in, Eitha.q_in[3]) annotation (Line(
-                 points={{182,-50},{180,-50},{180,15.0933},{178.89,15.0933}},
+             connect(EithaPressure.q_in, Eitha.q_in[2]) annotation (Line(
+                 points={{196,-32},{178.89,-32},{178.89,17.715}},
                  color={127,0,0},
                  thickness=0.5));
              connect(EethaPressure.q_in, Eetha.q_in[3]) annotation (Line(
@@ -4326,6 +4439,54 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                 LVentricularElastance.Et, LeftVentricle.elastance) annotation (
             Line(points={{203.42,107.68},{222,107.68},{222,76.6},{166.8,76.6}},
               color={0,0,127}));
+        connect(PulmonaryValve.q_out, power.q_in) annotation (Line(
+            points={{-106,57},{-96,57},{-96,62}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(power.q_out, Epa.q_in[2]) annotation (Line(
+            points={{-96,82},{-96,96.18},{-80.14,96.18}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(Rrain.q_out, power1.q_in) annotation (Line(
+            points={{-236,17},{-254,17},{-254,26}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(power1.q_out, RightAtrium.q_in[2]) annotation (Line(
+            points={{-254,46},{-254,56.18},{-228.14,56.18}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(power.power, feedback.u1) annotation (Line(points={{-108,72},{-276,72},
+                {-276,-56},{-262,-56}}, color={0,0,127}));
+        connect(power1.power, feedback.u2) annotation (Line(points={{-266,36},{-268,36},
+                {-268,-30},{-254,-30},{-254,-48}}, color={0,0,127}));
+        connect(feedback.y, rightHeartPower.u)
+          annotation (Line(points={{-245,-56},{-216,-56}}, color={0,0,127}));
+        connect(Rlain.q_out, power2.q_in) annotation (Line(
+            points={{56,98},{70,98},{70,92}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(power2.q_out, LeftAtrium.q_in[2]) annotation (Line(
+            points={{70,72},{70,62.18},{87.86,62.18}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(AorticValve.q_out, power3.q_in) annotation (Line(
+            points={{208,64},{224,64},{224,48}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(power3.q_out, Eitha.q_in[3]) annotation (Line(
+            points={{224,28},{224,16.285},{178.89,16.285}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(feedback1.y, leftHeartPower.u)
+          annotation (Line(points={{155,-100},{184,-100}}, color={0,0,127}));
+        connect(power3.power, feedback1.u1) annotation (Line(points={{236,38},{244,38},
+                {244,-84},{130,-84},{130,-100},{138,-100}}, color={0,0,127}));
+        connect(power2.power, feedback1.u2) annotation (Line(points={{82,82},{106,82},
+                {106,-8},{118,-8},{118,-124},{146,-124},{146,-108}}, color={0,0,127}));
+        connect(Eitha.q_in[4], arterialPressure.q_in) annotation (Line(
+            points={{178.89,14.855},{178.89,-62},{204,-62}},
+            color={127,0,0},
+            thickness=0.5));
              annotation(Diagram(coordinateSystem(extent={{-280,-140},{280,180}},      preserveAspectRatio=false)),             Icon(coordinateSystem(extent = {{-280, -140}, {280, 180}}, preserveAspectRatio = false), graphics),
                Documentation(info="<html>
         <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it.</p>
@@ -4338,7 +4499,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
         <ul>
         <li><i>Jul 2015 </i>by Tomas Kulhanek: Created. </li>
         </ul>
-        </html>"),           experiment(StopTime=5));
+        </html>"),           experiment(StopTime=10, __Dymola_Algorithm="Dassl"));
          end HemodynamicsMeurs_flatNorm;
       annotation (Documentation(info=
                                 "<html>
@@ -4547,11 +4708,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            amplitude=50000,
            offset=InitialDialysatePressure + 101325)
            annotation (Placement(transformation(extent={{94,60},{74,80}})));
-           Physiolibrary.Fluid.Sources.PressureSource blood_output(redeclare package Medium =
-                                BloodPlasma) annotation (Placement(
+           Physiolibrary.Fluid.Sources.PressureSource blood_output(redeclare package
+            Medium =            BloodPlasma) annotation (Placement(
                  transformation(extent={{-74,60},{-54,80}})));
-           Physiolibrary.Fluid.Sources.PressureSource blood_input(redeclare package Medium =
-                                BloodPlasma, usePressureInput=true,
+           Physiolibrary.Fluid.Sources.PressureSource blood_input(redeclare package
+            Medium =            BloodPlasma, usePressureInput=true,
             massFractions_start=PlasmaSubstances)
              annotation (Placement(transformation(extent={{-16,-84},{4,-64}})));
 
@@ -5668,8 +5829,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  extent={{-6,-6},{6,6}},
                  rotation=0,
                  origin={-70,-150})));
-           Physiolibrary.Types.Constants.HydraulicConductanceConst hydraulicConductance1(k=1.250102626409427e-07*(5/4))
-                                             annotation (Placement(transformation(
+           Physiolibrary.Types.Constants.HydraulicConductanceConst hydraulicConductance1(k=
+              1.250102626409427e-07*(5/4))   annotation (Placement(transformation(
                  extent={{-4,-4},{4,4}},
                  rotation=270,
                  origin={-80,-132})));
@@ -5695,6 +5856,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              annotation (Placement(transformation(extent={{-14,-202},{12,-188}})));
         RespiratoryCenter respiratoryCenter(DV=DV)
           annotation (Placement(transformation(extent={{40,2},{20,22}})));
+        inner Modelica.Fluid.System system(T_ambient=310.15)
+          annotation (Placement(transformation(extent={{-66,-2},{-46,18}})));
          equation
            connect(
                 deadSpaceVentilation.q_out, volumeOutflow.q_in) annotation (Line(
@@ -5992,7 +6155,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              volume_start(displayUnit="l") = 0.0023,
              Compliance(displayUnit="ml/mmHg") = 6.0004926067653e-07,
              ZeroPressureVolume(displayUnit="l") = 0.0013,
-             ExternalPressure(displayUnit="mmHg") = 100791.72488574,
+          ExternalPressure(displayUnit="mmHg") = system.p_ambient - 533,
           nPorts=2)    annotation (Placement(transformation(
                  extent={{-10,-10},{10,10}},
                  rotation=90,
@@ -14118,8 +14281,7 @@ dateModified = "2021-01-27 10:14:41Z",
 uses(
     Modelica(version="4.0.0"),
     Complex(version="4.0.0"),
-    Chemical(version="1.4.0"),
-    ModelicaHackathonPoriz(version="1")),
+    Chemical(version="1.4.0")),
     conversion(
   from(version="BioChem-1.0.1", script="modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos",
       to="3.0.0"),
