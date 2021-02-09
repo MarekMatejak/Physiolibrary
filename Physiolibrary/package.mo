@@ -4853,10 +4853,10 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
         volume_start=LungsAirVolume_initial,
         use_concentration_start=true,
         massFractions_start=Air.reference_X,
-        concentration_start=((Air.reference_X ./ Air.MMb)*Air.density_pTX(
+        concentration_start=(Air.reference_X[1:Air.nS - 1] ./ Air.MMb[1:Air.nS - 1]) * Air.density_pTX(
                    101325,
                    298.15,
-                   Air.reference_X))[1:Air.nS - 1],
+                   Air.reference_X),
         EnthalpyNotUsed=false,
         ZeroPressureVolume=FunctionalResidualCapacity,
         Compliance=TotalCompliance,

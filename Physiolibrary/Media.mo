@@ -339,7 +339,7 @@ Modelica source.
         Modelica.Units.SI.Concentration c[nS]=
           if
             (size(concentrations,1)<nS) then
-            cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+            cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb[1:nS-1] .* sV[1:nS-1]))))/(MMb[nS]*sV[nS])})
           else
             concentrations;
       algorithm
@@ -1067,7 +1067,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       Modelica.Units.SI.Concentration c[nS]=
         if
           (size(concentrations,1)<nS) then
-          cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+          cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb[1:nS-1] .*sV[1:nS-1]))))/(MMb[nS]*sV[nS])})
         else
           concentrations;
     algorithm
