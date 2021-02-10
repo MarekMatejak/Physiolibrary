@@ -4855,16 +4855,13 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
         "Relative position in respiratory cycle (0,1) to absolute external lungs pressure"
         annotation (Placement(transformation(extent={{18,54},{38,74}})));
 
+
        Physiolibrary.Fluid.Components.ElasticVessel lungs(
         redeclare package Medium = Air,
         use_mass_start=false,
         volume_start=LungsAirVolume_initial,
-        use_concentration_start=true,
+        use_concentration_start=false,
         massFractions_start=Air.reference_X,
-        concentration_start=((Air.reference_X ./ Air.MMb)*Air.density_pTX(
-                   101325,
-                   298.15,
-                   Air.reference_X))[1:Air.nS - 1],
         EnthalpyNotUsed=false,
         ZeroPressureVolume=FunctionalResidualCapacity,
         Compliance=TotalCompliance,
