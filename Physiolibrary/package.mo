@@ -2266,7 +2266,8 @@ as signal.
          Boolean b;
          discrete Physiolibrary.Types.Time t0;
          discrete Physiolibrary.Types.Pressure  systolicMeassured, diastolicMeassured, meanMeasured;
-         Physiolibrary.Types.Pressure pressure, diastolicRunning, systolicRunning, pressureInt;
+         Physiolibrary.Types.Pressure pressure, diastolicRunning, systolicRunning;
+         Real pressureInt;
 
        equation
          diastolic = diastolicMeassured;
@@ -5145,8 +5146,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium
-          =    Air,
+         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium =
+               Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftBronchiResistance)
            annotation (Placement(transformation(extent={{-252,24},{-232,44}})));
@@ -5172,8 +5173,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          Physiolibrary.Types.Constants.PressureConst ambient_pressure(k=
                IntrathoraxPressure)
            annotation (Placement(transformation(extent={{84,44},{74,52}})));
-         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium
-          =    Air,
+         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium =
+               Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=RightBronchiResistance)
            annotation (Placement(transformation(extent={{-252,-54},{-232,-34}})));
@@ -5243,8 +5244,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftAlveoliResistance)
            annotation (Placement(transformation(extent={{-210,24},{-190,44}})));
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
-          =    Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
+               Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -5613,8 +5614,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
-          =    Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
+               Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -6209,16 +6210,13 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Air)
              annotation (Placement(transformation(rotation=0, extent={{-30,40},{-10,60}}),
                  iconTransformation(extent={{-30,40},{-10,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-            =                                                                          Air)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Air)
              annotation (Placement(transformation(rotation=0, extent={{10,40},{30,60}}),
                  iconTransformation(extent={{10,40},{30,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium
-            =                                                                          Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium = Blood)
              annotation (Placement(transformation(rotation=0, extent={{-114,-80},{-94,-60}}),
                  iconTransformation(extent={{-110,-10},{-90,10}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium
-            =                                                                           Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium = Blood)
              annotation (Placement(transformation(rotation=0, extent={{90,-80},{110,-60}}),
                  iconTransformation(extent={{90,-10},{110,10}})));
            Physiolibrary.Fluid.Components.Conductor conductorB(redeclare package
