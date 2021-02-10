@@ -331,6 +331,7 @@ Modelica source.
       redeclare function extends density_pTC
     protected
         Modelica.Units.SI.SpecificVolume sV[nS]=stateOfMatter.specificVolume(substanceData);
+        Modelica.Units.SI.MolarVolume mV[nS]=MMb.*sV;
         Modelica.Units.SI.Concentration c_electroneutral[nS-1]=
           if
             (size(concentrations,1)==nS-2) then
@@ -339,7 +340,7 @@ Modelica source.
         Modelica.Units.SI.Concentration c[nS]=
           if
             (size(concentrations,1)<nS) then
-            cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+            cat(1,c_electroneutral,{(1-(c_electroneutral*(mV[1:nS-1])))/sum(mV)})
           else
             concentrations;
       algorithm
@@ -1059,6 +1060,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
     redeclare function extends density_pTC
     protected
       Modelica.Units.SI.SpecificVolume sV[nS]=stateOfMatter.specificVolume(substanceData);
+      Modelica.Units.SI.MolarVolume mV[nS]=MMb.*sV;
       Modelica.Units.SI.Concentration c_electroneutral[nS-1]=
         if
           (size(concentrations,1)==nS-2) then
@@ -1067,7 +1069,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       Modelica.Units.SI.Concentration c[nS]=
         if
           (size(concentrations,1)<nS) then
-          cat(1,c_electroneutral,{(1-(c_electroneutral*((MMb.*sV)[1:nS-1])))/(MMb[nS]*sV[nS])})
+          cat(1,c_electroneutral,{(1-(c_electroneutral*(mV[1:nS-1])))/sum(mV)})
         else
           concentrations;
     algorithm
