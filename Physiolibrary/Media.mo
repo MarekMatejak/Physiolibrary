@@ -640,7 +640,7 @@ Modelica source.
       ThermodynamicState state;
       BloodGases bloodGases(
         p=p,
-        T=310.15,
+        T=T,
         C=C);
       Modelica.Units.SI.MoleFraction aO2;
       Modelica.Units.SI.MoleFraction aCO2;

@@ -554,9 +554,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
     protected
          constant Boolean GenerateComplianceConnection = true;
-      Modelica.Units.SI.Volume zpv;
-      Modelica.Units.SI.Pressure ep;
-         Real c(unit="m3/Pa");
+         parameter Modelica.Units.SI.Pressure p_initial = system.p_ambient;
+
 
 
       parameter Modelica.Units.SI.Volume BaseMeanVolume=
@@ -571,19 +570,11 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
       Modelica.Units.SI.Pressure relative_pressure;
 
-      /*parameter Modelica.Units.SI.Pressure d_sigmoid_initial= (BaseMeanVolume -
-    ResidualVolume)*(VitalCapacity - (BaseMeanVolume -
-    ResidualVolume))/(Compliance*VitalCapacity);
-parameter Modelica.Units.SI.Pressure c_sigmoid_initial=(BaseMeanVolume -
-    ZeroPressureVolume)/Compliance + d_sigmoid_initial*log((VitalCapacity/(
-    BaseMeanVolume - ResidualVolume) - 1));*/
-          parameter Modelica.Units.SI.Pressure p_initial = system.p_ambient; /*(if (not useSigmoidCompliance) then
-    (if (volume_start > ResidualVolume)
-    then (max( 0, volume_start - ZeroPressureVolume)/Compliance + ExternalPressure)
-    else ((-ExternalPressure/log(Modelica.Constants.eps))*
-       log(max(Modelica.Constants.eps, volume_start/ResidualVolume)) + ExternalPressure))
-    else (-(d_sigmoid_initial)*log((VitalCapacity/(volume_start - ResidualVolume)) - 1) + (c_sigmoid_initial) + ExternalPressure));
-*/
+        Modelica.Units.SI.Volume zpv;
+        Modelica.Units.SI.Pressure ep;
+        Types.HydraulicCompliance c;
+
+
       equation
 
         //elastic compartment
@@ -601,12 +592,12 @@ parameter Modelica.Units.SI.Pressure c_sigmoid_initial=(BaseMeanVolume -
 
         relative_pressure = pressure - ep;
 
-        pressure = if (not useSigmoidCompliance) then smooth(0, if noEvent(volume >
-          ResidualVolume) then (excessVolume/c + ep) else ((-ep/log(Modelica.Constants.eps))*log(max(Modelica.Constants.eps,
+        pressure = if (not useSigmoidCompliance) then
+          smooth(0, if noEvent(volume > ResidualVolume) then
+                     (excessVolume/c + ep)
+          else ((-ep/log(Modelica.Constants.eps))*log(max(Modelica.Constants.eps,
           volume/ResidualVolume)) + ep)) else (-d_sigmoid*log((VitalCapacity/(volume -
           ResidualVolume)) - 1) + c_sigmoid + ep);
-
-
 
        annotation (
           Icon(coordinateSystem(
@@ -4521,11 +4512,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            import Physiolibrary;
 
            replaceable package BloodPlasma = Physiolibrary.Media.BodyFluid constrainedby
-          Physiolibrary.Media.BodyFluid "Medium model of blood plasma" annotation (
+          Physiolibrary.Media.BodyFluid    "Medium model of blood plasma" annotation (
                choicesAllMatching=true);
 
            replaceable package Dialysate = Physiolibrary.Media.BodyFluid constrainedby
-          Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
+          Physiolibrary.Media.BodyFluid    "Medium model of dialysate" annotation (
                choicesAllMatching=true);
 
            parameter Physiolibrary.Types.HydraulicCompliance Compliance=7.5006157584566e-09
@@ -4538,12 +4529,12 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                0,0,0,1e-06}
              "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
 
-           parameter Modelica.Units.SI.MassFraction InitialPlasma[BloodPlasma.nS-1](displayUnit="%")={0.0031,0.0015,0.0002,0.0009,0.0018,
+           parameter Modelica.Units.SI.MassFraction InitialPlasma[BloodPlasma.nS-1](each displayUnit="%")={0.0031,0.0015,0.0002,0.0009,0.0018,
              0.0038,6e-05,1.2e-05,0.047,0.053,1e-11}
                "Initial blood plasma substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}"
                annotation (Dialog(group="Initialization"));
            //concentrations: { 135,24,5,5,30,105,1.5,0.5,0.7,0.8,1e-06} mmmol/L
-           parameter Modelica.Units.SI.MassFraction InitialDialysate[Dialysate.nS-1](displayUnit="%")={0.0032,0.002,0.00012,0.0009,1e-11,
+           parameter Modelica.Units.SI.MassFraction InitialDialysate[Dialysate.nS-1](each displayUnit="%")={0.0032,0.002,0.00012,0.0009,1e-11,
              0.004,6e-05,1.2e-05,1e-08,1e-08,0.00028}
                "Initial dialysate substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}"
                annotation (Dialog(group="Initialization"));
@@ -4574,19 +4565,15 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                  origin={94,48})));
 
 
-           Physiolibrary.Fluid.Interfaces.FluidPort_a blood_in(redeclare package
-            Medium =
+           Physiolibrary.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
                  BloodPlasma)
              annotation (Placement(transformation(extent={{-70,-110},{-50,-90}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b blood_out(redeclare package
-            Medium =
+           Physiolibrary.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
                  BloodPlasma)
              annotation (Placement(transformation(extent={{-70,110},{-50,90}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package
-            Medium =
+           Physiolibrary.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare package Medium =
                  Dialysate) annotation (Placement(transformation(extent={{50,110},{70,90}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package
-            Medium =
+           Physiolibrary.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package Medium =
                  Dialysate) annotation (Placement(transformation(extent={{50,-110},{70,-90}})));
 
            Chemical.Components.Membrane membrane[BloodPlasma.nS](each EnthalpyNotUsed=false, KC=
@@ -4675,13 +4662,13 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            parameter Integer N=5 "Number of parts";
 
          parameter Modelica.Units.SI.MassFraction PlasmaSubstances[
-           BloodPlasma.nS-1](displayUnit="%")={0.00310,0.00146,0.0002,0.0009,0.0018,
+           BloodPlasma.nS-1](each displayUnit="%")={0.00310,0.00146,0.0002,0.0009,0.0018,
              0.00376,6e-05,1e-05,0.04655,0.0532,1e-11}
             "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing blood plasma";
            //{135,24,5,5,30,106,1.5,0.5,0.7,0.8,1e-6};
 
          parameter Modelica.Units.SI.MassFraction DialysateSubstances[
-           Dialysate.nS-1](displayUnit="%")={0.00317,0.00195,0.000117,0.0009,6e-11,0.004,
+           Dialysate.nS-1](each displayUnit="%")={0.00317,0.00195,0.000117,0.0009,6e-11,0.004,
              6e-05,1e-05,6e-08,6e-08,0.000281}
              "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing dialysate";
            /*{138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6};*/
@@ -4717,11 +4704,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            amplitude=50000,
            offset=InitialDialysatePressure + 101325)
            annotation (Placement(transformation(extent={{94,60},{74,80}})));
-           Physiolibrary.Fluid.Sources.PressureSource blood_output(redeclare package
-            Medium =            BloodPlasma) annotation (Placement(
+           Physiolibrary.Fluid.Sources.PressureSource blood_output(redeclare package Medium =
+                                BloodPlasma) annotation (Placement(
                  transformation(extent={{-74,60},{-54,80}})));
-           Physiolibrary.Fluid.Sources.PressureSource blood_input(redeclare package
-            Medium =            BloodPlasma, usePressureInput=true,
+           Physiolibrary.Fluid.Sources.PressureSource blood_input(redeclare package Medium =
+                                BloodPlasma, usePressureInput=true,
             massFractions_start=PlasmaSubstances)
              annotation (Placement(transformation(extent={{-16,-84},{4,-64}})));
 
@@ -4879,8 +4866,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          "Human body system setting"
         annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-          Medium = Air)                           "External environment"
+         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package Medium =
+                   Air)                           "External environment"
         annotation (Placement(transformation(extent={{-76,-30},{-56,-10}})));
 
          Components.Resistor resistor(redeclare package Medium = Air,
@@ -4928,7 +4915,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                 100,100}})),
         Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        experiment(StopTime=16, __Dymola_Algorithm="Dassl"),
+        experiment(StopTime=16),
         Documentation(info=
                        "<html>
         <p>References:</p>
@@ -4954,7 +4941,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
         useSubstances=true,
         use_mass_start=true,
         mass_start=1,
-        concentration_start(displayUnit="mmol/l") = {0.45,8.2,21.5,1e-06,8.4,0.042,
+        concentration_start(each displayUnit="mmol/l") = {0.45,8.2,21.5,1e-06,8.4,0.042,
           0.042,0.66,28,0.153,5.4,37},
         EnthalpyNotUsed=false,
         Compliance=1,
@@ -5062,7 +5049,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          parameter Boolean EnthalpyNotUsed = false;
 
          parameter Pressure IntrathoraxPressure = system.p_ambient - 700;
-         parameter Frequency RespirationRate=0.08                                                               "Respiration rate";
+         parameter Frequency RespirationRate(displayUnit="1/min")=0.2                                           "Respiration rate";
          parameter Volume ResidualVolume=0.0013                                                      "Lungs residual volume";
          parameter Volume TotalLungCapacity=0.00623                                                      "Total Lung Capacity";
          parameter Volume BaseTidalVolume=0.0005                                                      "Base Tidal Volume";
@@ -5089,10 +5076,10 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            parameter Physiolibrary.Types.HydraulicResistance RightAlveoliResistance=TotalResistance*AlveoliDuctResistanceFraction
            "Right Alveoli Resistance";
 
-         parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit=
-              "l/cmH2O")=1.0197162129779e-06            "Total lungs compliance";
+         parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06
+                                                        "Total lungs compliance";
 
-         parameter Pressure Pmin=-533.28954966                                   "Relative external lungs pressure minimum caused by respiratory muscles";
+         parameter Pressure Pmin=-250                                   "Relative external lungs pressure minimum caused by respiratory muscles";
          parameter Pressure Pmax(displayUnit="mmHg")=0    "Relative external lungs pressure maximum";
          parameter Real RespiratoryMusclePressureCycle[:,3] = {
                {0,Pmax,0},
@@ -5131,7 +5118,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            nPorts=2) "Left alveolar space" annotation (Placement(transformation(extent={{-162,16},{-142,36}})));     //0.0133,
 
          Physiolibrary.Fluid.Sensors.PressureMeasure leftPleauralPressure(redeclare
-          package Medium =    PleuralFluid, GetAbsolutePressure=true)
+          package
+             Medium =         PleuralFluid, GetAbsolutePressure=true)
            "Left Pleaural pressure" annotation (Placement(transformation(
                extent={{10,-10},{-10,10}},
                rotation=0,
@@ -5141,8 +5129,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                                             "Human body system setting"
            annotation (Placement(transformation(extent={{60,66},{80,86}})));
 
-         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-          Medium =            Air, temperature_start=EnvironmentTemperature)
+         Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package Medium =
+                              Air, temperature_start=EnvironmentTemperature)
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
@@ -5164,7 +5152,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            substanceData=Chemical.Substances.CarbonDioxide_gas())
            annotation (Placement(transformation(extent={{-218,-16},{-198,4}})));
          Physiolibrary.Fluid.Sensors.PressureMeasure leftAlveolarPressure(redeclare
-          package Medium =    Air) "Left Alveolar pressure"
+          package
+             Medium =         Air) "Left Alveolar pressure"
            annotation (Placement(transformation(extent={{-124,22},{-104,42}})));
          Modelica.Blocks.Math.Add musclePressure annotation (Placement(transformation(
                extent={{-10,-10},{10,10}},
@@ -5215,7 +5204,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            nPorts=1) "Left Plearal space"
            annotation (Placement(transformation(extent={{-76,18},{-56,38}})));
          Physiolibrary.Fluid.Sensors.PressureMeasure rightPleauralPressure(redeclare
-          package Medium =    PleuralFluid, GetAbsolutePressure=true)
+          package
+             Medium =         PleuralFluid, GetAbsolutePressure=true)
            "Right pleaural pressure" annotation (Placement(transformation(
                extent={{10,-10},{-10,10}},
                rotation=0,
@@ -5231,7 +5221,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            nPorts=1) "Right Plearal space"
            annotation (Placement(transformation(extent={{-76,-58},{-56,-38}})));
          Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
-          package Medium =    Air) "Right Alveolar pressure"
+          package
+             Medium =         Air) "Right Alveolar pressure"
            annotation (Placement(transformation(extent={{-134,-38},{-114,
                 -18}})));
          Physiolibrary.Fluid.Components.Resistor trachea(
@@ -5295,7 +5286,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            redeclare package Medium = Air)
            annotation (Placement(transformation(extent={{-138,-64},{-158,-84}})));
          Physiolibrary.Fluid.Sensors.Temperature Temperature_alveolar(redeclare
-          package Medium =    Air)
+          package
+             Medium =         Air)
            annotation (Placement(transformation(extent={{-110,-40},{-90,
                 -20}})));
          Physiolibrary.Fluid.Sensors.PartialPressure pH2O_alveolar(
@@ -5311,8 +5303,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(
              redeclare package Medium = Air)
            annotation (Placement(transformation(extent={{-298,30},{-278,50}})));
-         Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare package
-          Medium =            Air)
+         Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare package Medium =
+                              Air)
            annotation (Placement(transformation(extent={{-296,72},{-276,92}})));
          Physiolibrary.Thermal.Components.Conductor conductor(Conductance(
                displayUnit="W/K") = 10)
@@ -5614,8 +5606,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
-               Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
+          =    Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -6210,13 +6202,16 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Air)
              annotation (Placement(transformation(rotation=0, extent={{-30,40},{-10,60}}),
                  iconTransformation(extent={{-30,40},{-10,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Air)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
+            =                                                                          Air)
              annotation (Placement(transformation(rotation=0, extent={{10,40},{30,60}}),
                  iconTransformation(extent={{10,40},{30,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium = Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium
+            =                                                                          Blood)
              annotation (Placement(transformation(rotation=0, extent={{-114,-80},{-94,-60}}),
                  iconTransformation(extent={{-110,-10},{-90,10}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium = Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium
+            =                                                                           Blood)
              annotation (Placement(transformation(rotation=0, extent={{90,-80},{110,-60}}),
                  iconTransformation(extent={{90,-10},{110,10}})));
            Physiolibrary.Fluid.Components.Conductor conductorB(redeclare package
@@ -14314,7 +14309,7 @@ input <i>u</i>:
 
   annotation (
 preferredView="info",
-version="3.0.0-alpha10",
+version="3.0.0-alpha11",
 versionDate="2021-01-27",
 dateModified = "2021-01-27 10:14:41Z",
 uses(
