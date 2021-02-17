@@ -1686,7 +1686,7 @@ as signal.
           then (
              if (size(concentration_start,1)==Medium.nS-2) then
              cat( 1,
-                (concentration_start .* Medium.MMb[1:Medium.nS - 2])./
+                (concentration_start .* (Medium.MMb[1:Medium.nS - 2]))./
                  Medium.density_pTC(
                   pressure_start,
                   temperature_start,
@@ -4512,11 +4512,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            import Physiolibrary;
 
            replaceable package BloodPlasma = Physiolibrary.Media.BodyFluid constrainedby
-          Physiolibrary.Media.BodyFluid    "Medium model of blood plasma" annotation (
+          Physiolibrary.Media.BodyFluid "Medium model of blood plasma" annotation (
                choicesAllMatching=true);
 
            replaceable package Dialysate = Physiolibrary.Media.BodyFluid constrainedby
-          Physiolibrary.Media.BodyFluid    "Medium model of dialysate" annotation (
+          Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
                choicesAllMatching=true);
 
            parameter Physiolibrary.Types.HydraulicCompliance Compliance=7.5006157584566e-09
