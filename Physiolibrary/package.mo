@@ -5606,8 +5606,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
-          =    Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
+               Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
@@ -6202,16 +6202,13 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Air)
              annotation (Placement(transformation(rotation=0, extent={{-30,40},{-10,60}}),
                  iconTransformation(extent={{-30,40},{-10,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-            =                                                                          Air)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Air)
              annotation (Placement(transformation(rotation=0, extent={{10,40},{30,60}}),
                  iconTransformation(extent={{10,40},{30,60}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium
-            =                                                                          Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package Medium = Blood)
              annotation (Placement(transformation(rotation=0, extent={{-114,-80},{-94,-60}}),
                  iconTransformation(extent={{-110,-10},{-90,10}})));
-           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium
-            =                                                                           Blood)
+           Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package Medium = Blood)
              annotation (Placement(transformation(rotation=0, extent={{90,-80},{110,-60}}),
                  iconTransformation(extent={{90,-10},{110,10}})));
            Physiolibrary.Fluid.Components.Conductor conductorB(redeclare package
@@ -13121,9 +13118,9 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
      type Mass = Modelica.Units.SI.Mass (
                                        displayUnit="g", nominal=1e-3, min=0, max=Modelica.Constants.inf);
      type MassFraction = Modelica.Units.SI.MassFraction (
-                                                       nominal=1e-2, min=ModelicaServices.Machine.small, max=Modelica.Constants.inf);
+                                                       nominal=0.1, min=ModelicaServices.Machine.small, max=Modelica.Constants.inf);
      type MassFlowRate = Modelica.Units.SI.MassFlowRate (
-                                                       displayUnit="mg/min", nominal=(1e-6)/60);
+                                                       displayUnit="mg/min", nominal=0.001);
      type Density = Modelica.Units.SI.Density (
                                              displayUnit="kg/l", nominal=1e-3);
      type MolarMass = Modelica.Units.SI.MolarMass (
@@ -13139,7 +13136,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
      type AbsolutePressure = Modelica.Units.SI.AbsolutePressure (
                                                                displayUnit="mmHg", nominal=101325, min=0, max=Modelica.Constants.inf);
      type Pressure =  Modelica.Units.SI.Pressure (
-                                                displayUnit="mmHg", nominal=133.322387415);
+                                                displayUnit="mmHg", nominal=1e5);
      type Volume =  Modelica.Units.SI.Volume (
                                             displayUnit="ml", nominal=1e-6, min=0, max=Modelica.Constants.inf);
      type VolumeFlowRate = Modelica.Units.SI.VolumeFlowRate (
