@@ -1,4 +1,4 @@
-// Convert Physiolibrary from 2.3 to 3.0
+﻿// Convert Physiolibrary from 2.3 to 3.0
 
 // clear
 convertClear();
@@ -53,7 +53,7 @@ convertModifiers({"Physiolibrary.Hydraulic.Components.Inertia"},{"volumeFlow_sta
 convertModifiers({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  {"ExternalPressure"}  , {"ExternalPressure=101325+%ExternalPressure%"}, true);
 
 
-convertModifiers({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  {"cardinality(q_in)=1"} , {"nHydraulicPorts=1"});
+// convertModifiers({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  {"cardinality(q_in)=1"} , {"nHydraulicPorts=1"});
 
 
 
@@ -64,7 +64,7 @@ convertClass("Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Physio
 convertClass("Physiolibrary.Hydraulic.Components.HydraulicColumn","Physiolibrary.Fluid.Components.HydraulicColumn");
 convertClass("Physiolibrary.Hydraulic.Components.Inertia","Physiolibrary.Fluid.Components.Inertia");
 convertClass("Physiolibrary.Hydraulic.Components.IdealValve","Physiolibrary.Fluid.Components.IdealValve");
-convertClass("Physiolibrary.Hydraulic.Components.IdelValveResistance","Physiolibrary.Fluid.Components.IdealValveResistance");
+convertClass("Physiolibrary.Hydraulic.Components.IdealValveResistance","Physiolibrary.Fluid.Components.IdealValveResistance");
 convertClass("Physiolibrary.Hydraulic.Components.Reabsorption","Physiolibrary.Fluid.Components.Reabsorption");
 convertClass("Physiolibrary.Hydraulic.Components.ElasticMembrane","Physiolibrary.Fluid.Components.ElasticMembrane");
 convertClass("Physiolibrary.Hydraulic.Sensors.FlowMeasure","Physiolibrary.Fluid.Sensors.FlowMeasure");
