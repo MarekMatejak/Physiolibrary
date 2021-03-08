@@ -189,4 +189,3 @@ convertClass("Physiolibrary.Blocks.Factors.Input2Effect","Physiolibrary.Blocks.F
 convertClass("Physiolibrary.Blocks.Factors.Input2EffectDelayed","Physiolibrary.Blocks.Factors.SplineLag")
 convertClass("Physiolibrary.Blocks.Factors.DelayedInput2Effect","Physiolibrary.Blocks.Factors.LagSpline")
 convertClass("Physiolibrary.Blocks.Factors.Input2EffectDelayedOrZero","Physiolibrary.Blocks.Factors.SplineLagOrZero")
-

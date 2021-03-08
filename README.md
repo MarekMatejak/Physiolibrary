@@ -129,7 +129,7 @@ Download [Physiolibrary 2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
 
 ## License (BSD 3-Clause)
 
-Copyright (c) 2008-2015, Marek Mateják, Charles University in Prague
+Copyright (c) 2008-2020, Marek Mateják, Charles University in Prague
 
 All rights reserved. 
 

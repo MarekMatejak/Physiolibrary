@@ -1,4 +1,4 @@
-// Unit conversions in Dymola
+﻿// Unit conversions in Dymola
 //
 // -------------------------------------------------------------------
 // Possible unit conversions are defined below. They are used for
@@ -34,7 +34,7 @@ defineUnitConversion("1", "Gu", 1 );   // Glodblatt unit: for renin 1Gu = 1 ng A
 defineUnitConversion("1/m3", "Gu/l", 1e-3 );
 defineUnitConversion("1/s", "Gu/min", 60 );
 defineUnitConversion("J", "cal/Gu", 1/4.1868 );
-//Be carefull - most of the following substances still do not have precisely measured molar amount of international unit !!!
+//Be careful - most of the following substances still do not have precisely measured molar amount of international unit !!!
 //Following estimations are from some purified preparations:
 //1 IU (Insulin) = 38.46 ug = 6.622 nmol  (5.808 kDa, WHO Expert Committee on Biological Standardisation (1987). 37th Report. WHO Tech Rep Ser No 760, pg.25)
 //defineUnitConversion("mol", "U_Insulin", 1/6.622e-9 );
@@ -227,33 +227,52 @@ defineUnitConversion("Pa", "Torr", 760/101325);
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.s)", (1e+6)*(133.322387415)); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.min)", (1e+6)*(133.322387415)*60); //hydraulic conductance
 defineUnitConversion("m3/(Pa.s)", "l/(mmHg.min)", (1e+3)*(133.322387415)*60);  //hydraulic conductance
+defineUnitConversion("m3/(Pa.s)", "l/(cmH2O.s)", (1e+3)*(98.0665)); //hydraulic resistance
+
+defineUnitConversion("mol2.s-1.J-1", "mol2.min-1.kJ-1", 1e3*60 ); //permeability
 defineUnitConversion("m3/(Pa.s)", "ml/(mmHg.day)", (1e+6)*(133.322387415)*60*60*24); //osmotic permeability
 defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/ml", (1e-6)/(133.322387415)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(mmHg.s)/l", (1e-3)/(133.322387415)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/m3", "(cmH2O.s)/l", (1e-3)/(98.0665)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/ml", (1e-6)/((133.322387415)*60)); //hydraulic resistance
 defineUnitConversion("(Pa.s)/m3", "(mmHg.min)/l", (1e-3)/((133.322387415)*60));
+defineUnitConversion("m3/Pa", "l/cmH2O", (1e+3)*(98.0665));  //hydraulic compliance
 defineUnitConversion("m3/Pa", "ml/mmHg", (1e+6)*(133.322387415));  //hydraulic compliance
 defineUnitConversion("m3/Pa", "l/mmHg", (1e+3)*(133.322387415));
 defineUnitConversion("Pa/m3", "mmHg/ml", 1/((1e+6)*(133.322387415)));  //hydraulic elastance
 defineUnitConversion("Pa.s2/m3", "mmHg.min2/ml", (1/133.322387415)*(1/(60^2))/(1e+6));
 defineUnitConversion("Pa.s2/m3", "mmHg.s2/ml", (1/133.322387415)*(1e-6));
 
+defineUnitConversion("kg/(Pa.s)", "g/(mmHg.s)", (1e+3)*(133.322387415)); //hydraulic conductance
+defineUnitConversion("kg/(Pa.s)", "g/(mmHg.min)", (1e+3)*(133.322387415)*60); //hydraulic conductance
+defineUnitConversion("kg/(Pa.s)", "kg/(mmHg.min)", 1*(133.322387415)*60);  //hydraulic conductance
+defineUnitConversion("kg/(Pa.s)", "g/(mmHg.day)", (1e+3)*(133.322387415)*60*60*24); //osmotic permeability
+defineUnitConversion("(Pa.s)/kg", "(mmHg.s)/g", (1e-3)/(133.322387415)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/kg", "(mmHg.min)/g", (1e-3)/((133.322387415)*60)); //hydraulic resistance
+defineUnitConversion("(Pa.s)/kg", "(mmHg.min)/kg", 1/((133.322387415)*60));
+defineUnitConversion("kg/Pa", "g/mmHg", (1e+3)*(133.322387415));  //hydraulic compliance
+defineUnitConversion("kg/Pa", "kg/mmHg", 1*(133.322387415));
+defineUnitConversion("Pa/kg", "mmHg/g", 1/((1e+3)*(133.322387415)));  //hydraulic elastance
+defineUnitConversion("Pa.s2/kg", "mmHg.min2/g", (1/133.322387415)*(1/(60^2))/(1e+3));
+defineUnitConversion("Pa.s2/kg", "mmHg.s2/g", (1/133.322387415)*(1e-3));
+
 
 // Bulk Modulus
 defineUnitConversion("N/m2","bar",1/1e5);
 
 // Volume Flow Rate
+defineUnitConversion("m3/s", "l/s", 1e3);
 defineUnitConversion("m3/s", "l/min", 1e3*60);
 defineUnitConversion("m3/s", "ml/day", 1e6*60*60*24);
 defineUnitConversion("m3/s", "l/day", 1e3*60*60*24);
+defineUnitConversion("m3/s", "l/h", 1e3*3600);
+defineUnitConversion("m3/s", "m3/h", 3600);
+
 
 // Density
 defineUnitConversion("kg/m3", "kg/dm3", 1e-3);
 defineUnitConversion("kg/m3", "kg/l", 1e-3);
 // defineUnitConversion("kg/m3", "g/cm3", 1e-3);
-defineUnitConversion("kg/m3", "pg/ml", 1e+9);
-defineUnitConversion("kg/m3", "g/ml", 1e-3);
-defineUnitConversion("kg/m3", "g/l", 1);
-defineUnitConversion("kg/m3", "g/dl", 1e-1);
 
 //Mass flow rate
 defineUnitConversion("kg/s", "kg/min", 60);
@@ -273,7 +292,10 @@ defineUnitConversion("N", "kN", 1e-3);
 defineUnitConversion("N", "MN", 1e-6);
 
 // Work, Energy
+defineUnitConversion("J", "Wh", 1/3600);
 defineUnitConversion("J", "kWh", 1/3600/1000);
+defineUnitConversion("1/J", "1/kWh", 3.6e6);
+defineUnitConversion("1/J", "1/MWh", 3.6e9);
 defineUnitConversion("J", "mJ", 1000);
 defineUnitConversion("J", "kJ", 1e-3);
 defineUnitConversion("J", "MJ", 1e-6);
@@ -294,10 +316,24 @@ defineUnitConversion("V", "kV", 0.001);
 defineUnitConversion("A", "mA", 1000);
 defineUnitConversion("A", "kA", 0.001);
 defineUnitConversion("A", "meq/min", (1000/(9.64853399*10^4))*60 );
+// Current density
+defineUnitConversion("A/m2", "A/cm2", 1e-4);
 
 // Capacitance
 defineUnitConversion("F", "uF", 1e6);
 
+// Charge
+defineUnitConversion("C", "As", 1);
+defineUnitConversion("C", "Ah", 1/3600);
+defineUnitConversion("C", "mAh", 1000/3600);
+
+// Reactive power
+defineUnitConversion("var", "kvar", 1e-3);
+defineUnitConversion("var", "Mvar", 1e-6);
+
+// Apparent power
+defineUnitConversion("VA", "kVA", 1e-3);
+defineUnitConversion("VA", "MVA", 1e-6);
 // Leakage
 defineUnitConversion("m3/(s.Pa)","l/(min.bar)",6e9);
 
@@ -311,6 +347,23 @@ defineUnitConversion("m2/s", "mm2/s",1e6);
 defineUnitConversion("1/K", "ppm/K",1e6);
 
 defineUnitConversion("1", "%",100);
+// Fuel consumption
+defineUnitConversion("cl/km", "l/100km", 1, 0)
+defineUnitConversion("cl/km", "mpg", 0, 454.609/1.609344)
+defineUnitConversion("cl/km", "mpgUS", 0, 378.5411784/1.609344)
+
+// For Rectification and Chemical engineering
+defineUnitConversion("mol/s", "mol/h", 3600);
+defineUnitConversion("J/(mol.K)", "J/(kmol.K)", 1000);
+defineUnitConversion("s/m", "h/m", 1/3600);
+defineUnitConversion("W/(m2.K)", "kW/(m2.K)", 1e-3);
+defineUnitConversion("m2/s", "m2/h", 3600);
+
+// Surface-area-to-volume ratio (for reactivity in chemical reactions)
+defineUnitConversion("m2/m3", "1/m", 1);
+
+// various
+defineUnitConversion("1", "%", 100);
 
 // -------------------------------------------------------------------
 // The default display unit used by Dymola (until another display unit
@@ -334,7 +387,4 @@ defineUnitConversion("1", "%",100);
 // defineDefaultDisplayUnit("s", "min");
 // defineDefaultDisplayUnit("C", "meq");
 // defineDefaultDisplayUnit("V", "mV");
-
-
-
-
+// defineDefaultDisplayUnit("m/s", "km/h");

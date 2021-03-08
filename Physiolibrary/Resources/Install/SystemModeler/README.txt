@@ -5,5 +5,3 @@ To add library WITHOUT display units to Wolfram SystemModeler 4.0 please run "in
 Current support of SystemModeler is limited:
  - Steady state examples are not running.
  - Without display units.
-
-

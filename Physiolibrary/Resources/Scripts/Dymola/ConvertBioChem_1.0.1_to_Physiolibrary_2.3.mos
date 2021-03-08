@@ -105,4 +105,3 @@ convertModifiers("BioChem.Reactions.MassAction.Reversible.BiUni.Ubr", fill("",0)
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","s1","substrates[1]")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p1","products[1]")
 convertElement("BioChem.Reactions.MassAction.Reversible.UniBi.Ubr","p2","products[2]")
-

@@ -1,0 +1,93 @@
+// Convert Physiolibrary from 2.3 to 3.0
+
+// clear
+convertClear();
+
+
+convertElement("Physiolibrary.Hydraulic.Sources.PressureSource","P","pressure_start")
+convertElement("Physiolibrary.Hydraulic.Sources.PressureSource","T","temperature_start")
+
+convertElement("Physiolibrary.Hydraulic.Components.Resistor","useConductanceInput","useResistanceInput")
+convertElement("Physiolibrary.Hydraulic.Components.IdealValveResistance","useLimitationInputs","useResistanceInputs")
+convertElement("Physiolibrary.Hydraulic.Components.ElasticVesselElastance","useComplianceInput","useElastanceInput")
+convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance"},"volume","fluidVolume")
+convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance"},"CollapsingPressureVolume","ResidualVolume")
+
+
+convertModifiers("Physiolibrary.Fluid.Components.IdealValveResistance",  {"_Goff<>0"}  , {"_Roff=1/%_Goff%"});
+convertModifiers("Physiolibrary.Fluid.Components.IdealValveResistance",  {"_Goff=0"}  , {"_Roff=Modelica.Constants.inf"});
+convertElement("Physiolibrary.Fluid.Components.IdealValveResistance",  "Goff" , "1/Roff");
+convertElement("Physiolibrary.Fluid.Components.IdealValveResistance",  "Gon" , "1/Ron");
+convertElement("Physiolibrary.Fluid.Components.ElasticVesselElastance",  "compliance" , "1/elastance");
+convertElement("Physiolibrary.Fluid.Components.Resistor",  "cond" , "1/resistance");
+
+
+convertClass("Physiolibrary.Hydraulic.Components.Pump","Physiolibrary.Fluid.Components.VolumePump");
+convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedVolume","Physiolibrary.Fluid.Sources.PressureSource");
+convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedPump","Physiolibrary.Fluid.Sources.VolumeInflowSource");
+convertClass("Physiolibrary.Hydraulic.Sources.UnlimitedOutflowPump","Physiolibrary.Fluid.Sources.VolumeOutflowSource");
+convertClass("Physiolibrary.Hydraulic.Interfaces.HydraulicPort","Physiolibrary.Fluid.Interfaces.FluidPort");
+convertClass("Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a","Physiolibrary.Fluid.Interfaces.FluidPort_a");
+convertClass("Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b","Physiolibrary.Fluid.Interfaces.FluidPort_b");
+convertClass("Physiolibrary.Hydraulic.Interfaces.ConditionalSolutionFlow","Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow");
+
+
+convertElement({"Physiolibrary.Hydraulic.Interfaces.HydraulicPort","Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a","Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"},"pressure","p-101325")
+convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  "externalPressure"  ,  "externalPressure-101325")
+convertElement({"Physiolibrary.Hydraulic.Interfaces.HydraulicPort","Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a","Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b"},"q","m_flow/density")
+convertElement({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},"q_in","q_in[1]")
+convertElement("Physiolibrary.Hydraulic.Components.HydrostaticColumn","G","")
+convertElement("Physiolibrary.Hydraulic.Components.HydrostaticColumn","ro","")
+convertElement("Physiolibrary.Hydraulic.Components.HydrostaticColumn","GravityAcceleration","")
+convertElement("Physiolibrary.Hydraulic.Components.Inertia","volumeFlow_start","massFlow_start")
+convertElement("Physiolibrary.Hydraulic.Components.ElasticMembrane","q_int","q_in")
+convertElement("Physiolibrary.Hydraulic.Components.ElasticMembrane","q_ext","q_out")
+convertElement("Physiolibrary.Hydraulic.Components.ElasticMembrane","NominalValue","")
+convertElement("Physiolibrary.Hydraulic.Components.ElasticMembrane","volume_start","")
+
+//convertModifiers({"Physiolibrary.Types.Constants.PressureConst"},{"k"},{"k=101325+%k%"},true);
+
+convertModifiers({"Physiolibrary.Hydraulic.Components.Inertia"},{"I"}  , {"I=%I%/1000"}, true);
+convertModifiers({"Physiolibrary.Hydraulic.Components.Inertia"},{"volumeFlow_start"}  , {"massFlow_start=%volumeFlow_start%*1000"}, true);
+
+convertModifiers({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  {"ExternalPressure"}  , {"ExternalPressure=101325+%ExternalPressure%"}, true);
+
+
+convertModifiers({"Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Cardiovascular.Model.Burkhoff.Parts.ElasticVesselWithSVandP"},  {"cardinality(q_in)=1"} , {"nHydraulicPorts=1"});
+
+
+
+convertClass("Physiolibrary.Hydraulic.Components.Conductor","Physiolibrary.Fluid.Components.Conductor");
+convertClass("Physiolibrary.Hydraulic.Components.Resistor","Physiolibrary.Fluid.Components.Resistor");
+convertClass("Physiolibrary.Hydraulic.Components.ElasticVessel","Physiolibrary.Fluid.Components.ElasticVessel");
+convertClass("Physiolibrary.Hydraulic.Components.ElasticVesselElastance","Physiolibrary.Fluid.Components.ElasticVesselElastance");
+convertClass("Physiolibrary.Hydraulic.Components.HydraulicColumn","Physiolibrary.Fluid.Components.HydraulicColumn");
+convertClass("Physiolibrary.Hydraulic.Components.Inertia","Physiolibrary.Fluid.Components.Inertia");
+convertClass("Physiolibrary.Hydraulic.Components.IdealValve","Physiolibrary.Fluid.Components.IdealValve");
+convertClass("Physiolibrary.Hydraulic.Components.IdelValveResistance","Physiolibrary.Fluid.Components.IdealValveResistance");
+convertClass("Physiolibrary.Hydraulic.Components.Reabsorption","Physiolibrary.Fluid.Components.Reabsorption");
+convertClass("Physiolibrary.Hydraulic.Components.ElasticMembrane","Physiolibrary.Fluid.Components.ElasticMembrane");
+convertClass("Physiolibrary.Hydraulic.Sensors.FlowMeasure","Physiolibrary.Fluid.Sensors.FlowMeasure");
+convertClass("Physiolibrary.Hydraulic.Sensors.PressureMeasure","Physiolibrary.Fluid.Sensors.PressureMeasure");
+
+
+convertClass("Physiolibrary.Hydraulic","Physiolibrary.Fluid");
+convertClass("Physiolibrary.Chemical","Physiolibrary.Obsolete.ObsoleteChemical");
+convertClass("Physiolibrary.Osmotic","Physiolibrary.Obsolete.ObsoleteOsmotic");
+convertClass("Physiolibrary.SteadyState","Physiolibrary.Obsolete.SteadyState");
+convertClass("Physiolibrary.Types.ScaleConstant","Physiolibrary.Obsolete.ObsoleteTypes.ScaleConstant");
+convertClass("Physiolibrary.Types.IO_Bus","Physiolibrary.Obsolete.ObsoleteTypes.IO_Bus");
+convertClass("Physiolibrary.Types.TorsoBusConnector","Physiolibrary.Obsolete.ObsoleteTypes.TorsoBusConnector");
+convertClass("Physiolibrary.Types.TissueBusConnector","Physiolibrary.Obsolete.ObsoleteTypes.TissueBusConnector");
+convertClass("Physiolibrary.Types.AbstractReal","Physiolibrary.Obsolete.ObsoleteTypes.AbstractReal");
+convertClass("Physiolibrary.Types.RealTypeInputParameters","Physiolibrary.Obsolete.ObsoleteTypes.RealTypeInputParameters");
+convertClass("Physiolibrary.Types.RealExtension","Physiolibrary.Obsolete.ObsoleteTypes.RealExtension");
+convertClass("Physiolibrary.Types.RealTypes","Physiolibrary.Obsolete.ObsoleteTypes.RealTypes");
+convertClass("Physiolibrary.Types.AbstractBoolean","Physiolibrary.Obsolete.ObsoleteTypes.AbstractBoolean");
+convertClass("Physiolibrary.Types.FilesUtilities","Physiolibrary.Obsolete.ObsoleteTypes.FilesUtilities");
+convertClass("Physiolibrary.Types.BooleanExtension","Physiolibrary.Obsolete.ObsoleteTypes.BooleanExtension");
+convertClass("Physiolibrary.Types.Utilities","Physiolibrary.Obsolete.ObsoleteTypes.Utilities");
+convertClass("Physiolibrary.Types.ZeroUtilities","Physiolibrary.Obsolete.ObsoleteTypes.ZeroUtilities");
+convertClass("Physiolibrary.Types.SimulationType","Physiolibrary.Obsolete.ObsoleteTypes.SimulationType");
+
+convertClass("Physiolibrary.Types.HydraulicInertance","Physiolibrary.Obsolete.ObsoleteTypes.VolumetricHydraulicInertance");
