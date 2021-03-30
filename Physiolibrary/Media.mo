@@ -22,6 +22,9 @@ package Media
         max=350,
         start=310.15));
 
+    type S = enumeration(
+        H2O);
+
   protected
     package stateOfMatter = Chemical.Interfaces.Incompressible
       "Substances model to translate data into substance properties";
@@ -178,6 +181,12 @@ Modelica source.
          AbsolutePressure(start=1.0e5, nominal=1.0e5),
          Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
          MassFlowRate(nominal=1e-3));
+
+      type S = enumeration(
+        O2,
+        CO2,
+        H2O,
+        N2);
 
   protected
       package stateOfMatter = Chemical.Interfaces.IdealGas
@@ -378,6 +387,22 @@ Modelica source.
         max=320.15,
         start=310.15,
         nominal=310.15));
+
+    type S = enumeration(
+        RBC,
+        O2,
+        CO2,
+        CO,
+        Hb,
+        MetHb,
+        HbF,
+        Alb,
+        Glb,
+        PO4,
+        DPG,
+        SID,
+        H,
+        Others);
 
   protected
     constant Real C[nS - 2]={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,
@@ -830,6 +855,20 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         max=350,
         start=310.15));
 
+    type S = enumeration(
+        Na,
+        HCO3,
+        K,
+        Glu,
+        Urea,
+        Cl,
+        Ca,
+        Mg,
+        Alb,
+        Glb,
+        Others,
+        H2O);
+
   protected
     constant Modelica.Units.SI.Concentration concentrations_start[nS - 1]={135,24,5,5,3,105,
         1.5,0.5,0.7,0.8,1e-6} "Default concentrations of substance base molecules except water";
@@ -1177,6 +1216,8 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 
       end ChemicalSolution;
 
+      type S = enumeration(:);
+
       constant Modelica.Units.SI.ChargeNumberOfIon zb[nS] "Charge number of base molecules";
       constant Modelica.Units.SI.MolarMass MMb[nS] "Molar mass of base molecules";
       /*Be carefull: it could be different from molar mass of substance in solution */
@@ -1189,6 +1230,31 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         /*Be carefull: it could be different from concentration of substance in solution */
         output Modelica.Units.SI.Density d "Density";
       end density_pTC;
+
+       replaceable function concentrations_Xd
+        "Total amount of base molecules per total volume (Be carefull: it could be different from concentration of substance particles in solution)"
+        input Modelica.Units.SI.MassFraction X[:] "Mass fractions of substances (size can be nS-2 with electroneutrality and substance specificVolume usage, nS-1 with specificVolume usage or nS for all substances";
+        input Modelica.Units.SI.Density d "Density";
+        output Modelica.Units.SI.Concentration concentrations[nS] "Total amount of base molecules per total volume ";
+
+      protected
+        Modelica.Units.SI.Concentration c_lastbutone, c_last;
+       algorithm
+
+        c_lastbutone :=if (size(X, 1) == nS - 2) then (d*sum(X)/(MMb[nS]) - d*sum((zb[1:nS -
+          2]) .* X ./ (MMb[1:nS - 2])) - d/MMb[nS])/(zb[nS - 1] - MMb[nS - 1]/MMb[nS]) else
+          d*(X[nS - 1])/(MMb[nS - 1]);
+               //electroneutrality: concentrations*zb = 0 & density: concentrations*MMb = d
+
+        c_last :=if (size(X, 1) < nS) then (1/MMb[nS])*(d - d*sum(X[1:nS - 2] ./ MMb[1:nS - 2])
+           - c_lastbutone*MMb[nS - 1]) else d*(X[nS])/(MMb[nS]);
+            //density: concentrations*MMb = d
+
+        concentrations :=cat(
+          1,
+          d*(X[1:nS - 2]) ./ (MMb[1:nS - 2]),
+          {c_lastbutone,c_last});
+       end concentrations_Xd;
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
