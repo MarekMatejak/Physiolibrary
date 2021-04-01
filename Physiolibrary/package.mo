@@ -5995,6 +5995,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              redeclare package Medium = Blood,
              use_concentration_start=true,
              concentration_start=VenousBloodComposition,
+          useSubstances=true,
              volume_start(displayUnit="l") = 0.00325,
              Compliance(displayUnit="ml/mmHg") = 6.1880080007267e-07,
              ZeroPressureVolume(displayUnit="l") = 0.00295,
@@ -6006,7 +6007,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                Placement(transformation(
                  extent={{10,-10},{-10,10}},
                  rotation=0,
-                 origin={-70,-192})));
+                 origin={-80,-204})));
            Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasurePulmArteries(redeclare
             package Medium =                                                                                  Blood)
              annotation (Placement(transformation(extent={{-60,-108},{-80,-88}})));
@@ -6063,6 +6064,11 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
           annotation (Placement(transformation(extent={{40,2},{20,22}})));
            inner Modelica.Fluid.System system(T_ambient=310.15)
           annotation (Placement(transformation(extent={{-66,-2},{-46,18}})));
+        Sensors.BloodGasesMeasurement venous(redeclare package Medium = Blood)
+          annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-66,-176})));
          equation
            connect(
                 deadSpaceVentilation.q_out, volumeOutflow.q_in) annotation (Line(
@@ -6083,12 +6089,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
                points={{42,-140},{42,-100},{41.9,-100},{41.9,-100.05}},
                color={127,0,0},
                thickness=0.5));
-           connect(rightHeartPump.q_in,systemicVeins. q_in[1]) annotation (Line(
-               points={{-50,-160},{-50,-194.267},{-50.1,-194.267}},
-               color={127,0,0},
-               thickness=0.5));
-           connect(pressureMeasureVeins.q_in,systemicVeins. q_in[2]) annotation (Line(
-               points={{-66,-198},{-50,-198},{-50,-196},{-50.1,-196}},
+           connect(pressureMeasureVeins.q_in,systemicVeins. q_in[1]) annotation (Line(
+               points={{-76,-210},{-50,-210},{-50,-194.267},{-50.1,-194.267}},
                color={127,0,0},
                thickness=0.5));
            connect(pressureMeasurePulmArteries.q_in,pulmonaryArteries. q_in[2])
@@ -6106,7 +6108,7 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            connect(hydraulicConductance1.y,multiProduct1. u[1]) annotation (Line(points={{-80,
                 -137},{-80,-148},{-76,-148},{-76,-147.9}}, color={0,0,127}));
            connect(pressureMeasureVeins.pressure,multiProduct1. u[2]) annotation (Line(
-                 points={{-76,-196},{-80,-196},{-80,-152.1},{-76,-152.1}},
+                 points={{-86,-208},{-94,-208},{-94,-152.1},{-76,-152.1}},
                                                                      color={0,0,127}));
            connect(
                 pulmonaryShunt.q_in, pulmonaryArteries.q_in[3]) annotation (Line(
@@ -6160,8 +6162,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
               color={127,0,0},
               thickness=0.5));
              connect(
-                tissueUnit[i].q_out, systemicVeins.q_in[3]) annotation (Line(
-              points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-197.733}},
+                tissueUnit[i].q_out, systemicVeins.q_in[2]) annotation (Line(
+              points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-196}},
               color={127,0,0},
               thickness=0.5));
            end for;
@@ -6189,6 +6191,21 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
             points={{43.8,-182},{40,-182},{40,-197.3},{42.1,-197.3}},
             color={127,0,0},
             thickness=0.5));
+        connect(systemicVeins.q_in[3], venous.a_port) annotation (Line(
+            points={{-50.1,-197.733},{-50.1,-188},{-55.8,-188},{-55.8,-182}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(venous.b_port, rightHeartPump.q_in) annotation (Line(
+            points={{-55.8,-169.8},{-55.8,-164.9},{-50,-164.9},{-50,-160}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(systemicVeins.substances[Blood.S.O2], venous.O2) annotation (Line(
+              points={{-60,-196},{-66,-196},{-66,-198},{-72,-198},{-72,-186}}, color={
+                158,66,200}));
+        connect(venous.CO2, systemicVeins.substances[Blood.S.CO2]) annotation (Line(
+              points={{-66,-186},{-66,-196},{-60,-196}}, color={158,66,200}));
+        connect(venous.H_plus, systemicVeins.substances[Blood.S.H])
+          annotation (Line(points={{-60,-186},{-60,-196}}, color={158,66,200}));
            annotation (
              Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-220},{100,40}})),
              Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-220},{100,40}})),
@@ -6835,8 +6852,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            "External environment"
            annotation (Placement(transformation(extent={{-360,78},{-340,98}})));
 
-         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium
-          =    Air,
+         Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package Medium =
+               Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftBronchiResistance)
            annotation (Placement(transformation(extent={{-252,24},{-232,44}})));
@@ -6853,8 +6870,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
          Physiolibrary.Types.Constants.PressureConst ambient_pressure(k=
                IntrathoraxPressure)
            annotation (Placement(transformation(extent={{84,44},{74,52}})));
-         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium
-          =    Air,
+         Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium =
+               Air,
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=RightBronchiResistance)
            annotation (Placement(transformation(extent={{-252,-54},{-232,-34}})));
@@ -6915,8 +6932,8 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
            EnthalpyNotUsed=EnthalpyNotUsed,
            Resistance=LeftAlveoliResistance)
            annotation (Placement(transformation(extent={{-210,24},{-190,44}})));
-         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium
-          =    Air)
+         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium =
+               Air)
            annotation (Placement(transformation(extent={{-10,-10},{10,10}},
                rotation=270,
                origin={-318,66})));
