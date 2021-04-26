@@ -145,9 +145,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 Release manager: [Marek Matejak](http://github.com/MarekMatejak)
 
 Contributor: 
- [Marek Matejak](http://github.com/MarekMatejak)
- [Tomas Kulhanek] (https://github.com/TomasKulhanek), 
- [tbeu] (https://github.com/tbeu)
+ [Marek Matejak](http://github.com/MarekMatejak),
+ [Tomas Kulhanek](https://github.com/TomasKulhanek), 
+ [tbeu](https://github.com/tbeu)
 
 You may report bugs or issues to [project issues](https://github.com/MarekMatejak/Physiolibrary/issues) or to e-mail: marek\<at\>matfyz\<dot\>cz
 
