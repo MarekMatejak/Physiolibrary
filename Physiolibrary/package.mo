@@ -5829,8 +5829,9 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
              replaceable package Air =
                  Physiolibrary.Media.Air annotation(choicesAllMatching=True);
 
+             Real prd "Placeholder real derivative - to workaround fixed parameter variability during FMI2 export";
              parameter Physiolibrary.Types.Frequency RR=0.286
-                                                         "Respiration rate";
+                                                         "Respiration rate" annotation(Evaluate = false);
              parameter Physiolibrary.Types.Volume TV=0.0005
                                                          "Tidal volume";
              parameter Physiolibrary.Types.Volume DV=0.00015
@@ -6067,12 +6068,14 @@ parameter Modelica.Units.SI.Molality amountPartition_start[Medium.nS]=Medium.ref
           annotation (Placement(transformation(extent={{40,2},{20,22}})));
            inner Modelica.Fluid.System system(T_ambient=310.15)
           annotation (Placement(transformation(extent={{-66,-2},{-46,18}})));
-        Sensors.BloodGasesMeasurement venous(redeclare package Medium = Blood)
+           Sensors.BloodGasesMeasurement venous(redeclare package Medium = Blood)
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={-66,-176})));
          equation
+           der(prd) = RR + Blood_Hb + Blood_BEox + TV + Hct - prd;
+
            connect(
                 deadSpaceVentilation.q_out, volumeOutflow.q_in) annotation (Line(
             points={{6,-42},{64,-42}},
