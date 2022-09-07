@@ -79,7 +79,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
     end Connectors;
 
     package ReleaseNotes "Release notes"
-      class Version_3_0_0 "Version 3.0 (Nov. 26, 2020)"
+      class Version_3_0_0alpha "Version 3.0-alpha (Nov. 26, 2020)"
         extends Modelica.Icons.ReleaseNotes;
         annotation (
           Documentation(info = "<html>
@@ -89,7 +89,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 <li>obsolete previous Physiolibrary steady state concept</li>
 </ul>
 </html>"));
-      end Version_3_0_0;
+      end Version_3_0_0alpha;
 
       extends Modelica.Icons.ReleaseNotes;
 
@@ -304,10 +304,10 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 <p>Slovak Republic,</p>
 <p>email: marek@matfyz.cz</p>
 <p><b><span style=\"color: #008000;\">Organization: </span></b></p>
-<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,</p>
-<p>U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
+<p>General University Hospital in Prague, U Nemocnice 499/2, 128 08 Prague 2, Czech Republic</p>
+<p>Institute of Pathological Physiology, First Faculty of Medicine, Charles University in Prague,U Nemocnice 5, 128 53 Prague 2, Czech Republic</p>
 <p><b>Copyright notices of the files:</b></p>
-<p>Copyright (c) 2008-2020, Marek Matej&aacute;k, Charles University in Prague</p>
+<p>Copyright (c) 2008-2022, Marek Matej&aacute;k, Charles University in Prague, General University Hospital in Prague</p>
 <p><br>All rights reserved. </p>
 <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: </p>
 <p>1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. </p>
@@ -441,7 +441,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         parameter Modelica.Units.SI.Volume ZeroPressureVolume = 1e-11 "Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false" annotation (
           Dialog(enable = not useV0Input));
         //default = 1e-5 ml
-        parameter Modelica.Units.SI.AbsolutePressure ExternalPressure = 101325 "External absolute pressure if useExternalPressureInput=false." annotation (
+        parameter Types.Pressure ExternalPressure = if isExternalPressureAbsolute then system.p_ambient else 0 "External pressure if useExternalPressureInput=false." annotation (
           Dialog(enable = not useExternalPressureInput));
         parameter Modelica.Units.SI.Volume ResidualVolume = 1e-9 "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model" annotation (
           Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
@@ -465,6 +465,12 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           HideResult = true,
           choices(checkBox = true),
           Dialog(group = "Conditional inputs"));
+        parameter Boolean isExternalPressureAbsolute = false "external pressure as absolute pressure? Relative to ambient otherwise." annotation (
+          Evaluate = true,
+          HideResult = true,
+          choices(checkBox = true),
+          Dialog(group = "Conditional inputs"));
+
         Modelica.Blocks.Interfaces.RealInput externalPressure(unit = "Pa", start = ExternalPressure) = ep if useExternalPressureInput annotation (
           Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {60, 90})));
         Modelica.Blocks.Interfaces.RealOutput fluidVolume(unit = "m3") = volume annotation (
@@ -481,6 +487,7 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         constant Boolean GenerateComplianceConnection = true;
         parameter Modelica.Units.SI.Pressure p_initial = system.p_ambient;
         parameter Modelica.Units.SI.Volume BaseMeanVolume = ZeroPressureVolume + BaseTidalVolume / 2 "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
+
         Modelica.Units.SI.Pressure d_sigmoid = (BaseMeanVolume - ResidualVolume) * (VitalCapacity - (BaseMeanVolume - ResidualVolume)) / (c * VitalCapacity);
         Modelica.Units.SI.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1);
         Modelica.Units.SI.Pressure relative_pressure;
@@ -500,8 +507,12 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           ep = ExternalPressure;
         end if;
         excessVolume = max(0, volume - zpv);
-        relative_pressure = pressure - ep;
-        pressure = if not useSigmoidCompliance then smooth(0, if noEvent(volume > ResidualVolume) then excessVolume / c + ep else (-ep / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)) + ep) else (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid + ep;
+        relative_pressure = pressure - (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+        pressure = (if not useSigmoidCompliance then
+                        smooth(0, if noEvent(volume > ResidualVolume) then excessVolume / c
+                                                                      else (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)))
+                                                else (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
+                    + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-280, -104}, {280, -142}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}),
           Documentation(revisions = "<html>
@@ -963,7 +974,8 @@ Connector with one flow signal of type Real.
           Evaluate = true,
           choices(checkBox = true));
         //,Dialog(group="Conditional inputs"));
-        Chemical.Interfaces.SubstancePorts_a substances[Medium.nS] if useSubstances annotation (
+        Chemical.Interfaces.SubstancePorts_a substances[Medium.nS]
+        if useSubstances                                                            annotation (
           Placement(transformation(extent = {{-110, -40}, {-90, 40}}), iconTransformation(extent = {{-110, -40}, {-90, 40}})));
         Medium.ChemicalSolution chemicalSolution(p = pressure, h = enthalpy / mass, X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}), i = i, EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
         parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
@@ -1783,8 +1795,7 @@ as signal.
         //    annotation (Dialog(enable=not usePressureInput));
         Physiolibrary.Types.RealIO.PressureInput pressure(start = pressure_start) = p if usePressureInput "Pressure" annotation (
           Placement(transformation(extent = {{-120, -20}, {-80, 20}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium
-          =                                                                     Medium) "PressureFlow output connectors" annotation (
+        Physiolibrary.Fluid.Interfaces.FluidPort_a y(redeclare package Medium = Medium) "PressureFlow output connectors" annotation (
           Placement(transformation(extent = {{84, -16}, {116, 16}})));
         //   parameter Types.Temperature T = system.T_ambient "Fluid temperature";
         //  parameter Modelica.Units.SI.MassFraction substances[Medium.nS-1]=Medium.reference_X[1:Medium.nS-1] "Mass fractions of substances in Medium";
@@ -3883,11 +3894,9 @@ as signal.
           Components.Resistor systemicArteriesResistance(redeclare package
             Medium =                                                                Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 40})));
-          Components.Resistor systemicVeinsResistance(redeclare package Medium
-            =                                                                    Blood, Resistance = 1 / Conductance * (1 - ArteriesViensResistanceRatio)) annotation (
+          Components.Resistor systemicVeinsResistance(redeclare package Medium = Blood, Resistance = 1 / Conductance * (1 - ArteriesViensResistanceRatio)) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-64, 0})));
-          Components.ElasticVessel systemicCapillaries(redeclare package Medium
-            =                                                                     Blood, use_concentration_start = true, concentration_start = BloodComposition, useSubstances = true, volume_start(displayUnit = "l") = bloodVolume_start, Compliance(displayUnit = "ml/mmHg") = 3.0002463033826e-08, ZeroPressureVolume(displayUnit = "l") = bloodV0, nPorts = 2) annotation (
+          Components.ElasticVessel systemicCapillaries(redeclare package Medium = Blood, use_concentration_start = true, concentration_start = BloodComposition, useSubstances = true, volume_start(displayUnit = "l") = bloodVolume_start, Compliance(displayUnit = "ml/mmHg") = 3.0002463033826e-08, ZeroPressureVolume(displayUnit = "l") = bloodV0, nPorts = 2) annotation (
             Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-2, -14})));
           Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = O2_consumption) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-70, -38})));
@@ -5234,7 +5243,7 @@ as signal.
 
     class Heart
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/heart.png")}));
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/heartPict.png")}));
     end Heart;
 
     class SweatGland
