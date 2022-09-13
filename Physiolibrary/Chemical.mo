@@ -15027,8 +15027,8 @@ end solution_temperature_;
       model AlbuminTitration "Figge-Fencl model (22. Dec. 2007)"
         extends Modelica.Icons.Example;
 
-        Chemical.Components.Solution solution(redeclare package stateOfMatter
-            = Interfaces.Incompressible)
+        Chemical.Components.Solution solution(redeclare package stateOfMatter =
+              Interfaces.Incompressible)
           annotation (Placement(transformation(extent={{-104,-100},{96,100}})));
 
         constant Integer n=218 "Number of weak acid group in albumin molecule";
