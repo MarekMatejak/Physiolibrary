@@ -441,7 +441,7 @@ Modelica source.
       state.X = X;
     end BaseProperties;
 
-  protected
+  //protected
     function _sO2CO
       input Real pH;
       input Real pO2;
@@ -496,6 +496,7 @@ Modelica source.
 
     end _sO2CO;
 
+  public
     model BloodGases
       input Real C[nS - 1]=Conc
         "Volume, amount of substance or mass of substance per total volume of solution";
@@ -513,7 +514,7 @@ Modelica source.
         "Carbon monoxide partial pressure";
       output Physiolibrary.Types.pH pH
         "Blood plasma acidity";
-    protected
+      // protected
       Physiolibrary.Types.VolumeFraction Hct=C[1] "haematocrit";
       Physiolibrary.Types.Concentration tO2=C[2] "oxygen content per volume of blood";
       Physiolibrary.Types.Concentration tCO2=C[3]
@@ -658,7 +659,7 @@ Modelica source.
     redeclare replaceable model extends ChemicalSolution
       outer Modelica.Fluid.System system "System wide properties";
 
-    protected
+      // protected
       Real I = 0 "mole-fraction-based ionic strength";
       Real C[nS - 1]=(X[1:(nS - 1)] ./ C2X);
 
