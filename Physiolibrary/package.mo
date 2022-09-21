@@ -3232,7 +3232,7 @@ as signal.
           annotation (Placement(transformation(extent={{-308,0},{-288,20}})));
         Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
-        Components.ElasticVessel plearalSpace(
+        Components.ElasticVessel pleuralSpace(
           redeclare package Medium = PleuralFluid,
           volume_start=PleuralFluidVolume_initial,
           useThermalPort=false,
@@ -3243,7 +3243,7 @@ as signal.
           useSubstances=false,
           useInternalSpaceInput=true,
           InternalSpace(displayUnit="l") = 0.0031,
-          nPorts=1) "Plearal space"
+          nPorts=1) "Pleural space"
           annotation (Placement(transformation(extent={{-46,34},{-66,54}})));
         Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
               PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
@@ -3268,15 +3268,15 @@ as signal.
           Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
         connect(environment.y, flowMeasure.q_in) annotation (
           Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(alveoli.fluidVolume, plearalSpace.internalSpace) annotation (Line(
+        connect(alveoli.fluidVolume,pleuralSpace. internalSpace) annotation (Line(
               points={{-146,6},{-154,6},{-154,44},{-65,44}}, color={0,0,127}));
         connect(pleauralPressure.pressure, alveoli.externalPressure) annotation (Line(
               points={{-82,24},{-82,-26},{-142,-26},{-142,-11}}, color={0,0,127}));
-        connect(plearalSpace.q_in[1], pleauralPressure.q_in) annotation (Line(
+        connect(pleuralSpace.q_in[1], pleauralPressure.q_in) annotation (Line(
             points={{-55.9,44},{-38,44},{-38,22},{-72,22}},
             color={127,0,0},
             thickness=0.5));
-        connect(respiratoryMusclePressureCycle.val, plearalSpace.externalPressure)
+        connect(respiratoryMusclePressureCycle.val,pleuralSpace. externalPressure)
           annotation (Line(points={{-14,82},{-8,82},{-8,62},{-62,62},{-62,53}}, color=
                {0,0,127}));
         connect(flowMeasure.q_out, lungsPathways.q_in) annotation (Line(
@@ -3876,14 +3876,15 @@ as signal.
           Placement(transformation(extent = {{-220, -96}, {-200, -76}})));
         Chemical.Sources.SubstanceOutflow O2_right(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
           Placement(transformation(extent = {{-158, -96}, {-138, -76}})));
-        Physiolibrary.Fluid.Components.ElasticVessel leftPlearalSpace(redeclare
+        Physiolibrary.Fluid.Components.ElasticVessel leftPleuralSpace(redeclare
           package Medium =
             PleuralFluid,
           volume_start=pleuralVolume_initial*LeftPleuralSizeFraction,                                                                                useThermalPort = false,
           ZeroPressureVolume=RelaxedLungsCavitySpace*LeftLungsSizeFraction,
           Compliance=TotalCompliance*LeftPleuralSizeFraction,                                                                                                                                                                                          useExternalPressureInput = true, useSigmoidCompliance = false, useSubstances = false,
           useInternalSpaceInput=true,
-          InternalSpace=RelaxedLungsCavitySpace*LeftLungsSizeFraction,                                                                                                                                                                                                        nPorts = 1) "Left Plearal space" annotation (
+          InternalSpace=RelaxedLungsCavitySpace*LeftLungsSizeFraction,                                                                                                                                                                                                        nPorts = 1)
+        "Left Pleural space"                                                                                                                                                                                                         annotation (
           Placement(transformation(extent={{-56,18},{-76,38}})));
         Physiolibrary.Fluid.Sensors.PressureMeasure rightPleauralPressure(redeclare
           package Medium =
@@ -3971,7 +3972,7 @@ as signal.
           Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
         connect(leftAlveolarPressure.q_in, leftAlveoli.q_in[1]) annotation (
           Line(points={{-118,26},{-152,26},{-152,24},{-152.1,24},{-152.1,25.35}},           color = {127, 0, 0}, thickness = 0.5));
-        connect(leftPlearalSpace.q_in[1], leftPleauralPressure.q_in) annotation (
+        connect(leftPleuralSpace.q_in[1], leftPleauralPressure.q_in) annotation (
           Line(points={{-65.9,28},{-65.9,48},{-66,48},{-66,58}},          color = {127, 0, 0}, thickness = 0.5));
         connect(rightPleuralSpace.q_in[1], rightPleauralPressure.q_in) annotation (
           Line(points={{-65.9,-48},{-65.9,-28},{-66,-28},{-66,-18}},          color = {127, 0, 0}, thickness = 0.5));
@@ -4049,13 +4050,13 @@ as signal.
           Line(points = {{-156, -48}, {-172, -48}, {-172, -86}, {-158, -86}}, color = {158, 66, 200}));
         connect(rightAlveoli.substances[3], pH2O_alveolar.port_a) annotation (
           Line(points = {{-156, -48}, {-102, -48}, {-102, -76}}, color = {158, 66, 200}));
-      connect(leftPlearalSpace.externalPressure, respiratoryMusclePressureCycle.val)
+      connect(leftPleuralSpace.externalPressure, respiratoryMusclePressureCycle.val)
         annotation (Line(points={{-72,37},{-72,48},{-2,48},{-2,82},{-14,82}},
             color={0,0,127}));
       connect(rightPleuralSpace.externalPressure,
         respiratoryMusclePressureCycle.val) annotation (Line(points={{-72,-39},
               {-72,-28},{-2,-28},{-2,82},{-14,82}}, color={0,0,127}));
-        connect(leftAlveoli.fluidVolume, leftPlearalSpace.internalSpace) annotation (
+        connect(leftAlveoli.fluidVolume,leftPleuralSpace. internalSpace) annotation (
             Line(points={{-142,18},{-90,18},{-90,28},{-75,28}}, color={0,0,127}));
         connect(leftPleauralPressure.pressure, leftAlveoli.externalPressure)
           annotation (Line(points={{-76,60},{-146,60},{-146,35}}, color={0,0,127}));
