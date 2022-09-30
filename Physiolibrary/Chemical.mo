@@ -839,7 +839,12 @@ package Chemical "Physical Chemistry"
 <td></td>
 </tr>
 </table>
-</html>"));
+</html>"), Icon(graphics={             Text(
+              extent={{-88,-21},{88,21}},
+              lineColor={128,0,255},
+              textString="%name",
+              origin={96,-1},
+              rotation=90)}));
     end GasSolubility;
 
     model Membrane

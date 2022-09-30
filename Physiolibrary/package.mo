@@ -436,31 +436,37 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
         extends Physiolibrary.Icons.ElasticBalloon;
         extends Physiolibrary.Fluid.Interfaces.Accumulation(final pressure_start = p_initial);
         parameter String stateName=getInstanceName();
-        parameter Types.HydraulicCompliance Compliance = 1e+3 "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false" annotation (
+        parameter Types.HydraulicCompliance Compliance = 1e+3
+        "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false"                                                       annotation (
           Dialog(enable = not useComplianceInput));
-        parameter Types.Volume ZeroPressureVolume = 1e-11 "Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false" annotation (
+        parameter Types.Volume ZeroPressureVolume = 1e-11
+        "Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false"                                                   annotation (
           Dialog(enable = not useV0Input));
         //default = 1e-5 ml
-        parameter Types.Pressure ExternalPressure = if isExternalPressureAbsolute then system.p_ambient else 0 "External pressure if useExternalPressureInput=false." annotation (
+        parameter Types.Pressure ExternalPressure = if isExternalPressureAbsolute then system.p_ambient else 0
+        "External pressure if useExternalPressureInput=false."                                                                                                        annotation (
           Dialog(enable = not useExternalPressureInput));
-        parameter Types.Volume ResidualVolume = 1e-9 "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model" annotation (
+        parameter Types.Volume ResidualVolume = 1e-9
+        "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model"                                              annotation (
           Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
-        Types.Volume excessVolume "Additional cavity volume (=fluid volume + internal space volume), that generate pressure";
+        Types.Volume excessVolume
+        "Additional cavity volume (=fluid volume + internal space volume), that generate pressure";
         parameter Boolean useV0Input = false "=true, if zero-pressure-fluid_volume input is used" annotation (
           Evaluate = true,
           HideResult = true,
           choices(checkBox = true),
           Dialog(group = "Conditional inputs"));
         Types.RealIO.VolumeInput zeroPressureVolume(start = ZeroPressureVolume) = zpv
-          if useV0Input                                                                                                                         annotation (
-          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {-80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-20, 90})));
+        if useV0Input                                                                                                                           annotation (
+          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {-80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-70,90})));
         parameter Boolean useComplianceInput = false "=true, if compliance input is used" annotation (
           Evaluate = true,
           HideResult = true,
           choices(checkBox = true),
           Dialog(group = "Conditional inputs"));
-        Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c if useComplianceInput annotation (
-          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {20, 90})));
+        Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c
+        if useComplianceInput                                                                           annotation (
+          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={0,90})));
         parameter Boolean useExternalPressureInput = false "=true, if external pressure input is used" annotation (
           Evaluate = true,
           HideResult = true,
@@ -472,21 +478,24 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           choices(checkBox = true),
           Dialog(group = "Conditional inputs"));
 
-        Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep if useExternalPressureInput annotation (
-          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {60, 90})));
+        Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep
+        if useExternalPressureInput                                                                            annotation (
+          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={70,90})));
         Types.RealIO.VolumeOutput fluidVolume= volume annotation (
           Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {116, -60}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {100, -80})));
         parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs" annotation (
           Evaluate = true,
           choices(checkBox = true),
           Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
-        parameter Types.Volume VitalCapacity = 0.00493 "Relative volume capacity if useSigmoidCompliance" annotation (
+        parameter Types.Volume VitalCapacity = 0.00493
+        "Relative volume capacity if useSigmoidCompliance"                                                annotation (
           Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
-        parameter Types.Volume BaseTidalVolume = 0.000543 "Base value of tidal volume" annotation (
+        parameter Types.Volume BaseTidalVolume = 0.000543
+        "Base value of tidal volume"                                                   annotation (
           Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
         Types.RealIO.VolumeInput internalSpace(
           start=InternalSpace)=is if useInternalSpaceInput
-          "additional internal volume (e.g. another inserted compartment inside)"
+        "additional internal volume (e.g. another inserted compartment inside)"
           annotation (Placement(transformation(
               extent={{-20,-20},{20,20}},
               rotation=180,
@@ -499,14 +508,16 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
           HideResult = true,
           choices(checkBox = true),
           Dialog(group = "Conditional inputs"));
-        parameter Types.Volume InternalSpace = 0 "Internal space if there is no pressure gradient" annotation (
+        parameter Types.Volume InternalSpace = 0
+        "Internal space if there is no pressure gradient"                                          annotation (
           Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
         Types.Pressure relative_pressure;
 
     protected
         constant Boolean GenerateComplianceConnection = true;
         parameter Types.Pressure p_initial = system.p_ambient;
-        parameter Types.Volume BaseMeanVolume = ZeroPressureVolume + BaseTidalVolume / 2 "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
+        parameter Types.Volume BaseMeanVolume = ZeroPressureVolume + BaseTidalVolume / 2
+        "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
 
         Types.Pressure d_sigmoid = (BaseMeanVolume - ResidualVolume) * (VitalCapacity - (BaseMeanVolume - ResidualVolume)) / (c * VitalCapacity);
         Types.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1);
@@ -1775,7 +1786,7 @@ as signal.
         parameter Modelica.Units.SI.MassFraction substances[Medium.nS - 1] = Medium.X_default[1:Medium.nS - 1] "Mass fractions of substances in medium";
         parameter Types.Temperature T = system.T_ambient "Fluid temperature";
         parameter Types.Pressure P = system.p_ambient "Fluid pressure";
-    protected
+      //protected
         parameter Modelica.Units.SI.MassFraction X[Medium.nS] = cat(1, substances, {1 - sum(substances)});
         parameter Modelica.Units.SI.SpecificEnthalpy h = Medium.specificEnthalpy(Medium.setState_pTX(P, T, X)) "Fluid enthalphy";
         Modelica.Units.SI.Density density;
@@ -3400,79 +3411,126 @@ as signal.
       end AirWaterSaturation;
 
       package BloodGasesTransport "Transport of O2 and CO2 through respiration and circulation in human body"
+
         model BloodyMary
           replaceable package Blood =
             Physiolibrary.Media.BloodBySiggaardAndersen                           annotation (
             choicesAllMatching = True);
           replaceable package Air = Physiolibrary.Media.Air annotation (
             choicesAllMatching = True);
-          parameter Physiolibrary.Types.Frequency RR = 0.286 "Respiration rate";
-          parameter Physiolibrary.Types.Volume TV = 0.0005 "Tidal volume";
-          parameter Physiolibrary.Types.Volume DV = 0.00015 "Dead space volume";
-          parameter Physiolibrary.Types.VolumeFlowRate CO = 9.1666666666667e-05 "Cardiac output";
-          parameter Physiolibrary.Types.HydraulicConductance cShunt = 1.250102626409427e-07 * (1 / 3 * 0.02);
-          parameter Physiolibrary.Types.HydraulicConductance cTotalVentilation = 1.019716212977928e-05 * (1 / 1.5);
-          parameter Physiolibrary.Types.HydraulicConductance cTotalCirculation = 1.250102626409427e-07 * (1 / 3 * (1 - 0.02));
+          parameter Physiolibrary.Types.Frequency RR=0.286   "Respiration rate";
+          parameter Physiolibrary.Types.Volume TV=0.0005   "Tidal volume";
+          parameter Physiolibrary.Types.Volume DV=0.00015   "Dead space volume";
+          parameter Physiolibrary.Types.VolumeFlowRate CO=9.1666666666667e-05   "Cardiac output";
+          parameter Physiolibrary.Types.HydraulicConductance cShunt=1.250102626409427e-07
+              *(1/3*0.02);
+          parameter Physiolibrary.Types.HydraulicConductance cTotalVentilation=1.019716212977928e-05
+              *(1/1.5);
+          parameter Physiolibrary.Types.HydraulicConductance cTotalCirculation=1.250102626409427e-07
+              *(1/3*(1 - 0.02));
+          parameter Physiolibrary.Types.HydraulicCompliance LungsCompliance=6.0004926067653e-07 "Lungs compliance";
+          parameter Physiolibrary.Types.Volume ResidualVolume=0.0013 "Lungs residual volume";
+          parameter Physiolibrary.Types.Volume TotalCapacity=0.00623 "Lungs total capacity";
+          parameter Physiolibrary.Types.Volume BaseTidalVolume=0.0005 "Lungs base tidal volume";
           parameter Physiolibrary.Types.Volume alveolarVolume_start = TV - DV + alveolarV0 "initial volume of air in alveoli";
-          parameter Physiolibrary.Types.Volume alveolarV0 = 0.0013 "volume of air in alveoli, which does not generate air pressure";
-          parameter Physiolibrary.Types.Volume lungCapyVolume_start = 0.00015 "initial volume of blood in alveolar capillaries";
-          parameter Physiolibrary.Types.Volume lungCapyV0 = 0.0001 "volume of blood in alveolar capillaries, which does not generate blood pressure";
-          parameter Physiolibrary.Types.Volume tissueBloodVolume_start = 0.0003 "initial volume of blood in tissues";
-          parameter Physiolibrary.Types.Volume tissueV0 = 0.0002 "volume of blood in tissues, which does not generate blood pressure";
-          parameter Types.MolarFlowRate O2_consumption = 1.666666666666667e-05 * (2 * 7.71) "Tissue consumption of O2 by metabolism";
-          parameter Types.MolarFlowRate CO2_production = 1.666666666666667e-05 * (2 * 6.17) "Tissue production of CO2 by metabolism";
-          parameter Types.HydraulicConductance TotalSystemicConductance = 1.250102626409427e-07 * (1 / 20) "Total systemic blood circulation conductance";
+          parameter Physiolibrary.Types.Volume alveolarV0=0.0013   "volume of air in alveoli, which does not generate air pressure";
+          parameter Physiolibrary.Types.Volume lungCapyVolume_start=0.00015   "initial volume of blood in alveolar capillaries";
+          parameter Physiolibrary.Types.Volume lungCapyV0=0.0001   "volume of blood in alveolar capillaries, which does not generate blood pressure";
+          parameter Physiolibrary.Types.Volume tissueBloodVolume_start=0.0003   "initial volume of blood in tissues";
+          parameter Physiolibrary.Types.Volume tissueV0=0.0002   "volume of blood in tissues, which does not generate blood pressure";
+          parameter Physiolibrary.Types.HydraulicCompliance CapillariesCompliance=
+              3.0002463033826e-08                                                        "Systemic capillaries compliance";
+          parameter Types.MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
+          parameter Types.MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
+          parameter Types.HydraulicConductance TotalSystemicConductance=1.250102626409427e-07
+              *(1/20)                                                                                      "Total systemic blood circulation conductance";
           parameter Integer NA = 1 "Number of pulmonary alveolar units";
           parameter Integer NT = 1 "Number of systemic tissue units";
+      protected
           parameter Types.Fraction Hct = 0.44 "Hematocrit";
           parameter Types.Concentration Arterial_O2 = 8.16865 "Initial Total oxygenin arterial blood", Venous_O2 = 5.48 "Initial Total oxygen in venous blood", Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood", Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood", Blood_CO = 1.512e-6 "Total carbon monoxide", Blood_Hb = 8.4 "Hemoglobin", Blood_MetHb = 0.042 "Methemoglobin", Blood_HbF = 0.042 "Foetal hemoglobin", Blood_Alb = 0.66 "Albumin", Blood_PO4 = 0.153 "Inorganic phosphates", Blood_DPG = 5.4 "Diphosphoglycerate";
           parameter Real Blood_Glb = 28 "Globulins", Blood_BEox = 0 "Base excess of oxygenated blood from normal arterial conditions";
           constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions", zGlbNAP = 0.0892857 "charge on globilins at normal arterial plasma conditions", zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions", ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions", ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions", zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions";
           parameter Real NSID = (1 - Hct) * (zAlbNAP * Blood_Alb + zGlbNAP * Blood_Glb + zPO4NAP * Blood_PO4 + ztCO2NAP) + Hct * (zHbNAE * (Blood_Hb / Hct) + ztCO2NAE) "Total charge number on buffers at normal arterial conditions per total volume";
           parameter Real Blood_SID = NSID - Blood_BEox "Strong ion difference";
+      public
           parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood";
           parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood";
-          parameter Types.Fraction AirO2 = 0.21 "O2 content in inspired air";
-          parameter Types.Fraction AirCO2 = 0.0003 "CO2 content in inspired air";
-          parameter Types.Fraction AirH2O = 0.06 "H2O content in inspired air";
+          parameter Types.Fraction AirO2=0.21   "O2 content in inspired air";
+          parameter Types.Fraction AirCO2=0.0003   "CO2 content in inspired air";
+          parameter Types.Fraction AirH2O=0.06   "H2O content in inspired air";
           parameter Types.Fraction AirN2 = 1 - AirO2 - AirCO2 - AirH2O "N2 content in inspired air";
           Types.Pressure Air_pO2 = AirO2 * system.p_ambient "O2 content in inspired air";
           Types.Pressure Air_pCO2 = AirCO2 * system.p_ambient "CO2 content in inspired air";
           Physiolibrary.Fluid.Components.VolumePump deadSpaceVentilation(redeclare
-            package Medium =                                                                        Air, useSolutionFlowInput = true, SolutionFlow = DV * RR) annotation (
+            package   Medium =                                                                      Air, useSolutionFlowInput = true, SolutionFlow = DV * RR,
+            density(start=1.1300953420756321, displayUnit="g/cm3"),
+            q_in(m_flow(start=5.759563136974551E-05)),
+            q_out(p(start=101335.86111397855, displayUnit="bar")))                                                                                            annotation (
             Placement(transformation(extent = {{-14, -52}, {6, -32}})));
           Physiolibrary.Fluid.Sources.PressureSource pressureSource(pressure_start(displayUnit = "Pa"), redeclare
-            package Medium =                                                                                                       Air, use_concentration_start = true, concentration_start = {AirO2, AirCO2, AirH2O, AirN2}) annotation (
+            package   Medium =                                                                                                     Air, use_concentration_start = true, concentration_start = {AirO2, AirCO2, AirH2O, AirN2}) annotation (
             Placement(transformation(extent = {{-96, -52}, {-76, -32}})));
           Physiolibrary.Fluid.Sources.VolumeOutflowSource volumeOutflow(useSolutionFlowInput = true, SolutionFlow = TV * RR, redeclare
-            package Medium =                                                                                                                            Air) annotation (
+            package   Medium =                                                                                                                          Air,
+            density(start=1.1300953420756321))                                                                                                               annotation (
             Placement(transformation(extent = {{64, -52}, {84, -32}})));
           Physiolibrary.Fluid.Components.VolumePump leftHeartPump(redeclare
-            package Medium =                                                                 Blood, useSolutionFlowInput = true, SolutionFlow(displayUnit = "l/min") = 8.3333333333333e-05) annotation (
+            package
+              Medium =                                                                       Blood, useSolutionFlowInput = true, SolutionFlow(displayUnit = "l/min") = 8.3333333333333e-05) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {42, -150})));
           Physiolibrary.Fluid.Components.VolumePump rightHeartPump(redeclare
-            package Medium =                                                                  Blood, useSolutionFlowInput = true, SolutionFlow(displayUnit = "l/min") = 8.3333333333333e-05) annotation (
+            package
+              Medium =                                                                        Blood, useSolutionFlowInput = true, SolutionFlow(displayUnit = "l/min") = 8.3333333333333e-05) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-50, -150})));
           Physiolibrary.Fluid.Components.ElasticVessel pulmonaryArteries(redeclare
-            package Medium =                                                                        Blood, use_concentration_start = true, concentration_start = VenousBloodComposition, volume_start(displayUnit = "l") = 0.00038, Compliance(displayUnit = "ml/mmHg") = 3.6002955640592e-08, ZeroPressureVolume(displayUnit = "l") = 0.0003, nPorts = 4) annotation (
+            package   Medium =                                                                      Blood, use_concentration_start = true, concentration_start = VenousBloodComposition, volume_start(displayUnit = "l") = 0.00038, Compliance(displayUnit = "ml/mmHg") = 3.6002955640592e-08, ZeroPressureVolume(displayUnit = "l") = 0.0003, nPorts = 4) annotation (
             Placement(transformation(extent = {{-60, -112}, {-40, -92}})));
           Physiolibrary.Fluid.Components.ElasticVessel pulmonaryVeins(redeclare
-            package Medium =                                                                     Blood, use_concentration_start = true, concentration_start = ArterialBloodComposition, volume_start(displayUnit = "l") = 0.0004, Compliance(displayUnit = "ml/mmHg") = 7.5006157584566e-08, ZeroPressureVolume(displayUnit = "l") = 0.0004, nPorts = 4) annotation (
+            package
+              Medium =                                                                           Blood, use_concentration_start = true, concentration_start = ArterialBloodComposition, volume_start(displayUnit = "l") = 0.0004, Compliance(displayUnit = "ml/mmHg") = 7.5006157584566e-08, ZeroPressureVolume(displayUnit = "l") = 0.0004, nPorts = 4) annotation (
             Placement(transformation(extent = {{32, -112}, {52, -92}})));
           Physiolibrary.Fluid.Components.ElasticVessel systemicArteries(redeclare
-            package Medium =                                                                       Blood, use_concentration_start = true, concentration_start = ArterialBloodComposition, useSubstances = true, volume_start(displayUnit = "l") = 0.00085, Compliance(displayUnit = "ml/mmHg") = 2.6627185942521e-08, ZeroPressureVolume(displayUnit = "l") = 0.00045, nPorts = 2) annotation (
+            package   Medium = Blood,
+              use_concentration_start = true,
+              concentration_start = ArterialBloodComposition,
+              useSubstances = true,
+              volume_start(displayUnit = "l") = 0.00085,
+              Compliance(displayUnit = "ml/mmHg") = 2.6627185942521e-08,
+              ZeroPressureVolume(displayUnit = "l") = 0.00045,
+              nPorts = NT+1,
+            chemicalSolution(bloodGases(
+                cHCO3(start=24.51879571586536, displayUnit="mmol/l"),
+                pCO(start=1.0005449962821231E-05, displayUnit="bar"),
+                pCO2(start=5345.09227220704, displayUnit="bar"),
+                pO2(start=11608.744631309959, displayUnit="bar"),
+                sO2CO(start=0.9627613894820818, displayUnit="%"))))                                                                                                                                                                                                         annotation (
             Placement(transformation(extent = {{46, -206}, {26, -186}})));
           Physiolibrary.Fluid.Components.ElasticVessel systemicVeins(redeclare
-            package Medium =                                                                    Blood, use_concentration_start = true, concentration_start = VenousBloodComposition, useSubstances = true, volume_start(displayUnit = "l") = 0.00325, Compliance(displayUnit = "ml/mmHg") = 6.1880080007267e-07, ZeroPressureVolume(displayUnit = "l") = 0.00295, nPorts = 3) annotation (
+            package
+              Medium = Blood,
+              use_concentration_start = true,
+              concentration_start = VenousBloodComposition,
+              useSubstances = true, volume_start(displayUnit = "l") = 0.00325,
+              Compliance(displayUnit = "ml/mmHg") = 6.1880080007267e-07,
+              ZeroPressureVolume(displayUnit = "l") = 0.00295,
+              nPorts = NT+2,
+            chemicalSolution(bloodGases(
+                cHCO3(start=26.674314102391666, displayUnit="mmol/l"),
+                pCO(start=6.3972838566901375E-06, displayUnit="bar"),
+                pCO2(start=6930.575174544387, displayUnit="bar"),
+                pO2(start=5006.216473490174, displayUnit="bar"),
+                sCO(start=1.808984022893137E-07, displayUnit="%"),
+                sO2CO(start=0.649370212847236, displayUnit="%"))))                                                                                                                                                                                                         annotation (
             Placement(transformation(extent = {{-60, -206}, {-40, -186}})));
           Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureVeins(redeclare
-            package Medium =                                                                          Blood) annotation (
+            package   Medium =                                                                        Blood) annotation (
             Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-80, -204})));
           Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasurePulmArteries(redeclare
-            package Medium =                                                                                 Blood) annotation (
+            package   Medium =                                                                               Blood) annotation (
             Placement(transformation(extent = {{-60, -108}, {-80, -88}})));
           Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasurePulmVeins(redeclare
-            package Medium =                                                                              Blood) annotation (
+            package   Medium =                                                                            Blood) annotation (
             Placement(transformation(extent = {{52, -108}, {72, -88}})));
           Types.Constants.VolumeFlowRateConst leftCardiacOutput(k = CO) annotation (
             Placement(transformation(extent = {{-4, -4}, {4, 4}}, rotation = 180, origin = {76, -150})));
@@ -3481,30 +3539,71 @@ as signal.
           Physiolibrary.Types.Constants.HydraulicConductanceConst hydraulicConductance1(k = 1.250102626409427e-07 * (5 / 4)) annotation (
             Placement(transformation(extent = {{-4, -4}, {4, 4}}, rotation = 270, origin = {-80, -132})));
           Physiolibrary.Fluid.Components.Conductor pulmonaryShunt(redeclare
-            package Medium =                                                                 Blood, Conductance(displayUnit = "l/(cmH2O.s)") = cShunt) annotation (
+            package
+              Medium =                                                                       Blood, Conductance(displayUnit = "l/(cmH2O.s)") = cShunt) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-4, -104})));
-        Physiolibrary.Organs.Lungs.Components.AlveolarUnit alveolarUnit[NA](
+        Organs.Lungs.Components.RespiratoryUnit            respiratoryUnit
+                                                                       [NA](
           redeclare package Blood = Blood,
           redeclare package Air = Air,
-          cVentilation=ones(NA)*(cTotalVentilation/NA),
-          cCirculation=ones(NA)*(cTotalCirculation/NA),
-          airVolume_start=ones(NA)*(alveolarVolume_start/NA),
-          airZeroPressureVolume=ones(NA)*(alveolarV0/NA),
-          bloodVolume_start=ones(NA)*(lungCapyVolume_start/NA),
-          bloodZeroPressureVolume=ones(NA)*(lungCapyV0/NA),
-          BloodComposition=fill(ArterialBloodComposition, NA)) annotation (
-            Placement(transformation(rotation=0, extent={{-20,-96},{12,-64}})));
+            AirVolume_initial=ones(NA)*(alveolarVolume_start/NA),
+            FunctionalResidualCapacity=ones(NA)*(alveolarV0/NA),
+            TotalCompliance=ones(NA)*(LungsCompliance/NA),
+            ResidualVolume=ones(NA)*(ResidualVolume/NA),
+            TotalCapacity=ones(NA)*(TotalCapacity/NA),
+            BaseTidalVolume=ones(NA)*(BaseTidalVolume/NA),
+            TotalResistance=ones(NA)*(NA/cTotalVentilation),
+            CapillariesVolume_initial=ones(NA)*(lungCapyVolume_start/NA),
+            Blood_initial=fill(ArterialBloodComposition, NA),
+            CapillariesZeroPressureVolume=ones(NA)*(lungCapyV0/NA),
+            CapillariesCompliance=fill(CapillariesCompliance/NA, NA),
+            CapillariesConductance=ones(NA)*((cTotalCirculation)/(NA*1/8)),
+            ArteriesConductance=ones(NA)*((cTotalCirculation)/(NA*7/8)),
+                                       each nPorts=2,
+            pulmCapysVentilated(chemicalSolution(bloodGases(
+                  cHCO3(start=fill(24.518795715865362,NA), each displayUnit="mmol/l"),
+                  pCO(start=fill(1.0005449962821248E-05,NA), each  displayUnit="bar"),
+                  pCO2(start=fill(5345.092272207041,NA), each  displayUnit="bar"),
+                  pO2(start=fill(11608.74463130998,NA), each  displayUnit="bar"),
+                  sO2CO(start=fill(0.962761389482082,NA), each  displayUnit="%")))))                                            annotation (
+            Placement(transformation(rotation=0, extent={{-22,-96},{10,-64}})));
           Sensors.BloodGasesMeasurement arterial(redeclare package Medium = Blood) annotation (
             Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 270, origin = {54, -176})));
-          TissueUnit tissueUnit[NT](O2_consumption = fill(O2_consumption / NT, NT), CO2_production = fill(CO2_production / NT, NT), Conductance = fill(TotalSystemicConductance / NT, NT), bloodVolume_start = fill(tissueBloodVolume_start / NT, NT), bloodV0 = fill(tissueV0 / NT, NT), BloodComposition = fill(VenousBloodComposition, NT), redeclare
-            package Blood =                                                                                                                                                                                                         Blood) annotation (
+          TissueUnit tissueUnit[NT](
+            O2_consumption = fill(O2_consumption / NT, NT),
+            CO2_production = fill(CO2_production / NT, NT),
+            Conductance = fill(TotalSystemicConductance / NT, NT),
+            bloodVolume_start = fill(tissueBloodVolume_start / NT, NT),
+            bloodV0 = fill(tissueV0 / NT, NT),
+            BloodComposition = fill(VenousBloodComposition, NT),
+            Compliance=fill(CapillariesCompliance/NT, NT),       redeclare
+            package
+              Blood =          Blood,
+            systemicCapillaries(chemicalSolution(bloodGases(
+                  cHCO3(start=fill(26.674314102391666,NT), each displayUnit="mmol/l"),
+                  pCO(start=fill(6.39728383892192E-06,NT), each displayUnit="bar"),
+                  pCO2(start=fill(6930.57517454441,NT), each displayUnit="bar"),
+                  pO2(start=fill(5006.216473490139,NT), each displayUnit="bar"),
+                  sCO(start=fill(1.8089840228933077E-07,NT), each displayUnit="%"),
+                  sO2CO(start=fill(0.6493702128472361,NT), each displayUnit="%")))))
+             annotation (
             Placement(transformation(extent = {{-14, -202}, {12, -188}})));
+            //,
+          /*  systemicCapillaries(chemicalSolution(bloodGases(
+          cHCO3(start={26.674314102391666}, each displayUnit="mmol/l"),
+          pCO(start={6.39728383892192E-06}, each displayUnit="mmHg"),
+          pCO2(start={6930.57517454441}, each displayUnit="mmHg"),
+          pO2(start={5006.216473490139}, each displayUnit="mmHg"),
+          sCO(start={1.8089840228933077E-07}, each displayUnit="%"),
+          sO2CO(start={0.6493702128472361}, each displayUnit="%"))))*/
           RespiratoryCenter respiratoryCenter(DV = DV) annotation (
             Placement(transformation(extent = {{40, 2}, {20, 22}})));
           inner Modelica.Fluid.System system(T_ambient = 310.15) annotation (
             Placement(transformation(extent = {{-66, -2}, {-46, 18}})));
           Sensors.BloodGasesMeasurement venous(redeclare package Medium = Blood) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-66, -176})));
+          Types.Constants.PressureConst pressure(k(displayUnit="mmHg") = -533.28954966)
+            annotation (Placement(transformation(extent={{-42,-58},{-34,-50}})));
         equation
           connect(deadSpaceVentilation.q_out, volumeOutflow.q_in) annotation (
             Line(points = {{6, -42}, {64, -42}}, color = {127, 0, 0}, thickness = 0.5));
@@ -3515,7 +3614,7 @@ as signal.
           connect(leftHeartPump.q_in, pulmonaryVeins.q_in[1]) annotation (
             Line(points={{42,-140},{42,-100},{41.9,-100},{41.9,-102.975}},         color = {127, 0, 0}, thickness = 0.5));
           connect(pressureMeasureVeins.q_in, systemicVeins.q_in[1]) annotation (
-            Line(points={{-76,-210},{-50,-210},{-50,-196.867},{-50.1,-196.867}},          color = {127, 0, 0}, thickness = 0.5));
+            Line(points={{-76,-210},{-50,-210},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
           connect(pressureMeasurePulmArteries.q_in, pulmonaryArteries.q_in[2]) annotation (
             Line(points={{-66,-104},{-50,-104},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
           connect(pulmonaryVeins.q_in[2], pressureMeasurePulmVeins.q_in) annotation (
@@ -3531,24 +3630,33 @@ as signal.
           connect(pulmonaryShunt.q_out, pulmonaryVeins.q_in[3]) annotation (
             Line(points={{6,-104},{41.9,-104},{41.9,-101.675}},       color = {127, 0, 0}, thickness = 0.5));
           for i in 1:NA loop
-            connect(alveolarUnit[i].q_in1, pulmonaryArteries.q_in[4]) annotation (
-              Line(points={{-20,-80},{-30,-80},{-30,-100},{-50.1,-100},{-50.1,
-                  -101.025}},                                                                       color = {127, 0, 0}, thickness = 0.5));
-            connect(alveolarUnit[i].q_in, pressureSource.y) annotation (
-              Line(points = {{-7.2, -72}, {-64, -72}, {-64, -42}, {-76, -42}}, color = {127, 0, 0}, thickness = 0.5));
-            connect(alveolarUnit[i].q_out, volumeOutflow.q_in) annotation (
-              Line(points = {{-0.8, -72}, {34, -72}, {34, -42}, {64, -42}}, color = {127, 0, 0}, thickness = 0.5));
-            connect(alveolarUnit[i].q_out1, pulmonaryVeins.q_in[4]) annotation (
-              Line(points={{12,-80},{22,-80},{22,-98},{42,-98},{42,-101.025},{
-                  41.9,-101.025}},                                                                        color = {127, 0, 0}, thickness = 0.5));
+            connect(respiratoryUnit[i].blood_in, pulmonaryArteries.q_in[4]) annotation (
+                Line(
+                points={{-22,-87.04},{-30,-87.04},{-30,-100},{-50.1,-100},{-50.1,-101.025}},
+                color={127,0,0},
+                thickness=0.5));
+            connect(respiratoryUnit[i].airways[1], pressureSource.y) annotation (Line(
+                points={{-6,-64.84},{-64,-64.84},{-64,-42},{-76,-42}},
+                color={127,0,0},
+                thickness=0.5));
+            connect(respiratoryUnit[i].airways[2], volumeOutflow.q_in) annotation (Line(
+                points={{-6,-63.48},{34,-63.48},{34,-42},{64,-42}},
+                color={127,0,0},
+                thickness=0.5));
+            connect(respiratoryUnit[i].blood_out, pulmonaryVeins.q_in[4]) annotation (Line(
+                points={{10.32,-86.4},{22,-86.4},{22,-98},{42,-98},{42,-101.025},{41.9,-101.025}},
+                color={127,0,0},
+                thickness=0.5));
+            connect(pressure.y, respiratoryUnit[i].thoraxPressure) annotation (Line(
+                points={{-33,-54},{-12.56,-54},{-12.56,-67.68}}, color={0,0,127}));
           end for;
           connect(leftHeartPump.solutionFlow, leftCardiacOutput.y) annotation (
             Line(points = {{49, -150}, {71, -150}}, color = {0, 0, 127}));
           for i in 1:NT loop
-            connect(tissueUnit[i].q_in, systemicArteries.q_in[1]) annotation (
+            connect(tissueUnit[i].q_in, systemicArteries.q_in[i+1]) annotation (
               Line(points={{13.6611,-195.21},{28,-195.21},{28,-196},{36.1,-196},
-                  {36.1,-196.65}},                                                                         color = {127, 0, 0}, thickness = 0.5));
-            connect(tissueUnit[i].q_out, systemicVeins.q_in[2]) annotation (
+                  {36.1,-196}},                                                                            color = {127, 0, 0}, thickness = 0.5));
+            connect(tissueUnit[i].q_out, systemicVeins.q_in[i+2]) annotation (
               Line(points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-196}},        color = {127, 0, 0}, thickness = 0.5));
           end for;
           connect(respiratoryCenter.deadSpaceVentilation, deadSpaceVentilation.solutionFlow) annotation (
@@ -3561,10 +3669,10 @@ as signal.
             Line(points = {{54, -165}, {54, -160}, {90, -160}, {90, 11}, {40.4, 11}}, color = {0, 0, 127}));
           connect(arterial.b_port, leftHeartPump.q_out) annotation (
             Line(points = {{43.8, -169.8}, {42, -169.8}, {42, -160}}, color = {127, 0, 0}, thickness = 0.5));
-          connect(arterial.a_port, systemicArteries.q_in[2]) annotation (
-            Line(points={{43.8,-182},{40,-182},{40,-195.35},{36.1,-195.35}},        color = {127, 0, 0}, thickness = 0.5));
-          connect(systemicVeins.q_in[3], venous.a_port) annotation (
-            Line(points={{-50.1,-195.133},{-50.1,-188},{-55.8,-188},{-55.8,-182}},          color = {127, 0, 0}, thickness = 0.5));
+          connect(arterial.a_port, systemicArteries.q_in[1]) annotation (
+            Line(points={{43.8,-182},{40,-182},{40,-196},{36.1,-196}},              color = {127, 0, 0}, thickness = 0.5));
+          connect(systemicVeins.q_in[2], venous.a_port) annotation (
+            Line(points={{-50.1,-196},{-50.1,-188},{-55.8,-188},{-55.8,-182}},              color = {127, 0, 0}, thickness = 0.5));
           connect(venous.b_port, rightHeartPump.q_in) annotation (
             Line(points = {{-55.8, -169.8}, {-55.8, -164.9}, {-50, -164.9}, {-50, -160}}, color = {127, 0, 0}, thickness = 0.5));
           connect(systemicVeins.substances[Blood.S.O2], venous.O2) annotation (
@@ -3579,6 +3687,7 @@ as signal.
             Line(points = {{54, -186}, {54, -196}, {46, -196}}, color = {158, 66, 200}));
           connect(arterial.O2, systemicArteries.substances[Blood.S.O2]) annotation (
             Line(points = {{60, -186}, {60, -196}, {46, -196}}, color = {158, 66, 200}));
+
           annotation (
             Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -220}, {100, 40}})),
             Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -220}, {100, 40}})),
@@ -3594,12 +3703,21 @@ as signal.
           parameter Types.Volume bloodVolume_start = 0.0003;
           parameter Types.Volume bloodV0 = 0.0002;
           parameter Real BloodComposition[Blood.nS - 2] = {0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
+          parameter Types.HydraulicCompliance Compliance = 3.0002463033826e-08 "Compliance of tissue blood vessels";
           Components.Resistor systemicArteriesResistance(redeclare package
             Medium =                                                                Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 40})));
           Components.Resistor systemicVeinsResistance(redeclare package Medium = Blood, Resistance = 1 / Conductance * (1 - ArteriesViensResistanceRatio)) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-64, 0})));
-          Components.ElasticVessel systemicCapillaries(redeclare package Medium = Blood, use_concentration_start = true, concentration_start = BloodComposition, useSubstances = true, volume_start(displayUnit = "l") = bloodVolume_start, Compliance(displayUnit = "ml/mmHg") = 3.0002463033826e-08, ZeroPressureVolume(displayUnit = "l") = bloodV0, nPorts = 2) annotation (
+          Components.ElasticVessel systemicCapillaries(
+               redeclare package Medium = Blood,
+               use_concentration_start = true,
+               concentration_start = BloodComposition,
+               useSubstances = true,
+               volume_start(displayUnit = "l") = bloodVolume_start,
+               Compliance(displayUnit = "ml/mmHg") = Compliance,
+               ZeroPressureVolume(displayUnit = "l") = bloodV0,
+               nPorts = 2) annotation (
             Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-2, -14})));
           Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = O2_consumption) annotation (
             Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-70, -38})));
@@ -3778,15 +3896,16 @@ as signal.
         //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
         replaceable package PleuralFluid = Physiolibrary.Media.Water;
         parameter Boolean EnthalpyNotUsed = false;
-        parameter Pressure IntrathoraxPressure = -700;
-        parameter Frequency RespirationRate(displayUnit = "1/min") = 0.2 "Respiration rate";
-        parameter Volume ResidualVolume = 0.0013 "Lungs residual volume";
-        parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity";
-        parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume";
-        parameter Volume LungsAirVolume_initial = 0.0031 "Initial volume of alveolar space";
-        parameter Volume pleuralVolume_initial = 0.0001 "Initial volume of pleural fluid";
-        parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity";
-        parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+        parameter Pressure IntrathoraxPressure=-700;
+        parameter Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
+        parameter Volume ResidualVolume=0.0013   "Lungs residual volume";
+        parameter Volume TotalLungCapacity=0.00623   "Total Lung Capacity";
+        parameter Volume BaseTidalVolume=0.0005   "Base Tidal Volume";
+        parameter Volume LungsAirVolume_initial=0.0031   "Initial volume of alveolar space";
+        parameter Volume pleuralVolume_initial=0.0001   "Initial volume of pleural fluid";
+        parameter Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity";
+        parameter Physiolibrary.Types.HydraulicResistance TotalResistance(
+          displayUnit="(cmH2O.s)/l")=147099.75                                        "Total lungs pathways resistance";
         parameter Real BronchiResistanceFraction = 0.3;
         parameter Real AlveoliDuctResistanceFraction = 0.2;
         parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
@@ -3795,12 +3914,13 @@ as signal.
         parameter Physiolibrary.Types.HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance";
         parameter Physiolibrary.Types.HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance";
         parameter Physiolibrary.Types.HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance";
-        parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance = 1.0197162129779e-06 "Total lungs compliance";
-        parameter Pressure Pmin = -250 "Relative external lungs pressure minimum caused by respiratory muscles";
-        parameter Pressure Pmax(displayUnit = "mmHg") = 0 "Relative external lungs pressure maximum";
+        parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance=
+          1.0197162129779e-06                                                                   "Total lungs compliance";
+        parameter Pressure Pmin=-250   "Relative external lungs pressure minimum caused by respiratory muscles";
+        parameter Pressure Pmax(displayUnit="mmHg")=0     "Relative external lungs pressure maximum";
         parameter Real RespiratoryMusclePressureCycle[:, 3] = {{0, Pmax, 0}, {3 / 8, Pmin, 0}, {1, Pmax, 0}} "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
-        parameter Temperature CoreTemperature = 310.15 "body temperature";
-        parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+        parameter Temperature CoreTemperature=310.15   "body temperature";
+        parameter Temperature EnvironmentTemperature=298.15   "external air temperature";
         parameter Mass m_initial = LungsAirVolume_initial * Air.density(Air.setState_pTX(system.p_ambient + Pmax, CoreTemperature, Air.reference_X));
         //  parameter Density d = Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature));
 
@@ -4051,20 +4171,20 @@ as signal.
         connect(rightAlveoli.substances[3], pH2O_alveolar.port_a) annotation (
           Line(points = {{-156, -48}, {-102, -48}, {-102, -76}}, color = {158, 66, 200}));
       connect(leftPleuralSpace.externalPressure, respiratoryMusclePressureCycle.val)
-        annotation (Line(points={{-72,37},{-72,48},{-2,48},{-2,82},{-14,82}},
+        annotation (Line(points={{-73,37},{-73,48},{-2,48},{-2,82},{-14,82}},
             color={0,0,127}));
       connect(rightPleuralSpace.externalPressure,
-        respiratoryMusclePressureCycle.val) annotation (Line(points={{-72,-39},
-              {-72,-28},{-2,-28},{-2,82},{-14,82}}, color={0,0,127}));
+        respiratoryMusclePressureCycle.val) annotation (Line(points={{-73,-39},
+              {-73,-28},{-2,-28},{-2,82},{-14,82}}, color={0,0,127}));
         connect(leftAlveoli.fluidVolume,leftPleuralSpace. internalSpace) annotation (
             Line(points={{-142,18},{-90,18},{-90,28},{-75,28}}, color={0,0,127}));
         connect(leftPleauralPressure.pressure, leftAlveoli.externalPressure)
-          annotation (Line(points={{-76,60},{-146,60},{-146,35}}, color={0,0,127}));
+          annotation (Line(points={{-76,60},{-145,60},{-145,35}}, color={0,0,127}));
       connect(rightAlveoli.fluidVolume, rightPleuralSpace.internalSpace)
         annotation (Line(points={{-136,-56},{-82,-56},{-82,-48},{-75,-48}},
             color={0,0,127}));
       connect(rightPleauralPressure.pressure, rightAlveoli.externalPressure)
-        annotation (Line(points={{-76,-16},{-140,-16},{-140,-39},{-140,-39}},
+        annotation (Line(points={{-76,-16},{-140,-16},{-140,-39},{-139,-39}},
             color={0,0,127}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false)),

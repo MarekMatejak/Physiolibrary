@@ -142,12 +142,12 @@ package Organs
       annotation (Placement(transformation(extent={{52,-98},{36,-82}})));
     equation
     connect(RightAtrium.zeroPressureVolume, RightAtriumV0.y) annotation (Line(
-        points={{-67,18},{-67,24},{-75,24}},
+        points={{-72,18},{-72,24},{-75,24}},
         color={0,0,127},
         smooth=Smooth.None));
       connect(busConnector.Pericardium_Pressure,RightAtrium.externalPressure)
         annotation (Line(
-          points={{6,42},{6,24},{-59,24},{-59,18}},
+          points={{6,42},{6,24},{-58,24},{-58,18}},
           color={0,0,255},
           thickness=0.1,
           smooth=Smooth.None), Text(
@@ -161,7 +161,7 @@ package Organs
           thickness=0.5,
           smooth=Smooth.None));
     connect(LeftAtrium.zeroPressureVolume, LeftAtriumV0.y) annotation (Line(
-        points={{76,11},{76,16},{69,16}},
+        points={{71,11},{71,16},{69,16}},
         color={0,0,127},
         smooth=Smooth.None));
       connect(busConnector,leftVentricle. busConnector)          annotation (
@@ -172,7 +172,7 @@ package Organs
           smooth=Smooth.None));
       connect(busConnector.Pericardium_Pressure,LeftAtrium.externalPressure)
         annotation (Line(
-          points={{6,42},{6,24},{84,24},{84,11}},
+          points={{6,42},{6,24},{85,24},{85,11}},
           color={0,0,255},
           thickness=0.1,
           smooth=Smooth.None));
@@ -337,7 +337,7 @@ package Organs
         extent={{6,3},{6,3}}));
     connect(RightAtrium.externalPressure, rightAtrium_TMP.u2) annotation (
         Line(
-        points={{-59,18},{-59,-98.4},{-30,-98.4}},
+        points={{-58,18},{-58,-98.4},{-30,-98.4}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(pressureMeasure.pressure, rightAtrium_TMP.u1) annotation (Line(
@@ -349,7 +349,7 @@ package Organs
         color={0,0,127},
         smooth=Smooth.None));
     connect(LeftAtrium.externalPressure, leftAtrium_TMP.u2) annotation (Line(
-        points={{84,11},{84,-98},{44,-98},{44,-96.4}},
+        points={{85,11},{85,-98},{44,-98},{44,-96.4}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(busConnector.leftAtrium_TMP, leftAtrium_TMP.y) annotation (Line(
@@ -1625,6 +1625,7 @@ vector of pressure-flow connectors.
 </HTML>
 "));
         end VentricleVolumeAndPumping;
+
     end Components;
 
     package Interfaces
@@ -2162,103 +2163,144 @@ vector of pressure-flow connectors.
     model Lungs
        extends Icons.Lungs;
       import Physiolibrary.Types.*;
-      replaceable package Air = Media.Air constrainedby Physiolibrary.Media.Interfaces.PartialMedium annotation (
-         choicesAllMatching = true);
-      replaceable package PleuralFluid = Physiolibrary.Media.Water constrainedby Physiolibrary.Media.Interfaces.PartialMedium annotation (
-         choicesAllMatching = true);
-      replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby Physiolibrary.Media.Interfaces.PartialMedium annotation (
-         choicesAllMatching = true);
 
-      parameter Volume bloodVolume_start = 0.00015;
-      parameter Volume bloodZeroPressureVolume = 0.0001;
+      replaceable package Air = Media.Air constrainedby
+        Physiolibrary.Media.Interfaces.PartialMedium                                                 annotation (
+         choicesAllMatching = true, Dialog( group = "Ventilation"));
+      replaceable package PleuralFluid = Physiolibrary.Media.Water constrainedby
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                          annotation (
+         choicesAllMatching = true, Dialog( group = "Thorax"));
+      replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation (
+         choicesAllMatching = true, Dialog( group = "Perfusion"));
+
+
+      parameter Integer NRU=1 "Number of respiratory units";
+
+
+      parameter Integer nPorts=0   "Number of airways ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+
+      parameter Types.Volume LungsAirVolume_initial=0.00302   "Initial volume of alveolar space" annotation (Dialog( group = "Ventilation"));
+      parameter Real Air_initial[Air.nS] = {100,40,47,760 - 187} "Initial composition of air inside alveoli"
+         annotation (Dialog( group = "Ventilation"));
+      parameter Types.Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity" annotation (Dialog( group = "Ventilation"));
+      parameter Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Pulmonary compliance" annotation (Dialog( group = "Ventilation"));
+
+
+      parameter Types.Volume ResidualVolume=0.0013   "Residual volume"
+        annotation (Dialog( group = "Ventilation"));
+      parameter Types.Volume TotalLungCapacity=0.00623   "Total Capacity" annotation (Dialog( group = "Ventilation"));
+      parameter Types.Volume BaseTidalVolume=0.0005   "Base Tidal Volume" annotation (Dialog( group = "Ventilation"));
+
+      parameter Types.HydraulicResistance AirwaysResistances[NRU]=fill(NRU*147099.75,NRU)   "Airways resistances per respiratory unit" annotation (Dialog( group = "Ventilation"));
+
+
+      parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood" annotation(Dialog( group = "Perfusion"));
+      parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood" annotation(Dialog( group = "Perfusion"));
+
+      parameter Types.Volume ArteriesVolume_initial=0.000200488  "Initial volume of blood in arteries"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.Volume ArteriesZeroPressureVolume=0.00011 "Blood arteries zero pressure volume"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicCompliance ArteriesCompliance=3.975326351982e-08 "Blood arteries compliance"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicConductance ArteriesConductance=1.6876385456527e-07   "Blood arteries conductance"
+       annotation (Dialog( group = "Perfusion"));
+
+      parameter Types.Volume CapillariesVolume_initial=0.000200141 "Initial volume of blood in capillaries"
+      annotation (Dialog( group = "Perfusion"));
+      parameter Types.Volume CapillariesZeroPressureVolume=0.00014 "Maximal volume of blood capillaries zero at zero blood pressure inside"
+      annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicCompliance CapillariesCompliance=3.45028324889e-08   "Blood capillaries compliance"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicConductance CapillariesConductance=2.250184727537e-07   "Blood capillaries conductance"
+      annotation (Dialog( group = "Perfusion"));
+
+
+
+      parameter Types.Volume VeinsVolume_initial=0.000210463  "Initial volume of blood in veins"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.Volume VeinsZeroPressureVolume=0.00015 "Blood venous zero pressure volume"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicCompliance VeinsCompliance=4.5003694550739e-08 "Blood venous compliance"
+       annotation (Dialog( group = "Perfusion"));
+      parameter Types.HydraulicConductance VeinsConductance=6.7505541826109e-07   "Blood venous conductance"
+       annotation (Dialog( group = "Perfusion"));
+
+
+      parameter Real Diffusions[NRU](unit="mol2.s-1.J-1")=fill(1e-4,NRU)         "Gasses diffussions per respiratory unit" annotation (Dialog( group = "Diffusion"));
+
+
+
+      parameter Volume PleuralFluidVolume_initial=0.0001   "Initial volume of pleural fluid volume" annotation(Dialog( group = "Thorax"));
+      parameter Volume PleuralCavityVolume = PleuralFluidVolume_initial + LungsAirVolume_initial "Volume of relaxed pleural cavity" annotation(Dialog( group = "Thorax"));
+
+
+    protected
       parameter Fraction Hct = 0.44 "Hematocrit";
-      parameter Concentration Arterial_O2 = 8.16865 "Initial Total oxygenin arterial blood", Venous_O2 = 5.48 "Initial Total oxygen in venous blood", Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood", Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood", Blood_CO = 1.512e-6 "Total carbon monoxide", Blood_Hb = 8.4 "Hemoglobin", Blood_MetHb = 0.042 "Methemoglobin", Blood_HbF = 0.042 "Foetal hemoglobin", Blood_Alb = 0.66 "Albumin", Blood_PO4 = 0.153 "Inorganic phosphates", Blood_DPG = 5.4 "Diphosphoglycerate";
+      parameter Concentration Arterial_O2 = 8.16865 "Initial Total oxygen in arterial blood", Venous_O2 = 5.48 "Initial Total oxygen in venous blood", Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood", Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood", Blood_CO = 1.512e-6 "Total carbon monoxide", Blood_Hb = 8.4 "Hemoglobin", Blood_MetHb = 0.042 "Methemoglobin", Blood_HbF = 0.042 "Foetal hemoglobin", Blood_Alb = 0.66 "Albumin", Blood_PO4 = 0.153 "Inorganic phosphates", Blood_DPG = 5.4 "Diphosphoglycerate";
       parameter Real Blood_Glb = 28 "Globulins", Blood_BEox = 0 "Base excess of oxygenated blood from normal arterial conditions";
       constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions", zGlbNAP = 0.0892857 "charge on globilins at normal arterial plasma conditions", zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions", ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions", ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions", zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions";
       parameter Real NSID = (1 - Hct) * (zAlbNAP * Blood_Alb + zGlbNAP * Blood_Glb + zPO4NAP * Blood_PO4 + ztCO2NAP) + Hct * (zHbNAE * (Blood_Hb / Hct) + ztCO2NAE) "Total charge number on buffers at normal arterial conditions per total volume";
       parameter Real Blood_SID = NSID - Blood_BEox "Strong ion difference";
-      parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood";
-      parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood";
 
-      parameter MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
-      parameter MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
-      parameter Boolean EnthalpyNotUsed = false;
-      parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
-      parameter Volume ResidualVolume = 0.0013 "Lungs residual volume";
-      parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity";
-      parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume";
-      parameter Volume LungsAirVolume_initial = 0.00302 "Initial volume of alveolar space";
-      parameter Volume PleuralFluidVolume_initial = 0.0001 "Initial volume of pleural fluid volume";
-      parameter Volume PleuralCavityVolume_initial = PleuralFluidVolume_initial + LungsAirVolume_initial "Initial volume of pleural cavity";
-      parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity";
-      parameter HydraulicResistance TotalResistance=147099.75   "Total lungs pathways resistance";
-      parameter Real BronchiResistanceFraction = 0.3;
-      parameter Real AlveoliDuctResistanceFraction = 0.2;
-      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
-      parameter HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
-      parameter HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance";
-      parameter HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance";
-      parameter HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance";
-      parameter HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance";
-      parameter HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Total lungs compliance";
+     // parameter MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
+     // parameter MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
+     // parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
+      //parameter Volume ResidualVolume = 0.0013 "Lungs residual volume" annotation(Dialog( group = "Ventilation"));
+      //parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity" annotation(Dialog( group = "Ventilation"));
+      //parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume" annotation(Dialog( group = "Ventilation"));
+      //parameter Volume LungsAirVolume_initial = 0.00302 "Initial volume of alveolar space" annotation(Dialog( group = "Ventilation"));
+      //parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity" annotation(Dialog( group = "Ventilation"));
+      //parameter HydraulicResistance TotalResistance=147099.75   "Total lungs pathways resistance" annotation(Dialog( group = "Ventilation"));
+      /*
+  parameter Real BronchiResistanceFraction = 0.3 annotation(Dialog( group = "Ventilation"));
+  parameter Real AlveoliDuctResistanceFraction = 0.2 annotation(Dialog( group = "Ventilation"));
+  parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2 annotation(Dialog( group = "Ventilation"));
+  parameter HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+  parameter HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+  parameter HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
+  parameter HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+  parameter HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
+  */
+      //parameter HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Total lungs compliance" annotation(Dialog( group = "Ventilation"));
 
-    Physiolibrary.Fluid.Components.ElasticVessel pulmCapys(
-        redeclare package Medium = Blood,
-        use_concentration_start=true,
-        concentration_start=VenousBloodComposition,
-        useSubstances=true,
-        stateName="PulmCapys.Vol",
-        Compliance=3.45028324889e-08,
-        ZeroPressureVolume=0.00014,
-        useComplianceInput=false,
-        useExternalPressureInput=true,
-        useV0Input=false,
-        volume_start=0.000200141,
-        nPorts=2)                 "pulmonary capilaries"
-      annotation (Placement(transformation(extent={{-28,-48},{-8,-28}})));
-
+    public
     Physiolibrary.Fluid.Components.ElasticVessel pulmArty(
         redeclare package Medium = Blood,
         use_concentration_start=true,
         concentration_start=VenousBloodComposition,
         stateName="PulmArty.Vol",
-        Compliance=3.975326351982e-08,
-        ZeroPressureVolume=0.00011,
+        Compliance=ArteriesCompliance,
+        ZeroPressureVolume=ArteriesZeroPressureVolume,
         useComplianceInput=false,
         useExternalPressureInput=true,
         useV0Input=false,
-        volume_start=0.000200488,
-        nPorts=2)
-      annotation (Placement(transformation(extent={{-90,-48},{-70,-28}})));
+        volume_start=ArteriesVolume_initial,
+        nPorts=1+NRU)
+      annotation (Placement(transformation(extent={{-90,-28},{-70,-8}})));
 
     Physiolibrary.Fluid.Components.ElasticVessel pulmVeins(
         redeclare package Medium = Blood,
         use_concentration_start=true,
         concentration_start=ArterialBloodComposition,
         stateName="PulmVeins.Vol",
-        Compliance=4.5003694550739e-08,
-        ZeroPressureVolume=0.00015,
+        Compliance=VeinsCompliance,
+        ZeroPressureVolume=VeinsZeroPressureVolume,
         useComplianceInput=false,
         useExternalPressureInput=true,
         useV0Input=false,
-        volume_start=0.000210463,
-        nPorts=2)               "pulmonary veins"
-      annotation (Placement(transformation(extent={{44,-46},{64,-26}})));
+        volume_start=VeinsVolume_initial,
+        nPorts=1+NRU)               "pulmonary veins"
+      annotation (Placement(transformation(extent={{30,-26},{50,-6}})));
 
-    Physiolibrary.Fluid.Components.Conductor pulmArtyConductance(redeclare
-          package
-          Medium =                                                                          Blood,Conductance=1.6876385456527e-07)
-      annotation (Placement(transformation(extent={{-65,-57},{-43,-35}})));
-    Physiolibrary.Fluid.Components.Conductor pulmCapysConductance(redeclare
-          package
-          Medium =                                                                           Blood,
-        Conductance=2.250184727537e-07)
-      annotation (Placement(transformation(extent={{20,-47},{42,-25}})));
     Physiolibrary.Fluid.Components.Conductor pulmVeinsConductance(redeclare
           package
           Medium =                                                                           Blood,
-        Conductance=6.7505541826109e-07)
-      annotation (Placement(transformation(extent={{68,-47},{90,-25}})));
+          Conductance=VeinsConductance)
+      annotation (Placement(transformation(extent={{68,-27},{90,-5}})));
     Physiolibrary.Types.BusConnector busConnector
       "signals of organ bood flow resistence" annotation (Placement(
           transformation(extent={{84,-68},{104,-48}}),
@@ -2267,94 +2309,102 @@ vector of pressure-flow connectors.
       Types.Constants.VolumeConst
                                volume(k=1e-06*(110 + 140 + 150))
         annotation (Placement(transformation(extent={{-26,-96},{-18,-88}})));
-      Modelica.Blocks.Math.Sum sum2(nin=2)
+      Modelica.Blocks.Math.Sum sum2(nin=1+NRU)
         annotation (Placement(transformation(extent={{-26,-84},{-18,-76}})));
       Modelica.Blocks.Math.Gain PulmonaryCirculation_DeoxygenatedBloodVolume(k=1)
         annotation (Placement(transformation(extent={{-26,-70},{-18,-62}})));
       inner Modelica.Fluid.System system                              "Human body system setting" annotation (
-        Placement(transformation(extent={{72,10},{92,30}})));
-      Fluid.Components.ElasticVessel               alveoli(
-        redeclare package Medium = Air,
-        volume_start=LungsAirVolume_initial,
-        use_concentration_start=true,
-        concentration_start={100,40,47,760 - 187},
-        useThermalPort=false,
-        ZeroPressureVolume=FunctionalResidualCapacity,
-        ResidualVolume=ResidualVolume,
-        Compliance=TotalCompliance,
-        useExternalPressureInput=true,
-        useSigmoidCompliance=true,
-        VitalCapacity=TotalLungCapacity - ResidualVolume,
-        BaseTidalVolume=BaseTidalVolume,
-        useSubstances=true,
-        EnthalpyNotUsed=EnthalpyNotUsed,
-        nPorts=2) "Alveolar space" annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-26,44})));
-      Fluid.Components.Resistor               lungsPathwaysIn(
-        redeclare package Medium = Air,
-        EnthalpyNotUsed=EnthalpyNotUsed,
-        Resistance=TotalResistance) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-60,76})));
+        Placement(transformation(extent={{76,64},{96,84}})));
       Fluid.Components.ElasticVessel pleuralSpace(
         redeclare package Medium = PleuralFluid,
         volume_start=PleuralFluidVolume_initial,
         useThermalPort=false,
-        ZeroPressureVolume=PleuralCavityVolume_initial,
+        ZeroPressureVolume=PleuralCavityVolume,
         Compliance=TotalCompliance,
         useExternalPressureInput=true,
         useSigmoidCompliance=false,
         useSubstances=false,
         useInternalSpaceInput=true,
-        InternalSpace(displayUnit="l") = PleuralCavityVolume_initial,
+        InternalSpace(displayUnit="l") = PleuralCavityVolume,
         nPorts=1) "Pleural space"
-        annotation (Placement(transformation(extent={{16,58},{-4,78}})));
+        annotation (Placement(transformation(extent={{-32,20},{-52,40}})));
       Fluid.Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
             PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
         annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
-            origin={-16,78})));
-      Chemical.Components.GasSolubility diffusion_O2(KC=1e-4)
-        annotation (Placement(transformation(extent={{-42,4},{-22,24}})));
-      Chemical.Components.GasSolubility diffusion_CO2(KC=1e-4)
-        annotation (Placement(transformation(extent={{-24,2},{-4,22}})));
-      Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium = Blood)
-        annotation (Placement(transformation(extent={{0,-26},{20,-6}})));
-      Fluid.Components.Resistor lungsPathwaysOut(
-        redeclare package Medium = Air,
-        EnthalpyNotUsed=EnthalpyNotUsed,
-        Resistance=TotalResistance) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={60,74})));
-      Fluid.Interfaces.FluidPort_a air_in(redeclare package Medium = Air)
-        annotation (Placement(transformation(extent={{-70,94},{-50,114}}),
-            iconTransformation(extent={{-70,90},{-50,110}})));
-      Fluid.Interfaces.FluidPort_b air_out(redeclare package Medium = Air)
-        annotation (Placement(transformation(extent={{50,90},{70,110}}),
-            iconTransformation(extent={{50,86},{70,106}})));
+            origin={-64,40})));
       Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium = Blood)
-        annotation (Placement(transformation(extent={{-110,-46},{-90,-26}}),
+        annotation (Placement(transformation(extent={{-110,-26},{-90,-6}}),
             iconTransformation(extent={{-110,-50},{-90,-30}})));
       Fluid.Interfaces.FluidPort_b blod_out(redeclare package Medium = Blood)
-        annotation (Placement(transformation(extent={{90,-46},{110,-26}}),
+        annotation (Placement(transformation(extent={{90,-26},{110,-6}}),
             iconTransformation(extent={{90,-50},{110,-30}})));
       Types.RealIO.PressureInput respiratotyMusclePressure annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={0,104}), iconTransformation(
+            origin={-50,86}),iconTransformation(
             extent={{20,-20},{-20,20}},
             rotation=0,
             origin={80,40})));
+      Components.RespiratoryUnit respiratoryUnit[NRU](
+        redeclare package Air = Air,
+        redeclare package Blood = Blood,
+        AirVolume_initial=fill(LungsAirVolume_initial/NRU, NRU),
+        Air_initial=fill(Air_initial, NRU),
+        TotalCapacity=fill(TotalLungCapacity/NRU, NRU),
+        TotalResistance=AirwaysResistances,
+        CapillariesVolume_initial=fill(CapillariesVolume_initial/NRU, NRU),
+        Blood_initial=fill(ArterialBloodComposition, NRU),
+        ResidualVolume=fill(ResidualVolume/NRU, NRU),
+        BaseTidalVolume=fill(BaseTidalVolume/NRU, NRU),
+        FunctionalResidualCapacity=fill(FunctionalResidualCapacity/NRU, NRU),
+        TotalCompliance=fill(TotalCompliance/NRU, NRU),
+        CapillariesZeroPressureVolume=fill(CapillariesZeroPressureVolume/NRU, NRU),
+        CapillariesCompliance=fill(CapillariesCompliance/NRU, NRU),
+        CapillariesConductance=fill(CapillariesConductance/NRU, NRU),
+        ArteriesConductance=fill(ArteriesConductance/NRU, NRU),
+        Diffusion=Diffusions,
+        each nPorts=nPorts) annotation (Placement(transformation(rotation=0, extent={{-10,
+                -24},{10,-4}})));
+
+      Fluid.Interfaces.FluidPorts_a airways[nPorts](redeclare package Medium = Air)
+        annotation (Placement(transformation(rotation=0, extent={{-6,60},{6,94}}),
+            iconTransformation(extent={{-6,82},{6,116}})));
+      Modelica.Blocks.Math.Sum lungsVolume(nin=NRU) annotation (Placement(
+            transformation(
+            extent={{-4,-4},{4,4}},
+            rotation=180,
+            origin={-36,-2})));
     equation
 
-      sum2.u[1]=pulmCapys.volume;
-      sum2.u[2]=pulmVeins.volume;
+      sum2.u[1]=pulmVeins.volume;
+      PulmonaryCirculation_DeoxygenatedBloodVolume.u = pulmArty.volume;
+
+      for i in 1:NRU loop
+        sum2.u[1+i]=respiratoryUnit[i].pulmCapysVentilated.volume;
+
+        connect(respiratoryUnit[i].blood_in, pulmArty.q_in[1+i]) annotation (Line(
+          points={{-10,-18.4},{-70,-18.4},{-70,-18},{-80.1,-18}},
+          color={127,0,0},
+          thickness=0.5));
+        connect(respiratoryUnit[i].blood_out, pulmVeins.q_in[1+i]) annotation (Line(
+          points={{10.2,-18},{26,-18},{26,-16},{39.9,-16}},
+          color={127,0,0},
+          thickness=0.5));
+
+        connect(pleauralPressure.pressure, respiratoryUnit[i].thoraxPressure)
+        annotation (Line(points={{-70,36},{-74,36},{-74,6},{-4.1,6},{-4.1,-6.3}},
+            color={0,0,127}));
+
+        connect(airways, respiratoryUnit[i].airways) annotation (Line(
+          points={{0,77},{0,-4.1}},
+          color={127,0,0},
+          thickness=0.5));
+      end for;
+
+
 
       connect(volume.y, busConnector.PulmonaryCirculation_V0) annotation (Line(
           points={{-17,-92},{80,-92},{80,-58},{94,-58}},
@@ -2363,92 +2413,33 @@ vector of pressure-flow connectors.
           string="%second",
           index=1,
           extent={{6,3},{6,3}}));
-          PulmonaryCirculation_DeoxygenatedBloodVolume.u = pulmArty.volume;
 
-    connect(pulmArtyConductance.q_in, pulmArty.q_in[1]) annotation (Line(
-        points={{-65,-46},{-70,-46},{-70,-38.65},{-80.1,-38.65}},
-        color={127,0,0},
-        thickness=0.5));
+
       connect(pulmVeinsConductance.q_in, pulmVeins.q_in[1]) annotation (Line(
-          points={{68,-36},{60,-36},{60,-36.65},{53.9,-36.65}},
+          points={{68,-16},{54,-16},{54,-16},{39.9,-16}},
           color={127,0,0},
           thickness=0.5));
-    connect(pulmCapysConductance.q_out, pulmVeins.q_in[2]) annotation (Line(
-        points={{42,-36},{48,-36},{48,-35.35},{53.9,-35.35}},
-        color={127,0,0},
-        thickness=0.5));
-      connect(pulmArtyConductance.q_out, pulmCapys.q_in[1]) annotation (Line(
-          points={{-43,-46},{-18.1,-46},{-18.1,-38.65}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(alveoli.fluidVolume,pleuralSpace. internalSpace) annotation (Line(
-            points={{-18,54},{-18,68},{-3,68}},            color={0,0,127}));
-      connect(pleauralPressure.pressure,alveoli. externalPressure) annotation (Line(
-            points={{-22,74},{-46,74},{-46,50},{-35,50}},      color={0,0,127}));
+
+
       connect(pleuralSpace.q_in[1],pleauralPressure. q_in) annotation (Line(
-          points={{6.1,68},{6,68},{6,72},{-12,72}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(lungsPathwaysIn.q_out,alveoli. q_in[1]) annotation (Line(
-          points={{-60,66},{-60,43.9},{-25.35,43.9}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(diffusion_O2.gas_port,alveoli. substances[Air.S.O2]) annotation (Line(
-            points={{-32,24},{-32,34},{-26,34}},                         color={158,
-              66,200}));
-      connect(diffusion_CO2.gas_port,alveoli. substances[Air.S.CO2]) annotation (
-          Line(points={{-14,22},{-14,28},{-26,28},{-26,34}},
-                                                      color={158,66,200}));
-      connect(air_out,lungsPathwaysOut. q_in) annotation (Line(
-          points={{60,100},{60,84}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(lungsPathwaysOut.q_out,alveoli. q_in[2]) annotation (Line(
-          points={{60,64},{60,43.9},{-26.65,43.9}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(lungsPathwaysIn.q_in,air_in)  annotation (Line(
-          points={{-60,86},{-60,104}},
+          points={{-41.9,30},{-42,30},{-42,34},{-60,34}},
           color={127,0,0},
           thickness=0.5));
       connect(pleuralSpace.externalPressure,respiratotyMusclePressure)  annotation (
-         Line(points={{0,77},{0,104}},                 color={0,0,127}));
-      connect(blood_in, pulmArty.q_in[2]) annotation (Line(
-          points={{-100,-36},{-98,-36},{-98,-37.35},{-80.1,-37.35}},
+         Line(points={{-49,39},{-49,46},{-50,46},{-50,86}},
+                                                       color={0,0,127}));
+      connect(blood_in, pulmArty.q_in[1]) annotation (Line(
+          points={{-100,-16},{-98,-16},{-98,-18},{-80.1,-18}},
           color={127,0,0},
           thickness=0.5));
       connect(pulmVeinsConductance.q_out, blod_out) annotation (Line(
-          points={{90,-36},{100,-36}},
+          points={{90,-16},{100,-16}},
           color={127,0,0},
           thickness=0.5));
       connect(pleauralPressure.pressure, pulmVeins.externalPressure) annotation (
-          Line(points={{-22,74},{34,74},{34,26},{60,26},{60,-27}}, color={0,0,127}));
-      connect(alveolar.b_port, pulmCapysConductance.q_in) annotation (Line(
-          points={{16.2,-26.2},{16,-26.2},{16,-36},{20,-36}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(pulmCapys.substances[Blood.S.O2], diffusion_O2.liquid_port)
-        annotation (Line(points={{-28,-38},{-34,-38},{-34,4},{-32,4}}, color={158,66,
-              200}));
-      connect(pulmCapys.substances[Blood.S.CO2], diffusion_CO2.liquid_port)
-        annotation (Line(points={{-28,-38},{-32,-38},{-32,-20},{-14,-20},{-14,2}},
-            color={158,66,200}));
-      connect(pleauralPressure.pressure, pulmCapys.externalPressure) annotation (
-          Line(points={{-22,74},{-46,74},{-46,-29},{-12,-29}}, color={0,0,127}));
-      connect(alveolar.H_plus, pulmCapys.substances[Blood.S.H]) annotation (Line(
-            points={{0,-22},{-30,-22},{-30,-38},{-28,-38}}, color={158,66,200}));
-      connect(alveolar.CO2, pulmCapys.substances[Blood.S.CO2]) annotation (Line(
-            points={{0,-16},{-8,-16},{-8,-22},{-30,-22},{-30,-38},{-28,-38}}, color=
-             {158,66,200}));
-      connect(alveolar.O2, pulmCapys.substances[Blood.S.O2]) annotation (Line(
-            points={{0,-10},{-8,-10},{-8,-22},{-30,-22},{-30,-38},{-28,-38}}, color=
-             {158,66,200}));
-      connect(pulmCapys.q_in[2], alveolar.a_port) annotation (Line(
-          points={{-18.1,-37.35},{4,-37.35},{4,-26.2}},
-          color={127,0,0},
-          thickness=0.5));
+          Line(points={{-70,36},{-74,36},{-74,6},{47,6},{47,-7}},  color={0,0,127}));
       connect(pleauralPressure.pressure, pulmArty.externalPressure) annotation (
-          Line(points={{-22,74},{-46,74},{-46,-22},{-74,-22},{-74,-29}}, color={0,0,
+          Line(points={{-70,36},{-74,36},{-74,-4},{-73,-4},{-73,-9}},    color={0,0,
               127}));
       connect(sum2.y, busConnector.PulmonaryCirculation_OxygenatedBloodVolume)
         annotation (Line(points={{-17.6,-80},{78,-80},{78,-58},{94,-58}}, color={0,0,
@@ -2464,6 +2455,11 @@ vector of pressure-flow connectors.
           index=1,
           extent={{6,3},{6,3}},
           horizontalAlignment=TextAlignment.Left));
+
+      connect(lungsVolume.y, pleuralSpace.internalSpace) annotation (Line(points={{-40.4,
+              -2},{-62,-2},{-62,30},{-51,30}}, color={0,0,127}));
+      connect(respiratoryUnit.volume, lungsVolume.u) annotation (Line(points={{4.8,-6.6},
+              {4.8,-2},{-31.2,-2}}, color={0,0,127}));
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={
@@ -2511,6 +2507,220 @@ vector of pressure-flow connectors.
     end Lungs;
 
     package Components
+      model RespiratoryUnit "Lungs respiratory unit"
+        extends Physiolibrary.Icons.PulmonaryCirculation;
+
+        parameter Integer nPorts=0   "Number of airways ports" annotation (
+          Evaluate = true,
+          Dialog(connectorSizing = true, group = "Ports"));
+
+        replaceable package Air = Media.Air
+            constrainedby Media.Interfaces.PartialMedium  "Air medium model"
+               annotation ( choicesAllMatching = true, Dialog( group = "Ventilation"));
+        replaceable package Blood = Media.BloodBySiggaardAndersen
+            constrainedby Media.Interfaces.PartialMedium "Blood medium model"
+               annotation ( choicesAllMatching = true, Dialog( group = "Perfusion"));
+
+
+
+
+        parameter Types.Volume AirVolume_initial=0.00302   "Initial volume of alveolar space" annotation (Dialog( group = "Ventilation"));
+        parameter Real Air_initial[Air.nS] = {100,40,47,760 - 187} "Initial composition of air inside alveoli"
+           annotation (Dialog( group = "Ventilation"));
+        parameter Types.Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity" annotation (Dialog( group = "Ventilation"));
+        parameter Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Pulmonary compliance" annotation (Dialog( group = "Ventilation"));
+
+
+        parameter Types.Volume ResidualVolume=0.0013   "Residual volume"
+          annotation (Dialog( group = "Ventilation"));
+        parameter Types.Volume TotalCapacity=0.00623   "Total Capacity" annotation (Dialog( group = "Ventilation"));
+        parameter Types.Volume BaseTidalVolume=0.0005   "Base Tidal Volume" annotation (Dialog( group = "Ventilation"));
+
+        parameter Types.HydraulicResistance TotalResistance=147099.75   "Total airways resistance" annotation (Dialog( group = "Ventilation"));
+
+
+        parameter Types.Volume CapillariesVolume_initial=0.000200141 "Initial volume of blood in capillaries"
+        annotation (Dialog( group = "Perfusion"));
+        parameter Real Blood_initial[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of blood"
+           annotation (Dialog( group = "Perfusion"));
+        parameter Types.Volume CapillariesZeroPressureVolume=0.00014 "Maximal volume of blood capillaries zero at zero blood pressure inside"
+        annotation (Dialog( group = "Perfusion"));
+        parameter Types.HydraulicCompliance CapillariesCompliance=3.45028324889e-08   "Blood capillaries compliance"
+         annotation (Dialog( group = "Perfusion"));
+
+
+        parameter Types.HydraulicConductance CapillariesConductance=2.250184727537e-07   "Blood capillaries conductance"
+        annotation (Dialog( group = "Perfusion"));
+        parameter Types.HydraulicConductance ArteriesConductance=1.6876385456527e-07   "Blood arteries conductance"
+         annotation (Dialog( group = "Perfusion"));
+
+
+        parameter Real Diffusion(unit="mol2.s-1.J-1")=1e-4         "Gasses diffussion" annotation (Dialog( group = "Diffusion"));
+
+
+       Fluid.Components.ElasticVessel pulmCapysVentilated(
+          redeclare package Medium = Blood,
+          use_concentration_start=true,
+          concentration_start=Blood_initial,
+          useSubstances=true,
+          stateName="PulmCapys.Vol",
+          Compliance=CapillariesCompliance,
+          ZeroPressureVolume=CapillariesZeroPressureVolume,
+          useComplianceInput=false,
+          useExternalPressureInput=true,
+          useV0Input=false,
+          volume_start=CapillariesVolume_initial,
+          nPorts=2) "pulmonary capilaries"
+          annotation (Placement(transformation(extent={{0,-48},{20,-28}})));
+
+
+        Fluid.Components.Conductor pulmArty(redeclare package Medium = Blood,
+            Conductance=ArteriesConductance)
+          annotation (Placement(transformation(extent={{-73,-55},{-51,-33}})));
+        Fluid.Components.Conductor pulmCapys(redeclare package Medium = Blood,
+            Conductance=CapillariesConductance)
+          annotation (Placement(transformation(extent={{64,-51},{86,-29}})));
+        Fluid.Components.ElasticVessel alveoli(
+          redeclare package Medium = Air,
+          volume_start=AirVolume_initial,
+          use_concentration_start=true,
+          concentration_start=Air_initial,
+          useThermalPort=false,
+          ZeroPressureVolume=FunctionalResidualCapacity,
+          ResidualVolume=ResidualVolume,
+          Compliance=TotalCompliance,
+          useExternalPressureInput=true,
+          useSigmoidCompliance=true,
+          VitalCapacity=TotalCapacity - ResidualVolume,
+          BaseTidalVolume=BaseTidalVolume,
+          useSubstances=true,
+          nPorts=nPorts)
+                    "Alveolar space" annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={0,24})));
+        Chemical.Components.GasSolubility O2_diffusion(KC=Diffusion)
+          annotation (Placement(transformation(extent={{-54,-16},{-34,4}})));
+        Chemical.Components.GasSolubility CO2_diffusion(KC=Diffusion)
+          annotation (Placement(transformation(extent={{-22,-16},{-2,4}})));
+        Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium =
+              Blood)
+          annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
+
+
+      protected
+        parameter Types.Fraction Hct = 0.44 "Hematocrit";
+        parameter Types.Concentration  Arterial_O2 = 8.16865 "Initial Total oxygenin arterial blood",
+                                       Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood",
+                                       Venous_O2 = 5.48 "Initial Total oxygen in venous blood",
+                                       Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood",
+                                       Blood_CO = 1.512e-6 "Total carbon monoxide",
+                                       Blood_Hb = 8.4 "Hemoglobin",
+                                       Blood_MetHb = 0.042 "Methemoglobin",
+                                       Blood_HbF = 0.042 "Foetal hemoglobin",
+                                       Blood_Alb = 0.66 "Albumin",
+                                       Blood_PO4 = 0.153 "Inorganic phosphates",
+                                       Blood_DPG = 5.4 "Diphosphoglycerate";
+        parameter Real Blood_Glb = 28 "Globulins",
+                       Blood_SID = NSID - Blood_BEox "Strong ion difference";
+        parameter Real Blood_BEox = 0 "Base excess of oxygenated blood from normal arterial conditions";
+        parameter Real NSID = (1 - Hct) * (zAlbNAP * Blood_Alb + zGlbNAP * Blood_Glb + zPO4NAP * Blood_PO4 + ztCO2NAP) + Hct * (zHbNAE * (Blood_Hb / Hct) + ztCO2NAE)
+                             "Total charge number on buffers at normal arterial conditions per total volume";
+        constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions",
+                      zGlbNAP = 0.0892857 "charge on globilins at normal arterial plasma conditions",
+                      zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions",
+                      ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions",
+                      ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions",
+                      zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions";
+
+      public
+        Types.RealIO.PressureInput thoraxPressure(start=alveoli.ExternalPressure)
+          annotation (Placement(transformation(
+              rotation=270,
+              extent={{-9,-9},{9,9}},
+              origin={-41,77}), iconTransformation(
+              extent={{-9,-9},{9,9}},
+              rotation=270,
+              origin={-41,77})));
+        Types.RealIO.VolumeOutput volume annotation (Placement(transformation(
+              rotation=90,
+              extent={{-10,-10},{10,10}},
+              origin={48,74}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={48,74})));
+        Fluid.Interfaces.FluidPorts_a airways[nPorts](redeclare package Medium = Air)
+          annotation (Placement(transformation(rotation=0, extent={{-6,82},{6,116}}),
+              iconTransformation(extent={{-6,82},{6,116}})));
+        Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium = Blood)
+          annotation (Placement(transformation(rotation=0, extent={{-110,-54},{-90,-34}}),
+              iconTransformation(extent={{-110,-54},{-90,-34}})));
+        Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium = Blood)
+          annotation (Placement(transformation(rotation=0, extent={{92,-50},{112,-30}}),
+              iconTransformation(extent={{92,-50},{112,-30}})));
+        Fluid.Components.Resistor airway[nPorts](redeclare package Medium = Air,
+            each Resistance=TotalResistance) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={0,70})));
+      equation
+        if nPorts>0 then
+          connect(airways, airway.q_in) annotation (Line(
+              points={{0,99},{0,89.5},{1.77636e-15,89.5},{1.77636e-15,80}},
+              color={127,0,0},
+              thickness=0.5));
+          connect(airway.q_out, alveoli.q_in) annotation (Line(
+              points={{-1.77636e-15,60},{-1.77636e-15,40},{0,40},{0,23.9}},
+              color={127,0,0},
+              thickness=0.5));
+        end if;
+        connect(pulmArty.q_out, pulmCapysVentilated.q_in[1]) annotation (Line(
+            points={{-51,-44},{10,-44},{10,-38.65},{9.9,-38.65}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(O2_diffusion.gas_port,alveoli. substances[Air.S.O2]) annotation (Line(
+              points={{-44,4},{-44,12},{-12,12},{-12,14},{-8.88178e-16,14}},
+                                                                           color={158,
+                66,200}));
+        connect(CO2_diffusion.gas_port,alveoli. substances[Air.S.CO2]) annotation (
+            Line(points={{-12,4},{-12,14},{-8.88178e-16,14}},
+                                                        color={158,66,200}));
+        connect(alveolar.b_port, pulmCapys.q_in) annotation (Line(
+            points={{48.2,-26.2},{48.2,-40},{64,-40}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pulmCapysVentilated.substances[Blood.S.O2],O2_diffusion. liquid_port)
+          annotation (Line(points={{0,-38},{-44,-38},{-44,-16}},         color={
+                158,66,200}));
+        connect(pulmCapysVentilated.substances[Blood.S.CO2],CO2_diffusion. liquid_port)
+          annotation (Line(points={{0,-38},{-12,-38},{-12,-16}},
+              color={158,66,200}));
+        connect(alveolar.H_plus,pulmCapysVentilated. substances[Blood.S.H])
+          annotation (Line(points={{32,-22},{0,-22},{0,-38}},  color={158,66,200}));
+        connect(alveolar.CO2,pulmCapysVentilated. substances[Blood.S.CO2])
+          annotation (Line(points={{32,-16},{32,-22},{0,-22},{0,-38}},
+                                                                     color={158,
+                66,200}));
+        connect(alveolar.O2,pulmCapysVentilated. substances[Blood.S.O2])
+          annotation (Line(points={{32,-10},{32,-22},{0,-22},{0,-38}},color={158,
+                66,200}));
+        connect(pulmCapysVentilated.q_in[2],alveolar. a_port) annotation (Line(
+            points={{9.9,-37.35},{36,-37.35},{36,-26.2}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(thoraxPressure, alveoli.externalPressure)
+          annotation (Line(points={{-41,77},{-41,31},{-9,31}}, color={0,0,127}));
+        connect(volume, alveoli.fluidVolume)
+          annotation (Line(points={{48,74},{48,40},{8,40},{8,34}}, color={0,0,127}));
+        connect(blood_in, pulmArty.q_in)
+          annotation (Line(points={{-100,-44},{-73,-44}}, color={127,0,0}));
+        connect(blood_out, pulmCapys.q_out)
+          annotation (Line(points={{102,-40},{86,-40}}, color={127,0,0}));
+        connect(thoraxPressure, pulmCapysVentilated.externalPressure) annotation (
+            Line(points={{-41,77},{-41,50},{18,50},{18,-29},{17,-29}}, color={0,0,127}));
+
+      end RespiratoryUnit;
+
       model LungBloodFlow
           extends Physiolibrary.Icons.LungShunt;
         Physiolibrary.Types.RealIO.VolumeFlowRateInput   CardiacOutput
@@ -2709,128 +2919,6 @@ vector of pressure-flow connectors.
                 textString="%name")}));
       end Angiotensine2;
 
-      model AlveolarUnit
-        extends Physiolibrary.Icons.PulmonaryCirculation;
-        outer Modelica.Fluid.System system "System wide properties";
-        Physiolibrary.Fluid.Components.Resistor pulmonaryResistanceA(redeclare
-            package Medium =                                                                    Blood, Resistance = 1 / cCirculation * (7 / 8)) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-18, -70})));
-        Physiolibrary.Fluid.Components.Resistor pulmonaryResistanceB(redeclare
-            package Medium =                                                                    Blood, Resistance = 1 / cCirculation * (1 / 8)) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {14, -70})));
-        Physiolibrary.Fluid.Components.ElasticVessel pulmonaryCapillaries(redeclare
-            package Medium =                                                                         Blood, use_concentration_start = true, concentration_start = BloodComposition, useSubstances = true, volume_start(displayUnit = "l") = bloodVolume_start, Compliance(displayUnit = "ml/mmHg") = 3.0002463033826e-08, ZeroPressureVolume(displayUnit = "l") = bloodZeroPressureVolume, nPorts = 2) annotation (
-          Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-2, -36})));
-        Chemical.Components.GasSolubility O2(KC = 1e-4) annotation (
-          Placement(transformation(extent = {{-28, -16}, {-8, 4}})));
-        Chemical.Components.GasSolubility CO2(KC = 1e-4) annotation (
-          Placement(transformation(extent = {{2, -14}, {22, 6}})));
-        Physiolibrary.Fluid.Components.Conductor conductorA(redeclare package
-            Medium =                                                                   Air, Conductance(displayUnit = "l/(cmH2O.s)") = cVentilation) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-70, 28})));
-        Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasureInAlveoli(redeclare
-            package Medium =                                                                    Air) annotation (
-          Placement(transformation(extent = {{-46, 18}, {-26, 38}})));
-        Physiolibrary.Fluid.Components.ElasticVessel alveoli(redeclare package
-            Medium =                                                                    Air, use_concentration_start = true, concentration_start = {0.15, 0.05, 0, 0.8}, useSubstances = true, onElectricGround = false, volume_start(displayUnit = "l") = airVolume_start, Compliance(displayUnit = "ml/mmHg") = 6.0004926067653e-07, ZeroPressureVolume(displayUnit = "l") = airZeroPressureVolume,
-        ExternalPressure(displayUnit="mmHg") = -533,                                                                                                                                                                                                        nPorts = 2) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-6, 28})));
-        Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasureOutAlveoli(redeclare
-            package Medium =                                                                     Air) annotation (
-          Placement(transformation(extent = {{20, 18}, {40, 38}})));
-        replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen
-                                                                                constrainedby Physiolibrary.Media.Interfaces.PartialMedium annotation ( choicesAllMatching = true);
-        replaceable package Air = Physiolibrary.Media.Air annotation (
-          choicesAllMatching = True);
-        parameter Physiolibrary.Types.HydraulicConductance cVentilation = 1.250102626409427e-07 * (1 / 1.5);
-        parameter Physiolibrary.Types.HydraulicConductance cCirculation = 1.250102626409427e-07 * (1 / 3);
-        parameter Physiolibrary.Types.Volume airVolume_start = 0.0023;
-        parameter Physiolibrary.Types.Volume airZeroPressureVolume = 0.0013;
-        parameter Physiolibrary.Types.Volume bloodVolume_start = 0.00015;
-        parameter Physiolibrary.Types.Volume bloodZeroPressureVolume = 0.0001;
-        parameter Real BloodComposition[Blood.nS - 2] = {0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in ventilated lungs capilaries";
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-            Medium =                                                               Air) annotation (
-          Placement(transformation(rotation = 0, extent = {{-30, 40}, {-10, 60}}), iconTransformation(extent = {{-30, 40}, {-10, 60}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
-            Medium =                                                                Air) annotation (
-          Placement(transformation(rotation = 0, extent = {{10, 40}, {30, 60}}), iconTransformation(extent = {{10, 40}, {30, 60}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_a q_in1(redeclare package
-            Medium =                                                                Blood) annotation (
-          Placement(transformation(rotation = 0, extent = {{-114, -80}, {-94, -60}}), iconTransformation(extent = {{-110, -10}, {-90, 10}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b q_out1(redeclare package
-            Medium =                                                                 Blood) annotation (
-          Placement(transformation(rotation = 0, extent = {{90, -80}, {110, -60}}), iconTransformation(extent = {{90, -10}, {110, 10}})));
-        Physiolibrary.Fluid.Components.Conductor conductorB(redeclare package
-            Medium =                                                                   Air, Conductance(displayUnit = "l/(cmH2O.s)") = cVentilation) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {60, 28})));
-        Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium =
-              Blood)
-          annotation (Placement(transformation(extent={{36,-42},{56,-22}})));
-        Types.RealIO.PressureOutput pressure annotation (
-          Placement(transformation(extent = {{100, -52}, {120, -32}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {80, -50})));
-        Types.RealIO.pHOutput pH annotation (
-          Placement(transformation(extent = {{100, -30}, {120, -10}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {40, -50})));
-        Types.RealIO.PressureOutput pO2 annotation (
-          Placement(transformation(extent = {{100, 2}, {120, 22}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-40, -50})));
-        Types.RealIO.PressureOutput pCO2 annotation (
-          Placement(transformation(extent = {{100, -16}, {120, 4}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {0, -50})));
-        Types.RealIO.FractionOutput sO2 "Oxygen saturation (amount of oxygen per amount of hemoglobin units)" annotation (
-          Placement(transformation(extent = {{98, 22}, {118, 42}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-80, -50})));
-      equation
-        connect(pulmonaryResistanceA.q_out, pulmonaryCapillaries.q_in[1]) annotation (
-          Line(points={{-8,-70},{-4,-70},{-4,-36.65},{-1.9,-36.65}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(q_in, conductorA.q_in) annotation (
-          Line(points = {{-20, 50}, {-86, 50}, {-86, 28}, {-80, 28}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(conductorA.q_out, flowMeasureInAlveoli.q_in) annotation (
-          Line(points = {{-60, 28}, {-46, 28}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(q_in1, pulmonaryResistanceA.q_in) annotation (
-          Line(points = {{-104, -70}, {-28, -70}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(pulmonaryResistanceB.q_out, q_out1) annotation (
-          Line(points = {{24, -70}, {100, -70}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(flowMeasureOutAlveoli.q_out, conductorB.q_in) annotation (
-          Line(points = {{40, 28}, {50, 28}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(conductorB.q_out, q_out) annotation (
-          Line(points = {{70, 28}, {74, 28}, {74, 50}, {20, 50}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(alveolar.a_port, pulmonaryCapillaries.q_in[2]) annotation (
-          Line(points={{40,-42.2},{40,-52},{-1.9,-52},{-1.9,-35.35}},         color = {127, 0, 0}, thickness = 0.5));
-        connect(alveolar.pressure, pressure) annotation (
-          Line(points = {{57, -40}, {84, -40}, {84, -42}, {110, -42}}, color = {0, 0, 127}));
-        connect(alveolar.pH, pH) annotation (
-          Line(points = {{57, -36}, {96, -36}, {96, -20}, {110, -20}}, color = {0, 0, 127}));
-        connect(alveolar.pCO2, pCO2) annotation (
-          Line(points = {{57, -32}, {94, -32}, {94, -6}, {110, -6}}, color = {0, 0, 127}));
-        connect(alveolar.pO2, pO2) annotation (
-          Line(points = {{57, -28}, {90, -28}, {90, 12}, {110, 12}}, color = {0, 0, 127}));
-        connect(pressure, pressure) annotation (
-          Line(points = {{110, -42}, {110, -42}}, color = {0, 0, 127}));
-        connect(flowMeasureInAlveoli.q_out, alveoli.q_in[1]) annotation (
-          Line(points={{-26,28},{-5.35,27.9}},     color = {127, 0, 0}, thickness = 0.5));
-        connect(flowMeasureOutAlveoli.q_in, alveoli.q_in[2]) annotation (
-          Line(points={{20,28},{-6.65,27.9}},     color = {127, 0, 0}, thickness = 0.5));
-        connect(alveolar.b_port, pulmonaryResistanceB.q_in) annotation (
-          Line(points = {{52.2, -42.2}, {52.2, -56}, {0, -56}, {0, -70}, {4, -70}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(alveolar.sO2, sO2) annotation (
-          Line(points = {{57, -24}, {88, -24}, {88, 32}, {108, 32}}, color = {0, 0, 127}));
-        connect(O2.liquid_port, pulmonaryCapillaries.substances[Blood.S.O2]) annotation (
-          Line(points = {{-18, -16}, {-18, -26}, {8, -26}, {8, -36}}, color = {158, 66, 200}));
-        connect(O2.gas_port, alveoli.substances[Air.S.O2]) annotation (
-          Line(points = {{-18, 4}, {-18, 12}, {-6, 12}, {-6, 18}}, color = {158, 66, 200}));
-        connect(CO2.gas_port, alveoli.substances[Air.S.CO2]) annotation (
-          Line(points = {{12, 6}, {12, 12}, {-6, 12}, {-6, 18}}, color = {158, 66, 200}));
-        connect(CO2.liquid_port, pulmonaryCapillaries.substances[Blood.S.CO2]) annotation (
-          Line(points = {{12, -14}, {12, -26}, {8, -26}, {8, -36}}, color = {158, 66, 200}));
-        connect(alveolar.O2, pulmonaryCapillaries.substances[Blood.S.O2]) annotation (
-          Line(points = {{36, -26}, {8, -26}, {8, -36}}, color = {158, 66, 200}));
-        connect(alveolar.CO2, pulmonaryCapillaries.substances[Blood.S.CO2]) annotation (
-          Line(points = {{36, -32}, {30, -32}, {30, -26}, {8, -26}, {8, -36}}, color = {158, 66, 200}));
-        connect(alveolar.H_plus, pulmonaryCapillaries.substances[Blood.S.H]) annotation (
-          Line(points = {{36, -38}, {30, -38}, {30, -26}, {8, -26}, {8, -36}}, color = {158, 66, 200}));
-        annotation (
-          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})),
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
-      end AlveolarUnit;
-
       model PulmonaryCirculation
 
          extends Physiolibrary.Icons.PulmonaryCirculation;
@@ -2913,7 +3001,8 @@ vector of pressure-flow connectors.
                {{-108,42},{-92,58}})));
         Components.LungBloodFlow lungBloodFlow
           annotation (Placement(transformation(extent={{-26,74},{-6,94}})));
-      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package
+      Fluid.Sensors.VolumeFlowMeasure         volumeFlowMeasure(
+                                                          redeclare package
             Medium = Blood)
         annotation (Placement(transformation(extent={{-42,-10},{-22,10}})));
         Modelica.Blocks.Math.Sum sum1(nin=3)
@@ -2923,51 +3012,46 @@ vector of pressure-flow connectors.
       Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare
             package Medium = Blood)
         annotation (Placement(transformation(extent={{-8,-26},{12,-6}})));
-      Physiolibrary.Types.Constants.DensityConst density(k=1000)
-          "TODO @P3 - correct volume-mass conversion"
-        annotation (Placement(transformation(extent={{-84,56},{-76,64}})));
-      Modelica.Blocks.Math.Division toVolume
-        annotation (Placement(transformation(extent={{-66,56},{-46,76}})));
         Modelica.Blocks.Math.Gain PulmonaryCirculation_DeoxygenatedBloodVolume(k=1)
           annotation (Placement(transformation(extent={{-6,-68},{14,-48}})));
       equation
         connect(pulmArty.externalPressure,busConnector. Thorax_AvePressure) annotation (Line(
-            points={{-70,9},{-70,14},{28,14},{28,76}},
+            points={{-69,9},{-69,14},{28,14},{28,76}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(pulmCapys.externalPressure,busConnector. Thorax_AvePressure) annotation (Line(
-            points={{-6,9},{-6,14},{28,14},{28,76}},
+            points={{-5,9},{-5,14},{28,14},{28,76}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(pulmVeins.externalPressure,busConnector. Thorax_AvePressure) annotation (Line(
-            points={{54,9},{54,14},{28,14},{28,76}},
+            points={{55,9},{55,14},{28,14},{28,76}},
             color={0,0,127},
             smooth=Smooth.None));
       connect(pulmArty.zeroPressureVolume, ArtysV0.y) annotation (Line(
-          points={{-78,9},{-78,20},{-85,20}},
+          points={{-83,9},{-83,20},{-85,20}},
           color={0,0,127},
           smooth=Smooth.None));
         connect(pulmArty.compliance, ArtysCompliance.y)
                                                 annotation (Line(
-            points={{-74,9},{-74,20},{-63,20}},
+            points={{-76,9},{-76,20},{-63,20}},
             color={0,0,127},
             smooth=Smooth.None));
       connect(CapysV0.y, pulmCapys.zeroPressureVolume) annotation (Line(
-          points={{-19,20},{-14,20},{-14,9}},
+          points={{-19,20},{-19,20},{-19,9}},
           color={0,0,127},
           smooth=Smooth.None));
         connect(CapysCompliance.y,pulmCapys.compliance)
                                                  annotation (Line(
-            points={{-5,20},{-10,20},{-10,9}},
+            points={{-5,20},{-12,20},{-12,9}},
             color={0,0,127},
             smooth=Smooth.None));
       connect(pulmVeins.zeroPressureVolume, VeinsV0.y) annotation (Line(
-          points={{46,9},{46,20},{39,20}},
+          points={{41,9},{41,20},{39,20}},
           color={0,0,127},
           smooth=Smooth.None));
         connect(VeinsCompliance.y,pulmVeins.compliance)
                                                  annotation (Line(
-            points={{57,18},{50,18},{50,9}},
+            points={{57,18},{48,18},{48,9}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(lungBloodFlow.AlveolarVentilated, busConnector.AlveolarVentilated_BloodFlow)
@@ -2979,7 +3063,8 @@ vector of pressure-flow connectors.
             index=1,
             extent={{6,3},{6,3}}));
 
-        connect(pulmArtyConductance.q_out, flowMeasure.q_in) annotation (Line(
+        connect(pulmArtyConductance.q_out, volumeFlowMeasure.q_in) annotation (
+            Line(
             points={{-45,0},{-42,0}},
             color={0,0,0},
             thickness=1,
@@ -3036,10 +3121,10 @@ vector of pressure-flow connectors.
           points={{-67,0},{-68,0},{-68,0.65},{-76.1,0.65}},
           color={127,0,0},
           thickness=0.5));
-      connect(flowMeasure.q_out, pulmCapys.q_in[1]) annotation (Line(
-          points={{-22,0},{-18,0},{-18,-0.866667},{-12.1,-0.866667}},
-          color={127,0,0},
-          thickness=0.5));
+        connect(volumeFlowMeasure.q_out, pulmCapys.q_in[1]) annotation (Line(
+            points={{-22,0},{-18,0},{-18,-0.866667},{-12.1,-0.866667}},
+            color={127,0,0},
+            thickness=0.5));
       connect(pulmCapys.q_in[2], pulmCapysConductance.q_in) annotation (Line(
           points={{-12.1,-2.22045e-16},{-6,-2.22045e-16},{-6,0},{4,0}},
           color={127,0,0},
@@ -3052,14 +3137,8 @@ vector of pressure-flow connectors.
             points={{62,0},{54,0},{54,-0.65},{47.9,-0.65}},
             color={127,0,0},
             thickness=0.5));
-      connect(toVolume.y, lungBloodFlow.CardiacOutput) annotation (Line(points=
-              {{-45,66},{-32,66},{-32,90},{-26,90}}, color={0,0,127}));
         connect(PulmonaryCirculation_DeoxygenatedBloodVolume.y, busConnector.PulmonaryCirculation_DeoxygenatedBloodVolume)
           annotation (Line(points={{15,-58},{94,-58},{94,76},{28,76}}, color={0,0,127}));
-      connect(density.y, toVolume.u2)
-        annotation (Line(points={{-75,60},{-68,60}}, color={0,0,127}));
-      connect(flowMeasure.massFlow, toVolume.u1) annotation (Line(points={{-32,
-              12},{-32,44},{-94,44},{-94,72},{-68,72}}, color={0,0,127}));
       connect(pressureMeasure.q_in, pulmCapys.q_in[3]) annotation (Line(
           points={{-2,-22},{-12,-22},{-12,0.866667},{-12.1,0.866667}},
           color={127,0,0},
@@ -3072,6 +3151,9 @@ vector of pressure-flow connectors.
             points={{-100,0},{-100,0}},
             color={127,0,0},
             thickness=0.5));
+        connect(volumeFlowMeasure.volumeFlow, lungBloodFlow.CardiacOutput)
+          annotation (Line(points={{-32,12},{-46,12},{-46,90},{-26,90}}, color=
+                {0,0,127}));
         annotation ( Icon(coordinateSystem(
                 preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
               graphics={
@@ -3149,12 +3231,12 @@ vector of pressure-flow connectors.
         Fluid.Sensors.FlowMeasure               flowMeasure(redeclare package
             Medium =
               Air)                                                                          annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-52,58})));
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={2,46})));
         Types.Constants.FrequencyConst               frequency(k=RespirationRate)   annotation (
-          Placement(transformation(extent={{-88,-6},{-80,2}})));
+          Placement(transformation(extent={{14,22},{22,30}})));
         Blocks.Source.PeriodicCurveSource               respiratoryMusclePressureCycle(data=
               RespiratoryMusclePressureCycle)                                                                                 "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
-          Placement(transformation(extent={{-68,-12},{-48,8}})));
+          Placement(transformation(extent={{34,16},{54,36}})));
         inner Modelica.Fluid.System system(T_ambient=310.15)            "Human body system setting" annotation (
           Placement(transformation(extent={{74,-32},{94,-12}})));
         Fluid.Sources.PressureSource
@@ -3167,14 +3249,8 @@ vector of pressure-flow connectors.
           redeclare package Blood = Blood,
           redeclare package Air = Air,
           redeclare package PleuralFluid = PleuralFluid,
-          air_out(p(start=101945.76432635664, displayUnit="bar")),
-          pulmCapys(chemicalSolution(bloodGases(
-                cHCO3(start=27.812663416909643),
-                pCO(start=2.866070587636904E-06),
-                pCO2(start=7599.528832976393),
-                pO2(start=2251.9191919431005),
-                sCO(start=1.8090097996867478E-07),
-                sO2CO(start=0.6520043095412261)))))
+          NRU=1,
+          nPorts=1)
           annotation (Placement(transformation(extent={{-8,-8},{12,12}})));
         Fluid.Sources.VolumeInflowSource pulmonaryAtrysInput(
           SolutionFlow(displayUnit="l/min") = 9.1666666666667e-05,
@@ -3185,16 +3261,12 @@ vector of pressure-flow connectors.
           annotation (Placement(transformation(extent={{-78,-92},{-58,-72}})));
       equation
         connect(environment.y,flowMeasure. q_in) annotation (
-          Line(points={{-74,80},{-52,80},{-52,68}},           color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-74,80},{2,80},{2,56}},               color = {127, 0, 0}, thickness = 0.5));
         connect(frequency.y,respiratoryMusclePressureCycle. frequence) annotation (
-          Line(points={{-79,-2},{-68,-2}},      color = {0, 0, 127}));
-        connect(flowMeasure.q_out, lungs.air_in) annotation (Line(
-            points={{-52,48},{-52,18},{-4,18},{-4,12}},
-            color={127,0,0},
-            thickness=0.5));
+          Line(points={{23,26},{34,26}},        color = {0, 0, 127}));
         connect(respiratoryMusclePressureCycle.val, lungs.respiratotyMusclePressure)
-          annotation (Line(points={{-48,-2},{-26,-2},{-26,6},{10,6}}, color={0,
-                0,127}));
+          annotation (Line(points={{54,26},{60,26},{60,6},{10,6}}, color={0,0,
+                127}));
         connect(pulmonaryVeinsOutput.y, lungs.blod_out) annotation (Line(
             points={{46,-82},{18,-82},{18,-2},{12,-2}},
             color={127,0,0},
@@ -3203,11 +3275,95 @@ vector of pressure-flow connectors.
             points={{-58,-82},{-14,-82},{-14,-2},{-8,-2}},
             color={127,0,0},
             thickness=0.5));
+        connect(flowMeasure.q_out, lungs.airways[1]) annotation (Line(
+            points={{2,36},{2,23.95},{2,23.95},{2,11.9}},
+            color={127,0,0},
+            thickness=0.5));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)),
           experiment(StopTime=60, __Dymola_Algorithm="Dassl"));
       end LungsTest;
+
+      model MeanLungsTest
+
+        replaceable package Air = Media.Air;
+        //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
+        replaceable package PleuralFluid = Physiolibrary.Media.Water;
+        replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen
+                                                                                constrainedby
+          Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
+
+        parameter Types.Fraction Hct = 0.44 "Hematocrit";
+        parameter Types.Concentration Arterial_O2 = 8.16865 "Initial Total oxygenin arterial blood", Venous_O2 = 5.48 "Initial Total oxygen in venous blood", Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood", Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood", Blood_CO = 1.512e-6 "Total carbon monoxide", Blood_Hb = 8.4 "Hemoglobin", Blood_MetHb = 0.042 "Methemoglobin", Blood_HbF = 0.042 "Foetal hemoglobin", Blood_Alb = 0.66 "Albumin", Blood_PO4 = 0.153 "Inorganic phosphates", Blood_DPG = 5.4 "Diphosphoglycerate";
+        parameter Real Blood_Glb = 28 "Globulins", Blood_BEox = 0 "Base excess of oxygenated blood from normal arterial conditions";
+        constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions", zGlbNAP = 0.0892857 "charge on globilins at normal arterial plasma conditions", zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions", ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions", ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions", zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions";
+        parameter Real NSID = (1 - Hct) * (zAlbNAP * Blood_Alb + zGlbNAP * Blood_Glb + zPO4NAP * Blood_PO4 + ztCO2NAP) + Hct * (zHbNAE * (Blood_Hb / Hct) + ztCO2NAE) "Total charge number on buffers at normal arterial conditions per total volume";
+        parameter Real Blood_SID = NSID - Blood_BEox "Strong ion difference";
+        parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood";
+        parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood";
+
+        parameter Types.Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
+        parameter Types.Pressure Pmin(displayUnit="Pa")=-1000
+                                       "Negative pressure gradient caused by respiratory muscles";
+        parameter Types.Pressure Pmax(displayUnit="Pa")=0     "Positive presure gradient caused by respiratory muscles";
+        parameter Real RespiratoryMusclePressureCycle[:, 3] = {{0, Pmax, 0}, {3 / 8, Pmin, 0}, {1, Pmax, 0}} "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
+
+        Fluid.Sources.PressureSource               environment(redeclare
+            package Medium =
+                     Air, y(m_flow(start=0.0050764996707716465)))                                "External environment" annotation (
+          Placement(transformation(extent={{-94,70},{-74,90}})));
+        inner Modelica.Fluid.System system(T_ambient=310.15)            "Human body system setting" annotation (
+          Placement(transformation(extent={{74,-32},{94,-12}})));
+        Fluid.Sources.PressureSource
+                               pulmonaryVeinsOutput(redeclare package Medium = Blood)
+                   annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={56,-82})));
+        Lungs lungs(
+          redeclare package Blood = Blood,
+          redeclare package Air = Air,
+          redeclare package PleuralFluid = PleuralFluid,
+          NRU=10,
+          nPorts=2)
+          annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+        Fluid.Sources.VolumeInflowSource pulmonaryAtrysInput(
+          SolutionFlow(displayUnit="l/min") = 9.1666666666667e-05,
+          redeclare package Medium = Blood,
+          use_concentration_start=true,
+          concentration_start=VenousBloodComposition,
+          pressure_start=system.p_ambient + 2199.8193923475)
+          annotation (Placement(transformation(extent={{-78,-92},{-58,-72}})));
+        Types.Constants.PressureConst pressure(k(displayUnit="Pa") = -300)
+          annotation (Placement(transformation(extent={{34,12},{42,20}})));
+        Fluid.Sources.VolumeOutflowSource volumeOutflowSource(SolutionFlow(
+              displayUnit="l/min") = 0.000109, redeclare package Medium = Air)
+          annotation (Placement(transformation(extent={{46,70},{66,90}})));
+      equation
+        connect(pulmonaryVeinsOutput.y, lungs.blod_out) annotation (Line(
+            points={{46,-82},{18,-82},{18,-4},{12,-4}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pulmonaryAtrysInput.q_out, lungs.blood_in) annotation (Line(
+            points={{-58,-82},{-14,-82},{-14,-4},{-8,-4}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(pressure.y, lungs.respiratotyMusclePressure) annotation (Line(
+              points={{43,16},{48,16},{48,4},{10,4}}, color={0,0,127}));
+        connect(volumeOutflowSource.q_in, lungs.airways[1]) annotation (Line(
+            points={{46,80},{2,80},{2,9.475}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(environment.y, lungs.airways[2]) annotation (Line(
+            points={{-74,80},{2,80},{2,10.325}},
+            color={127,0,0},
+            thickness=0.5));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)),
+          experiment(StopTime=60, __Dymola_Algorithm="Dassl"));
+      end MeanLungsTest;
     end Examples;
+
   end Lungs;
 
   package Liver
@@ -5723,9 +5879,9 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       connect(volumeCorrections.q_out, systemicVeinsElacticBloodCompartment.port_a)
         annotation (Line(
           points={{-42,31},{-42,30},{-46,30},{-46,42},{-20,42},{-20,0},{-34,0}},
-
           color={127,0,0},
           thickness=0.5));
+
       connect(systemicVeinsElacticBloodCompartment.port_a,
         hydrostaticDifference1.q_up) annotation (Line(
           points={{-34,0},{-25,0},{-25,-64}},
@@ -7612,21 +7768,13 @@ Blood resistance in gastro interstitial tract.
             extent={{10,10},{-10,-10}},
             rotation=180,
             origin={14,-80})));
-      Lungs.Lungs lungs(redeclare package Blood = Blood)
+      Lungs.Lungs pulmonary(redeclare package Blood = Blood, nPorts=2)
         annotation (Placement(transformation(extent={{0,-8},{28,20}})));
       Fluid.Sensors.PressureMeasure meanPressure(redeclare package Medium = Blood)
         annotation (Placement(transformation(extent={{68,-46},{88,-26}})));
       Fluid.Sources.PressureSource               environment(redeclare package
           Medium = Air, y(m_flow(start=0.0050764996707716465)))                                "External environment" annotation (
         Placement(transformation(extent={{-38,64},{-18,84}})));
-      Fluid.Sensors.FlowMeasure               flowMeasure(redeclare package
-          Medium = Air)                                                                   annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={4,52})));
-      Types.Constants.FrequencyConst               frequency(k=RespirationRate)   annotation (
-        Placement(transformation(extent={{44,30},{52,38}})));
-      Blocks.Source.PeriodicCurveSource               respiratoryMusclePressureCycle(data=
-            RespiratoryMusclePressureCycle)                                                                                 "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
-        Placement(transformation(extent={{64,24},{84,44}})));
       Types.Constants.PressureConst pressure(k=-445.99288489321)
         annotation (Placement(transformation(extent={{-92,-58},{-84,-50}})));
       Types.Constants.FractionConst Exercise_MusclePump_Effect(k=1)
@@ -7636,6 +7784,11 @@ Blood resistance in gastro interstitial tract.
         annotation (Placement(transformation(extent={{-72,46},{-92,66}})));
       Physiolibrary.Organs.Blood.BloodPropertiesBase bloodProperties
         annotation (Placement(transformation(extent={{-74,-14},{-94,6}})));
+      Fluid.Sources.VolumeOutflowSource volumeOutflowSource(SolutionFlow(
+            displayUnit="l/min") = 0.000109, redeclare package Medium = Air)
+        annotation (Placement(transformation(extent={{52,64},{72,84}})));
+      Types.Constants.PressureConst respMusclePressure(k(displayUnit="Pa") = -300)
+        annotation (Placement(transformation(extent={{38,22},{46,30}})));
     equation
       connect(heart.busConnector, busConnector) annotation (Line(
           points={{4,-37},{-36,-37},{-36,-36},{-62,-36}},
@@ -7653,26 +7806,14 @@ Blood resistance in gastro interstitial tract.
           points={{22,-40},{40,-40},{40,-52},{74,-52},{74,-42}},
           color={127,0,0},
           thickness=0.5));
-      connect(heart.fromRightVentricle, lungs.blood_in) annotation (Line(
-          points={{6,-40},{-16,-40},{-16,0},{0,0},{0,0.4}},
+      connect(heart.fromRightVentricle, pulmonary.blood_in) annotation (Line(
+          points={{6,-40},{-26,-40},{-26,0},{0,0},{0,0.4}},
           color={127,0,0},
           thickness=0.5));
-      connect(lungs.blod_out, heart.leftAtrium) annotation (Line(
+      connect(pulmonary.blod_out, heart.leftAtrium) annotation (Line(
           points={{28,0.4},{38,0.4},{38,-28.2},{21.8,-28.2}},
           color={127,0,0},
           thickness=0.5));
-      connect(environment.y,flowMeasure. q_in) annotation (
-        Line(points={{-18,74},{4,74},{4,62}},               color = {127, 0, 0}, thickness = 0.5));
-      connect(frequency.y,respiratoryMusclePressureCycle. frequence) annotation (
-        Line(points={{53,34},{64,34}},        color = {0, 0, 127}));
-      connect(flowMeasure.q_out, lungs.air_in) annotation (Line(
-          points={{4,42},{2,42},{2,20},{5.6,20}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(respiratoryMusclePressureCycle.val, lungs.respiratotyMusclePressure)
-        annotation (Line(points={{84,34},{90,34},{90,12},{25.2,12},{25.2,11.6}},
-                                                                    color={0,
-              0,127}));
       connect(pressure.y, busConnector.Pericardium_Pressure) annotation (Line(
             points={{-83,-54},{-62,-54},{-62,-36}},color={0,0,127}), Text(
           string="%second",
@@ -7691,7 +7832,7 @@ Blood resistance in gastro interstitial tract.
           points={{-62,-36},{-36,-36},{-36,-76},{3.8,-76}},
           color={0,0,255},
           thickness=0.5));
-      connect(busConnector, lungs.busConnector) annotation (Line(
+      connect(busConnector, pulmonary.busConnector) annotation (Line(
           points={{-62,-36},{-36,-36},{-36,11.6},{0,11.6}},
           color={0,0,255},
           thickness=0.5));
@@ -7702,6 +7843,17 @@ Blood resistance in gastro interstitial tract.
       connect(bloodProperties.busConnector, busConnector) annotation (Line(
           points={{-74.6,2.8},{-62,2.8},{-62,-36}},
           color={0,0,255},
+          thickness=0.5));
+      connect(respMusclePressure.y, pulmonary.respiratotyMusclePressure)
+        annotation (Line(points={{47,26},{62,26},{62,12},{25.2,12},{25.2,11.6}},
+            color={0,0,127}));
+      connect(environment.y, pulmonary.airways[1]) annotation (Line(
+          points={{-18,74},{14,74},{14,19.265}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(volumeOutflowSource.q_in, pulmonary.airways[2]) annotation (Line(
+          points={{52,74},{14,74},{14,20.455}},
+          color={127,0,0},
           thickness=0.5));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)));
