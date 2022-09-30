@@ -4,9 +4,97 @@ package Organs
 
     model Heart
        extends Physiolibrary.Icons.Heart;
+       import Physiolibrary.Types.*;
 
         replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen
-                                                                                constrainedby Physiolibrary.Media.Interfaces.PartialMedium annotation ( choicesAllMatching = true);
+                                                                                constrainedby Physiolibrary.Media.Interfaces.PartialMedium "Blood medium model" annotation ( choicesAllMatching = true);
+
+        parameter Volume RightAtriumBlood_initial=5.16454e-05 "Initial blood volume in right atrium" annotation(Dialog(group="Right atrium"));
+        parameter HydraulicCompliance RightAtriumCompliance=9.3757696980707e-08 "Mean compliance of right atrium" annotation(Dialog(group="Right atrium"));
+        parameter Volume RightVentricle_initial=8.75e-05 "Initial blood volume in right ventricle" annotation(Dialog(group="Right ventricle"));
+        parameter HydraulicCompliance RightVentricleBasicCompliance=2.1901798014693e-07 "Basic compliance od right ventricle" annotation(Dialog(group="Right ventricle"));
+
+        parameter Volume LeftAtriumBlood_initial=5.05035e-05 "Initial blood volume in left atrium" annotation(Dialog(group="Left atrium"));
+        parameter HydraulicCompliance LeftAtriumCompliance=4.6878848490354e-08 "Mean compliance of left atrium" annotation(Dialog(group="Left atrium"));
+        parameter Volume LeftVentricle_initial=8.75e-05 "Initial blood volume in left ventricle" annotation(Dialog(group="Left ventricle"));
+        parameter HydraulicCompliance LeftVentricleBasicCompliance=1.0950899007347e-07 "Basic compliance od left ventricle" annotation(Dialog(group="Left ventricle"));
+
+        parameter Real SA_SympatheticEffect[:,3]={{0.0,0,0},{1.0,10,10},{5.0,120,0}} "Heart rate effect base on sympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+        parameter Real SA_ParasympatheticEffect[:,3]={{ 0.0,    0,  0}, { 2.0,  -20,  -8}, { 8.0,  -40,  0}} "Heart rate effect base on parasympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+
+        parameter Real AdaptationOnNA[:,3]={{-4.0,0.0,0},{0.0,1.0,0.3},{12.0,4.0,0}} "Neural activity effect based on mean atrial pressure change" annotation(Dialog(group="Baroreceptors"));
+        parameter Pressure AdaptivePressure(displayUnit="mmHg") = 799.93432449 "Initial value of adapted mean atrial pressure" annotation(Dialog(group="Baroreceptors"));
+        parameter Time AdaptationTau(displayUnit="d") = 2592000 "Delay coefficient of baroreceptors adaptation" annotation(Dialog(group="Baroreceptors"));
+
+        parameter Physiolibrary.Types.Pressure NormalPericardiumPressure = -446
+        "Typical value of pericardium cavity pressure (relative to environment ambient pressure)";
+
+
+        parameter Physiolibrary.Types.Volume RV_NormalEndDiastolicVolume = 0.000125
+      "Typical value of blood volume in ventricle after filling"
+        annotation (Dialog(tab="Right ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure RV_NormalFillingPressure = 95.9921189388
+      "Typical value of filling pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Right ventricle", group="Diastole"));                   //(0.00051*101325/760)*(RV_NormalEndDiastolicVolume^(1/RV_n_Diastole))
+        parameter Physiolibrary.Types.Fraction RV_stiffnes = 1
+      "Relative stiffnes (1 if normal)"
+        annotation (Dialog(tab="Right ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Fraction RV_n_Diastole(displayUnit="1") = 2
+      "Exponent of P-V characteristic of EDV curve on filling pressure"
+        annotation (Dialog(tab="Right ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure RV_NormalSystolicPressure = 1666.5298426875
+      "Typical value of systolic pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Right ventricle",group="Systole"));
+        parameter Physiolibrary.Types.Volume RV_NormalEndSystolicVolume = 5.122e-05
+      "Typical value of blood volume in ventricle after ejection"
+        annotation (Dialog(tab="Right ventricle",group="Systole"));                //(RV_NormalSystolicPressure/(17.39*101325/760))^(RV_n_Systole)
+        parameter Physiolibrary.Types.Pressure RV_additionalPressure_Systolic = 1199.901486735
+      "Pressure difference between mean and systolic pressure"
+        annotation (Dialog(tab="Right ventricle",group="Systole"));     //= 24
+        parameter Physiolibrary.Types.Fraction RV_contractilityBasic=1
+      "Relative contractility (1 if normal)"
+         annotation (Dialog(tab="Right ventricle",group="Systole"));       //= 1
+        parameter Physiolibrary.Types.Fraction RV_n_Systole(displayUnit="1")=0.5
+      "Exponent of P-V characteristic of ESV curve on systolic pressure"
+        annotation (Dialog(tab="Right ventricle",group="Systole"));
+        parameter Physiolibrary.Types.Frequency RV_K=1
+        "time adaptation coeficient of average ventricle blood volume"
+        annotation (Dialog(tab="Right ventricle"));
+
+
+
+          parameter Physiolibrary.Types.Volume LV_NormalEndDiastolicVolume = 0.000125
+      "Typical value of blood volume in ventricle after filling"
+        annotation (Dialog(tab="Left ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure LV_NormalFillingPressure = 615.9494298573
+      "Typical value of filling pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Left ventricle", group="Diastole"));                   //(0.00051*101325/760)*(LV_NormalEndDiastolicVolume^(1/LV_n_Diastole))
+        parameter Physiolibrary.Types.Fraction LV_stiffnes = 1
+      "Relative stiffnes (1 if normal)"
+        annotation (Dialog(tab="Left ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Fraction LV_n_Diastole(displayUnit="1") = 2
+      "Exponent of P-V characteristic of EDV curve on filling pressure"
+        annotation (Dialog(tab="Left ventricle", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure LV_NormalSystolicPressure = 12665.626804425
+      "Typical value of systolic pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Left ventricle",group="Systole"));
+        parameter Physiolibrary.Types.Volume LV_NormalEndSystolicVolume = 5.087e-05
+      "Typical value of blood volume in ventricle after ejection"
+        annotation (Dialog(tab="Left ventricle",group="Systole"));                //(LV_NormalSystolicPressure/(17.39*101325/760))^(LV_n_Systole)
+        parameter Physiolibrary.Types.Pressure LV_additionalPressure_Systolic = 3199.73729796
+      "Pressure difference between mean and systolic pressure"
+        annotation (Dialog(tab="Left ventricle",group="Systole"));     //= 24
+        parameter Physiolibrary.Types.Fraction LV_contractilityBasic=1
+      "Relative contractility (1 if normal)"
+         annotation (Dialog(tab="Left ventricle",group="Systole"));       //= 1
+        parameter Physiolibrary.Types.Fraction LV_n_Systole(displayUnit="1")=0.5
+      "Exponent of P-V characteristic of ESV curve on systolic pressure"
+        annotation (Dialog(tab="Left ventricle",group="Systole"));
+        parameter Physiolibrary.Types.Frequency LV_K=0.016666666666667
+        "time adaptation coeficient of average ventricle blood volume"
+        annotation (Dialog(tab="Left ventricle"));
+
+
 
        Physiolibrary.Fluid.Components.ElasticVessel RightAtrium(
         redeclare package Medium = Blood,
@@ -14,29 +102,30 @@ package Organs
       useExternalPressureInput=true,
       useV0Input=true,
       useComplianceInput=false,
-        volume_start=5.16454e-05,
-        Compliance=9.3757696980707e-08,
+        volume_start=RightAtriumBlood_initial,
+        Compliance=RightAtriumCompliance,
         nPorts=3)                     "right atrium"
       annotation (Placement(transformation(extent={{-75,-1},{-55,19}})));
      //
     Physiolibrary.Types.Constants.VolumeConst RightAtriumV0(k=0)
       annotation (Placement(transformation(extent={{-84,20},{-76,28}})));
       Physiolibrary.Organs.Heart.Components.Ventricle rightVentricle(
+        NormalExternalPressure=NormalPericardiumPressure,
         redeclare package Blood = Blood,
         stateName="RightVentricle.Vol",
-        n_Diastole=2.0,
-        n_Systole=0.5,
-        BasicCompliance(displayUnit="ml/mmHg") = 2.1901798014693e-07,
-        additionalPressure_Systolic(displayUnit="mmHg") = 1199.901486735,
-        initialVol=8.75e-05,
-        NormalEndDiastolicVolume=0.000125,
-        NormalFillingPressure=95.9921189388,
-        stiffnes=1,
-        NormalSystolicPressure=1666.5298426875,
-        NormalEndSystolicVolume=5.122e-05,
-        contractilityBasic=1,
-        K=1,
-        AmbientPressure=101325.0144354)
+        n_Diastole=RV_n_Diastole,
+        n_Systole=RV_n_Systole,
+        BasicCompliance(displayUnit="ml/mmHg") = RightVentricleBasicCompliance,
+        additionalPressure_Systolic(displayUnit="mmHg") = RV_additionalPressure_Systolic,
+        initialVol=RightVentricle_initial,
+         NormalEndDiastolicVolume=RV_NormalEndDiastolicVolume,
+        NormalFillingPressure=RV_NormalFillingPressure,
+        stiffnes=RV_stiffnes,
+        NormalSystolicPressure=RV_NormalSystolicPressure,
+        NormalEndSystolicVolume=RV_NormalEndSystolicVolume,
+        contractilityBasic=RV_contractilityBasic,
+        K=RV_K,
+        AmbientPressure=system.p_ambient)
              annotation (Placement(transformation(extent={{-6,-46},{-50,-2}})));
     //
     //    Abasic_Diastole=0.00026,
@@ -49,30 +138,31 @@ package Organs
     stateName="LeftAtrium.Vol",
       useExternalPressureInput=true,
       useV0Input=true,
-        volume_start=5.05035e-05,
+        volume_start=LeftAtriumBlood_initial,
       useComplianceInput=false,
-        Compliance=4.6878848490354e-08,
+        Compliance=LeftAtriumCompliance,
         nPorts=3)                     "left atrium"
       annotation (Placement(transformation(extent={{68,-8},{88,12}})));
      //
     Physiolibrary.Types.Constants.VolumeConst LeftAtriumV0(k=0)
       annotation (Placement(transformation(extent={{60,12},{68,20}})));
       Physiolibrary.Organs.Heart.Components.Ventricle leftVentricle(
+        NormalExternalPressure=NormalPericardiumPressure,
         redeclare package Blood = Blood,
         stateName="LeftVentricle.Vol",
-        n_Diastole=2,
-        n_Systole=0.5,
-        BasicCompliance(displayUnit="ml/mmHg") = 1.0950899007347e-07,
-        initialVol=8.75e-05,
-        NormalEndDiastolicVolume=0.000125,
-        NormalFillingPressure=615.9494298573,
-        stiffnes=1,
-        NormalSystolicPressure=12665.626804425,
-        NormalEndSystolicVolume=5.087e-05,
-        additionalPressure_Systolic=3199.73729796,
-        contractilityBasic=1,
-        K=0.016666666666667,
-        AmbientPressure=101325.0144354)
+        n_Diastole=LV_n_Diastole,
+        n_Systole=LV_n_Systole,
+        BasicCompliance(displayUnit="ml/mmHg") = RightVentricleBasicCompliance,
+        additionalPressure_Systolic(displayUnit="mmHg") = LV_additionalPressure_Systolic,
+        initialVol=RightVentricle_initial,
+         NormalEndDiastolicVolume=LV_NormalEndDiastolicVolume,
+        NormalFillingPressure=LV_NormalFillingPressure,
+        stiffnes=LV_stiffnes,
+        NormalSystolicPressure=LV_NormalSystolicPressure,
+        NormalEndSystolicVolume=LV_NormalEndSystolicVolume,
+        contractilityBasic=LV_contractilityBasic,
+        K=LV_K,
+        AmbientPressure=system.p_ambient)
         annotation (Placement(transformation(extent={{26,-46},{70,-2}})));
      //
      //   MaxContractionCompliance(displayUnit="ml/mmHg") = 3.0002463033826e-09,
@@ -114,7 +204,8 @@ package Organs
         annotation (Placement(transformation(extent={{-4,-4},{4,4}},
             rotation=180,
             origin={66,-74})));
-      Components.SA_Node SA_node
+      Components.SA_Node SA_node(SympatheticEffect=SA_SympatheticEffect,
+          ParasympatheticEffect=SA_ParasympatheticEffect)
         annotation (Placement(transformation(extent={{-58,76},{-38,96}})));
       Components.ANP atriopeptin
         annotation (Placement(transformation(extent={{72,76},{92,96}})));
@@ -132,14 +223,16 @@ package Organs
       Modelica.Blocks.Math.Add avePressure(k1=0.5, k2=0.5)
         annotation (Placement(transformation(extent={{-68,48},{-56,60}})));
       Components.BaroReceptorAdaptation lowPressureReceptors(
-        PressureChangeOnNA={{-4.0,0.0,0},{0.0,1.0,0.3},{12.0,4.0,0}},
-        AdaptivePressure(displayUnit="mmHg") = 799.93432449,
-        Tau(displayUnit="d") = 2592000) annotation (Placement(transformation(extent=
+        PressureChangeOnNA=AdaptationOnNA,
+        AdaptivePressure(displayUnit="mmHg") = AdaptivePressure,
+        Tau(displayUnit="d") = AdaptationTau) annotation (Placement(transformation(extent=
                {{-10,-10},{10,10}}, origin={-40,54})));
       Modelica.Blocks.Math.Feedback rightAtrium_TMP
         annotation (Placement(transformation(extent={{-38,-100},{-22,-84}})));
       Modelica.Blocks.Math.Feedback leftAtrium_TMP
       annotation (Placement(transformation(extent={{52,-98},{36,-82}})));
+      inner Modelica.Fluid.System system(T_ambient=310.15)            "Human body system setting" annotation (
+        Placement(transformation(extent={{68,40},{88,60}})));
     equation
     connect(RightAtrium.zeroPressureVolume, RightAtriumV0.y) annotation (Line(
         points={{-72,18},{-72,24},{-75,24}},
@@ -2297,8 +2390,7 @@ vector of pressure-flow connectors.
       annotation (Placement(transformation(extent={{30,-26},{50,-6}})));
 
     Physiolibrary.Fluid.Components.Conductor pulmVeinsConductance(redeclare
-          package
-          Medium =                                                                           Blood,
+          package Medium =                                                                   Blood,
           Conductance=VeinsConductance)
       annotation (Placement(transformation(extent={{68,-27},{90,-5}})));
     Physiolibrary.Types.BusConnector busConnector
@@ -2328,8 +2420,8 @@ vector of pressure-flow connectors.
         InternalSpace(displayUnit="l") = PleuralCavityVolume,
         nPorts=1) "Pleural space"
         annotation (Placement(transformation(extent={{-32,20},{-52,40}})));
-      Fluid.Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
-            PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
+      Fluid.Sensors.PressureMeasure pleauralPressure(redeclare package Medium
+          = PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
         annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
@@ -2377,6 +2469,8 @@ vector of pressure-flow connectors.
             extent={{-4,-4},{4,4}},
             rotation=180,
             origin={-36,-2})));
+      Modelica.Blocks.Math.Gain pericardium(k=0.84)
+        annotation (Placement(transformation(extent={{-26,-56},{-18,-48}})));
     equation
 
       sum2.u[1]=pulmVeins.volume;
@@ -2460,6 +2554,15 @@ vector of pressure-flow connectors.
               -2},{-62,-2},{-62,30},{-51,30}}, color={0,0,127}));
       connect(respiratoryUnit.volume, lungsVolume.u) annotation (Line(points={{4.8,-6.6},
               {4.8,-2},{-31.2,-2}}, color={0,0,127}));
+      connect(pleauralPressure.pressure, pericardium.u) annotation (Line(points
+            ={{-70,36},{-74,36},{-74,-52},{-26.8,-52}}, color={0,0,127}));
+      connect(pericardium.y, busConnector.Pericardium_Pressure) annotation (
+          Line(points={{-17.6,-52},{78,-52},{78,-58},{94,-58}}, color={0,0,127}),
+          Text(
+          string="%second",
+          index=1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={
@@ -7775,8 +7878,6 @@ Blood resistance in gastro interstitial tract.
       Fluid.Sources.PressureSource               environment(redeclare package
           Medium = Air, y(m_flow(start=0.0050764996707716465)))                                "External environment" annotation (
         Placement(transformation(extent={{-38,64},{-18,84}})));
-      Types.Constants.PressureConst pressure(k=-445.99288489321)
-        annotation (Placement(transformation(extent={{-92,-58},{-84,-50}})));
       Types.Constants.FractionConst Exercise_MusclePump_Effect(k=1)
         annotation (Placement(transformation(extent={{-96,-86},{-88,-78}})));
       Physiolibrary.Organs.Blood.RedCells redCells(RBCBaseSecretionRate(k(
@@ -7814,12 +7915,6 @@ Blood resistance in gastro interstitial tract.
           points={{28,0.4},{38,0.4},{38,-28.2},{21.8,-28.2}},
           color={127,0,0},
           thickness=0.5));
-      connect(pressure.y, busConnector.Pericardium_Pressure) annotation (Line(
-            points={{-83,-54},{-62,-54},{-62,-36}},color={0,0,127}), Text(
-          string="%second",
-          index=1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
       connect(Exercise_MusclePump_Effect.y, busConnector.Exercise_MusclePump_Effect)
         annotation (Line(points={{-87,-82},{-70,-82},{-70,-36},{-62,-36}},
                                                                          color={0,0,
