@@ -1046,6 +1046,8 @@ Connector with one flow signal of type Real.
         Physiolibrary.Types.Mass substanceMasses[Medium.nXi](start = m_start);
         Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
         Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
+        Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
+        Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
         Physiolibrary.Types.Volume volume;
         Physiolibrary.Types.Density density;
     protected
@@ -1096,6 +1098,7 @@ Connector with one flow signal of type Real.
           end if;
         end if;
         der(substanceMasses) = q_in.m_flow * xx_mass + massFlows[1:Medium.nXi];
+        der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
         if Medium.reducedX then
           der(mass) = ones(nPorts) * q_in.m_flow + massFlows * ones(Medium.nS);
         else
@@ -1115,9 +1118,11 @@ Connector with one flow signal of type Real.
         end if;
         for i in 1:nPorts loop
           xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
+          xC_mass[i, :] = actualStream(q_in[i].C_outflow);
           q_in[i].p = pressure;
           q_in[i].h_outflow = enthalpy / mass;
           q_in[i].Xi_outflow = massFractions;
+          q_in[i].C_outflow  = extraSubstanceAmounts ./ mass;
         end for;
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false)),
@@ -1134,7 +1139,7 @@ Connector with one flow signal of type Real.
         port.m_flow = 0;
         port.h_outflow = Medium.h_default;
         port.Xi_outflow = Medium.X_default[1:Medium.nXi];
-        port.C_outflow = zeros(Medium.nC);
+        port.C_outflow = Medium.C_default;
         annotation (
           Documentation(info = "<html>
 <p>
@@ -1159,13 +1164,17 @@ as signal.
           Dialog(enable = not use_concentration_start, group = "Initialization of medium composition"));
         parameter Modelica.Units.SI.Concentration concentration_start[:] = Medium.reference_X ./ Medium.MMb * Medium.density_pTX(pressure_start, temperature_start, Medium.reference_X) "* Amounts of all base molecules. If size is nS then mass fractions are scaled all base substance masses to sum=1 (this is not a good idea for non-gaseous solutions). If size is nS-1 then last substance is calculated from other specific volumes. If size is nS-2 then last but one substance is calculated from electroneutrality and last substance from specific volumes." annotation (
           Dialog(enable = use_concentration_start, group = "Initialization of medium composition"));
+        parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per liter of solution"
+          annotation(Dialog(group = "Initialization of medium composition"));
         parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
           Dialog(group = "Initialization"));
         parameter Modelica.Units.SI.Pressure pressure_start = system.p_ambient "Initial pressure" annotation (
           Dialog(group = "Initialization"));
+
     protected
         parameter Modelica.Units.SI.MassFraction x_mass_start[Medium.nS] = if Medium.nS < 2 then {1} elseif use_concentration_start then if size(concentration_start, 1) == Medium.nS - 2 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 2] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {-concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1] / Medium.density_pTC(pressure_start, temperature_start, concentration_start), 1 - (sum(concentration_start .* Medium.MMb[1:Medium.nS - 2]) - concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)}) elseif size(concentration_start, 1) == Medium.nS - 1 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 1] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {1 - sum(concentration_start .* Medium.MMb[1:Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)})
           elseif size(concentration_start, 1) == Medium.nS then concentration_start .* Medium.MMb ./ sum(concentration_start .* Medium.MMb) else ones(Medium.nS) else if size(massFractions_start, 1) == Medium.nS - 1 then cat(1, massFractions_start, {1 - sum(massFractions_start)}) elseif size(massFractions_start, 1) == Medium.nS then massFractions_start ./ sum(massFractions_start) else ones(Medium.nS) "Initial mass fractions of substances";
+        parameter Real C_start[Medium.nC] = extraConcentration_start ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start) "Extra substance amounts per kilogram of solution";
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false)),
           Diagram(coordinateSystem(preserveAspectRatio = false)));

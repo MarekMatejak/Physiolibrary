@@ -364,15 +364,14 @@ Modelica source.
 </html>"));
     end Air;
 
-  package BloodBySiggaardAndersen
-    "Blood for gases transport"
+  package BloodBySiggaardAndersen "Blood for gases transport"
     extends Interfaces.PartialMedium(
       zb = {   0,     0,     0,     0,        0,        0,        0,      0, 0,     0,     0,    -1,     1,     0},
       MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266, 0.031, 0.001, 0.018},
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       reducedX=false,
       singleState=true,
-      final substanceNames={"RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG","SID","H+","Others"},
+      substanceNames={"RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG","SID","H+","Others"},
       reference_X=cat(
           1,
           Conc .* C2X,
@@ -388,7 +387,7 @@ Modelica source.
         start=310.15,
         nominal=310.15));
 
-    type S = enumeration(
+   type S = enumeration(
         RBC,
         O2,
         CO2,
@@ -440,7 +439,6 @@ Modelica source.
       state.T = T;
       state.X = X;
     end BaseProperties;
-
   //protected
     function _sO2CO
       input Real pH;
@@ -768,7 +766,6 @@ Modelica source.
           v,
           I);
 
-
       substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,uH_plus,0};
 
       substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,hH_plus,0};
@@ -800,7 +797,6 @@ Modelica source.
       d := 1057;
     end density_pTC;
 
-
     redeclare replaceable function extends specificEnthalpy
     algorithm
       h := (state.T - 310.15)*_cp;
@@ -811,7 +807,6 @@ Modelica source.
     algorithm
       cp := _cp;
     end specificHeatCapacityCp;
-
 
     redeclare replaceable function extends temperature
     algorithm
@@ -1264,4 +1259,59 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 </html>"));
     end PartialMedium;
   end Interfaces;
+
+  package Blood2 "Blood for respiration and metabolism"
+    extends BloodBySiggaardAndersen(
+      substanceNames={"RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG",
+        "Glucose","Lactate","Urea","AminoAcids","Lipids","Ketoacids",
+        "SID","H+","Others"},
+      zb = {  0,0,0,0,0,0,0,0,0,0,0,
+              0,-1,0,0,0,-1,
+              -1,1,0},
+      MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266, 0.031,
+              0.1806, 0.09008, 0.06006, 0.1, 0.80645, 0.102,
+              0.001, 0.018},
+      C={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,5.4,37.67,
+         6.08,1.04,6.64,4.97,1.23,4.88e-2},
+      extraPropertiesNames={"Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin"},
+      C_default=EC);
+        //names: "Lipids","Ketoacids","Glucose","Lactate","AminoAcids","Urea",
+           //MMb: 0.80645, 0.102, 0.1806,  0.09008, 0.1, 0.06006,
+         //C: 1.23,4.88e-2,6.08,1.04,4.97,6.64
+
+
+  type S = enumeration(
+        RBC,
+        O2,
+        CO2,
+        CO,
+        Hb,
+        MetHb,
+        HbF,
+        Alb,
+        Glb,
+        PO4,
+        DPG,
+        Glucose,
+        Lactate,
+        Urea,
+        AminoAcids,
+        Lipids,
+        Ketoacids,
+        SID,
+        H,
+        Others);
+
+   type ES = enumeration(
+        Insulin,
+        Glucagon,
+        Thyrotropin,
+        Thyroxine,
+        Leptin) "Extra substances (e.g. signaling molecules)";
+
+   constant Real EC[nC]={19.91,69.68,4.03,79.6,7.96} "Default amounts of extra substances per liter";
+   constant String E_Units[nC]={"mU","ng","pmol","ug","ug"} "Units of extra substance amounts";
+   constant Real EMMb "Molar mass of base molecules of extra substances";
+
+  end Blood2;
 end Media;
