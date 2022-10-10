@@ -1273,7 +1273,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
               0.001, 0.018},
       C={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,5.4,37.67,
          6.08,1.04,6.64,4.97,1.23,4.88e-2},
-      extraPropertiesNames={"Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin"},
+      extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin","Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin"},
       C_default=EC);
         //names: "Lipids","Ketoacids","Glucose","Lactate","AminoAcids","Urea",
            //MMb: 0.80645, 0.102, 0.1806,  0.09008, 0.1, 0.06006,
@@ -1303,15 +1303,25 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         Others);
 
    type ES = enumeration(
+        Epinephrine,
+        Norepinephrine,
+        Vasopressin,
         Insulin,
         Glucagon,
         Thyrotropin,
         Thyroxine,
-        Leptin) "Extra substances (e.g. signaling molecules)";
+        Leptin,
+        Desglymidodrine,
+        AlphaBlockers,
+        BetaBlockers)
+          "Extra substances (e.g. signaling molecules, drugs)";
 
-   constant Real EC[nC]={19.91,69.68,4.03,79.6,7.96} "Default amounts of extra substances per liter";
-   constant String E_Units[nC]={"mU","ng","pmol","ug","ug"} "Units of extra substance amounts";
-   constant Real EMMb "Molar mass of base molecules of extra substances";
+   constant Real EC[nC]={40,240,1.84,19.91,69.68,4.03,79.6,7.96,
+                         0,0,0} "Default amounts of extra substances per liter";
+   constant String E_Units[nC]={"ng","ng","pmol","mU","ng","pmol","ug","ug",
+             "ug", "%", "%"} "Units of extra substance amounts";
+   constant Real EMMb[nC]={0.183204, 0.16918, 1.084, 5.808, 3.485, 28, 0.777, 16.026,
+             0.19723,0.3,0.26} "Molar mass of base molecules of extra substances";
 
   end Blood2;
 end Media;
