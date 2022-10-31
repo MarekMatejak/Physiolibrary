@@ -151,6 +151,7 @@ package Media
     algorithm
       d := 1000;
     end density_pTC;
+
     annotation (Documentation(info="<html>
 <p>
 This package is a <strong>template</strong> for <strong>new medium</strong> models. For a new
@@ -1273,7 +1274,10 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
               0.001, 0.018},
       C={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,5.4,37.67,
          6.08,1.04,6.64,4.97,1.23,4.88e-2},
-      extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin","Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin"},
+      extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin","Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin","Desglymidodrine",
+        "AlphaBlockers",
+        "BetaBlockers",
+        "AnesthesiaVascularConductance"},
       C_default=EC);
         //names: "Lipids","Ketoacids","Glucose","Lactate","AminoAcids","Urea",
            //MMb: 0.80645, 0.102, 0.1806,  0.09008, 0.1, 0.06006,
@@ -1313,15 +1317,163 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         Leptin,
         Desglymidodrine,
         AlphaBlockers,
-        BetaBlockers)
+        BetaBlockers,
+        AnesthesiaVascularConductance)
           "Extra substances (e.g. signaling molecules, drugs)";
 
    constant Real EC[nC]={40,240,1.84,19.91,69.68,4.03,79.6,7.96,
-                         0,0,0} "Default amounts of extra substances per liter";
+                         0,0,0,1} "Default amounts of extra substances per kilogram";
+             //TODO: *0.994  .. change here and in all places where these values are in use
    constant String E_Units[nC]={"ng","ng","pmol","mU","ng","pmol","ug","ug",
-             "ug", "%", "%"} "Units of extra substance amounts";
+             "ug", "%", "%","%"} "Units of extra substance amounts";
    constant Real EMMb[nC]={0.183204, 0.16918, 1.084, 5.808, 3.485, 28, 0.777, 16.026,
-             0.19723,0.3,0.26} "Molar mass of base molecules of extra substances";
+             0.19723,0.3,0.26,0} "Molar mass of base molecules of extra substances";
+
+
+
+
+
+
+
+  public
+    redeclare model ChemicalSolution
+      outer Modelica.Fluid.System system "System wide properties";
+
+      Chemical.Interfaces.SubstancePorts_a substances[nS];
+      Physiolibrary.Types.RealIO.PressureInput p "pressure";
+      Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
+      Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
+      Physiolibrary.Types.RealIO.ElectricCurrentInput i "electric current from substances";
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
+      Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
+      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS] "specific enthalpies of substances in streams";
+      Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
+
+      parameter Boolean EnthalpyNotUsed=false annotation (
+      Evaluate=true,
+      HideResult=true,
+      choices(checkBox=true),
+      Dialog(tab="Advanced", group="Performance"));
+
+
+      // protected
+      Real I = 0 "mole-fraction-based ionic strength";
+      Real C[nS - 1]=(X[1:(nS - 1)] ./ C2X);
+
+      ThermodynamicState state;
+      BloodGases bloodGases(
+        p=p,
+        T=T,
+        C=C);
+      Modelica.Units.SI.MoleFraction aO2;
+      Modelica.Units.SI.MoleFraction aCO2;
+      Modelica.Units.SI.MoleFraction aCO;
+      Modelica.Units.SI.MoleFraction aH_plus;
+      Modelica.Units.SI.ChemicalPotential uO2;
+      Modelica.Units.SI.ChemicalPotential uCO2;
+      Modelica.Units.SI.ChemicalPotential uCO;
+      Modelica.Units.SI.ChemicalPotential uH_plus;
+      Modelica.Units.SI.MolarEnthalpy hO2;
+      Modelica.Units.SI.MolarEnthalpy hCO2;
+      Modelica.Units.SI.MolarEnthalpy hCO;
+      Modelica.Units.SI.MolarEnthalpy hH_plus;
+      constant Chemical.Interfaces.IdealGas.SubstanceData O2=
+          Chemical.Substances.Oxygen_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO2=
+          Chemical.Substances.CarbonDioxide_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO=
+          Chemical.Substances.CarbonMonoxide_gas();
+      constant Chemical.Interfaces.Incompressible.SubstanceData H_plus=
+          Chemical.Substances.Proton_aqueous();
+
+    equation
+      v=0 "electric potential is not used without external flows of charge";
+
+      if (EnthalpyNotUsed) then
+        state = setState_pTX(
+            p,
+            T,
+            X);
+        T = system.T_ambient;
+      else
+        state = setState_phX(
+            p,
+            h,
+            X);
+        T = state.T;
+      end if;
+
+      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
+        actualStream(substances.h_outflow) ./ MMb "specific enthalpy in stream";
+
+      aO2 = bloodGases.pO2/p;
+      aCO2 = bloodGases.pCO2/p;
+      aCO = bloodGases.pCO/p;
+      aH_plus = 10^(-bloodGases.pH);
+
+      uO2 = Modelica.Constants.R*T*log(aO2) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          O2,
+          T,
+          p,
+          v,
+          I);
+      uCO2 = Modelica.Constants.R*T*log(aCO2) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          CO2,
+          T,
+          p,
+          v,
+          I);
+      uCO = Modelica.Constants.R*T*log(aCO) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          CO,
+          T,
+          p,
+          v,
+          I);
+      uH_plus = Modelica.Constants.R*T*log(aH_plus) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          H_plus,
+          T,
+          p,
+          v,
+          I);
+
+      hO2 = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          O2,
+          T,
+          p,
+          v,
+          I);
+      hCO2 = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          CO2,
+          T,
+          p,
+          v,
+          I);
+      hCO = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          CO,
+          T,
+          p,
+          v,
+          I);
+      hH_plus = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          H_plus,
+          T,
+          p,
+          v,
+          I);
+
+      substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,uH_plus,0,0,0,0,0,0,0};
+
+      substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,hH_plus,0,0,0,0,0,0,0};
+
+      massFlows = substances.q .* MMb;
+    end ChemicalSolution;
+
+
 
   end Blood2;
 end Media;

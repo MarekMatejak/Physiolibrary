@@ -987,6 +987,36 @@ Connector with one flow signal of type Real.
         end if;
       end ConditionalVolumeFlow;
 
+      partial model CompositionSetup "Initial substances composition setup"
+        replaceable package Medium = Media.Water
+            constrainedby Media.Interfaces.PartialMedium "Medium model" annotation (
+           choicesAllMatching = true);
+
+        outer Modelica.Fluid.System system "System wide properties";
+        parameter Boolean use_concentration_start = false "* Use concentration_start, otherwise massFraction_start" annotation (
+          Evaluate = true,
+          choices(checkBox = true),
+          Dialog(group = "Initialization of medium composition"));
+        parameter Modelica.Units.SI.MassFraction massFractions_start[:] = Medium.reference_X "* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1." annotation (
+          Dialog(enable = not use_concentration_start, group = "Initialization of medium composition"));
+        parameter Modelica.Units.SI.Concentration concentration_start[:] = Medium.reference_X ./ Medium.MMb * Medium.density_pTX(pressure_start, temperature_start, Medium.reference_X) "* Amounts of all base molecules. If size is nS then mass fractions are scaled all base substance masses to sum=1 (this is not a good idea for non-gaseous solutions). If size is nS-1 then last substance is calculated from other specific volumes. If size is nS-2 then last but one substance is calculated from electroneutrality and last substance from specific volumes." annotation (
+          Dialog(enable = use_concentration_start, group = "Initialization of medium composition"));
+        parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per liter of solution"
+          annotation(Dialog(group = "Initialization of medium composition"));
+        parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
+          Dialog(group = "Initialization"));
+        parameter Modelica.Units.SI.Pressure pressure_start = system.p_ambient "Initial pressure" annotation (
+          Dialog(group = "Initialization"));
+
+    protected
+        parameter Modelica.Units.SI.MassFraction x_mass_start[Medium.nS] = if Medium.nS < 2 then {1} elseif use_concentration_start then if size(concentration_start, 1) == Medium.nS - 2 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 2] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {-concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1] / Medium.density_pTC(pressure_start, temperature_start, concentration_start), 1 - (sum(concentration_start .* Medium.MMb[1:Medium.nS - 2]) - concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)}) elseif size(concentration_start, 1) == Medium.nS - 1 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 1] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {1 - sum(concentration_start .* Medium.MMb[1:Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)})
+          elseif size(concentration_start, 1) == Medium.nS then concentration_start .* Medium.MMb ./ sum(concentration_start .* Medium.MMb) else ones(Medium.nS) else if size(massFractions_start, 1) == Medium.nS - 1 then cat(1, massFractions_start, {1 - sum(massFractions_start)}) elseif size(massFractions_start, 1) == Medium.nS then massFractions_start ./ sum(massFractions_start) else ones(Medium.nS) "Initial mass fractions of substances";
+        parameter Real C_start[Medium.nC] = extraConcentration_start "Extra substance amounts per kilogram of solution";
+        annotation (
+          Icon(coordinateSystem(preserveAspectRatio = false)),
+          Diagram(coordinateSystem(preserveAspectRatio = false)));
+      end CompositionSetup;
+
       partial model Accumulation
         extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
@@ -1150,35 +1180,6 @@ as signal.
 </html>"));
       end PartialAbsoluteSensor;
 
-      partial model CompositionSetup "Initial substances composition setup"
-        replaceable package Medium = Physiolibrary.Media.Water constrainedby
-        Media.Interfaces.PartialMedium                                                                      "Medium model" annotation (
-           choicesAllMatching = true);
-        //Chemical.Media.Water_Incompressible
-        outer Modelica.Fluid.System system "System wide properties";
-        parameter Boolean use_concentration_start = false "* Use concentration_start, otherwise massFraction_start" annotation (
-          Evaluate = true,
-          choices(checkBox = true),
-          Dialog(group = "Initialization of medium composition"));
-        parameter Modelica.Units.SI.MassFraction massFractions_start[:] = Medium.reference_X "* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1." annotation (
-          Dialog(enable = not use_concentration_start, group = "Initialization of medium composition"));
-        parameter Modelica.Units.SI.Concentration concentration_start[:] = Medium.reference_X ./ Medium.MMb * Medium.density_pTX(pressure_start, temperature_start, Medium.reference_X) "* Amounts of all base molecules. If size is nS then mass fractions are scaled all base substance masses to sum=1 (this is not a good idea for non-gaseous solutions). If size is nS-1 then last substance is calculated from other specific volumes. If size is nS-2 then last but one substance is calculated from electroneutrality and last substance from specific volumes." annotation (
-          Dialog(enable = use_concentration_start, group = "Initialization of medium composition"));
-        parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per liter of solution"
-          annotation(Dialog(group = "Initialization of medium composition"));
-        parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
-          Dialog(group = "Initialization"));
-        parameter Modelica.Units.SI.Pressure pressure_start = system.p_ambient "Initial pressure" annotation (
-          Dialog(group = "Initialization"));
-
-    protected
-        parameter Modelica.Units.SI.MassFraction x_mass_start[Medium.nS] = if Medium.nS < 2 then {1} elseif use_concentration_start then if size(concentration_start, 1) == Medium.nS - 2 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 2] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {-concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1] / Medium.density_pTC(pressure_start, temperature_start, concentration_start), 1 - (sum(concentration_start .* Medium.MMb[1:Medium.nS - 2]) - concentration_start * Medium.zb[1:Medium.nS - 2] * Medium.MMb[Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)}) elseif size(concentration_start, 1) == Medium.nS - 1 then cat(1, concentration_start .* Medium.MMb[1:Medium.nS - 1] ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start), {1 - sum(concentration_start .* Medium.MMb[1:Medium.nS - 1]) ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start)})
-          elseif size(concentration_start, 1) == Medium.nS then concentration_start .* Medium.MMb ./ sum(concentration_start .* Medium.MMb) else ones(Medium.nS) else if size(massFractions_start, 1) == Medium.nS - 1 then cat(1, massFractions_start, {1 - sum(massFractions_start)}) elseif size(massFractions_start, 1) == Medium.nS then massFractions_start ./ sum(massFractions_start) else ones(Medium.nS) "Initial mass fractions of substances";
-        parameter Real C_start[Medium.nC] = extraConcentration_start ./ Medium.density_pTC(pressure_start, temperature_start, concentration_start) "Extra substance amounts per kilogram of solution";
-        annotation (
-          Icon(coordinateSystem(preserveAspectRatio = false)),
-          Diagram(coordinateSystem(preserveAspectRatio = false)));
-      end CompositionSetup;
     end Interfaces;
 
     package Sensors
@@ -1363,8 +1364,9 @@ as signal.
       //sensor = zero flows
         port_a.q = 0;
         referenceFluidPort.m_flow = 0;
-        referenceFluidPort.h_outflow = Medium.h_default;
-        referenceFluidPort.Xi_outflow = Medium.reference_X[1:Medium.nXi];
+        referenceFluidPort.h_outflow = 0;
+        referenceFluidPort.Xi_outflow =  zeros(Medium.nXi);
+        referenceFluidPort.C_outflow = zeros(Medium.nC);
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor = {0, 0, 0}, textString = "p"), Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
           Documentation(revisions = "<html>
@@ -1423,8 +1425,10 @@ as signal.
       //sensor = zero flows
         port_a.q = 0;
         referenceFluidPort.m_flow = 0;
-        referenceFluidPort.h_outflow = Medium.h_default;
-        referenceFluidPort.Xi_outflow = Medium.reference_X[1:Medium.nXi];
+        referenceFluidPort.h_outflow = 0;
+        referenceFluidPort.Xi_outflow =  zeros(Medium.nXi);
+        referenceFluidPort.C_outflow = zeros(Medium.nC);
+
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor = {0, 0, 0}, textString = "p"), Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
           Documentation(revisions = "<html>
@@ -1640,7 +1644,7 @@ as signal.
         q_out.m_flow = -q;
         q_out.h_outflow = h;
         q_out.Xi_outflow = X[1:Medium.nXi];
-        q_out.C_outflow = zeros(Medium.nC);
+        q_out.C_outflow = C_start; //zeros(Medium.nC);
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -50}, {100, 50}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Polygon(points = {{-80, 25}, {80, 0}, {-80, -25}, {-80, 25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Text(extent = {{-150, -94}, {150, -54}}, textString = "%name", lineColor = {0, 0, 255})}),
           Documentation(revisions = "<html>
@@ -1678,7 +1682,7 @@ as signal.
         q_out.m_flow = -q * density;
         q_out.h_outflow = h;
         q_out.Xi_outflow = x_mass_start[1:Medium.nXi];
-        q_out.C_outflow = zeros(Medium.nC);
+        q_out.C_outflow = C_start; //zeros(Medium.nC);
         density = Medium.density(Medium.setState_phX(pressure_start, inStream(q_out.h_outflow), inStream(q_out.Xi_outflow)));
       // medium density
         annotation (
@@ -1760,7 +1764,7 @@ as signal.
         q_in.m_flow = q;
         q_in.h_outflow = h;
         q_in.Xi_outflow = X[1:Medium.nXi];
-        q_in.C_outflow = zeros(Medium.nC);
+        q_in.C_outflow = C_start; // zeros(Medium.nC);
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -50}, {100, 50}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Polygon(points = {{-80, 25}, {80, 0}, {-80, -25}, {-80, 25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Text(extent = {{-150, -94}, {150, -54}}, textString = "%name", lineColor = {0, 0, 255})}),
           Documentation(revisions = "<html>
@@ -1803,7 +1807,7 @@ as signal.
         q_in.m_flow = q * density;
         q_in.h_outflow = h;
         q_in.Xi_outflow = X[1:Medium.nXi];
-        q_in.C_outflow = zeros(Medium.nC);
+        q_in.C_outflow = C_start; //zeros(Medium.nC);
       // medium density
         density = Medium.density(Medium.setState_phX(P, inStream(q_in.h_outflow), inStream(q_in.Xi_outflow)));
         annotation (
@@ -5286,7 +5290,8 @@ as signal.
 
     class MetabolismPart
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 120}}), graphics={  Bitmap(extent = {{28, 120}, {98, 44}}, fileName = "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 120}}), graphics={  Bitmap(extent={{28,44},
+                {98,120}},                                                                                                                         fileName = "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
     end MetabolismPart;
 
     class CellularMetabolism
