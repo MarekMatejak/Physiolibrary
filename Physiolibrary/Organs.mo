@@ -2,6 +2,463 @@
 package Organs
   package Heart "Heart Components"
 
+    model Heart2
+       extends Physiolibrary.Icons.Heart;
+       import Physiolibrary.Types.*;
+
+        replaceable package Blood = Physiolibrary.Media.Blood2                  constrainedby
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                                       "Blood medium model" annotation ( choicesAllMatching = true);
+
+        parameter Types.HydraulicConductance RightCoronaryLarge(displayUnit=
+            "ml/(mmHg.min)")=1.2501026264094e-09           "Conductance of lagre coronary vessels" annotation(Dialog(tab="Right heart",group="Coronary blood suply"));
+        parameter Types.HydraulicConductance RightCoronarySmall(displayUnit=
+            "ml/(mmHg.min)")=6.2505131320471e-11           "Conductance of small coronary vessels" annotation(Dialog(tab="Right heart",group="Coronary blood suply"));
+        parameter Types.HydraulicConductance LeftCoronaryLarge(displayUnit=
+            "ml/(mmHg.min)")=5.0004105056377e-09           "Conductance of lagre coronary vessels" annotation(Dialog(tab="Left heart", group="Coronary blood suply"));
+        parameter Types.HydraulicConductance LeftCoronarySmall(displayUnit=
+            "ml/(mmHg.min)")=3.1252565660236e-10           "Conductance of small coronary vessels" annotation(Dialog(tab="Left heart", group="Coronary blood suply"));
+
+        parameter Volume RightAtriumBlood_initial=5.16454e-05 "Initial blood volume in right atrium" annotation(Dialog(tab="Right heart", group="Atrium"));
+        parameter HydraulicCompliance RightAtriumCompliance=9.3757696980707e-08 "Mean compliance of right atrium" annotation(Dialog(tab="Right heart", group="Atrium"));
+        parameter Volume RightVentricle_initial=8.75e-05 "Initial blood volume in right ventricle" annotation(Dialog(tab="Right heart", group="Ventricle"));
+        parameter HydraulicCompliance RightVentricleBasicCompliance=
+          2.1901798014693e-07                                                           "Basic compliance od right ventricle" annotation(Dialog(tab="Right heart", group="Ventricle"));
+
+        parameter Volume LeftAtriumBlood_initial=5.05035e-05 "Initial blood volume in left atrium" annotation(Dialog(tab="Left heart", group="Atrium"));
+        parameter HydraulicCompliance LeftAtriumCompliance=4.6878848490354e-08 "Mean compliance of left atrium" annotation(Dialog(tab="Left heart", group="Atrium"));
+        parameter Volume LeftVentricle_initial=8.75e-05 "Initial blood volume in left ventricle" annotation(Dialog(tab="Left heart", group="Ventricle"));
+        parameter HydraulicCompliance LeftVentricleBasicCompliance=
+          1.0950899007347e-07                                                          "Basic compliance od left ventricle" annotation(Dialog(tab="Left heart", group="Ventricle"));
+
+        parameter Real SA_SympatheticEffect[:,3]={{0.0,0,0},{1.0,10,10},{5.0,120,0}} "Heart rate effect base on sympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+        parameter Real SA_ParasympatheticEffect[:,3]={{ 0.0,    0,  0}, { 2.0,  -20,  -8}, { 8.0,  -40,  0}} "Heart rate effect base on parasympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+
+        parameter Real AdaptationOnNA[:,3]={{-4.0,0.0,0},{0.0,1.0,0.3},{12.0,4.0,0}} "Neural activity effect based on mean atrial pressure change" annotation(Dialog(group="Baroreceptors"));
+        parameter Pressure AdaptivePressure(displayUnit="mmHg")=799.93432449   "Initial value of adapted mean atrial pressure" annotation(Dialog(group="Baroreceptors"));
+        parameter Time AdaptationTau(displayUnit="d")=2592000   "Delay coefficient of baroreceptors adaptation" annotation(Dialog(group="Baroreceptors"));
+
+        parameter Physiolibrary.Types.Pressure NormalPericardiumPressure=-446
+        "Typical value of pericardium cavity pressure (relative to environment ambient pressure)";
+
+        parameter Physiolibrary.Types.Volume RV_NormalEndDiastolicVolume=0.000125
+      "Typical value of blood volume in ventricle after filling"
+        annotation (Dialog(tab="Right heart", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure RV_NormalFillingPressure=
+          95.9921189388
+      "Typical value of filling pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Right heart", group="Diastole"));                   //(0.00051*101325/760)*(RV_NormalEndDiastolicVolume^(1/RV_n_Diastole))
+        parameter Physiolibrary.Types.Fraction RV_stiffnes=1
+      "Relative stiffnes (1 if normal)"
+        annotation (Dialog(tab="Right heart", group="Diastole"));
+        parameter Physiolibrary.Types.Fraction RV_n_Diastole(displayUnit="1")=2
+      "Exponent of P-V characteristic of EDV curve on filling pressure"
+        annotation (Dialog(tab="Right heart", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure RV_NormalSystolicPressure=
+          1666.5298426875
+      "Typical value of systolic pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Right heart",group="Systole"));
+        parameter Physiolibrary.Types.Volume RV_NormalEndSystolicVolume=5.122e-05
+      "Typical value of blood volume in ventricle after ejection"
+        annotation (Dialog(tab="Right heart",group="Systole"));                //(RV_NormalSystolicPressure/(17.39*101325/760))^(RV_n_Systole)
+        parameter Physiolibrary.Types.Pressure RV_additionalPressure_Systolic=
+          1199.901486735
+      "Pressure difference between mean and systolic pressure"
+        annotation (Dialog(tab="Right heart",group="Systole"));     //= 24
+        parameter Physiolibrary.Types.Fraction RV_contractilityBasic=1
+      "Relative contractility (1 if normal)"
+         annotation (Dialog(tab="Right heart",group="Systole"));       //= 1
+        parameter Physiolibrary.Types.Fraction RV_n_Systole(displayUnit="1")=
+        0.5
+      "Exponent of P-V characteristic of ESV curve on systolic pressure"
+        annotation (Dialog(tab="Right heart",group="Systole"));
+        parameter Physiolibrary.Types.Frequency RV_K=1
+        "time adaptation coeficient of average ventricle blood volume"
+        annotation (Dialog(tab="Right heart"));
+
+          parameter Physiolibrary.Types.Volume LV_NormalEndDiastolicVolume=0.000125
+      "Typical value of blood volume in ventricle after filling"
+        annotation (Dialog(tab="Left heart", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure LV_NormalFillingPressure=
+          615.9494298573
+      "Typical value of filling pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Left heart", group="Diastole"));                   //(0.00051*101325/760)*(LV_NormalEndDiastolicVolume^(1/LV_n_Diastole))
+        parameter Physiolibrary.Types.Fraction LV_stiffnes=1
+      "Relative stiffnes (1 if normal)"
+        annotation (Dialog(tab="Left heart", group="Diastole"));
+        parameter Physiolibrary.Types.Fraction LV_n_Diastole(displayUnit="1")=2
+      "Exponent of P-V characteristic of EDV curve on filling pressure"
+        annotation (Dialog(tab="Left heart", group="Diastole"));
+        parameter Physiolibrary.Types.Pressure LV_NormalSystolicPressure=
+          12665.626804425
+      "Typical value of systolic pressure relative to pericardium pressure"
+        annotation (Dialog(tab="Left heart",group="Systole"));
+        parameter Physiolibrary.Types.Volume LV_NormalEndSystolicVolume=5.087e-05
+      "Typical value of blood volume in ventricle after ejection"
+        annotation (Dialog(tab="Left heart",group="Systole"));                //(LV_NormalSystolicPressure/(17.39*101325/760))^(LV_n_Systole)
+        parameter Physiolibrary.Types.Pressure LV_additionalPressure_Systolic=
+          3199.73729796
+      "Pressure difference between mean and systolic pressure"
+        annotation (Dialog(tab="Left heart",group="Systole"));     //= 24
+        parameter Physiolibrary.Types.Fraction LV_contractilityBasic=1
+      "Relative contractility (1 if normal)"
+         annotation (Dialog(tab="Left heart",group="Systole"));       //= 1
+        parameter Physiolibrary.Types.Fraction LV_n_Systole(displayUnit="1")=
+        0.5
+      "Exponent of P-V characteristic of ESV curve on systolic pressure"
+        annotation (Dialog(tab="Left heart",group="Systole"));
+        parameter Physiolibrary.Types.Frequency LV_K=0.016666666666667
+        "time adaptation coeficient of average ventricle blood volume"
+        annotation (Dialog(tab="Left heart"));
+
+     //
+    //
+    //    Abasic_Diastole=0.00026,
+    //    Abasic_Systole=3.53,
+    //    MaxContractionCompliance(displayUnit="ml/mmHg") = 1.5001231516913e-08,
+    //    Cond1=60000000,
+    //    Cond2=60000000,
+     //
+     //
+     //   MaxContractionCompliance(displayUnit="ml/mmHg") = 3.0002463033826e-09,
+       // Abasic_Diastole=0.00051,
+    //    Cond1(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
+    //    Cond2(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
+    Physiolibrary.Types.BusConnector busConnector
+        "signals of organ bood flow resistence"
+                                              annotation (Placement(
+          transformation(extent={{-4,32},{16,52}}), iconTransformation(extent=
+             {{-108,-38},{-92,-22}})));
+    Physiolibrary.Fluid.Interfaces.FluidPort_a rightAtrium(redeclare package
+          Medium =
+            Blood)
+      "blood inflow to right atrium" annotation (Placement(transformation(
+            extent={{-100,-14},{-80,6}}),  iconTransformation(extent={{-90,50},
+                {-70,70}})));
+    Physiolibrary.Fluid.Interfaces.FluidPort_b fromRightVentricle(redeclare
+          package Medium =
+                   Blood)
+      "blood outflow to pulmonary circulation" annotation (Placement(
+          transformation(extent={{-22,0},{-2,20}}), iconTransformation(extent={{-90,-70},
+                {-70,-50}})));
+    Physiolibrary.Fluid.Interfaces.FluidPort_b fromLeftVentricle(redeclare
+          package Medium =
+                   Blood)
+      "blood outflow to aorta" annotation (Placement(transformation(extent={{10,0},{
+                30,20}}),      iconTransformation(extent={{70,-70},{90,-50}})));
+    Physiolibrary.Fluid.Interfaces.FluidPort_a leftAtrium(redeclare package
+          Medium =
+            Blood)
+      "blood inflow to left atrium" annotation (Placement(transformation(
+            extent={{86,-12},{106,8}}), iconTransformation(extent={{68,48},{88,
+                68}})));
+      Components.SA_Node SA_node(SympatheticEffect=SA_SympatheticEffect,
+          ParasympatheticEffect=SA_ParasympatheticEffect)
+        annotation (Placement(transformation(extent={{-58,76},{-38,96}})));
+      Components.ANP atriopeptin
+        annotation (Placement(transformation(extent={{72,76},{92,96}})));
+    Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare
+          package Medium =
+                   Blood)
+      annotation (Placement(transformation(extent={{-94,54},{-74,74}})));
+      Components.BaroReceptorAdaptation lowPressureReceptors(
+        PressureChangeOnNA=AdaptationOnNA,
+        AdaptivePressure(displayUnit="mmHg") = AdaptivePressure,
+        Tau(displayUnit="d") = AdaptationTau) annotation (Placement(transformation(extent=
+               {{-10,-10},{10,10}}, origin={-40,54})));
+      inner Modelica.Fluid.System system(T_ambient=310.15)            "Human body system setting" annotation (
+        Placement(transformation(extent={{68,40},{88,60}})));
+      Fluid.Components.ElasticVessel RightAtrium(
+        redeclare package Medium = Blood,
+        stateName="RightAtrium.Vol",
+        useExternalPressureInput=true,
+        useV0Input=false,
+        useComplianceInput=false,
+        volume_start=RightAtriumBlood_initial,
+        Compliance=RightAtriumCompliance,
+        nPorts=3) "Heart atrium"
+        annotation (Placement(transformation(extent={{-77,-15},{-57,5}})));
+      Components.Ventricle RightVentricle(
+        NormalExternalPressure=NormalPericardiumPressure,
+        redeclare package Blood = Blood,
+        stateName="RightVentricle.Vol",
+        n_Diastole=RV_n_Diastole,
+        n_Systole=RV_n_Systole,
+        BasicCompliance(displayUnit="ml/mmHg") = RightVentricleBasicCompliance,
+
+        additionalPressure_Systolic(displayUnit="mmHg") =
+          RV_additionalPressure_Systolic,
+        initialVol=RightVentricle_initial,
+        NormalEndDiastolicVolume=RV_NormalEndDiastolicVolume,
+        NormalFillingPressure=RV_NormalFillingPressure,
+        stiffnes=RV_stiffnes,
+        NormalSystolicPressure=RV_NormalSystolicPressure,
+        NormalEndSystolicVolume=RV_NormalEndSystolicVolume,
+        contractilityBasic=RV_contractilityBasic,
+        K=RV_K,
+        AmbientPressure=system.p_ambient)
+        annotation (Placement(transformation(extent={{-12,-46},{-56,-2}})));
+      Components.LeftHeartCoronary rightTissue(
+        redeclare package Blood = Blood,
+        BasicLargeVeselsConductance=RightCoronaryLarge,
+        BasicSmallVeselsConductance=RightCoronarySmall)
+        annotation (Placement(transformation(extent={{-60,-78},{-40,-58}})));
+    Fluid.Sensors.PressureMeasure leftAtriumTMP(redeclare package Medium =
+            Blood)
+        annotation (Placement(transformation(extent={{-82,40},{-62,60}})));
+      Components.Ventricle LeftVentricle(
+        NormalExternalPressure=NormalPericardiumPressure,
+        redeclare package Blood = Blood,
+        stateName="LeftVentricle.Vol",
+        n_Diastole=LV_n_Diastole,
+        n_Systole=LV_n_Systole,
+        BasicCompliance(displayUnit="ml/mmHg") = LeftVentricleBasicCompliance,
+        additionalPressure_Systolic(displayUnit="mmHg") =
+          LV_additionalPressure_Systolic,
+        initialVol=LeftVentricle_initial,
+        NormalEndDiastolicVolume=LV_NormalEndDiastolicVolume,
+        NormalFillingPressure=LV_NormalFillingPressure,
+        stiffnes=LV_stiffnes,
+        NormalSystolicPressure=LV_NormalSystolicPressure,
+        NormalEndSystolicVolume=LV_NormalEndSystolicVolume,
+        contractilityBasic=LV_contractilityBasic,
+        K=LV_K,
+        AmbientPressure=system.p_ambient)
+        annotation (Placement(transformation(extent={{20,-40},{64,4}})));
+      Fluid.Components.ElasticVessel LeftAtrium(
+        redeclare package Medium = Blood,
+        stateName="LeftAtrium.Vol",
+        useExternalPressureInput=true,
+        useV0Input=false,
+        useComplianceInput=false,
+        volume_start=LeftAtriumBlood_initial,
+        Compliance=LeftAtriumCompliance,
+        nPorts=2) "Heart atrium"
+        annotation (Placement(transformation(extent={{59,-9},{79,11}})));
+      Components.LeftHeartCoronary leftTissue(
+        redeclare package Blood = Blood,
+        BasicLargeVeselsConductance=LeftCoronaryLarge,
+        BasicSmallVeselsConductance=LeftCoronarySmall)
+        annotation (Placement(transformation(extent={{70,-76},{50,-56}})));
+    equation
+    //  rightHeart.atriumBlood = sum3.u[1];
+    //  leftHeart.atriumBlood = sum2.u[1];
+      connect(SA_node.Rate, busConnector.HeartVentricleRate) annotation (Line(
+          points={{-38.2,86},{6,86},{6,44},{6,44},{6,42},{6,42}},
+          color={0,0,127},
+          smooth=Smooth.None), Text(
+          string="%second",
+          index=1,
+          extent={{6,3},{6,3}}));
+      connect(busConnector.BetaPool_Effect,SA_node. BetaPool_Effect)
+        annotation (Line(
+          points={{6,42},{6,76},{-96,76},{-96,92},{-58,92}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}}));
+      connect(busConnector.BetaBlocade_Effect,SA_node. BetaBlockade_Effect)
+        annotation (Line(
+          points={{6,42},{6,76},{-96,76},{-96,88},{-58,88}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}}));
+      connect(busConnector.VagusNerve_NA_Hz, SA_node.VagusNerve_NA_Hz)
+        annotation (Line(
+          points={{6,42},{6,76},{-96,76},{-96,80},{-58,80}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}}));
+      connect(busConnector.GangliaGeneral_NA, SA_node.GangliaGeneral_NA)
+        annotation (Line(
+          points={{6,42},{6,76},{-96,76},{-96,84},{-58,84}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}}));
+      connect(busConnector,atriopeptin. busConnector)
+                                              annotation (Line(
+          points={{6,42},{6,76},{74,76},{74,80}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None));
+    connect(lowPressureReceptors.NA, busConnector.AtrialLowPressureReceptors_NA)
+      annotation (Line(
+        points={{-30,54},{6,54},{6,42}},
+        color={0,0,127},
+        smooth=Smooth.None), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}}));
+      connect(fromLeftVentricle, fromLeftVentricle) annotation (Line(
+          points={{20,10},{20,10}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pressureMeasure.q_in, rightAtrium) annotation (Line(
+          points={{-88,58},{-88,-4},{-90,-4}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pressureMeasure.pressure, lowPressureReceptors.pericardiumPressure)
+        annotation (Line(points={{-78,60},{-49.8,60}}, color={0,0,127}));
+      connect(RightVentricle.q_in, RightAtrium.q_in[1]) annotation (Line(
+          points={{-38.4,-6.4},{-38.4,-6},{-66,-6},{-66,-5.86667},{-67.1,
+              -5.86667}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(rightAtrium, RightAtrium.q_in[2]) annotation (Line(
+          points={{-90,-4},{-67.1,-4},{-67.1,-5}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(RightVentricle.q_out, fromRightVentricle) annotation (Line(
+          points={{-29.6,-2},{-28,-2},{-28,10},{-12,10}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(busConnector, RightVentricle.busConnector) annotation (Line(
+          points={{6,42},{6,22},{-34,22},{-34,-35.88}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(RightVentricle.MotionPower, rightTissue.motionPower) annotation (
+          Line(points={{-47.2,-24},{-58,-24},{-58,-59},{-57,-59}}, color={0,0,
+              127}));
+      connect(rightTissue.busConnector, busConnector) annotation (Line(
+          points={{-55.5,-61.3},{-54,-61.3},{-54,-36},{-34,-36},{-34,22},{6,22},
+              {6,42}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(rightTissue.q_out, RightAtrium.q_in[3]) annotation (Line(
+          points={{-65.8,-68},{-90,-68},{-90,-4},{-82,-4},{-82,-4.13333},{-67.1,
+              -4.13333}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(lowPressureReceptors.rightAtriumPressure, busConnector.Pericardium_Pressure)
+        annotation (Line(points={{-50,54},{-58,54},{-58,42},{6,42}}, color={0,0,
+              127}));
+      connect(RightAtrium.externalPressure, busConnector.Pericardium_Pressure)
+        annotation (Line(points={{-60,4},{-60,22},{6,22},{6,42}}, color={0,0,
+              127}));
+      connect(leftAtriumTMP.pressure, lowPressureReceptors.leftAtriumPressure)
+        annotation (Line(points={{-66,46},{-66,48},{-50,48}}, color={0,0,127}));
+      connect(leftAtriumTMP.q_in, leftAtrium) annotation (Line(
+          points={{-76,44},{-76,34},{96,34},{96,-2}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(fromLeftVentricle, rightTissue.q_in) annotation (Line(
+          points={{20,10},{12,10},{12,-68},{-34,-68}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(leftAtrium, LeftAtrium.q_in[1]) annotation (Line(
+          points={{96,-2},{96,0.35},{68.9,0.35}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(LeftAtrium.q_in[2], LeftVentricle.q_in) annotation (Line(
+          points={{68.9,1.65},{68.9,0},{46.4,0},{46.4,-0.4}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(LeftVentricle.q_out, fromLeftVentricle) annotation (Line(
+          points={{37.6,4},{36,4},{36,10},{20,10}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(leftTissue.q_in, fromLeftVentricle) annotation (Line(
+          points={{44,-66},{44,-68},{12,-68},{12,10},{20,10}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(leftTissue.q_out, rightAtrium) annotation (Line(
+          points={{75.8,-66},{90,-66},{90,-92},{-90,-92},{-90,-4}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(LeftVentricle.MotionPower, leftTissue.motionPower) annotation (
+          Line(points={{55.2,-18},{66,-18},{66,-57},{67,-57}}, color={0,0,127}));
+      connect(busConnector, LeftVentricle.busConnector) annotation (Line(
+          points={{6,42},{6,22},{42,22},{42,-29.88}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(leftTissue.busConnector, busConnector) annotation (Line(
+          points={{65.5,-59.3},{62,-59.3},{62,-30},{42,-30},{42,22},{6,22},{6,
+              42}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(LeftAtrium.externalPressure, busConnector.Pericardium_Pressure)
+        annotation (Line(points={{76,10},{76,22},{6,22},{6,42}}, color={0,0,127}));
+      annotation ( Icon(coordinateSystem(
+              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            graphics={                Text(
+              extent={{-164,-60},{156,-88}},
+              lineColor={0,0,255},
+              textString="%name")}),
+        Documentation(info="<html>
+<p>Calculates hearth pumping (left and right atria and ventricles, as wel as coronary circulation). By pressure-flow connectors communicate with pulmonary and systemic circulation.</p>
+<p>Blood volume (and pressure) distributions between </p>
+<ul>
+<li>right/left atrium and</li>
+<li>right/left ventricle.</li>
+</ul>
+<p>Generate average blood flow throught ventricles.</p>
+<p>On the contrary of Tom Coleman models: coronary circulation outflows to right atrium, average blood volume in the hearth are calculated more simple (with the same results in steady state).</p>
+<p><h4></p><p>New heart energy balance</h4></p>
+<p><br>left: 1.41 W(const BasalCals), HR*P*V 1.4 W </p>
+<p>right: 0.21 W (const BasalCals), HR*P*V 0.19 W </p>
+<p><br>Effeciency by</p>
+<p>https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.660639</p>
+<p>is 25&percnt; (basal metabolism included).</p>
+<p><br>Optimal values:</p>
+<p>Left heart:</p>
+<p>90mmHg= 12000Pa</p>
+<p>75ml = 0.000075m3</p>
+<p>75bpm = 1.25Hz</p>
+<p>= 1.125 W (mechanical work)</p>
+<p>4.5 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>1.41 W (basal metabolism)</p>
+<p>36&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br>Right heart:</p>
+<p>12.4mmHg=1653Pa</p>
+<p>75ml= 0.000075m3</p>
+<p>75bpm=1.25Hz</p>
+<p>= 0.155 W (mechanical work)</p>
+<p>/0.25 = 0.62 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>0.21 W (basal metabolism)</p>
+<p>38&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br><b>Old estimation of heart energy balance</b></p>
+<p><br>left: 1.67 W (const MotionCals) , 6.07 W (const HeatCals), 1.41 W(const BasalCals) = 7.74 W + 1.41 W = 9.15 W</p>
+<p>right: 0.35 W (const MotionCals) , 1.19 W (const HeatCals), 0.21 W (const BasalCals) = 1.54 W + 0.21 W</p>
+</html>",
+        revisions="<html>
+
+<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\"><tr>
+<td><p>Author:</p></td>
+<td><p>Marek Matejak</p></td>
+</tr>
+<tr>
+<td><p>Design:</p></td>
+<td><p>Zuzana Rubaninska</p></td>
+</tr>
+<tr>
+<td><p>License:</p></td>
+<td><p><a href=\"http://www.physiomodel.org/license.html\">Physiomodel License 1.0</a> </p></td>
+</tr>
+
+<tr>
+<td><p>Date of:</p></td>
+<td><p>january 2009, August 2010</p></td>
+</tr>
+<tr>
+<td><p>References:</p></td>
+<td><p>Tom Coleman: QHP 2008 beta 3,, Physiomodel 2010, University of Mississippi Medical Center</p></td>
+</tr>
+</table>
+<br/><p>Copyright &copy; 2014 Marek Matejak, Charles University in Prague.</p><br/>
+
+</html>"));
+    end Heart2;
+
     model Heart
        extends Physiolibrary.Icons.Heart;
        import Physiolibrary.Types.*;
@@ -361,12 +818,38 @@ package Organs
         Documentation(info="<html>
 <p>Calculates hearth pumping (left and right atria and ventricles, as wel as coronary circulation). By pressure-flow connectors communicate with pulmonary and systemic circulation.</p>
 <p>Blood volume (and pressure) distributions between </p>
-<p><ul>
+<ul>
 <li>right/left atrium and</li>
 <li>right/left ventricle.</li>
-</ul></p>
+</ul>
 <p>Generate average blood flow throught ventricles.</p>
 <p>On the contrary of Tom Coleman models: coronary circulation outflows to right atrium, average blood volume in the hearth are calculated more simple (with the same results in steady state).</p>
+<p><h4></p><p>New heart energy balance</h4></p>
+<p><br>left: 1.41 W(const BasalCals), HR*P*V 1.4 W </p>
+<p>right: 0.21 W (const BasalCals), HR*P*V 0.19 W </p>
+<p><br>Effeciency by</p>
+<p>https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.660639</p>
+<p>is 25&percnt; (basal metabolism included).</p>
+<p><br>Optimal values:</p>
+<p>Left heart:</p>
+<p>90mmHg= 12000Pa</p>
+<p>75ml = 0.000075m3</p>
+<p>75bpm = 1.25Hz</p>
+<p>= 1.125 W (mechanical work)</p>
+<p>4.5 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>1.41 W (basal metabolism)</p>
+<p>36&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br>Right heart:</p>
+<p>12.4mmHg=1653Pa</p>
+<p>75ml= 0.000075m3</p>
+<p>75bpm=1.25Hz</p>
+<p>= 0.155 W (mechanical work)</p>
+<p>/0.25 = 0.62 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>0.21 W (basal metabolism)</p>
+<p>38&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br><b>Old estimation of heart energy balance</b></p>
+<p><br>left: 1.67 W (const MotionCals) , 6.07 W (const HeatCals), 1.41 W(const BasalCals) = 7.74 W + 1.41 W = 9.15 W</p>
+<p>right: 0.35 W (const MotionCals) , 1.19 W (const HeatCals), 0.21 W (const BasalCals) = 1.54 W + 0.21 W</p>
 </html>",
         revisions="<html>
 
@@ -414,14 +897,14 @@ package Organs
           annotation (Placement(transformation(extent={{-75,-1},{-55,19}})));
         Types.Constants.VolumeConst AtriumV0(k=0)
           annotation (Placement(transformation(extent={{-84,20},{-76,28}})));
-        Components.Ventricle ventricle(
+        Components.Ventricle ventricleMechanics(
           NormalExternalPressure=NormalPericardiumPressure,
           redeclare package Blood = Blood,
           stateName=VentricleStateName,
           n_Diastole=n_Diastole,
           n_Systole=n_Systole,
           BasicCompliance(displayUnit="ml/mmHg") = VentricleBasicCompliance,
-          additionalPressure_Systolic(displayUnit="mmHg")=
+          additionalPressure_Systolic(displayUnit="mmHg") =
             additionalPressure_Systolic,
           initialVol=Ventricle_initial,
           NormalEndDiastolicVolume=NormalEndDiastolicVolume,
@@ -432,8 +915,8 @@ package Organs
           contractilityBasic=contractilityBasic,
           K=K,
           AmbientPressure=system.p_ambient)
-          annotation (Placement(transformation(extent={{-6,-46},{-50,-2}})));
-        LeftHeartCoronary             coronary(
+          annotation (Placement(transformation(extent={{-4,-46},{-48,-2}})));
+        LeftHeartCoronary tissue(
           redeclare package Blood = Blood,
           BasicLargeVeselsConductance=CoronaryLarge,
           BasicSmallVeselsConductance=CoronarySmall)
@@ -552,14 +1035,6 @@ package Organs
               rotation=270,
               origin={0,-100})));
 
-        Metabolism metabolism(
-          redeclare package Blood = Blood,
-          StructureEffect=StructureEffect,
-          BasalPowerPerKg=BasalPowerPerKg,
-          TissueSize=TissueSize,
-          MotionCals=MotionCals,
-          HeatCals=HeatCals) annotation (Placement(transformation(rotation=0,
-                extent={{28,34},{48,54}})));
       equation
 
 
@@ -567,22 +1042,24 @@ package Organs
             points={{-72,18},{-72,24},{-75,24}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(ventricle.q_in, Atrium.q_in[2]) annotation (Line(
-            points={{-32.4,-6.4},{-32.4,9.65},{-65.1,9.65}},
+        connect(ventricleMechanics.q_in, Atrium.q_in[2]) annotation (Line(
+            points={{-30.4,-6.4},{-30.4,9.65},{-65.1,9.65}},
             color={127,0,0},
             thickness=0.5));
         connect(externalPressure, Atrium.externalPressure) annotation (Line(points={{-70,
                 90},{-70,58},{-58,58},{-58,18}}, color={0,0,127}));
         connect(atriumV0, AtriumV0.y) annotation (Line(points={{-50,-100},{-50,
                 24},{-75,24}}, color={0,0,127}));
-        connect(busConnector, coronary.busConnector) annotation (Line(points={{98,-62},
-                {46,-62},{46,-36},{18,-36},{18,90},{34.5,90},{34.5,82.7}}, color={0,0,
-                255}));
-        connect(ventricleBlood, ventricle.Vol) annotation (Line(points={{40,-100},{40,
-                -42},{-32,-42},{-32,-32.8},{-36.8,-32.8}},     color={0,0,127}));
-        connect(busConnector, ventricle.busConnector) annotation (Line(points={{98,-62},
-                {46,-62},{46,-36},{-28,-36},{-28,-35.88}}, color={0,0,255}));
-        connect(fromCoronary, coronary.q_out) annotation (Line(
+        connect(busConnector, tissue.busConnector) annotation (Line(points={{98,
+                -62},{46,-62},{46,-36},{18,-36},{18,90},{34.5,90},{34.5,82.7}},
+              color={0,0,255}));
+        connect(ventricleBlood, ventricleMechanics.Vol) annotation (Line(points
+              ={{40,-100},{40,-42},{-34,-42},{-34,-32.8},{-34.8,-32.8}}, color=
+                {0,0,127}));
+        connect(busConnector, ventricleMechanics.busConnector) annotation (Line(
+              points={{98,-62},{46,-62},{46,-36},{-26,-36},{-26,-35.88}}, color
+              ={0,0,255}));
+        connect(fromCoronary, tissue.q_out) annotation (Line(
             points={{-36,76},{24.2,76}},
             color={127,0,0},
             thickness=0.5));
@@ -590,11 +1067,11 @@ package Organs
             points={{-99,9},{-100,9},{-100,8},{-74,8},{-74,8.35},{-65.1,8.35}},
             color={127,0,0},
             thickness=0.5));
-        connect(ventricle.q_out, fromVentricle) annotation (Line(
-            points={{-23.6,-2},{-22,-2},{-22,9},{-3,9}},
+        connect(ventricleMechanics.q_out, fromVentricle) annotation (Line(
+            points={{-21.6,-2},{-22,-2},{-22,9},{-3,9}},
             color={127,0,0},
             thickness=0.5));
-        connect(coronary.q_in, toCorronary) annotation (Line(
+        connect(tissue.q_in, toCorronary) annotation (Line(
             points={{56,76},{82,76}},
             color={127,0,0},
             thickness=0.5));
@@ -602,12 +1079,6 @@ package Organs
                 1},{-55,-70},{0,-70},{0,-102}}, color={0,0,127}));
         connect(atriumBlood, atriumBlood)
           annotation (Line(points={{0,-102},{0,-102}}, color={0,0,127}));
-        connect(metabolism.y,       coronary.power) annotation (Line(points={{42,34},
-                {42,32},{20,32},{20,85},{33,85}},   color={0,0,127}));
-        connect(coronary.q_out,metabolism.port) annotation (Line(
-            points={{24.2,76},{24.2,54.0909},{28,54.0909},{28,54}},
-            color={127,0,0},
-            thickness=0.5));
         annotation (Icon(graphics={Text(
                 extent={{-158,-108},{160,-140}},
                 textColor={28,108,200},
@@ -686,11 +1157,9 @@ package Organs
           annotation (Placement(transformation(extent={{28,-96},{48,-76}})));
         Modelica.Blocks.Math.Product power
           annotation (Placement(transformation(extent={{74,-86},{94,-66}})));
-        Types.RealIO.PowerOutput Power annotation (Placement(transformation(extent={{
-                  100,-78},{106,-72}}), iconTransformation(
-              extent={{-20,-20},{20,20}},
-              rotation=270,
-              origin={86,-52})));
+        Types.RealIO.PowerOutput MotionPower annotation (Placement(
+              transformation(extent={{4,-56},{10,-50}}), iconTransformation(
+                extent={{40,-20},{80,20}}, rotation=0)));
       equation
         connect(basicContractility.y, betaReceptorsActivityFactor.yBase)
                                                                annotation (Line(
@@ -766,10 +1235,6 @@ package Organs
             points={{1,-6},{8,-6},{8,12},{4,12},{4,18},{10,18}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(ventricle.Volume, Vol)                 annotation (Line(
-            points={{12.4,75},{62,75},{62,33},{73,33}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(BloodFlow.u2, busConnector.HeartVentricleRate)
           annotation (Line(
             points={{22,18},{22,2}},
@@ -821,8 +1286,8 @@ package Organs
             horizontalAlignment=TextAlignment.Right));
         connect(product1.y, power.u2) annotation (Line(points={{49,-86},{60,-86},{60,-82},
                 {72,-82}}, color={0,0,127}));
-        connect(power.y, Power)
-          annotation (Line(points={{95,-76},{95,-75},{103,-75}}, color={0,0,127}));
+        connect(power.y, MotionPower) annotation (Line(points={{95,-76},{95,-53},
+                {7,-53}}, color={0,0,127}));
        annotation (
           Documentation(info="<HTML>
 <PRE>
@@ -1380,16 +1845,32 @@ SYSTOLE
       end BetaReceptorsActivityFactor;
 
       model LeftHeartCoronary "Coronary perfusion of left heart"
-        extends Physiolibrary.Organs.Interfaces.Heart2(
-          BasicSmallVeselsConductance(displayUnit="ml/(mmHg.min)") = 3.1252565660236e-10,
-          BasicLargeVeselsConductance(displayUnit="ml/(mmHg.min)") = 5.0004105056377e-09,
-                                                      Vasculature(stateName=
-                "LeftHeart-Vasculature.Effect"),
-          elasticVessel(useSubstances=true, nPorts=6));
 
-        extends Physiolibrary.Icons.LeftHeart;
+         extends Physiolibrary.Icons.PerfusionDO;
+         extends Physiolibrary.Icons.LeftHeart;
+         extends Icons.MetabolismPart;
+
+
+        replaceable package Blood = Physiolibrary.Media.Blood2 constrainedby
+          Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
+          //Physiolibrary.Media.BloodBySiggaardAndersen
+
+        parameter Physiolibrary.Types.HydraulicConductance BasicLargeVeselsConductance( displayUnit="ml/(min.mmHg)") = 5.0004105056377e-09;
+        parameter Physiolibrary.Types.HydraulicConductance BasicSmallVeselsConductance( displayUnit="ml/(min.mmHg)") = 3.1252565660236e-10;
 
         parameter Boolean FunctionFailed=false "true if function failed";
+
+          parameter Types.Fraction StructureEffect=1 "Structure effect on metabolism (1..OK, 0..zero basal functions)";
+          parameter Types.PowerPerMass BasalPowerPerKg=5.5398342
+                                                       "Rate of energy consumption by basal metabolism in 1 kg of tissue";
+          parameter Types.Mass TissueSize=0.0385
+                                          "Tissue mass";
+       /*   parameter Types.Power MotionCals(displayUnit="cal/min")=0.3489
+                                     "Rate of energy consumption caused by motion";
+    parameter Types.Power HeatCals(displayUnit="cal/min")=1.18626
+    "Rate of energy consumption caused by heat prosuction"; */
+
+          parameter Types.Fraction MotionEffeciency = 0.37 "Motion effeciency without basal metabolism";
 
           Fluid.Sensors.PartialPressure pO2(
           redeclare package stateOfMatter =
@@ -1397,12 +1878,11 @@ SYSTOLE
           substanceData=Chemical.Substances.Oxygen_gas(),
           redeclare package Medium = Blood)
           annotation (Placement(transformation(extent={{34,16},{14,36}})));
-        Modelica.Fluid.Sensors.TraceSubstances vasopressin(redeclare package
-            Medium =
+        Modelica.Fluid.Sensors.TraceSubstances vasopressin(redeclare package Medium =
               Blood, substanceName="Vasopressin")
-          annotation (Placement(transformation(extent={{-66,46},{-46,66}})));
+          annotation (Placement(transformation(extent={{-68,58},{-48,78}})));
         Modelica.Blocks.Sources.BooleanConstant FunctionFailed_(k=FunctionFailed)
-          annotation (Placement(transformation(extent={{-10,36},{0,46}})));
+          annotation (Placement(transformation(extent={{-8,34},{2,44}})));
         Physiolibrary.Organs.Blood.ViscosityConductanceEffect
           viscosityConductanceEffect
           annotation (Placement(transformation(extent={{-54,18},{-34,38}})));
@@ -1412,12 +1892,12 @@ SYSTOLE
         Modelica.Fluid.Sensors.TraceSubstances anesthesiaVascularConductance(
             redeclare package Medium = Blood, substanceName="AnesthesiaVascularConductance")
           annotation (Placement(transformation(extent={{-44,66},{-24,86}})));
-        Types.RealIO.PowerInput power(displayUnit="cal/min")
-          "Total rate of consumed energy by metabolism" annotation (Placement(
-              transformation(
+        Types.RealIO.PowerInput motionPower(displayUnit="cal/min")
+          "Total rate of motion energy (external work per time)" annotation (
+            Placement(transformation(
               rotation=0,
               extent={{-10,-10},{10,10}},
-              origin={-66,-66}), iconTransformation(
+              origin={-96,-52}), iconTransformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-70,90})));
@@ -1426,49 +1906,221 @@ SYSTOLE
         "0.2093 ml/cal,  4.1864 J/cal, 22710.95322615 ml/mol"
           annotation (Placement(transformation(extent={{4,-4},{-4,4}},
               rotation=180,
-              origin={-38,-66})));
+              origin={52,20})));
+      Fluid.Sensors.VolumeFlowMeasure               flowMeasure(redeclare
+            package
+            Medium = Blood)                                     annotation (
+          Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            origin={88,0})));
+      Blocks.Factors.Spline               PO2Effect(data={{12,2.0,0},{17,1.0,-0.04},{30,
+              0.8,0}}, Xscale=101325/760)
+        annotation (Placement(transformation(extent={{60,20},{80,40}})));
+      Blocks.Factors.Spline               ADHEffect2(data={{0.8,1.0,0},{3.0,0.1,0}},
+            UsePositiveLog10=true)
+        annotation (Placement(transformation(extent={{60,58},{80,78}})));
+      Blocks.Factors.Spline               MetabolismEffect(data={{30,1.0,0},{100,3.0,0}},
+            Xscale=1/1362657.193569)
+        "O2Need 1 ml_STP/min = 1/1362657.193569 mol/s"
+        annotation (Placement(transformation(extent={{60,10},{80,30}})));
+      Blocks.Factors.Normalization               Anesthesia
+        annotation (Placement(transformation(extent={{60,66},{80,86}})));
+      Types.Constants.HydraulicConductanceConst
+        LargeVesselBasicConductance(k=BasicLargeVeselsConductance)
+        annotation (Placement(transformation(extent={{-6,18},{-18,30}})));
+      Blocks.Factors.Normalization               Viscosity1
+        annotation (Placement(transformation(extent={{-30,4},{-10,24}})));
+      Types.Constants.HydraulicConductanceConst
+        SmallVesselBasicConductance(k=BasicSmallVeselsConductance)
+        annotation (Placement(transformation(extent={{90,86},{78,98}})));
+      Blocks.Factors.DamagedFraction               Infraction
+        annotation (Placement(transformation(extent={{60,2},{80,22}})));
+        Blocks.Factors.SplineLagOrZero                            Vasculature(
+          data={{41,1.2,0},{51,1.0,-0.03},{61,0.8,0}},
+          HalfTime=30*86400*Modelica.Math.log(2),
+          integrator(y_start=1.2),
+          Xscale=101325/760)
+          annotation (Placement(transformation(extent={{60,30},{80,50}})));
+      Blocks.Factors.Normalization               Viscosity
+        annotation (Placement(transformation(extent={{60,74},{80,94}})));
+      Fluid.Components.Conductor               resistor2_1(redeclare package Medium =
+              Blood, useConductanceInput=true)
+        annotation (Placement(transformation(extent={{60,-10},{80,10}})));
+      Fluid.Components.Conductor               resistor2_2(redeclare package Medium =
+              Blood, useConductanceInput=true)
+        annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+        Fluid.Components.ElasticVessel elasticVessel(
+          redeclare package Medium = Blood,
+          useSubstances=true,
+          volume_start=1e-06,
+          Compliance=7.5006157584566e-10,
+          nPorts=7)
+          annotation (Placement(transformation(extent={{20,-10},{40,10}})));
+        Physiolibrary.Organs.Components.AplhaReceptorsActivityFactor2
+          aplhaReceptorsActivityFactor2_1(redeclare package Blood = Blood)
+          annotation (Placement(transformation(extent={{60,46},{80,66}})));
+      Fluid.Interfaces.FluidPort_a               q_in(redeclare package Medium =
+              Blood)                                  "Blood inflow"
+        annotation ( Placement(transformation(extent={{100,-10},{120,10}},
+                                 rotation=0),
+                                      iconTransformation(extent={{150,-10},{
+                170,10}})));
+      Fluid.Interfaces.FluidPort_b               q_out(redeclare package Medium =
+              Blood)
+        "Blood outflow"
+        annotation ( Placement(transformation(extent={{-110,-10},{-90,10}},
+                                 rotation=0),
+                                        iconTransformation(extent={{-168,-10},
+                {-148,10}})));
+      Types.BusConnector               busConnector
+        "signals of organ bood flow resistence" annotation (Placement(
+            transformation(extent={{-100,80},{-80,100}}), iconTransformation(
+              extent={{-64,58},{-46,76}})));
+        Types.RealIO.VolumeFlowRateOutput               BloodFlow
+                                                 annotation (Placement(transformation(
+                extent={{92,14},{104,26}}),  iconTransformation(extent={{60,-60},{80,
+                  -40}})));
+        Metabolism metabolism(
+          redeclare package Blood = Blood,
+          StructureEffect=StructureEffect,
+          BasalPowerPerKg=BasalPowerPerKg,
+          TissueSize=TissueSize,
+          MotionEffeciency=MotionEffeciency)
+                                 annotation (Placement(transformation(rotation=0,
+                extent={{24,-62},{44,-42}})));
       equation
-        connect(vasopressin.C, ADHEffect2.u) annotation (Line(points={{-45,56},{8,56},
-                {8,68},{62,68}},  color={0,0,127}));
+        connect(vasopressin.C, ADHEffect2.u) annotation (Line(points={{-47,68},{-47,62},
+                {54,62},{54,68},{62,68}},
+                                  color={0,0,127}));
         connect(FunctionFailed_.y, Vasculature.Failed)
-          annotation (Line(points={{0.5,41},{0.5,40},{8,40},{8,44},{60,44}},
-                                                      color={255,0,255}));
+          annotation (Line(points={{2.5,39},{2.5,38},{10,38},{10,40},{52,40},{52,44},{
+                60,44}},                              color={255,0,255}));
         connect(elasticVessel.q_in[3], vasopressin.port) annotation (Line(
-            points={{29.9,0},{30,0},{30,-28},{-58,-28},{-58,46},{-56,46}},
+            points={{29.9,-0.371429},{29.9,12},{8,12},{8,50},{-74,50},{-74,58},{-58,58}},
             color={127,0,0},
             thickness=0.5));
         connect(elasticVessel.q_in[4], Hct.port) annotation (Line(
-            points={{29.9,0},{29.9,-28},{-58,-28},{-58,8},{-80,8},{-80,14}},
+            points={{29.9,-5.55112e-17},{29.9,12},{8,12},{8,50},{-64,50},{-64,6},{-80,
+                6},{-80,14}},
             color={127,0,0},
             thickness=0.5));
         connect(viscosityConductanceEffect.effect, Viscosity1.u) annotation (Line(
               points={{-34,28},{-34,14},{-28,14}},
               color={0,0,127}));
         connect(viscosityConductanceEffect.effect, Viscosity.u) annotation (Line(
-              points={{-34,28},{-22,28},{-22,80},{54,80},{54,84},{62,84}},
+              points={{-34,28},{-22,28},{-22,64},{-10,64},{-10,84},{62,84}},
                          color={0,0,127}));
-        connect(elasticVessel.q_in[5], anesthesiaVascularConductance.port)
-          annotation (Line(
-            points={{29.9,0},{30,0},{30,-28},{-58,-28},{-58,42},{-34,42},{-34,66}},
+        connect(CalToO2.y, MetabolismEffect.u) annotation (Line(points={{56.4,20},{62,
+                20}},                                   color={0,0,127}));
+        connect(pO2.referenceFluidPort, elasticVessel.q_in[5]) annotation (Line(
+            points={{24,16.2},{24,14},{29.9,14},{29.9,0.371429}},
             color={127,0,0},
             thickness=0.5));
-        connect(CalToO2.y, MetabolismEffect.u) annotation (Line(points={{-33.6,
-                -66},{50,-66},{50,20},{62,20}},         color={0,0,127}));
-        connect(power, CalToO2.u)
-          annotation (Line(points={{-66,-66},{-42.8,-66}}, color={0,0,127}));
-        connect(pO2.referenceFluidPort, elasticVessel.q_in[6]) annotation (Line(
-            points={{24,16.2},{10,16.2},{10,0},{29.9,0}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(pO2.partialPressure, PO2Effect.u) annotation (Line(points={{34,
-                26},{34,40},{54,40},{54,30},{62,30}}, color={0,0,127}));
+        connect(pO2.partialPressure, PO2Effect.u) annotation (Line(points={{34,26},{34,
+                38},{54,38},{54,30},{62,30}},         color={0,0,127}));
         connect(pO2.partialPressure, Vasculature.u)
           annotation (Line(points={{34,26},{34,38},{60,38}}, color={0,0,127}));
         connect(elasticVessel.substances[Blood.S.O2], pO2.port_a) annotation (
-            Line(points={{20,0},{20,-8},{12,-8},{12,18},{8,18},{8,26},{14,26}},
+            Line(points={{20,0},{4,0},{4,26},{14,26}},
               color={158,66,200}));
         connect(Hct.Xi, viscosityConductanceEffect.hematocrit)
           annotation (Line(points={{-69,24},{-54,24}}, color={0,0,127}));
+        connect(anesthesiaVascularConductance.port, elasticVessel.q_in[6])
+          annotation (Line(points={{-34,66},{-34,50},{8,50},{8,12},{29.9,12},{29.9,0.742857}},
+                                                                               color={
+                0,127,255}));
+        connect(anesthesiaVascularConductance.C, Anesthesia.u)
+          annotation (Line(points={{-23,76},{62,76}}, color={0,0,127}));
+        connect(flowMeasure.q_in,q_in)  annotation (Line(
+            points={{98,0},{110,0}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(flowMeasure.volumeFlow,BloodFlow)
+          annotation (Line(points={{88,12},{88,20},{98,20}}, color={0,0,127}));
+        connect(LargeVesselBasicConductance.y,Viscosity1. yBase) annotation (Line(
+            points={{-19.5,24},{-20,24},{-20,16}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Viscosity.y,Anesthesia. yBase) annotation (Line(
+            points={{70,80},{70,78}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Viscosity.yBase,SmallVesselBasicConductance. y) annotation (
+            Line(
+            points={{70,86},{70,92},{76.5,92}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Anesthesia.y,ADHEffect2. yBase) annotation (Line(
+            points={{70,72},{70,70}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Vasculature.y,PO2Effect. yBase) annotation (Line(
+            points={{70,34},{70,32}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PO2Effect.y,MetabolismEffect. yBase) annotation (Line(
+            points={{70,26},{70,22}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(MetabolismEffect.y,Infraction. yBase) annotation (Line(
+            points={{70,16},{70,14}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(q_out,resistor2_2. q_in) annotation (Line(
+            points={{-100,0},{-30,0}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(resistor2_1.q_out,flowMeasure. q_out) annotation (Line(
+            points={{80,0},{78,0}},
+            color={0,0,0},
+            thickness=1,
+            smooth=Smooth.None));
+        connect(resistor2_1.cond,Infraction. y) annotation (Line(
+            points={{70,6},{70,8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(resistor2_2.cond,Viscosity1. y) annotation (Line(
+            points={{-20,6},{-20,10}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(resistor2_1.q_in,elasticVessel. q_in[1]) annotation (Line(
+            points={{60,0},{28,0},{28,-1.11429},{29.9,-1.11429}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(resistor2_2.q_out,elasticVessel. q_in[2]) annotation (Line(
+            points={{-10,0},{8,0},{8,-0.742857},{29.9,-0.742857}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(aplhaReceptorsActivityFactor2_1.port_a,elasticVessel. q_in[5])
+          annotation (Line(
+            points={{60,54},{30,54},{30,0.371429},{29.9,0.371429}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(ADHEffect2.y,aplhaReceptorsActivityFactor2_1. yBase) annotation (Line(
+              points={{70,64},{70,63}},                      color={0,0,127}));
+        connect(busConnector.GangliaGeneral_NA,aplhaReceptorsActivityFactor2_1. GangliaGeneral_NA)
+          annotation (Line(
+            points={{-90,90},{-90,50},{60.2,50}},
+            color={0,0,255},
+            thickness=0.5), Text(
+            string="%first",
+            index=-1,
+            extent={{-6,3},{-6,3}},
+            horizontalAlignment=TextAlignment.Right));
+        connect(Vasculature.yBase, aplhaReceptorsActivityFactor2_1.y)
+          annotation (Line(points={{70,46},{70,49}}, color={0,0,127}));
+        connect(CalToO2.u, metabolism.y) annotation (Line(points={{47.2,20},{44,20},{44,
+                -62},{38,-62}}, color={0,0,127}));
+        connect(metabolism.port, elasticVessel.q_in[7]) annotation (Line(points={{24,-42},
+                {30,-42},{30,1.11429},{29.9,1.11429}}, color={0,127,255}));
+        connect(motionPower, metabolism.motionPower)
+          annotation (Line(points={{-96,-52},{24,-52}}, color={0,0,127}));
+        annotation (Icon(graphics={Text(
+                extent={{-160,-100},{160,-140}},
+                textColor={127,0,0},
+                textString="%name")}));
       end LeftHeartCoronary;
 
       model RightHeartCoronary "Coronary perfusion of right heart"
@@ -1796,29 +2448,25 @@ vector of pressure-flow connectors.
           annotation (Placement(transformation(extent={{-46,34},{-26,54}})));
         Blocks.Factors.Spline Thyroid(data={{0,0.7,0},{8,1.0,0.4},{40,1.5,0}}, Xscale=
              1) "8 ug/dl = 8e-9/1e-4 kg/m3"
-          annotation (Placement(transformation(extent={{60,8},{80,28}})));
+          annotation (Placement(transformation(extent={{60,14},{80,34}})));
         Blocks.Factors.Spline HeatMetabolism_Skin(data={{10 + 273.15,0.0,0},{37 + 273.15,
               1.0,0.12},{40 + 273.15,1.5,0},{46 + 273.15,0.0,0}})
-          annotation (Placement(transformation(extent={{60,4},{80,24}})));
+          annotation (Placement(transformation(extent={{60,10},{80,30}})));
         Blocks.Factors.Normalization StructureEffect__
-          annotation (Placement(transformation(extent={{60,-6},{80,14}})));
+          annotation (Placement(transformation(extent={{60,0},{80,20}})));
         Types.Constants.PowerConst BasalPower(k=BasalPowerPerKg*TissueSize)
           "Rate of energy during basal metabolism (BasalCalsUsed*TissueSize)"
           annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
               rotation=270,
-              origin={69,31})));
+              origin={69,37})));
         Modelica.Blocks.Math.Sum TotalCaloriesUse(nin=3) annotation (Placement(
               transformation(
               extent={{-4.5,-4.5},{3.5,3.5}},
               rotation=270,
               origin={71.5,-20.5})));
-        Types.Constants.HeatFlowRateConst motionCals(k=MotionCals)
-          annotation (Placement(transformation(extent={{38,-12},{50,0}})));
-        Types.Constants.HeatFlowRateConst heatCals(k=HeatCals)
-          annotation (Placement(transformation(extent={{38,-30},{50,-18}})));
         Modelica.Blocks.Sources.Constant structureEffect(k=StructureEffect)
-          annotation (Placement(transformation(extent={{36,6},{48,18}})));
+          annotation (Placement(transformation(extent={{36,12},{48,24}})));
           replaceable package Blood = Media.Blood2               constrainedby
           Media.Interfaces.PartialMedium                                                                                                     "Blood medium model" annotation ( choicesAllMatching = true);
           parameter Types.Fraction StructureEffect=1 "Structure effect on metabolism (1..OK, 0..zero basal functions)";
@@ -1826,47 +2474,55 @@ vector of pressure-flow connectors.
                                                        "Rate of energy consumption by basal metabolism in 1 kg of tissue";
           parameter Types.Mass TissueSize=0.0385
                                           "Tissue mass";
-          parameter Types.Power MotionCals(displayUnit="cal/min")=0.3489
-                                           "Rate of energy consumption caused by motion";
-          parameter Types.Power HeatCals(displayUnit="cal/min")=1.18626
-                                         "Rate of energy consumption caused by heat prosuction";
+       /*   parameter Types.Power MotionCals(displayUnit="cal/min")=0.3489
+                                     "Rate of energy consumption caused by motion";
+    parameter Types.Power HeatCals(displayUnit="cal/min")=1.18626
+    "Rate of energy consumption caused by heat prosuction"; */
+
+          parameter Types.Fraction MotionEffeciency = 0.37 "Motion effeciency without basal metabolism";
         Modelica.Blocks.Interfaces.RealOutput y annotation (Placement(transformation(
                 rotation=0, extent={{30,-110},{50,-90}})));
         Modelica.Fluid.Interfaces.FluidPort_a port(redeclare package Medium = Blood)
           annotation (Placement(transformation(rotation=0, extent={{-110,90},{-90,110}})));
+        Types.RealIO.PowerInput motionPower "Power needed for motion"
+          annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+        Modelica.Blocks.Math.Gain motionHeat(k=1 - MotionEffeciency)
+          annotation (Placement(transformation(extent={{-20,-26},{0,-6}})));
       equation
         connect(temperature.T, HeatMetabolism_Skin.u) annotation (Line(points={{-29,44},
-                {-22,44},{-22,24},{16,24},{16,22},{50,22},{50,14},{62,14}}, color={0,0,
+                {-22,44},{-22,30},{16,30},{16,28},{50,28},{50,20},{62,20}}, color={0,0,
                 127}));
         connect(Thyroid.y,HeatMetabolism_Skin. yBase)       annotation (Line(
-            points={{70,14},{70,16}},
+            points={{70,20},{70,22}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(HeatMetabolism_Skin.y,StructureEffect__. yBase) annotation (Line(
-            points={{70,10},{72,10},{72,6},{70,6}},
+            points={{70,16},{72,16},{72,12},{70,12}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(BasalPower.y,Thyroid. yBase) annotation (Line(
-            points={{69,26},{70,26},{70,20}},
+            points={{69,32},{70,32},{70,26}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(motionCals.y,TotalCaloriesUse. u[2]) annotation (Line(points={{51.5,-6},
-                {56,-6},{56,-15.2},{71,-15.2}}, color={0,0,127}));
-        connect(heatCals.y,TotalCaloriesUse. u[3]) annotation (Line(points={{51.5,
-                -24},{60,-24},{60,-15.2},{71.2667,-15.2}},
-                                                      color={0,0,127}));
-        connect(StructureEffect__.y,TotalCaloriesUse. u[1]) annotation (Line(points={{70,0},{
+        connect(StructureEffect__.y,TotalCaloriesUse. u[1]) annotation (Line(points={{70,6},{
                 70,-10},{70.7333,-10},{70.7333,-15.2}},        color={0,0,127}));
-        connect(thyroxine.C,Thyroid. u) annotation (Line(points={{5,44},{54,44},{54,18},
-                {62,18}}, color={0,0,127}));
-        connect(structureEffect.y,StructureEffect__. u) annotation (Line(points={{48.6,
-                12},{54,12},{54,4},{62,4}}, color={0,0,127}));
+        connect(thyroxine.C,Thyroid. u) annotation (Line(points={{5,44},{54,44},{54,24},
+                {62,24}}, color={0,0,127}));
+        connect(structureEffect.y,StructureEffect__. u) annotation (Line(points={{48.6,18},
+                {54,18},{54,10},{62,10}},   color={0,0,127}));
         connect(y, TotalCaloriesUse.y) annotation (Line(points={{40,-100},{40,-62},{71,
                 -62},{71,-24.4}}, color={0,0,127}));
         connect(port, temperature.port) annotation (Line(points={{-100,100},{-100,32},
                 {-36,32},{-36,34}}, color={127,0,0}));
         connect(port, thyroxine.port) annotation (Line(points={{-100,100},{-100,32},{-6,
                 32},{-6,34}}, color={127,0,0}));
+        connect(motionPower, TotalCaloriesUse.u[2]) annotation (Line(points={{-100,0},
+                {72,0},{72,-15.2},{71,-15.2}}, color={0,0,127}));
+        connect(motionHeat.y, TotalCaloriesUse.u[3]) annotation (Line(points={{1,-16},
+                {62,-16},{62,-8},{71.2667,-8},{71.2667,-15.2}},
+                                                      color={0,0,127}));
+        connect(motionPower, motionHeat.u) annotation (Line(points={{-100,0},{-28,0},{
+                -28,-16},{-22,-16}}, color={0,0,127}));
       end Metabolism;
     end Components;
 
@@ -1937,13 +2593,6 @@ vector of pressure-flow connectors.
             transformation(extent={{12,-8},{32,12}}), iconTransformation(
               extent={{-10,-64},{10,-44}})));
 
-        Physiolibrary.Types.RealIO.VolumeOutput Vol
-                                            annotation (Placement(transformation(
-                extent={{70,30},{76,36}}),    iconTransformation(
-              extent={{-20,-20},{20,20}},
-              rotation=270,
-              origin={40,-40})));
-
        annotation (
           Documentation(info="<html>
 <pre>Heart ventricle interface.</pre>
@@ -1954,10 +2603,10 @@ vector of pressure-flow connectors.
 <li><i>2014</i><br>Marek Matejak - update to Physiolibrary 2.3.0</li>
 </ul>
 </html>"),Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},
-                {100,100}}),   graphics={Text(
-                extent={{-100,-126},{100,-92}},
-                textString="%name",
-                lineColor={0,0,255})}));
+                {100,100}}), graphics={Text(
+                extent={{-100,-100},{100,-120}},
+                textColor={127,0,0},
+                textString="%name")}));
       end IVentricle;
     end Interfaces;
 
@@ -9292,15 +9941,6 @@ Blood resistance in gastro interstitial tract.
           points={{70,80},{70,78}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(busConnector.Anesthesia_VascularConductance, Anesthesia.u)
-        annotation (Line(
-          points={{-90,90},{6,90},{6,76},{62,76}},
-          color={0,0,255},
-          thickness=0.5,
-          smooth=Smooth.None), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}}));
       connect(Viscosity.yBase, SmallVesselBasicConductance.y) annotation (
           Line(
           points={{70,86},{70,92},{76.5,92}},
@@ -9350,7 +9990,7 @@ Blood resistance in gastro interstitial tract.
           thickness=0.5));
       connect(aplhaReceptorsActivityFactor2_1.port_a, elasticVessel.q_in[5])
         annotation (Line(
-          points={{60,54},{48,54},{48,0},{29.9,0}},
+          points={{60,54},{30,54},{30,0},{29.9,0}},
           color={127,0,0},
           thickness=0.5));
       connect(ADHEffect2.y,aplhaReceptorsActivityFactor2_1. yBase) annotation (Line(

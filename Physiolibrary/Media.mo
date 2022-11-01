@@ -1274,7 +1274,8 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
               0.001, 0.018},
       C={0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,5.4,37.67,
          6.08,1.04,6.64,4.97,1.23,4.88e-2},
-      extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin","Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin","Desglymidodrine",
+      extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin","Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
+        "Desglymidodrine",
         "AlphaBlockers",
         "BetaBlockers",
         "AnesthesiaVascularConductance"},
@@ -1327,7 +1328,7 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
    constant String E_Units[nC]={"ng","ng","pmol","mU","ng","pmol","ug","ug",
              "ug", "%", "%","%"} "Units of extra substance amounts";
    constant Real EMMb[nC]={0.183204, 0.16918, 1.084, 5.808, 3.485, 28, 0.777, 16.026,
-             0.19723,0.3,0.26,0} "Molar mass of base molecules of extra substances";
+             0.19723,0.3,0.26,1} "Molar mass of base molecules of extra substances";
 
 
 
