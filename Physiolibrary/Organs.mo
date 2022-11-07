@@ -7431,7 +7431,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
 
-      Physiolibrary.Organs.Heart.Heart heart(redeclare package Blood =
+      Heart.Heart2                     heart2_1(
+                                             redeclare package Blood =
             Blood)
         annotation (Placement(transformation(extent={{-2,-6},{24,20}})));
       Physiolibrary.Organs.Lungs.Components.PulmonaryCirculation
@@ -7474,29 +7475,29 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(busConnector, heart.busConnector) annotation (Line(
+      connect(busConnector, heart2_1.busConnector) annotation (Line(
           points={{-27,1},{-25.5,1},{-25.5,3.1},{-2,3.1}},
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(heart.fromLeftVentricle, systemicCirculation.q_in) annotation (
-          Line(
+      connect(heart2_1.fromLeftVentricle, systemicCirculation.q_in) annotation
+        (Line(
           points={{21.4,-0.8},{21.4,0},{32,0},{32,-51}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(systemicCirculation.q_out, heart.rightAtrium) annotation (Line(
+      connect(systemicCirculation.q_out, heart2_1.rightAtrium) annotation (Line(
           points={{-2,-51},{-4,-51},{-4,14.8},{0.6,14.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_in, heart.fromRightVentricle) annotation (
-          Line(
+      connect(pulmonaryCirculation.q_in, heart2_1.fromRightVentricle)
+        annotation (Line(
           points={{2,64},{-8,64},{-8,0},{0.6,0},{0.6,-0.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_out, heart.leftAtrium) annotation (Line(
+      connect(pulmonaryCirculation.q_out, heart2_1.leftAtrium) annotation (Line(
           points={{30,64},{36,64},{36,16},{20,16},{20,14.54},{21.14,14.54}},
           color={0,0,0},
           thickness=1,
@@ -7981,7 +7982,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-      Physiolibrary.Organs.Heart.Heart heart(redeclare package Blood =
+      Heart.Heart2                     heart2_1(
+                                             redeclare package Blood =
             Blood)
         annotation (Placement(transformation(extent={{-2,-6},{24,20}})));
       Physiolibrary.Organs.Lungs.Components.PulmonaryCirculation
@@ -8022,29 +8024,29 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(busConnector, heart.busConnector) annotation (Line(
+      connect(busConnector, heart2_1.busConnector) annotation (Line(
           points={{-27,1},{-25.5,1},{-25.5,3.1},{-2,3.1}},
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(heart.fromLeftVentricle, systemicCirculation.q_in) annotation (
-          Line(
+      connect(heart2_1.fromLeftVentricle, systemicCirculation.q_in) annotation
+        (Line(
           points={{21.4,-0.8},{21.4,0},{32,0},{32,-51}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(systemicCirculation.q_out, heart.rightAtrium) annotation (Line(
+      connect(systemicCirculation.q_out, heart2_1.rightAtrium) annotation (Line(
           points={{-2,-51},{-4,-51},{-4,14.8},{0.6,14.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_in, heart.fromRightVentricle) annotation (
-          Line(
+      connect(pulmonaryCirculation.q_in, heart2_1.fromRightVentricle)
+        annotation (Line(
           points={{2,64},{-8,64},{-8,0},{0.6,0},{0.6,-0.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_out, heart.leftAtrium) annotation (Line(
+      connect(pulmonaryCirculation.q_out, heart2_1.leftAtrium) annotation (Line(
           points={{30,64},{36,64},{36,16},{20,16},{20,14.54},{21.14,14.54}},
           color={0,0,0},
           thickness=1,
@@ -13023,7 +13025,8 @@ QHP 2008 / LeftHeart-Flow
     model Cardiovascular
       replaceable package Blood = Physiolibrary.Media.Blood2                  constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
-      Systems.CardioVascularSystem cardioVascularSystem(redeclare package Blood =
+      Systems.CardioVascularSystem cardioVascularSystem2_1(
+                                                        redeclare package Blood =
             Blood)
         annotation (Placement(transformation(extent={{34,-16},{54,4}})));
       Types.BusConnector busConnector
@@ -13033,7 +13036,8 @@ QHP 2008 / LeftHeart-Flow
       Types.Constants.FractionConst Exercise_MusclePump_Effect(k=1)
         annotation (Placement(transformation(extent={{-58,-70},{-50,-62}})));
     equation
-      connect(busConnector, cardioVascularSystem.busConnector) annotation (Line(
+      connect(busConnector, cardioVascularSystem2_1.busConnector) annotation (
+          Line(
           points={{-24,16},{28,16},{28,2},{36,2}},
           color={0,0,255},
           thickness=0.5));
