@@ -1278,8 +1278,9 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         "Desglymidodrine",
         "AlphaBlockers",
         "BetaBlockers",
-        "AnesthesiaVascularConductance"},
+        "AnesthesiaVascularConductance","Angiotensin2","Renin","Aldosterone"},
       C_default=EC);
+
         //names: "Lipids","Ketoacids","Glucose","Lactate","AminoAcids","Urea",
            //MMb: 0.80645, 0.102, 0.1806,  0.09008, 0.1, 0.06006,
          //C: 1.23,4.88e-2,6.08,1.04,4.97,6.64
@@ -1319,16 +1320,22 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
         Desglymidodrine,
         AlphaBlockers,
         BetaBlockers,
-        AnesthesiaVascularConductance)
+        AnesthesiaVascularConductance,
+        Angiotensin2,
+        Renin,
+        Aldosterone)
           "Extra substances (e.g. signaling molecules, drugs)";
 
    constant Real EC[nC]={40,240,1.84,19.91,69.68,4.03,79.6,7.96,
-                         0,0,0,1} "Default amounts of extra substances per kilogram";
+                         0,0,0,1,
+                         20,2,0.33}  "Default amounts of extra substances per kilogram";
              //TODO: *0.994  .. change here and in all places where these values are in use
    constant String E_Units[nC]={"ng","ng","pmol","mU","ng","pmol","ug","ug",
-             "ug", "%", "%","%"} "Units of extra substance amounts";
+             "ug", "%", "%","%",
+             "pG/mL","GU/ml", "pmol/ml"} "Units of extra substance amounts";
    constant Real EMMb[nC]={0.183204, 0.16918, 1.084, 5.808, 3.485, 28, 0.777, 16.026,
-             0.19723,0.3,0.26,1} "Molar mass of base molecules of extra substances";
+             0.19723,0.3,0.26,1,
+             1.046,48,0.36044} "Molar mass of base molecules of extra substances";
 
 
 
