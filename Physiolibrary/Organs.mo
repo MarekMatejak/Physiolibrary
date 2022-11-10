@@ -73,7 +73,7 @@ package Organs
         annotation (Dialog(tab="Right heart",group="Systole"));
         parameter Physiolibrary.Types.Frequency RV_K=1
         "time adaptation coeficient of average ventricle blood volume"
-        annotation (Dialog(tab="Right heart"));
+        annotation (Dialog(tab="Right heart", group="Ventricle"));
 
           parameter Physiolibrary.Types.Volume LV_NormalEndDiastolicVolume=0.000125
       "Typical value of blood volume in ventricle after filling"
@@ -108,7 +108,7 @@ package Organs
         annotation (Dialog(tab="Left heart",group="Systole"));
         parameter Physiolibrary.Types.Frequency LV_K=0.016666666666667
         "time adaptation coeficient of average ventricle blood volume"
-        annotation (Dialog(tab="Left heart"));
+        annotation (Dialog(tab="Left heart", group="Ventricle"));
 
      //
     //
@@ -123,14 +123,7 @@ package Organs
        // Abasic_Diastole=0.00051,
     //    Cond1(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
     //    Cond2(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
-    Physiolibrary.Types.BusConnector busConnector
-        "signals of organ bood flow resistence"
-                                              annotation (Placement(
-          transformation(extent={{-10,-56},{10,-36}}),
-                                                    iconTransformation(extent={{70,-28},
-                {86,-12}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_a rightAtrium(redeclare package
-          Medium =
+    Physiolibrary.Fluid.Interfaces.FluidPort_a rightAtrium(redeclare package Medium =
             Blood)
       "blood inflow to right atrium" annotation (Placement(transformation(
             extent={{-102,58},{-82,78}}),  iconTransformation(extent={{-90,50},
@@ -143,8 +136,7 @@ package Organs
           Medium = Blood) "blood outflow to aorta" annotation (Placement(
             transformation(extent={{8,72},{28,92}}), iconTransformation(extent=
                 {{70,-70},{90,-50}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_a leftAtrium(redeclare package
-          Medium =
+    Physiolibrary.Fluid.Interfaces.FluidPort_a leftAtrium(redeclare package Medium =
             Blood)
       "blood inflow to left atrium" annotation (Placement(transformation(
             extent={{84,60},{104,80}}), iconTransformation(extent={{68,48},{88,
@@ -152,11 +144,9 @@ package Organs
       Components.SA_Node SA_node(SympatheticEffect=SA_SympatheticEffect,
           ParasympatheticEffect=SA_ParasympatheticEffect)
         annotation (Placement(transformation(extent={{62,-62},{42,-42}})));
-      Components.ANP atriopeptin
-        annotation (Placement(transformation(extent={{-78,-48},{-58,-28}})));
     Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare
-          package Medium =
-                   Blood)
+          package
+          Medium = Blood)
       annotation (Placement(transformation(extent={{-92,-74},{-72,-54}})));
       Components.BaroReceptors lowPressureReceptors(
         PressureChangeOnNA=AdaptationOnNA,
@@ -238,47 +228,34 @@ package Organs
         BasicSmallVeselsConductance=LeftCoronarySmall)
         annotation (Placement(transformation(extent={{70,-2},{50,18}})));
       Physiolibrary.Organs.Components.BetaReceptors betaReceptors(redeclare
-          package Blood = Blood,                                  useBase=false)
+          package
+          Blood =         Blood,                                  useBase=false)
         annotation (Placement(transformation(extent={{86,-42},{66,-22}})));
       Types.RealIO.PressureInput Pericardium "pericardium pressure" annotation (
          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={40,90}), iconTransformation(
+            origin={40,100}),iconTransformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={40,90})));
+            origin={40,100})));
       Types.RealIO.FrequencyInput Sympathicus "Ganglia general neural activity"
-        annotation (Placement(transformation(extent={{-72,10},{-52,30}}),
-            iconTransformation(extent={{-72,10},{-52,30}})));
+        annotation (Placement(transformation(extent={{-18,10},{2,30}}),
+            iconTransformation(extent={{-18,10},{2,30}})));
       Types.RealIO.FrequencyInput Parasympathicus "Vagus neural activity"
         annotation (Placement(transformation(extent={{-14,-42},{6,-22}}),
             iconTransformation(extent={{-72,-30},{-52,-10}})));
       Types.RealIO.FractionOutput AtrialLowPressureReceptors annotation (
           Placement(transformation(
-            extent={{-10,-10},{10,10}},
+            extent={{-9,-9},{9,9}},
             rotation=0,
-            origin={54,20}), iconTransformation(
-            extent={{-10,-10},{10,10}},
+            origin={11,-87}),iconTransformation(
+            extent={{-9,-9},{9,9}},
             rotation=0,
-            origin={54,20})));
+            origin={11,-87})));
     equation
     //  rightHeart.atriumBlood = sum3.u[1];
     //  leftHeart.atriumBlood = sum2.u[1];
-      connect(busConnector,atriopeptin. busConnector)
-                                              annotation (Line(
-          points={{0,-46},{-52,-46},{-52,-24},{-82,-24},{-82,-44},{-76,-44}},
-          color={0,0,255},
-          thickness=0.5,
-          smooth=Smooth.None));
-    connect(lowPressureReceptors.NA, busConnector.AtrialLowPressureReceptors_NA)
-      annotation (Line(
-        points={{-28,-74},{0,-74},{0,-46}},
-        color={0,0,127},
-        smooth=Smooth.None), Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}}));
       connect(leftVentricle, leftVentricle) annotation (Line(
           points={{18,82},{18,82}},
           color={127,0,0},
@@ -349,41 +326,45 @@ package Organs
           thickness=0.5));
       connect(betaReceptors.y, SA_node.BetaReceptorsEffect)
         annotation (Line(points={{76,-39},{76,-54},{62,-54}}, color={0,0,127}));
-      connect(SA_node.Rate, RightVentricle.HeartRate) annotation (Line(points={
-              {42.2,-52},{40,-52},{40,18},{-34,18},{-34,40}}, color={0,0,127}));
-      connect(SA_node.Rate, LeftVentricle.HeartRate) annotation (Line(points={{
-              42.2,-52},{40,-52},{40,40}}, color={0,0,127}));
+      connect(SA_node.Rate, RightVentricle.HeartRate) annotation (Line(points={{42.2,
+              -52},{40,-52},{40,-12},{-38.4,-12},{-38.4,40}}, color={0,0,127}));
+      connect(SA_node.Rate, LeftVentricle.HeartRate) annotation (Line(points={{42.2,
+              -52},{44.4,-52},{44.4,40}},  color={0,0,127}));
       connect(Pericardium, RightAtrium.externalPressure)
-        annotation (Line(points={{40,90},{-62,90},{-62,76}}, color={0,0,127}));
+        annotation (Line(points={{40,100},{-62,100},{-62,76}},
+                                                             color={0,0,127}));
       connect(Pericardium, LeftAtrium.externalPressure)
-        annotation (Line(points={{40,90},{76,90},{76,82}}, color={0,0,127}));
-      connect(RightVentricle.Pericardium, Pericardium) annotation (Line(points=
-              {{-26.8,54},{2,54},{2,90},{40,90}}, color={0,0,127}));
-      connect(LeftVentricle.Pericardium, Pericardium) annotation (Line(points={
-              {32.8,54},{2,54},{2,90},{40,90}}, color={0,0,127}));
+        annotation (Line(points={{40,100},{76,100},{76,82}},
+                                                           color={0,0,127}));
+      connect(RightVentricle.Pericardium, Pericardium) annotation (Line(points={{-27,54},
+              {2,54},{2,100},{40,100}},           color={0,0,127}));
+      connect(LeftVentricle.Pericardium, Pericardium) annotation (Line(points={{33,54},
+              {2,54},{2,100},{40,100}},         color={0,0,127}));
       connect(Sympathicus, LeftVentricle.GangliaGeneral) annotation (Line(
-            points={{-62,20},{2,20},{2,46},{32.8,46}}, color={0,0,127}));
+            points={{-8,20},{-8,46.2},{32.8,46.2}},    color={0,0,127}));
       connect(Sympathicus, RightVentricle.GangliaGeneral) annotation (Line(
-            points={{-62,20},{2,20},{2,46},{-26.8,46}}, color={0,0,127}));
+            points={{-8,20},{-8,46.2},{-26.8,46.2}},    color={0,0,127}));
       connect(Sympathicus, betaReceptors.GangliaGeneral) annotation (Line(
-            points={{-62,20},{90,20},{90,-38},{85.8,-38}}, color={0,0,127}));
+            points={{-8,20},{58,20},{58,22},{90,22},{90,-38},{85.8,-38}},
+                                                           color={0,0,127}));
       connect(Pericardium, lowPressureReceptors.rightAtriumPressure)
-        annotation (Line(points={{40,90},{-100,90},{-100,-74},{-48,-74}}, color=
+        annotation (Line(points={{40,100},{-100,100},{-100,-74},{-48,-74}},
+                                                                          color=
              {0,0,127}));
       connect(Sympathicus, leftTissue.Ganglia)
-        annotation (Line(points={{-62,20},{59,20},{59,13}}, color={0,0,127}));
-      connect(Sympathicus, rightTissue.Ganglia) annotation (Line(points={{-62,
-              20},{-47,20},{-47,13}}, color={0,0,127}));
+        annotation (Line(points={{-8,20},{59,20},{59,13}},  color={0,0,127}));
+      connect(Sympathicus, rightTissue.Ganglia) annotation (Line(points={{-8,20},
+              {-47,20},{-47,13}},     color={0,0,127}));
       connect(Parasympathicus, SA_node.VagusNerve_NA_Hz) annotation (Line(
             points={{-4,-32},{18,-32},{18,-64},{70,-64},{70,-58},{62,-58}},
             color={0,0,127}));
       connect(lowPressureReceptors.NA, AtrialLowPressureReceptors) annotation (
-          Line(points={{-28,-74},{0,-74},{0,20},{54,20}}, color={0,0,127}));
+          Line(points={{-28,-74},{11,-74},{11,-87}},      color={0,0,127}));
       annotation ( Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={                Text(
-              extent={{-164,-60},{156,-88}},
-              lineColor={0,0,255},
+              extent={{-154,-82},{166,-110}},
+              lineColor={162,29,33},
               textString="%name")}),
         Documentation(info="<html>
 <p>Calculates hearth pumping (left and right atria and ventricles, as wel as coronary circulation). By pressure-flow connectors communicate with pulmonary and systemic circulation.</p>
@@ -459,12 +440,10 @@ package Organs
        replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                    annotation ( choicesAllMatching = true);
 
-
        parameter String stateName;
 
        parameter Physiolibrary.Types.Pressure AmbientPressure
         "Environment ambient pressure";
-
 
           extends Physiolibrary.Icons.HeartVentricle;
         parameter Physiolibrary.Types.Volume initialVol = 90e-6
@@ -529,9 +508,6 @@ package Organs
                 {110,10}},       rotation=0),
                              iconTransformation(extent={{-30,90},{-10,110}})));
 
-
-
-
       Physiolibrary.Types.Constants.FractionConst
         basicContractility(k=contractilityBasic)
         annotation (Placement(transformation(extent={{60,6},{68,14}})));
@@ -585,32 +561,32 @@ package Organs
               rotation=90,
               origin={16,30})));
 
-        Modelica.Fluid.Sensors.RelativePressure relativePressure(redeclare
-            package Medium =
-                     Blood)
+        Modelica.Fluid.Sensors.RelativePressure StrokePressure(redeclare
+            package
+            Medium = Blood) "Pressure difference between systole and diastole"
           annotation (Placement(transformation(extent={{2,-70},{-18,-50}})));
         Modelica.Blocks.Math.Product EW "External work - energy of heart cycle"
-          annotation (Placement(transformation(extent={{28,-98},{46,-80}})));
+          annotation (Placement(transformation(extent={{26,-100},{44,-82}})));
         Modelica.Blocks.Math.Product power
           annotation (Placement(transformation(extent={{74,-86},{94,-66}})));
         Types.RealIO.PowerOutput MotionPower annotation (Placement(transformation(
-                extent={{4,-56},{10,-50}}), iconTransformation(extent={{40,-20},{80,20}},
+                extent={{92,-98},{98,-92}}),iconTransformation(extent={{40,-20},{80,20}},
                 rotation=0)));
         Types.RealIO.FrequencyInput HeartRate annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
-              origin={0,-70}), iconTransformation(
+              origin={22,-70}),iconTransformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
-              origin={0,-70})));
+              origin={22,-70})));
         Types.RealIO.FrequencyInput GangliaGeneral
           "Sympathicus neural activity from general ganglia" annotation (
-            Placement(transformation(extent={{-46,-50},{-26,-30}}),
-              iconTransformation(extent={{-46,-50},{-26,-30}})));
+            Placement(transformation(extent={{22,-26},{42,-6}}),
+              iconTransformation(extent={{-46,-49},{-26,-29}})));
         Types.RealIO.PressureInput Pericardium "pericardium pressure"
-          annotation (Placement(transformation(extent={{-46,-10},{-26,10}}),
-              iconTransformation(extent={{-46,-10},{-26,10}})));
+          annotation (Placement(transformation(extent={{-96,-92},{-76,-72}}),
+              iconTransformation(extent={{-45,-10},{-25,10}})));
       equation
         connect(basicContractility.y, sympatheticReceptors.yBase) annotation (
             Line(
@@ -662,37 +638,38 @@ package Organs
             points={{12,80},{100,80},{100,0}},
             color={127,0,0},
             thickness=0.5));
-        connect(q_in, relativePressure.port_b) annotation (Line(
+        connect(q_in, StrokePressure.port_b) annotation (Line(
             points={{-100,0},{-100,-60},{-18,-60}},
             color={127,0,0},
             thickness=0.5));
-        connect(q_out, relativePressure.port_a) annotation (Line(
+        connect(q_out, StrokePressure.port_a) annotation (Line(
             points={{100,0},{100,-60},{2,-60}},
             color={127,0,0},
             thickness=0.5));
-        connect(relativePressure.p_rel, EW.u1) annotation (Line(points={{-8,-69},
-                {-8,-83.6},{26.2,-83.6}}, color={0,0,127}));
-        connect(StrokeVolume.y, EW.u2) annotation (Line(points={{1,-6},{8,-6},{
-                8,-94.4},{26.2,-94.4}}, color={0,0,127}));
-        connect(EW.y, power.u2) annotation (Line(points={{46.9,-89},{60,-89},{
-                60,-82},{72,-82}}, color={0,0,127}));
+        connect(StrokePressure.p_rel, EW.u1) annotation (Line(points={{-8,-69},{-8,-85.6},
+                {24.2,-85.6}}, color={0,0,127}));
+        connect(StrokeVolume.y, EW.u2) annotation (Line(points={{1,-6},{8,-6},{8,-96.4},
+                {24.2,-96.4}},          color={0,0,127}));
+        connect(EW.y, power.u2) annotation (Line(points={{44.9,-91},{60,-91},{60,-82},
+                {72,-82}},         color={0,0,127}));
         connect(power.y, MotionPower)
-          annotation (Line(points={{95,-76},{95,-53},{7,-53}}, color={0,0,127}));
+          annotation (Line(points={{95,-76},{95,-95}},         color={0,0,127}));
         connect(sympatheticReceptors.port_a, systole.port) annotation (Line(
             points={{62,-12},{60,-12},{60,-44},{62,-44}},
             color={127,0,0},
             thickness=0.5));
-        connect(HeartRate, power.u1) annotation (Line(points={{0,-70},{18,-70},
-                {18,-70},{72,-70}}, color={0,0,127}));
-        connect(HeartRate, BloodFlow.u2) annotation (Line(points={{0,-70},{44,
-                -70},{44,12},{22,12},{22,18}}, color={0,0,127}));
+        connect(HeartRate, power.u1) annotation (Line(points={{22,-70},{72,-70}},
+                                    color={0,0,127}));
+        connect(HeartRate, BloodFlow.u2) annotation (Line(points={{22,-70},{22,18}},
+                                               color={0,0,127}));
         connect(GangliaGeneral, sympatheticReceptors.GangliaGeneral)
-          annotation (Line(points={{-36,-40},{14,-40},{14,-16},{62.2,-16}},
+          annotation (Line(points={{32,-16},{62.2,-16}},
               color={0,0,127}));
-        connect(Pericardium, systole.externalPressure) annotation (Line(points=
-                {{-36,0},{-16,0},{-16,-40},{52,-40}}, color={0,0,127}));
-        connect(diastole.externalPressure, Pericardium) annotation (Line(points=
-               {{-56,-40},{-70,-40},{-70,0},{-36,0}}, color={0,0,127}));
+        connect(Pericardium, systole.externalPressure) annotation (Line(points={{-86,-82},
+                {-50,-82},{-50,-46},{32,-46},{32,-40},{52,-40}},
+                                                      color={0,0,127}));
+        connect(diastole.externalPressure, Pericardium) annotation (Line(points={{-56,-40},
+                {-50,-40},{-50,-82},{-86,-82}},       color={0,0,127}));
        annotation (
           Documentation(info="<HTML>
 <PRE>
@@ -776,7 +753,11 @@ SYSTOLE
               textString="Mass_SteadyState"),     Text(
                 extent={{8,62},{32,60}},
                 lineColor={0,0,0},
-                textString="Blood_Inflow")}));
+                textString="Blood_Inflow")}),
+          Icon(graphics={Text(
+                extent={{-98,-100},{100,-120}},
+                textColor={162,29,33},
+                textString="%name")}));
       end Ventricle;
 
       model SA_Node
@@ -850,7 +831,7 @@ SYSTOLE
       //  useNormalizedVolume=false,
       Physiolibrary.Blocks.Factors.Spline LAPEffect(data={{0.0,0.0,0},{8.0,1.0,
             0.4},{20.0,10.0,0}}, Xscale=101325/760)
-        annotation (Placement(transformation(extent={{54,60},{34,80}})));
+        annotation (Placement(transformation(extent={{54,62},{34,82}})));
       Physiolibrary.Types.Constants.MolarFlowRateConst hormoneFlowConstant(k=
             6.8333333333333e-13)
         annotation (Placement(transformation(extent={{6,82},{-2,90}})));
@@ -908,8 +889,8 @@ SYSTOLE
               rotation=270,
               origin={-35,-47})));
         Modelica.Blocks.Interfaces.RealOutput NephronANP_Log10Conc
-                          annotation (Placement(transformation(extent={{-94,-64},
-                  {-74,-44}}), iconTransformation(extent={{80,-60},{120,-20}})));
+                          annotation (Placement(transformation(extent={{-78,-64},
+                  {-58,-44}}), iconTransformation(extent={{80,-60},{120,-20}})));
       Physiolibrary.Blocks.Math.Integrator ANPPool(y_start=2.85895e-10)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -921,7 +902,7 @@ SYSTOLE
         annotation (Placement(transformation(extent={{-68,30},{-48,50}})));
       equation
         connect(hormoneFlowConstant1.y, LAPEffect.yBase) annotation (Line(
-            points={{47,86},{44,86},{44,72}},
+            points={{47,86},{44,86},{44,74}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(hormoneFlowConstant.y, RAPEffect.yBase) annotation (Line(
@@ -933,7 +914,7 @@ SYSTOLE
             color={0,0,127},
             smooth=Smooth.None));
         connect(LAPEffect.y, SteadyState.u1) annotation (Line(
-            points={{44,66},{44,54}},
+            points={{44,68},{44,54}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(feedback.y,integrator. u) annotation (Line(
@@ -980,7 +961,7 @@ SYSTOLE
             color={0,0,127},
             smooth=Smooth.None));
         connect(log10_2.y, NephronANP_Log10Conc) annotation (Line(
-            points={{-64.6,-82},{-94,-82},{-94,-54},{-84,-54}},
+            points={{-64.6,-82},{-68,-82},{-68,-54}},
             color={0,0,127},
             smooth=Smooth.None));
       connect(busConnector.rightAtrium_TMP, RAPEffect.u) annotation (Line(
@@ -992,7 +973,7 @@ SYSTOLE
           index=-1,
           extent={{-6,3},{-6,3}}));
       connect(LAPEffect.u, busConnector.leftAtrium_TMP) annotation (Line(
-          points={{52,70},{86,70},{86,94},{-94,94}},
+          points={{52,72},{86,72},{86,94},{-94,94}},
           color={0,0,127},
           smooth=Smooth.None), Text(
           string="%second",
@@ -1418,7 +1399,6 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow annotation (
       //Abasic_Diastole "parametrization of end diastolic volume curve";
       parameter Physiolibrary.Types.Pressure AmbientPressure
         "Environment ambient pressure";
-
 
         Physiolibrary.Types.RealIO.VolumeOutput
                                             EDV   annotation (Placement(transformation(extent={{-74,-74},
@@ -2297,9 +2277,7 @@ vector of pressure-flow connectors.
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation (
          choicesAllMatching = true, Dialog( group = "Perfusion"));
 
-
       parameter Integer NRU=1 "Number of respiratory units";
-
 
       parameter Integer nPorts=0   "Number of airways ports" annotation (
         Evaluate = true,
@@ -2311,14 +2289,12 @@ vector of pressure-flow connectors.
       parameter Types.Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity" annotation (Dialog( group = "Ventilation"));
       parameter Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Pulmonary compliance" annotation (Dialog( group = "Ventilation"));
 
-
       parameter Types.Volume ResidualVolume=0.0013   "Residual volume"
         annotation (Dialog( group = "Ventilation"));
       parameter Types.Volume TotalLungCapacity=0.00623   "Total Capacity" annotation (Dialog( group = "Ventilation"));
       parameter Types.Volume BaseTidalVolume=0.0005   "Base Tidal Volume" annotation (Dialog( group = "Ventilation"));
 
       parameter Types.HydraulicResistance AirwaysResistances[NRU]=fill(NRU*147099.75,NRU)   "Airways resistances per respiratory unit" annotation (Dialog( group = "Ventilation"));
-
 
       parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood" annotation(Dialog( group = "Perfusion"));
       parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood" annotation(Dialog( group = "Perfusion"));
@@ -2341,8 +2317,6 @@ vector of pressure-flow connectors.
       parameter Types.HydraulicConductance CapillariesConductance=2.250184727537e-07   "Blood capillaries conductance"
       annotation (Dialog( group = "Perfusion"));
 
-
-
       parameter Types.Volume VeinsVolume_initial=0.000210463  "Initial volume of blood in veins"
        annotation (Dialog( group = "Perfusion"));
       parameter Types.Volume VeinsZeroPressureVolume=0.00015 "Blood venous zero pressure volume"
@@ -2352,14 +2326,10 @@ vector of pressure-flow connectors.
       parameter Types.HydraulicConductance VeinsConductance=6.7505541826109e-07   "Blood venous conductance"
        annotation (Dialog( group = "Perfusion"));
 
-
       parameter Real Diffusions[NRU](unit="mol2.s-1.J-1")=fill(1e-4,NRU)         "Gasses diffussions per respiratory unit" annotation (Dialog( group = "Diffusion"));
-
-
 
       parameter Volume PleuralFluidVolume_initial=0.0001   "Initial volume of pleural fluid volume" annotation(Dialog( group = "Thorax"));
       parameter Volume PleuralCavityVolume = PleuralFluidVolume_initial + LungsAirVolume_initial "Volume of relaxed pleural cavity" annotation(Dialog( group = "Thorax"));
-
 
     protected
       parameter Fraction Hct = 0.44 "Hematocrit";
@@ -2528,8 +2498,6 @@ vector of pressure-flow connectors.
           thickness=0.5));
       end for;
 
-
-
       connect(volume.y, busConnector.PulmonaryCirculation_V0) annotation (Line(
           points={{-17,-92},{80,-92},{80,-58},{94,-58}},
           color={0,0,127},
@@ -2538,12 +2506,10 @@ vector of pressure-flow connectors.
           index=1,
           extent={{6,3},{6,3}}));
 
-
       connect(pulmVeinsConductance.q_in, pulmVeins.q_in[1]) annotation (Line(
           points={{68,-16},{54,-16},{54,-16},{39.9,-16}},
           color={127,0,0},
           thickness=0.5));
-
 
       connect(pleuralSpace.q_in[1],pleauralPressure. q_in) annotation (Line(
           points={{-41.9,30},{-42,30},{-42,34},{-60,34}},
@@ -2655,15 +2621,11 @@ vector of pressure-flow connectors.
             constrainedby Media.Interfaces.PartialMedium "Blood medium model"
                annotation ( choicesAllMatching = true, Dialog( group = "Perfusion"));
 
-
-
-
         parameter Types.Volume AirVolume_initial=0.00302   "Initial volume of alveolar space" annotation (Dialog( group = "Ventilation"));
         parameter Real Air_initial[Air.nS] = {100,40,47,760 - 187} "Initial composition of air inside alveoli"
            annotation (Dialog( group = "Ventilation"));
         parameter Types.Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity" annotation (Dialog( group = "Ventilation"));
         parameter Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Pulmonary compliance" annotation (Dialog( group = "Ventilation"));
-
 
         parameter Types.Volume ResidualVolume=0.0013   "Residual volume"
           annotation (Dialog( group = "Ventilation"));
@@ -2671,7 +2633,6 @@ vector of pressure-flow connectors.
         parameter Types.Volume BaseTidalVolume=0.0005   "Base Tidal Volume" annotation (Dialog( group = "Ventilation"));
 
         parameter Types.HydraulicResistance TotalResistance=147099.75   "Total airways resistance" annotation (Dialog( group = "Ventilation"));
-
 
         parameter Types.Volume CapillariesVolume_initial=0.000200141 "Initial volume of blood in capillaries"
         annotation (Dialog( group = "Perfusion"));
@@ -2682,15 +2643,12 @@ vector of pressure-flow connectors.
         parameter Types.HydraulicCompliance CapillariesCompliance=3.45028324889e-08   "Blood capillaries compliance"
          annotation (Dialog( group = "Perfusion"));
 
-
         parameter Types.HydraulicConductance CapillariesConductance=2.250184727537e-07   "Blood capillaries conductance"
         annotation (Dialog( group = "Perfusion"));
         parameter Types.HydraulicConductance ArteriesConductance=1.6876385456527e-07   "Blood arteries conductance"
          annotation (Dialog( group = "Perfusion"));
 
-
         parameter Real Diffusion(unit="mol2.s-1.J-1")=1e-4         "Gasses diffussion" annotation (Dialog( group = "Diffusion"));
-
 
        Fluid.Components.ElasticVessel pulmCapysVentilated(
           redeclare package Medium = Blood,
@@ -2706,7 +2664,6 @@ vector of pressure-flow connectors.
           volume_start=CapillariesVolume_initial,
           nPorts=2) "pulmonary capilaries"
           annotation (Placement(transformation(extent={{0,-48},{20,-28}})));
-
 
         Fluid.Components.Conductor pulmArty(redeclare package Medium = Blood,
             Conductance=ArteriesConductance)
@@ -2740,7 +2697,6 @@ vector of pressure-flow connectors.
         Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium =
               Blood)
           annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
-
 
       protected
         parameter Types.Fraction Hct = 0.44 "Hematocrit";
@@ -3506,7 +3462,6 @@ vector of pressure-flow connectors.
     model Liver
       extends Physiolibrary.Organs.Interfaces.BaseDO;
       extends Physiolibrary.Icons.Liver;
-
 
     Physiolibrary.Fluid.Interfaces.FluidPort_a portalVein(redeclare package
           Medium = Blood)                                 annotation (
@@ -5568,11 +5523,10 @@ QHP 2008 / Skin-Flow
       extends Physiolibrary.Icons.PerfusionDO;
       extends Physiolibrary.Icons.PeripheralCirculation;
 
-
     replaceable package Blood = Physiolibrary.Media.Blood2 constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true); //BloodBySiggaardAndersen
-    Physiolibrary.Fluid.Interfaces.FluidPort_a q_in[8](redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a q_in[8](redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {90,-10},{110,10}}, rotation=0), iconTransformation(extent={{
                 150,-10},{170,10}})));
     Physiolibrary.Fluid.Interfaces.FluidPort_b q_out[8](redeclare package
@@ -5879,12 +5833,12 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-    Physiolibrary.Fluid.Interfaces.FluidPort_a q_in[2](redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a q_in[2](redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {90,-10},{110,10}}, rotation=0), iconTransformation(extent={{90,
                 -10},{110,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-          = Blood)                                   "Blood outflow"
+    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
+            Blood)                                   "Blood outflow"
       annotation ( Placement(transformation(extent={{-110,
               -10},{-90,10}},  rotation=0),
                                       iconTransformation(extent={{-110,-10},{
@@ -6061,8 +6015,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
                 {118,10}},     rotation=0),
                                     iconTransformation(extent={{90,-10},{110,
               10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-          =                                                                     Blood) "Blood outflow"
+    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Blood) "Blood outflow"
       annotation (Placement(transformation(extent={{-104,4},
                 {-84,24}},     rotation=0),
                                       iconTransformation(extent={{-110,-10},{
@@ -6100,15 +6053,10 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           package Medium =                                                                     Blood,
         useSolutionFlowInput=true)
       annotation (Placement(transformation(extent={{-28,24},{-42,38}})));
-      Physiolibrary.Organs.Components.SystemicVeins veins(redeclare package
-          Blood =                                                                   Blood, BaseConductance(
-            displayUnit="ml/(mmHg.min)") = 1.2000985213531e-07)
-        "scaled to coronary vessels reorganisation"
-        annotation (Placement(transformation(extent={{-72,-8},{-56,8}})));
       Physiolibrary.Organs.Components.SystemicVeinsElacticBloodCompartment
         systemicVeinsElacticBloodCompartment(redeclare package Blood = Blood,
           nPorts=10)
-        annotation (Placement(transformation(extent={{-54,-10},{-34,10}})));
+        annotation (Placement(transformation(extent={{-56,-10},{-36,10}})));
     Physiolibrary.Types.Constants.PressureConst SystemicVeinsExternalPressure(
         k=0)
       annotation (Placement(transformation(extent={{-36,16},{-43,23}})));
@@ -6187,27 +6135,21 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(veins.busConnector,busConnector)           annotation (
-         Line(
-          points={{-58.48,1.52},{-60,1.52},{-60,50},{46,50}},
-          color={0,0,255},
-          thickness=0.5,
-          smooth=Smooth.None));
       connect(SystemicVeinsCompliance.y, systemicVeinsElacticBloodCompartment.Compliance)
         annotation (Line(
-          points={{-36,14},{-38.2,14},{-38.2,10},{-38,10}},
+          points={{-36,14},{-38.2,14},{-38.2,10},{-40,10}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(busConnector,systemicVeinsElacticBloodCompartment. busConnector)
         annotation (Line(
-          points={{46,50},{-26,50},{-26,6.1},{-34.2,6.1}},
+          points={{46,50},{-26,50},{-26,6.1},{-36.2,6.1}},
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
       connect(systemicVeinsElacticBloodCompartment.ExternalPressure,
         SystemicVeinsExternalPressure.y)
         annotation (Line(
-          points={{-44,10},{-44,19.5},{-43.875,19.5}},
+          points={{-46,10},{-46,19.5},{-43.875,19.5}},
           color={0,0,127},
           smooth=Smooth.None));
     connect(busConnector.BloodVolume_change, volumeCorrections.solutionFlow)
@@ -6245,7 +6187,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         smooth=Smooth.None));
       connect(systemicVeinsElacticBloodCompartment.Pressure, busConnector.SystemicVeins_Pressure)
         annotation (Line(
-          points={{-54,-4},{-54,-28},{46,-28},{46,50}},
+          points={{-56,-4},{-56,-28},{46,-28},{46,50}},
           color={0,0,127},
           smooth=Smooth.None), Text(
           string="%second",
@@ -6253,7 +6195,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           extent={{6,3},{6,3}}));
       connect(systemicVeinsElacticBloodCompartment.V0, busConnector.SystemicVeins_V0)
         annotation (Line(
-          points={{-50.8,10},{-50.8,50},{46,50}},
+          points={{-52.8,10},{-52.8,50},{46,50}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(V0_artys.y, busConnector.SystemicArtys_V0) annotation (Line(
@@ -6280,11 +6222,6 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{-2,-13.5},{-2,50},{46,50}},
           color={0,0,255},
           thickness=0.5,
-          smooth=Smooth.None));
-      connect(veins.q_out, collapsedVeins.q_in) annotation (Line(
-          points={{-72,0},{-72,1.77636e-15},{-74.5,1.77636e-15}},
-          color={0,0,0},
-          thickness=1,
           smooth=Smooth.None));
 
       connect(legsArtys.q_in,sequesteredBlood. referencePoint) annotation (Line(
@@ -6360,7 +6297,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         extent={{6,3},{6,3}}));
     connect(systemicVeinsElacticBloodCompartment.Vol, busConnector.SystemicVeins_DeoxygenatedBloodVolume)
       annotation (Line(
-        points={{-48,-10},{-48,-28},{46,-28},{46,50}},
+        points={{-50,-10},{-50,-28},{46,-28},{46,50}},
         color={0,0,127},
         smooth=Smooth.None), Text(
         string="%second",
@@ -6374,11 +6311,6 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         string="%second",
         index=1,
         extent={{6,3},{6,3}}));
-    connect(splanchnicCirculation.q_out, veins.q_out) annotation (Line(
-        points={{-2,-23},{-72,-23},{-72,0}},
-        color={0,0,0},
-        thickness=1,
-        smooth=Smooth.None));
       connect(systemicArtys.q_in[1], gravityHydrostaticDifference.q_down)
         annotation (Line(
           points={{75.395,-0.7675},{52,-0.7675},{52,14},{102,14},{102,30.8},{
@@ -6405,35 +6337,41 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{108,0},{108,0}},
           color={127,0,0},
           thickness=0.5));
-      connect(veins.q_in, systemicVeinsElacticBloodCompartment.port_b)
-        annotation (Line(
-          points={{-56,0},{-54,0}},
-          color={127,0,0},
-          thickness=0.5));
 
       connect(peripheral.q_in, systemicArtys.q_in[5:12]) annotation (Line(
           points={{34.4,14},{52,14},{52,1.3775},{75.395,1.3775}},
           color={127,0,0},
           thickness=0.5));
-      connect(systemicVeinsElacticBloodCompartment.port_a[1], volumeCorrections.q_out)
+      connect(splanchnicCirculation.q_in, systemicArtys.q_in[13:14])
         annotation (Line(
-          points={{-34,-0.45},{-20,-0.45},{-20,40},{-48,40},{-48,31},{-42,31}},
-
+          points={{36,-23},{50,-23},{50,1.7675},{75.395,1.7675}},
           color={127,0,0},
           thickness=0.5));
+      connect(systemicVeinsElacticBloodCompartment.port_b, collapsedVeins.q_in)
+        annotation (Line(
+          points={{-56,0},{-64.25,0},{-64.25,-1.66533e-15},{-74.5,-1.66533e-15}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(collapsedVeins.q_in, splanchnicCirculation.q_out) annotation (
+          Line(
+          points={{-74.5,-1.55431e-15},{-68,-1.55431e-15},{-68,-23},{-2,-23}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(systemicVeinsElacticBloodCompartment.port_a[1], volumeCorrections.q_out)
+        annotation (Line(
+          points={{-36,-0.45},{-18,-0.45},{-18,40},{-48,40},{-48,31},{-42,31}},
+          color={127,0,0},
+          thickness=0.5));
+
       connect(systemicVeinsElacticBloodCompartment.port_a[2],
         hydrostaticDifference1.q_up) annotation (Line(
-          points={{-34,-0.35},{-25,-0.35},{-25,-64}},
+          points={{-36,-0.35},{-25,-0.35},{-25,-64}},
           color={127,0,0},
           thickness=0.5));
       connect(systemicVeinsElacticBloodCompartment.port_a[3:10], peripheral.q_out)
         annotation (Line(
-          points={{-34,0.45},{-20,0.45},{-20,14},{-10.12,14}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(splanchnicCirculation.q_in, systemicArtys.q_in[13:14])
-        annotation (Line(
-          points={{36,-23},{50,-23},{50,1.7675},{75.395,1.7675}},
+          points={{-36,0.45},{-18,0.45},{-18,14},{-10.12,14}},
           color={127,0,0},
           thickness=0.5));
      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
@@ -6504,14 +6442,12 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-
-      Heart.Heart heart2_1(redeclare package Blood = Blood)
+      Heart.Heart heart(redeclare package Blood = Blood)
         annotation (Placement(transformation(extent={{-2,-6},{24,20}})));
-      Physiolibrary.Organs.Lungs.Components.PulmonaryCirculation
-        pulmonaryCirculation(redeclare package Blood = Blood)
+      Physiolibrary.Organs.Lungs.Components.PulmonaryCirculation pulmonary(
+          redeclare package Blood = Blood)
         annotation (Placement(transformation(extent={{2,50},{30,78}})));
-      SystemicCirculationFullDynamic
-        systemicCirculation(redeclare package Blood = Blood)
+      SystemicCirculation systemic(redeclare package Blood = Blood)
         annotation (Placement(transformation(extent={{-2,-68},{32,-34}})));
     Physiolibrary.Types.BusConnector busConnector
       "signals of organ bood flow resistence" annotation (Placement(
@@ -6530,14 +6466,12 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       Physiolibrary.Organs.Blood.BloodPropertiesBase bloodProperties
         annotation (Placement(transformation(extent={{-36,-50},{-56,-30}})));
     equation
-      connect(busConnector, pulmonaryCirculation.busConnector) annotation (
-          Line(
+      connect(busConnector, pulmonary.busConnector) annotation (Line(
           points={{-27,1},{-26,1},{-26,71},{2,71}},
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(busConnector, systemicCirculation.busConnector) annotation (
-          Line(
+      connect(busConnector, systemic.busConnector) annotation (Line(
           points={{-27,1},{-26,1},{-26,-44.2},{-2.34,-44.2}},
           color={0,0,255},
           thickness=0.5,
@@ -6547,29 +6481,22 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={0,0,255},
           thickness=0.5,
           smooth=Smooth.None));
-      connect(busConnector, heart2_1.busConnector) annotation (Line(
-          points={{-27,1},{-25.5,1},{-25.5,4.4},{21.14,4.4}},
-          color={0,0,255},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(heart2_1.leftVentricle, systemicCirculation.q_in) annotation (
-          Line(
+      connect(heart.leftVentricle, systemic.q_in) annotation (Line(
           points={{21.4,-0.8},{21.4,0},{32,0},{32,-51}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(systemicCirculation.q_out, heart2_1.rightAtrium) annotation (Line(
+      connect(systemic.q_out, heart.rightAtrium) annotation (Line(
           points={{-2,-51},{-4,-51},{-4,14.8},{0.6,14.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_in, heart2_1.rightVentricle) annotation (
-          Line(
+      connect(pulmonary.q_in, heart.rightVentricle) annotation (Line(
           points={{2,64},{-8,64},{-8,0},{0.6,0},{0.6,-0.8}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-      connect(pulmonaryCirculation.q_out, heart2_1.leftAtrium) annotation (Line(
+      connect(pulmonary.q_out, heart.leftAtrium) annotation (Line(
           points={{30,64},{36,64},{36,16},{20,16},{20,14.54},{21.14,14.54}},
           color={0,0,0},
           thickness=1,
@@ -6581,15 +6508,14 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{-36.6,-33.2},{-36.6,-32},{-27,-32},{-27,1}},
           color={0,0,255},
           thickness=0.5));
-      connect(heart2_1.Pericardium, busConnector.Pericardium_Pressure)
-        annotation (Line(points={{16.2,18.7},{16.2,24},{-27,24},{-27,1}}, color=
-             {0,0,127}));
-      connect(heart2_1.Sympathicus, busConnector.GangliaGeneral_NA) annotation (
-         Line(points={{2.94,9.6},{2.94,10},{-26,10},{-26,6},{-27,6},{-27,1}},
+      connect(heart.Pericardium, busConnector.Pericardium_Pressure) annotation (
+         Line(points={{16.2,20},{16.2,24},{-27,24},{-27,1}}, color={0,0,127}));
+      connect(heart.Sympathicus, busConnector.GangliaGeneral_NA) annotation (
+          Line(points={{9.96,9.6},{9.96,10},{-26,10},{-26,6},{-27,6},{-27,1}},
             color={0,0,127}));
-      connect(heart2_1.Parasympathicus, busConnector.VagusNerve_NA_Hz)
-        annotation (Line(points={{2.94,4.4},{2.94,4},{-28,4},{-28,1},{-27,1}},
-            color={0,0,127}));
+      connect(heart.Parasympathicus, busConnector.VagusNerve_NA_Hz) annotation (
+         Line(points={{2.94,4.4},{2.94,4},{-28,4},{-28,1},{-27,1}}, color={0,0,
+              127}));
       annotation ( Documentation(info="<html>
 <p><h4><font color=\"#008000\">Cardiovascular system</font></h4></p>
 <p><font style=\"color: #008000; \">Connect heart with pulmonary and systemic part. This connection contains pressures and blood flows before and after heart.</font></p>
@@ -6631,6 +6557,314 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
               textString="%name")}));
     end CardioVascularSystem;
 
+    model SystemicCirculation
+      extends Physiolibrary.Icons.SystemicCirculation;
+
+      replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen constrainedby
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
+
+    Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Blood) "Blood inflow"
+      annotation (Placement(transformation(extent={{98,-10},
+                {118,10}},     rotation=0),
+                                    iconTransformation(extent={{90,-10},{110,
+              10}})));
+    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Blood) "Blood outflow"
+      annotation (Placement(transformation(extent={{-104,4},
+                {-84,24}},     rotation=0),
+                                      iconTransformation(extent={{-110,-10},{
+              -90,10}})));
+
+      /*
+  Library.PressureFlow.NegativePressureFlow fromSystemicVeins annotation (
+      Placement(transformation(extent={{-110,-10},{-90,10}}),iconTransformation(
+          extent={{-112,44},{-92,64}})));
+  Library.PressureFlow.PositivePressureFlow systemicArteries
+    annotation (Placement(transformation(extent={{88,-10},{108,10}}),
+        iconTransformation(extent={{90,46},{110,66}})));
+*/
+
+    Physiolibrary.Fluid.Components.ElasticVessel systemicArtys(redeclare
+          package Medium =                                                                Blood,
+      stateName="SystemicArtys.Vol",
+      useV0Input=true,
+      useComplianceInput=false,
+      volume_start=0.00100036,
+      Compliance=1.1625954425608e-08,
+      useExternalPressureInput=false,
+      ExternalPressure=0,
+        nPorts=13)
+      annotation (Placement(transformation(extent={{65,-10},{86,11}})));
+    Physiolibrary.Types.Constants.VolumeConst               V0_artys(k=0.00085)
+      annotation (Placement(transformation(extent={{98,18},{88,28}})));
+    Physiolibrary.Types.Constants.HydraulicComplianceConst
+      SystemicVeinsCompliance(k=6.645545561992547e-007)
+      annotation (Placement(transformation(extent={{-27,10},{-35,18}})));
+      Physiolibrary.Organs.Systems.PeripheralCirculation peripheral(redeclare
+          package Blood =                                                                     Blood)
+        annotation (Placement(transformation(extent={{-2,0},{26,28}})));
+      Physiolibrary.Organs.Components.SystemicVeinsElacticBloodCompartment
+        systemicVeinsElacticBloodCompartment(redeclare package Blood = Blood,
+          nPorts=8)
+        annotation (Placement(transformation(extent={{-56,-10},{-36,10}})));
+    Physiolibrary.Types.Constants.PressureConst SystemicVeinsExternalPressure(
+        k=0)
+      annotation (Placement(transformation(extent={{-36,16},{-43,23}})));
+    Physiolibrary.Types.BusConnector busConnector
+      "signals of organ bood flow resistence" annotation (Placement(
+          transformation(extent={{36,40},{56,60}}), iconTransformation(extent=
+             {{-110,32},{-94,48}})));
+      Physiolibrary.Organs.Components.CollapsingVeins collapsedVeins(redeclare
+          package Medium = Blood)                                                                     annotation (
+          Placement(transformation(
+            extent={{-10,10.5},{10,-10.5}},
+            rotation=180,
+            origin={-84.5,0})));
+    Physiolibrary.Fluid.Components.HydrostaticColumn
+      gravityHydrostaticDifference(redeclare package Medium = Blood,     useHeightInput=true)
+      annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          origin={61,35})));
+    Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare
+          package Medium = Blood)
+      annotation (Placement(transformation(
+          extent={{8.5,-8.5},{-8.5,8.5}},
+          origin={78.5,45.5})));
+      Modelica.Blocks.Math.Gain G(k=9.81) annotation (Placement(transformation(
+            extent={{4,-4},{-4,4}},
+            rotation=90,
+            origin={34,26})));
+      Physiolibrary.Organs.Systems.SplanchnicCirculation splanchnicCirculation(redeclare
+          package Blood =                                                                                Blood)
+        annotation (Placement(transformation(extent={{-2,-42},{36,-4}})));
+    Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure1(redeclare
+          package Medium =                                                                  Blood)
+      annotation (Placement(transformation(extent={{76,-38},{96,-18}})));
+    equation
+    connect(systemicArtys.zeroPressureVolume, V0_artys.y) annotation (Line(
+        points={{68.15,9.95},{68.15,23},{86.75,23}},
+        color={0,0,127},
+        smooth=Smooth.None));
+      connect(busConnector, peripheral.busConnector)          annotation (
+          Line(
+          points={{46,50},{46,23.38},{4.3,23.38}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None));
+      connect(SystemicVeinsCompliance.y, systemicVeinsElacticBloodCompartment.Compliance)
+        annotation (Line(
+          points={{-36,14},{-38.2,14},{-38.2,10},{-40,10}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(busConnector,systemicVeinsElacticBloodCompartment. busConnector)
+        annotation (Line(
+          points={{46,50},{-26,50},{-26,6.1},{-36.2,6.1}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None));
+      connect(systemicVeinsElacticBloodCompartment.ExternalPressure,
+        SystemicVeinsExternalPressure.y)
+        annotation (Line(
+          points={{-46,10},{-46,19.5},{-43.875,19.5}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(collapsedVeins.ExternalPressure, busConnector.Thorax_AvePressure)
+        annotation (Line(
+          points={{-90.5,2.1},{-80,2.1},{-80,50},{46,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+    connect(pressureMeasure.pressure, busConnector.CarotidSinus_Pressure)
+      annotation (Line(
+        points={{73.4,42.1},{46,42.1},{46,50}},
+        color={0,0,127},
+        smooth=Smooth.None));
+      connect(gravityHydrostaticDifference.height, busConnector.CarotidSinusHeight)
+        annotation (Line(
+          points={{50,35},{46,35},{46,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(gravityHydrostaticDifference.q_up, pressureMeasure.q_in)
+        annotation (Line(
+          points={{71,39},{80,39},{80,40.4},{81.9,40.4}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+    connect(pressureMeasure.pressure, busConnector.CarotidSinusArteryPressure)
+      annotation (Line(
+        points={{73.4,42.1},{46,42.1},{46,50}},
+        color={0,0,127},
+        smooth=Smooth.None));
+      connect(systemicVeinsElacticBloodCompartment.Pressure, busConnector.SystemicVeins_Pressure)
+        annotation (Line(
+          points={{-56,-4},{-56,-28},{46,-28},{46,50}},
+          color={0,0,127},
+          smooth=Smooth.None), Text(
+          string="%second",
+          index=1,
+          extent={{6,3},{6,3}}));
+      connect(systemicVeinsElacticBloodCompartment.V0, busConnector.SystemicVeins_V0)
+        annotation (Line(
+          points={{-52.8,10},{-52.8,50},{46,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(V0_artys.y, busConnector.SystemicArtys_V0) annotation (Line(
+          points={{86.75,23},{70,23},{70,22},{46,22},{46,50}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(collapsedVeins.q_out, q_out) annotation (Line(
+          points={{-94.5,-1.22465e-15},{-96.25,-1.22465e-15},{-96.25,14},{-94,
+              14}},
+          color={0,0,0},
+          thickness=1,
+          smooth=Smooth.None));
+      connect(busConnector.Gravity_Gz, G.u) annotation (Line(
+          points={{46,50},{46,38},{34,38},{34,30.8}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}}));
+
+      connect(splanchnicCirculation.busConnector, busConnector) annotation (
+          Line(
+          points={{-2,-13.5},{-2,50},{46,50}},
+          color={0,0,255},
+          thickness=0.5,
+          smooth=Smooth.None));
+
+    connect(systemicArtys.fluidVolume, busConnector.SystemicArtys_OxygenatedBloodVolume)
+      annotation (Line(
+        points={{86,-7.9},{72,-7.9},{72,-28},{46,-28},{46,50}},
+        color={0,0,127},
+        smooth=Smooth.None), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}}));
+    connect(systemicVeinsElacticBloodCompartment.Vol, busConnector.SystemicVeins_DeoxygenatedBloodVolume)
+      annotation (Line(
+        points={{-50,-10},{-50,-28},{46,-28},{46,50}},
+        color={0,0,127},
+        smooth=Smooth.None), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}}));
+    connect(pressureMeasure1.pressure, busConnector.SystemicArtys_Pressure)
+      annotation (Line(
+        points={{92,-32},{98,-32},{98,-42},{46,-42},{46,50}},
+        color={0,0,127},
+        smooth=Smooth.None), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}}));
+      connect(systemicArtys.q_in[1], gravityHydrostaticDifference.q_down)
+        annotation (Line(
+          points={{75.395,-0.76},{52,-0.76},{52,14},{102,14},{102,30.8},{70.8,
+              30.8}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(pressureMeasure1.q_in, systemicArtys.q_in[2]) annotation (Line(
+          points={{82,-34},{82,-44},{64,-44},{64,-14},{60,-14},{60,-0.55},{
+              75.395,-0.55}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(q_in, systemicArtys.q_in[3]) annotation (Line(
+          points={{108,0},{108,14},{54,14},{54,-0.34},{75.395,-0.34}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(q_in, q_in) annotation (Line(
+          points={{108,0},{108,0}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(peripheral.q_in, systemicArtys.q_in[4:11]) annotation (Line(
+          points={{34.4,14},{52,14},{52,1.34},{75.395,1.34}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(splanchnicCirculation.q_in, systemicArtys.q_in[12:13])
+        annotation (Line(
+          points={{36,-23},{50,-23},{50,1.76},{75.395,1.76}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(systemicVeinsElacticBloodCompartment.port_b, collapsedVeins.q_in)
+        annotation (Line(
+          points={{-56,0},{-64.25,0},{-64.25,-1.66533e-15},{-74.5,-1.66533e-15}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(collapsedVeins.q_in, splanchnicCirculation.q_out) annotation (
+          Line(
+          points={{-74.5,-1.55431e-15},{-68,-1.55431e-15},{-68,-23},{-2,-23}},
+          color={127,0,0},
+          thickness=0.5));
+
+      connect(systemicVeinsElacticBloodCompartment.port_a[1:8],  peripheral.q_out)
+        annotation (Line(
+          points={{-36,0.4375},{-18,0.4375},{-18,14},{-10.12,14}},
+          color={127,0,0},
+          thickness=0.5));
+     annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+              -100},{100,100}}),   graphics={Text(
+              extent={{42,46},{74,46}},
+              lineColor={0,0,255},
+              textString="Carotid Artery Pressure")}),
+                                     Icon(coordinateSystem(
+              preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
+            graphics={
+            Text(
+              extent={{-104,-54},{110,-76}},
+              lineColor={0,0,255},
+              textString="%name")}),
+      Documentation(revisions="<html>
+
+<table>
+<tr>
+<td>Author:</td>
+<td>Marek Matejak</td>
+</tr>
+<tr>
+<td>License:</td>
+<td><a href=\"http://www.physiomodel.org/license.html\">Physiomodel License 1.0</a> </td>
+</tr>
+<tr>
+<td>By:</td>
+<td>Charles University, Prague</td>
+</tr>
+<tr>
+<td>Date of:</td>
+<td>january 2009</td>
+</tr>
+<tr>
+<td>References:</td>
+<td>Tom Coleman: QHP 2008 beta 3, University of Mississippi Medical Center</td>
+</tr>
+</table>
+<br/><p>Copyright &copy; 2014 Marek Matejak, Charles University in Prague.</p><br/>
+
+</html>",
+        info="<html>
+<p>Blood volume (and pressure) distributions between </p>
+<p><ul>
+<li>systemic arteries, </li>
+<li>systemic veins and</li>
+<li>portal (splanchnic) vein.</li>
+</ul></p>
+<p>Blood flow throught: </p>
+<p><ul>
+<li>GIT, hepatic artery, liver</li>
+<li>Kidney</li>
+<li>CNS</li>
+<li>Skeletal muscle</li>
+<li>Respiratory muscle</li>
+<li>Skin</li>
+<li>Bones</li>
+<li>Adipose tissue</li>
+<li>Other tissue</li>
+</ul></p>
+</html>"));
+    end SystemicCirculation;
   end Systems;
 
   package Components
@@ -6861,7 +7095,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         useExternalPressureInput=true,
         useV0Input=true,
       volume_start=initialSystemisVeinsVol,
-        nPorts=4+nPorts)                                    "systemic veins"
+        nPorts=4+nPorts)                                           "systemic veins"
         annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
     Physiolibrary.Blocks.Factors.Spline V0_A2_Effect(
       data={{0.0,1.05,0.0},{1.3,1.00,-0.10},{3.0,0.85,0.0}},
@@ -6902,6 +7136,10 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       Modelica.Fluid.Sensors.TraceSubstances Angiotensin2(redeclare package Medium =
                    Blood, substanceName="Angiotensin2")
         annotation (Placement(transformation(extent={{-74,4},{-54,24}})));
+      SystemicVeins                                 veins(redeclare package Blood =
+            Blood, BaseConductance(displayUnit="ml/(mmHg.min)") = 1.2000985213531e-07)
+        "scaled to coronary vessels reorganisation"
+        annotation (Placement(transformation(extent={{-88,-8},{-72,8}})));
     equation
       connect(V0_A2_Effect.y, systemicVeins.zeroPressureVolume) annotation (Line(
           points={{-20,13},{-20,12},{-11,12},{-11,9}},
@@ -6938,12 +7176,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{22,-16},{10,-16},{10,0},{-4.1,0}},
           color={127,0,0},
           thickness=0.5));
-      connect(port_b, systemicVeins.q_in[3]) annotation (Line(
-          points={{-100,0},{-50,0},{-50,5.55112e-17},{-4.1,5.55112e-17}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(AplhaReceptors.port_a, systemicVeins.q_in[4]) annotation (Line(
-          points={{-30,32},{-46,32},{-46,4},{-4,4},{-4,0},{-4.1,0}},
+      connect(AplhaReceptors.port_a, systemicVeins.q_in[3]) annotation (Line(
+          points={{-30,32},{-44,32},{-44,2},{-2,2},{-2,0},{-4.1,0}},
           color={127,0,0},
           thickness=0.5));
       connect(Angiotensin2.C, V0_A2_Effect.u) annotation (Line(points={{-53,14},
@@ -6959,6 +7193,19 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           horizontalAlignment=TextAlignment.Right));
       connect(port_a[1:nPorts], systemicVeins.q_in[5:4+nPorts]) annotation (Line(
           points={{100,0},{40,0},{40,4},{12,4},{12,0},{-4.1,0}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(veins.busConnector, busConnector) annotation (Line(
+          points={{-74.48,1.52},{-74.48,82},{-78,82},{-78,80},{-82,80},{-82,82},{-78,
+              82}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(veins.q_out, port_b) annotation (Line(
+          points={{-88,0},{-100,0}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(veins.q_in, systemicVeins.q_in[4]) annotation (Line(
+          points={{-72,0},{-4,0},{-4,0},{-4.1,0}},
           color={127,0,0},
           thickness=0.5));
      annotation (
@@ -7087,7 +7334,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
 
     connect(add.y, pressureControledCompartment.externalPressure) annotation (
        Line(
-        points={{-6,29},{-6,20},{-6,9},{-8,9}},
+        points={{-6,29},{-6,20},{-6,9},{-7,9}},
         color={0,0,127},
         smooth=Smooth.None));
       connect(pressureControledCompartment.fluidVolume, Vol) annotation (Line(
@@ -7579,7 +7826,6 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
             origin={80,-90}),
             iconTransformation(extent={{-10,-10},{10,10}},  rotation=270,
             origin={0,-70})));
-
 
       parameter Boolean useBase=false "If not then yBase=1" annotation (
         Evaluate = true,

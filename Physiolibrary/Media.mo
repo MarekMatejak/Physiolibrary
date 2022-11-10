@@ -206,7 +206,6 @@ Modelica source.
 
       constant Real aMM[nS] = ones(nS) ./ stateOfMatter.specificAmountOfParticles(substanceData, T=298.15, p=101325) "Average molar mass of substance particle";
 
-
   public
       redeclare replaceable record extends ThermodynamicState
         "A selection of variables that uniquely defines the thermodynamic state"
@@ -218,7 +217,6 @@ Modelica source.
 
 </html>"));
       end ThermodynamicState;
-
 
       redeclare replaceable model extends ChemicalSolution
     protected
@@ -356,7 +354,6 @@ Modelica source.
       algorithm
         d:=c*MMb;
       end density_pTC;
-
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
@@ -897,7 +894,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       Chemical.Substances.Water_liquid()}
        "Definition of the substances";
 
-
     replaceable function electrochemicalPotentials_pTXvI
        "electrochemical potentials for base molecules (for Chemical Substance interface)"
       input Modelica.Units.SI.Pressure p;
@@ -955,7 +951,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       else actualStream(substances.h_outflow) ./ MMb
         "molar enthalpy in stream";
 
-
       substances.u = electrochemicalPotentials_pTXvI(
           p,
           T,
@@ -1007,7 +1002,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 </html>"));
     end ThermodynamicState;
 
-
     redeclare function extends setState_pTX
       "Return thermodynamic state as function of p, T and composition X or Xi"
       input Modelica.Units.SI.ElectricPotential v=0;
@@ -1049,7 +1043,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
     algorithm
       h := state.X * stateOfMatter.specificEnthalpy(substanceData,T=state.T,p=state.p);
     end specificEnthalpy;
-
 
     redeclare function extends specificHeatCapacityCp
       "Return specific heat capacity at constant pressure"
@@ -1128,9 +1121,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
      //BloodBySiggaardAndersen;
      //Water;
 
-
-
-
     //constants
     constant Integer nX = Medium.nX;
     constant Integer nXi = Medium.nXi;
@@ -1138,18 +1128,14 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 
     constant MolarMass MMb[Medium.nS] = Medium.MMb "Molar mass of substance base molecues";
 
-
     //Density d_pTC=Medium.density_pTC(p,T,{135,24,5,5,3,105,1.5,0.5,0.7,0.8,1e-6});
     //Medium.density_pTC(p,T,{0.44,8.16865,21.2679,1.512e-6,8.4,0.042,0.042,0.66,28,0.153,5.4,37.67});
-
-
 
     //state variables
     Pressure p;
     Temperature T;
     MassFraction X[Medium.nS] "mass fraction";
     parameter Boolean EnthalpyNotUsed = false;
-
 
     //functions for supporting Physiolibrary.Fluid.Interfaces
     Medium.ThermodynamicState state_pTX = Medium.setState_pTX(p,T,X);
@@ -1165,21 +1151,17 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
     Density d_phX=Medium.density_phX(p,h,X);
     Density d_state=Medium.density(state_pTX);
 
-
     MassFraction sumX = ones(Medium.nX)*X;
 
     //support of substances in Physiolibrary.Fluid.Components.ElasticVessel
     Medium.ChemicalSolution chemicalSolution(
        p=p, h=h, X=X, i=0, EnthalpyNotUsed=EnthalpyNotUsed);
 
-
     MassFraction _X[Medium.nS] = {100,40,47,760 - 187} .* MMb / ({100,40,47,760 - 187} * MMb);
   equation
     T=298.15; //310.15+1;
     p=100000; //101325+5000;
     X=Medium.reference_X;
-
-
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)),
@@ -1285,7 +1267,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
            //MMb: 0.80645, 0.102, 0.1806,  0.09008, 0.1, 0.06006,
          //C: 1.23,4.88e-2,6.08,1.04,4.97,6.64
 
-
   type S = enumeration(
         RBC,
         O2,
@@ -1337,12 +1318,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
              0.19723,0.3,0.26,1,
              1.046,48,0.36044} "Molar mass of base molecules of extra substances";
 
-
-
-
-
-
-
   public
     redeclare model ChemicalSolution
       outer Modelica.Fluid.System system "System wide properties";
@@ -1363,7 +1338,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
       HideResult=true,
       choices(checkBox=true),
       Dialog(tab="Advanced", group="Performance"));
-
 
       // protected
       Real I = 0 "mole-fraction-based ionic strength";
@@ -1480,8 +1454,6 @@ Marek Mateják, Tomáš Kulhánek, Stanislav Matoušek: Adair-based hemoglobin e
 
       massFlows = substances.q .* MMb;
     end ChemicalSolution;
-
-
 
   end Blood2;
 end Media;
