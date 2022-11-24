@@ -165,11 +165,41 @@ package Fluid "Physiological fluids with static and dynamic properties"
       end if;
       excessVolume = max(0, volume + is - zpv + InternalSpace) - InternalSpace;
       relative_pressure = pressure - (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
-      pressure = (if not useSigmoidCompliance then
-                      smooth(0, if noEvent(volume > ResidualVolume) then excessVolume / c
-                                                                    else (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)))
-                                              else (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
-                  + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+
+      // linear compliance
+             // normal state
+                   // colapsing with a small volume inside
+                   // colapsed without any volume inside
+      // sigmoid compliance
+    /*  pressure = (if not useSigmoidCompliance
+  then 
+    smooth(0,
+    if noEvent(volume > ResidualVolume)
+       then 
+          excessVolume / c
+       else 
+          (if noEvent(volume > Modelica.Constants.eps) then 
+              (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume))
+          else -(if isExternalPressureAbsolute then ep else ep + system.p_ambient)))
+  else 
+    (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
+  + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+  */
+        pressure = (if not useSigmoidCompliance
+      then
+        smooth(0,
+        if noEvent(volume > ResidualVolume)
+           then
+              excessVolume / c
+           else   (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)))
+      else
+        (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
+      + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+
+      assert(volume > Modelica.Constants.eps, "Attempt to reach negative volume!");
+
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-280, -104}, {280, -142}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}),
         Documentation(revisions = "<html>
@@ -1079,7 +1109,7 @@ as signal.
       extends Modelica.Icons.RoundSensor;
       outer Modelica.Fluid.System system;
       replaceable package Medium =
-        Physiolibrary.Media.BloodBySiggaardAndersen                            "Blood" annotation (
+        Physiolibrary.Media.Blood                             "Blood" annotation (
         choicesAllMatching = true);
       Physiolibrary.Fluid.Interfaces.FluidPort_a a_port(redeclare package
         Medium =                                                                   Medium) annotation (
@@ -1637,13 +1667,13 @@ as signal.
       connect(heart.q_out, inertia.q_in) annotation (
         Line(points = {{-30, 48}, {-26, 48}, {-26, 66}, {-16, 66}}, thickness = 1));
       connect(inertia.q_out, arteries.q_in[1]) annotation (
-        Line(points = {{4, 66}, {16, 66}, {16, 49.95}, {25.9, 49.95}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{4,66},{16,66},{16,47.025},{25.9,47.025}},        color = {127, 0, 0}, thickness = 0.5));
       connect(impedance.q_out, arteries.q_in[2]) annotation (
-        Line(points = {{4, 48}, {16, 48}, {16, 48.65}, {25.9, 48.65}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{4,48},{16,48},{16,47.675},{25.9,47.675}},        color = {127, 0, 0}, thickness = 0.5));
       connect(arteries.q_in[3], resistance.q_in) annotation (
-        Line(points = {{25.9, 47.35}, {48, 47.35}, {48, 44}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{25.9,48.325},{48,48.325},{48,44}},      color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure.q_in, arteries.q_in[4]) annotation (
-        Line(points = {{68, 68}, {25.9, 68}, {25.9, 46.05}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{68,68},{25.9,68},{25.9,48.975}},       color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_in) annotation (
         Line(points = {{48, 24}, {48, 20}, {24, 20}}, color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_out, veins.y) annotation (
@@ -1869,8 +1899,7 @@ as signal.
         connect(V0AS.y, SystemicArteries.zeroPressureVolume) annotation (
           Line(points={{29.75,-43},{39,-43},{39,-51}},        color = {0, 0, 127}));
         connect(rightHeart.q_out, PulmonaryArteries.q_in[1]) annotation (
-          Line(points={{-53.76,4.56},{-40,4.56},{-40,37.35},{-30.1,37.35}},
-                                                                          color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-48,3},{-40,3},{-40,37.35},{-30.1,37.35}},        color = {127, 0, 0}, thickness = 0.5));
         connect(PulmonaryArteries.q_in[2], TotalPulmonaryResistance.q_in) annotation (
           Line(points={{-30.1,38.65},{-16,38.65},{-16,38},{-2,38}},        color = {127, 0, 0}, thickness = 0.5));
         connect(TotalPulmonaryResistance.q_out, PulmonaryVeins.q_in[1]) annotation (
@@ -1878,7 +1907,8 @@ as signal.
         connect(PulmonaryVeins.q_in[2], leftHeart.q_in) annotation (
           Line(points={{51.9,38.65},{74,38.65},{74,0}},      color = {127, 0, 0}, thickness = 0.5));
         connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (
-          Line(points={{57.28,1.2},{50,1.2},{50,-60.8667},{45.9,-60.8667}},                       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{52,2.22045e-16},{50,2.22045e-16},{50,-60.8667},{45.9,
+                -60.8667}},                                                                       color = {127, 0, 0}, thickness = 0.5));
         connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in) annotation (
           Line(points = {{45.9, -60}, {30, -60}, {30, -60}, {16, -60}}, color = {127, 0, 0}, thickness = 0.5));
         connect(TotalSystemicResistance.q_out, SystemicVeins.q_in[1]) annotation (
@@ -2704,12 +2734,12 @@ as signal.
       import Modelica.Units.SI.*;
       replaceable package Air = Chemical.Media.SimpleAir_C;
       //Chemical.Media.Air_MixtureGasNasa;
-      replaceable package Blood = Physiolibrary.Media.BloodBySiggaardAndersen;
+      replaceable package Blood = Physiolibrary.Media.Blood;
       inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
-        Medium =                                                                    Blood, Compliance = 1, EnthalpyNotUsed = false, concentration_start = {0.45, 8.199999999999999, 21.5, 1e-06, 8.4, 0.04200000000000001, 0.04200000000000001, 0.66, 28, 0.153, 5.399999999999999, 37}, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
-        Placement(transformation(extent = {{-4, -52}, {16, -32}})));
+        Medium =                                                                    Blood, Compliance = 1, EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
+        Placement(transformation(extent={{-2,-52},{18,-32}})));
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
@@ -2725,17 +2755,16 @@ as signal.
         Placement(transformation(extent = {{-70, 52}, {-50, 72}})));
       Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 34})));
-      Sensors.pH pH(redeclare package Medium = Media.BloodBySiggaardAndersen) "Acidity of blood" annotation (
-        Placement(transformation(extent = {{54, -74}, {74, -54}})));
-      Sensors.PartialPressure pO2(redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                           substanceData = Chemical.Substances.Oxygen_gas(), redeclare
-          package
-                Medium =
-          Media.BloodBySiggaardAndersen)                                                                                                                                                                      "Partial pressure of O2 in blood" annotation (
-        Placement(transformation(extent = {{-78, -70}, {-58, -50}})));
-      Sensors.MassFractions XO2(redeclare package Medium =
-          Media.BloodBySiggaardAndersen,                                                  substanceName = "O2") "Mass fraction of O2 in blood" annotation (
-        Placement(transformation(extent = {{44, -20}, {64, 0}})));
+      Sensors.pH pH(redeclare package Medium = Media.Blood) "Acidity of blood"
+        annotation (Placement(transformation(extent={{54,-74},{74,-54}})));
+      Sensors.PartialPressure pO2(
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        redeclare package Medium = Media.Blood) "Partial pressure of O2 in blood"
+        annotation (Placement(transformation(extent={{-78,-70},{-58,-50}})));
+      Sensors.MassFractions XO2(redeclare package Medium = Media.Blood,
+          substanceName="O2") "Mass fraction of O2 in blood"
+        annotation (Placement(transformation(extent={{44,-20},{64,0}})));
     equation
       connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
         Line(points = {{-76, 28}, {-48, 28}, {-48, 0}}, color = {158, 66, 200}));
@@ -2744,23 +2773,24 @@ as signal.
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
         Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
       connect(pH.referenceFluidPort, blood.q_in[1]) annotation (
-        Line(points={{64,-73.8},{64,-78},{4,-78},{4,-46},{5.9,-46},{5.9,
-            -42.8667}},                                                                          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{64,-73.8},{64,-78},{4,-78},{4,-46},{7.9,-46},{7.9,
+              -42.8667}},                                                                        color = {127, 0, 0}, thickness = 0.5));
       connect(pO2.referenceFluidPort, blood.q_in[2]) annotation (
-        Line(points = {{-68, -69.8}, {-32, -69.8}, {-32, -60}, {4, -60}, {4, -46}, {5.9, -46}, {5.9, -42}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-68,-69.8},{-32,-69.8},{-32,-60},{4,-60},{4,-46},{7.9,-46},{7.9,
+              -42}},                                                                                        color = {127, 0, 0}, thickness = 0.5));
       connect(XO2.port, blood.q_in[3]) annotation (
-        Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{5.9,
-            -46},{5.9,-41.1333}},                                                                                    color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{7.9,
+              -46},{7.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
       connect(CO2_GasSolubility.liquid_port, blood.substances[Blood.S.CO2]) annotation (
-        Line(points = {{-30, -20}, {-30, -42}, {-4, -42}}, color = {158, 66, 200}));
+        Line(points={{-30,-20},{-30,-42},{-2,-42}},        color = {158, 66, 200}));
       connect(pO2.port_a, blood.substances[Blood.S.O2]) annotation (
-        Line(points = {{-58, -60}, {-34, -60}, {-34, -42}, {-4, -42}}, color = {158, 66, 200}));
+        Line(points={{-58,-60},{-34,-60},{-34,-42},{-2,-42}},          color = {158, 66, 200}));
       connect(O2_GasSolubility.liquid_port, blood.substances[Blood.S.O2]) annotation (
-        Line(points = {{-48, -20}, {-46, -20}, {-46, -42}, {-4, -42}}, color = {158, 66, 200}));
+        Line(points={{-48,-20},{-46,-20},{-46,-42},{-2,-42}},          color = {158, 66, 200}));
       connect(CO_GasSolubility.liquid_port, blood.substances[Blood.S.CO]) annotation (
-        Line(points = {{-12, -20}, {-12, -42}, {-4, -42}}, color = {158, 66, 200}));
+        Line(points={{-12,-20},{-12,-42},{-2,-42}},        color = {158, 66, 200}));
       connect(pH.port_a, blood.substances[Blood.S.H]) annotation (
-        Line(points = {{74, -64}, {82, -64}, {82, -28}, {-22, -28}, {-22, -42}, {-4, -42}}, color = {158, 66, 200}));
+        Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-2,-42}},              color = {158, 66, 200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -3143,7 +3173,7 @@ as signal.
 
       model BloodyMary
         replaceable package Blood =
-          Physiolibrary.Media.BloodBySiggaardAndersen                           annotation (
+          Physiolibrary.Media.Blood                                             annotation (
           choicesAllMatching = True);
         replaceable package Air = Physiolibrary.Media.Air annotation (
           choicesAllMatching = True);
@@ -3175,16 +3205,9 @@ as signal.
             *(1/20)                                                                                      "Total systemic blood circulation conductance";
         parameter Integer NA=1  "Number of pulmonary alveolar units";
         parameter Integer NT=1  "Number of systemic tissue units";
-      protected
-        parameter Types.Fraction Hct = 0.44 "Hematocrit";
-        parameter Types.Concentration Arterial_O2 = 8.16865 "Initial Total oxygenin arterial blood", Venous_O2 = 5.48 "Initial Total oxygen in venous blood", Arterial_CO2 = 21.2679 "Initial Total carbon dioxide in arterial blood", Venous_CO2 = 23.77 "Initial Total carbon dioxide in venous blood", Blood_CO = 1.512e-6 "Total carbon monoxide", Blood_Hb = 8.4 "Hemoglobin", Blood_MetHb = 0.042 "Methemoglobin", Blood_HbF = 0.042 "Foetal hemoglobin", Blood_Alb = 0.66 "Albumin", Blood_PO4 = 0.153 "Inorganic phosphates", Blood_DPG = 5.4 "Diphosphoglycerate";
-        parameter Real Blood_Glb = 28 "Globulins", Blood_BEox = 0 "Base excess of oxygenated blood from normal arterial conditions";
-        constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions", zGlbNAP = 0.0892857 "charge on globilins at normal arterial plasma conditions", zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions", ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions", ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions", zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions";
-        parameter Real NSID = (1 - Hct) * (zAlbNAP * Blood_Alb + zGlbNAP * Blood_Glb + zPO4NAP * Blood_PO4 + ztCO2NAP) + Hct * (zHbNAE * (Blood_Hb / Hct) + ztCO2NAE) "Total charge number on buffers at normal arterial conditions per total volume";
-        parameter Real Blood_SID = NSID - Blood_BEox "Strong ion difference";
       public
-        parameter Real ArterialBloodComposition[Blood.nS - 2] = {Hct, Arterial_O2, Arterial_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of arterial blood";
-        parameter Real VenousBloodComposition[Blood.nS - 2] = {Hct, Venous_O2, Venous_CO2, Blood_CO, Blood_Hb, Blood_MetHb, Blood_HbF, Blood_Alb, Blood_Glb, Blood_PO4, Blood_DPG, Blood_SID} "Initial composition of venous blood";
+        parameter Real ArterialBloodComposition[Blood.nS - 2] = Blood.ArterialDefault "Initial composition of arterial blood";
+        parameter Real VenousBloodComposition[Blood.nS - 2] = Blood.VenousDefault "Initial composition of venous blood";
         parameter Types.Fraction AirO2=0.21   "O2 content in inspired air";
         parameter Types.Fraction AirCO2=0.0003   "CO2 content in inspired air";
         parameter Types.Fraction AirH2O=0.06   "H2O content in inspired air";
@@ -3383,8 +3406,8 @@ as signal.
           Line(points = {{49, -150}, {71, -150}}, color = {0, 0, 127}));
         for i in 1:NT loop
           connect(tissueUnit[i].q_in, systemicArteries.q_in[i+1]) annotation (
-            Line(points={{13.6611,-195.21},{28,-195.21},{28,-196},{36.1,-196},
-                {36.1,-196}},                                                                            color = {127, 0, 0}, thickness = 0.5));
+            Line(points={{13.6611,-195.21},{28,-195.21},{28,-196},{36.1,-196},{
+                  36.1,-196}},                                                                           color = {127, 0, 0}, thickness = 0.5));
           connect(tissueUnit[i].q_out, systemicVeins.q_in[i+2]) annotation (
             Line(points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-196}},        color = {127, 0, 0}, thickness = 0.5));
         end for;
@@ -3431,7 +3454,7 @@ as signal.
         parameter Types.Fraction ArteriesViensResistanceRatio = 7 / 8 "Ratio between arteries and veins resistance";
         parameter Types.Volume bloodVolume_start = 0.0003;
         parameter Types.Volume bloodV0 = 0.0002;
-        parameter Real BloodComposition[Blood.nS - 2] = {0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
+        parameter Real BloodComposition[Blood.nS - 2] = Blood.VenousDefault; //{0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
         parameter Types.HydraulicCompliance Compliance = 3.0002463033826e-08 "Compliance of tissue blood vessels";
         Components.Resistor systemicArteriesResistance(redeclare package
           Medium =                                                                Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
@@ -3457,7 +3480,7 @@ as signal.
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {70, -38})));
         Sensors.BloodGasesMeasurement tissue annotation (
           Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {38, -8})));
-        replaceable package Blood = Media.BloodBySiggaardAndersen annotation (
+        replaceable package Blood = Media.Blood                   annotation (
           choicesAllMatching = True);
         Interfaces.FluidPort_a q_in(redeclare package Medium = Blood) annotation (
           Placement(transformation(rotation = 0, extent = {{83, -5}, {96, 6}}), iconTransformation(extent = {{95, -7}, {108, 4}})));
@@ -3848,8 +3871,8 @@ as signal.
       connect(rightPleuralSpace.q_in[1], rightPleauralPressure.q_in) annotation (
         Line(points={{-65.9,-48},{-65.9,-28},{-66,-28},{-66,-18}},          color = {127, 0, 0}, thickness = 0.5));
       connect(rightAlveoli.q_in[1], rightAlveolarPressure.q_in) annotation (
-        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-128,-60},
-            {-128,-34}},                                                                             color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-128,-60},{
+              -128,-34}},                                                                            color = {127, 0, 0}, thickness = 0.5));
       connect(leftBronchi.q_out, leftAlveolarDuct.q_in) annotation (
         Line(points={{-232,32},{-228,32},{-228,30},{-222,30},{-222,32},{-210,
             32}},                               color = {127, 0, 0}, thickness = 0.5));
@@ -3877,7 +3900,7 @@ as signal.
         Line(points = {{-198, -72}, {-190, -72}, {-190, -86}, {-200, -86}}, color = {158, 66, 200}));
       connect(pCO2.referenceFluidPort, rightAlveoli.q_in[3]) annotation (
         Line(points={{-208,-62.2},{-184,-62.2},{-184,-44},{-148,-44},{-148,
-            -49.3},{-146.1,-49.3},{-146.1,-48.2167}},                                                                               color = {127, 0, 0}, thickness = 0.5));
+              -49.3},{-146.1,-49.3},{-146.1,-48.2167}},                                                                             color = {127, 0, 0}, thickness = 0.5));
       connect(pO2.port_a, O2_right.port_a) annotation (
         Line(points = {{-158, -74}, {-166, -74}, {-166, -86}, {-158, -86}}, color = {158, 66, 200}));
       connect(pO2.referenceFluidPort, rightAlveoli.q_in[4]) annotation (
