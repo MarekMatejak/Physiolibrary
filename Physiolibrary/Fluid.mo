@@ -827,7 +827,8 @@ Connector with one flow signal of type Real.
       replaceable package Medium = Physiolibrary.Media.Water constrainedby
       Physiolibrary.Media.Interfaces.PartialMedium                                                                      "Medium in the sensor" annotation (
          choicesAllMatching = true);
-      FluidPort_a port(redeclare package Medium = Medium, m_flow(min = 0)) annotation (
+      Modelica.Fluid.Interfaces.FluidPort_a
+                  port(redeclare package Medium = Medium, m_flow(min = 0)) annotation (
         Placement(transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
     equation
       port.m_flow = 0;
@@ -883,24 +884,17 @@ as signal.
 
     model PressureMeasure "Hydraulic pressure at port"
       extends Physiolibrary.Icons.PressureMeasure;
-      replaceable package Medium = Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
-         choicesAllMatching = true);
+      extends Fluid.Interfaces.PartialAbsoluteSensor;
+
       outer Modelica.Fluid.System system "System wide properties";
       parameter Boolean GetAbsolutePressure = false "if false then output pressure is relative to ambient pressure" annotation (
         Evaluate = true,
         choices(checkBox = true));
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-        Medium =                                                                 Medium) annotation (
-        Placement(transformation(extent = {{-60, -80}, {-20, -40}})));
       Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure" annotation (
         Placement(transformation(extent = {{40, -60}, {80, -20}})));
     equation
-      pressure = q_in.p - (if GetAbsolutePressure then 0 else system.p_ambient);
-      q_in.m_flow = 0;
-      q_in.h_outflow = 0;
-      q_in.Xi_outflow = zeros(Medium.nXi);
-      q_in.C_outflow = zeros(Medium.nC);
+      pressure =port.p  - (if GetAbsolutePressure then 0 else system.p_ambient);
+
       annotation (
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
@@ -909,11 +903,9 @@ as signal.
     end PressureMeasure;
 
     model MassFractions "Ideal one port mass fraction sensor"
-      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          replaceable package
-                            Medium =
-          Media.Water);
       extends Modelica.Icons.RoundSensor;
+      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
+
       parameter String substanceName = "CO2" "Name of mass fraction";
       Physiolibrary.Types.RealIO.MassFractionOutput Xi "Mass fraction in port medium" annotation (
         Placement(transformation(extent = {{100, -10}, {120, 10}})));
@@ -1007,32 +999,28 @@ as signal.
 
     model PartialPressure "Measure of partial pressure of the substance"
       extends Modelica.Icons.RoundSensor;
+      extends Fluid.Interfaces.PartialAbsoluteSensor;
       extends Chemical.Interfaces.PartialSubstance;
-      replaceable package Medium = Physiolibrary.Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                                      "Medium model" annotation (
-         choicesAllMatching = true);
+
       Physiolibrary.Types.RealIO.PressureOutput partialPressure "Partial pressure of the substance in gaseous solution" annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, origin = {-100, 0}, rotation = 180)));
-      Interfaces.FluidPort_a referenceFluidPort(redeclare package Medium = Medium) annotation (
-        Placement(transformation(extent = {{-10, -108}, {10, -88}})));
+
     protected
       Medium.ThermodynamicState state;
     equation
       partialPressure = x * state.p;
-      state = Medium.setState_phX(referenceFluidPort.p, inStream(referenceFluidPort.h_outflow), inStream(referenceFluidPort.Xi_outflow));
+      state =Medium.setState_phX(
+        port.p,
+        inStream(port.h_outflow),
+        inStream(port.Xi_outflow));
     //aliases
       temperature = state.T;
       pressure = state.p;
+
       electricPotential = 0;
-    //not used
       moleFractionBasedIonicStrength = 0;
-    //not used
-    //sensor = zero flows
       port_a.q = 0;
-      referenceFluidPort.m_flow = 0;
-      referenceFluidPort.h_outflow = 0;
-      referenceFluidPort.Xi_outflow =  zeros(Medium.nXi);
-      referenceFluidPort.C_outflow = zeros(Medium.nC);
+
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor = {0, 0, 0}, textString = "p"), Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
         Documentation(revisions = "<html>
@@ -1042,11 +1030,9 @@ as signal.
     end PartialPressure;
 
     model Temperature "Temperature sensor"
-      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          replaceable package
-                            Medium =
-          Media.Water);
       extends Modelica.Icons.RoundSensor;
+      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
+
       Physiolibrary.Types.RealIO.TemperatureOutput T "Temperature" annotation (
         Placement(transformation(extent = {{100, -10}, {120, 10}})));
     equation
@@ -1064,41 +1050,37 @@ as signal.
 
     model pH "Measure of pH (acidity) of the solution"
       extends Modelica.Icons.RoundSensor;
+      extends Fluid.Interfaces.PartialAbsoluteSensor;
       extends Chemical.Interfaces.PartialSubstance(final substanceData = if useHydronium then Chemical.Substances.Hydronium_aqueous() else Chemical.Substances.Proton_aqueous(), redeclare
           final package
                       stateOfMatter =
           Chemical.Interfaces.Incompressible);
-      replaceable package Medium = Physiolibrary.Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                                      "Medium model" annotation (
-         choicesAllMatching = true);
+
       Physiolibrary.Types.RealIO.pHOutput pH "Acidity of the solution" annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, origin = {-100, 0}, rotation = 180)));
       parameter Boolean useHydronium = false "Measured substance is H3O+ instead of H+";
-      Interfaces.FluidPort_a referenceFluidPort(redeclare package Medium = Medium) annotation (
-        Placement(transformation(extent = {{-10, -108}, {10, -88}})));
       Types.SpecificEnthalpy h;
     protected
       Medium.ThermodynamicState state;
     equation
       pH = -log10(a);
-      h = inStream(referenceFluidPort.h_outflow);
-      state = Medium.setState_phX(referenceFluidPort.p, h, inStream(referenceFluidPort.Xi_outflow));
+      h =inStream(port.h_outflow);
+      state =Medium.setState_phX(
+        port.p,
+        h,
+        inStream(port.Xi_outflow));
     //aliases
       temperature = state.T;
       pressure = state.p;
+
       electricPotential = 0;
-    //not used
       moleFractionBasedIonicStrength = 0;
-    //not used
-    //sensor = zero flows
       port_a.q = 0;
-      referenceFluidPort.m_flow = 0;
-      referenceFluidPort.h_outflow = 0;
-      referenceFluidPort.Xi_outflow =  zeros(Medium.nXi);
-      referenceFluidPort.C_outflow = zeros(Medium.nC);
+
 
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor = {0, 0, 0}, textString = "p"), Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor={0,0,0},
+              textString="pH"),                                                                                                                                                              Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
         Documentation(revisions = "<html>
 <p><i>2009-2015</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
@@ -1161,14 +1143,20 @@ as signal.
       d = Medium.density_phX(a_port.p, h, X);
       c = Medium.concentrations_Xd(X, d);
       sO2 = c[Medium.S.O2] / c[Medium.S.Hb];
-      connect(pressureMeasureSystemicCapillaries.q_in, a_port) annotation (
-        Line(points = {{74, -82}, {74, -90}, {40, -90}, {40, -84}, {-60, -84}, {-60, -102}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(pCO2_measure.referenceFluidPort, a_port) annotation (
-        Line(points = {{2, -9.8}, {2, -84}, {-60, -84}, {-60, -102}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(pH_measure.referenceFluidPort, a_port) annotation (
-        Line(points = {{-34, -69.8}, {-34, -82}, {-60, -82}, {-60, -102}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(pO2_measure.referenceFluidPort, a_port) annotation (
-        Line(points = {{40, 50.2}, {40, -84}, {-60, -84}, {-60, -102}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(pressureMeasureSystemicCapillaries.port, a_port) annotation (
+        Line(points={{78,-86},{78,-90},{40,-90},{40,-84},{-60,-84},{-60,-102}},              color = {127, 0, 0}, thickness = 0.5));
+      connect(pCO2_measure.port, a_port) annotation (Line(
+          points={{2,-10},{2,-84},{-60,-84},{-60,-102}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pH_measure.port, a_port) annotation (Line(
+          points={{-34,-70},{-34,-82},{-60,-82},{-60,-102}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pO2_measure.port, a_port) annotation (Line(
+          points={{40,50},{40,-84},{-60,-84},{-60,-102}},
+          color={127,0,0},
+          thickness=0.5));
       connect(pCO2_measure.port_a, CO2) annotation (
         Line(points = {{-8, 0}, {-100, 0}}, color = {158, 66, 200}));
       connect(H_plus, pH_measure.port_a) annotation (
@@ -1208,14 +1196,9 @@ as signal.
 
     model Sphygmomanometer "Systolic, diastolic and mean pressure measurement with latency of measurement time"
       extends Physiolibrary.Icons.PressureMeasure;
+      extends Fluid.Interfaces.PartialAbsoluteSensor;
       parameter Physiolibrary.Types.Time MeasurementTime = 2 "Measurement time period";
-      replaceable package Medium = Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
-         choicesAllMatching = true);
       outer Modelica.Fluid.System system "System wide properties";
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-        Medium =                                                                 Medium) annotation (
-        Placement(transformation(extent = {{-60, -80}, {-20, -40}})));
       Physiolibrary.Types.RealIO.PressureOutput diastolic "Diastolic pressure" annotation (
         Placement(transformation(extent = {{40, -60}, {80, -20}})));
       Types.RealIO.PressureOutput systolic "Systolic pressure" annotation (
@@ -1245,11 +1228,8 @@ as signal.
         reinit(systolicRunning, pressure);
         reinit(pressureInt, 0);
       end when;
-      pressure = q_in.p - system.p_ambient;
-      q_in.m_flow = 0;
-      q_in.h_outflow = 0;
-      q_in.Xi_outflow = zeros(Medium.nXi);
-      q_in.C_outflow = zeros(Medium.nC);
+      pressure =port.p  - system.p_ambient;
+
       annotation (
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
@@ -1517,7 +1497,7 @@ as signal.
         Line(points = {{-73, 84}, {-10, 84}, {-10, 77}}, color = {0, 0, 127}));
       connect(veins.q_in[1], heart.q_in) annotation (
         Line(points={{-48.1,49.35},{-46,49.35},{-46,70},{-20,70}},        color = {127, 0, 0}, thickness = 0.5));
-      connect(pressureMeasure.q_in, arteries.q_in[1]) annotation (
+      connect(pressureMeasure.port, arteries.q_in[1]) annotation (
         Line(points={{88,72},{88,50.0467},{65.88,50.0467}},        color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_in, veins.q_in[2]) annotation (
         Line(points={{-18,32},{-32,32},{-32,50.65},{-48.1,50.65}},        color = {127, 0, 0}, thickness = 0.5));
@@ -1559,7 +1539,7 @@ as signal.
         Line(points = {{-61, 68}, {-38, 68}, {-38, 55}}, color = {0, 0, 127}));
       connect(unlimitedPump.q_out, arteries.q_in[2]) annotation (
         Line(points = {{-28, 48}, {-16, 48}, {-16, 48}, {-2.1, 48}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(arteries.q_in[3], pressureMeasure.q_in) annotation (
+      connect(arteries.q_in[3],pressureMeasure.port)  annotation (
         Line(points={{-2.1,48.8667},{-2,48.8667},{-2,60},{56,60}},          color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_in) annotation (
         Line(points = {{18, 24}, {18, 10}, {8, 10}}, color = {127, 0, 0}, thickness = 0.5));
@@ -1619,7 +1599,7 @@ as signal.
         Line(points = {{50, 24}, {50, 20}, {22, 20}}, color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_out, veins.y) annotation (
         Line(points = {{2, 20}, {-30, 20}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(pressureMeasure.q_in, arteries.q_in[3]) annotation (
+      connect(pressureMeasure.port, arteries.q_in[3]) annotation (
         Line(points={{64,70},{26,70},{26,48.8667},{25.9,48.8667}},          color = {127, 0, 0}, thickness = 0.5));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-74, 90}, {46, 80}}, lineColor = {175, 175, 175}, textString = "3-element Windkessel model")}),
@@ -1672,7 +1652,7 @@ as signal.
         Line(points={{4,48},{16,48},{16,47.675},{25.9,47.675}},        color = {127, 0, 0}, thickness = 0.5));
       connect(arteries.q_in[3], resistance.q_in) annotation (
         Line(points={{25.9,48.325},{48,48.325},{48,44}},      color = {127, 0, 0}, thickness = 0.5));
-      connect(pressureMeasure.q_in, arteries.q_in[4]) annotation (
+      connect(pressureMeasure.port, arteries.q_in[4]) annotation (
         Line(points={{68,68},{25.9,68},{25.9,48.975}},       color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_in) annotation (
         Line(points = {{48, 24}, {48, 20}, {24, 20}}, color = {127, 0, 0}, thickness = 0.5));
@@ -1760,7 +1740,7 @@ as signal.
         Line(points={{-10,84},{2,84},{2,83.1333},{13.9,83.1333}},          color = {127, 0, 0}, thickness = 0.5));
       connect(pulmonaryVeinsAndLeftAtrium.q_in[2], leftHeart.q_in) annotation (
         Line(points = {{13.9, 84}, {36, 84}, {36, 60}, {-12, 60}, {-12, 16}, {16, 16}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(pressureMeasure1.q_in, pulmonaryVeinsAndLeftAtrium.q_in[3]) annotation (
+      connect(pressureMeasure1.port, pulmonaryVeinsAndLeftAtrium.q_in[3]) annotation (
         Line(points={{-2,30},{-12,30},{-12,60},{36,60},{36,84},{13.9,84},{
             13.9,84.8667}},                                                                              color = {127, 0, 0}, thickness = 0.5));
       connect(leftHeart.q_out, arteries.q_in[1]) annotation (
@@ -1783,9 +1763,9 @@ as signal.
         Line(points={{-84,2},{-86,2},{-86,17.1333},{-72.1,17.1333}},          color = {127, 0, 0}, thickness = 0.5));
       connect(rightAtrium.q_in[2], rightHeart.q_in) annotation (
         Line(points = {{-72.1, 18}, {-64, 18}, {-64, 18}, {-56, 18}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(rightAtrium.q_in[3], pressureMeasure.q_in) annotation (
+      connect(rightAtrium.q_in[3],pressureMeasure.port)  annotation (
         Line(points={{-72.1,18.8667},{-72,18.8667},{-72,30}},        color = {127, 0, 0}, thickness = 0.5));
-      connect(arteries.q_in[5], MeanArterialPressure.q_in) annotation (
+      connect(arteries.q_in[5],MeanArterialPressure.port)  annotation (
         Line(points={{23.9,-34.96},{80,-34.96},{80,-30}},        color = {127, 0, 0}, thickness = 0.5));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-82, -80}, {80, -100}}, lineColor = {175, 175, 175}, textString = "Circulation part of Guyton-Coleman-Granger's model from 1972")}),
@@ -1915,7 +1895,7 @@ as signal.
           Line(points={{-4,-60},{-20,-60},{-20,-60.65},{-36.1,-60.65}},        color = {127, 0, 0}, thickness = 0.5));
         connect(SystemicVeins.q_in[2], rightHeart.q_in) annotation (
           Line(points={{-36.1,-59.35},{-80,-59.35},{-80,3},{-72,3}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(SystemicArteries.q_in[3], pressureMeasure.q_in) annotation (
+        connect(SystemicArteries.q_in[3],pressureMeasure.port)  annotation (
           Line(points={{45.9,-59.1333},{60,-59.1333},{60,-62},{74,-62}},          color = {127, 0, 0}, thickness = 0.5));
         connect(RT.y, TotalSystemicResistance.resistance) annotation (
           Line(points = {{-2.75, -45}, {-2.75, -44.5}, {6, -44.5}, {6, -54}}, color = {0, 0, 127}));
@@ -2134,15 +2114,15 @@ as signal.
         connect(pulmonaryVeins.q_in[2], mitralValve.q_in) annotation (
           Line(points={{-279.15,-2.025},{-268.725,-2.025},{-268.725,-3},{-258,
               -3}},                                                                        color = {127, 0, 0}, thickness = 0.5));
-        connect(arteriesPressure.q_in, arteries.q_in[3]) annotation (
+        connect(arteriesPressure.port, arteries.q_in[3]) annotation (
           Line(points={{32,-68},{32,-69},{-1.15,-69},{-1.15,-1.7}},          color = {127, 0, 0}, thickness = 0.5));
-        connect(rightVentricle.q_in[3], rightVentriclePressure.q_in) annotation (
+        connect(rightVentricle.q_in[3],rightVentriclePressure.port)  annotation (
           Line(points={{170.85,-1.7},{170.85,-64},{188,-64}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(leftVentricle.q_in[3], leftVentriclePressure.q_in) annotation (
+        connect(leftVentricle.q_in[3],leftVentriclePressure.port)  annotation (
           Line(points={{-209.15,-1.7},{-209.15,-68},{-200,-68}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(aortaPressure.q_in, aorta.q_in[3]) annotation (
+        connect(aortaPressure.port, aorta.q_in[3]) annotation (
           Line(points={{-100,-56},{-112,-56},{-112,-2.5125},{-111.15,-2.5125}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(aorta.q_in[4], sphygmomanometer.q_in) annotation (
+        connect(aorta.q_in[4],sphygmomanometer.port)  annotation (
           Line(points={{-111.15,-1.5375},{-111.15,-86},{-102,-86}},       color = {127, 0, 0}, thickness = 0.5));
         annotation (
           Diagram(coordinateSystem(extent = {{-350, -100}, {400, 100}}, preserveAspectRatio = false, grid = {2, 2})),
@@ -2479,15 +2459,15 @@ as signal.
           Line(points={{-146,17},{-164,17},{-164,15.8733},{-180.14,15.8733}},          color = {127, 0, 0}, thickness = 0.5));
         connect(Rrain.q_in, Eithv.q_in[2]) annotation (
           Line(points = {{-208, 17}, {-194, 17}, {-194, 17}, {-180.14, 17}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(EithaPressure.q_in, Eitha.q_in[2]) annotation (
+        connect(EithaPressure.port, Eitha.q_in[2]) annotation (
           Line(points={{196,-32},{178.89,-32},{178.89,16.6425}},       color = {127, 0, 0}, thickness = 0.5));
-        connect(EethaPressure.q_in, Eetha.q_in[3]) annotation (
+        connect(EethaPressure.port, Eetha.q_in[3]) annotation (
           Line(points={{84,-52},{84,-54},{68.87,-54},{68.87,18.1267}},          color = {127, 0, 0}, thickness = 0.5));
-        connect(EstPressure.q_in, Est.q_in[3]) annotation (
+        connect(EstPressure.port, Est.q_in[3]) annotation (
           Line(points={{-6,-48},{-16.12,-48},{-16.12,17.9533}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(EethvPressure.q_in, Eethv.q_in[3]) annotation (
+        connect(EethvPressure.port, Eethv.q_in[3]) annotation (
           Line(points={{-86,-48},{-95.13,-48},{-95.13,18.1267}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(Eithv.q_in[3], EithvPressure.q_in) annotation (
+        connect(Eithv.q_in[3],EithvPressure.port)  annotation (
           Line(points={{-180.14,18.1267},{-180.14,-50},{-160,-50}},        color = {127, 0, 0}, thickness = 0.5));
         connect(RAtrialElastance.Et, RightAtrium.elastance) annotation (
           Line(points = {{-202.39, 101.84}, {-202.39, 85.92}, {-225.2, 85.92}, {-225.2, 70.6}}, color = {0, 0, 127}));
@@ -2525,7 +2505,7 @@ as signal.
           Line(points = {{236, 38}, {244, 38}, {244, -84}, {130, -84}, {130, -100}, {138, -100}}, color = {0, 0, 127}));
         connect(power2.power, feedback1.u2) annotation (
           Line(points = {{82, 82}, {106, 82}, {106, -8}, {118, -8}, {118, -124}, {146, -124}, {146, -108}}, color = {0, 0, 127}));
-        connect(Eitha.q_in[4], arterialPressure.q_in) annotation (
+        connect(Eitha.q_in[4],arterialPressure.port)  annotation (
           Line(points={{178.89,18.0725},{178.89,-62},{204,-62}},       color = {127, 0, 0}, thickness = 0.5));
         annotation (
           Diagram(coordinateSystem(extent = {{-280, -140}, {280, 180}}, preserveAspectRatio = false)),
@@ -2772,12 +2752,16 @@ as signal.
         Line(points = {{-50, 62}, {-30, 62}, {-30, 0}}, color = {158, 66, 200}));
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
         Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
-      connect(pH.referenceFluidPort, blood.q_in[1]) annotation (
-        Line(points={{64,-73.8},{64,-78},{4,-78},{4,-46},{7.9,-46},{7.9,
-              -42.8667}},                                                                        color = {127, 0, 0}, thickness = 0.5));
-      connect(pO2.referenceFluidPort, blood.q_in[2]) annotation (
-        Line(points={{-68,-69.8},{-32,-69.8},{-32,-60},{4,-60},{4,-46},{7.9,-46},{7.9,
-              -42}},                                                                                        color = {127, 0, 0}, thickness = 0.5));
+      connect(pH.port, blood.q_in[1]) annotation (Line(
+          points={{64,-73.8},{64,-78},{4,-78},{4,-46},{7.9,-46},{7.9,-42.8667}},
+
+          color={127,0,0},
+          thickness=0.5));
+      connect(pO2.port, blood.q_in[2]) annotation (Line(
+          points={{-68,-69.8},{-32,-69.8},{-32,-60},{4,-60},{4,-46},{7.9,-46},{
+              7.9,-42}},
+          color={127,0,0},
+          thickness=0.5));
       connect(XO2.port, blood.q_in[3]) annotation (
         Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{7.9,
               -46},{7.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
@@ -2835,7 +2819,7 @@ as signal.
       Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-40, -30}, {-20, -10}})));
     equation
-      connect(lungsPressureMeasure.q_in, lungs.q_in[1]) annotation (
+      connect(lungsPressureMeasure.port, lungs.q_in[1]) annotation (
         Line(points={{76,-16},{76,-18.65},{45.9,-18.65}},      color = {127, 0, 0}, thickness = 0.5));
       connect(resistor.q_out, lungs.q_in[2]) annotation (
         Line(points={{14,-20},{28,-20},{28,-17.35},{45.9,-17.35}},        color = {127, 0, 0}, thickness = 0.5));
@@ -3029,7 +3013,7 @@ as signal.
     connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
         Line(points={{-82,24},{-82,-26},{-143,-26},{-143,-11}}, color={0,0,
             127}));
-    connect(chest.q_in[1], pleauralPressure.q_in) annotation (Line(
+    connect(chest.q_in[1],pleauralPressure.port)  annotation (Line(
         points={{-55.9,44},{-38,44},{-38,22},{-72,22}},
         color={127,0,0},
         thickness=0.5));
@@ -3044,7 +3028,7 @@ as signal.
         points={{-288,10},{-156,10},{-156,-1.35},{-135.9,-1.35}},
         color={127,0,0},
         thickness=0.5));
-    connect(alveolarPressure.q_in, lungs.q_in[2]) annotation (Line(
+    connect(alveolarPressure.port, lungs.q_in[2]) annotation (Line(
         points={{-164,-22},{-174,-22},{-174,-2.65},{-135.9,-2.65}},
         color={127,0,0},
         thickness=0.5));
@@ -3139,8 +3123,12 @@ as signal.
         Line(points={{-318,24},{-318,-0.866667},{-318.1,-0.866667}},    color = {127, 0, 0}, thickness = 0.5));
     connect(water.port_a, evaporation.liquid_port) annotation (Line(points={{
             -324,-68},{-352,-68},{-352,-48}}, color={158,66,200}));
-      connect(pH2O_upperRespiratory.referenceFluidPort, upperRespiratoryTract.q_in[2]) annotation (
-        Line(points = {{-354, 33.8}, {-354, 48}, {-330, 48}, {-330, 14}, {-318.1, 14}, {-318.1, 1.11022e-16}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[2])
+        annotation (Line(
+          points={{-354,33.8},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
+              1.11022e-16}},
+          color={127,0,0},
+          thickness=0.5));
     connect(cooling.q_out, upperRespiratoryTract.heatPort) annotation (Line(
         points={{-322,-34},{-324,-34},{-324,-10}},
         color={191,0,0},
@@ -3365,11 +3353,11 @@ as signal.
           Line(points={{-50,-140},{-50,-116},{-50.1,-116},{-50.1,-102.975}},         color = {127, 0, 0}, thickness = 0.5));
         connect(leftHeartPump.q_in, pulmonaryVeins.q_in[1]) annotation (
           Line(points={{42,-140},{42,-100},{41.9,-100},{41.9,-102.975}},         color = {127, 0, 0}, thickness = 0.5));
-        connect(pressureMeasureVeins.q_in, systemicVeins.q_in[1]) annotation (
+        connect(pressureMeasureVeins.port, systemicVeins.q_in[1]) annotation (
           Line(points={{-76,-210},{-50,-210},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
-        connect(pressureMeasurePulmArteries.q_in, pulmonaryArteries.q_in[2]) annotation (
+        connect(pressureMeasurePulmArteries.port, pulmonaryArteries.q_in[2]) annotation (
           Line(points={{-66,-104},{-50,-104},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
-        connect(pulmonaryVeins.q_in[2], pressureMeasurePulmVeins.q_in) annotation (
+        connect(pulmonaryVeins.q_in[2],pressureMeasurePulmVeins.port)  annotation (
           Line(points={{41.9,-102.325},{42,-102.325},{42,-104},{58,-104}},        color = {127, 0, 0}, thickness = 0.5));
         connect(multiProduct1.y, rightHeartPump.solutionFlow) annotation (
           Line(points = {{-62.98, -150}, {-57, -150}}, color = {0, 0, 127}));
@@ -3864,13 +3852,13 @@ as signal.
     equation
       connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
         Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
-      connect(leftAlveolarPressure.q_in, leftAlveoli.q_in[1]) annotation (
+      connect(leftAlveolarPressure.port, leftAlveoli.q_in[1]) annotation (
         Line(points={{-118,26},{-152,26},{-152,24},{-152.1,24},{-152.1,25.35}},           color = {127, 0, 0}, thickness = 0.5));
-      connect(leftPleuralSpace.q_in[1], leftPleauralPressure.q_in) annotation (
+      connect(leftPleuralSpace.q_in[1],leftPleauralPressure.port)  annotation (
         Line(points={{-65.9,28},{-65.9,48},{-66,48},{-66,58}},          color = {127, 0, 0}, thickness = 0.5));
-      connect(rightPleuralSpace.q_in[1], rightPleauralPressure.q_in) annotation (
+      connect(rightPleuralSpace.q_in[1],rightPleauralPressure.port)  annotation (
         Line(points={{-65.9,-48},{-65.9,-28},{-66,-28},{-66,-18}},          color = {127, 0, 0}, thickness = 0.5));
-      connect(rightAlveoli.q_in[1], rightAlveolarPressure.q_in) annotation (
+      connect(rightAlveoli.q_in[1],rightAlveolarPressure.port)  annotation (
         Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-128,-60},{
               -128,-34}},                                                                            color = {127, 0, 0}, thickness = 0.5));
       connect(leftBronchi.q_out, leftAlveolarDuct.q_in) annotation (
@@ -3898,19 +3886,28 @@ as signal.
         Line(points = {{-324, -68}, {-352, -68}, {-352, -48}}, color = {158, 66, 200}));
       connect(pCO2.port_a, CO2_right.port_b) annotation (
         Line(points = {{-198, -72}, {-190, -72}, {-190, -86}, {-200, -86}}, color = {158, 66, 200}));
-      connect(pCO2.referenceFluidPort, rightAlveoli.q_in[3]) annotation (
-        Line(points={{-208,-62.2},{-184,-62.2},{-184,-44},{-148,-44},{-148,
-              -49.3},{-146.1,-49.3},{-146.1,-48.2167}},                                                                             color = {127, 0, 0}, thickness = 0.5));
+      connect(pCO2.port, rightAlveoli.q_in[3]) annotation (Line(
+          points={{-208,-62.2},{-184,-62.2},{-184,-44},{-148,-44},{-148,-49.3},
+              {-146.1,-49.3},{-146.1,-48.2167}},
+          color={127,0,0},
+          thickness=0.5));
       connect(pO2.port_a, O2_right.port_a) annotation (
         Line(points = {{-158, -74}, {-166, -74}, {-166, -86}, {-158, -86}}, color = {158, 66, 200}));
-      connect(pO2.referenceFluidPort, rightAlveoli.q_in[4]) annotation (
-        Line(points={{-148,-64.2},{-148,-44},{-146.1,-44},{-146.1,-47.7833}},          color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_alveolar.referenceFluidPort, rightAlveoli.q_in[5]) annotation (
-        Line(points={{-112,-66.2},{-112,-50},{-146,-50},{-146,-44},{-146.1,
-            -44},{-146.1,-47.35}},                                                                            color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_upperRespiratory.referenceFluidPort, upperRespiratoryTract.q_in[3]) annotation (
-        Line(points={{-354,33.8},{-354,48},{-330,48},{-330,14},{-318.1,14},{
-            -318.1,0.325}},                                                                              color = {127, 0, 0}, thickness = 0.5));
+      connect(pO2.port, rightAlveoli.q_in[4]) annotation (Line(
+          points={{-148,-64.2},{-148,-44},{-146.1,-44},{-146.1,-47.7833}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pH2O_alveolar.port, rightAlveoli.q_in[5]) annotation (Line(
+          points={{-112,-66.2},{-112,-50},{-146,-50},{-146,-44},{-146.1,-44},{-146.1,
+              -47.35}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[3])
+        annotation (Line(
+          points={{-354,33.8},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
+              0.325}},
+          color={127,0,0},
+          thickness=0.5));
       connect(conductor.q_out, upperRespiratoryTract.heatPort) annotation (
         Line(points={{-322,-34},{-324,-34},{-324,-10}},          color = {191, 0, 0}, thickness = 0.5));
       connect(conductor1.q_out, coreHeat.port) annotation (
