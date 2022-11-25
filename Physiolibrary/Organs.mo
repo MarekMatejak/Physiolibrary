@@ -1131,8 +1131,6 @@ SYSTOLE
             Medium =
               Blood, substanceName="Vasopressin")
           annotation (Placement(transformation(extent={{-68,58},{-48,78}})));
-        Modelica.Blocks.Sources.BooleanConstant FunctionFailed_(k=FunctionFailed)
-          annotation (Placement(transformation(extent={{-8,34},{2,44}})));
         Modelica.Fluid.Sensors.TraceSubstances anesthesiaVascularConductance(
             redeclare package Medium = Blood, substanceName="AnesthesiaVascularConductance")
           annotation (Placement(transformation(extent={{-42,66},{-22,86}})));
@@ -1178,6 +1176,7 @@ SYSTOLE
       Blocks.Factors.DamagedFraction               Infraction
         annotation (Placement(transformation(extent={{60,2},{80,22}})));
         Blocks.Factors.SplineLagOrZero                            Vasculature(
+          FunctionFailed=FunctionFailed,
           data={{41,1.2,0},{51,1.0,-0.03},{61,0.8,0}},
           HalfTime=30*86400*Modelica.Math.log(2),
           integrator(y_start=1.2),
@@ -1241,9 +1240,6 @@ SYSTOLE
         connect(vasopressin.C, ADHEffect2.u) annotation (Line(points={{-47,68},{-47,62},
                 {54,62},{54,68},{62,68}},
                                   color={0,0,127}));
-        connect(FunctionFailed_.y, Vasculature.Failed)
-          annotation (Line(points={{2.5,39},{2.5,38},{10,38},{10,40},{52,40},{52,44},{
-                60,44}},                              color={255,0,255}));
         connect(elasticVessel.q_in[3], vasopressin.port) annotation (Line(
             points={{29.9,-0.4875},{29.9,12},{8,12},{8,50},{-74,50},{-74,58},{
                 -58,58}},
@@ -3577,7 +3573,7 @@ vector of pressure-flow connectors.
           thickness=1,
           smooth=Smooth.None));
       connect(AfferentArtery.q_in,pressureMeasure1.port)  annotation (Line(
-          points={{44,0},{58,0},{58,-16},{56,-16}},
+          points={{44,0},{58,0},{58,-20},{52,-20}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -3757,7 +3753,7 @@ vector of pressure-flow connectors.
         color={0,0,0},
         thickness=1));
     connect(EfferentArtery.q_in,pressureMeasure.port)  annotation (Line(
-        points={{-34,0},{-30,0},{-30,6},{-26,6}},
+        points={{-34,0},{-30,0},{-30,2},{-22,2}},
         color={0,0,0},
         thickness=1));
     connect(busConnector.MD_Na, NaEffect_MaculaDensa.u) annotation (Line(
@@ -4525,7 +4521,9 @@ QHP 2008 / Kidney-Flow
     Physiolibrary.Blocks.Factors.Normalization Anesthesia_Skin
       annotation (Placement(transformation(extent={{58,50},{78,70}})));
       Physiolibrary.Blocks.Factors.SplineLagOrZero
-        Vasculature_Skin(HalfTime=30*86400*Modelica.Math.log(2), data={{41,1.2,0},{51,1.0,-0.03},{61,0.8,0}},
+        Vasculature_Skin(
+        useFunctionFailedInput=true,
+        HalfTime=30*86400*Modelica.Math.log(2),                  data={{41,1.2,0},{51,1.0,-0.03},{61,0.8,0}},
         stateName="Skin-Vasculature.Effect")
         annotation (Placement(transformation(extent={{58,40},{78,60}})));
     Physiolibrary.Blocks.Factors.Normalization TermoregulationEffect
@@ -5557,7 +5555,7 @@ QHP 2008 / Skin-Flow
 
       connect(gravityHydrostaticDifference.q_up,pressureMeasure.port)
         annotation (Line(
-          points={{71,39},{80,39},{80,40.4},{81.9,40.4}},
+          points={{71,39},{80,39},{80,37},{78.5,37}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -5637,7 +5635,7 @@ QHP 2008 / Skin-Flow
           thickness=0.5));
 
       connect(pressureMeasure1.port, systemicArtys.q_in[2]) annotation (Line(
-          points={{82,-34},{82,-44},{64,-44},{64,-14},{60,-14},{60,-0.55},{
+          points={{86,-38},{86,-44},{64,-44},{64,-14},{60,-14},{60,-0.55},{
               75.395,-0.55}},
           color={127,0,0},
           thickness=0.5));
@@ -5677,6 +5675,8 @@ QHP 2008 / Skin-Flow
           points={{-36,0.4375},{-18,0.4375},{-18,14},{-10.12,14}},
           color={127,0,0},
           thickness=0.5));
+      connect(peripheral.Sympathicus, busConnector.GangliaGeneral_NA)
+        annotation (Line(points={{13.4,21},{13.4,50},{46,50}}, color={0,0,127}));
      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}),   graphics={Text(
               extent={{42,46},{74,46}},
@@ -5790,6 +5790,10 @@ QHP 2008 / Skin-Flow
         extent={{60,10},{78,28}})));*/
       Kidney.Kidney kidney(redeclare package Blood = Blood)
         annotation (Placement(transformation(extent={{16,12},{36,32}})));
+      Types.RealIO.FrequencyInput Sympathicus
+        "Sympathetic ganglia general neural activity" annotation (Placement(
+            transformation(extent={{-110,50},{-90,70}}), iconTransformation(
+              extent={{0,40},{20,60}})));
     equation
 
       connect(busConnector, otherTissue.busConnector)  annotation (Line(
@@ -6023,6 +6027,20 @@ QHP 2008 / Skin-Flow
           points={{-36,-85},{-56,-85},{-56,4.375},{-100,4.375}},
           color={127,0,0},
           thickness=0.5));
+      connect(Sympathicus, bone.Ganglia) annotation (Line(points={{-100,60},{
+              -48,60},{-48,92},{-23.7,92},{-23.7,81.5}}, color={0,0,127}));
+      connect(Sympathicus, fat.Ganglia) annotation (Line(points={{-100,60},{-14,
+              60},{-14,54},{-8,54},{-8,45.5},{-23.7,45.5}}, color={0,0,127}));
+      connect(Sympathicus, brain.Ganglia) annotation (Line(points={{-100,60},{
+              -48,60},{-48,92},{26.3,92},{26.3,63.5}}, color={0,0,127}));
+      connect(Sympathicus, skeletalMuscle.Ganglia) annotation (Line(points={{
+              -100,60},{-14,60},{-14,54},{-8,54},{-8,38},{-6,38},{-6,-24},{
+              -19.7,-24},{-19.7,-34.5}}, color={0,0,127}));
+      connect(Sympathicus, otherTissue.Ganglia) annotation (Line(points={{-100,
+              60},{-100,-78.5},{-21.7,-78.5}}, color={0,0,127}));
+      connect(Sympathicus, respiratoryMuscle.Ganglia) annotation (Line(points={
+              {-100,60},{-14,60},{-14,54},{-8,54},{-8,38},{-6,38},{-6,-24},{4,
+              -24},{4,-42},{34.3,-42},{34.3,-58.5}}, color={0,0,127}));
       annotation (
         Documentation(info="<HTML>
 <PRE>
@@ -6156,7 +6174,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         color={127,0,0},
         thickness=0.5));
     connect(portalVein.q_in[3],pressureMeasure.port)  annotation (Line(
-        points={{-5.605,1.41},{10,1.41},{10,-38},{12,-38}},
+        points={{-5.605,1.41},{10,1.41},{10,-42},{16,-42}},
         color={127,0,0},
         thickness=0.5));
       connect(SplanchnicCirculation_DeoxygenatedBloodVolume.y, busConnector.SplanchnicCirculation_DeoxygenatedBloodVolume)
@@ -6178,6 +6196,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{-62.96,46},{-86,46},{-86,0},{-100,0}},
           color={127,0,0},
           thickness=0.5));
+      connect(GITract.Ganglia, busConnector.GangliaGeneral_NA) annotation (Line(
+            points={{47.2,6},{47.2,-46},{66,-46}}, color={0,0,127}));
       annotation (       Icon(coordinateSystem(
               preserveAspectRatio=true, extent={{-100,-100},{100,100}}),
             graphics={
@@ -6395,7 +6415,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
 
       connect(gravityHydrostaticDifference.q_up,pressureMeasure.port)
         annotation (Line(
-          points={{71,39},{80,39},{80,40.4},{81.9,40.4}},
+          points={{71,39},{80,39},{80,37},{78.5,37}},
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
@@ -6543,7 +6563,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={127,0,0},
           thickness=0.5));
       connect(pressureMeasure1.port, systemicArtys.q_in[3]) annotation (Line(
-          points={{82,-34},{82,-44},{64,-44},{64,-14},{60,-14},{60,-0.3775},{
+          points={{86,-38},{86,-44},{64,-44},{64,-14},{60,-14},{60,-0.3775},{
               75.395,-0.3775}},
           color={127,0,0},
           thickness=0.5));
@@ -6593,6 +6613,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{-36,0.45},{-18,0.45},{-18,14},{-10.12,14}},
           color={127,0,0},
           thickness=0.5));
+      connect(peripheral.Sympathicus, busConnector.GangliaGeneral_NA)
+        annotation (Line(points={{13.4,21},{13.4,50},{46,50}}, color={0,0,127}));
      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
               -100},{100,100}}),   graphics={Text(
               extent={{42,46},{74,46}},
@@ -7580,7 +7602,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={80,-66})));
-      Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Blood)
+      Modelica.Fluid.Interfaces.FluidPort_a
+                                   port_a(redeclare package Medium = Blood)
         annotation (Placement(transformation(extent={{-110,-30},{-90,-10}})));
       Modelica.Fluid.Sensors.TraceSubstances norepinephrine(redeclare package
           Medium = Blood, substanceName="Norepinephrine")
@@ -7756,7 +7779,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={80,-66})));
-      Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Blood)
+      Modelica.Fluid.Interfaces.FluidPort_a
+                                   port_a(redeclare package Medium = Blood)
         annotation (Placement(transformation(extent={{-110,-30},{-90,-10}})));
       Modelica.Fluid.Sensors.TraceSubstances norepinephrine(redeclare package
           Medium = Blood, substanceName="Norepinephrine")
@@ -8064,6 +8088,8 @@ Blood flow variable resistor abstract model.
       parameter Real[:,3] VasopressinEffect = {{0.8,1.0,0},{3.0,0.1,0}};
       parameter Physiolibrary.Types.Time VasculatureHalfTime=30*86400*Modelica.Math.log(2);
 
+      parameter Boolean FunctionFailed=false "Function failed";
+
     Physiolibrary.Blocks.Factors.Spline A2Effect(
       Xscale=1e-9/1.046,
       UsePositiveLog10=true,
@@ -8086,6 +8112,7 @@ Blood flow variable resistor abstract model.
           Blood = Blood)
       annotation (Placement(transformation(extent={{12,58},{-8,78}})));
       Physiolibrary.Blocks.Factors.SplineLagOrZero              Vasculature(
+        FunctionFailed=FunctionFailed,
       Xscale=101325/760,
         data=VasculatureConductanceOnPO2,
         HalfTime=VasculatureHalfTime,
@@ -8099,7 +8126,8 @@ Blood flow variable resistor abstract model.
         Setting=1)
         annotation (Placement(transformation(extent={{-8,16},{12,36}})));
     Physiolibrary.Fluid.Components.Conductor arterioles(redeclare package
-          Medium = Blood, useConductanceInput=true)
+          Medium =
+            Blood, useConductanceInput=true)
         annotation (Placement(transformation(extent={{12,-102},{-8,-82}})));
     Physiolibrary.Blocks.Factors.Spline pO2OnConductance(
                    Xscale=101325/760, data=PO2OnConductance,
@@ -8177,28 +8205,29 @@ Blood flow variable resistor abstract model.
           transformation(extent={{-100,80},{-80,100}}), iconTransformation(
             extent={{60,40},{100,80}})));
       Modelica.Fluid.Sensors.TraceSubstances vasopressin(redeclare package
-          Medium = Blood, substanceName="Vasopressin")
-        annotation (Placement(transformation(extent={{-46,30},{-26,50}})));
+          Medium =
+            Blood, substanceName="Vasopressin")
+        annotation (Placement(transformation(extent={{-44,30},{-24,50}})));
       Modelica.Fluid.Sensors.TraceSubstances anesthesiaVascularConductance(
-          redeclare package Medium = Blood, substanceName=
-            "AnesthesiaVascularConductance")
+          redeclare package Medium = Blood, substanceName="AnesthesiaVascularConductance")
         annotation (Placement(transformation(extent={{-94,50},{-74,70}})));
       Types.RealIO.FrequencyInput Ganglia
         "Sympathetic ganglia general neural activity" annotation (Placement(
-            transformation(extent={{264,-26},{284,-6}}),
+            transformation(extent={{-40,8},{-20,28}}),
                                                      iconTransformation(
               extent={{0,40},{20,60}})));
         Fluid.Sensors.PartialPressure pO2(
-        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
-        substanceData=Chemical.Substances.Oxygen_gas(),
+        redeclare package stateOfMatter =
+            Physiolibrary.Chemical.Interfaces.IdealGas,
+        substanceData=Physiolibrary.Chemical.Substances.Oxygen_gas(),
         redeclare package Medium = Blood)
-        annotation (Placement(transformation(extent={{-38,-20},{-58,0}})));
+        annotation (Placement(transformation(extent={{-64,-20},{-84,0}})));
       Fluid.Components.ElasticVessel elasticVessel(
         redeclare package Medium = Blood,
         useSubstances=true,
         volume_start=1e-06,
         Compliance=7.5006157584566e-10,
-        nPorts=13)
+        nPorts=9)
         annotation (Placement(transformation(extent={{-60,-100},{-40,-80}})));
     Fluid.Components.Conductor venules(
         redeclare package Medium = Blood,
@@ -8208,12 +8237,12 @@ Blood flow variable resistor abstract model.
         Fluid.Sensors.PartialPressure pCO2(
         redeclare package stateOfMatter =
             Physiolibrary.Chemical.Interfaces.IdealGas,
-        substanceData=Physiolibrary.Chemical.Substances.CarbonDioxide_aqueous(),
-
+        substanceData=Physiolibrary.Chemical.Substances.CarbonDioxide_gas(),
         redeclare package Medium = Blood)
         annotation (Placement(transformation(extent={{-42,-56},{-62,-36}})));
-      Modelica.Fluid.Sensors.TraceSubstances vasopressin1(redeclare package
-          Medium = Blood, substanceName="Vasopressin")
+      Modelica.Fluid.Sensors.TraceSubstances angiotensin2(redeclare package
+          Medium =
+            Blood, substanceName="Angiotensin2")
         annotation (Placement(transformation(extent={{-78,32},{-58,52}})));
     equation
       connect(Vasculature.y,pO2OnConductance. yBase) annotation (Line(
@@ -8228,14 +8257,6 @@ Blood flow variable resistor abstract model.
           points={{-4.5,82},{2,82},{2,70}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(busConnector.Angiotensin2, A2Effect.u) annotation (Line(
-          points={{-90,90},{-60,90},{-60,50},{-6,50}},
-          color={0,0,255},
-          thickness=0.5,
-          smooth=Smooth.None), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}}));
       connect(PO2OnTension.y,PCO2OnTension. yBase) annotation (Line(
           points={{-18,-42},{-18,-44}},
           color={0,0,127},
@@ -8319,15 +8340,6 @@ Blood flow variable resistor abstract model.
           points={{32,36},{32,32}},
           color={0,0,127},
           smooth=Smooth.None));
-    connect(tissueConnector.Function_Failed, Vasculature.Failed) annotation (
-        Line(
-        points={{-84,10},{-60,10},{-60,-4},{-8,-4}},
-        color={127,0,0},
-        thickness=0.5,
-        smooth=Smooth.None), Text(
-        string="%first",
-        index=-1,
-        extent={{-6,3},{-6,3}}));
     connect(IntensityEffect.u, busConnector.Exercise_Metabolism_MotionWatts)
       annotation (Line(
         points={{40,40},{98,40},{98,90},{-90,90}},
@@ -8338,73 +8350,65 @@ Blood flow variable resistor abstract model.
         extent={{6,3},{6,3}}));
     connect(volumeFlowMeasure.volumeFlow, BloodFlow) annotation (Line(points=
             {{58,-78},{58,-62},{84,-62}}, color={0,0,127}));
-      connect(AplhaReceptors.GangliaGeneral, busConnector.GangliaGeneral_NA)
-        annotation (Line(points={{-7.8,20},{-62,20},{-62,90},{-90,90}}, color={
-              0,0,127}), Text(
-          string="%second",
-          index=1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(Viscosity.port, q_in) annotation (Line(points={{12,68},{100,68},{
-              100,-90}}, color={0,127,255}));
       connect(anesthesiaVascularConductance.C, Anesthesia.u)
         annotation (Line(points={{-73,60},{-6,60}}, color={0,0,127}));
-      connect(Viscosity.port, elasticVessel.q_in[6]) annotation (Line(points={{12,68},
-              {100,68},{100,-76},{116,-76},{116,-104},{-50.1,-104},{-50.1,-90.2}},
-                                                           color={0,127,255}));
-      connect(Ganglia, aplhaReceptorsActivityFactor2_1.GangliaGeneral)
-        annotation (Line(points={{274,-16},{324.2,-16}},
-                                                     color={0,0,127}));
-      connect(elasticVessel.substances[Blood.S.O2],pO2. port_a) annotation (
-          Line(points={{-60,-90},{-60,-74},{-62,-74},{-62,-10},{-58,-10}},
-            color={158,66,200}));
       connect(q_out, venules.q_out) annotation (Line(
           points={{-106,-90},{-92,-90}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(venules.q_in, elasticVessel.q_in[7]) annotation (Line(
-          points={{-72,-90},{-50.1,-90},{-50.1,-90}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(elasticVessel.q_in[8], arterioles.q_out) annotation (Line(
-          points={{-50.1,-89.8},{-50.1,-92},{-8,-92}},
           color={127,0,0},
           thickness=0.5));
       connect(volumeFlowMeasure.q_out, arterioles.q_in) annotation (Line(
           points={{48,-90},{46,-90},{46,-92},{12,-92}},
           color={127,0,0},
           thickness=0.5));
-      connect(anesthesiaVascularConductance.port, elasticVessel.q_in[9])
-        annotation (Line(points={{-84,50},{-84,24},{-98,24},{-98,-6},{-66,-6},{
-              -66,-104},{-50.1,-104},{-50.1,-89.6}}, color={0,127,255}));
       connect(vasopressin.C, ADHEffect.u)
-        annotation (Line(points={{-25,40},{-6,40}}, color={0,0,127}));
-      connect(vasopressin.port, elasticVessel.q_in[10]) annotation (Line(points
-            ={{-36,30},{-36,-94},{-34,-94},{-34,-104},{-50.1,-104},{-50.1,-89.4}},
-            color={0,127,255}));
-      connect(AplhaReceptors.port_a, elasticVessel.q_in[11]) annotation (Line(
-          points={{-8,24},{-60,24},{-60,-72},{-50.1,-72},{-50.1,-89.2}},
-          color={127,0,0},
-          thickness=0.5));
+        annotation (Line(points={{-23,40},{-6,40}}, color={0,0,127}));
       connect(pO2.partialPressure, Vasculature.u)
-        annotation (Line(points={{-38,-10},{-8,-10}}, color={0,0,127}));
-      connect(pO2.partialPressure, PO2OnTension.u) annotation (Line(points={{
-              -38,-10},{-32,-10},{-32,-38},{-26,-38}}, color={0,0,127}));
-      connect(pO2.partialPressure, pO2OnConductance.u) annotation (Line(points=
-              {{-38,-10},{-14,-10},{-14,-18},{-6,-18}}, color={0,0,127}));
-      connect(pO2.port, elasticVessel.q_in[12]) annotation (Line(
-          points={{-48,-19.8},{-48,-90},{-50.1,-90},{-50.1,-89}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(pCO2.port_a, elasticVessel.substances[Blood.S.CO2]) annotation (
-          Line(points={{-62,-46},{-64,-46},{-64,-90},{-60,-90}}, color={158,66,
-              200}));
+        annotation (Line(points={{-64,-10},{-8,-10}}, color={0,0,127}));
+      connect(pO2.partialPressure, PO2OnTension.u) annotation (Line(points={{-64,-10},
+              {-32,-10},{-32,-38},{-26,-38}}, color={0,0,127}));
+      connect(pO2.partialPressure, pO2OnConductance.u) annotation (Line(points={{-64,
+              -10},{-14,-10},{-14,-18},{-6,-18}}, color={0,0,127}));
+      connect(pCO2.port_a, elasticVessel.substances[Blood.S.CO2]) annotation (Line(
+            points={{-62,-46},{-64,-46},{-64,-90},{-60,-90}}, color={158,66,200}));
       connect(pCO2.partialPressure, PCO2OnTension.u)
         annotation (Line(points={{-42,-46},{-26,-46}}, color={0,0,127}));
-      connect(pCO2.port, elasticVessel.q_in[13]) annotation (Line(
-          points={{-52,-55.8},{-52,-88.8},{-50.1,-88.8}},
+      connect(angiotensin2.C, A2Effect.u) annotation (Line(points={{-57,42},{-52,42},
+              {-52,54},{-14,54},{-14,50},{-6,50}}, color={0,0,127}));
+      connect(AplhaReceptors.GangliaGeneral, Ganglia) annotation (Line(points={{-7.8,
+              20},{-16,20},{-16,18},{-30,18}}, color={0,0,127}));
+      connect(arterioles.q_out, elasticVessel.q_in[1]) annotation (Line(
+          points={{-8,-92},{-50.1,-92},{-50.1,-91.1556}},
           color={127,0,0},
           thickness=0.5));
+      connect(venules.q_in, elasticVessel.q_in[2]) annotation (Line(
+          points={{-72,-90},{-52,-90},{-52,-90.8667},{-50.1,-90.8667}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(pCO2.port, elasticVessel.q_in[3]) annotation (Line(points={{-52,-56},
+              {-52,-74},{-50,-74},{-50,-90.5778},{-50.1,-90.5778}},color={0,127,255}));
+      connect(pO2.port, elasticVessel.q_in[4]) annotation (Line(points={{-74,-20},
+              {-74,-74},{-50,-74},{-50,-90.2889},{-50.1,-90.2889}},
+                                                               color={0,127,255}));
+      connect(vasopressin.port, elasticVessel.q_in[5]) annotation (Line(points={{-34,
+              30},{-34,-62},{-52,-62},{-52,-76},{-50,-76},{-50,-90},{-50.1,-90}},
+            color={0,127,255}));
+      connect(angiotensin2.port, elasticVessel.q_in[6]) annotation (Line(points={{-68,32},
+              {-68,22},{-36,22},{-36,4},{-34,4},{-34,-62},{-52,-62},{-52,-74},{
+              -50,-74},{-50,-89.7111},{-50.1,-89.7111}},
+                                                     color={0,127,255}));
+      connect(anesthesiaVascularConductance.port, elasticVessel.q_in[7])
+        annotation (Line(points={{-84,50},{-84,26},{-66,26},{-66,22},{-34,22},{
+              -34,-62},{-50,-62},{-50,-89.4222},{-50.1,-89.4222}},
+                                                          color={0,127,255}));
+      connect(AplhaReceptors.port_a, elasticVessel.q_in[8]) annotation (Line(points={{-8,24},
+              {-8,-89.1333},{-50.1,-89.1333}},         color={0,127,255}));
+      connect(Viscosity.port, elasticVessel.q_in[9]) annotation (Line(points={{12,68},
+              {16,68},{16,-102},{-22,-102},{-22,-88},{-30,-88},{-30,-88.8444},{
+              -50.1,-88.8444}},
+                          color={0,127,255}));
+      connect(elasticVessel.substances[Blood.S.O2], pO2.port_a) annotation (Line(
+            points={{-60,-90},{-64,-90},{-64,-48},{-90,-48},{-90,-10},{-84,-10}},
+            color={158,66,200}));
       annotation (
         Documentation(info="<HTML>
 <PRE>

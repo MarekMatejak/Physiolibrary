@@ -570,6 +570,13 @@ input <i>u</i>:
 
     model SplineLagOrZero "LagSpline if not Failed"
       extends Physiolibrary.Icons.BaseFactorIcon2;
+
+      parameter Boolean useFunctionFailedInput = false "=true, if FunctionFailed input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      parameter Boolean FunctionFailed = false "Function failed" annotation(Dialog(enable = not useFunctionFailedInput));
       Modelica.Blocks.Interfaces.RealInput u annotation (
         Placement(transformation(extent = {{-120, -40}, {-80, 0}}), iconTransformation(extent = {{-120, -40}, {-80, 0}})));
       parameter Boolean enabled = true "disabled => y=yBase";
@@ -592,7 +599,7 @@ input <i>u</i>:
         Placement(transformation(extent = {{-48, 40}, {-28, 60}})));
       Modelica.Blocks.Sources.Constant Constant1(k = 0) annotation (
         Placement(transformation(extent = {{-70, 52}, {-58, 64}})));
-      Modelica.Blocks.Interfaces.BooleanInput Failed annotation (
+      Modelica.Blocks.Interfaces.BooleanInput Failed(start = FunctionFailed) = ff if useFunctionFailedInput annotation (
         Placement(transformation(extent = {{-120, 20}, {-80, 60}})));
       Physiolibrary.Types.Fraction effect;
       Modelica.Blocks.Logical.Switch switch2 annotation (
@@ -601,10 +608,13 @@ input <i>u</i>:
         Placement(transformation(extent = {{-60, 78}, {-40, 98}})));
       Modelica.Blocks.Sources.BooleanConstant booleanConstant(k = enabled) annotation (
         Placement(transformation(extent = {{-96, 62}, {-76, 82}})));
+
+      Boolean ff;
     equation
+      if not useFunctionFailedInput then
+        ff=FunctionFailed;
+      end if;
       effect = integrator.y;
-      connect(curve.u, u) annotation (
-        Line(points = {{-76, 0}, {-88, 0}, {-88, -20}, {-100, -20}}, color = {0, 0, 127}));
       connect(yBase, product.u1) annotation (
         Line(points = {{0, 60}, {0, 31}, {0, -38}, {6, -38}}, color = {0, 0, 127}));
       connect(product.y, y) annotation (
@@ -619,8 +629,7 @@ input <i>u</i>:
         Line(points = {{-56, 0}, {-54, 0}, {-54, 42}, {-50, 42}}, color = {0, 0, 127}));
       connect(Constant1.y, switch1.u1) annotation (
         Line(points = {{-57.4, 58}, {-50, 58}}, color = {0, 0, 127}));
-      connect(switch1.u2, Failed) annotation (
-        Line(points = {{-50, 50}, {-58, 50}, {-58, 38}, {-80, 38}, {-80, 40}, {-100, 40}}, color = {255, 0, 255}));
+      switch1.u2=ff;
       connect(switch2.y, feedback.u1) annotation (
         Line(points = {{-3, 80}, {0, 80}, {0, 64}, {-14, 64}, {-14, 34}}, color = {0, 0, 127}));
       connect(booleanConstant.y, switch2.u2) annotation (
@@ -629,6 +638,8 @@ input <i>u</i>:
         Line(points = {{-26, 72}, {-34, 72}, {-34, 66}, {-22, 66}, {-22, 50}, {-27, 50}}, color = {0, 0, 127}));
       connect(One.y, switch2.u3) annotation (
         Line(points = {{-37.5, 88}, {-26, 88}}, color = {0, 0, 127}));
+      connect(u, curve.u)
+        annotation (Line(points={{-100,-20},{-76,-20},{-76,0}}, color={0,0,127}));
       annotation (
         Documentation(revisions = "<html>
 <p><i>2009-2018</i></p>
