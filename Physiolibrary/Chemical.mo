@@ -2768,6 +2768,7 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort
     "Electro-chemical potential and molar change of the substance in the solution"
+    extends VagueSubstancePort;
 
     Modelica.Units.SI.ChemicalPotential u
       "Electro-chemical potential of the substance in the solution";
@@ -2804,7 +2805,17 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort_a
     "Electro-chemical potential and molar flow of the substance in the solution"
-      extends SubstancePort;
+      extends VagueSubstancePort_a;
+
+    Modelica.Units.SI.ChemicalPotential u
+      "Electro-chemical potential of the substance in the solution";
+
+    flow Modelica.Units.SI.MolarFlowRate q
+      "Molar change of the substance";
+
+      //with molar flow of substance heat energy is changing also..
+    stream Modelica.Units.SI.MolarEnthalpy h_outflow
+      "Outgoing molar enthalphy";
 
     annotation (
         defaultComponentName="port_a",
@@ -2835,8 +2846,17 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort_b
     "Electro-chemical potential and molar flow of the substance in the solution"
-      extends SubstancePort;
+      extends VagueSubstancePort_b;
 
+    Modelica.Units.SI.ChemicalPotential u
+      "Electro-chemical potential of the substance in the solution";
+
+    flow Modelica.Units.SI.MolarFlowRate q
+      "Molar change of the substance";
+
+      //with molar flow of substance heat energy is changing also..
+    stream Modelica.Units.SI.MolarEnthalpy h_outflow
+      "Outgoing molar enthalphy";
     annotation (
         defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
@@ -2866,9 +2886,9 @@ package Chemical "Physical Chemistry"
 
     partial model OnePort "Base model for chemical process"
 
-    SubstancePort_b port_a annotation (Placement(transformation(extent={{-110,-10},
+    SubstancePort_a port_a annotation (Placement(transformation(extent={{-110,-10},
               {-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
-    SubstancePort_a port_b annotation (Placement(transformation(extent={{90,-10},
+    SubstancePort_b port_b annotation (Placement(transformation(extent={{90,-10},
               {110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
 
     parameter Boolean EnthalpyNotUsed=false annotation (
@@ -5063,6 +5083,195 @@ end solution_temperature_;
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end SubstanceMolarityPort_b;
+
+    connector VagueSubstancePort
+      "Relative electro-chemical potential and change of the substance in nonspecific units"
+
+    Modelica.Units.SI.ChemicalPotential u
+      "Relative electro-chemical potential of the substance in the solution";
+
+    flow Real q
+      "Change of the substance in nonspecific units";
+
+
+      annotation (Documentation(revisions="<html>
+<p><i>2015</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>",     info="<html>
+<p>Definition of electro-chemical potential of the substance:</p>
+<h4>u(x,T,v) = u&deg;(T) + R*T*ln(gamma*x) + z*F*v</h4>
+<h4>u&deg;(T) = DfG(T) = DfH - T * DfS</h4>
+<p>where</p>
+<p>x .. mole fraction of the substance in the solution</p>
+<p>T .. temperature in Kelvins</p>
+<p>v .. eletric potential of the solution</p>
+<p>z .. elementary charge of the substance (like -1 for electron, +2 for Ca^2+)</p>
+<p>R .. gas constant</p>
+<p>F .. Faraday constant</p>
+<p>gamma .. activity coefficient</p>
+<p>u&deg;(T) .. chemical potential of pure substance</p>
+<p>DfG(T) .. free Gibbs energy of formation of the substance at current temperature T. </p>
+<p>DfH .. free enthalpy of formation of the substance</p>
+<p>DfS .. free entropy of formation of the substance </p>
+<p><br>Be carefull, DfS is not the same as absolute entropy of the substance S&deg; from III. thermodinamic law! It must be calculated from tabulated value of DfG(298.15 K) and DfH as DfS=(DfH - DfG)/298.15. </p>
+</html>"));
+    end VagueSubstancePort;
+
+    connector VagueSubstancePort_a
+      "Relative electro-chemical potential and nonspecific flow of the substance"
+      extends VagueSubstancePort;
+
+    annotation (
+        defaultComponentName="port_a",
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={Rectangle(
+              extent={{-20,10},{20,-10}},
+              lineColor={158,66,200}),Rectangle(
+            extent={{-100,100},{100,-100}},
+            lineColor={158,66,200},
+            fillColor={158,66,200},
+            fillPattern=FillPattern.Solid)}),
+        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
+            graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={158,66,200},
+              fillColor={158,66,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=1),
+       Text(extent = {{-160,110},{40,50}}, lineColor={172,72,218},   textString = "%name")}),
+        Documentation(info="<html>
+<p>Chemical port with internal definition of the substance inside the component. </p>
+</html>",
+        revisions="<html>
+<p><i>2015</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end VagueSubstancePort_a;
+
+    connector VagueSubstancePort_b
+      "Relative electro-chemical potential and unspecific flow of the substance"
+      extends VagueSubstancePort;
+
+    annotation (
+        defaultComponentName="port_b",
+        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
+                100}}),     graphics={Rectangle(
+              extent={{-20,10},{20,-10}},
+              lineColor={158,66,200}),Rectangle(
+              extent={{-100,100},{100,-100}},
+              lineColor={158,66,200},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}),
+        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
+            graphics={Rectangle(
+              extent={{-40,40},{40,-40}},
+              lineColor={158,66,200},
+              lineThickness=1,
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid),
+       Text(extent = {{-160,110},{40,50}}, lineColor={172,72,218},   textString = "%name")}),
+        Documentation(info="<html>
+<p>Chemical port with external definition of the substance outside the component.</p>
+</html>",
+        revisions="<html>
+<p><i>2015</i></p>
+<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"));
+    end VagueSubstancePort_b;
+
+    connector VagueSubstancePorts_a
+      extends VagueSubstancePort;
+      annotation (
+         defaultComponentName="ports_a",
+         Diagram(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-50,-200},{50,200}},
+            initialScale=0.2),graphics={
+            Text(extent={{-73,130},{77,100}}, textString="%name"),
+            Rectangle(
+              extent={{25,-100},{-25,100}},
+              lineColor={158,66,200}),
+                      Rectangle(
+              extent={{-20,20},{20,-20}},
+              lineColor={158,66,200},
+              lineThickness=1),
+                      Rectangle(
+              extent={{-20,90},{20,50}},
+              lineColor={158,66,200},
+              lineThickness=1),
+                      Rectangle(
+              extent={{-20,-52},{20,-90}},
+              lineColor={158,66,200},
+              lineThickness=1)}),
+               Icon(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-50,-200},{50,200}},
+            initialScale=0.2),graphics={
+            Rectangle(
+              extent={{50,-200},{-50,200}},
+              lineColor={158,66,200},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+                                      Rectangle(
+              extent={{-40,38},{40,-42}},
+              lineColor={158,66,200},
+              fillColor={158,66,200},
+              fillPattern=FillPattern.Solid),
+                                      Rectangle(
+              extent={{-40,170},{40,90}},
+              lineColor={158,66,200},
+              fillColor={158,66,200},
+              fillPattern=FillPattern.Solid),
+                                      Rectangle(
+              extent={{-40,-92},{40,-172}},
+              lineColor={158,66,200},
+              fillColor={158,66,200},
+              fillPattern=FillPattern.Solid)}));
+
+    end VagueSubstancePorts_a;
+
+    connector VagueSubstancePorts_b
+      extends VagueSubstancePort;
+      annotation (
+         defaultComponentName="ports_b",
+         Diagram(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-50,-200},{50,200}},
+            initialScale=0.2),graphics={
+            Text(extent={{-73,130},{77,100}}, textString="%name"),
+            Rectangle(
+              extent={{25,-100},{-25,100}},
+              lineColor={158,66,200}),
+                      Rectangle(
+              extent={{-20,20},{20,-20}},
+              lineColor={158,66,200},
+              lineThickness=1),
+                      Rectangle(
+              extent={{-20,90},{20,50}},
+              lineColor={158,66,200},
+              lineThickness=1),
+                      Rectangle(
+              extent={{-20,-52},{20,-90}},
+              lineColor={158,66,200},
+              lineThickness=1)}),
+               Icon(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-50,-200},{50,200}},
+            initialScale=0.2),graphics={
+            Rectangle(
+              extent={{50,-200},{-50,200}},
+              lineColor={158,66,200},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+                                      Rectangle(
+              extent={{-40,38},{40,-42}},
+              lineColor={158,66,200}),Rectangle(
+              extent={{-40,170},{40,90}},
+              lineColor={158,66,200}),Rectangle(
+              extent={{-40,-92},{40,-172}},
+              lineColor={158,66,200})}));
+
+    end VagueSubstancePorts_b;
   end Interfaces;
 
   package Substances "Definitions of substances"
@@ -13582,27 +13791,27 @@ end solution_temperature_;
         annotation (Placement(transformation(extent={{-6,-54},{14,-34}})));
     equation
       connect(Ag.port_a, electrodeReaction1.substrates[1]) annotation (Line(
-          points={{-52,-20},{-42,-20},{-42,-10},{-38,-10}},
+          points={{-52,-20},{-42,-20},{-42,-10},{-41,-10}},
           color={158,66,200},
           thickness=1));
       connect(Cl.port_a, electrodeReaction1.substrates[2]) annotation (Line(
-          points={{-20,-16},{-42,-16},{-42,-10}},
+          points={{-20,-16},{-39,-16},{-39,-10}},
           color={158,66,200},
           thickness=1));
       connect(AgCl.port_a, electrodeReaction1.products[1]) annotation (Line(
-          points={{-56,14},{-38,14},{-38,10}},
+          points={{-56,14},{-41,14},{-41,10}},
           color={158,66,200},
           thickness=1));
       connect(H.port_a, electrodeReaction.products[1]) annotation (Line(
-          points={{28,-16},{50,-16},{50,-4}},
+          points={{28,-16},{53,-16},{53,-4}},
           color={158,66,200},
           thickness=1));
       connect(electrodeReaction.products[2], electrone1.port_a) annotation (Line(
-          points={{54,-4},{54,-16},{68,-16}},
+          points={{51,-4},{51,-16},{68,-16}},
           color={158,66,200},
           thickness=1));
       connect(electrodeReaction1.products[2], electrone.port_a) annotation (Line(
-          points={{-42,10},{-42,42},{-58,42}},
+          points={{-39,10},{-39,42},{-58,42}},
           color={158,66,200},
           thickness=1));
       connect(Cl.solution, solution1.solution) annotation (Line(

@@ -124,7 +124,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
             origin={100,8}), iconTransformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={90,0})));
+            origin={90,60})));
       parameter Boolean useInternalSpaceInput = false "=true, if internal space input is used" annotation (
         Evaluate = true,
         HideResult = true,
@@ -134,6 +134,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
       "Internal space if there is no pressure gradient"                                          annotation (
         Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
       Types.Pressure relative_pressure;
+
 
     protected
       constant Boolean GenerateComplianceConnection = true;
@@ -665,7 +666,7 @@ Connector with one flow signal of type Real.
         Dialog(enable = not use_concentration_start, group = "Initialization of medium composition"));
       parameter Modelica.Units.SI.Concentration concentration_start[:] = Medium.reference_X ./ Medium.MMb * Medium.density_pTX(pressure_start, temperature_start, Medium.reference_X) "* Amounts of all base molecules. If size is nS then mass fractions are scaled all base substance masses to sum=1 (this is not a good idea for non-gaseous solutions). If size is nS-1 then last substance is calculated from other specific volumes. If size is nS-2 then last but one substance is calculated from electroneutrality and last substance from specific volumes." annotation (
         Dialog(enable = use_concentration_start, group = "Initialization of medium composition"));
-      parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per liter of solution"
+      parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per kilogram of solution"
         annotation(Dialog(group = "Initialization of medium composition"));
       parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
         Dialog(group = "Initialization"));
@@ -698,18 +699,34 @@ Connector with one flow signal of type Real.
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS]
-      if useSubstances                                                            annotation (
+      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS] if useSubstances annotation (
         Placement(transformation(extent = {{-110, -40}, {-90, 40}}), iconTransformation(extent = {{-110, -40}, {-90, 40}})));
-      Medium.ChemicalSolution chemicalSolution(p = pressure, h = enthalpy / mass, X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}), i = i, EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
+      parameter Boolean useExtraSubstances = false "=true, if extra s ubstance ports are used"
+         annotation (  Evaluate = true,    HideResult = true,
+                       choices(checkBox = true),    Dialog(group = "Conditional inputs"));
+
+      Chemical.Interfaces.VagueSubstancePorts_a extraSubstances[Medium.nC](
+          u=Modelica.Constants.R*Medium.temperature_phX(pressure, enthalpy / mass, massFractions)*log({ max(Modelica.Constants.small,extraSubstanceConcentrations[i]) for i in 1:Medium.nC}),
+          q=extraFlows) if useExtraSubstances
+          annotation (Placement(transformation(extent={{90,-40},
+                {110,40}}),
+                       iconTransformation(extent={{90,-40},{110,40}})));
+
+      Medium.ChemicalSolution chemicalSolution(
+        p = pressure,
+        h = enthalpy / mass,
+        X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
+        i = i,
+        EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
+
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
         choices(checkBox = true),
         Dialog(group = "Initialization"));
-      parameter Physiolibrary.Types.Volume volume_start = 0.001 "Total volume of solution start value" annotation (
+      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
         HideResult = use_mass_start,
         Dialog(enable = not use_mass_start, group = "Initialization"));
-      parameter Physiolibrary.Types.Mass mass_start(displayUnit = "kg") = 1 "Total mass of solution start value" annotation (
+      parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=1     "Total mass of solution start value" annotation (
         HideResult = not use_mass_start,
         Dialog(enable = use_mass_start, group = "Initialization"));
 
@@ -742,6 +759,7 @@ Connector with one flow signal of type Real.
       Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
       Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
       Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
       Physiolibrary.Types.Volume volume;
       Physiolibrary.Types.Density density;
     protected
@@ -749,6 +767,8 @@ Connector with one flow signal of type Real.
       Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS];
       Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS];
       Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
+      Modelica.Blocks.Interfaces.RealOutput extraFlows[Medium.nC];
+
     initial equation
       assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
     /* assert(
@@ -791,6 +811,9 @@ Connector with one flow signal of type Real.
           i = 0;
         end if;
       end if;
+      if not useExtraSubstances then
+        extraFlows = zeros(Medium.nC);
+      end if;
       der(substanceMasses) = q_in.m_flow * xx_mass + massFlows[1:Medium.nXi];
       der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
       if Medium.reducedX then
@@ -810,14 +833,16 @@ Connector with one flow signal of type Real.
       else
         density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
       end if;
+      extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
       for i in 1:nPorts loop
         xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
         xC_mass[i, :] = actualStream(q_in[i].C_outflow);
         q_in[i].p = pressure;
         q_in[i].h_outflow = enthalpy / mass;
         q_in[i].Xi_outflow = massFractions;
-        q_in[i].C_outflow  = extraSubstanceAmounts ./ mass;
+        q_in[i].C_outflow  = extraSubstanceConcentrations;
       end for;
+
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)));
@@ -2718,8 +2743,10 @@ as signal.
       inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
-        Medium =                                                                    Blood, Compliance = 1, EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
-        Placement(transformation(extent={{-2,-52},{18,-32}})));
+        Medium =                                                                    Blood,
+        useExtraSubstances=true,
+        Compliance=1,                                                                                      EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
+        Placement(transformation(extent={{-6,-52},{14,-32}})));
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
@@ -2753,28 +2780,28 @@ as signal.
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
         Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
       connect(pH.port, blood.q_in[1]) annotation (Line(
-          points={{64,-73.8},{64,-78},{4,-78},{4,-46},{7.9,-46},{7.9,-42.8667}},
-
+          points={{64,-74},{64,-78},{4,-78},{4,-46},{3.9,-46},{3.9,-42.8667}},
           color={127,0,0},
           thickness=0.5));
+
       connect(pO2.port, blood.q_in[2]) annotation (Line(
-          points={{-68,-69.8},{-32,-69.8},{-32,-60},{4,-60},{4,-46},{7.9,-46},{
-              7.9,-42}},
+          points={{-68,-70},{-32,-70},{-32,-60},{4,-60},{4,-46},{3.9,-46},{3.9,
+              -42}},
           color={127,0,0},
           thickness=0.5));
       connect(XO2.port, blood.q_in[3]) annotation (
-        Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{7.9,
-              -46},{7.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{3.9,
+              -46},{3.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
       connect(CO2_GasSolubility.liquid_port, blood.substances[Blood.S.CO2]) annotation (
-        Line(points={{-30,-20},{-30,-42},{-2,-42}},        color = {158, 66, 200}));
+        Line(points={{-30,-20},{-30,-42},{-6,-42}},        color = {158, 66, 200}));
       connect(pO2.port_a, blood.substances[Blood.S.O2]) annotation (
-        Line(points={{-58,-60},{-34,-60},{-34,-42},{-2,-42}},          color = {158, 66, 200}));
+        Line(points={{-58,-60},{-34,-60},{-34,-42},{-6,-42}},          color = {158, 66, 200}));
       connect(O2_GasSolubility.liquid_port, blood.substances[Blood.S.O2]) annotation (
-        Line(points={{-48,-20},{-46,-20},{-46,-42},{-2,-42}},          color = {158, 66, 200}));
+        Line(points={{-48,-20},{-46,-20},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
       connect(CO_GasSolubility.liquid_port, blood.substances[Blood.S.CO]) annotation (
-        Line(points={{-12,-20},{-12,-42},{-2,-42}},        color = {158, 66, 200}));
+        Line(points={{-12,-20},{-12,-42},{-6,-42}},        color = {158, 66, 200}));
       connect(pH.port_a, blood.substances[Blood.S.H]) annotation (
-        Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-2,-42}},              color = {158, 66, 200}));
+        Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-6,-42}},              color = {158, 66, 200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -2820,7 +2847,7 @@ as signal.
         Placement(transformation(extent = {{-40, -30}, {-20, -10}})));
     equation
       connect(lungsPressureMeasure.port, lungs.q_in[1]) annotation (
-        Line(points={{76,-16},{76,-18.65},{45.9,-18.65}},      color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{80,-20},{80,-18.65},{45.9,-18.65}},      color = {127, 0, 0}, thickness = 0.5));
       connect(resistor.q_out, lungs.q_in[2]) annotation (
         Line(points={{14,-20},{28,-20},{28,-17.35},{45.9,-17.35}},        color = {127, 0, 0}, thickness = 0.5));
       connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
@@ -3014,7 +3041,7 @@ as signal.
         Line(points={{-82,24},{-82,-26},{-143,-26},{-143,-11}}, color={0,0,
             127}));
     connect(chest.q_in[1],pleauralPressure.port)  annotation (Line(
-        points={{-55.9,44},{-38,44},{-38,22},{-72,22}},
+        points={{-55.9,44},{-38,44},{-38,18},{-76,18}},
         color={127,0,0},
         thickness=0.5));
     connect(respiratoryMusclePressureCycle.val, chest.externalPressure)
@@ -3029,7 +3056,7 @@ as signal.
         color={127,0,0},
         thickness=0.5));
     connect(alveolarPressure.port, lungs.q_in[2]) annotation (Line(
-        points={{-164,-22},{-174,-22},{-174,-2.65},{-135.9,-2.65}},
+        points={{-160,-26},{-174,-26},{-174,-2.65},{-135.9,-2.65}},
         color={127,0,0},
         thickness=0.5));
     connect(CO2_diffusion.port_a, lungs.substances[Air.S.CO2]) annotation (
@@ -3853,14 +3880,14 @@ as signal.
       connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
         Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
       connect(leftAlveolarPressure.port, leftAlveoli.q_in[1]) annotation (
-        Line(points={{-118,26},{-152,26},{-152,24},{-152.1,24},{-152.1,25.35}},           color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-114,22},{-152,22},{-152,24},{-152.1,24},{-152.1,25.35}},           color = {127, 0, 0}, thickness = 0.5));
       connect(leftPleuralSpace.q_in[1],leftPleauralPressure.port)  annotation (
-        Line(points={{-65.9,28},{-65.9,48},{-66,48},{-66,58}},          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-65.9,28},{-65.9,48},{-70,48},{-70,54}},          color = {127, 0, 0}, thickness = 0.5));
       connect(rightPleuralSpace.q_in[1],rightPleauralPressure.port)  annotation (
-        Line(points={{-65.9,-48},{-65.9,-28},{-66,-28},{-66,-18}},          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-65.9,-48},{-65.9,-28},{-70,-28},{-70,-22}},          color = {127, 0, 0}, thickness = 0.5));
       connect(rightAlveoli.q_in[1],rightAlveolarPressure.port)  annotation (
-        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-128,-60},{
-              -128,-34}},                                                                            color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-124,-60},{
+              -124,-38}},                                                                            color = {127, 0, 0}, thickness = 0.5));
       connect(leftBronchi.q_out, leftAlveolarDuct.q_in) annotation (
         Line(points={{-232,32},{-228,32},{-228,30},{-222,30},{-222,32},{-210,
             32}},                               color = {127, 0, 0}, thickness = 0.5));
@@ -3887,24 +3914,24 @@ as signal.
       connect(pCO2.port_a, CO2_right.port_b) annotation (
         Line(points = {{-198, -72}, {-190, -72}, {-190, -86}, {-200, -86}}, color = {158, 66, 200}));
       connect(pCO2.port, rightAlveoli.q_in[3]) annotation (Line(
-          points={{-208,-62.2},{-184,-62.2},{-184,-44},{-148,-44},{-148,-49.3},
-              {-146.1,-49.3},{-146.1,-48.2167}},
+          points={{-208,-62},{-184,-62},{-184,-44},{-148,-44},{-148,-49.3},{
+              -146.1,-49.3},{-146.1,-48.2167}},
           color={127,0,0},
           thickness=0.5));
       connect(pO2.port_a, O2_right.port_a) annotation (
         Line(points = {{-158, -74}, {-166, -74}, {-166, -86}, {-158, -86}}, color = {158, 66, 200}));
       connect(pO2.port, rightAlveoli.q_in[4]) annotation (Line(
-          points={{-148,-64.2},{-148,-44},{-146.1,-44},{-146.1,-47.7833}},
+          points={{-148,-64},{-148,-44},{-146.1,-44},{-146.1,-47.7833}},
           color={127,0,0},
           thickness=0.5));
       connect(pH2O_alveolar.port, rightAlveoli.q_in[5]) annotation (Line(
-          points={{-112,-66.2},{-112,-50},{-146,-50},{-146,-44},{-146.1,-44},{-146.1,
-              -47.35}},
+          points={{-112,-66},{-112,-50},{-146,-50},{-146,-44},{-146.1,-44},{
+              -146.1,-47.35}},
           color={127,0,0},
           thickness=0.5));
       connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[3])
         annotation (Line(
-          points={{-354,33.8},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
+          points={{-354,34},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
               0.325}},
           color={127,0,0},
           thickness=0.5));
@@ -3948,11 +3975,11 @@ as signal.
       respiratoryMusclePressureCycle.val) annotation (Line(points={{-73,-39},
             {-73,-28},{-2,-28},{-2,82},{-14,82}}, color={0,0,127}));
       connect(leftAlveoli.fluidVolume,leftPleuralSpace. internalSpace) annotation (
-          Line(points={{-142,18},{-90,18},{-90,28},{-75,28}}, color={0,0,127}));
+          Line(points={{-142,18},{-90,18},{-90,34},{-75,34}}, color={0,0,127}));
       connect(leftPleauralPressure.pressure, leftAlveoli.externalPressure)
         annotation (Line(points={{-76,60},{-145,60},{-145,35}}, color={0,0,127}));
     connect(rightAlveoli.fluidVolume, rightPleuralSpace.internalSpace)
-      annotation (Line(points={{-136,-56},{-82,-56},{-82,-48},{-75,-48}},
+      annotation (Line(points={{-136,-56},{-82,-56},{-82,-42},{-75,-42}},
           color={0,0,127}));
     connect(rightPleauralPressure.pressure, rightAlveoli.externalPressure)
       annotation (Line(points={{-76,-16},{-140,-16},{-140,-39},{-139,-39}},
