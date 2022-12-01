@@ -1234,6 +1234,37 @@ package Chemical "Physical Chemistry"
 <br/>
 </html>"));
     end Stream;
+
+    model VagueMembrane
+      "Passive transport of the vague substance through semipermeable membrane"
+      extends Icons.Membrane;
+      extends Interfaces.VagueOnePort;
+      extends Interfaces.ConditionalKinetics;
+
+      parameter Real kE(unit="mol/J")=0 "Kinetic turnover coefficient";
+
+    protected
+    Modelica.Units.SI.ChemicalPotential du;
+    equation
+      //the main equation
+      du = (port_a.u - port_b.u);
+      port_a.q = kC * du * exp(-kE*abs(du));
+
+      annotation ( Documentation(info="<html>
+<p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
+<p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium.</p>
+<p>If zero-flow Donnan&apos;s equilibrium is reached. </p>
+</html>", revisions="<html>
+<p><i>2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+              {100,100}}), graphics={
+            Text(
+              extent={{-97,-12},{97,12}},
+              textString="%name",
+              lineColor={128,0,255},
+            origin={69,2},
+            rotation=90)}));
+    end VagueMembrane;
   end Components;
 
   package Sensors "Chemical sensors"
@@ -5126,19 +5157,19 @@ end solution_temperature_;
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
                 100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
-              lineColor={158,66,200}),Rectangle(
+              lineColor={217,67,180}),Rectangle(
             extent={{-100,100},{100,-100}},
-            lineColor={158,66,200},
-            fillColor={158,66,200},
+            lineColor={217,67,180},
+            fillColor={217,67,180},
             fillPattern=FillPattern.Solid)}),
         Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
             graphics={Rectangle(
               extent={{-40,40},{40,-40}},
-              lineColor={158,66,200},
-              fillColor={158,66,200},
+              lineColor={217,67,180},
+              fillColor={217,67,180},
               fillPattern=FillPattern.Solid,
               lineThickness=1),
-       Text(extent = {{-160,110},{40,50}}, lineColor={172,72,218},   textString = "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor={217,67,180},   textString = "%name")}),
         Documentation(info="<html>
 <p>Chemical port with internal definition of the substance inside the component. </p>
 </html>",
@@ -5157,19 +5188,19 @@ end solution_temperature_;
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
                 100}}),     graphics={Rectangle(
               extent={{-20,10},{20,-10}},
-              lineColor={158,66,200}),Rectangle(
+              lineColor={217,67,180}),Rectangle(
               extent={{-100,100},{100,-100}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid)}),
         Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
             graphics={Rectangle(
               extent={{-40,40},{40,-40}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1,
             fillColor={255,255,255},
             fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor={172,72,218},   textString = "%name")}),
+       Text(extent = {{-160,110},{40,50}}, lineColor={217,67,180},   textString = "%name")}),
         Documentation(info="<html>
 <p>Chemical port with external definition of the substance outside the component.</p>
 </html>",
@@ -5190,18 +5221,18 @@ end solution_temperature_;
             Text(extent={{-73,130},{77,100}}, textString="%name"),
             Rectangle(
               extent={{25,-100},{-25,100}},
-              lineColor={158,66,200}),
+              lineColor={217,67,180}),
                       Rectangle(
               extent={{-20,20},{20,-20}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1),
                       Rectangle(
               extent={{-20,90},{20,50}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1),
                       Rectangle(
               extent={{-20,-52},{20,-90}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1)}),
                Icon(coordinateSystem(
             preserveAspectRatio=false,
@@ -5209,23 +5240,23 @@ end solution_temperature_;
             initialScale=0.2),graphics={
             Rectangle(
               extent={{50,-200},{-50,200}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
                                       Rectangle(
-              extent={{-40,38},{40,-42}},
-              lineColor={158,66,200},
-              fillColor={158,66,200},
+              extent={{-38,38},{42,-42}},
+              lineColor={217,67,180},
+              fillColor={217,67,180},
               fillPattern=FillPattern.Solid),
                                       Rectangle(
               extent={{-40,170},{40,90}},
-              lineColor={158,66,200},
-              fillColor={158,66,200},
+              lineColor={217,67,180},
+              fillColor={217,67,180},
               fillPattern=FillPattern.Solid),
                                       Rectangle(
               extent={{-40,-92},{40,-172}},
-              lineColor={158,66,200},
-              fillColor={158,66,200},
+              lineColor={217,67,180},
+              fillColor={217,67,180},
               fillPattern=FillPattern.Solid)}));
 
     end VagueSubstancePorts_a;
@@ -5241,18 +5272,18 @@ end solution_temperature_;
             Text(extent={{-73,130},{77,100}}, textString="%name"),
             Rectangle(
               extent={{25,-100},{-25,100}},
-              lineColor={158,66,200}),
+              lineColor={217,67,180}),
                       Rectangle(
               extent={{-20,20},{20,-20}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1),
                       Rectangle(
               extent={{-20,90},{20,50}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1),
                       Rectangle(
               extent={{-20,-52},{20,-90}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               lineThickness=1)}),
                Icon(coordinateSystem(
             preserveAspectRatio=false,
@@ -5260,18 +5291,29 @@ end solution_temperature_;
             initialScale=0.2),graphics={
             Rectangle(
               extent={{50,-200},{-50,200}},
-              lineColor={158,66,200},
+              lineColor={217,67,180},
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
                                       Rectangle(
               extent={{-40,38},{40,-42}},
-              lineColor={158,66,200}),Rectangle(
+              lineColor={217,67,180}),Rectangle(
               extent={{-40,170},{40,90}},
-              lineColor={158,66,200}),Rectangle(
+              lineColor={217,67,180}),Rectangle(
               extent={{-40,-92},{40,-172}},
-              lineColor={158,66,200})}));
+              lineColor={217,67,180})}));
 
     end VagueSubstancePorts_b;
+
+    partial model VagueOnePort "Base model for vague chemical process"
+
+    VagueSubstancePort_a port_a annotation (Placement(transformation(extent={{-110,-10},
+              {-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
+    VagueSubstancePort_b port_b annotation (Placement(transformation(extent={{90,-10},
+              {110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
+
+    equation
+      port_a.q + port_b.q = 0;
+    end VagueOnePort;
   end Interfaces;
 
   package Substances "Definitions of substances"
