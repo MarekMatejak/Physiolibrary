@@ -1263,7 +1263,7 @@ SYSTOLE
                 {54,38},{54,30},{62,30}},             color={0,0,127}));
         connect(pO2.partialPressure, Vasculature.u)
           annotation (Line(points={{40,38},{60,38}},         color={0,0,127}));
-        connect(capillarries.substances[Blood.S.O2], pO2.port_a) annotation (
+        connect(capillarries.substances[Blood.i("O2")], pO2.port_a) annotation (
             Line(points={{20,0},{20,24},{14,24},{14,38},{20,38}}, color={158,66,
                 200}));
         connect(anesthesiaVascularConductance.port, capillarries.q_in[3])
@@ -1343,10 +1343,10 @@ SYSTOLE
         connect(aplhaReceptorsActivityFactor2_1.port_a, capillarries.q_in[7])
           annotation (Line(points={{60,54},{30,54},{30,2},{29.9,2},{29.9,0.8125}},
               color={0,127,255}));
-        connect(Viscosity.port, anesthesiaVascularConductance.port) annotation
-          (Line(points={{60,84},{30,84},{30,66}}, color={0,127,255}));
-        connect(vasopressin.port, capillarries.q_in[8]) annotation (Line(points
-              ={{30,58},{29.9,58},{29.9,1.1375}}, color={0,127,255}));
+        connect(Viscosity.port, anesthesiaVascularConductance.port) annotation (
+           Line(points={{60,84},{30,84},{30,66}}, color={0,127,255}));
+        connect(vasopressin.port, capillarries.q_in[8]) annotation (Line(points=
+               {{30,58},{29.9,58},{29.9,1.1375}}, color={0,127,255}));
         connect(resistor2_1.q_out, port_a) annotation (Line(
             points={{80,0},{110,0}},
             color={127,0,0},
@@ -1358,8 +1358,8 @@ SYSTOLE
           annotation (Line(points={{-44,-76},{-52,-76},{-52,-16},{44,-16},{44,
                 -4},{40,-4},{40,0}}, color={217,67,180}));
         connect(capyMembrane.ports_b, interstitium.substances) annotation (Line(
-              points={{-24,-64.2},{-16,-64.2},{-16,-48},{2,-48},{2,-56}}, color
-              ={158,66,200}));
+              points={{-24,-64.2},{-16,-64.2},{-16,-48},{2,-48},{2,-56}}, color=
+               {158,66,200}));
         connect(capyMembrane.extraPorts_b, interstitium.extraSubstances)
           annotation (Line(points={{-24,-76},{-16,-76},{-16,-86},{2,-86},{2,-76}},
               color={217,67,180}));
@@ -1369,8 +1369,8 @@ SYSTOLE
         connect(cellMembrane.extraPorts_a, interstitium.extraSubstances)
           annotation (Line(points={{24,-76},{16,-76},{16,-86},{2,-86},{2,-76}},
               color={217,67,180}));
-        connect(cellMembrane.ports_b, cells.substances) annotation (Line(points
-              ={{44,-64.2},{50,-64.2},{50,-48},{82,-48},{82,-60}}, color={158,
+        connect(cellMembrane.ports_b, cells.substances) annotation (Line(points=
+               {{44,-64.2},{50,-64.2},{50,-48},{82,-48},{82,-60}}, color={158,
                 66,200}));
         connect(cellMembrane.extraPorts_b, cells.extraSubstances) annotation (
             Line(points={{44,-76},{50,-76},{50,-86},{82,-86},{82,-80}}, color={
@@ -1746,7 +1746,7 @@ vector of pressure-flow connectors.
         replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
         Components.Ventricle                            rightVentricle(
-          redeclare package Blood = Blood,
+          redeclare package Medium = Blood,
           stateName="RightVentricle.Vol",
           n_Diastole=2.0,
           n_Systole=0.5,
@@ -1847,7 +1847,7 @@ vector of pressure-flow connectors.
         replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
         Components.Ventricle                            rightVentricle(
-          redeclare package Blood = Blood,
+          redeclare package Medium = Blood,
           stateName="RightVentricle.Vol",
           n_Diastole=2.0,
           n_Systole=0.5,
@@ -2412,7 +2412,7 @@ vector of pressure-flow connectors.
           horizontalAlignment=TextAlignment.Left));
 
       connect(lungsVolume.y, pleuralSpace.internalSpace) annotation (Line(points={{-40.4,
-              -2},{-62,-2},{-62,30},{-51,30}}, color={0,0,127}));
+              -2},{-62,-2},{-62,36},{-51,36}}, color={0,0,127}));
       connect(respiratoryUnit.volume, lungsVolume.u) annotation (Line(points={{4.8,
               -6.6},{4.8,-2},{-31.2,-2}},
                                     color={0,0,127}));
@@ -2608,29 +2608,29 @@ vector of pressure-flow connectors.
             points={{-51,-44},{10,-44},{10,-38.65},{9.9,-38.65}},
             color={127,0,0},
             thickness=0.5));
-        connect(O2_diffusion.gas_port,alveoli. substances[Air.S.O2]) annotation (Line(
+        connect(O2_diffusion.gas_port,alveoli. substances[Air.i("O2")]) annotation (Line(
               points={{-44,4},{-44,12},{-12,12},{-12,14},{-8.88178e-16,14}},
                                                                            color={158,
                 66,200}));
-        connect(CO2_diffusion.gas_port,alveoli. substances[Air.S.CO2]) annotation (
+        connect(CO2_diffusion.gas_port,alveoli. substances[Air.i("CO2")]) annotation (
             Line(points={{-12,4},{-12,14},{-8.88178e-16,14}},
                                                         color={158,66,200}));
         connect(alveolar.b_port, pulmCapys.q_in) annotation (Line(
             points={{48.2,-26.2},{48.2,-40},{64,-40}},
             color={127,0,0},
             thickness=0.5));
-        connect(pulmCapysVentilated.substances[Blood.S.O2],O2_diffusion. liquid_port)
+        connect(pulmCapysVentilated.substances[Blood.i("O2")],O2_diffusion. liquid_port)
           annotation (Line(points={{0,-38},{-44,-38},{-44,-16}},         color={
                 158,66,200}));
-        connect(pulmCapysVentilated.substances[Blood.S.CO2],CO2_diffusion. liquid_port)
+        connect(pulmCapysVentilated.substances[Blood.i("CO2")],CO2_diffusion. liquid_port)
           annotation (Line(points={{0,-38},{-12,-38},{-12,-16}},
               color={158,66,200}));
-        connect(alveolar.H_plus,pulmCapysVentilated. substances[Blood.S.H])
+        connect(alveolar.H_plus,pulmCapysVentilated. substances[Blood.i("H+")])
           annotation (Line(points={{32,-22},{0,-22},{0,-38}},  color={158,66,200}));
-        connect(alveolar.CO2,pulmCapysVentilated. substances[Blood.S.CO2])
+        connect(alveolar.CO2,pulmCapysVentilated. substances[Blood.i("CO2")])
           annotation (Line(points={{32,-16},{0,-16},{0,-38}},        color={158,
                 66,200}));
-        connect(alveolar.O2,pulmCapysVentilated. substances[Blood.S.O2])
+        connect(alveolar.O2,pulmCapysVentilated. substances[Blood.i("O2")])
           annotation (Line(points={{32,-10},{0,-10},{0,-38}},         color={158,
                 66,200}));
         connect(pulmCapysVentilated.q_in[2],alveolar. a_port) annotation (Line(
@@ -5464,12 +5464,12 @@ QHP 2008 / Skin-Flow
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {98,-10},{118,10}}, rotation=0), iconTransformation(extent={{90,
                 -10},{110,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent=
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent=
                 {{-104,4},{-84,24}}, rotation=0), iconTransformation(extent={{-110,
                 -10},{-90,10}})));
 
@@ -5549,11 +5549,11 @@ QHP 2008 / Skin-Flow
         Placement(transformation(extent={{76,-90},{96,-70}})));
       Chemical.Sources.SubstanceInflowT CO2_left(
         SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*6.17),
-
         redeclare package stateOfMatter =
             Physiolibrary.Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.CarbonDioxide_gas())                                                                                                                                                                           annotation (
         Placement(transformation(extent={{28,-90},{48,-70}})));
+
       Fluid.Sensors.PartialPressure               pCO2(
         redeclare package stateOfMatter =
             Physiolibrary.Chemical.Interfaces.IdealGas,
@@ -5740,12 +5740,12 @@ QHP 2008 / Skin-Flow
       connect(pO2.port, systemicArtys.q_in[15]) annotation (Line(points={{84,
               -52},{84,-44},{64,-44},{64,-14},{60,-14},{60,1.774},{75.395,1.774}},
             color={0,127,255}));
-      connect(O2_left.port_a, systemicArtys.substances[Blood.S.O2]) annotation
-        (Line(points={{76,-80},{60,-80},{60,-16},{58,-16},{58,0.5},{65,0.5}},
+      connect(O2_left.port_a, systemicArtys.substances[Blood.i("O2")]) annotation (
+         Line(points={{76,-80},{60,-80},{60,-16},{58,-16},{58,0.5},{65,0.5}},
             color={158,66,200}));
       connect(pO2.port_a, O2_left.port_a) annotation (Line(points={{74,-62},{74,
               -80},{76,-80}}, color={158,66,200}));
-      connect(CO2_left.port_b, systemicArtys.substances[Blood.S.CO2])
+      connect(CO2_left.port_b, systemicArtys.substances[Blood.i("CO2")])
         annotation (Line(points={{48,-80},{60,-80},{60,-16},{58,-16},{58,0.5},{
               65,0.5}}, color={158,66,200}));
       connect(pCO2.port_a, CO2_left.port_b) annotation (Line(points={{34,-60},{
@@ -7180,7 +7180,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
               {-32,-10},{-32,-38},{-26,-38}}, color={0,0,127}));
       connect(pO2.partialPressure, pO2OnConductance.u) annotation (Line(points={{-64,
               -10},{-14,-10},{-14,-18},{-6,-18}}, color={0,0,127}));
-      connect(pCO2.port_a, elasticVessel.substances[Blood.S.CO2]) annotation (Line(
+      connect(pCO2.port_a, elasticVessel.substances[Blood.i("CO2")]) annotation (Line(
             points={{-62,-46},{-64,-46},{-64,-90},{-60,-90}}, color={158,66,200}));
       connect(pCO2.partialPressure, PCO2OnTension.u)
         annotation (Line(points={{-42,-46},{-26,-46}}, color={0,0,127}));
@@ -7216,7 +7216,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
               {16,68},{16,-102},{-22,-102},{-22,-88},{-30,-88},{-30,-88.8444},{
               -50.1,-88.8444}},
                           color={0,127,255}));
-      connect(elasticVessel.substances[Blood.S.O2], pO2.port_a) annotation (Line(
+      connect(elasticVessel.substances[Blood.i("O2")], pO2.port_a) annotation (Line(
             points={{-60,-90},{-64,-90},{-64,-48},{-90,-48},{-90,-10},{-84,-10}},
             color={158,66,200}));
       connect(angiotensin2.C, A2Effect.u) annotation (Line(points={{-57,42},{-50,42},
@@ -8384,7 +8384,6 @@ Blood resistance in gastro interstitial tract.
       replaceable package MediumB = Physiolibrary.Media.Blood  constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-
       Chemical.Interfaces.SubstancePorts_a ports_a[MediumA.nS]
         annotation (Placement(transformation(extent={{-110,18},{-90,98}})));
       Chemical.Interfaces.VagueSubstancePorts_a extraPorts_a[MediumA.nC]
@@ -8393,100 +8392,111 @@ Blood resistance in gastro interstitial tract.
         annotation (Placement(transformation(extent={{90,-100},{110,-20}})));
       Chemical.Interfaces.SubstancePorts_b ports_b[MediumB.nS]
         annotation (Placement(transformation(extent={{90,18},{110,98}})));
-      Chemical.Components.Membrane membrane[:](KC=KC)
+      Chemical.Components.Membrane membrane[size(substanceNames,1)](KC=KC)
         annotation (Placement(transformation(extent={{-6,48},{14,68}})));
-      Chemical.Components.VagueMembrane vagueMembrane[:](KC=EKC)
+      Chemical.Components.VagueMembrane vagueMembrane[size(extraSubstanceNames,1)](KC=EKC)
         annotation (Placement(transformation(extent={{-8,-70},{12,-50}})));
-      parameter String substanceNames[:]={"O2","CO2"};
+      parameter String substanceNames[:]={"O2","CO2","Others"};
+      parameter Real KC[size(substanceNames,1)](each final unit="mol2.s-1.J-1")=fill(1,size(substanceNames,1));
       parameter String extraSubstanceNames[:]={"Epinephrine","Angiotensin2","Renin"};
+      parameter Real EKC[size(extraSubstanceNames,1)]=fill(1,size(extraSubstanceNames,1));
 
     protected
-      parameter Integer iSA[size(substanceNames,1)](fixed=false)
+      parameter Integer iSA[size(substanceNames,1)] = findIndieces(substanceNames,MediumA.substanceNames)
         "Indieces of substances in vector of substances of medium A";
 
-      parameter Integer iSB[size(substanceNames,1)](fixed=false)
+      parameter Integer iSB[size(substanceNames,1)] = findIndieces(substanceNames,MediumB.substanceNames)
         "Indieces of substances in vector of substances of medium B";
 
-      parameter Integer iEA[size(extraSubstanceNames,1)](fixed=false)
+      parameter Integer iEA[size(extraSubstanceNames,1)] = findIndieces(extraSubstanceNames,MediumA.extraPropertiesNames)
         "Indieces of extra substances in vector of extra substances of medium A";
 
-      parameter Integer iEB[size(extraSubstanceNames,1)](fixed=false)
+      parameter Integer iEB[size(extraSubstanceNames,1)] = findIndieces(extraSubstanceNames,MediumB.extraPropertiesNames)
         "Indieces of extra substances in vector of extra substances of medium B";
 
-    initial algorithm
-      for j in 1:size(substanceNames,1) loop
-        iSA[j]:= -1;
-        for i in 1:MediumA.nS loop
-           if ( Modelica.Utilities.Strings.isEqual(MediumA.substanceNames[i], substanceNames[j])) then
-             iSA[j] := i;
-           end if;
+      parameter Integer ioSA[MediumA.nS-size(substanceNames,1)] = findOtherIndiecies(MediumA.nS,iSA)
+        "Indieces of substances in vector of substances of medium A";
+
+      parameter Integer ioSB[MediumB.nS-size(substanceNames,1)] = findOtherIndiecies(MediumB.nS,iSB)
+        "Indieces of substances in vector of substances of medium B";
+
+      parameter Integer ioEA[MediumA.nC-size(extraSubstanceNames,1)] = findOtherIndiecies(MediumA.nC,iEA)
+        "Indieces of extra substances in vector of extra substances of medium A";
+
+      parameter Integer ioEB[MediumB.nC-size(extraSubstanceNames,1)] = findOtherIndiecies(MediumB.nC,iEB)
+        "Indieces of extra substances in vector of extra substances of medium B";
+
+      function findIndieces
+        input String searchNames[:];
+        input String vectorNames[:];
+        output Integer indieces[size(searchNames,1)];
+      algorithm
+        for j in 1:size(searchNames,1) loop
+          indieces[j]:= -1;
+          for i in 1:size(vectorNames,1) loop
+            if ( Modelica.Utilities.Strings.isEqual(vectorNames[i], searchNames[j])) then
+             indieces[j] := i;
+            end if;
+          end for;
+          assert(indieces[j] > 0, "Substance '" + searchNames[j] + "' is not present between Substances in Medium\n"
+             + "Check parameters and medium model.");
         end for;
-        assert(iSA[j] > 0, "Substance '" + substanceNames[j] + "' is not present in medium A ('"
-             + MediumA.mediumName + "').\n"
-             + "Check sensor parameter and medium model.");
-        iSB[j]:= -1;
-        for i in 1:MediumB.nS loop
-           if ( Modelica.Utilities.Strings.isEqual(MediumB.substanceNames[i], substanceNames[j])) then
-             iSB[j] := i;
-           end if;
+      end findIndieces;
+
+      function findOtherIndiecies
+        input Integer n "Length of vector";
+        input Integer indiecies[:] "Indiecies in vector";
+        output Integer otherIndiecies[n-size(indiecies,1)] "Other indiecies";
+      protected
+        Integer k,e;
+      algorithm
+        k:=1;
+        for i in 1:n loop
+          e:=1;
+          for j in i:size(indiecies,1) loop
+            if (indiecies[j]==i) then e:=0; end if;
+          end for;
+          if (e==1) then
+            otherIndiecies[k]:=i;
+            k:=k+1;
+          end if;
         end for;
-        assert(iSB[j] > 0, "Substance '" + substanceNames[j] + "' is not present in medium B ('"
-             + MediumB.mediumName + "').\n"
-             + "Check sensor parameter and medium model.");
-      end for;
-      for k in 1:size(extraSubstanceNames,1) loop
-        iEA[k]:= -1;
-        for i in 1:MediumA.nC loop
-           if ( Modelica.Utilities.Strings.isEqual(MediumA.extraPropertiesNames[i], extraSubstanceNames[k])) then
-             iEA[k] := i;
-           end if;
-        end for;
-        assert(iEA[k] > 0, "Extra substance '" + extraSubstanceNames[k] + "' is not present in medium A ('"
-             + MediumA.mediumName + "').\n"
-             + "Check sensor parameter and medium model.");
-        iEB[k]:= -1;
-        for i in 1:MediumB.nC loop
-           if ( Modelica.Utilities.Strings.isEqual(MediumB.extraPropertiesNames[i], extraSubstanceNames[k])) then
-             iEB[k] := i;
-           end if;
-        end for;
-        assert(iEB[k] > 0, "Extra substance '" + extraSubstanceNames[k] + "' is not present in medium B ('"
-             + MediumB.mediumName + "').\n"
-             + "Check sensor parameter and medium model.");
-      end for;
+      end findOtherIndiecies;
+
     equation
 
-      connect(membrane.port_a, ports_a)
-        annotation (Line(points={{-6,58},{-100,58}}, color={158,66,200}));
-      connect(membrane.port_b, ports_b)
-        annotation (Line(points={{14,58},{100,58}}, color={158,66,200}));
-      connect(vagueMembrane.port_a, extraPorts_a)
-        annotation (Line(points={{-8,-60},{-100,-60}}, color={158,66,200}));
+      for j in 1:size(substanceNames,1) loop
+        connect(membrane[j].port_a, ports_a[iSA[j]])
+          annotation (Line(points={{-6,58},{-100,58}}, color={158,66,200}));
+        connect(membrane[j].port_b, ports_b[iSB[j]])
+          annotation (Line(points={{14,58},{100,58}}, color={158,66,200}));
+      end for;
+
+      for oj in 1:size(ioSA,1) loop
+        ports_a[ioSA[oj]].q=0;
+        ports_a[ioSA[oj]].h_outflow=0;
+        ports_b[ioSB[oj]].q=0;
+        ports_b[ioSB[oj]].h_outflow=0;
+      end for;
+
+      for k in 1:size(extraSubstanceNames,1) loop
+        connect(vagueMembrane[k].port_a, extraPorts_a[iEA[k]])
+          annotation (Line(points={{-8,-60},{-100,-60}}, color={217,67,180}));
+        connect(vagueMembrane[k].port_b, extraPorts_b[iEB[k]])
+          annotation (Line(points={{12,-60},{100,-60}}, color={217,67,180}));
+      end for;
+
+      for ok in 1:size(ioEA,1) loop
+        extraPorts_a[ioEA[ok]].q=0;
+        extraPorts_b[ioEB[ok]].q=0;
+      end for;
+
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
               extent={{-140,-124},{140,-104}},
               textColor={102,44,145},
               textString="%name")}),                                 Diagram(
             coordinateSystem(preserveAspectRatio=false)));
     end Membrane;
-
-    model Membrane2
-      extends Icons.Membrane;
-
-      replaceable package MediumA = Physiolibrary.Media.Blood  constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
-
-      replaceable package MediumB = Physiolibrary.Media.Blood  constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
-
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              extent={{-140,-124},{140,-104}},
-              textColor={102,44,145},
-              textString="%name")}),                                 Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-
-
-    end Membrane2;
   end Components;
 
   package Interfaces

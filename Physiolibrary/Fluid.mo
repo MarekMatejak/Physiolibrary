@@ -685,6 +685,7 @@ Connector with one flow signal of type Real.
     partial model Accumulation
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
+
       parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
         Evaluate = true,
         Dialog(connectorSizing = true, group = "Ports"));
@@ -1167,7 +1168,7 @@ as signal.
       X = actualStream(a_port.Xi_outflow);
       d = Medium.density_phX(a_port.p, h, X);
       c = Medium.concentrations_Xd(X, d);
-      sO2 = c[Medium.S.O2] / c[Medium.S.Hb];
+      sO2 =c[Medium.i("O2")]/c[Medium.i("Hb")];
       connect(pressureMeasureSystemicCapillaries.port, a_port) annotation (
         Line(points={{78,-86},{78,-90},{40,-90},{40,-84},{-60,-84},{-60,-102}},              color = {127, 0, 0}, thickness = 0.5));
       connect(pCO2_measure.port, a_port) annotation (Line(
@@ -2743,8 +2744,8 @@ as signal.
       inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
-        Medium =                                                                    Blood,
-        useExtraSubstances=true,
+          Medium =                                                                  Blood,
+        useExtraSubstances=false,
         Compliance=1,                                                                                      EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
         Placement(transformation(extent={{-6,-52},{14,-32}})));
       // massFractions_start=zeros(Blood.nS - 1),
@@ -2792,15 +2793,15 @@ as signal.
       connect(XO2.port, blood.q_in[3]) annotation (
         Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{3.9,
               -46},{3.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
-      connect(CO2_GasSolubility.liquid_port, blood.substances[Blood.S.CO2]) annotation (
+      connect(CO2_GasSolubility.liquid_port, blood.substances[Blood.i("CO2")]) annotation (
         Line(points={{-30,-20},{-30,-42},{-6,-42}},        color = {158, 66, 200}));
-      connect(pO2.port_a, blood.substances[Blood.S.O2]) annotation (
+      connect(pO2.port_a, blood.substances[Blood.i("O2")]) annotation (
         Line(points={{-58,-60},{-34,-60},{-34,-42},{-6,-42}},          color = {158, 66, 200}));
-      connect(O2_GasSolubility.liquid_port, blood.substances[Blood.S.O2]) annotation (
+      connect(O2_GasSolubility.liquid_port, blood.substances[Blood.i("O2")]) annotation (
         Line(points={{-48,-20},{-46,-20},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
-      connect(CO_GasSolubility.liquid_port, blood.substances[Blood.S.CO]) annotation (
+      connect(CO_GasSolubility.liquid_port, blood.substances[Blood.i("CO")]) annotation (
         Line(points={{-12,-20},{-12,-42},{-6,-42}},        color = {158, 66, 200}));
-      connect(pH.port_a, blood.substances[Blood.S.H]) annotation (
+      connect(pH.port_a, blood.substances[Blood.i("H+")]) annotation (
         Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-6,-42}},              color = {158, 66, 200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -3059,10 +3060,10 @@ as signal.
         points={{-160,-26},{-174,-26},{-174,-2.65},{-135.9,-2.65}},
         color={127,0,0},
         thickness=0.5));
-    connect(CO2_diffusion.port_a, lungs.substances[Air.S.CO2]) annotation (
+    connect(CO2_diffusion.port_a, lungs.substances[Air.i("CO2")]) annotation (
         Line(points={{-64,10},{-126,10},{-126,0},{-124,0},{-124,-2},{-126,-2}},
           color={158,66,200}));
-    connect(O2_diffusion.port_a, lungs.substances[Air.S.O2]) annotation (Line(
+    connect(O2_diffusion.port_a, lungs.substances[Air.i("O2")]) annotation (Line(
           points={{-62,-22},{-126,-22},{-126,-2}}, color={158,66,200}));
       connect(CO2_diffusion.port_b, CO2.port_a) annotation (Line(points={{-44,10},
             {-10,10}},                color={158,66,200}));
@@ -3169,9 +3170,9 @@ as signal.
       connect(upperRespiratoryTract.q_in[3], Temperature_upperRespiratory.port) annotation (
         Line(points={{-318.1,0.866667},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,
               30}},                                                                                     color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances[Air.S.H2O]) annotation (
+      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
         Line(points = {{-344, 24}, {-334, 24}, {-334, 0}, {-328, 0}}, color = {158, 66, 200}));
-    connect(evaporation.gas_port, upperRespiratoryTract.substances[Air.S.H2O])
+    connect(evaporation.gas_port, upperRespiratoryTract.substances[Air.i("H2O")])
       annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
             200}));
       annotation (
@@ -3442,17 +3443,17 @@ as signal.
           Line(points={{-50.1,-196},{-50.1,-188},{-55.8,-188},{-55.8,-182}},              color = {127, 0, 0}, thickness = 0.5));
         connect(venous.b_port, rightHeartPump.q_in) annotation (
           Line(points = {{-55.8, -169.8}, {-55.8, -164.9}, {-50, -164.9}, {-50, -160}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(systemicVeins.substances[Blood.S.O2], venous.O2) annotation (
+        connect(systemicVeins.substances[Blood.i("O2")], venous.O2) annotation (
           Line(points = {{-60, -196}, {-72, -196}, {-72, -186}}, color = {158, 66, 200}));
-        connect(venous.CO2, systemicVeins.substances[Blood.S.CO2]) annotation (
+        connect(venous.CO2, systemicVeins.substances[Blood.i("CO2")]) annotation (
           Line(points = {{-66, -186}, {-66, -196}, {-60, -196}}, color = {158, 66, 200}));
-        connect(venous.H_plus, systemicVeins.substances[Blood.S.H]) annotation (
+        connect(venous.H_plus, systemicVeins.substances[Blood.i("H+")]) annotation (
           Line(points = {{-60, -186}, {-60, -196}}, color = {158, 66, 200}));
-        connect(arterial.H_plus, systemicArteries.substances[Blood.S.H]) annotation (
+        connect(arterial.H_plus, systemicArteries.substances[Blood.i("H+")]) annotation (
           Line(points = {{48, -186}, {48, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.CO2, systemicArteries.substances[Blood.S.CO2]) annotation (
+        connect(arterial.CO2, systemicArteries.substances[Blood.i("CO2")]) annotation (
           Line(points = {{54, -186}, {54, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.O2, systemicArteries.substances[Blood.S.O2]) annotation (
+        connect(arterial.O2, systemicArteries.substances[Blood.i("O2")]) annotation (
           Line(points = {{60, -186}, {60, -196}, {46, -196}}, color = {158, 66, 200}));
 
         annotation (
@@ -3532,15 +3533,15 @@ as signal.
           Line(points = {{44.2, -18.2}, {44.2, -32}, {-48, -32}, {-48, -1.66533e-15}, {-54, -1.66533e-15}}, color = {127, 0, 0}, thickness = 0.5));
         connect(tissue.sO2, sO2) annotation (
           Line(points = {{49, -3.55271e-15}, {50, -3.55271e-15}, {50, 26}, {66, 26}}, color = {0, 0, 127}));
-        connect(tissue.O2, systemicCapillaries.substances[Blood.S.O2]) annotation (
+        connect(tissue.O2, systemicCapillaries.substances[Blood.i("O2")]) annotation (
           Line(points = {{28, -2}, {14, -2}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.CO2, systemicCapillaries.substances[Blood.S.CO2]) annotation (
+        connect(tissue.CO2, systemicCapillaries.substances[Blood.i("CO2")]) annotation (
           Line(points = {{28, -8}, {14, -8}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.H_plus, systemicCapillaries.substances[Blood.S.H]) annotation (
+        connect(tissue.H_plus, systemicCapillaries.substances[Blood.i("H+")]) annotation (
           Line(points = {{28, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(O2_left.port_a, systemicCapillaries.substances[Blood.S.O2]) annotation (
+        connect(O2_left.port_a, systemicCapillaries.substances[Blood.i("O2")]) annotation (
           Line(points = {{-60, -38}, {14, -38}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(systemicCapillaries.substances[Blood.S.CO2], CO2_left.port_b) annotation (
+        connect(systemicCapillaries.substances[Blood.i("CO2")], CO2_left.port_b) annotation (
           Line(points = {{8, -14}, {14, -14}, {14, -38}, {60, -38}}, color = {158, 66, 200}));
         annotation (
           Diagram(coordinateSystem(extent = {{-90, -50}, {90, 50}})),
@@ -3954,19 +3955,19 @@ as signal.
             -288,30}},                                                                               color = {127, 0, 0}, thickness = 0.5));
       connect(rightAlveoli.q_in[6], Temperature_alveolar.port) annotation (
         Line(points={{-146.1,-46.9167},{-100,-46.9167},{-100,-40}},        color = {127, 0, 0}, thickness = 0.5));
-      connect(upperRespiratoryTract.substances[3], pH2O_upperRespiratory.port_a) annotation (
+      connect(upperRespiratoryTract.substances[Air.i("H2O")], pH2O_upperRespiratory.port_a) annotation (
         Line(points = {{-328, 0}, {-334, 0}, {-334, 24}, {-344, 24}}, color = {158, 66, 200}));
-      connect(gasSolubility1.gas_port, upperRespiratoryTract.substances[3]) annotation (
+      connect(gasSolubility1.gas_port, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
         Line(points = {{-352, -28}, {-352, 0}, {-328, 0}}, color = {158, 66, 200}));
-      connect(CO2_left.port_b, leftAlveoli.substances[2]) annotation (
+      connect(CO2_left.port_b, leftAlveoli.substances[Air.i("CO2")]) annotation (
         Line(points={{-180,-4},{-170,-4},{-170,26},{-162,26}},          color = {158, 66, 200}));
-      connect(O2_left.port_a, leftAlveoli.substances[1]) annotation (
+      connect(O2_left.port_a, leftAlveoli.substances[Air.i("O2")]) annotation (
         Line(points={{-164,-4},{-170,-4},{-170,26},{-162,26}},          color = {158, 66, 200}));
-      connect(CO2_right.port_b, rightAlveoli.substances[2]) annotation (
+      connect(CO2_right.port_b, rightAlveoli.substances[Air.i("CO2")]) annotation (
         Line(points = {{-200, -86}, {-172, -86}, {-172, -48}, {-156, -48}}, color = {158, 66, 200}));
-      connect(rightAlveoli.substances[1], O2_right.port_a) annotation (
+      connect(rightAlveoli.substances[Air.i("O2")], O2_right.port_a) annotation (
         Line(points = {{-156, -48}, {-172, -48}, {-172, -86}, {-158, -86}}, color = {158, 66, 200}));
-      connect(rightAlveoli.substances[3], pH2O_alveolar.port_a) annotation (
+      connect(rightAlveoli.substances[Air.i("H2O")], pH2O_alveolar.port_a) annotation (
         Line(points = {{-156, -48}, {-102, -48}, {-102, -76}}, color = {158, 66, 200}));
     connect(leftPleuralSpace.externalPressure, respiratoryMusclePressureCycle.val)
       annotation (Line(points={{-73,37},{-73,48},{-2,48},{-2,82},{-14,82}},

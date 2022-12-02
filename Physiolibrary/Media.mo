@@ -123,81 +123,7 @@ package Media
 
     constant SpecificHeatCapacity _cp=3490 "specific heat capacity of blood";
 
-    constant Integer _RBC= 1,
-        _O2=2,
-        _CO2=3,
-        _CO=4,
-        _Hb=5,
-        _MetHb=6,
-        _HbF=7,
-        _Alb=8,
-        _Glb=9,
-        _PO4=10,
-        _DPG=11,
-        _Glucose=12,
-        _Lactate=13,
-        _Urea=14,
-        _AminoAcids=15,
-        _Lipids=16,
-        _Ketoacids=17,
-        _SID=18,
-        _H=19,
-        _Others=20;
 
-    type S = enumeration(
-        RBC,
-        O2,
-        CO2,
-        CO,
-        Hb,
-        MetHb,
-        HbF,
-        Alb,
-        Glb,
-        PO4,
-        DPG,
-        Glucose,
-        Lactate,
-        Urea,
-        AminoAcids,
-        Lipids,
-        Ketoacids,
-        SID,
-        H,
-        Others);
-    constant Integer _Epinephrine=1,
-        _Norepinephrine=2,
-        _Vasopressin=3,
-        _Insulin=4,
-        _Glucagon=5,
-        _Thyrotropin=6,
-        _Thyroxine=7,
-        _Leptin=8,
-        _Desglymidodrine=9,
-        _AlphaBlockers=10,
-        _BetaBlockers=11,
-        _AnesthesiaVascularConductance=12,
-        _Angiotensin2=13,
-        _Renin=14,
-        _Aldosterone=15;
-
-    type ES = enumeration(
-        Epinephrine,
-        Norepinephrine,
-        Vasopressin,
-        Insulin,
-        Glucagon,
-        Thyrotropin,
-        Thyroxine,
-        Leptin,
-        Desglymidodrine,
-        AlphaBlockers,
-        BetaBlockers,
-        AnesthesiaVascularConductance,
-        Angiotensin2,
-        Renin,
-        Aldosterone)
-          "Extra substances (e.g. signaling molecules, drugs)";
     replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
       input Real pH "acidity";
       input Real pO2 "oxygen partial pressure";
@@ -418,7 +344,7 @@ package Media
 </html>"));
     end BloodGases;
 
-    replaceable model ChemicalSolution "Blood chemical substances as chemical solution"
+    redeclare replaceable model ChemicalSolution "Blood chemical substances as chemical solution"
       outer Modelica.Fluid.System system "System wide properties";
 
       Chemical.Interfaces.SubstancePorts_a substances[nS];
@@ -485,8 +411,6 @@ package Media
         T = state.T;
       end if;
 
-      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        actualStream(substances.h_outflow) ./ MMb "specific enthalpy in stream";
 
       aO2 = bloodGases.pO2/p;
       aCO2 = bloodGases.pCO2/p;
@@ -551,7 +475,11 @@ package Media
 
       substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,hH_plus,0};
 
+      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
+        actualStream(substances.h_outflow) ./ MMb "specific enthalpy in stream";
+
       massFlows = substances.q .* MMb;
+
       annotation (Documentation(info="<html>
 <p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
 </html>"));
@@ -676,8 +604,6 @@ package Media
         max=350,
         start=310.15));
 
-    type S = enumeration(
-        H2O);
 
   protected
     package stateOfMatter = Chemical.Interfaces.Incompressible
@@ -836,12 +762,6 @@ Modelica source.
          AbsolutePressure(start=1.0e5, nominal=1.0e5),
          Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
          MassFlowRate(nominal=1e-3));
-
-      type S = enumeration(
-        O2,
-        CO2,
-        H2O,
-        N2);
 
   protected
       package stateOfMatter = Chemical.Interfaces.IdealGas
@@ -1034,20 +954,6 @@ Modelica source.
         min=273,
         max=350,
         start=310.15));
-
-    type S = enumeration(
-        Na,
-        HCO3,
-        K,
-        Glu,
-        Urea,
-        Cl,
-        Ca,
-        Mg,
-        Alb,
-        Glb,
-        Others,
-        H2O);
 
   protected
     constant Modelica.Units.SI.Concentration concentrations_start[nS - 1]={135,24,5,5,3,105,
@@ -1361,6 +1267,36 @@ Modelica source.
 
     extends Modelica.Media.Interfaces.PartialMedium;
 
+      function i "Find index of substance"
+        input String searchName "Name of substance to find in substanceNames";
+        output Integer index "Index of searchName in substanceNames";
+      algorithm
+          index := -1;
+          for i in 1:nS loop
+            if ( Modelica.Utilities.Strings.isEqual(substanceNames[i], searchName)) then
+             index := i;
+            end if;
+          end for;
+          assert(index > 0, "Substance '" + searchName + "' is not present between Substances in Medium\n"
+             + "Check parameters and medium model.");
+      end i;
+
+      function j "Find index of extra substance"
+        input String searchName "Name of extra substance to find in extraPropertiesNames";
+        output Integer index "Index of searchName in extraPropertiesNames";
+      algorithm
+          index := -1;
+          for i in 1:nS loop
+            if ( Modelica.Utilities.Strings.isEqual(extraPropertiesNames[i], searchName)) then
+             index := i;
+            end if;
+          end for;
+          assert(index > 0, "Extra substance '" + searchName + "' is not present between extraPropertiesNames in Medium\n"
+             + "Check parameters and medium model.");
+      end j;
+
+
+
       replaceable partial model ChemicalSolution
         Chemical.Interfaces.SubstancePorts_a substances[nS];
         Physiolibrary.Types.RealIO.PressureInput p "pressure";
@@ -1373,6 +1309,7 @@ Modelica source.
         Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS] "specific enthalpies of substances in streams";
         Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
 
+
         parameter Boolean EnthalpyNotUsed=false annotation (
         Evaluate=true,
         HideResult=true,
@@ -1380,8 +1317,6 @@ Modelica source.
         Dialog(tab="Advanced", group="Performance"));
 
       end ChemicalSolution;
-
-      type S = enumeration(:);
 
       constant Modelica.Units.SI.ChargeNumberOfIon zb[nS] "Charge number of base molecules";
       constant Modelica.Units.SI.MolarMass MMb[nS] "Molar mass of base molecules";
