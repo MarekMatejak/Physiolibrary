@@ -717,7 +717,7 @@ Connector with one flow signal of type Real.
         p = pressure,
         h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
-        i = i,
+        _i = i,
         EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
@@ -3995,6 +3995,34 @@ as signal.
 </html>"));
     end Respiration;
 
+    model TwoCompartments
+      replaceable package Blood = Physiolibrary.Media.Blood;
+      Components.ElasticVessel elasticVessel(
+        redeclare package Medium = Blood,
+        useSubstances=true,
+        Compliance=7.5006157584566e-09,                                      nPorts=
+           1) annotation (Placement(transformation(extent={{-68,-10},{-48,12}})));
+      Components.ElasticVessel elasticVessel1(
+        redeclare package Medium = Blood,
+        useSubstances=true,
+        volume_start=0.002,
+        Compliance=7.5006157584566e-09,
+        nPorts=1) annotation (Placement(transformation(extent={{60,-8},{80,12}})));
+      Components.Conductor conductor(redeclare package Medium = Blood,
+          Conductance=1.2501026264094e-07)
+        annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
+    equation
+      connect(elasticVessel.q_in[1], conductor.q_in) annotation (Line(
+          points={{-58.1,1},{-58.1,0},{-4,0}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(conductor.q_out, elasticVessel1.q_in[1]) annotation (Line(
+          points={{16,0},{18,0},{18,2},{69.9,2}},
+          color={127,0,0},
+          thickness=0.5));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end TwoCompartments;
   end Examples;
   annotation (
     Documentation(info = "<html>

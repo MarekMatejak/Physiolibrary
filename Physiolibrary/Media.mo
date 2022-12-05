@@ -8,8 +8,8 @@ package Media
         "SID","H+","Others"},
       reference_X=cat(
           1,
-          Conc .* C2X,
-          {1 - (Conc*C2X)}),
+          Conc .* C2X[1:nS-1],
+          {1 - (Conc*C2X[1:nS-1])}),
       zb = {  0,0,0,0,0,0,0,0,0,0,0,
               0,-1,0,0,0,-1,
               -1,1,0},
@@ -119,7 +119,7 @@ package Media
 
     constant Modelica.Units.SI.Concentration Conc[nS - 1] = cat(1,ArterialDefault,{-ArterialDefault*zb[1:nS-2]}) "Default concentrations of substance base molecules except water";
 
-    constant Real C2X[nS - 1]= MMb[1:nS-1] ./ density_pTC(reference_p, reference_T, ArterialDefault) "Default concentrations to mass fractions coefficients X[i]=C[i]*C2X[i]  [kg/kg = mol/L * (kg/mol)/(kg/L)]";
+    constant Real C2X[nS]= MMb ./ density_pTC(reference_p, reference_T, ArterialDefault) "Default concentrations to mass fractions coefficients X[i]=C[i]*C2X[i]  [kg/kg = mol/L * (kg/mol)/(kg/L)]";
 
     constant SpecificHeatCapacity _cp=3490 "specific heat capacity of blood";
 
@@ -351,7 +351,7 @@ package Media
       Physiolibrary.Types.RealIO.PressureInput p "pressure";
       Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
       Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
-      Physiolibrary.Types.RealIO.ElectricCurrentInput i "electric current from substances";
+      Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
 
       Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
       Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
@@ -366,7 +366,9 @@ package Media
 
       // protected
       Real I = 0 "mole-fraction-based ionic strength";
-      Real C[nS - 1]=(X[1:(nS - 1)] ./ C2X);
+      Real C[nS - 1]=(X[1:(nS - 1)] ./ C2X[1:(nS - 1)]);
+
+      Real x[nS]=(X ./ C2X)/(sum(X ./ C2X)) "Mole fractions of substances";
 
       ThermodynamicState state;
       BloodGases bloodGases(
@@ -393,6 +395,21 @@ package Media
           Chemical.Substances.CarbonMonoxide_gas();
       constant Chemical.Interfaces.Incompressible.SubstanceData H_plus=
           Chemical.Substances.Proton_aqueous();
+
+      constant Chemical.Interfaces.Incompressible.SubstanceData PO4=
+            Chemical.Substances.Phosphate_aqueous();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Glucose=
+           Chemical.Substances.Glucose_solid();
+      //  constant Chemical.Interfaces.Incompressible.SubstanceData Lactate=
+      //     Chemical.Substances.Lactate_solid();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Urea=
+           Chemical.Substances.Urea_aqueous();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Water=
+           Chemical.Substances.Water_liquid();
+
+
+    public
+         Real water_S, water_H, water_G, water_G0, water_H0, u_water;
 
     equation
       v=0 "electric potential is not used without external flows of charge";
@@ -471,9 +488,28 @@ package Media
           v,
           I);
 
-      substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,uH_plus,0};
+      water_S=Chemical.Interfaces.Incompressible.molarEntropyPure(
+          Water, T, p, v, I);
+      water_H=Chemical.Interfaces.Incompressible.molarEnthalpyElectroneutral(
+          Water, T, p, v, I);
+      water_G=Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Water, T, p, v, I);
 
-      substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,hH_plus,0};
+      water_H0=Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Water, 298.15, 101325, 0, 0);
+      water_G0=Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Water, 298.15, 101325, 0, 0);
+
+      u_water = Modelica.Constants.R*T*log(x[i("Others")])  +  water_G-water_G0;
+
+      //precise electro-chemical potential to use with electro-chemical processes
+      /*substances[i("Others")].u=Modelica.Constants.R*T*log(x[i("Others")]) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Water, T, p, v, I);
+      */
+      substances.u = {0,uO2,uCO2,uCO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,uH_plus,u_water};
+
+      substances.h_outflow = {0,hO2,hCO2,hCO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,hH_plus,water_H-water_H0};
 
       actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
         actualStream(substances.h_outflow) ./ MMb "specific enthalpy in stream";
@@ -1302,7 +1338,7 @@ Modelica source.
         Physiolibrary.Types.RealIO.PressureInput p "pressure";
         Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
         Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
-        Physiolibrary.Types.RealIO.ElectricCurrentInput i "electric current from substances";
+        Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
 
         Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
         Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
