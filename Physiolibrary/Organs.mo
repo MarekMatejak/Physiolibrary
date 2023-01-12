@@ -30,8 +30,10 @@ package Organs
         parameter HydraulicCompliance LeftVentricleBasicCompliance=
           1.0950899007347e-07                                                          "Basic compliance od left ventricle" annotation(Dialog(tab="Left heart", group="Ventricle"));
 
-        parameter Real SA_SympatheticEffect[:,3]={{0.0,0,0},{1.0,10,10},{5.0,120,0}} "Heart rate effect base on sympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
-        parameter Real SA_ParasympatheticEffect[:,3]={{ 0.0,    0,  0}, { 2.0,  -20,  -8}, { 8.0,  -40,  0}} "Heart rate effect base on parasympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+        parameter Frequency BaseHeartRate=1.3666666666667
+                                          "Base heart rate" annotation(Dialog(group="Sinoatrial node"));
+        parameter Real SA_SympatheticRateIncrease[:,3]={{0.0,0,0},{1.0,10,10},{5.0,120,0}} "Heart rate increase on sympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
+        parameter Real SA_ParasympatheticRateIncrease[:,3]={{ 0.0,    0,  0}, { 2.0,  -20,  -8}, { 8.0,  -40,  0}} "Heart rate increase on parasympathetic neural activity" annotation(Dialog(group="Sinoatrial node"));
 
         parameter Real AdaptationOnNA[:,3]={{-4.0,0.0,0},{0.0,1.0,0.3},{12.0,4.0,0}} "Neural activity effect based on mean atrial pressure change" annotation(Dialog(group="Baroreceptors"));
         parameter Pressure AdaptivePressure(displayUnit="mmHg")=799.93432449   "Initial value of adapted mean atrial pressure" annotation(Dialog(group="Baroreceptors"));
@@ -143,8 +145,10 @@ package Organs
       "blood inflow to left atrium" annotation (Placement(transformation(
             extent={{84,60},{104,80}}), iconTransformation(extent={{68,48},{88,
                 68}})));
-      Components.SA_Node SA_node(SympatheticEffect=SA_SympatheticEffect,
-          ParasympatheticEffect=SA_ParasympatheticEffect)
+      Components.SA_Node SA_node(
+        BaseHeartRate=BaseHeartRate,
+        SympatheticEffect=SA_SympatheticRateIncrease,
+        ParasympatheticEffect=SA_ParasympatheticRateIncrease)
         annotation (Placement(transformation(extent={{62,-62},{42,-42}})));
     Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare
           package Medium =
@@ -661,10 +665,6 @@ package Organs
                 {72,-82}},         color={0,0,127}));
         connect(power.y, MotionPower)
           annotation (Line(points={{95,-76},{95,-95}},         color={0,0,127}));
-        connect(sympatheticReceptors.port_a, systole.port) annotation (Line(
-            points={{62,-12},{60,-12},{60,-44},{62,-44}},
-            color={127,0,0},
-            thickness=0.5));
         connect(HeartRate, power.u1) annotation (Line(points={{22,-70},{72,-70}},
                                     color={0,0,127}));
         connect(HeartRate, BloodFlow.u2) annotation (Line(points={{22,-70},{22,18}},
@@ -677,6 +677,8 @@ package Organs
                                                       color={0,0,127}));
         connect(diastole.externalPressure, Pericardium) annotation (Line(points={{-56,-40},
                 {-50,-40},{-50,-82},{-86,-82}},       color={0,0,127}));
+        connect(sympatheticReceptors.port_a, ventricle.port_c) annotation (Line(
+              points={{62,-12},{46,-12},{46,70},{12.2,70}}, color={0,127,255}));
        annotation (
           Documentation(info="<HTML>
 <PRE>
@@ -768,7 +770,8 @@ SYSTOLE
       end Ventricle;
 
       model SA_Node
-      extends Physiolibrary.Icons.SinoatrialNode;
+        extends Physiolibrary.Icons.SinoatrialNode;
+        parameter Types.Frequency BaseHeartRate(displayUnit="1/min") = 1.3666666666667;
         parameter Real SympatheticEffect[:,3]={{ 0.0,    0,  0}, { 1.0,   10,  10}, { 5.0,  120,  0}};
         parameter Real ParasympatheticEffect[:,3]={{ 0.0,    0,  0}, { 2.0,  -20,  -8}, { 8.0,  -40,  0}};
 
@@ -787,7 +790,7 @@ SYSTOLE
         Physiolibrary.Types.RealIO.FrequencyInput VagusNerve_NA_Hz
           annotation (Placement(transformation(extent={{-120,-80},{-80,-40}})));
       Physiolibrary.Types.Constants.FrequencyConst            Constant1(k(
-            displayUnit="1/min") = 1.3666666666667)
+            displayUnit="1/min") = BaseHeartRate)
         annotation (Placement(transformation(extent={{-6,-10},{14,10}})));
       Physiolibrary.Blocks.Interpolation.Curve sympatheticEffect(
         x=SympatheticEffect[:, 1],
@@ -1198,7 +1201,7 @@ SYSTOLE
         Fluid.Components.ElasticVessel capillarries(
           redeclare package Medium = Blood,
           useSubstances=true,
-          useExtraSubstances=true,
+          
           volume_start=1e-06,
           Compliance=7.5006157584566e-10,
           nPorts=8)
@@ -1231,15 +1234,13 @@ SYSTOLE
               transformation(rotation=0, extent={{-10,6},{-30,26}})));
         Fluid.Components.ElasticVessel interstitium(
           redeclare package Medium = Physiolibrary.Media.Blood,
-          useSubstances=true,
-          useExtraSubstances=true) annotation (Placement(transformation(
+          useSubstances=true) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={2,-66})));
         Fluid.Components.ElasticVessel cells(
           redeclare package Medium = Physiolibrary.Media.Blood,
-          useSubstances=true,
-          useExtraSubstances=true) annotation (Placement(transformation(
+          useSubstances=true) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={82,-70})));
@@ -1504,10 +1505,14 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
         "pressure around ventricle"                                             annotation (
       Placement(transformation(extent={{-110,-70},{-90,-50}}), iconTransformation(
                 extent={{-110,-70},{-90,-50}})));
+                Physiolibrary.Types.Pressure systolicPressure;
+                Real coef;
       equation
       //  outflow.q = 0;
       //  P=outflow.pressure;
       //  ESV = ((outflow.pressure+additionalPressure_Systolic-externalPressure)/(contractility*Abasic_Systole))^(1/n_Systole);
+        systolicPressure= (port.p-AmbientPressure);
+        coef=(port.p+additionalPressure_Systolic-externalPressure-AmbientPressure)/(contractility*(NormalSystolicPressure+additionalPressure_Systolic-NormalExternalPressure));
         ESV = NormalEndSystolicVolume*((port.p+additionalPressure_Systolic-externalPressure-AmbientPressure)/(contractility*(NormalSystolicPressure+additionalPressure_Systolic-NormalExternalPressure)))^(1/n_Systole);
 
       // drawing icon
@@ -1574,10 +1579,12 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
           Media.Interfaces.PartialMedium "Medium model" annotation (
             choicesAllMatching=true);
           outer Modelica.Fluid.System system "System wide properties";
-          Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+          Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package
+            Medium =
                 Medium) "Inflow"
             annotation (Placement(transformation(extent={{-114,-14},{-86,14}})));
-          Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+          Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package
+            Medium =
                 Medium) "Outflow"
             annotation (Placement(transformation(extent={{86,-14},{114,14}})));
           Fluid.Components.VolumePump volumePump(redeclare package Medium =
@@ -1603,8 +1610,11 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
             massFractions_start=massFractions_start,
             concentration_start=concentration_start,
             extraConcentration_start=extraConcentration_start,
-            volume_start=8.8e-05,                    nPorts=2)
+            volume_start=8.8e-05,                    nPorts=3)
           annotation (Placement(transformation(extent={{4,-6},{24,14}})));
+          Fluid.Interfaces.FluidPort_b port_c(redeclare package Medium = Medium)
+          "Measurement port"
+          annotation (Placement(transformation(extent={{88,-114},{116,-86}})));
         equation
 
           connect(port_a, volumePump.q_in) annotation (Line(
@@ -1624,11 +1634,11 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
         connect(gain.u, feedback.y) annotation (Line(points={{66,76},{72,76},{
                 72,14},{36,14},{36,-28},{3,-28},{3,-42}}, color={0,0,127}));
         connect(volumePump.q_out, elasticVessel.q_in[1]) annotation (Line(
-            points={{-8,2},{0,2},{0,3.35},{13.9,3.35}},
+            points={{-8,2},{0,2},{0,3.13333},{13.9,3.13333}},
             color={127,0,0},
             thickness=0.5));
         connect(volumePump1.q_in, elasticVessel.q_in[2]) annotation (Line(
-            points={{54,0},{26,0},{26,4.65},{13.9,4.65}},
+            points={{54,0},{26,0},{26,4},{13.9,4}},
             color={127,0,0},
             thickness=0.5));
         connect(elasticVessel.fluidVolume, Volume) annotation (Line(points={{24,-4},{50,
@@ -1641,6 +1651,10 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
           annotation (Line(points={{60,-100},{60,7},{64,7}}, color={0,0,127}));
         connect(add.y, volumePump.solutionFlow) annotation (Line(points={{-7,82},
                 {-18,82},{-18,9}}, color={0,0,127}));
+        connect(elasticVessel.q_in[3], port_c) annotation (Line(
+            points={{13.9,4.86667},{16,4.86667},{16,-100},{102,-100}},
+            color={127,0,0},
+            thickness=0.5));
                    annotation (Documentation(info="<HTML>
 <p>
 Model has a vector of continuous Real input signals as pressures for
@@ -1743,6 +1757,7 @@ vector of pressure-flow connectors.
 
     package Examples
       model VentricleTest
+
         replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
         Components.Ventricle                            rightVentricle(
@@ -1798,7 +1813,12 @@ vector of pressure-flow connectors.
         connect(Parasymphaticus.y, SA_node.VagusNerve_NA_Hz)
           annotation (Line(points={{-81,34},{-54,34}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
+              coordinateSystem(preserveAspectRatio=false)),
+              Documentation(revisions = "<html>
+        <p><i>2022</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
+          experiment(StopTime = 5));
       end VentricleTest;
 
       model DiastoleTest
@@ -1836,11 +1856,16 @@ vector of pressure-flow connectors.
             color={127,0,0},
             thickness=0.5));
         connect(rightAtrium.y,pressureMeasure.port)  annotation (Line(
-            points={{-62,-10},{48,-10},{48,-16},{58,-16},{58,-8}},
+            points={{-62,-10},{48,-10},{48,-16},{62,-16},{62,-12}},
             color={127,0,0},
             thickness=0.5));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
+              coordinateSystem(preserveAspectRatio=false)),
+              Documentation(revisions = "<html>
+        <p><i>2022</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
+          experiment(StopTime = 5));
       end DiastoleTest;
 
       model RightHeartTest
@@ -1933,7 +1958,12 @@ vector of pressure-flow connectors.
               points={{41,-22},{46,-22},{46,-8},{-28,-8},{-28,-36}}, color={0,0,
                 127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
+              coordinateSystem(preserveAspectRatio=false)),
+              Documentation(revisions = "<html>
+        <p><i>2022</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
+          experiment(StopTime = 5));
       end RightHeartTest;
 
       model RightAtriumTest
@@ -1960,7 +1990,8 @@ vector of pressure-flow connectors.
         Types.Constants.PressureConst pericardium(k=-445.2967739661)
           annotation (Placement(transformation(extent={{-42,-6},{-34,2}})));
         Fluid.Sources.VolumeOutflowSource bloodFlow(SolutionFlow(displayUnit=
-                "l/min") = 0.0001, redeclare package Medium = Blood)
+                "l/min") = 9.1666666666667e-05,
+                                   redeclare package Medium = Blood)
           annotation (Placement(transformation(extent={{14,-64},{34,-44}})));
         Fluid.Sources.PressureSource systemicArtery(pressure_start(displayUnit=
                 "mmHg") = 113990.64123983, redeclare package Medium = Blood)
@@ -1985,7 +2016,12 @@ vector of pressure-flow connectors.
             color={127,0,0},
             thickness=0.5));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
+              coordinateSystem(preserveAspectRatio=false)),
+              Documentation(revisions = "<html>
+        <p><i>2022</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
+          experiment(StopTime = 5));
       end RightAtriumTest;
     end Examples;
 
@@ -3212,7 +3248,11 @@ vector of pressure-flow connectors.
             thickness=0.5));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)),
-          experiment(StopTime=60, __Dymola_Algorithm="Dassl"));
+          Documentation(revisions = "<html>
+        <p><i>2014-2018</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
+          experiment(StopTime=60));
       end LungsTest;
 
       model MeanLungsTest
@@ -11716,7 +11756,7 @@ Blood flow variable resistor abstract model.
           Medium = Air, y(m_flow(start=0.0050764996707716465)))                                "External environment" annotation (
         Placement(transformation(extent={{-38,64},{-18,84}})));
       Types.Constants.FractionConst Exercise_MusclePump_Effect(k=1)
-        annotation (Placement(transformation(extent={{-96,-86},{-88,-78}})));
+        annotation (Placement(transformation(extent={{-90,-86},{-82,-78}})));
       Physiolibrary.Organs.Blood.RedCells redCells
         annotation (Placement(transformation(extent={{-72,46},{-92,66}})));
       Fluid.Sources.VolumeOutflowSource volumeOutflowSource(SolutionFlow(
@@ -11748,7 +11788,7 @@ Blood flow variable resistor abstract model.
           color={127,0,0},
           thickness=0.5));
       connect(Exercise_MusclePump_Effect.y, busConnector.Exercise_MusclePump_Effect)
-        annotation (Line(points={{-87,-82},{-70,-82},{-70,-36},{-62,-36}},
+        annotation (Line(points={{-81,-82},{-70,-82},{-70,-36},{-62,-36}},
                                                                          color={0,0,
               127}), Text(
           string="%second",

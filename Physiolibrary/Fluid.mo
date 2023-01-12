@@ -700,25 +700,26 @@ Connector with one flow signal of type Real.
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS] if useSubstances annotation (
+      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS](q(nominal=Medium.SubstanceFlowNominal)) if useSubstances annotation (
         Placement(transformation(extent = {{-110, -40}, {-90, 40}}), iconTransformation(extent = {{-110, -40}, {-90, 40}})));
-      parameter Boolean useExtraSubstances = false "=true, if extra s ubstance ports are used"
-         annotation (  Evaluate = true,    HideResult = true,
-                       choices(checkBox = true),    Dialog(group = "Conditional inputs"));
+      /*parameter Boolean useExtraSubstances = false "=true, if extra s ubstance ports are used"
+     annotation (  Evaluate = true,    HideResult = true,
+                   choices(checkBox = true),    Dialog(group = "Conditional inputs"));
 
-      Chemical.Interfaces.VagueSubstancePorts_a extraSubstances[Medium.nC](
-          u=Modelica.Constants.R*Medium.temperature_phX(pressure, enthalpy / mass, massFractions)*log({ max(Modelica.Constants.small,extraSubstanceConcentrations[i]) for i in 1:Medium.nC}),
-          q=extraFlows) if useExtraSubstances
-          annotation (Placement(transformation(extent={{90,-40},
-                {110,40}}),
-                       iconTransformation(extent={{90,-40},{110,40}})));
-
+  Chemical.Interfaces.VagueSubstancePorts_a extraSubstances[Medium.nC](
+      u=Modelica.Constants.R*Medium.temperature_phX(pressure, enthalpy / mass, massFractions)*log({ max(Modelica.Constants.small,extraSubstanceConcentrations[i]) for i in 1:Medium.nC}),
+      q(nominal=Medium.ExtraSubstanceFlowNominal)=extraFlows) if useExtraSubstances
+      annotation (Placement(transformation(extent={{90,-40},
+            {110,40}}),
+                   iconTransformation(extent={{90,-40},{110,40}})));
+*/
       Medium.ChemicalSolution chemicalSolution(
+        startSubstanceMasses = m_start,
         p = pressure,
         h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
         _i = i,
-        EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
+        EnthalpyNotUsed = SubstanceEnthalpyNotUsed)  if useSubstances;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -736,6 +737,13 @@ Connector with one flow signal of type Real.
         HideResult = true,
         choices(checkBox = true),
         Dialog(tab = "Advanced", group = "Performance"));
+
+       parameter Boolean SubstanceEnthalpyNotUsed = true annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(tab = "Advanced", group = "Performance"));
+
       parameter Boolean useThermalPort = false "Is thermal port pressent?" annotation (
         Evaluate = true,
         HideResult = true,
@@ -748,27 +756,34 @@ Connector with one flow signal of type Real.
     protected
       parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
 
-      parameter Modelica.Units.SI.Mass m_start[Medium.nXi] = tm_start * x_mass_start[1:Medium.nXi];
+      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
       Modelica.Units.SI.ElectricCurrent i;
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
 
       Physiolibrary.Types.Enthalpy enthalpy(start = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start));
       Physiolibrary.Types.Mass mass(start = tm_start);
-      Physiolibrary.Types.Mass substanceMasses[Medium.nXi](start = m_start);
+    //  Physiolibrary.Types.Mass substanceMasses[Medium.nXi](start = m_start);
       Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
       Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
-      Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
-      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
-      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+      /*
+  Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
+  Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+  Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+  */
       Physiolibrary.Types.Volume volume;
       Physiolibrary.Types.Density density;
     protected
       Physiolibrary.Types.Pressure pressure;
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS];
-      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS];
+      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS] "Specific substances enthalpies [J/kg]";
+      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[Medium.nS] "Actual stream substances enthalpies [J/kg]";
+      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+    //  Physiolibrary.Types.Enthalpy substanceEnthalpies[Medium.nS] "enthalpy per substance [J]";
       Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
-      Modelica.Blocks.Interfaces.RealOutput extraFlows[Medium.nC];
+    //  Modelica.Blocks.Interfaces.RealOutput extraFlows[Medium.nC];
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
 
     initial equation
       assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
@@ -778,13 +793,17 @@ Connector with one flow signal of type Real.
 */
     /*  assert(
   not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)>=Medium.nS-2)),
-  "Initial concentration composition must have at least nS-2 values!");
-*/
+  "Initial concentration composition must have at least 
+  -2 values!");
+  */
+      if not useSubstances then
+        substanceMasses = m_start;
+      end if;
       if Medium.reducedX then
         mass = tm_start;
       end if;
-      substanceMasses = m_start;
-      if not EnthalpyNotUsed then
+      //substanceMasses = m_start;
+      if not EnthalpyNotUsed and not useSubstances then
         enthalpy = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start);
       end if;
     equation
@@ -799,11 +818,28 @@ Connector with one flow signal of type Real.
       if useSubstances then
         connect(substances, chemicalSolution.substances);
         connect(chemicalSolution.massFlows, massFlows);
-        connect(chemicalSolution.actualStreamSpecificEnthalpies, specificEnthalpies);
+        connect(chemicalSolution.actualStreamSpecificEnthalpies, actualStreamSpecificEnthalpies);
+        connect(chemicalSolution.specificEnthalpies, specificEnthalpies);
+        connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
+        connect(chemicalSolution.substanceMasses, substanceMasses);
         connect(v, chemicalSolution.v);
+        /*q_in.m_flow * actualStream(q_in.h_outflow) + heatFromEnvironment =
+      if (EnthalpyNotUsed) then  0
+      else    der(specificEnthalpies)*substanceMasses + massFlows*specificEnthalpies
+              -massFlows*(actualStreamSpecificEnthalpies)
+              "heat transfer from/to substances in solution [J/s]"; */
+
+        //specificEnthalpies = (substances.h_outflow) ./ Medium.MMb;
+        //actualStreamSpecificEnthalpies = (actualStream(substances.h_outflow)) ./ Medium.MMb;
+
       else
+        der(substanceMasses) = (if not Medium.reducedX then q_in.m_flow *xx_mass else cat(1, q_in.m_flow*xx_mass, {1 - sum(q_in.m_flow*xx_mass)}))
+            + massFlows[1:Medium.nS];
+
         massFlows = zeros(Medium.nS);
         specificEnthalpies = zeros(Medium.nS);
+        actualStreamSpecificEnthalpies = zeros(Medium.nS);
+
       // not used
         if not onElectricGround then
         //both electric variables set to zero
@@ -812,17 +848,21 @@ Connector with one flow signal of type Real.
           i = 0;
         end if;
       end if;
-      if not useExtraSubstances then
-        extraFlows = zeros(Medium.nC);
-      end if;
-      der(substanceMasses) = q_in.m_flow * xx_mass + massFlows[1:Medium.nXi];
-      der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
-      if Medium.reducedX then
-        der(mass) = ones(nPorts) * q_in.m_flow + massFlows * ones(Medium.nS);
-      else
+
+      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {1 - sum(q_in.m_flow *xx_mass)}));
+
+    /*  if not useExtraSubstances then
+    extraFlows = zeros(Medium.nC);
+  end if;
+  der(extraSubstanceAmounts) = q_in.m_flow * xC_mass + extraFlows;
+  */
+
+      /*  if Medium.reducedX then
+    der(mass) = ones(nPorts) * q_in.m_flow + massFlows * ones(Medium.nXi);
+  else*/
         mass = sum(substanceMasses);
-      end if;
-      massFractions = substanceMasses ./ mass;
+    //  end if;
+      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
       if EnthalpyNotUsed then
         enthalpy = mass * Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
       else
@@ -834,14 +874,14 @@ Connector with one flow signal of type Real.
       else
         density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
       end if;
-      extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
+    //  extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
       for i in 1:nPorts loop
         xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
-        xC_mass[i, :] = actualStream(q_in[i].C_outflow);
+      //  xC_mass[i, :] = actualStream(q_in[i].C_outflow);
         q_in[i].p = pressure;
         q_in[i].h_outflow = enthalpy / mass;
         q_in[i].Xi_outflow = massFractions;
-        q_in[i].C_outflow  = extraSubstanceConcentrations;
+       // q_in[i].C_outflow  = extraSubstanceConcentrations;
       end for;
 
       annotation (
@@ -1408,7 +1448,7 @@ as signal.
       y.p = p;
       y.h_outflow = h;
       y.Xi_outflow = x_mass_start[1:Medium.nXi];
-      y.C_outflow = zeros(Medium.nC);
+      y.C_outflow = C_start;
       annotation (
         Documentation(info = "<html>
         <p>Model has a vector of continuous Real input signals as pressures for vector of pressure-flow connectors. </p>
@@ -1524,7 +1564,7 @@ as signal.
       connect(veins.q_in[1], heart.q_in) annotation (
         Line(points={{-48.1,49.35},{-46,49.35},{-46,70},{-20,70}},        color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure.port, arteries.q_in[1]) annotation (
-        Line(points={{88,72},{88,50.0467},{65.88,50.0467}},        color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{92,68},{92,50.0467},{65.88,50.0467}},        color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_in, veins.q_in[2]) annotation (
         Line(points={{-18,32},{-32,32},{-32,50.65},{-48.1,50.65}},        color = {127, 0, 0}, thickness = 0.5));
       connect(heart.q_out, arteries.q_in[2]) annotation (
@@ -2745,8 +2785,8 @@ as signal.
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
           Medium =                                                                  Blood,
-        useExtraSubstances=false,
-        Compliance=1,                                                                                      EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
+        
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                           EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
         Placement(transformation(extent={{-6,-52},{14,-32}})));
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
@@ -2758,7 +2798,7 @@ as signal.
       Chemical.Components.GasSolubility CO_GasSolubility(KC = 1e-7) annotation (
         Placement(transformation(extent = {{-22, -20}, {-2, 0}})));
       Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false, PartialPressure(displayUnit = "mmHg") = 133.322387415) annotation (
-        Placement(transformation(extent = {{-96, 18}, {-76, 38}})));
+        Placement(transformation(extent={{-96,16},{-76,36}})));
       Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
         Placement(transformation(extent = {{-70, 52}, {-50, 72}})));
       Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
@@ -2775,7 +2815,7 @@ as signal.
         annotation (Placement(transformation(extent={{44,-20},{64,0}})));
     equation
       connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
-        Line(points = {{-76, 28}, {-48, 28}, {-48, 0}}, color = {158, 66, 200}));
+        Line(points={{-76,26},{-48,26},{-48,0}},        color = {158, 66, 200}));
       connect(CO2.port_a, CO2_GasSolubility.gas_port) annotation (
         Line(points = {{-50, 62}, {-30, 62}, {-30, 0}}, color = {158, 66, 200}));
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
@@ -3036,8 +3076,8 @@ as signal.
         Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
       connect(environment.y, flowMeasure.q_in) annotation (
         Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
-    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={
-            {-146,6},{-154,6},{-154,44},{-65,44}}, color={0,0,127}));
+    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={{-146,6},
+              {-154,6},{-154,50},{-65,50}},        color={0,0,127}));
     connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
         Line(points={{-82,24},{-82,-26},{-143,-26},{-143,-11}}, color={0,0,
             127}));
@@ -3382,11 +3422,11 @@ as signal.
         connect(leftHeartPump.q_in, pulmonaryVeins.q_in[1]) annotation (
           Line(points={{42,-140},{42,-100},{41.9,-100},{41.9,-102.975}},         color = {127, 0, 0}, thickness = 0.5));
         connect(pressureMeasureVeins.port, systemicVeins.q_in[1]) annotation (
-          Line(points={{-76,-210},{-50,-210},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-80,-214},{-50,-214},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
         connect(pressureMeasurePulmArteries.port, pulmonaryArteries.q_in[2]) annotation (
-          Line(points={{-66,-104},{-50,-104},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-70,-108},{-50,-108},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
         connect(pulmonaryVeins.q_in[2],pressureMeasurePulmVeins.port)  annotation (
-          Line(points={{41.9,-102.325},{42,-102.325},{42,-104},{58,-104}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{41.9,-102.325},{42,-102.325},{42,-108},{62,-108}},        color = {127, 0, 0}, thickness = 0.5));
         connect(multiProduct1.y, rightHeartPump.solutionFlow) annotation (
           Line(points = {{-62.98, -150}, {-57, -150}}, color = {0, 0, 127}));
         connect(hydraulicConductance1.y, multiProduct1.u[1]) annotation (
@@ -3995,34 +4035,89 @@ as signal.
 </html>"));
     end Respiration;
 
-    model TwoCompartments
-      replaceable package Blood = Physiolibrary.Media.Blood;
-      Components.ElasticVessel elasticVessel(
+    model CapillaryMembrane
+      extends Modelica.Icons.Example;
+      replaceable package Blood = Physiolibrary.Media.Blood2;
+      Components.ElasticVessel C(
         redeclare package Medium = Blood,
         useSubstances=true,
-        Compliance=7.5006157584566e-09,                                      nPorts=
-           1) annotation (Placement(transformation(extent={{-68,-10},{-48,12}})));
-      Components.ElasticVessel elasticVessel1(
+        EnthalpyNotUsed=false,
+        Compliance=7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{-72,-18},{-52,4}})));
+      Components.ElasticVessel D(
         redeclare package Medium = Blood,
         useSubstances=true,
         volume_start=0.002,
-        Compliance=7.5006157584566e-09,
-        nPorts=1) annotation (Placement(transformation(extent={{60,-8},{80,12}})));
-      Components.Conductor conductor(redeclare package Medium = Blood,
-          Conductance=1.2501026264094e-07)
-        annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
+        EnthalpyNotUsed=false,
+        Compliance=7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{56,-12},{76,8}})));
+      Chemical.Components.Membrane membrane[Blood.nS](each EnthalpyNotUsed=true, KC=Blood.CapyllaryMembrane_KC)
+        annotation (Placement(transformation(extent={{0,-56},{20,-36}})));
+        /*
+    .* {0,1,1,1,
+    0,0,0,0,0,0,0,
+    1,0,0,0,0,0,
+    0,0,1}
+    
+    "RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG",
+      "Glucose","Lactate","Urea","AminoAcids","Lipids","Ketoacids",
+      "SID","H+","Others"
+      */
+        /*
+    {  D_Epinephrine, D_Norepinephrine, D_Vasopressin, D_Insulin, D_Glucagon,
+      D_Thyrotropin, D_Thyroxine, D_Leptin,
+      D_Desglymidodrine, D_AlphaBlockers, D_BetaBlockers,
+      D_AnesthesiaVascularConductance, D_Angiotensin2,
+      D_Renin, D_Aldosterone}
+    */
+      inner Modelica.Fluid.System system(T_ambient=310.15)
+        annotation (Placement(transformation(extent={{64,66},{84,86}})));
+      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-6)   annotation (
+        Placement(transformation(extent={{-64,32},{-44,52}})));
+      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-6)   annotation (
+        Placement(transformation(extent={{-40,32},{-20,52}})));
+      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-7)   annotation (
+        Placement(transformation(extent={{-12,30},{8,50}})));
+      Chemical.Sources.ExternalIdealGasSubstance O2(
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        usePartialPressureInput=false,
+        PartialPressure(displayUnit="mmHg") = 11999.01486735)                                                                                                                                 annotation (
+        Placement(transformation(extent={{-88,50},{-68,70}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData=
+            Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit="mmHg")=
+             5332.8954966)                                                                                                                                          annotation (
+        Placement(transformation(extent={{-62,86},{-42,106}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData=
+            Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit="mmHg")=
+             0.000133322387415)                                                                                                                                          annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={36,68})));
     equation
-      connect(elasticVessel.q_in[1], conductor.q_in) annotation (Line(
-          points={{-58.1,1},{-58.1,0},{-4,0}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(conductor.q_out, elasticVessel1.q_in[1]) annotation (Line(
-          points={{16,0},{18,0},{18,2},{69.9,2}},
-          color={127,0,0},
-          thickness=0.5));
+      connect(C.substances, membrane.port_a) annotation (Line(points={{-72,-7},
+              {-76,-7},{-76,12},{-6,12},{-6,-46},{0,-46}},
+                                                        color={158,66,200}));
+      connect(membrane.port_b, D.substances) annotation (Line(points={{20,-46},
+              {42,-46},{42,-2},{56,-2}},
+                                  color={158,66,200}));
+      connect(O2.port_a,O2_GasSolubility. gas_port) annotation (
+        Line(points={{-68,60},{-54,60},{-54,52}},       color = {158, 66, 200}));
+      connect(CO2.port_a,CO2_GasSolubility. gas_port) annotation (
+        Line(points={{-42,96},{-30,96},{-30,52}},       color = {158, 66, 200}));
+      connect(CO.port_a,CO_GasSolubility. gas_port) annotation (
+        Line(points={{26,68},{-2,68},{-2,50}},         color = {158, 66, 200}));
+      connect(O2_GasSolubility.liquid_port, C.substances[Blood.i("O2")]) annotation (Line(
+            points={{-54,32},{-80,32},{-80,-7},{-72,-7}}, color={158,66,200}));
+      connect(CO2_GasSolubility.liquid_port, C.substances[Blood.i("CO2")]) annotation (
+          Line(points={{-30,32},{-30,12},{-76,12},{-76,-7},{-72,-7}}, color={158,66,
+              200}));
+      connect(CO_GasSolubility.liquid_port, C.substances[Blood.i("CO")]) annotation (Line(
+            points={{-2,30},{-2,12},{-76,12},{-76,-7},{-72,-7}}, color={158,66,200}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end TwoCompartments;
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(
+          StopTime=20,
+          Tolerance=1e-08,
+          __Dymola_Algorithm="Dassl"));
+    end CapillaryMembrane;
   end Examples;
   annotation (
     Documentation(info = "<html>
