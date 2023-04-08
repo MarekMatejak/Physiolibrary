@@ -829,8 +829,7 @@ Connector with one flow signal of type Real.
 
 
       else
-        der(substanceMasses) = (if not Medium.reducedX then q_in.m_flow *xx_mass else cat(1, q_in.m_flow*xx_mass, {1 - sum(q_in.m_flow*xx_mass)}))
-            + massFlows[1:Medium.nS];
+        der(substanceMasses) = substanceMassFlowsFromStream;
 
         massFlows = zeros(Medium.nS);
         specificEnthalpies = zeros(Medium.nS);
@@ -845,7 +844,7 @@ Connector with one flow signal of type Real.
         end if;
       end if;
 
-      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {1 - sum(q_in.m_flow *xx_mass)}));
+      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
 
     /*  if not useExtraSubstances then
     extraFlows = zeros(Medium.nC);
