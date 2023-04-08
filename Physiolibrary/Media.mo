@@ -16,6 +16,10 @@ package Media
       MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266,
               0.1806, 0.09008, 0.06006, 0.1, 0.80645, 0.102,
               0.031, 0.019, 0.018},
+      SubstanceFlowNominal=
+    {D_Hct, D_Arterial_O2, D_Arterial_CO2, 1, D_Hb, D_MetHb, D_HbF, D_Alb, D_Glb, D_PO4, D_DPG,
+      D_Glucose, D_Lactate, D_Urea, D_AminoAcids, D_Lipids, D_Ketoacids,
+      D_SID, 1, 1}./TimeScale,
       extraPropertiesNames={"Epinephrine","Norepinephrine","Vasopressin",
         "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
         "Desglymidodrine","AlphaBlockers","BetaBlockers",
@@ -38,12 +42,12 @@ package Media
 
 
   public
-    constant Real ArterialDefault[Blood2.nS - 2]=
+    constant Real ArterialDefault[Blood.nS - 2]=
      {D_Hct, D_Arterial_O2, D_Arterial_CO2, D_CO, D_Hb, D_MetHb, D_HbF, D_Alb, D_Glb, D_PO4, D_DPG,
       D_Glucose, D_Lactate, D_Urea, D_AminoAcids, D_Lipids, D_Ketoacids,
       D_SID} "Default composition of arterial blood";
 
-    constant Real VenousDefault[Blood2.nS - 2]=
+    constant Real VenousDefault[Blood.nS - 2]=
      {D_Hct, D_Venous_O2, D_Venous_CO2, D_CO, D_Hb, D_MetHb, D_HbF, D_Alb, D_Glb, D_PO4, D_DPG,
       D_Glucose, D_Lactate, D_Urea, D_AminoAcids, D_Lipids, D_Ketoacids,
       D_SID} "Default composition of venous blood";
@@ -58,12 +62,9 @@ package Media
 
     constant Real TimeScale=60 "Time scale of simulation";
 
-    constant Real SubstanceFlowNominal[Blood2.nS]=
-    {D_Hct, D_Arterial_O2, D_Arterial_CO2, 1, D_Hb, D_MetHb, D_HbF, D_Alb, D_Glb, D_PO4, D_DPG,
-      D_Glucose, D_Lactate, D_Urea, D_AminoAcids, D_Lipids, D_Ketoacids,
-      D_SID, 1, 1}./TimeScale "Nominal of substance flow";
 
-    constant Real ExtraSubstanceFlowNominal[Blood2.nC]=
+
+    constant Real ExtraSubstanceFlowNominal[Blood.nC]=
     {  D_Epinephrine, D_Norepinephrine, D_Vasopressin, D_Insulin, D_Glucagon,
         D_Thyrotropin, D_Thyroxine, D_Leptin,
         1,1,1,
@@ -359,32 +360,32 @@ package Media
 </html>"));
     end BloodGases;
 
-    redeclare replaceable model ChemicalSolution "Blood chemical substances as chemical solution"
-      outer Modelica.Fluid.System system "System wide properties";
+    redeclare replaceable model extends ChemicalSolution "Blood chemical substances as chemical solution"
+      /*outer Modelica.Fluid.System system "System wide properties";
 
-      Chemical.Interfaces.SubstancePorts_a substances[nS](q(nominal=SubstanceFlowNominal));
-      Physiolibrary.Types.RealIO.PressureInput p "pressure";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
-      Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
-      Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
+  Chemical.Interfaces.SubstancePorts_a substances[nS](q(nominal=SubstanceFlowNominal));
+  Physiolibrary.Types.RealIO.PressureInput p "pressure";
+  Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
+  Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
+  Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
 
-      Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS];
-      Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS];
+  Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS];
+  Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS];
 
-      parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of substance masses";
+  parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of substance masses";
 
-      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
-      Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS] "specific enthalpies of substances in streams";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[nS] "specific enthalpies of substances in streams";
-      Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
+  Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
+  Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
+  Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS] "specific enthalpies of substances in streams";
+  Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[nS] "specific enthalpies of substances in streams";
+  Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
 
-      parameter Boolean EnthalpyNotUsed=false "If true then simplify heat flows from/to chemical reactions (deprecated)" annotation (
-      Evaluate=true,
-      HideResult=true,
-      choices(checkBox=true),
-      Dialog(tab="Advanced", group="Performance"));
-
+  parameter Boolean EnthalpyNotUsed=false "If true then simplify heat flows from/to chemical reactions (deprecated)" annotation (
+  Evaluate=true,
+  HideResult=true,
+  choices(checkBox=true),
+  Dialog(tab="Advanced", group="Performance"));
+*/
       // protected
       Real I = 0 "mole-fraction-based ionic strength";
       Real C[nS - 1]=(X[1:(nS - 1)] ./ C2X[1:(nS - 1)]);
@@ -452,8 +453,7 @@ package Media
          Real water_S, water_H, water_G, water_G0, water_H0, u_water;
          Real uPO4,uGlucose,uLactace,uUrea,uAminoAcids,uLipids,uKetoAcids,uSID;
       //   Real logm[nS];
-    initial equation
-      substanceMasses = startSubstanceMasses;
+
     equation
       v=0 "electric potential is not used without external flows of charge";
 
@@ -577,21 +577,10 @@ package Media
                              //fill(-59330,nS).*MMb;
      // elasticVessel.q_in[1].h_outflow        -59330        J/kg
 
-      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        (actualStream(substances.h_outflow)) ./ MMb "specific enthalpy in stream";
-
-      specificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        (substances.h_outflow) ./ MMb "specific enthalpy of substance";
 
 
-      massFlows = substances.q .* MMb;
 
 
-    der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
-      //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
-      // However, the numerical solvers can handle it in form of log(m) much better. :-)
-    //  der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
-    //  substanceMasses = exp(logm);
 
       annotation (Documentation(info="<html>
 <p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
@@ -739,10 +728,6 @@ package Media
           {1},
           p);
 
-      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        actualStream(substances.h_outflow) ./ stateOfMatter.molarMassOfBaseMolecule(
-        substanceData) "specific enthalpy in stream";
-
       substances.u = stateOfMatter.chemicalPotentialPure(
           substanceData,
           T,
@@ -758,9 +743,6 @@ package Media
           v,
           I) "molar enthalphy of the substances";
 
-      massFlows = substances.q .* stateOfMatter.molarMassOfBaseMolecule(substanceData);
-
-      der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
 
     end ChemicalSolution;
 
@@ -930,10 +912,6 @@ Modelica source.
             X,
             p);
 
-        actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS)
-        else actualStream(substances.h_outflow) ./ MMb
-          "molar enthalpy in stream";
-
         substances.u = electrochemicalPotentials_pTXvI(
             p,
             T,
@@ -948,9 +926,6 @@ Modelica source.
             v,
             I);
 
-        massFlows = substances.q .* MMb;
-
-        der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
       end ChemicalSolution;
 
       replaceable function electrochemicalPotentials_pTXvI
@@ -1148,8 +1123,7 @@ Modelica source.
       Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
       Modelica.Units.SI.ChargeNumberOfIon z[nS] "Charge of base molecule of substance";
 
-    initial equation
-      substanceMasses = startSubstanceMasses;
+
     equation
       NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
@@ -1163,9 +1137,6 @@ Modelica source.
           v,
           I);
 
-      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS)
-      else actualStream(substances.h_outflow) ./ MMb
-        "molar enthalpy in stream";
 
       substances.u = electrochemicalPotentials_pTXvI(
           p,
@@ -1183,11 +1154,6 @@ Modelica source.
       z = stateOfMatter.chargeNumberOfIon(substanceData,T,p,v,I);
 
       _i = Modelica.Constants.F*z*substances.q "electric current";
-
-      massFlows = substances.q .* MMb;
-
-
-      der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
 
     end ChemicalSolution;
 
@@ -1427,36 +1393,58 @@ Modelica source.
 
 
       replaceable partial model ChemicalSolution
-        Chemical.Interfaces.SubstancePorts_a substances[nS];
+        outer Modelica.Fluid.System system "System wide properties";
+
+        Chemical.Interfaces.SubstancePorts_a substances[nS](q(nominal=SubstanceFlowNominal));
         Physiolibrary.Types.RealIO.PressureInput p "pressure";
         Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
         Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
         Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
 
         Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS];
-
-        Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS];
-
-        Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS] "mass flows of substances";
-        Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
-        Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS] "specific enthalpies of substances in streams";
-        Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
-
+        Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS](nominal=SubstanceFlowNominal);
 
         parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of substance masses";
 
-        parameter Boolean EnthalpyNotUsed=false annotation (
+        Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS](nominal=SubstanceFlowNominal) "mass flows of substances";
+        Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
+        Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS](nominal=SubstanceFlowNominal) "specific enthalpies of substances in streams";
+        Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[nS](nominal=SubstanceFlowNominal) "specific enthalpies of substances in streams";
+        Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
+
+        parameter Boolean EnthalpyNotUsed=false "If true then simplify heat flows from/to chemical reactions (deprecated)" annotation (
         Evaluate=true,
         HideResult=true,
         choices(checkBox=true),
         Dialog(tab="Advanced", group="Performance"));
+
       initial equation
         substanceMasses = startSubstanceMasses;
+
+      equation
+        actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
+          (actualStream(substances.h_outflow)) ./ MMb "specific enthalpy in stream";
+
+
+        specificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
+          (substances.h_outflow) ./ MMb "specific enthalpy of substance";
+
+
+        massFlows = substances.q .* MMb;
+
+
+        der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
+        //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
+        // However, the numerical solvers can handle it in form of log(m) much better. :-)
+      //  der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
+      //  substanceMasses = exp(logm);
       end ChemicalSolution;
+
 
       constant Modelica.Units.SI.ChargeNumberOfIon zb[nS] "Charge number of base molecules";
       constant Modelica.Units.SI.MolarMass MMb[nS] "Molar mass of base molecules";
       /*Be carefull: it could be different from molar mass of substance in solution */
+      constant Real SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
 
       replaceable function density_pTC
         "Density at defined total amount of solvents base molecules per total volume"
@@ -1516,6 +1504,15 @@ Modelica source.
           1,
           Conc .* C2X[1:nS-1],
           {1 - (Conc*C2X[1:nS-1])}),
+      SubstanceFlowNominal={D_Hct,D_Arterial_O2,
+        D_Arterial_CO2,1,D_Hb,D_MetHb,D_HbF,D_Alb,D_Glb,D_PO4,D_DPG,D_Glucose,
+        D_Lactate,D_Urea,D_AminoAcids,D_Lipids,D_Ketoacids,D_SID,
+        D_Epinephrine,
+        D_Norepinephrine,D_Vasopressin,D_Insulin,D_Glucagon,D_Thyrotropin,
+        D_Thyroxine,D_Leptin,1,1,1,D_AnesthesiaVascularConductance,D_Angiotensin2,
+        D_Renin,D_Aldosterone,
+        1,1} ./
+        TimeScale,
       zb = {  0,0,0,0,0,0,0,0,0,0,0,
               0,-1,0,0,0,-1,
               -1,
@@ -1572,15 +1569,7 @@ Modelica source.
 
     constant Real TimeScale=6000 "Time scale of simulation";
 
-    constant Real SubstanceFlowNominal[nS]={D_Hct,D_Arterial_O2,
-        D_Arterial_CO2,1,D_Hb,D_MetHb,D_HbF,D_Alb,D_Glb,D_PO4,D_DPG,D_Glucose,
-        D_Lactate,D_Urea,D_AminoAcids,D_Lipids,D_Ketoacids,D_SID,
-        D_Epinephrine,
-        D_Norepinephrine,D_Vasopressin,D_Insulin,D_Glucagon,D_Thyrotropin,
-        D_Thyroxine,D_Leptin,1,1,1,D_AnesthesiaVascularConductance,D_Angiotensin2,
-        D_Renin,D_Aldosterone,
-        1,1} ./
-        TimeScale "Nominal of substance flow";
+
   /*
   constant String ExtraSubstancesUnits[nC]={"ng","ng","pmol","mU","ng","pmol","ug","ug",
            "ug", "%", "%","%",
@@ -1966,31 +1955,7 @@ Modelica source.
 </html>"));
     end BloodGases;
 
-    redeclare replaceable model ChemicalSolution "Blood chemical substances as chemical solution"
-      outer Modelica.Fluid.System system "System wide properties";
-
-      Chemical.Interfaces.SubstancePorts_a substances[nS](q(nominal=SubstanceFlowNominal));
-      Physiolibrary.Types.RealIO.PressureInput p "pressure";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
-      Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of substances";
-      Physiolibrary.Types.RealIO.ElectricCurrentInput _i "electric current from substances";
-
-      Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS];
-      Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS](nominal=SubstanceFlowNominal);
-
-      parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of substance masses";
-
-      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS](nominal=SubstanceFlowNominal) "mass flows of substances";
-      Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[nS](nominal=SubstanceFlowNominal) "specific enthalpies of substances in streams";
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[nS](nominal=SubstanceFlowNominal) "specific enthalpies of substances in streams";
-      Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
-
-      parameter Boolean EnthalpyNotUsed=false "If true then simplify heat flows from/to chemical reactions (deprecated)" annotation (
-      Evaluate=true,
-      HideResult=true,
-      choices(checkBox=true),
-      Dialog(tab="Advanced", group="Performance"));
+    redeclare replaceable model extends ChemicalSolution "Blood chemical substances as chemical solution"
 
       // protected
       Real I = 0 "mole-fraction-based ionic strength";
@@ -2177,7 +2142,8 @@ Modelica source.
       uAminoAcids = Modelica.Constants.R*T*log(x[i("AminoAcids")]) +  water_G;
       uLipids = Modelica.Constants.R*T*log(x[i("Lipids")]) +  water_G;
       uKetoAcids = Modelica.Constants.R*T*log(x[i("Ketoacids")]) +  water_G;
-      uSID = Modelica.Constants.R*T*log(x[i("SID")]) +  water_G + z*Modelica.Constants.F*electricPotential;
+      uSID = Modelica.Constants.R*T*log(x[i("SID")]) +  water_G;
+       //TODO202304: + z*Modelica.Constants.F*electricPotential;
 
 
       //TODO: electroneutrality!
@@ -2228,19 +2194,7 @@ Modelica source.
                              //fill(-59330,nS).*MMb;
      // elasticVessel.q_in[1].h_outflow        -59330        J/kg
 
-      actualStreamSpecificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        (actualStream(substances.h_outflow)) ./ MMb "specific enthalpy in stream";
 
-      specificEnthalpies = if EnthalpyNotUsed then zeros(nS) else
-        (substances.h_outflow) ./ MMb "specific enthalpy of substance";
-
-      massFlows = substances.q .* MMb;
-
-    der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
-      //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
-      // However, the numerical solvers can handle it in form of log(m) much better. :-)
-    //  der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
-    //  substanceMasses = exp(logm);
 
       annotation (Documentation(info="<html>
 <p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
