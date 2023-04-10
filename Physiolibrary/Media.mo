@@ -1444,7 +1444,9 @@ Modelica source.
       constant Modelica.Units.SI.ChargeNumberOfIon zb[nS] "Charge number of base molecules";
       constant Modelica.Units.SI.MolarMass MMb[nS] "Molar mass of base molecules";
       /*Be carefull: it could be different from molar mass of substance in solution */
-      constant Real SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
+      constant Modelica.Units.SI.MassFlowRate SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
+      constant Modelica.Units.SI.SpecificEnthalpy SpecificEnthalpyNominal=-1E6 "Nominal of specific enthalpy";
+
 
       replaceable function density_pTC
         "Density at defined total amount of solvents base molecules per total volume"
