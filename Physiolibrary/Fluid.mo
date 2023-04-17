@@ -168,26 +168,8 @@ package Fluid "Physiological fluids with static and dynamic properties"
       relative_pressure = pressure - (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
 
 
-      // linear compliance
-             // normal state
-                   // colapsing with a small volume inside
-                   // colapsed without any volume inside
-      // sigmoid compliance
-    /*  pressure = (if not useSigmoidCompliance
-  then 
-    smooth(0,
-    if noEvent(volume > ResidualVolume)
-       then 
-          excessVolume / c
-       else 
-          (if noEvent(volume > Modelica.Constants.eps) then 
-              (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume))
-          else -(if isExternalPressureAbsolute then ep else ep + system.p_ambient)))
-  else 
-    (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
-  + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
-  */
-        pressure = (if not useSigmoidCompliance
+
+      pressure = (if not useSigmoidCompliance
       then
         smooth(0,
         if noEvent(volume > ResidualVolume)
@@ -685,11 +667,10 @@ Connector with one flow signal of type Real.
     partial model Accumulation
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
-
       parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
         Evaluate = true,
         Dialog(connectorSizing = true, group = "Ports"));
-      Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium) annotation (
+      Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium, each h_outflow(nominal=Medium.SpecificEnthalpyNominal)) annotation (
         Placement(transformation(extent = {{-10, -28}, {10, 28}}), iconTransformation(extent = {{-7, -26}, {7, 26}}, rotation = 180, origin = {-1, 0})));
       parameter Boolean useSubstances = false "=true, if substance ports are used" annotation (
         Evaluate = true,
@@ -700,25 +681,16 @@ Connector with one flow signal of type Real.
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS] if useSubstances annotation (
+      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS](q(nominal=Medium.SubstanceFlowNominal)) if useSubstances annotation (
         Placement(transformation(extent = {{-110, -40}, {-90, 40}}), iconTransformation(extent = {{-110, -40}, {-90, 40}})));
-      parameter Boolean useExtraSubstances = false "=true, if extra s ubstance ports are used"
-         annotation (  Evaluate = true,    HideResult = true,
-                       choices(checkBox = true),    Dialog(group = "Conditional inputs"));
-
-      Chemical.Interfaces.VagueSubstancePorts_a extraSubstances[Medium.nC](
-          u=Modelica.Constants.R*Medium.temperature_phX(pressure, enthalpy / mass, massFractions)*log({ max(Modelica.Constants.small,extraSubstanceConcentrations[i]) for i in 1:Medium.nC}),
-          q=extraFlows) if useExtraSubstances
-          annotation (Placement(transformation(extent={{90,-40},
-                {110,40}}),
-                       iconTransformation(extent={{90,-40},{110,40}})));
 
       Medium.ChemicalSolution chemicalSolution(
+        startSubstanceMasses = m_start,
         p = pressure,
         h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
         _i = i,
-        EnthalpyNotUsed = EnthalpyNotUsed) if useSubstances;
+        EnthalpyNotUsed = EnthalpyNotUsed)  if useSubstances;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -731,11 +703,7 @@ Connector with one flow signal of type Real.
         HideResult = not use_mass_start,
         Dialog(enable = use_mass_start, group = "Initialization"));
 
-      parameter Boolean EnthalpyNotUsed = false annotation (
-        Evaluate = true,
-        HideResult = true,
-        choices(checkBox = true),
-        Dialog(tab = "Advanced", group = "Performance"));
+
       parameter Boolean useThermalPort = false "Is thermal port pressent?" annotation (
         Evaluate = true,
         HideResult = true,
@@ -746,29 +714,42 @@ Connector with one flow signal of type Real.
         Placement(transformation(extent = {{-70, -90}, {-50, -70}}), iconTransformation(extent={{-70,
               -110},{-50,-90}})));
     protected
+      parameter Boolean EnthalpyNotUsed = false annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(tab = "Advanced", group = "Performance"));
+      Physiolibrary.Types.Enthalpy enthalpy2;
+
       parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
 
-      parameter Modelica.Units.SI.Mass m_start[Medium.nXi] = tm_start * x_mass_start[1:Medium.nXi];
+      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
       Modelica.Units.SI.ElectricCurrent i;
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
 
       Physiolibrary.Types.Enthalpy enthalpy(start = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start));
+
+
       Physiolibrary.Types.Mass mass(start = tm_start);
-      Physiolibrary.Types.Mass substanceMasses[Medium.nXi](start = m_start);
       Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
       Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
+
       Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
       Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
       Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+
       Physiolibrary.Types.Volume volume;
       Physiolibrary.Types.Density density;
     protected
       Physiolibrary.Types.Pressure pressure;
-      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS];
-      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS];
+      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS] "Specific substances enthalpies [J/kg]";
+      Physiolibrary.Types.RealIO.SpecificEnthalpyOutput actualStreamSpecificEnthalpies[Medium.nS] "Actual stream substances enthalpies [J/kg]";
+      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
       Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
-      Modelica.Blocks.Interfaces.RealOutput extraFlows[Medium.nC];
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
 
     initial equation
       assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
@@ -778,16 +759,23 @@ Connector with one flow signal of type Real.
 */
     /*  assert(
   not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)>=Medium.nS-2)),
-  "Initial concentration composition must have at least nS-2 values!");
-*/
+  "Initial concentration composition must have at least 
+  -2 values!");
+  */
+      if not useSubstances then
+        substanceMasses = m_start;
+      end if;
       if Medium.reducedX then
         mass = tm_start;
       end if;
-      substanceMasses = m_start;
-      if not EnthalpyNotUsed then
+      //substanceMasses = m_start;
+      if not EnthalpyNotUsed and not useSubstances then
         enthalpy = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start);
       end if;
+
+
     equation
+      enthalpy2 = specificEnthalpies*substanceMasses;
       if onElectricGround then
         v = 0;
       else
@@ -799,11 +787,25 @@ Connector with one flow signal of type Real.
       if useSubstances then
         connect(substances, chemicalSolution.substances);
         connect(chemicalSolution.massFlows, massFlows);
-        connect(chemicalSolution.actualStreamSpecificEnthalpies, specificEnthalpies);
+        connect(chemicalSolution.actualStreamSpecificEnthalpies, actualStreamSpecificEnthalpies);
+        connect(chemicalSolution.specificEnthalpies, specificEnthalpies);
+        connect(chemicalSolution.substanceMasses, substanceMasses);
+        connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
         connect(v, chemicalSolution.v);
+        /*q_in.m_flow * actualStream(q_in.h_outflow) + heatFromEnvironment =
+      if (EnthalpyNotUsed) then  0
+      else    der(specificEnthalpies)*substanceMasses + massFlows*specificEnthalpies
+              -massFlows*(actualStreamSpecificEnthalpies)
+              "heat transfer from/to substances in solution [J/s]"; */
+
+
       else
+        der(substanceMasses) = substanceMassFlowsFromStream;
+
         massFlows = zeros(Medium.nS);
         specificEnthalpies = zeros(Medium.nS);
+        actualStreamSpecificEnthalpies = zeros(Medium.nS);
+
       // not used
         if not onElectricGround then
         //both electric variables set to zero
@@ -812,21 +814,20 @@ Connector with one flow signal of type Real.
           i = 0;
         end if;
       end if;
-      if not useExtraSubstances then
-        extraFlows = zeros(Medium.nC);
-      end if;
-      der(substanceMasses) = q_in.m_flow * xx_mass + massFlows[1:Medium.nXi];
+
+      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
+
+
       der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
-      if Medium.reducedX then
-        der(mass) = ones(nPorts) * q_in.m_flow + massFlows * ones(Medium.nS);
-      else
-        mass = sum(substanceMasses);
-      end if;
-      massFractions = substanceMasses ./ mass;
+
+
+      mass = sum(substanceMasses);
+
+      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
       if EnthalpyNotUsed then
         enthalpy = mass * Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
       else
-        der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + massFlows * specificEnthalpies + heatFromEnvironment;
+        der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + massFlows * actualStreamSpecificEnthalpies + heatFromEnvironment;
       end if;
       volume = mass / density;
       if EnthalpyNotUsed then
@@ -1408,7 +1409,7 @@ as signal.
       y.p = p;
       y.h_outflow = h;
       y.Xi_outflow = x_mass_start[1:Medium.nXi];
-      y.C_outflow = zeros(Medium.nC);
+      y.C_outflow = C_start;
       annotation (
         Documentation(info = "<html>
         <p>Model has a vector of continuous Real input signals as pressures for vector of pressure-flow connectors. </p>
@@ -1507,7 +1508,7 @@ as signal.
       Physiolibrary.Fluid.Components.MassPump heart(useSolutionFlowInput = true) annotation (
         Placement(transformation(extent = {{-20, 60}, {0, 80}})));
       Physiolibrary.Fluid.Components.ElasticVessel arteries(volume_start(displayUnit = "l") = 0.001, nPorts = 3, Compliance(displayUnit = "ml/mmHg") = 1.1625954425608e-08, ZeroPressureVolume(displayUnit = "ml") = 0.00085) annotation (
-        Placement(transformation(extent = {{54, 40}, {78, 62}})));
+        Placement(transformation(extent={{56,40},{80,62}})));
       Physiolibrary.Fluid.Components.ElasticVessel veins(volume_start(displayUnit = "l") = 0.0032, nPorts = 2, ZeroPressureVolume(displayUnit = "ml") = 0.00295, Compliance(displayUnit = "ml/mmHg") = 6.1880080007267e-07) annotation (
         Placement(transformation(extent = {{-58, 40}, {-38, 60}})));
       Modelica.Blocks.Sources.Pulse pulse(width = 25, period = 60 / 75, amplitude = 3.3e-1) annotation (
@@ -1524,15 +1525,15 @@ as signal.
       connect(veins.q_in[1], heart.q_in) annotation (
         Line(points={{-48.1,49.35},{-46,49.35},{-46,70},{-20,70}},        color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure.port, arteries.q_in[1]) annotation (
-        Line(points={{88,72},{88,50.0467},{65.88,50.0467}},        color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{92,68},{92,50.0467},{67.88,50.0467}},        color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_in, veins.q_in[2]) annotation (
         Line(points={{-18,32},{-32,32},{-32,50.65},{-48.1,50.65}},        color = {127, 0, 0}, thickness = 0.5));
       connect(heart.q_out, arteries.q_in[2]) annotation (
-        Line(points = {{0, 70}, {65.88, 70}, {65.88, 51}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{0,70},{67.88,70},{67.88,51}},        color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_out) annotation (
         Line(points = {{2, 32}, {12, 32}}, color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_in, arteries.q_in[3]) annotation (
-        Line(points={{32,32},{38,32},{38,51.9533},{65.88,51.9533}},          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{32,32},{38,32},{38,51.9533},{67.88,51.9533}},          color = {127, 0, 0}, thickness = 0.5));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-54, 98}, {66, 88}}, lineColor = {175, 175, 175}, textString = "Minimal circulation driven by cardiac output")}),
         Documentation(revisions = "<html>
@@ -1566,7 +1567,7 @@ as signal.
       connect(unlimitedPump.q_out, arteries.q_in[2]) annotation (
         Line(points = {{-28, 48}, {-16, 48}, {-16, 48}, {-2.1, 48}}, color = {127, 0, 0}, thickness = 0.5));
       connect(arteries.q_in[3],pressureMeasure.port)  annotation (
-        Line(points={{-2.1,48.8667},{-2,48.8667},{-2,60},{56,60}},          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-2.1,48.8667},{-2,48.8667},{-2,56},{60,56}},          color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_in) annotation (
         Line(points = {{18, 24}, {18, 10}, {8, 10}}, color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_out, unlimitedVolume.y) annotation (
@@ -2141,15 +2142,15 @@ as signal.
           Line(points={{-279.15,-2.025},{-268.725,-2.025},{-268.725,-3},{-258,
               -3}},                                                                        color = {127, 0, 0}, thickness = 0.5));
         connect(arteriesPressure.port, arteries.q_in[3]) annotation (
-          Line(points={{32,-68},{32,-69},{-1.15,-69},{-1.15,-1.7}},          color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{36,-72},{36,-69},{-1.15,-69},{-1.15,-1.7}},          color = {127, 0, 0}, thickness = 0.5));
         connect(rightVentricle.q_in[3],rightVentriclePressure.port)  annotation (
-          Line(points={{170.85,-1.7},{170.85,-64},{188,-64}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{170.85,-1.7},{170.85,-68},{192,-68}},        color = {127, 0, 0}, thickness = 0.5));
         connect(leftVentricle.q_in[3],leftVentriclePressure.port)  annotation (
-          Line(points={{-209.15,-1.7},{-209.15,-68},{-200,-68}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-209.15,-1.7},{-209.15,-72},{-196,-72}},        color = {127, 0, 0}, thickness = 0.5));
         connect(aortaPressure.port, aorta.q_in[3]) annotation (
-          Line(points={{-100,-56},{-112,-56},{-112,-2.5125},{-111.15,-2.5125}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-96,-60},{-112,-60},{-112,-2.5125},{-111.15,-2.5125}},         color = {127, 0, 0}, thickness = 0.5));
         connect(aorta.q_in[4],sphygmomanometer.port)  annotation (
-          Line(points={{-111.15,-1.5375},{-111.15,-86},{-102,-86}},       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-111.15,-1.5375},{-111.15,-90},{-98,-90}},        color = {127, 0, 0}, thickness = 0.5));
         annotation (
           Diagram(coordinateSystem(extent = {{-350, -100}, {400, 100}}, preserveAspectRatio = false, grid = {2, 2})),
           Icon(coordinateSystem(extent = {{-350, -100}, {400, 100}}, preserveAspectRatio = true, grid = {2, 2})),
@@ -2486,15 +2487,15 @@ as signal.
         connect(Rrain.q_in, Eithv.q_in[2]) annotation (
           Line(points = {{-208, 17}, {-194, 17}, {-194, 17}, {-180.14, 17}}, color = {127, 0, 0}, thickness = 0.5));
         connect(EithaPressure.port, Eitha.q_in[2]) annotation (
-          Line(points={{196,-32},{178.89,-32},{178.89,16.6425}},       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{200,-36},{178.89,-36},{178.89,16.6425}},       color = {127, 0, 0}, thickness = 0.5));
         connect(EethaPressure.port, Eetha.q_in[3]) annotation (
-          Line(points={{84,-52},{84,-54},{68.87,-54},{68.87,18.1267}},          color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{88,-56},{88,-54},{68.87,-54},{68.87,18.1267}},          color = {127, 0, 0}, thickness = 0.5));
         connect(EstPressure.port, Est.q_in[3]) annotation (
-          Line(points={{-6,-48},{-16.12,-48},{-16.12,17.9533}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-2,-52},{-16.12,-52},{-16.12,17.9533}},        color = {127, 0, 0}, thickness = 0.5));
         connect(EethvPressure.port, Eethv.q_in[3]) annotation (
-          Line(points={{-86,-48},{-95.13,-48},{-95.13,18.1267}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-82,-52},{-95.13,-52},{-95.13,18.1267}},        color = {127, 0, 0}, thickness = 0.5));
         connect(Eithv.q_in[3],EithvPressure.port)  annotation (
-          Line(points={{-180.14,18.1267},{-180.14,-50},{-160,-50}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-180.14,18.1267},{-180.14,-54},{-156,-54}},        color = {127, 0, 0}, thickness = 0.5));
         connect(RAtrialElastance.Et, RightAtrium.elastance) annotation (
           Line(points = {{-202.39, 101.84}, {-202.39, 85.92}, {-225.2, 85.92}, {-225.2, 70.6}}, color = {0, 0, 127}));
         connect(RVentricularElastance.Et, RightVentricle.elastance) annotation (
@@ -2532,7 +2533,7 @@ as signal.
         connect(power2.power, feedback1.u2) annotation (
           Line(points = {{82, 82}, {106, 82}, {106, -8}, {118, -8}, {118, -124}, {146, -124}, {146, -108}}, color = {0, 0, 127}));
         connect(Eitha.q_in[4],arterialPressure.port)  annotation (
-          Line(points={{178.89,18.0725},{178.89,-62},{204,-62}},       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{178.89,18.0725},{178.89,-66},{208,-66}},       color = {127, 0, 0}, thickness = 0.5));
         annotation (
           Diagram(coordinateSystem(extent = {{-280, -140}, {280, 180}}, preserveAspectRatio = false)),
           Icon(coordinateSystem(extent = {{-280, -140}, {280, 180}}, preserveAspectRatio = false), graphics),
@@ -2582,10 +2583,10 @@ as signal.
           Dialog(group = "Initialization"));
         Physiolibrary.Fluid.Components.Resistor blood_pipe(redeclare package
           Medium =
-            BloodPlasma,                                                                           EnthalpyNotUsed = false, Resistance(displayUnit = "(mmHg.min)/l") = Resistance) annotation (
+            BloodPlasma,                                                                            Resistance(displayUnit = "(mmHg.min)/l") = Resistance) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-94, -58})));
         Physiolibrary.Fluid.Components.Resistor dialysatePipe(redeclare package
-                  Medium =                                                               Dialysate, EnthalpyNotUsed = false, Resistance = Resistance) annotation (
+                  Medium =                                                               Dialysate, Resistance = Resistance) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {94, 48})));
         Physiolibrary.Fluid.Interfaces.FluidPort_a blood_in(redeclare package
           Medium =
@@ -2611,11 +2612,11 @@ as signal.
         Physiolibrary.Fluid.Components.ElasticVessel bloodVessel(redeclare
             package
                   Medium =
-            BloodPlasma,                                                                                 useSubstances = true, volume_start = InitialBloodPressure * Compliance, massFractions_start = InitialPlasma, EnthalpyNotUsed = false, Compliance(displayUnit = "ml/mmHg") = Compliance, ZeroPressureVolume(displayUnit = "m3"), nPorts = 2) annotation (
+            BloodPlasma,                                                                                 useSubstances = true, volume_start = InitialBloodPressure * Compliance, massFractions_start = InitialPlasma,  Compliance(displayUnit = "ml/mmHg") = Compliance, ZeroPressureVolume(displayUnit = "m3"), nPorts = 2) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-68, -4})));
         Physiolibrary.Fluid.Components.ElasticVessel dialysateVessel(redeclare
             package
-                  Medium =                                                                      Dialysate, useSubstances = true, onElectricGround = true, volume_start = InitialDialysatePressure * Compliance, massFractions_start = InitialDialysate, EnthalpyNotUsed = false, Compliance(displayUnit = "ml/mmHg") = Compliance, nPorts = 2) annotation (
+                  Medium =                                                                      Dialysate, useSubstances = true, onElectricGround = true, volume_start = InitialDialysatePressure * Compliance, massFractions_start = InitialDialysate,  Compliance(displayUnit = "ml/mmHg") = Compliance, nPorts = 2) annotation (
           Placement(transformation(extent = {{66, -14}, {86, 6}})));
       equation
         connect(membrane.port_b, dialysateVessel.substances) annotation (
@@ -2625,15 +2626,15 @@ as signal.
         connect(blood_pipe.q_in, blood_in) annotation (
           Line(points = {{-94, -68}, {-94, -100}, {-60, -100}}, color = {127, 0, 0}, thickness = 0.5));
         connect(blood_pipe.q_out, bloodVessel.q_in[1]) annotation (
-          Line(points = {{-94, -48}, {-94, -5.3}, {-67.9, -5.3}}, color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-94,-48},{-94,-3.35},{-67.9,-3.35}},      color = {127, 0, 0}, thickness = 0.5));
         connect(dialysatePipe.q_in, dialysate_in) annotation (
           Line(points = {{94, 58}, {94, 100}, {60, 100}}, color = {127, 0, 0}, thickness = 0.5));
         connect(dialysatePipe.q_out, dialysateVessel.q_in[1]) annotation (
-          Line(points = {{94, 38}, {94, -2}, {75.9, -2}, {75.9, -2.7}}, color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{94,38},{94,-2},{75.9,-2},{75.9,-4.65}},         color = {127, 0, 0}, thickness = 0.5));
         connect(blood_out, bloodVessel.q_in[2]) annotation (
-          Line(points = {{-60, 100}, {-94, 100}, {-94, -2.7}, {-67.9, -2.7}}, color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-60,100},{-94,100},{-94,-4.65},{-67.9,-4.65}},        color = {127, 0, 0}, thickness = 0.5));
         connect(dialysate_out, dialysateVessel.q_in[2]) annotation (
-          Line(points = {{60, -100}, {94, -100}, {94, -5.3}, {75.9, -5.3}}, color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{60,-100},{94,-100},{94,-3.35},{75.9,-3.35}},        color = {127, 0, 0}, thickness = 0.5));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Rectangle(extent = {{-100, 100}, {0, -100}}, lineColor = {255, 255, 0}, fillColor = {238, 46, 47}, fillPattern = FillPattern.VerticalCylinder), Rectangle(extent = {{0, 100}, {100, -100}}, lineColor = {255, 255, 0}, fillPattern = FillPattern.VerticalCylinder, fillColor = {28, 108, 200})}),
           Diagram(coordinateSystem(preserveAspectRatio = false)));
@@ -2745,9 +2746,9 @@ as signal.
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
           Medium =                                                                  Blood,
-        useExtraSubstances=false,
-        Compliance=1,                                                                                      EnthalpyNotUsed = false, concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            concentration_start = Blood.ArterialDefault, mass_start = 1, nPorts = 3, useSubstances = true, use_concentration_start = true, use_mass_start = true) annotation (
         Placement(transformation(extent={{-6,-52},{14,-32}})));
+
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
@@ -2758,7 +2759,7 @@ as signal.
       Chemical.Components.GasSolubility CO_GasSolubility(KC = 1e-7) annotation (
         Placement(transformation(extent = {{-22, -20}, {-2, 0}})));
       Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false, PartialPressure(displayUnit = "mmHg") = 133.322387415) annotation (
-        Placement(transformation(extent = {{-96, 18}, {-76, 38}})));
+        Placement(transformation(extent={{-96,16},{-76,36}})));
       Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
         Placement(transformation(extent = {{-70, 52}, {-50, 72}})));
       Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
@@ -2775,7 +2776,7 @@ as signal.
         annotation (Placement(transformation(extent={{44,-20},{64,0}})));
     equation
       connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
-        Line(points = {{-76, 28}, {-48, 28}, {-48, 0}}, color = {158, 66, 200}));
+        Line(points={{-76,26},{-48,26},{-48,0}},        color = {158, 66, 200}));
       connect(CO2.port_a, CO2_GasSolubility.gas_port) annotation (
         Line(points = {{-50, 62}, {-30, 62}, {-30, 0}}, color = {158, 66, 200}));
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
@@ -2829,7 +2830,7 @@ as signal.
       Blocks.Source.PeriodicCurveSource respiratoryMusclePressureCycle(data = RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
         Placement(transformation(extent = {{18, 8}, {38, 28}})));
       Physiolibrary.Fluid.Components.ElasticVessel lungs(redeclare package
-        Medium =                                                                    Air, use_mass_start = false, volume_start = LungsAirVolume_initial, use_concentration_start = false, massFractions_start = Air.reference_X, EnthalpyNotUsed = false, ZeroPressureVolume = FunctionalResidualCapacity, Compliance = TotalCompliance, useExternalPressureInput = true, nPorts = 2) "Lungs" annotation (
+        Medium =                                                                    Air, use_mass_start = false, volume_start = LungsAirVolume_initial, use_concentration_start = false, massFractions_start = Air.reference_X, ZeroPressureVolume = FunctionalResidualCapacity, Compliance = TotalCompliance, useExternalPressureInput = true, nPorts = 2) "Lungs" annotation (
         Placement(transformation(extent = {{36, -28}, {56, -8}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure lungsPressureMeasure(redeclare
           package
@@ -2840,7 +2841,7 @@ as signal.
       Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
                 Medium =                                                                Air) "External environment" annotation (
         Placement(transformation(extent = {{-76, -30}, {-56, -10}})));
-      Components.Resistor resistor(redeclare package Medium = Air, EnthalpyNotUsed = false, Resistance = TotalResistance) annotation (
+      Components.Resistor resistor(redeclare package Medium = Air,  Resistance = TotalResistance) annotation (
         Placement(transformation(extent = {{-6, -30}, {14, -10}})));
       Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
         Placement(transformation(extent = {{-12, 14}, {-4, 22}})));
@@ -2985,7 +2986,6 @@ as signal.
       VitalCapacity=TotalLungCapacity - ResidualVolume,
       BaseTidalVolume=BaseTidalVolume,
       useSubstances=true,
-      EnthalpyNotUsed=EnthalpyNotUsed,
       nPorts=2) "Alveolar space" annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
@@ -2995,7 +2995,7 @@ as signal.
         annotation (Placement(transformation(extent={{-170,-26},{-150,-6}})));
       Physiolibrary.Fluid.Components.Resistor lungsPathways(
         redeclare package Medium = Air,
-        EnthalpyNotUsed=EnthalpyNotUsed,
+        EnthalpyNotUsed=false,
         Resistance=TotalResistance)
         annotation (Placement(transformation(extent={{-308,0},{-288,20}})));
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
@@ -3036,8 +3036,8 @@ as signal.
         Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
       connect(environment.y, flowMeasure.q_in) annotation (
         Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
-    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={
-            {-146,6},{-154,6},{-154,44},{-65,44}}, color={0,0,127}));
+    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={{-146,6},
+              {-154,6},{-154,50},{-65,50}},        color={0,0,127}));
     connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
         Line(points={{-82,24},{-82,-26},{-143,-26},{-143,-11}}, color={0,0,
             127}));
@@ -3153,7 +3153,7 @@ as signal.
             -324,-68},{-352,-68},{-352,-48}}, color={158,66,200}));
       connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[2])
         annotation (Line(
-          points={{-354,33.8},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
+          points={{-354,34},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
               1.11022e-16}},
           color={127,0,0},
           thickness=0.5));
@@ -3382,11 +3382,11 @@ as signal.
         connect(leftHeartPump.q_in, pulmonaryVeins.q_in[1]) annotation (
           Line(points={{42,-140},{42,-100},{41.9,-100},{41.9,-102.975}},         color = {127, 0, 0}, thickness = 0.5));
         connect(pressureMeasureVeins.port, systemicVeins.q_in[1]) annotation (
-          Line(points={{-76,-210},{-50,-210},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-80,-214},{-50,-214},{-50,-196},{-50.1,-196}},                  color = {127, 0, 0}, thickness = 0.5));
         connect(pressureMeasurePulmArteries.port, pulmonaryArteries.q_in[2]) annotation (
-          Line(points={{-66,-104},{-50,-104},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-70,-108},{-50,-108},{-50,-102.325},{-50.1,-102.325}},        color = {127, 0, 0}, thickness = 0.5));
         connect(pulmonaryVeins.q_in[2],pressureMeasurePulmVeins.port)  annotation (
-          Line(points={{41.9,-102.325},{42,-102.325},{42,-104},{58,-104}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{41.9,-102.325},{42,-102.325},{42,-108},{62,-108}},        color = {127, 0, 0}, thickness = 0.5));
         connect(multiProduct1.y, rightHeartPump.solutionFlow) annotation (
           Line(points = {{-62.98, -150}, {-57, -150}}, color = {0, 0, 127}));
         connect(hydraulicConductance1.y, multiProduct1.u[1]) annotation (
@@ -3664,7 +3664,7 @@ as signal.
       replaceable package Air = Media.Air;
       //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
       replaceable package PleuralFluid = Physiolibrary.Media.Water;
-      parameter Boolean EnthalpyNotUsed = false;
+
       parameter Pressure IntrathoraxPressure=-700;
       parameter Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
       parameter Volume ResidualVolume=0.0013   "Lungs residual volume";
@@ -3704,31 +3704,29 @@ as signal.
       Physiolibrary.Blocks.Source.PeriodicCurveSource respiratoryMusclePressureCycle(data = RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
         Placement(transformation(extent = {{-34, 72}, {-14, 92}})));
       Physiolibrary.Fluid.Components.ElasticVessel leftAlveoli(redeclare
-          package
-                Medium =                                                                  Air,
+          package Medium =                                                                Air,
         volume_start=LungsAirVolume_initial*LeftLungsSizeFraction,                                                                    use_concentration_start = true, concentration_start = {100, 40, 47, 760 - 187}, useThermalPort = true,
         ZeroPressureVolume=FunctionalResidualCapacity*LeftLungsSizeFraction,
         ResidualVolume=ResidualVolume*LeftLungsSizeFraction,
         Compliance=TotalCompliance*LeftLungsSizeFraction,                                                                                                                                                                                                        useExternalPressureInput = true, useSigmoidCompliance = true,
         VitalCapacity=(TotalLungCapacity - ResidualVolume)*LeftLungsSizeFraction,
-        BaseTidalVolume=BaseTidalVolume*LeftLungsSizeFraction,                                                                                                                                                                                                        useSubstances = true, EnthalpyNotUsed = EnthalpyNotUsed, nPorts = 2,
+        BaseTidalVolume=BaseTidalVolume*LeftLungsSizeFraction,                                                                                                                                                                                                        useSubstances = true,  nPorts = 2,
         q_in(m_flow(start={0.0,0.028225848485321114}), p(start={101344.01141127005,101344.0078125},
               each displayUnit="bar")))                                                                                                                                                                                                         "Left alveolar space" annotation (
         Placement(transformation(extent = {{-162, 16}, {-142, 36}})));
       //0.0133,
       Physiolibrary.Fluid.Sensors.PressureMeasure leftPleauralPressure(redeclare
-          package
-                Medium =
+          package Medium =
           PleuralFluid, GetAbsolutePressure=false)                                                                                          "Left Pleaural pressure" annotation (
         Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-70, 64})));
       inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-                Medium =                                                                Air, temperature_start = EnvironmentTemperature,
+          Medium =                                                                      Air, temperature_start = EnvironmentTemperature,
         y(m_flow(start=0.09561940275276484)))                                                                                            "External environment" annotation (
         Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
       Physiolibrary.Fluid.Components.Resistor leftBronchi(redeclare package
-        Medium =                                                                     Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = LeftBronchiResistance,
+          Medium =                                                                   Air,  Resistance = LeftBronchiResistance,
         q_in(p(start=103156.07860174825, displayUnit="bar")),
         q_out(p(start=102073.43154792248, displayUnit="bar")))                                                                                                   annotation (
         Placement(transformation(extent={{-252,22},{-232,42}})));
@@ -3737,41 +3735,36 @@ as signal.
       Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
         Placement(transformation(extent={{-164,-14},{-144,6}})));
       Chemical.Sources.SubstanceInflowT CO2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.00010283333333333, redeclare
-          package
-                stateOfMatter =
+          package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                                                                         substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
         Placement(transformation(extent={{-200,-14},{-180,6}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure leftAlveolarPressure(redeclare
-          package
-                Medium =                                                                          Air) "Left Alveolar pressure" annotation (
+          package Medium =                                                                        Air) "Left Alveolar pressure" annotation (
         Placement(transformation(extent = {{-124, 22}, {-104, 42}})));
       Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package
-        Medium =                                                                      Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = RightBronchiResistance,
+          Medium =                                                                    Air,  Resistance = RightBronchiResistance,
         q_in(m_flow(start=0.028225848485321524)),
         q_out(p(start=102073.43154792248, displayUnit="bar")))                                                                                                     annotation (
         Placement(transformation(extent = {{-252, -54}, {-232, -34}})));
       Physiolibrary.Fluid.Components.ElasticVessel rightAlveoli(redeclare
-          package
-                Medium =                                                                   Air,
+          package Medium =                                                                 Air,
         volume_start=LungsAirVolume_initial*RightLungsSizeFraction,                                                                    use_concentration_start = true, concentration_start = {100, 40, 47, 760 - 187}, useThermalPort = true,
         ZeroPressureVolume=FunctionalResidualCapacity*RightLungsSizeFraction,
         ResidualVolume=ResidualVolume*RightLungsSizeFraction,
         Compliance=TotalCompliance*RightLungsSizeFraction,                                                                                                                                                                                                        useExternalPressureInput = true, useSigmoidCompliance = true,
         VitalCapacity=(TotalLungCapacity - ResidualVolume)*RightLungsSizeFraction,
-        BaseTidalVolume=BaseTidalVolume*RightLungsSizeFraction,                                                                                                                                                                                                        useSubstances = true, EnthalpyNotUsed = EnthalpyNotUsed, nPorts = 6,
+        BaseTidalVolume=BaseTidalVolume*RightLungsSizeFraction,                                                                                                                                                                                                        useSubstances = true, nPorts = 6,
         q_in(p(start={101344.01141127005,101344.0078125,101344.0078125,101344.0078125,
                 101344.0078125,101344.0078125}, each displayUnit="bar")))                                                                                                                                                                                                         "Right alveolar space" annotation (
         Placement(transformation(extent = {{-156, -58}, {-136, -38}})));
       Chemical.Sources.SubstanceInflowT CO2_right(SubstanceFlow(displayUnit = "mmol/min") = 0.00010283333333333, redeclare
-          package
-                stateOfMatter =
+          package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                                                                          substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
         Placement(transformation(extent = {{-220, -96}, {-200, -76}})));
       Chemical.Sources.SubstanceOutflow O2_right(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
         Placement(transformation(extent = {{-158, -96}, {-138, -76}})));
       Physiolibrary.Fluid.Components.ElasticVessel leftPleuralSpace(redeclare
-          package
-                Medium =
+          package Medium =
           PleuralFluid,
         volume_start=pleuralVolume_initial*LeftPleuralSizeFraction,                                                                                useThermalPort = false,
         ZeroPressureVolume=RelaxedLungsCavitySpace*LeftLungsSizeFraction,
@@ -3781,13 +3774,11 @@ as signal.
       "Left Pleural space"                                                                                                                                                                                                         annotation (
         Placement(transformation(extent={{-56,18},{-76,38}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure rightPleauralPressure(redeclare
-          package
-                Medium =
+          package Medium =
           PleuralFluid, GetAbsolutePressure=false)                                                                                           "Right pleaural pressure" annotation (
         Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-70, -12})));
       Physiolibrary.Fluid.Components.ElasticVessel rightPleuralSpace(redeclare
-          package
-                Medium =
+          package Medium =
           PleuralFluid,
       volume_start=pleuralVolume_initial*RightPleuralSizeFraction,
       ZeroPressureVolume=RelaxedLungsCavitySpace*RightLungsSizeFraction,
@@ -3796,35 +3787,29 @@ as signal.
       InternalSpace=RelaxedLungsCavitySpace*RightLungsSizeFraction,                                                                                                                                                                                                        nPorts = 1) "Right Plearal space" annotation (
         Placement(transformation(extent={{-56,-58},{-76,-38}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
-          package
-                Medium =                                                                           Air) "Right Alveolar pressure" annotation (
+          package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package
-        Medium =                                                                 Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));
       Physiolibrary.Fluid.Components.Resistor leftAlveolarDuct(redeclare
-          package
-                Medium =                                                                  Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = LeftAlveoliResistance) annotation (
+          package Medium =                                                                Air,  Resistance = LeftAlveoliResistance) annotation (
         Placement(transformation(extent={{-210,22},{-190,42}})));
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package
-        Medium =                                                                     Air) annotation (
+          Medium =                                                                   Air) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
       Physiolibrary.Fluid.Components.Resistor rightAlveolarDuct(redeclare
-          package
-                Medium =                                                                   Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = RightAlveoliResistance) annotation (
+          package Medium =                                                                 Air,  Resistance = RightAlveoliResistance) annotation (
         Placement(transformation(extent = {{-212, -54}, {-192, -34}})));
       Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare
-          package
-                Medium =                                                                            Air, use_concentration_start = true, useSubstances = true,
+          package Medium =                                                                          Air, use_concentration_start = true, useSubstances = true,
         volume_start=9.98e-05,                                                                                                                                                          concentration_start = {100, 40, 47, 760 - 187}, useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,
         ResidualVolume(displayUnit="ml"),
         InternalSpace=5e-05,                                                                                                                                                                                                        nPorts = 4) annotation (
         Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare
-          package
-                Medium =                                                                                 Air, EnthalpyNotUsed = EnthalpyNotUsed, Resistance = 0.5 * TracheaResistance) annotation (
+          package Medium =                                                                               Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,30})));
       Chemical.Sources.PureSubstance water(redeclare package stateOfMatter =
           Chemical.Interfaces.Incompressible,                                                                    substanceData = Chemical.Substances.Water_liquid()) annotation (
@@ -3832,42 +3817,33 @@ as signal.
       Chemical.Components.GasSolubility gasSolubility1(KC = 1e-5) annotation (
         Placement(transformation(extent = {{-362, -48}, {-342, -28}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pCO2(redeclare package
-        stateOfMatter =
+          stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                substanceData = Chemical.Substances.CarbonDioxide_gas(), redeclare
-          package
-                Medium =                                                                                                                                                                                   Air) annotation (
+          package Medium =                                                                                                                                                                                 Air) annotation (
         Placement(transformation(extent = {{-218, -62}, {-198, -82}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pO2(redeclare package
-        stateOfMatter =
+          stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                               substanceData = Chemical.Substances.Oxygen_gas(), redeclare
-          package
-                Medium =                                                                                                                                                                           Air) annotation (
+          package Medium =                                                                                                                                                                         Air) annotation (
         Placement(transformation(extent = {{-138, -64}, {-158, -84}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_alveolar(redeclare
-          package
-                Medium =                                                                      Air) annotation (
+          package Medium =                                                                    Air) annotation (
         Placement(transformation(extent = {{-110, -40}, {-90, -20}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pH2O_alveolar(redeclare
-          package
-                stateOfMatter =
+          package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                         substanceData = Chemical.Substances.Water_gas(), redeclare
-          package
-                Medium =                                                                                                                                                                                    Air) annotation (
+          package Medium =                                                                                                                                                                                  Air) annotation (
         Placement(transformation(extent = {{-122, -66}, {-102, -86}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory(redeclare
-          package
-                stateOfMatter =
+          package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                                 substanceData = Chemical.Substances.Water_gas(), redeclare
-          package
-                Medium =                                                                                                                                                                                            Air) annotation (
+          package Medium =                                                                                                                                                                                          Air) annotation (
         Placement(transformation(extent = {{-364, 34}, {-344, 14}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare
-          package
-                Medium =                                                                              Air) annotation (
+          package Medium =                                                                            Air) annotation (
         Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare
-          package
-                Medium =                                                                   Air) annotation (
+          package Medium =                                                                 Air) annotation (
         Placement(transformation(extent = {{-296, 72}, {-276, 92}})));
       Physiolibrary.Thermal.Components.Conductor conductor(Conductance(displayUnit = "W/K") = 10) annotation (
         Placement(transformation(extent = {{-302, -44}, {-322, -24}})));
@@ -3995,34 +3971,59 @@ as signal.
 </html>"));
     end Respiration;
 
-    model TwoCompartments
+    model CapillaryMembrane
+      extends Modelica.Icons.Example;
       replaceable package Blood = Physiolibrary.Media.Blood;
-      Components.ElasticVessel elasticVessel(
+      Components.ElasticVessel Artys(
         redeclare package Medium = Blood,
+        use_concentration_start=true,
+        concentration_start=Blood.ArterialDefault,
         useSubstances=true,
-        Compliance=7.5006157584566e-09,                                      nPorts=
-           1) annotation (Placement(transformation(extent={{-68,-10},{-48,12}})));
-      Components.ElasticVessel elasticVessel1(
+        Compliance=7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{-72,-18},{-52,4}})));
+      Components.ElasticVessel Veins(
         redeclare package Medium = Blood,
+        use_concentration_start=true,
+        concentration_start=Blood.VenousDefault,
         useSubstances=true,
         volume_start=0.002,
-        Compliance=7.5006157584566e-09,
-        nPorts=1) annotation (Placement(transformation(extent={{60,-8},{80,12}})));
-      Components.Conductor conductor(redeclare package Medium = Blood,
-          Conductance=1.2501026264094e-07)
-        annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
+        Compliance=7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{56,-12},{76,8}})));
+      Chemical.Components.Membrane membrane[Blood.nS](KC={0,0.01,0.01,0.01,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0})
+        annotation (Placement(transformation(extent={{4,-56},{24,-36}})));
+        /*
+    .* {0,1,1,1,
+    0,0,0,0,0,0,0,
+    1,0,0,0,0,0,
+    0,0,1}
+    
+    "RBC","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG",
+      "Glucose","Lactate","Urea","AminoAcids","Lipids","Ketoacids",
+      "SID","H+","Others"
+      */
+        /*
+    {  D_Epinephrine, D_Norepinephrine, D_Vasopressin, D_Insulin, D_Glucagon,
+      D_Thyrotropin, D_Thyroxine, D_Leptin,
+      D_Desglymidodrine, D_AlphaBlockers, D_BetaBlockers,
+      D_AnesthesiaVascularConductance, D_Angiotensin2,
+      D_Renin, D_Aldosterone}
+    */
+      inner Modelica.Fluid.System system(T_ambient=310.15)
+        annotation (Placement(transformation(extent={{64,66},{84,86}})));
     equation
-      connect(elasticVessel.q_in[1], conductor.q_in) annotation (Line(
-          points={{-58.1,1},{-58.1,0},{-4,0}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(conductor.q_out, elasticVessel1.q_in[1]) annotation (Line(
-          points={{16,0},{18,0},{18,2},{69.9,2}},
-          color={127,0,0},
-          thickness=0.5));
+      connect(Artys.substances, membrane.port_a) annotation (Line(points={{-72,-7},{
+              -76,-7},{-76,12},{-6,12},{-6,-46},{4,-46}}, color={158,66,200}));
+      connect(membrane.port_b, Veins.substances) annotation (Line(points={{24,-46},{
+              42,-46},{42,-2},{56,-2}}, color={158,66,200}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end TwoCompartments;
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(
+          StopTime=20,
+          Tolerance=1e-08,
+          __Dymola_Algorithm="Dassl"));
+    end CapillaryMembrane;
   end Examples;
   annotation (
     Documentation(info = "<html>

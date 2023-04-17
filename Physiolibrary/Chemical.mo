@@ -1235,36 +1235,6 @@ package Chemical "Physical Chemistry"
 </html>"));
     end Stream;
 
-    model VagueMembrane
-      "Passive transport of the vague substance through semipermeable membrane"
-      extends Icons.Membrane;
-      extends Interfaces.VagueOnePort;
-      extends Interfaces.ConditionalKinetics;
-
-      parameter Real kE(unit="mol/J")=0 "Kinetic turnover coefficient";
-
-    protected
-    Modelica.Units.SI.ChemicalPotential du;
-    equation
-      //the main equation
-      du = (port_a.u - port_b.u);
-      port_a.q = kC * du * exp(-kE*abs(du));
-
-      annotation ( Documentation(info="<html>
-<p><u><b><font style=\"color: #008000; \">Filtration throught semipermeable membrane.</font></b></u></p>
-<p>The penetrating particles are driven by electric and chemical gradient to reach Donnan&apos;s equilibrium.</p>
-<p>If zero-flow Donnan&apos;s equilibrium is reached. </p>
-</html>", revisions="<html>
-<p><i>2015 by </i>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"), Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-              {100,100}}), graphics={
-            Text(
-              extent={{-97,-12},{97,12}},
-              textString="%name",
-              lineColor={128,0,255},
-            origin={69,2},
-            rotation=90)}));
-    end VagueMembrane;
   end Components;
 
   package Sensors "Chemical sensors"
@@ -2799,13 +2769,13 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort
     "Electro-chemical potential and molar change of the substance in the solution"
-    extends VagueSubstancePort;
 
     Modelica.Units.SI.ChemicalPotential u
       "Electro-chemical potential of the substance in the solution";
 
-    flow Modelica.Units.SI.MolarFlowRate q
+    flow Modelica.Units.SI.MolarFlowRate q(nominal=1e-5)
       "Molar change of the substance";
+      // nominal: 0.6 mmol/min = 0.6 * 1e-3/60 mol/s
 
       //with molar flow of substance heat energy is changing also..
     stream Modelica.Units.SI.MolarEnthalpy h_outflow
@@ -2836,17 +2806,7 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort_a
     "Electro-chemical potential and molar flow of the substance in the solution"
-      extends VagueSubstancePort_a;
-
-    Modelica.Units.SI.ChemicalPotential u
-      "Electro-chemical potential of the substance in the solution";
-
-    flow Modelica.Units.SI.MolarFlowRate q
-      "Molar change of the substance";
-
-      //with molar flow of substance heat energy is changing also..
-    stream Modelica.Units.SI.MolarEnthalpy h_outflow
-      "Outgoing molar enthalphy";
+      extends SubstancePort;
 
     annotation (
         defaultComponentName="port_a",
@@ -2877,17 +2837,8 @@ package Chemical "Physical Chemistry"
 
     connector SubstancePort_b
     "Electro-chemical potential and molar flow of the substance in the solution"
-      extends VagueSubstancePort_b;
+      extends SubstancePort;
 
-    Modelica.Units.SI.ChemicalPotential u
-      "Electro-chemical potential of the substance in the solution";
-
-    flow Modelica.Units.SI.MolarFlowRate q
-      "Molar change of the substance";
-
-      //with molar flow of substance heat energy is changing also..
-    stream Modelica.Units.SI.MolarEnthalpy h_outflow
-      "Outgoing molar enthalphy";
     annotation (
         defaultComponentName="port_b",
         Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
@@ -5115,205 +5066,6 @@ end solution_temperature_;
 </html>"));
     end SubstanceMolarityPort_b;
 
-    connector VagueSubstancePort
-      "Relative electro-chemical potential and change of the substance in nonspecific units"
-
-    Modelica.Units.SI.ChemicalPotential u
-      "Relative electro-chemical potential of the substance in the solution";
-
-    flow Real q
-      "Change of the substance in nonspecific units";
-
-
-      annotation (Documentation(revisions="<html>
-<p><i>2015</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>",     info="<html>
-<p>Definition of electro-chemical potential of the substance:</p>
-<h4>u(x,T,v) = u&deg;(T) + R*T*ln(gamma*x) + z*F*v</h4>
-<h4>u&deg;(T) = DfG(T) = DfH - T * DfS</h4>
-<p>where</p>
-<p>x .. mole fraction of the substance in the solution</p>
-<p>T .. temperature in Kelvins</p>
-<p>v .. eletric potential of the solution</p>
-<p>z .. elementary charge of the substance (like -1 for electron, +2 for Ca^2+)</p>
-<p>R .. gas constant</p>
-<p>F .. Faraday constant</p>
-<p>gamma .. activity coefficient</p>
-<p>u&deg;(T) .. chemical potential of pure substance</p>
-<p>DfG(T) .. free Gibbs energy of formation of the substance at current temperature T. </p>
-<p>DfH .. free enthalpy of formation of the substance</p>
-<p>DfS .. free entropy of formation of the substance </p>
-<p><br>Be carefull, DfS is not the same as absolute entropy of the substance S&deg; from III. thermodinamic law! It must be calculated from tabulated value of DfG(298.15 K) and DfH as DfS=(DfH - DfG)/298.15. </p>
-</html>"));
-    end VagueSubstancePort;
-
-    connector VagueSubstancePort_a
-      "Relative electro-chemical potential and nonspecific flow of the substance"
-      extends VagueSubstancePort;
-
-    annotation (
-        defaultComponentName="port_a",
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={Rectangle(
-              extent={{-20,10},{20,-10}},
-              lineColor={217,67,180}),Rectangle(
-            extent={{-100,100},{100,-100}},
-            lineColor={217,67,180},
-            fillColor={217,67,180},
-            fillPattern=FillPattern.Solid)}),
-        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
-            graphics={Rectangle(
-              extent={{-40,40},{40,-40}},
-              lineColor={217,67,180},
-              fillColor={217,67,180},
-              fillPattern=FillPattern.Solid,
-              lineThickness=1),
-       Text(extent = {{-160,110},{40,50}}, lineColor={217,67,180},   textString = "%name")}),
-        Documentation(info="<html>
-<p>Chemical port with internal definition of the substance inside the component. </p>
-</html>",
-        revisions="<html>
-<p><i>2015</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end VagueSubstancePort_a;
-
-    connector VagueSubstancePort_b
-      "Relative electro-chemical potential and unspecific flow of the substance"
-      extends VagueSubstancePort;
-
-    annotation (
-        defaultComponentName="port_b",
-        Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-100},{100,
-                100}}),     graphics={Rectangle(
-              extent={{-20,10},{20,-10}},
-              lineColor={217,67,180}),Rectangle(
-              extent={{-100,100},{100,-100}},
-              lineColor={217,67,180},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid)}),
-        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100,-100},{100,100}}),
-            graphics={Rectangle(
-              extent={{-40,40},{40,-40}},
-              lineColor={217,67,180},
-              lineThickness=1,
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid),
-       Text(extent = {{-160,110},{40,50}}, lineColor={217,67,180},   textString = "%name")}),
-        Documentation(info="<html>
-<p>Chemical port with external definition of the substance outside the component.</p>
-</html>",
-        revisions="<html>
-<p><i>2015</i></p>
-<p>Marek Matejak, Charles University, Prague, Czech Republic </p>
-</html>"));
-    end VagueSubstancePort_b;
-
-    connector VagueSubstancePorts_a
-      extends VagueSubstancePort;
-      annotation (
-         defaultComponentName="ports_a",
-         Diagram(coordinateSystem(
-            preserveAspectRatio=false,
-            extent={{-50,-200},{50,200}},
-            initialScale=0.2),graphics={
-            Text(extent={{-73,130},{77,100}}, textString="%name"),
-            Rectangle(
-              extent={{25,-100},{-25,100}},
-              lineColor={217,67,180}),
-                      Rectangle(
-              extent={{-20,20},{20,-20}},
-              lineColor={217,67,180},
-              lineThickness=1),
-                      Rectangle(
-              extent={{-20,90},{20,50}},
-              lineColor={217,67,180},
-              lineThickness=1),
-                      Rectangle(
-              extent={{-20,-52},{20,-90}},
-              lineColor={217,67,180},
-              lineThickness=1)}),
-               Icon(coordinateSystem(
-            preserveAspectRatio=false,
-            extent={{-50,-200},{50,200}},
-            initialScale=0.2),graphics={
-            Rectangle(
-              extent={{50,-200},{-50,200}},
-              lineColor={217,67,180},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-                                      Rectangle(
-              extent={{-38,38},{42,-42}},
-              lineColor={217,67,180},
-              fillColor={217,67,180},
-              fillPattern=FillPattern.Solid),
-                                      Rectangle(
-              extent={{-40,170},{40,90}},
-              lineColor={217,67,180},
-              fillColor={217,67,180},
-              fillPattern=FillPattern.Solid),
-                                      Rectangle(
-              extent={{-40,-92},{40,-172}},
-              lineColor={217,67,180},
-              fillColor={217,67,180},
-              fillPattern=FillPattern.Solid)}));
-
-    end VagueSubstancePorts_a;
-
-    connector VagueSubstancePorts_b
-      extends VagueSubstancePort;
-      annotation (
-         defaultComponentName="ports_b",
-         Diagram(coordinateSystem(
-            preserveAspectRatio=false,
-            extent={{-50,-200},{50,200}},
-            initialScale=0.2),graphics={
-            Text(extent={{-73,130},{77,100}}, textString="%name"),
-            Rectangle(
-              extent={{25,-100},{-25,100}},
-              lineColor={217,67,180}),
-                      Rectangle(
-              extent={{-20,20},{20,-20}},
-              lineColor={217,67,180},
-              lineThickness=1),
-                      Rectangle(
-              extent={{-20,90},{20,50}},
-              lineColor={217,67,180},
-              lineThickness=1),
-                      Rectangle(
-              extent={{-20,-52},{20,-90}},
-              lineColor={217,67,180},
-              lineThickness=1)}),
-               Icon(coordinateSystem(
-            preserveAspectRatio=false,
-            extent={{-50,-200},{50,200}},
-            initialScale=0.2),graphics={
-            Rectangle(
-              extent={{50,-200},{-50,200}},
-              lineColor={217,67,180},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid),
-                                      Rectangle(
-              extent={{-40,38},{40,-42}},
-              lineColor={217,67,180}),Rectangle(
-              extent={{-40,170},{40,90}},
-              lineColor={217,67,180}),Rectangle(
-              extent={{-40,-92},{40,-172}},
-              lineColor={217,67,180})}));
-
-    end VagueSubstancePorts_b;
-
-    partial model VagueOnePort "Base model for vague chemical process"
-
-    VagueSubstancePort_a port_a annotation (Placement(transformation(extent={{-110,-10},
-              {-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
-    VagueSubstancePort_b port_b annotation (Placement(transformation(extent={{90,-10},
-              {110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
-
-    equation
-      port_a.q + port_b.q = 0;
-    end VagueOnePort;
   end Interfaces;
 
   package Substances "Definitions of substances"
@@ -12445,8 +12197,8 @@ end solution_temperature_;
 
     partial class Diffusion
 
-      annotation (Icon(graphics={Bitmap(extent={{-100,-100},{100,100}}, fileName=
-                  "modelica://Physiolibrary/Resources/Icons/diffusion.png")}));
+      annotation (Icon(graphics={Bitmap(extent={{-100,-100},{100,100}}, fileName
+                = "modelica://Physiolibrary/Resources/Icons/diffusion.png")}));
 
     end Diffusion;
 
@@ -14145,11 +13897,11 @@ end solution_temperature_;
         pH = -log10( H_.a);
 
         connect(OH.port_a, waterDissociation.products[1]) annotation (Line(
-            points={{20,26},{16,26},{16,48},{8,48}},
+            points={{20,26},{16,26},{16,45},{8,45}},
             color={158,66,200},
             thickness=1));
         connect(waterDissociation.products[2], H3O.port_a) annotation (Line(
-            points={{8,44},{16,44},{16,70},{20,70}},
+            points={{8,47},{16,47},{16,70},{20,70}},
             color={158,66,200},
             thickness=1));
         connect(H2O.port_a, waterDissociation.substrates[1]) annotation (Line(
@@ -14157,11 +13909,11 @@ end solution_temperature_;
             color={158,66,200},
             thickness=1));
         connect(OH_.port_a,waterDissociation_. products[1]) annotation (Line(
-            points={{18,-76},{14,-76},{14,-54},{6,-54}},
+            points={{18,-76},{14,-76},{14,-57},{6,-57}},
             color={158,66,200},
             thickness=1));
         connect(waterDissociation_.products[2], H_.port_a) annotation (Line(
-            points={{6,-58},{14,-58},{14,-30},{18,-30}},
+            points={{6,-55},{14,-55},{14,-30},{18,-30}},
             color={158,66,200},
             thickness=1));
         connect(H2O_.port_a,waterDissociation_. substrates[1]) annotation (Line(
@@ -14265,16 +14017,16 @@ end solution_temperature_;
             color={158,66,200},
             thickness=1));
         connect(HendersonHasselbalch.products[1], H.port_a) annotation (Line(
-            points={{-28,6},{-22,6},{-22,-30},{20,-30}},
+            points={{-28,3},{-22,3},{-22,-30},{20,-30}},
             color={158,66,200},
             thickness=1));
         connect(HendersonHasselbalch.products[2], HCO3.port_a) annotation (Line(
-            points={{-28,2},{-12,2},{-12,6},{4,6}},
+            points={{-28,5},{-12,5},{-12,6},{4,6}},
             color={158,66,200},
             thickness=1));
         connect(CO2_liquid.port_a, HendersonHasselbalch.substrates[2]) annotation (
             Line(
-            points={{-62,4},{-62,2},{-48,2}},
+            points={{-62,4},{-62,5},{-48,5}},
             color={158,66,200},
             thickness=1));
         connect(CO2_liquid.solution, solution.solution) annotation (Line(
@@ -14285,16 +14037,16 @@ end solution_temperature_;
         connect(liquidWater.solution, solution.solution) annotation (Line(points={
                 {-72,-50},{-72,-98.54},{60,-98.54}}, color={127,127,0}));
         connect(liquidWater.port_a, HendersonHasselbalch.substrates[1])
-          annotation (Line(points={{-56,-40},{-54,-40},{-54,6},{-48,6}}, color={158,
+          annotation (Line(points={{-56,-40},{-54,-40},{-54,3},{-48,3}}, color={158,
                 66,200}));
         connect(liquidWater.port_a, waterDissociation.substrates[1])
           annotation (Line(points={{-56,-40},{-50,-40},{-50,-58},{-44,-58}},
               color={158,66,200}));
         connect(waterDissociation.products[1], H.port_a) annotation (Line(
-              points={{-24,-56},{-6,-56},{-6,-30},{20,-30}}, color={158,66,
+              points={{-24,-59},{-6,-59},{-6,-30},{20,-30}}, color={158,66,
                 200}));
         connect(waterDissociation.products[2], OH.port_a) annotation (Line(
-              points={{-24,-60},{-8,-60},{-8,-72},{22,-72}}, color={158,66,
+              points={{-24,-57},{-8,-57},{-8,-72},{22,-72}}, color={158,66,
                 200}));
         connect(H.solution, solution.solution) annotation (Line(points={{4,
                 -40},{-12,-40},{-12,-98.54},{60,-98.54}}, color={127,127,0}));
@@ -14384,7 +14136,7 @@ end solution_temperature_;
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction.products[1], H2PO4.port_a) annotation (Line(
-            points={{-46,-46},{-42,-46},{-42,-48},{-20,-48}},
+            points={{-46,-49},{-42,-49},{-42,-48},{-20,-48}},
             color={107,45,134},
             thickness=1));
         connect(H2PO4.port_a, chemicalReaction1.substrates[1]) annotation (Line(
@@ -14392,7 +14144,7 @@ end solution_temperature_;
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction1.products[1], HPO4.port_a) annotation (Line(
-            points={{6,-46},{16,-46},{16,-48},{36,-48}},
+            points={{6,-49},{16,-49},{16,-48},{36,-48}},
             color={107,45,134},
             thickness=1));
         connect(HPO4.port_a, chemicalReaction2.substrates[1]) annotation (Line(
@@ -14400,19 +14152,19 @@ end solution_temperature_;
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction2.products[1], PO4.port_a) annotation (Line(
-            points={{64,-46},{74,-46},{74,-48},{72,-48}},
+            points={{64,-49},{74,-49},{74,-48},{72,-48}},
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction.products[2], H.port_a) annotation (Line(
-            points={{-46,-50},{-44,-50},{-44,-32},{38,-32},{38,-14}},
+            points={{-46,-47},{-44,-47},{-44,-32},{38,-32},{38,-14}},
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction1.products[2], H.port_a) annotation (Line(
-            points={{6,-50},{14,-50},{14,-32},{38,-32},{38,-14}},
+            points={{6,-47},{14,-47},{14,-32},{38,-32},{38,-14}},
             color={107,45,134},
             thickness=1));
         connect(chemicalReaction2.products[2], H.port_a) annotation (Line(
-            points={{64,-50},{66,-50},{66,-32},{38,-32},{38,-14}},
+            points={{64,-47},{66,-47},{66,-32},{38,-32},{38,-14}},
             color={107,45,134},
             thickness=1));
         connect(H3PO4.solution, solution.solution) annotation (Line(
@@ -14435,9 +14187,9 @@ end solution_temperature_;
         connect(OH.solution, solution.solution) annotation (Line(points={{22,22},
                 {22,-88},{60.4,-88},{60.4,-98}}, color={127,127,0}));
         connect(OH.port_a, reaction.substrates[1]) annotation (Line(points={{38,32},
-                {42,32},{42,16},{46,16}}, color={158,66,200}));
+                {42,32},{42,13},{46,13}}, color={158,66,200}));
         connect(H.port_a, reaction.substrates[2]) annotation (Line(points={{38,-14},
-                {42,-14},{42,12},{46,12}}, color={158,66,200}));
+                {42,-14},{42,15},{46,15}}, color={158,66,200}));
         connect(reaction.products[1], H2O.port_a)
           annotation (Line(points={{66,14},{76,14}}, color={158,66,200}));
         annotation ( Documentation(info="<html>
@@ -14554,7 +14306,8 @@ end solution_temperature_;
           use_mass_start=false,
           amountOfSubstance_start=0.1487)
           annotation (Placement(transformation(extent={{70,14},{90,34}})));
-        Chemical.Components.Diffusion diffusion annotation (Placement(transformation(
+        Chemical.Components.Membrane diffusion annotation (Placement(
+              transformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-66,-16})));
@@ -17837,39 +17590,39 @@ end solution_temperature_;
 
       equation
         connect(Pb.port_a, electrodeReaction1.substrates[1]) annotation (Line(
-            points={{64,-24},{45.5,-24},{45.5,4},{42,4}},
+            points={{64,-24},{45.5,-24},{45.5,4},{45,4}},
             color={158,66,200},
             thickness=1));
         connect(HSO4.port_a, electrodeReaction1.substrates[2]) annotation (Line(
-            points={{-2,-48},{44,-48},{44,4},{46,4}},
+            points={{-2,-48},{44,-48},{44,4},{43,4}},
             color={158,66,200},
             thickness=1));
         connect(PbSO4_.port_a, electrodeReaction1.products[1]) annotation (Line(
-            points={{64,14},{56,14},{56,28},{46,28},{46,24},{41.3333,24}},
+            points={{64,14},{56,14},{56,28},{46,28},{46,24},{45.3333,24}},
             color={158,66,200},
             thickness=1));
         connect(electrodeReaction.products[1], PbSO4.port_a) annotation (Line(
-            points={{-40,24},{-40,32},{-64,32}},
+            points={{-43,24},{-43,32},{-64,32}},
             color={158,66,200},
             thickness=1));
         connect(electrodeReaction.products[2], H2O.port_a) annotation (Line(
-            points={{-44,24},{-40,24},{-40,32},{-34,32},{-34,0},{-22,0}},
+            points={{-41,24},{-40,24},{-40,32},{-34,32},{-34,0},{-22,0}},
             color={158,66,200},
             thickness=1));
         connect(PbO2.port_a, electrodeReaction.substrates[1]) annotation (Line(
-            points={{-64,-30},{-42,-30},{-42,4},{-39,4}},
+            points={{-64,-30},{-42,-30},{-42,4},{-43.5,4}},
             color={158,66,200},
             thickness=1));
         connect(HSO4.port_a, electrodeReaction.substrates[2]) annotation (Line(
-            points={{-2,-48},{-40,-48},{-40,4},{-41,4}},
+            points={{-2,-48},{-40,-48},{-40,4},{-42.5,4}},
             color={158,66,200},
             thickness=1));
         connect(H.port_a, electrodeReaction.substrates[3]) annotation (Line(
-            points={{26,-18},{-38,-18},{-38,4},{-43,4}},
+            points={{26,-18},{-38,-18},{-38,4},{-41.5,4}},
             color={158,66,200},
             thickness=1));
         connect(electrone1.port_a, electrodeReaction.substrates[4]) annotation (Line(
-            points={{-66,-2},{-44,-2},{-44,4},{-45,4}},
+            points={{-66,-2},{-44,-2},{-44,4},{-40.5,4}},
             color={158,66,200},
             thickness=1));
         connect(H.port_a, electrodeReaction1.products[2]) annotation (Line(
@@ -17877,7 +17630,7 @@ end solution_temperature_;
             color={158,66,200},
             thickness=1));
         connect(electrone.port_a, electrodeReaction1.products[3]) annotation (Line(
-            points={{64,42},{44,42},{44,24},{46.6667,24}},
+            points={{64,42},{44,42},{44,24},{42.6667,24}},
             color={158,66,200},
             thickness=1));
       connect(electrone1.pin, voltageSensor.p) annotation (Line(
@@ -17952,11 +17705,11 @@ end solution_temperature_;
             color={158,66,200},
             thickness=1));
         connect(H.port_a, electrodeReaction.products[1]) annotation (Line(
-            points={{38,-26},{50,-26},{50,-4}},
+            points={{38,-26},{53,-26},{53,-4}},
             color={158,66,200},
             thickness=1));
         connect(electrodeReaction.products[2], electrone1.port_a) annotation (Line(
-            points={{54,-4},{54,-16},{66,-16}},
+            points={{51,-4},{51,-16},{66,-16}},
             color={158,66,200},
             thickness=1));
         connect(electrone.pin, voltageSensor.p) annotation (Line(
@@ -17974,12 +17727,12 @@ end solution_temperature_;
         connect(H2.port_a, electrodeReaction.substrates[1]) annotation (Line(
               points={{44,42},{52,42},{52,16}}, color={158,66,200}));
         connect(O2.port_a, electrodeReaction1.products[1]) annotation (Line(
-              points={{-60,22},{-34,22},{-34,16},{-37.3333,16}}, color={158,66,
+              points={{-60,22},{-34,22},{-34,16},{-41.3333,16}}, color={158,66,
                 200}));
         connect(H.port_a, electrodeReaction1.products[2]) annotation (Line(points=
                {{38,-26},{12,-26},{12,30},{-40,30},{-40,16}}, color={158,66,200}));
         connect(electrone.port_a, electrodeReaction1.products[3]) annotation (
-            Line(points={{-60,50},{-42,50},{-42,16},{-42.6667,16}}, color={158,66,
+            Line(points={{-60,50},{-42,50},{-42,16},{-38.6667,16}}, color={158,66,
                 200}));
         annotation (
         experiment(StopTime=1), Documentation(info=
@@ -18065,13 +17818,13 @@ end solution_temperature_;
       connect(H2_gas.solution, air.solution) annotation (Line(points={{20,-6},{20,-15.58},
               {32,-15.58}}, color={127,127,0}));
       connect(electrone1.port_a, reaction.substrates[2]) annotation (Line(points={{-64,-24},
-              {-48,-24},{-48,-33.2},{-34,-33.2}},      color={158,66,200}));
-      connect(H2_gas.port_a, reaction.products[1]) annotation (Line(points={{36,4},{42,4},
-              {42,-34},{-12,-34},{-12,-28.0667}},       color={158,66,200}));
+              {-48,-24},{-48,-29.9},{-34,-29.9}},      color={158,66,200}));
+      connect(H2_gas.port_a, reaction.products[1]) annotation (Line(points={{36,4},{
+              42,4},{42,-34},{-12,-34},{-12,-32.4667}}, color={158,66,200}));
       connect(O2_gas.port_a, reaction.products[2]) annotation (Line(points={{-2,4},{
               2,4},{2,-31},{-12,-31}}, color={158,66,200}));
       connect(electrone.port_a, reaction.products[3]) annotation (Line(points={{64,-28},
-              {26,-28},{26,-33.9333},{-12,-33.9333}}, color={158,66,200}));
+              {26,-28},{26,-29.5333},{-12,-29.5333}}, color={158,66,200}));
       connect(constantVoltage.p, voltageSensor.n) annotation (Line(points={{18,48},{
               60,48},{60,80},{-22,80}}, color={0,0,255}));
       connect(resistor.n, constantVoltage.n)
@@ -18081,7 +17834,7 @@ end solution_temperature_;
       connect(liquidWater.solution, water.solution) annotation (Line(points={{-10,-72},{
               -10,-79.66},{8.8,-79.66}},       color={127,127,0}));
       connect(liquidWater.port_a, reaction.substrates[1]) annotation (Line(points={{6,-62},
-              {-48,-62},{-48,-28.8},{-34,-28.8}},         color={158,66,200}));
+              {-48,-62},{-48,-32.1},{-34,-32.1}},         color={158,66,200}));
       annotation ( experiment(StopTime=1), Documentation(info="<html>
 <p>The water ecectrolysis: </p>
 <p><b>2 H<sub>2</sub>O +&nbsp;&nbsp;4 e<sup>-</sup><sub>(catode)</sub>&nbsp;&lt;-&gt;  2 H<sub>2</sub> + O<sub>2</sub>&nbsp;+&nbsp;&nbsp;4 e<sup>-</sup><sub>(anode)</sub>&nbsp;</b></p>
