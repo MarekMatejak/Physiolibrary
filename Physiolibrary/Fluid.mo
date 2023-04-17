@@ -3973,7 +3973,7 @@ as signal.
 
     model CapillaryMembrane
       extends Modelica.Icons.Example;
-      replaceable package Blood = Physiolibrary.Media.Blood2;
+      replaceable package Blood = Physiolibrary.Media.Blood;
       Components.ElasticVessel Artys(
         redeclare package Medium = Blood,
         use_concentration_start=true,
