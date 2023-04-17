@@ -1418,6 +1418,7 @@ Modelica source.
         choices(checkBox=true),
         Dialog(tab="Advanced", group="Performance"));
 
+        Real logm[nS] "natutal logarithm of substance masses (as state variables)";
       initial equation
         substanceMasses = startSubstanceMasses;
 
@@ -1432,12 +1433,10 @@ Modelica source.
 
         massFlows = substances.q .* MMb;
 
-
-        der(substanceMasses)= substanceMassFlowsFromStream + massFlows;
         //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
         // However, the numerical solvers can handle it in form of log(m) much better. :-)
-      //  der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
-      //  substanceMasses = exp(logm);
+        der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
+        substanceMasses = exp(logm);
       end ChemicalSolution;
 
 
@@ -1588,8 +1587,8 @@ Modelica source.
         D_Thyroxine_ug=79.6 "Default thyroxin T3 and T4 [ug/L]",
         D_Leptin_ug=7.96 "Default leptin [ug/L]",
         D_Desglymidodrine_ug=1e-5 "Default desglymidodrine [ug/L]",
-        D_AlphaBlockers_f=0 "Default aplpha blockers effect [%/L]",
-        D_BetaBlockers_f=0 "Default beta blockers effect [%/L]",
+        D_AlphaBlockers_f=Modelica.Constants.small "Default aplpha blockers effect [%/L]",
+        D_BetaBlockers_f=Modelica.Constants.small "Default beta blockers effect [%/L]",
         D_AnesthesiaVascularConductance_f=1 "Default effect of anesthesia to vascular conductance [%/L]",
         D_Angiotensin2_ng=20 "Default angiotensin II [ng/L]",
         D_Renin_ng_mL_h=2 "Default renin PRA [ng/mL/h]",

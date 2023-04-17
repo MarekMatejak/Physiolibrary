@@ -3974,19 +3974,25 @@ as signal.
     model CapillaryMembrane
       extends Modelica.Icons.Example;
       replaceable package Blood = Physiolibrary.Media.Blood2;
-      Components.ElasticVessel C(
+      Components.ElasticVessel Artys(
         redeclare package Medium = Blood,
+        use_concentration_start=true,
+        concentration_start=Blood.ArterialDefault,
         useSubstances=true,
         Compliance=7.5006157584566e-08)
         annotation (Placement(transformation(extent={{-72,-18},{-52,4}})));
-      Components.ElasticVessel D(
+      Components.ElasticVessel Veins(
         redeclare package Medium = Blood,
+        use_concentration_start=true,
+        concentration_start=Blood.VenousDefault,
         useSubstances=true,
         volume_start=0.002,
         Compliance=7.5006157584566e-08)
         annotation (Placement(transformation(extent={{56,-12},{76,8}})));
-      Chemical.Components.Membrane membrane[Blood.nS]( KC=Blood.CapyllaryMembrane_KC)
-        annotation (Placement(transformation(extent={{0,-56},{20,-36}})));
+      Chemical.Components.Membrane membrane[Blood.nS](KC={0,0.01,0.01,0.01,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0})
+        annotation (Placement(transformation(extent={{4,-56},{24,-36}})));
         /*
     .* {0,1,1,1,
     0,0,0,0,0,0,0,
@@ -4006,45 +4012,11 @@ as signal.
     */
       inner Modelica.Fluid.System system(T_ambient=310.15)
         annotation (Placement(transformation(extent={{64,66},{84,86}})));
-      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-6)   annotation (
-        Placement(transformation(extent={{-64,32},{-44,52}})));
-      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-6)   annotation (
-        Placement(transformation(extent={{-40,32},{-20,52}})));
-      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-7)   annotation (
-        Placement(transformation(extent={{-12,30},{8,50}})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(
-        substanceData=Chemical.Substances.Oxygen_gas(),
-        usePartialPressureInput=false,
-        PartialPressure(displayUnit="mmHg") = 11999.01486735)                                                                                                                                 annotation (
-        Placement(transformation(extent={{-88,50},{-68,70}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData=
-            Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit="mmHg")=
-             5332.8954966)                                                                                                                                          annotation (
-        Placement(transformation(extent={{-62,86},{-42,106}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData=
-            Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit="mmHg")=
-             0.000133322387415)                                                                                                                                          annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={36,68})));
     equation
-      connect(C.substances, membrane.port_a) annotation (Line(points={{-72,-7},
-              {-76,-7},{-76,12},{-6,12},{-6,-46},{0,-46}},
-                                                        color={158,66,200}));
-      connect(membrane.port_b, D.substances) annotation (Line(points={{20,-46},
-              {42,-46},{42,-2},{56,-2}},
-                                  color={158,66,200}));
-      connect(O2.port_a,O2_GasSolubility. gas_port) annotation (
-        Line(points={{-68,60},{-54,60},{-54,52}},       color = {158, 66, 200}));
-      connect(CO2.port_a,CO2_GasSolubility. gas_port) annotation (
-        Line(points={{-42,96},{-30,96},{-30,52}},       color = {158, 66, 200}));
-      connect(CO.port_a,CO_GasSolubility. gas_port) annotation (
-        Line(points={{26,68},{-2,68},{-2,50}},         color = {158, 66, 200}));
-      connect(O2_GasSolubility.liquid_port, C.substances[Blood.i("O2")]) annotation (Line(
-            points={{-54,32},{-80,32},{-80,-7},{-72,-7}}, color={158,66,200}));
-      connect(CO2_GasSolubility.liquid_port, C.substances[Blood.i("CO2")]) annotation (
-          Line(points={{-30,32},{-30,12},{-76,12},{-76,-7},{-72,-7}}, color={158,66,
-              200}));
-      connect(CO_GasSolubility.liquid_port, C.substances[Blood.i("CO")]) annotation (Line(
-            points={{-2,30},{-2,12},{-76,12},{-76,-7},{-72,-7}}, color={158,66,200}));
+      connect(Artys.substances, membrane.port_a) annotation (Line(points={{-72,-7},{
+              -76,-7},{-76,12},{-6,12},{-6,-46},{4,-46}}, color={158,66,200}));
+      connect(membrane.port_b, Veins.substances) annotation (Line(points={{24,-46},{
+              42,-46},{42,-2},{56,-2}}, color={158,66,200}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         experiment(
