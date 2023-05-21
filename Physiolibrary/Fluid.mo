@@ -2736,6 +2736,105 @@ as signal.
       end Dialysis;
     end Dialysis;
 
+    model AirWaterSaturation "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      Chemical.Components.GasSolubility evaporation(KC=1e-7)
+      annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
+                Medium =                                                                Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
+        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
+      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package
+        Medium =                                                                     Air) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare
+          package
+                Medium =                                                                            Air, useSubstances = true,
+        volume_start=0.0001,                                                                                                                          massFractions_start = Air.reference_X[1:Air.nS - 1], useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3) annotation (
+        Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
+      Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare
+          package
+                Medium =                                                                                 Air,  Resistance = 0.5 * TracheaResistance) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
+      Chemical.Sources.PureSubstance water(redeclare package stateOfMatter =
+          Chemical.Interfaces.Incompressible,                                                                    substanceData = Chemical.Substances.Water_liquid()) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-314, -68})));
+      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory(redeclare
+          package
+                stateOfMatter =
+          Chemical.Interfaces.IdealGas,                                                                                                 substanceData = Chemical.Substances.Water_gas(), redeclare
+          package
+                Medium =                                                                                                                                                                                            Air) annotation (
+        Placement(transformation(extent = {{-364, 34}, {-344, 14}})));
+      Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare
+          package
+                Medium =                                                                              Air) annotation (
+        Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
+      Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare
+          package
+                Medium =                                                                   Air) annotation (
+        Placement(transformation(extent = {{-296, 72}, {-276, 92}})));
+      Physiolibrary.Thermal.Components.Conductor cooling(Conductance(
+          displayUnit="W/K") = 10)
+      annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
+      Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
+        Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
+    equation
+      connect(environment.y, flowMeasure.q_in) annotation (
+        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(flowMeasure.q_out, upperRespiratoryTractResistance.q_out) annotation (
+        Line(points={{-318,56},{-318,44}},      color = {127, 0, 0}, thickness = 0.5));
+      connect(upperRespiratoryTractResistance.q_in, upperRespiratoryTract.q_in[1]) annotation (
+        Line(points={{-318,24},{-318,-0.866667},{-318.1,-0.866667}},    color = {127, 0, 0}, thickness = 0.5));
+    connect(water.port_a, evaporation.liquid_port) annotation (Line(points={{
+            -324,-68},{-352,-68},{-352,-48}}, color={158,66,200}));
+      connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[2])
+        annotation (Line(
+          points={{-354,34},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
+              1.11022e-16}},
+          color={127,0,0},
+          thickness=0.5));
+    connect(cooling.q_out, upperRespiratoryTract.heatPort) annotation (Line(
+        points={{-322,-34},{-324,-34},{-324,-10}},
+        color={191,0,0},
+        thickness=0.5));
+    connect(coreHeat.port, cooling.q_in) annotation (Line(
+        points={{-294,-34},{-302,-34}},
+        color={191,0,0},
+        thickness=0.5));
+      connect(flowMeasure.q_in, Temperature_mouth.port) annotation (
+        Line(points = {{-318, 76}, {-318, 82}, {-298, 82}, {-298, 72}, {-286, 72}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(upperRespiratoryTract.q_in[3], Temperature_upperRespiratory.port) annotation (
+        Line(points={{-318.1,0.866667},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,
+              30}},                                                                                     color = {127, 0, 0}, thickness = 0.5));
+      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
+        Line(points = {{-344, 24}, {-334, 24}, {-334, 0}, {-328, 0}}, color = {158, 66, 200}));
+    connect(evaporation.gas_port, upperRespiratoryTract.substances[Air.i("H2O")])
+      annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
+            200}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime = 200, __Dymola_Algorithm = "Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation;
+
     model BloodGasesEquilibrium
       extends Modelica.Icons.Example;
       import Modelica.Units.SI.*;
@@ -2924,266 +3023,6 @@ as signal.
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
         experiment(StopTime = 1800, __Dymola_Algorithm = "Dassl"));
     end MeanRespiration;
-
-    model SimpleRespiration "Human respiration model"
-      extends Modelica.Icons.Example;
-      import Modelica.Units.SI.*;
-      replaceable package Air = Media.Air;
-      //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
-      replaceable package PleuralFluid = Physiolibrary.Media.Water;
-
-      parameter Types.MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
-      parameter Types.MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
-      parameter Boolean EnthalpyNotUsed = false;
-      parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
-      parameter Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
-      parameter Volume ResidualVolume = 0.0013 "Lungs residual volume";
-      parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity";
-      parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume";
-      parameter Volume LungsAirVolume_initial = 0.00302 "Initial volume of alveolar space";
-      parameter Volume PleuralFluidVolume_initial = 0.0001 "Initial volume of pleural fluid volume";
-      parameter Volume PleuralCavityVolume_initial = 0.0001 + LungsAirVolume_initial "Initial volume of pleural cavity";
-      parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity";
-      parameter Physiolibrary.Types.HydraulicResistance TotalResistance=147099.75   "Total lungs pathways resistance";
-      parameter Real BronchiResistanceFraction = 0.3;
-      parameter Real AlveoliDuctResistanceFraction = 0.2;
-      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
-      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
-      parameter Physiolibrary.Types.HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance";
-      parameter Physiolibrary.Types.HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance";
-      parameter Physiolibrary.Types.HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance";
-      parameter Physiolibrary.Types.HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance";
-      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Total lungs compliance";
-      parameter Pressure Pmin(displayUnit="Pa")=-700
-                                     "Negative pressure gradient caused by respiratory muscles";
-      parameter Pressure Pmax(displayUnit="Pa")=0     "Positive presure gradient caused by respiratory muscles";
-      parameter Real RespiratoryMusclePressureCycle[:, 3] = {{0, Pmax, 0}, {3 / 8, Pmin, 0}, {1, Pmax, 0}} "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
-      parameter Temperature CoreTemperature=310.15   "body temperature";
-      parameter Temperature EnvironmentTemperature=CoreTemperature "external air temperature"; //298.15
-      parameter Mass m_initial = LungsAirVolume_initial * Air.density(Air.setState_pTX(system.p_ambient + Pmax, CoreTemperature, Air.reference_X));
-      //  parameter Density d = Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature));
-      Physiolibrary.Blocks.Source.PeriodicCurveSource respiratoryMusclePressureCycle(data = RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
-        Placement(transformation(extent = {{-34, 72}, {-14, 92}})));
-      //0.0133,
-      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
-        Placement(transformation(extent={{62,66},{82,86}})));
-      Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-          Medium =                                                                      Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
-        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
-      Physiolibrary.Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
-        Placement(transformation(extent = {{-54, 78}, {-46, 86}})));
-      Physiolibrary.Fluid.Components.ElasticVessel lungs(
-      redeclare package Medium = Air,
-      volume_start=LungsAirVolume_initial,
-      use_concentration_start=true,
-      concentration_start={100,40,47,760 - 187},
-      useThermalPort=false,
-      ZeroPressureVolume=FunctionalResidualCapacity,
-      ResidualVolume=ResidualVolume,
-      Compliance=TotalCompliance,
-      useExternalPressureInput=true,
-      useSigmoidCompliance=true,
-      VitalCapacity=TotalLungCapacity - ResidualVolume,
-      BaseTidalVolume=BaseTidalVolume,
-      useSubstances=true,
-      nPorts=2) "Alveolar space" annotation (Placement(transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=180,
-          origin={-136,-2})));
-      Physiolibrary.Fluid.Sensors.PressureMeasure alveolarPressure(redeclare
-          package Medium = Air) "Alveolar pressure"
-        annotation (Placement(transformation(extent={{-170,-26},{-150,-6}})));
-      Physiolibrary.Fluid.Components.Resistor lungsPathways(
-        redeclare package Medium = Air,
-        EnthalpyNotUsed=false,
-        Resistance=TotalResistance)
-        annotation (Placement(transformation(extent={{-308,0},{-288,20}})));
-      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
-      Components.ElasticVessel chest(
-      redeclare package Medium = PleuralFluid,
-      volume_start=PleuralFluidVolume_initial,
-      useThermalPort=false,
-      ZeroPressureVolume=PleuralCavityVolume_initial,
-      Compliance=TotalCompliance,
-      useExternalPressureInput=true,
-      useSigmoidCompliance=false,
-      useSubstances=false,
-      useInternalSpaceInput=true,
-      InternalSpace(displayUnit="l") = 0.0031,
-      nPorts=1) "Pleural space"
-      annotation (Placement(transformation(extent={{-46,34},{-66,54}})));
-      Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
-            PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=0,
-            origin={-76,28})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData=
-            Physiolibrary.Chemical.Substances.Oxygen_gas(), PartialPressure(
-            displayUnit="mmHg") = 5332.8954966)
-        annotation (Placement(transformation(extent={{10,-32},{-10,-12}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData=
-            Physiolibrary.Chemical.Substances.CarbonDioxide_gas(),
-          PartialPressure(displayUnit="mmHg") = 7332.731307825)
-        annotation (Placement(transformation(extent={{10,0},{-10,20}})));
-      Chemical.Components.Diffusion CO2_diffusion(KC=1e-4)
-        annotation (Placement(transformation(extent={{-64,0},{-44,20}})));
-      Chemical.Components.Diffusion O2_diffusion(KC=1e-4)
-        annotation (Placement(transformation(extent={{-62,-32},{-42,-12}})));
-    equation
-      connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
-        Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
-      connect(environment.y, flowMeasure.q_in) annotation (
-        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
-    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={{-146,6},
-              {-154,6},{-154,50},{-65,50}},        color={0,0,127}));
-    connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
-        Line(points={{-82,24},{-82,-26},{-143,-26},{-143,-11}}, color={0,0,
-            127}));
-    connect(chest.q_in[1],pleauralPressure.port)  annotation (Line(
-        points={{-55.9,44},{-38,44},{-38,18},{-76,18}},
-        color={127,0,0},
-        thickness=0.5));
-    connect(respiratoryMusclePressureCycle.val, chest.externalPressure)
-      annotation (Line(points={{-14,82},{-8,82},{-8,62},{-63,62},{-63,53}},
-          color={0,0,127}));
-      connect(flowMeasure.q_out, lungsPathways.q_in) annotation (Line(
-          points={{-318,56},{-318,10},{-308,10}},
-          color={127,0,0},
-          thickness=0.5));
-    connect(lungsPathways.q_out, lungs.q_in[1]) annotation (Line(
-        points={{-288,10},{-156,10},{-156,-1.35},{-135.9,-1.35}},
-        color={127,0,0},
-        thickness=0.5));
-    connect(alveolarPressure.port, lungs.q_in[2]) annotation (Line(
-        points={{-160,-26},{-174,-26},{-174,-2.65},{-135.9,-2.65}},
-        color={127,0,0},
-        thickness=0.5));
-    connect(CO2_diffusion.port_a, lungs.substances[Air.i("CO2")]) annotation (
-        Line(points={{-64,10},{-126,10},{-126,0},{-124,0},{-124,-2},{-126,-2}},
-          color={158,66,200}));
-    connect(O2_diffusion.port_a, lungs.substances[Air.i("O2")]) annotation (Line(
-          points={{-62,-22},{-126,-22},{-126,-2}}, color={158,66,200}));
-      connect(CO2_diffusion.port_b, CO2.port_a) annotation (Line(points={{-44,10},
-            {-10,10}},                color={158,66,200}));
-      connect(O2_diffusion.port_b, O2.port_a) annotation (Line(points={{-42,-22},
-            {-10,-22}},                  color={158,66,200}));
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}}),
-          graphics={Text(
-            extent={{-134,50},{-98,46}},
-            textColor={0,0,0},
-            textString="lungsVolume"), Text(
-            extent={{-134,-26},{-86,-32}},
-            textColor={0,0,0},
-            textString="intrathoraxPressure")}),
-        experiment(StopTime = 60, Tolerance = 1e-05, __Dymola_Algorithm = "Dassl"),
-        Documentation(info = "<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
-</html>"));
-    end SimpleRespiration;
-
-    model AirWaterSaturation "Human respiration model"
-      extends Modelica.Icons.Example;
-      import Modelica.Units.SI.*;
-      replaceable package Air = Media.Air;
-      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
-      parameter Real BronchiResistanceFraction = 0.3;
-      parameter Real AlveoliDuctResistanceFraction = 0.2;
-      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
-      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
-      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
-      Chemical.Components.GasSolubility evaporation(KC=1e-7)
-      annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
-      parameter Temperature CoreTemperature = 310.15 "body temperature";
-      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
-
-      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
-        Placement(transformation(extent = {{60, 66}, {80, 86}})));
-
-      Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
-                Medium =                                                                Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
-        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
-      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package
-        Medium =                                                                     Air) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
-      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare
-          package
-                Medium =                                                                            Air, useSubstances = true,
-        volume_start=0.0001,                                                                                                                          massFractions_start = Air.reference_X[1:Air.nS - 1], useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3) annotation (
-        Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
-      Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare
-          package
-                Medium =                                                                                 Air,  Resistance = 0.5 * TracheaResistance) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
-      Chemical.Sources.PureSubstance water(redeclare package stateOfMatter =
-          Chemical.Interfaces.Incompressible,                                                                    substanceData = Chemical.Substances.Water_liquid()) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-314, -68})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory(redeclare
-          package
-                stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                                 substanceData = Chemical.Substances.Water_gas(), redeclare
-          package
-                Medium =                                                                                                                                                                                            Air) annotation (
-        Placement(transformation(extent = {{-364, 34}, {-344, 14}})));
-      Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare
-          package
-                Medium =                                                                              Air) annotation (
-        Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
-      Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare
-          package
-                Medium =                                                                   Air) annotation (
-        Placement(transformation(extent = {{-296, 72}, {-276, 92}})));
-      Physiolibrary.Thermal.Components.Conductor cooling(Conductance(
-          displayUnit="W/K") = 10)
-      annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
-      Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
-        Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
-    equation
-      connect(environment.y, flowMeasure.q_in) annotation (
-        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(flowMeasure.q_out, upperRespiratoryTractResistance.q_out) annotation (
-        Line(points={{-318,56},{-318,44}},      color = {127, 0, 0}, thickness = 0.5));
-      connect(upperRespiratoryTractResistance.q_in, upperRespiratoryTract.q_in[1]) annotation (
-        Line(points={{-318,24},{-318,-0.866667},{-318.1,-0.866667}},    color = {127, 0, 0}, thickness = 0.5));
-    connect(water.port_a, evaporation.liquid_port) annotation (Line(points={{
-            -324,-68},{-352,-68},{-352,-48}}, color={158,66,200}));
-      connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[2])
-        annotation (Line(
-          points={{-354,34},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
-              1.11022e-16}},
-          color={127,0,0},
-          thickness=0.5));
-    connect(cooling.q_out, upperRespiratoryTract.heatPort) annotation (Line(
-        points={{-322,-34},{-324,-34},{-324,-10}},
-        color={191,0,0},
-        thickness=0.5));
-    connect(coreHeat.port, cooling.q_in) annotation (Line(
-        points={{-294,-34},{-302,-34}},
-        color={191,0,0},
-        thickness=0.5));
-      connect(flowMeasure.q_in, Temperature_mouth.port) annotation (
-        Line(points = {{-318, 76}, {-318, 82}, {-298, 82}, {-298, 72}, {-286, 72}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(upperRespiratoryTract.q_in[3], Temperature_upperRespiratory.port) annotation (
-        Line(points={{-318.1,0.866667},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,
-              30}},                                                                                     color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
-        Line(points = {{-344, 24}, {-334, 24}, {-334, 0}, {-328, 0}}, color = {158, 66, 200}));
-    connect(evaporation.gas_port, upperRespiratoryTract.substances[Air.i("H2O")])
-      annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
-            200}));
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
-        experiment(StopTime = 200, __Dymola_Algorithm = "Dassl"),
-        Documentation(info = "<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
-</html>"));
-    end AirWaterSaturation;
 
     package BloodGasesTransport "Transport of O2 and CO2 through respiration and circulation in human body"
 
@@ -3658,23 +3497,29 @@ as signal.
       end RespiratoryCenter;
     end BloodGasesTransport;
 
-    model Respiration "Human respiration model"
+    model SimpleRespiration "Human respiration model"
       extends Modelica.Icons.Example;
-      import Physiolibrary.Types.*;
+      import Modelica.Units.SI.*;
       replaceable package Air = Media.Air;
       //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
       replaceable package PleuralFluid = Physiolibrary.Media.Water;
 
-      parameter Pressure IntrathoraxPressure=-700;
+      parameter Types.MolarFlowRate O2_consumption=1.666666666666667e-05*(2*
+          7.71)                                                                         "Tissue consumption of O2 by metabolism";
+      parameter Types.MolarFlowRate CO2_production=1.666666666666667e-05*(2*
+          6.17)                                                                         "Tissue production of CO2 by metabolism";
+      parameter Boolean EnthalpyNotUsed = false;
+      parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
       parameter Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
-      parameter Volume ResidualVolume=0.0013   "Lungs residual volume";
-      parameter Volume TotalLungCapacity=0.00623   "Total Lung Capacity";
-      parameter Volume BaseTidalVolume=0.0005   "Base Tidal Volume";
-      parameter Volume LungsAirVolume_initial=0.0031   "Initial volume of alveolar space";
-      parameter Volume pleuralVolume_initial=0.0001   "Initial volume of pleural fluid";
-      parameter Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity";
-      parameter Physiolibrary.Types.HydraulicResistance TotalResistance(
-        displayUnit="(cmH2O.s)/l")=147099.75                                        "Total lungs pathways resistance";
+      parameter Volume ResidualVolume = 0.0013 "Lungs residual volume";
+      parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity";
+      parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume";
+      parameter Volume LungsAirVolume_initial = 0.00302 "Initial volume of alveolar space";
+      parameter Volume PleuralFluidVolume_initial = 0.0001 "Initial volume of pleural fluid volume";
+      parameter Volume PleuralCavityVolume_initial = 0.0001 + LungsAirVolume_initial "Initial volume of pleural cavity";
+      parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity";
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance=147099.75
+                                                                                    "Total lungs pathways resistance";
       parameter Real BronchiResistanceFraction = 0.3;
       parameter Real AlveoliDuctResistanceFraction = 0.2;
       parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
@@ -3684,8 +3529,182 @@ as signal.
       parameter Physiolibrary.Types.HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance";
       parameter Physiolibrary.Types.HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance";
       parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance=
-        1.0197162129779e-06                                                                   "Total lungs compliance";
-      parameter Pressure Pmin=-250   "Relative external lungs pressure minimum caused by respiratory muscles";
+          1.3876139153145e-06                                                                 "Total lungs compliance";
+      parameter Pressure Pmin(displayUnit="Pa")=-700
+                                     "Negative pressure gradient caused by respiratory muscles";
+      parameter Pressure Pmax(displayUnit="Pa")=0     "Positive presure gradient caused by respiratory muscles";
+      parameter Real RespiratoryMusclePressureCycle[:, 3] = {{0, Pmax, 0}, {3 / 8, Pmin, 0}, {1, Pmax, 0}} "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
+      parameter Temperature CoreTemperature=310.15   "body temperature";
+      parameter Temperature EnvironmentTemperature=CoreTemperature "external air temperature"; //298.15
+      parameter Mass m_initial = LungsAirVolume_initial * Air.density(Air.setState_pTX(system.p_ambient + Pmax, CoreTemperature, Air.reference_X));
+      //  parameter Density d = Air.density(Air.setState_pTX(system.p_ambient+Pmax,CoreTemperature));
+      Physiolibrary.Blocks.Source.PeriodicCurveSource respiratoryMusclePressureCycle(data = RespiratoryMusclePressureCycle) "Relative position in respiratory cycle (0,1) to absolute external lungs pressure" annotation (
+        Placement(transformation(extent = {{-34, 72}, {-14, 92}})));
+      //0.0133,
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{62,66},{82,86}})));
+      Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
+          Medium =                                                                      Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
+        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
+      Physiolibrary.Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
+        Placement(transformation(extent = {{-54, 78}, {-46, 86}})));
+      Physiolibrary.Fluid.Components.ElasticVessel lungs(
+      redeclare package Medium = Air,
+      volume_start=LungsAirVolume_initial,
+      use_concentration_start=true,
+      concentration_start={100,40,47,760 - 187},
+      useThermalPort=false,
+      ZeroPressureVolume=FunctionalResidualCapacity,
+      ResidualVolume=ResidualVolume,
+      Compliance=TotalCompliance,
+      useExternalPressureInput=true,
+      useSigmoidCompliance=true,
+      VitalCapacity=TotalLungCapacity - ResidualVolume,
+      BaseTidalVolume=BaseTidalVolume,
+      useSubstances=true,
+      nPorts=4) "Alveolar space" annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=180,
+          origin={-136,-2})));
+      Physiolibrary.Fluid.Sensors.PressureMeasure alveolarPressure(redeclare
+          package Medium = Air) "Alveolar pressure"
+        annotation (Placement(transformation(extent={{-170,-26},{-150,-6}})));
+      Physiolibrary.Fluid.Components.Resistor lungsPathways(
+        redeclare package Medium = Air,
+        EnthalpyNotUsed=false,
+        Resistance=TotalResistance)
+        annotation (Placement(transformation(extent={{-308,0},{-288,20}})));
+      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package
+          Medium =                                                                   Air) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
+      Components.ElasticVessel chest(
+      redeclare package Medium = PleuralFluid,
+      volume_start=PleuralFluidVolume_initial,
+      useThermalPort=false,
+      ZeroPressureVolume=PleuralCavityVolume_initial,
+      Compliance=TotalCompliance,
+      useExternalPressureInput=true,
+      useSigmoidCompliance=false,
+      useSubstances=false,
+      useInternalSpaceInput=true,
+      InternalSpace(displayUnit="l") = 0.0031,
+      nPorts=1) "Pleural space"
+      annotation (Placement(transformation(extent={{-46,34},{-66,54}})));
+      Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
+            PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
+        annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=0,
+            origin={-72,34})));
+      Chemical.Sources.SubstanceOutflow O2_consume(SubstanceFlow(displayUnit=
+              "mmol/min") = 1.666666666666667e-05*(2*7.71))
+        annotation (Placement(transformation(extent={{-114,4},{-94,24}})));
+      Chemical.Sources.SubstanceInflowT CO2_produce(
+        SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*6.17),
+
+        redeclare package stateOfMatter =
+            Physiolibrary.Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.CarbonDioxide_gas())
+        annotation (Placement(transformation(extent={{-94,-24},{-114,-4}})));
+      Sensors.PartialPressure                     pCO2(
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.CarbonDioxide_gas(),
+        redeclare package Medium = Air)                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-146,-42},{-126,-62}})));
+      Sensors.PartialPressure                     pO2(
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        redeclare package Medium = Air)                                                                                                                                                                 annotation (
+        Placement(transformation(extent={{-146,-72},{-126,-92}})));
+    equation
+      connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
+        Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
+      connect(environment.y, flowMeasure.q_in) annotation (
+        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
+    connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={{-146,6},
+              {-152,6},{-152,50},{-65,50}},        color={0,0,127}));
+    connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
+        Line(points={{-78,30},{-143,30},{-143,-11}},            color={0,0,
+            127}));
+    connect(chest.q_in[1],pleauralPressure.port)  annotation (Line(
+        points={{-55.9,44},{-38,44},{-38,24},{-72,24}},
+        color={127,0,0},
+        thickness=0.5));
+    connect(respiratoryMusclePressureCycle.val, chest.externalPressure)
+      annotation (Line(points={{-14,82},{-8,82},{-8,62},{-63,62},{-63,53}},
+          color={0,0,127}));
+      connect(flowMeasure.q_out, lungsPathways.q_in) annotation (Line(
+          points={{-318,56},{-318,10},{-308,10}},
+          color={127,0,0},
+          thickness=0.5));
+    connect(lungsPathways.q_out, lungs.q_in[1]) annotation (Line(
+        points={{-288,10},{-156,10},{-156,-1.025},{-135.9,-1.025}},
+        color={127,0,0},
+        thickness=0.5));
+    connect(alveolarPressure.port, lungs.q_in[2]) annotation (Line(
+        points={{-160,-26},{-170,-26},{-170,-1.675},{-135.9,-1.675}},
+        color={127,0,0},
+        thickness=0.5));
+      connect(CO2_produce.port_b, lungs.substances[Air.i("CO2")]) annotation (
+          Line(points={{-114,-14},{-126,-14},{-126,-2}}, color={158,66,200}));
+      connect(O2_consume.port_a, lungs.substances[Air.i("O2")]) annotation (
+          Line(points={{-114,14},{-126,14},{-126,-2}}, color={158,66,200}));
+      connect(pCO2.port_a, CO2_produce.port_b) annotation (Line(points={{-126,
+              -52},{-126,-14},{-114,-14}}, color={158,66,200}));
+      connect(pCO2.port, lungs.q_in[3]) annotation (Line(points={{-136,-42},{
+              -136,-32},{-176,-32},{-176,-26},{-174,-26},{-174,-2.325},{-135.9,
+              -2.325}}, color={0,127,255}));
+      connect(pO2.port_a, O2_consume.port_a) annotation (Line(points={{-126,-82},
+              {-126,14},{-114,14}}, color={158,66,200}));
+      connect(pO2.port, lungs.q_in[4]) annotation (Line(points={{-136,-72},{
+              -158,-72},{-158,-32},{-176,-32},{-176,-26},{-174,-26},{-174,
+              -2.975},{-135.9,-2.975}}, color={0,127,255}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}}),
+          graphics={Text(
+            extent={{-124,56},{-88,52}},
+            textColor={0,0,0},
+            textString="lungsVolume"), Text(
+            extent={{-132,36},{-84,30}},
+            textColor={0,0,0},
+            textString="intrathoraxPressure")}),
+        experiment(StopTime = 60, Tolerance = 1e-05, __Dymola_Algorithm = "Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end SimpleRespiration;
+
+    model Respiration "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Physiolibrary.Types.*;
+      replaceable package Air = Media.Air;
+      //Chemical.Media.SimpleAir_C; //Kitware.Air_IdealGas; //Chemical.Media.SimpleAir_C; //Chemical.Media.Air_MixtureGasNasa;
+      replaceable package PleuralFluid = Physiolibrary.Media.Water;
+
+      parameter Pressure IntrathoraxPressure(displayUnit="mmHg")=-700;
+      parameter Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
+      parameter Volume ResidualVolume=0.0013   "Lungs residual volume";
+      parameter Volume TotalLungCapacity=0.00623   "Total Lung Capacity";
+      parameter Volume BaseTidalVolume=0.0005   "Base Tidal Volume";
+      parameter Volume LungsAirVolume_initial=0.0031   "Initial volume of alveolar space";
+      parameter Volume pleuralVolume_initial=0.0001   "Initial volume of pleural fluid";
+      parameter Volume FunctionalResidualCapacity=0.00231   "Functional residual capacity";
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance(
+          displayUnit="(cmH2O.s)/l")=147099.75                                      "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance";
+      parameter Physiolibrary.Types.HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance=
+          1.5001231516913e-06                                                                 "Total lungs compliance";
+      parameter Pressure Pmin(displayUnit="Pa")=-700
+                                     "Relative external lungs pressure minimum caused by respiratory muscles";
       parameter Pressure Pmax(displayUnit="mmHg")=0     "Relative external lungs pressure maximum";
       parameter Real RespiratoryMusclePressureCycle[:, 3] = {{0, Pmax, 0}, {3 / 8, Pmin, 0}, {1, Pmax, 0}} "Absolute external lungs pressure during respiration cycle scaled to time period (0,1)";
       parameter Temperature CoreTemperature=310.15   "body temperature";
@@ -3731,7 +3750,7 @@ as signal.
         q_out(p(start=102073.43154792248, displayUnit="bar")))                                                                                                   annotation (
         Placement(transformation(extent={{-252,22},{-232,42}})));
       Physiolibrary.Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
-        Placement(transformation(extent = {{-54, 78}, {-46, 86}})));
+        Placement(transformation(extent={{-54,76},{-46,84}})));
       Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
         Placement(transformation(extent={{-164,-14},{-144,6}})));
       Chemical.Sources.SubstanceInflowT CO2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.00010283333333333, redeclare
@@ -3789,7 +3808,8 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
+          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));
@@ -3820,7 +3840,7 @@ as signal.
           stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                substanceData = Chemical.Substances.CarbonDioxide_gas(), redeclare
           package Medium =                                                                                                                                                                                 Air) annotation (
-        Placement(transformation(extent = {{-218, -62}, {-198, -82}})));
+        Placement(transformation(extent={{-216,-64},{-196,-84}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pO2(redeclare package
           stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                               substanceData = Chemical.Substances.Oxygen_gas(), redeclare
@@ -3855,7 +3875,8 @@ as signal.
         Placement(transformation(extent = {{-208, -40}, {-228, -20}})));
     equation
       connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
-        Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
+        Line(points={{-45,80},{-40,80},{-40,82},{-34,82}},
+                                              color = {0, 0, 127}));
       connect(leftAlveolarPressure.port, leftAlveoli.q_in[1]) annotation (
         Line(points={{-114,22},{-152,22},{-152,24},{-152.1,24},{-152.1,25.35}},           color = {127, 0, 0}, thickness = 0.5));
       connect(leftPleuralSpace.q_in[1],leftPleauralPressure.port)  annotation (
@@ -3889,9 +3910,9 @@ as signal.
       connect(water.port_a, gasSolubility1.liquid_port) annotation (
         Line(points = {{-324, -68}, {-352, -68}, {-352, -48}}, color = {158, 66, 200}));
       connect(pCO2.port_a, CO2_right.port_b) annotation (
-        Line(points = {{-198, -72}, {-190, -72}, {-190, -86}, {-200, -86}}, color = {158, 66, 200}));
+        Line(points={{-196,-74},{-190,-74},{-190,-86},{-200,-86}},          color = {158, 66, 200}));
       connect(pCO2.port, rightAlveoli.q_in[3]) annotation (Line(
-          points={{-208,-62},{-184,-62},{-184,-44},{-148,-44},{-148,-49.3},{
+          points={{-206,-64},{-184,-64},{-184,-44},{-148,-44},{-148,-49.3},{
               -146.1,-49.3},{-146.1,-48.2167}},
           color={127,0,0},
           thickness=0.5));
