@@ -570,18 +570,15 @@ package Media
     equation
       v=0 "electric potential is not used without external flows of charge";
 
-      if (EnthalpyNotUsed) then
-        state = setState_pTX(
-            p,
-            T,
-            X);
-        T = system.T_ambient;
-      else
-        state = setState_phX(
+      state = setState_phX(
             p,
             h,
             X);
-        T = state.T;
+
+      if (EnthalpyNotUsed) then
+        T = system.T_ambient;
+      else
+        T = temperature(state);
       end if;
 
       aO2 = bloodGases.pO2/p;
@@ -719,8 +716,10 @@ package Media
       "A selection of variables that uniquely defines the thermodynamic state"
       extends Modelica.Icons.Record;
       AbsolutePressure p "Absolute pressure of medium";
-      Temperature T "Temperature of medium";
+      SpecificEnthalpy h "Specific enthalpy";
       MassFraction X[nS] "Mass fractions of substances";
+      Types.ElectricPotential v "Electric potential of the substance";
+      Types.MoleFraction I "Ionic strengh (mole fraction based)";
       annotation (Documentation(info="<html>
 <p>Thermodynamic state of blood is represented by pressure, temperature and base substances composition.</p>
 </html>"));
@@ -729,15 +728,24 @@ package Media
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
+      InputElectricPotential v "electric potential";
+      InputMassFraction I "ionic strength";
+
+      // Local connector definition, used for equation balancing check
+      connector InputElectricPotential = input Types.ElectricPotential
+        "Electric potential as input signal connector";
+
     equation
       d = 1057;
-      h = (T - 310.15)*_cp;
+      h = specificEnthalpies_TpvI(T,p,v,I)*X;
       u = h - p/d;
       MM = 1;
       R_s = 8.3144;
       state.p = p;
-      state.T = T;
+      state.h = h;
       state.X = X;
+      state.v = v;
+      state.I = I;
       annotation (Documentation(info="<html>
 <p>Simplification of blood:</p>
 <p>Constant density and constant heat capacity</p>
@@ -745,20 +753,28 @@ package Media
     end BaseProperties;
 
     redeclare replaceable function extends setState_pTX "Thermodynamic state"
+      input Types.ElectricPotential v=0 "electric potential";
+      input MassFraction I=0 "ionic strength";
     algorithm
-      state.T := T;
+      state.h := specificEnthalpies_TpvI(T,p,v,I)*X;
       state.p := p;
       state.X := X;
+      state.v := v;
+      state.I := I;
       annotation (Documentation(info="<html>
 <p>Set thermodynamic state</p>
 </html>"));
     end setState_pTX;
 
     redeclare replaceable function extends setState_phX "Thermodynamic state"
+      input Types.ElectricPotential v=0 "electric potential";
+      input MassFraction I=0 "ionic strength";
     algorithm
       state.p := p;
-      state.T := 310.15 + h/_cp;
+      state.h := h;
       state.X := X;
+      state.v := v;
+      state.I := I;
       annotation (Documentation(info="<html>
 <p>Set thermodynamic state based on constant heat capacity</p>
 </html>"));
@@ -782,7 +798,7 @@ package Media
 
     redeclare replaceable function extends specificEnthalpy "Specific enthalpy"
     algorithm
-      h := (state.T - 310.15)*_cp;
+      h := state.h; //specificEnthalpies_TpvI(state.T,state.p)*state.X;
       annotation (Documentation(info="<html>
 <p>Heat energy from temperature based on constant heat capacity</p>
 </html>"));
@@ -798,7 +814,7 @@ package Media
 
     redeclare replaceable function extends temperature "Temperature"
     algorithm
-      T := state.T;
+      T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function funE(p=state.p, X=state.X,  h=state.h), 273.15, 330,     1e-5);
       annotation (Documentation(info="<html>
 <p>Temperature</p>
 </html>"));
@@ -905,6 +921,7 @@ package Media
       R_s = 8.3144/MM;
       state.p = p;
       state.T = T;
+
     end BaseProperties;
 
     redeclare replaceable record extends ThermodynamicState
@@ -1663,6 +1680,21 @@ Modelica source.
         substanceData,
         T,p,v,I);*/
        end specificEnthalpies_TpvI;
+
+       function temperatureError  "To find u as temperature, where temperatureError(u,p,X,h)->0"
+       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+         input Real p;
+         input Real X[nS];
+         input Real h;
+      protected
+          Real hs[nS];
+       algorithm
+         hs:=specificEnthalpies_TpvI(u,p);
+         y:=h-sum(hs[i]*X[i] for i in 1:nS);
+       end temperatureError;
+
+
+
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>

@@ -687,7 +687,7 @@ Connector with one flow signal of type Real.
       Medium.ChemicalSolution chemicalSolution(
         startSubstanceMasses = m_start,
         p = pressure,
-        h = enthalpy / mass,
+        h = enthalpy_future / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
         _i = i,
         EnthalpyNotUsed = EnthalpyNotUsed)  if useSubstances;                              //enthalpy / mass,
@@ -1045,7 +1045,7 @@ as signal.
         inStream(port.h_outflow),
         inStream(port.Xi_outflow));
     //aliases
-      temperature = state.T;
+      temperature = Medium.temperature(state);
       pressure = state.p;
 
       electricPotential = 0;
@@ -1101,7 +1101,7 @@ as signal.
         h,
         inStream(port.Xi_outflow));
     //aliases
-      temperature = state.T;
+      temperature = Medium.temperature(state);
       pressure = state.p;
 
       electricPotential = 0;
