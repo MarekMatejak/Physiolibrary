@@ -814,7 +814,7 @@ package Media
 
     redeclare replaceable function extends temperature "Temperature"
     algorithm
-      T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function funE(p=state.p, X=state.X,  h=state.h), 273.15, 330,     1e-5);
+      T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=state.p, X=state.X,  h=state.h), 273.15, 330,     1e-2);
       annotation (Documentation(info="<html>
 <p>Temperature</p>
 </html>"));
