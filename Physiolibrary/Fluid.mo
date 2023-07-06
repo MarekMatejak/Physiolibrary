@@ -730,6 +730,7 @@ Connector with one flow signal of type Real.
 
       Physiolibrary.Types.Enthalpy enthalpy(start = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start));
 
+      Physiolibrary.Types.Enthalpy enthalpy_future(start = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start));
 
       Physiolibrary.Types.Mass mass(start = tm_start);
       Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
@@ -770,6 +771,7 @@ Connector with one flow signal of type Real.
       end if;
       //substanceMasses = m_start;
       if not EnthalpyNotUsed and not useSubstances then
+        enthalpy_future = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start,v);
         enthalpy = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start);
       end if;
 
@@ -826,8 +828,10 @@ Connector with one flow signal of type Real.
       massFractions = substanceMasses[1:Medium.nXi] ./ mass;
       if EnthalpyNotUsed then
         enthalpy = mass * Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
+        enthalpy_future = substanceMasses * Medium.specificEnthalpies_TpvI(system.T_ambient,system.p_ambient,v);
       else
         der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + massFlows * actualStreamSpecificEnthalpies + heatFromEnvironment;
+        der(enthalpy_future) = q_in.m_flow * actualStream(q_in.h_outflow) + massFlows * actualStreamSpecificEnthalpies + heatFromEnvironment;
       end if;
       volume = mass / density;
       if EnthalpyNotUsed then
@@ -3518,8 +3522,7 @@ as signal.
       parameter Volume PleuralFluidVolume_initial = 0.0001 "Initial volume of pleural fluid volume";
       parameter Volume PleuralCavityVolume_initial = 0.0001 + LungsAirVolume_initial "Initial volume of pleural cavity";
       parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity";
-      parameter Physiolibrary.Types.HydraulicResistance TotalResistance=147099.75
-                                                                                    "Total lungs pathways resistance";
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance=147099.75   "Total lungs pathways resistance";
       parameter Real BronchiResistanceFraction = 0.3;
       parameter Real AlveoliDuctResistanceFraction = 0.2;
       parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
@@ -3601,11 +3604,11 @@ as signal.
         annotation (Placement(transformation(extent={{-114,4},{-94,24}})));
       Chemical.Sources.SubstanceInflowT CO2_produce(
         SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*6.17),
-
         redeclare package stateOfMatter =
             Physiolibrary.Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.CarbonDioxide_gas())
         annotation (Placement(transformation(extent={{-94,-24},{-114,-4}})));
+
       Sensors.PartialPressure                     pCO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.CarbonDioxide_gas(),
@@ -3808,8 +3811,7 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
-          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));

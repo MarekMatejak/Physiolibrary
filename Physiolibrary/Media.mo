@@ -60,6 +60,9 @@ package Media
         nominal=310.15));
 
   public
+    package stateOfMatter = Chemical.Interfaces.Incompressible
+      "Substances model to translate data into substance properties";
+
     constant Real ArterialDefault[nS - 2]={D_Hct,D_Arterial_O2,
         D_Arterial_CO2,D_CO,D_Hb,D_MetHb,D_HbF,D_Alb,D_Glb,D_PO4,D_DPG,D_Glucose,
         D_Lactate,D_Urea,D_AminoAcids,D_Lipids,D_Ketoacids,D_SID,
@@ -165,6 +168,35 @@ package Media
     constant Real C2X[nS]= MMb ./ density_pTC(reference_p, reference_T, ArterialDefault) "Default concentrations to mass fractions coefficients X[i]=C[i]*C2X[i]  [kg/kg = mmol/L * (kg/mol)/(kg/m3)]";
 
     constant SpecificHeatCapacity _cp=3490 "specific heat capacity of blood";
+
+  constant Chemical.Interfaces.IdealGas.SubstanceData O2=
+          Chemical.Substances.Oxygen_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO2=
+          Chemical.Substances.CarbonDioxide_gas();
+      constant Chemical.Interfaces.IdealGas.SubstanceData CO=
+          Chemical.Substances.CarbonMonoxide_gas();
+
+  /*
+    constant Chemical.Interfaces.Incompressible.SubstanceData O2=
+        Chemical.Substances.Oxygen_aqueous();
+    constant Chemical.Interfaces.Incompressible.SubstanceData CO2=
+        Chemical.Substances.CarbonDioxide_aqueous();
+    constant Chemical.Interfaces.Incompressible.SubstanceData CO=
+        Chemical.Substances.CarbonMonoxide_aqueous();
+*/
+      constant Chemical.Interfaces.Incompressible.SubstanceData H_plus=
+          Chemical.Substances.Proton_aqueous();
+
+      constant Chemical.Interfaces.Incompressible.SubstanceData PO4=
+            Chemical.Substances.Phosphate_aqueous();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Glucose=
+           Chemical.Substances.Glucose_solid();
+    //  constant Chemical.Interfaces.Incompressible.SubstanceData Lactate=
+    //       Chemical.Substances.Lactate_solid();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Urea=
+           Chemical.Substances.Urea_aqueous();
+      constant Chemical.Interfaces.Incompressible.SubstanceData Water=
+           Chemical.Substances.Water_liquid();
 
     replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
       input Real pH "acidity";
@@ -527,25 +559,7 @@ package Media
       Modelica.Units.SI.MolarEnthalpy hCO2;
       Modelica.Units.SI.MolarEnthalpy hCO;
       Modelica.Units.SI.MolarEnthalpy hH_plus;
-      constant Chemical.Interfaces.IdealGas.SubstanceData O2=
-          Chemical.Substances.Oxygen_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData CO2=
-          Chemical.Substances.CarbonDioxide_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData CO=
-          Chemical.Substances.CarbonMonoxide_gas();
-      constant Chemical.Interfaces.Incompressible.SubstanceData H_plus=
-          Chemical.Substances.Proton_aqueous();
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData PO4=
-            Chemical.Substances.Phosphate_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData Glucose=
-           Chemical.Substances.Glucose_solid();
-    //  constant Chemical.Interfaces.Incompressible.SubstanceData Lactate=
-    //       Chemical.Substances.Lactate_solid();
-      constant Chemical.Interfaces.Incompressible.SubstanceData Urea=
-           Chemical.Substances.Urea_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData Water=
-           Chemical.Substances.Water_liquid();
 
     public
          Real water_S, water_H, water_G, water_G0, water_H0, u_water;
@@ -797,6 +811,23 @@ package Media
 <p>Pressure</p>
 </html>"));
     end pressure;
+
+    redeclare function extends specificEnthalpies_TpvI
+    algorithm
+      specificEnthalpy:={0,
+         Chemical.Interfaces.IdealGas.specificEnthalpy(O2,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(CO2,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(CO,T,p,v,I),
+         0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         0,0,0,
+         0,0,0,0,0,
+         0,0,0,
+         0,
+         0,0,0,
+         Chemical.Interfaces.Incompressible.specificEnthalpy(H_plus,T,p,v,I),
+         Chemical.Interfaces.Incompressible.specificEnthalpy(Water,T,p,v,I)};
+    end specificEnthalpies_TpvI;
+
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
@@ -943,6 +974,13 @@ package Media
     algorithm
       d := 1000;
     end density_pTC;
+
+    replaceable function extends specificEnthalpies_TpvI
+    algorithm
+       specificEnthalpy:=stateOfMatter.specificEnthalpy(
+          substanceData,
+          T,p,v,I);
+    end specificEnthalpies_TpvI;
 
     annotation (Documentation(info="<html>
 <p>
@@ -1138,6 +1176,13 @@ Modelica source.
       algorithm
         d:=c*MMb;
       end density_pTC;
+
+      redeclare function extends specificEnthalpies_TpvI
+      algorithm
+           specificEnthalpy:=stateOfMatter.specificEnthalpy(
+              substanceData,
+              T,p,v,I);
+      end specificEnthalpies_TpvI;
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
@@ -1405,6 +1450,14 @@ Modelica source.
       d:=c*MMb;
     end density_pTC;
 
+    redeclare function extends specificEnthalpies_TpvI
+    algorithm
+         specificEnthalpy:=stateOfMatter.specificEnthalpy(
+            substanceData,
+            T,p,v,I);
+    end specificEnthalpies_TpvI;
+
+
     annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
 <p>Marek Matejak, http://www.physiolib.com </p>
@@ -1594,6 +1647,22 @@ Modelica source.
           d*(X[1:nS - 2]) ./ (MMb[1:nS - 2]),
           {c_lastbutone,c_last});
        end concentrations_Xd;
+
+       replaceable function specificEnthalpies_TpvI
+            "Specific enthalpies of medium substances"
+             input Modelica.Units.SI.Temperature T=298.15 "Temperature";
+             input Modelica.Units.SI.Pressure p=100000 "Pressure";
+             input Modelica.Units.SI.ElectricPotential v=0
+              "Electric potential of the substance";
+             input Modelica.Units.SI.MoleFraction I=0
+              "Ionic strengh (mole fraction based)";
+             output Modelica.Units.SI.SpecificEnthalpy specificEnthalpy[nS]
+               "Specific enthalpies of medium substances";
+            /* algorithm 
+     specificEnthalpy:=stateOfMatter.specificEnthalpy(
+        substanceData,
+        T,p,v,I);*/
+       end specificEnthalpies_TpvI;
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
