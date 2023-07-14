@@ -70,6 +70,9 @@ convertClass("Physiolibrary.Hydraulic.Components.ElasticMembrane","Physiolibrary
 convertClass("Physiolibrary.Hydraulic.Sensors.FlowMeasure","Physiolibrary.Fluid.Sensors.FlowMeasure");
 convertClass("Physiolibrary.Hydraulic.Sensors.PressureMeasure","Physiolibrary.Fluid.Sensors.PressureMeasure");
 
+convertElement({"Physiolibrary.Fluid.Sensors.PressureMeasure"} , "q_in" , "port");
+convertElement({"Physiolibrary.Fluid.Sensors.pH","Physiolibrary.Fluid.Sensors.PartialPressure"} , "referenceFluidPort" , "port");
+
 
 convertClass("Physiolibrary.Hydraulic","Physiolibrary.Fluid");
 convertClass("Physiolibrary.Chemical","Physiolibrary.Obsolete.ObsoleteChemical");

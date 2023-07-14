@@ -16,7 +16,22 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
     versionDate = "2022-08-24",
     dateModified = "2022-08-24 17:14:41Z",
     uses(Modelica(version = "4.0.0"), Complex(version = "4.0.0")),
-    conversion(from(version = "BioChem-1.0.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos", to = "3.0.0"), from(version = "0.4980", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos", to = "3.0.0"), from(version = "1.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_3.0.mos", to = "3.0.0"), from(version = "1.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_3.0.mos", to = "3.0.0"), from(version = "1.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_3.0.mos", to = "3.0.0"), from(version = "2.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_3.0.mos", to = "3.0.0"), from(version = "2.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"), from(version = "2.1.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"), from(version = "2.1.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"), from(version = "2.1.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"), from(version = "2.2.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_3.0.mos", to = "3.0.0"), from(version = "2.3.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"), from(version = "2.3.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"), from(version = "2.3.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0")),
+    conversion(
+      from(version = "BioChem-1.0.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos", to = "3.0.0"),
+      from(version = "0.4980", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos", to = "3.0.0"),
+      from(version = "1.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.0_to_3.0.mos", to = "3.0.0"),
+      from(version = "1.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.1_to_3.0.mos", to = "3.0.0"),
+      from(version = "1.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_1.2_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.0_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.1.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.1.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.1.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.1_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.2.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.2_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.3.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.3.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
+      from(version = "2.3.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
+      from(version = "3.0.0-alpha11", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_3.0.0-alpha11_to_3.0.0.mos", to = "3.0.0")),
     Documentation(revisions = "<html>
 <p>Copyright (c) 2022, Marek Matej&aacute;k, Ph.D. </p>
 <p>All rights reserved. </p>

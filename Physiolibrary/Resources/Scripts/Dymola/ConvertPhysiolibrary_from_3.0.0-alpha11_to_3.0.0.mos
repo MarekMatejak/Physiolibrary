@@ -1,0 +1,9 @@
+// Convert Physiolibrary from 3.0.0-alpha11 to 3.0.0-beta1
+
+// clear
+convertClear();
+
+convertElement({"Physiolibrary.Fluid.Sensors.PressureMeasure"} , "q_in" , "port");
+convertElement({"Physiolibrary.Fluid.Sensors.pH","Physiolibrary.Fluid.Sensors.PartialPressure"} , "referenceFluidPort" , "port");
+
+convertClass("Physiolibrary.Media.BloodBySiggaardAndersen","Physiolibrary.Media.Blood");
