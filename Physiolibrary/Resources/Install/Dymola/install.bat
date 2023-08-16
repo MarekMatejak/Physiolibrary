@@ -3,9 +3,16 @@ cls
 
 
 set CurrentDirectory=%cd%
-echo %~dp0
-cd %~dp0\..\..\..
+set dp0=%~dp0
+echo %dp0%
+cd %dp0%\..\..\..\..\Chemical\Chemical
+set CHEMICALDIR=%cd%
+echo %CHEMICALDIR%
+cd %dp0%\..\..\..
 set PHYSIOLIBRARYDIR=%cd%
+echo %PHYSIOLIBRARYDIR%
+
+
 
 if not exist "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola" ( 
    echo "The Physiolibrary directory '%PHYSIOLIBRARYDIR%' is not valid!"
@@ -14,7 +21,7 @@ if not exist "%PHYSIOLIBRARYDIR%\Resources\Install\Dymola" (
 
 
 FOR /f "delims=!" %%i IN ("%PHYSIOLIBRARYDIR%") DO (set PHYSIOLIBRARY=%%~nxi)
-
+FOR /f "delims=!" %%i IN ("%CHEMICALDIR%") DO (set CHEMICAL=%%~nxi)
 
 rem ****** Check administration privileges (for copying files into Dymola Program-Files directory)  *****
 
@@ -30,7 +37,7 @@ call set DYMOLADIR=%%x:\bin%x:*\bin=%=%%
 set x=
 
 if "%DYMOLADIR%"=="%DYMOLADIR:Dymola=%" ( set ISOK=N ) ELSE ( set ISOK=Y )
-choice /C YN /M "Do you want to install Physiolibrary into dymola directory '%DYMOLADIR%'? " /T 10 /D %ISOK%
+choice /C YN /M "Do you want to install Chemical and Physiolibrary into dymola directory '%DYMOLADIR%'? " /T 10 /D %ISOK%
 if errorlevel == 2 (
   set DYMOLADIR=
   set /P DYMOLADIR="Please write the Dymola directory:"
@@ -70,6 +77,8 @@ if not exist "%DYMOLADIR%\Modelica\Library" (
 xcopy /Y "Resources\DisplayUnits\displayunit.mos" "%DYMOLADIR%\insert\"
 mkdir "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
 xcopy /S /Y "%PHYSIOLIBRARYDIR%" "%DYMOLADIR%\Modelica\Library\%PHYSIOLIBRARY%"
+mkdir "%DYMOLADIR%\Modelica\Library\%CHEMICAL%"
+xcopy /S /Y "%CHEMICALDIR%" "%DYMOLADIR%\Modelica\Library\%CHEMICAL%"
 
 cd "%CurrentDirectory%"
 set CurrentDirectory=

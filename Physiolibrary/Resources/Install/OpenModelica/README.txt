@@ -1,3 +1,3 @@
 Download and install - https://openmodelica.org/
 
-Physiolibrary should be already included - menu: "File > System Libraries".
+Physiolibrary and Chemical should be already included - menu: "File > System Libraries".

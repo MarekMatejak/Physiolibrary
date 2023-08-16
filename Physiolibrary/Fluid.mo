@@ -78,16 +78,16 @@ package Fluid "Physiological fluids with static and dynamic properties"
         HideResult = true,
         choices(checkBox = true),
         Dialog(group = "Conditional inputs"));
-      Types.RealIO.VolumeInput zeroPressureVolume(start = ZeroPressureVolume) = zpv
-      if useV0Input                                                                                                                           annotation (
+      Types.RealIO.VolumeInput zeroPressureVolume(start = ZeroPressureVolume) = zpv if
+         useV0Input                                                                                                                           annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {-80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-70,90})));
       parameter Boolean useComplianceInput = false "=true, if compliance input is used" annotation (
         Evaluate = true,
         HideResult = true,
         choices(checkBox = true),
         Dialog(group = "Conditional inputs"));
-      Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c
-      if useComplianceInput                                                                           annotation (
+      Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c if
+         useComplianceInput                                                                           annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={0,90})));
       parameter Boolean useExternalPressureInput = false "=true, if external pressure input is used" annotation (
         Evaluate = true,
@@ -100,8 +100,8 @@ package Fluid "Physiological fluids with static and dynamic properties"
         choices(checkBox = true),
         Dialog(group = "Conditional inputs"));
 
-      Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep
-      if useExternalPressureInput                                                                            annotation (
+      Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep if
+         useExternalPressureInput                                                                            annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={70,90})));
       Types.RealIO.VolumeOutput fluidVolume= volume annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {116, -60}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {100, -80})));
@@ -218,7 +218,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
       extends Physiolibrary.Icons.HydrostaticGradient;
       extends Interfaces.OnePort_UpDown;
       replaceable package Medium = Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
+        Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
          choicesAllMatching = true);
       outer Modelica.Fluid.System system "System wide properties";
       parameter Boolean useHeightInput = false "=true, if height input is used" annotation (
@@ -413,7 +413,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
       import Physiolibrary;
       extends Physiolibrary.Icons.Reabsorption;
       replaceable package Medium = Physiolibrary.Media.Water constrainedby
-      Physiolibrary.Media.Interfaces.PartialMedium                                                                      "Medium model" annotation (
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                    "Medium model" annotation (
          choicesAllMatching = true);
       Physiolibrary.Fluid.Interfaces.FluidPort_a Inflow(redeclare package
         Medium =                                                                   Medium) annotation (
@@ -523,7 +523,7 @@ Connector with one flow signal of type Real.
 
     partial model OnePort "Hydraulical OnePort"
       replaceable package Medium = Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
+        Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
          choicesAllMatching = true);
       outer Modelica.Fluid.System system "System wide properties";
       FluidPort_a q_in(redeclare package Medium = Medium) "Inflow" annotation (
@@ -562,7 +562,7 @@ Connector with one flow signal of type Real.
 
     partial model OnePort_UpDown "OnePort with different position of connectors"
       replaceable package Medium = Media.Water constrainedby
-      Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
+        Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
          choicesAllMatching = true);
       //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
       Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package
@@ -690,7 +690,7 @@ Connector with one flow signal of type Real.
         h = enthalpy_future / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
         _i = i,
-        EnthalpyNotUsed = EnthalpyNotUsed)  if useSubstances;                              //enthalpy / mass,
+        EnthalpyNotUsed = EnthalpyNotUsed) if  useSubstances;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -856,7 +856,7 @@ Connector with one flow signal of type Real.
 
     partial model PartialAbsoluteSensor "Partial component to model a sensor that measures a potential variable"
       replaceable package Medium = Physiolibrary.Media.Water constrainedby
-      Physiolibrary.Media.Interfaces.PartialMedium                                                                      "Medium in the sensor" annotation (
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                    "Medium in the sensor" annotation (
          choicesAllMatching = true);
       Modelica.Fluid.Interfaces.FluidPort_a
                   port(redeclare package Medium = Medium, m_flow(min = 0)) annotation (
@@ -1883,10 +1883,10 @@ as signal.
         Physiolibrary.Types.Constants.VolumeConst V0AS(k = 0.000529) annotation (
           Placement(transformation(extent = {{14, -50}, {28, -36}})));
         replaceable Parts.HeartPump rightHeart(StarlingSlope(displayUnit = "ml/(mmHg.s)") = 1.2503526469347e-07) constrainedby
-        Parts.HeartInterface                                                                                                                        annotation (
+          Parts.HeartInterface                                                                                                                      annotation (
            Placement(transformation(extent = {{-72, -10}, {-48, 16}})));
         replaceable Parts.HeartPump leftHeart(StarlingSlope(displayUnit = "ml/(mmHg.s)") = 7.5006157584566e-08) constrainedby
-        Parts.HeartInterface                                                                                                                       annotation (
+          Parts.HeartInterface                                                                                                                     annotation (
            Placement(transformation(extent = {{74, -10}, {52, 10}})));
         inner Modelica.Fluid.System system(p_ambient(displayUnit = "mmHg") = 101325.0144354) annotation (
           Placement(transformation(extent = {{-94, 70}, {-74, 90}})));
@@ -1977,7 +1977,7 @@ as signal.
           \t  by the StarlingSlope and filling pressure."
           extends HeartInterface;
           replaceable package Medium = Media.Water constrainedby
-          Media.Interfaces.PartialMedium                                                        "Medium model" annotation (
+            Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
              choicesAllMatching = true);
           Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
             Medium =
@@ -2567,10 +2567,10 @@ as signal.
       model DialysisMembrane
         import Physiolibrary;
         replaceable package BloodPlasma = Physiolibrary.Media.BodyFluid constrainedby
-        Physiolibrary.Media.BodyFluid                                                                               "Medium model of blood plasma" annotation (
+          Physiolibrary.Media.BodyFluid                                                                             "Medium model of blood plasma" annotation (
            choicesAllMatching = true);
         replaceable package Dialysate = Physiolibrary.Media.BodyFluid constrainedby
-        Physiolibrary.Media.BodyFluid                                                                             "Medium model of dialysate" annotation (
+          Physiolibrary.Media.BodyFluid                                                                           "Medium model of dialysate" annotation (
            choicesAllMatching = true);
         parameter Physiolibrary.Types.HydraulicCompliance Compliance = 7.5006157584566e-09 "Hydraulic compliance";
         parameter Physiolibrary.Types.HydraulicResistance Resistance = 10 * 15998686.4898 "Hydraulic resistance";
@@ -2610,9 +2610,9 @@ as signal.
                   Medium =                                                                  Dialysate)
                                                                                                        annotation (
           Placement(transformation(extent = {{50, -110}, {70, -90}})));
-      Physiolibrary.Chemical.Components.Membrane membrane[BloodPlasma.nS](
-          each EnthalpyNotUsed=false, KC=Permeabilities)
-        annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
+        Chemical.Components.Membrane membrane[BloodPlasma.nS](each
+            EnthalpyNotUsed=false, KC=Permeabilities)
+          annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
         Physiolibrary.Fluid.Components.ElasticVessel bloodVessel(redeclare
             package
                   Medium =
@@ -3604,8 +3604,8 @@ as signal.
         annotation (Placement(transformation(extent={{-114,4},{-94,24}})));
       Chemical.Sources.SubstanceInflowT CO2_produce(
         SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*6.17),
-        redeclare package stateOfMatter =
-            Physiolibrary.Chemical.Interfaces.IdealGas,
+
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.CarbonDioxide_gas())
         annotation (Placement(transformation(extent={{-94,-24},{-114,-4}})));
 
