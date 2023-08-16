@@ -32,6 +32,7 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Prerequisities
 
+* Chemical library 1.4 or higher. To include right version of Chemical library as git submodule use "git clone --recursive" (or "git submodule update" for existing repositories): 
 * environment supporting Modelica 3.2 or higher ([Dymola](http://www.3ds.com/products-services/catia/capabilities/modelica-systems-simulation-info/dymola/trial-version/), [OpenModelica](https://build.openmodelica.org/omc/builds/windows/releases/), [SystemModeler](http://www.wolfram.com/system-modeler/trial/) or [JModelica](http://www.jmodelica.org/binary))
 * Modelica Standard Library 3.2.1 ([MSL](https://github.com/modelica/Modelica))
 
