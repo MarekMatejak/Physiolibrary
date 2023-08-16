@@ -564,8 +564,7 @@ Connector with one flow signal of type Real.
         Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
          choicesAllMatching = true);
       //Physiolibrary.Chemical.Examples.Media.SimpleBodyFluid_C
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium
-          =                                                                      Medium) "Top site" annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_up(redeclare package Medium = Medium) "Top site" annotation (
         Placement(transformation(extent = {{86, 26}, {114, 54}}), iconTransformation(extent = {{86, 26}, {114, 54}})));
       Physiolibrary.Fluid.Interfaces.FluidPort_a q_down(redeclare package
           Medium =                                                                 Medium) "Bottom site" annotation (
@@ -686,10 +685,9 @@ Connector with one flow signal of type Real.
       Medium.ChemicalSolution chemicalSolution(
         startSubstanceMasses = m_start,
         p = pressure,
-        h = enthalpy_future / mass,
+        h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
-        _i = i,
-        EnthalpyNotUsed = EnthalpyNotUsed)  if useSubstances;                              //enthalpy / mass,
+        _i = i)  if useSubstances;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -712,14 +710,8 @@ Connector with one flow signal of type Real.
       Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort(T = Medium.temperature_phX(pressure, enthalpy / mass, massFractions), Q_flow = heatFromEnvironment) if useThermalPort annotation (
         Placement(transformation(extent = {{-70, -90}, {-50, -70}}), iconTransformation(extent={{-70,
               -110},{-50,-90}})));
-    protected
-      parameter Boolean EnthalpyNotUsed = false annotation (
-        Evaluate = true,
-        HideResult = true,
-        choices(checkBox = true),
-        Dialog(tab = "Advanced", group = "Performance"));
-    //  Physiolibrary.Types.Enthalpy enthalpy2;
 
+    protected
       parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
 
       parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
@@ -727,9 +719,7 @@ Connector with one flow signal of type Real.
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
 
-      Physiolibrary.Types.Enthalpy enthalpy(start = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start));
-
-      Physiolibrary.Types.Enthalpy enthalpy_future(start = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start));
+      Physiolibrary.Types.Enthalpy enthalpy( start = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start));
 
       Physiolibrary.Types.Mass mass(start = tm_start);
       Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
@@ -743,7 +733,6 @@ Connector with one flow signal of type Real.
       Physiolibrary.Types.Density density;
     protected
       Physiolibrary.Types.Pressure pressure;
-    //  Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[Medium.nS] "Specific substances enthalpies [J/kg]";
       Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "Enthalpy inflow in substances connectors [J/s]";
       Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
       Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
@@ -768,15 +757,11 @@ Connector with one flow signal of type Real.
       if Medium.reducedX then
         mass = tm_start;
       end if;
-      //substanceMasses = m_start;
-      if not EnthalpyNotUsed and not useSubstances then
-        enthalpy_future = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start,v);
-        enthalpy = tm_start * Medium.specificEnthalpy_pTX(pressure_start, temperature_start, x_mass_start);
-      end if;
 
+      enthalpy = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start,v);
 
     equation
-     // enthalpy2 = specificEnthalpies*substanceMasses;
+
       if onElectricGround then
         v = 0;
       else
@@ -789,25 +774,16 @@ Connector with one flow signal of type Real.
         connect(substances, chemicalSolution.substances);
         connect(chemicalSolution.massFlows, massFlows);
         connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
-       // connect(chemicalSolution.specificEnthalpies, specificEnthalpies);
         connect(chemicalSolution.substanceMasses, substanceMasses);
         connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
         connect(v, chemicalSolution.v);
-        /*q_in.m_flow * actualStream(q_in.h_outflow) + heatFromEnvironment =
-      if (EnthalpyNotUsed) then  0
-      else    der(specificEnthalpies)*substanceMasses + massFlows*specificEnthalpies
-              -massFlows*(actualStreamSpecificEnthalpies)
-              "heat transfer from/to substances in solution [J/s]"; */
-
-
       else
         der(substanceMasses) = substanceMassFlowsFromStream;
 
         massFlows = zeros(Medium.nS);
-     //   specificEnthalpies = zeros(Medium.nS);
+
         enthalpyFromSubstances = 0;
 
-      // not used
         if not onElectricGround then
         //both electric variables set to zero
           v = 0;
@@ -825,19 +801,12 @@ Connector with one flow signal of type Real.
       mass = sum(substanceMasses);
 
       massFractions = substanceMasses[1:Medium.nXi] ./ mass;
-      if EnthalpyNotUsed then
-        enthalpy = mass * Medium.specificEnthalpy_pTX(system.p_ambient, system.T_ambient, Medium.reference_X);
-        enthalpy_future = substanceMasses * Medium.specificEnthalpies_TpvI(system.T_ambient,system.p_ambient,v);
-      else
-        der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
-        der(enthalpy_future) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
-      end if;
+
+      der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
+
       volume = mass / density;
-      if EnthalpyNotUsed then
-        density = Medium.density_pTX(pressure, temperature_start, massFractions);
-      else
-        density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
-      end if;
+      density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
+
       extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
       for i in 1:nPorts loop
         xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
@@ -1307,8 +1276,7 @@ as signal.
       extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-          =                                                                       Medium) annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{86, -14}, {114, 14}})));
 
       parameter Modelica.Units.SI.SpecificEnthalpy h = Medium.specificEnthalpy(Medium.setState_pTX(pressure_start, temperature_start, x_mass_start)) "Fluid enthalphy";
@@ -1344,8 +1312,7 @@ as signal.
       extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-          =                                                                       Medium) annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{86, -14}, {114, 14}})));
 
     //protected
@@ -1424,8 +1391,7 @@ as signal.
       extends Physiolibrary.Fluid.Interfaces.ConditionalMassFlow;
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium
-          =                                                                      Medium) annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-114, -14}, {-86, 14}}), iconTransformation(extent = {{-114, -14}, {-86, 14}})));
       parameter Modelica.Units.SI.SpecificEnthalpy h = Medium.specificEnthalpy(Medium.setState_pTX(pressure_start, temperature_start, x_mass_start)) "Fluid enthalphy";
     equation
@@ -1460,8 +1426,7 @@ as signal.
       extends Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow;
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium
-          =                                                                      Medium) annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-114, -14}, {-86, 14}}), iconTransformation(extent = {{-114, -14}, {-86, 14}})));
 
       parameter Modelica.Units.SI.SpecificEnthalpy h = Medium.specificEnthalpy(Medium.setState_pTX(pressure_start, temperature_start, x_mass_start)) "Fluid enthalphy";
@@ -3285,8 +3250,7 @@ as signal.
         parameter Types.Volume bloodV0 = 0.0002;
         parameter Real BloodComposition[Blood.nS - 2] = Blood.VenousDefault; //{0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
         parameter Types.HydraulicCompliance Compliance = 3.0002463033826e-08 "Compliance of tissue blood vessels";
-        Components.Resistor systemicArteriesResistance(redeclare package Medium
-            =                                                                     Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
+        Components.Resistor systemicArteriesResistance(redeclare package Medium = Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 40})));
         Components.Resistor systemicVeinsResistance(redeclare package Medium = Blood, Resistance = 1 / Conductance * (1 - ArteriesViensResistanceRatio)) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-64, 0})));
@@ -3779,8 +3743,7 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
-          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));

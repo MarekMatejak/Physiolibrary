@@ -1505,7 +1505,6 @@ Modelica source.
     Pressure p;
     Temperature T;
     MassFraction X[Medium.nS] "mass fraction";
-    parameter Boolean EnthalpyNotUsed = false;
 
     //functions for supporting Physiolibrary.Fluid.Interfaces
     Medium.ThermodynamicState state_pTX = Medium.setState_pTX(p,T,X);
@@ -1526,7 +1525,7 @@ Modelica source.
     //support of substances in Physiolibrary.Fluid.Components.ElasticVessel
     Medium.ChemicalSolution chemicalSolution(
        substanceMassFlowsFromStream = {0,0,0,0},
-       p=p, h=h, X=X, _i=0, EnthalpyNotUsed=EnthalpyNotUsed);
+       p=p, h=h, X=X, _i=0);
 
     MassFraction _X[Medium.nS] = {100,40,47,760 - 187} .* MMb / ({100,40,47,760 - 187} * MMb);
   equation
@@ -1593,27 +1592,18 @@ Modelica source.
         Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[nS](nominal=SubstanceFlowNominal) "mass flows of substances";
         Physiolibrary.Types.RealIO.TemperatureOutput T "temperature";
         Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "enthalpy from substances";
-      //  Physiolibrary.Types.RealIO.SpecificEnthalpyOutput specificEnthalpies[nS](nominal=SubstanceFlowNominal) "specific enthalpies of substances in streams";
+
         Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
 
-        parameter Boolean EnthalpyNotUsed=false "If true then simplify heat flows from/to chemical reactions (deprecated)" annotation (
-        Evaluate=true,
-        HideResult=true,
-        choices(checkBox=true),
-        Dialog(tab="Advanced", group="Performance"));
 
         Real logm[nS] "natutal logarithm of substance masses (as state variables)";
       initial equation
         substanceMasses = startSubstanceMasses;
 
       equation
-        enthalpyFromSubstances =  if EnthalpyNotUsed then 0 else
+        enthalpyFromSubstances =
           substances.q * actualStream(substances.h_outflow) "enthalpy from substances";
 
-      /*
-  specificEnthalpies = if EnthalpyNotUsed then zeros(nS) else 
-    (substances.h_outflow) ./ MMb "specific enthalpy of substance";
-*/
 
         massFlows = substances.q .* MMb;
 
