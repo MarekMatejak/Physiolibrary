@@ -679,8 +679,9 @@ Connector with one flow signal of type Real.
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Chemical.Interfaces.SubstancePorts_a substances[Medium.nS](q(nominal=Medium.SubstanceFlowNominal)) if useSubstances annotation (
-        Placement(transformation(extent = {{-110, -40}, {-90, 40}}), iconTransformation(extent = {{-110, -40}, {-90, 40}})));
+      Medium.SubstancesPort substances if useSubstances annotation (
+        Placement(transformation(extent={{-120,-20},{-80,20}}),      iconTransformation(extent={{-120,
+                -20},{-80,20}})));
 
       Medium.ChemicalSolution chemicalSolution(
         startSubstanceMasses = m_start,
@@ -2525,63 +2526,86 @@ as signal.
 
       model DialysisMembrane
         import Physiolibrary;
+        replaceable package Medium = Physiolibrary.Media.BodyFluid constrainedby
+          Physiolibrary.Media.BodyFluid                                                                             "Medium model of blood plasma" annotation (
+           choicesAllMatching = true);
+
         replaceable package BloodPlasma = Physiolibrary.Media.BodyFluid constrainedby
           Physiolibrary.Media.BodyFluid                                                                             "Medium model of blood plasma" annotation (
            choicesAllMatching = true);
         replaceable package Dialysate = Physiolibrary.Media.BodyFluid constrainedby
           Physiolibrary.Media.BodyFluid                                                                           "Medium model of dialysate" annotation (
            choicesAllMatching = true);
-        parameter Physiolibrary.Types.HydraulicCompliance Compliance = 7.5006157584566e-09 "Hydraulic compliance";
-        parameter Physiolibrary.Types.HydraulicResistance Resistance = 10 * 15998686.4898 "Hydraulic resistance";
-        parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS] = {1e-06, 1e-06, 1e-06, 1e-06, 1e-06, 1e-06, 1e-06, 1e-06, 0, 0, 0, 1e-06} "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
-        parameter Modelica.Units.SI.MassFraction InitialPlasma[BloodPlasma.nS - 1](each displayUnit = "%") = {0.0031, 0.0015, 0.0002, 0.0009, 0.0018, 0.0038, 6e-05, 1.2e-05, 0.047, 0.053, 1e-11} "Initial blood plasma substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
+        parameter Physiolibrary.Types.HydraulicCompliance Compliance=7.5006157584566e-09   "Hydraulic compliance";
+        parameter Physiolibrary.Types.HydraulicResistance Resistance=10*15998686.4898     "Hydraulic resistance";
+        parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
+            1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
+        parameter Modelica.Units.SI.MassFraction InitialPlasma[BloodPlasma.nS - 1](
+            displayUnit="%")={0.0031,0.0015,0.0002,0.0009,0.0018,0.0038,6e-05,1.2e-05,
+          0.047,0.053,1e-11}                                                                                                                                                                       "Initial blood plasma substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
           Dialog(group = "Initialization"));
         //concentrations: { 135,24,5,5,30,105,1.5,0.5,0.7,0.8,1e-06} mmmol/L
-        parameter Modelica.Units.SI.MassFraction InitialDialysate[Dialysate.nS - 1](each displayUnit = "%") = {0.0032, 0.002, 0.00012, 0.0009, 1e-11, 0.004, 6e-05, 1.2e-05, 1e-08, 1e-08, 0.00028} "Initial dialysate substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
+        parameter Modelica.Units.SI.MassFraction InitialDialysate[Dialysate.nS - 1](
+            displayUnit="%")={0.0032,0.002,0.00012,0.0009,1e-11,0.004,6e-05,1.2e-05,1e-08,
+          1e-08,0.00028}                                                                                                                                                                            "Initial dialysate substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
           Dialog(group = "Initialization"));
         //concantrations: {138,32,3,5,1e-06,111,1e-06,1e-06,1e-06,1e-06,1e-06} mmol/L
-        parameter Modelica.Units.SI.Pressure InitialBloodPressure(displayUnit = "mmHg") = 0 "Initial relative blood pressure" annotation (
+        parameter Modelica.Units.SI.Pressure InitialBloodPressure(displayUnit="mmHg")
+          =0                                                                                "Initial relative blood pressure" annotation (
           Dialog(group = "Initialization"));
-        parameter Modelica.Units.SI.Pressure InitialDialysatePressure(displayUnit = "mmHg") = 0 "Initial relative dialysate pressure" annotation (
+        parameter Modelica.Units.SI.Pressure InitialDialysatePressure(displayUnit="mmHg")
+          =0                                                                                    "Initial relative dialysate pressure" annotation (
           Dialog(group = "Initialization"));
-        Physiolibrary.Fluid.Components.Resistor blood_pipe(redeclare package
-            Medium =
+        Physiolibrary.Fluid.Components.Resistor blood_pipe(redeclare package Medium =
             BloodPlasma,                                                                            Resistance(displayUnit = "(mmHg.min)/l") = Resistance) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-94, -58})));
         Physiolibrary.Fluid.Components.Resistor dialysatePipe(redeclare package
             Medium =                                                                     Dialysate, Resistance = Resistance) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {94, 48})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_a blood_in(redeclare package
-            Medium =
+        Physiolibrary.Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium =
             BloodPlasma)                                                                            annotation (
           Placement(transformation(extent = {{-70, -110}, {-50, -90}})));
-        Physiolibrary.Fluid.Interfaces.FluidPort_b blood_out(redeclare package
-            Medium =
+        Physiolibrary.Fluid.Interfaces.FluidPort_b blood_out(redeclare package Medium =
             BloodPlasma)                                                                             annotation (
           Placement(transformation(extent = {{-70, 110}, {-50, 90}})));
         Physiolibrary.Fluid.Interfaces.FluidPort_a dialysate_in(redeclare
-            package Medium =                                                               Dialysate)
+            package
+            Medium =                                                                       Dialysate)
                                                                                                       annotation (
           Placement(transformation(extent = {{50, 110}, {70, 90}})));
         Physiolibrary.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare
-            package Medium =                                                                Dialysate)
+            package
+            Medium =                                                                        Dialysate)
                                                                                                        annotation (
           Placement(transformation(extent = {{50, -110}, {70, -90}})));
-        Chemical.Components.Membrane membrane[BloodPlasma.nS](each
-            EnthalpyNotUsed=false, KC=Permeabilities)
-          annotation (Placement(transformation(extent={{-8,-14},{12,6}})));
         Physiolibrary.Fluid.Components.ElasticVessel bloodVessel(redeclare
-            package Medium =
+            package
+            Medium =
             BloodPlasma,                                                                                 useSubstances = true, volume_start = InitialBloodPressure * Compliance, massFractions_start = InitialPlasma,  Compliance(displayUnit = "ml/mmHg") = Compliance, ZeroPressureVolume(displayUnit = "m3"), nPorts = 2) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-68, -4})));
         Physiolibrary.Fluid.Components.ElasticVessel dialysateVessel(redeclare
             package Medium =                                                                    Dialysate, useSubstances = true, onElectricGround = true, volume_start = InitialDialysatePressure * Compliance, massFractions_start = InitialDialysate,  Compliance(displayUnit = "ml/mmHg") = Compliance, nPorts = 2) annotation (
           Placement(transformation(extent = {{66, -14}, {86, 6}})));
+
+        Chemical.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Na")])
+          annotation (Placement(transformation(extent={{-10,76},{10,96}})));
+        Chemical.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("HCO3")])
+          annotation (Placement(transformation(extent={{-10,58},{10,78}})));
+        Chemical.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("K")])
+          annotation (Placement(transformation(extent={{-8,40},{12,60}})));
+        Chemical.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Glucose")])
+          annotation (Placement(transformation(extent={{-8,22},{12,42}})));
+        Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Urea")])
+          annotation (Placement(transformation(extent={{-8,2},{12,22}})));
+        Chemical.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Cl")])
+          annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
+        Chemical.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Mg")])
+          annotation (Placement(transformation(extent={{-6,-58},{14,-38}})));
+        Chemical.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("H2O")])
+          annotation (Placement(transformation(extent={{-6,-82},{14,-62}})));
+        Chemical.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[Medium.i("Ca")])
+          annotation (Placement(transformation(extent={{-6,-36},{14,-16}})));
       equation
-        connect(membrane.port_b, dialysateVessel.substances) annotation (
-          Line(points = {{12, -4}, {66, -4}}, color = {158, 66, 200}));
-        connect(bloodVessel.substances, membrane.port_a) annotation (
-          Line(points = {{-58, -4}, {-8, -4}}, color = {158, 66, 200}));
         connect(blood_pipe.q_in, blood_in) annotation (
           Line(points = {{-94, -68}, {-94, -100}, {-60, -100}}, color = {127, 0, 0}, thickness = 0.5));
         connect(blood_pipe.q_out, bloodVessel.q_in[1]) annotation (
@@ -2594,6 +2618,44 @@ as signal.
           Line(points={{-60,100},{-94,100},{-94,-4.65},{-67.9,-4.65}},        color = {127, 0, 0}, thickness = 0.5));
         connect(dialysate_out, dialysateVessel.q_in[2]) annotation (
           Line(points={{60,-100},{94,-100},{94,-3.35},{75.9,-3.35}},        color = {127, 0, 0}, thickness = 0.5));
+
+
+        connect(Na.port_a, bloodVessel.substances.Na) annotation (Line(points={{-10,86},
+                {-58,86},{-58,-4}},          color={158,66,200}));
+        connect(Na.port_b, dialysateVessel.substances.Na) annotation (Line(points={{10,86},
+                {66,86},{66,-4}},                 color={158,66,200}));
+        connect(HCO3.port_a, bloodVessel.substances.HCO3) annotation (Line(points={{-10,68},
+                {-50,68},{-50,-4},{-58,-4}},              color={158,66,200}));
+        connect(HCO3.port_b, dialysateVessel.substances.HCO3) annotation (Line(points={{10,68},
+                {64,68},{64,-4},{66,-4}},                     color={158,66,200}));
+        connect(K.port_a, bloodVessel.substances.K) annotation (Line(points={{-8,50},
+                {-50,50},{-50,-4},{-58,-4}},         color={158,66,200}));
+        connect(K.port_b, dialysateVessel.substances.K) annotation (Line(points={{12,50},
+                {64,50},{64,-4},{66,-4}},             color={158,66,200}));
+        connect(Glucose.port_a, bloodVessel.substances.Glucose) annotation (Line(
+              points={{-8,32},{-50,32},{-50,-4},{-58,-4}},          color={158,66,200}));
+        connect(Glucose.port_b, dialysateVessel.substances.Glucose) annotation (Line(
+              points={{12,32},{64,32},{64,-4},{66,-4}},             color={158,66,200}));
+        connect(Urea.port_a, bloodVessel.substances.Urea) annotation (Line(points={{-8,12},
+                {-50,12},{-50,-4},{-58,-4}},              color={158,66,200}));
+        connect(Urea.port_b, dialysateVessel.substances.Urea) annotation (Line(points={{12,12},
+                {64,12},{64,-4},{66,-4}},                     color={158,66,200}));
+        connect(Cl.port_a, bloodVessel.substances.Cl) annotation (Line(points={{-8,-6},
+                {-46,-6},{-46,-4},{-58,-4}},          color={158,66,200}));
+        connect(Cl.port_b, dialysateVessel.substances.Cl) annotation (Line(points={{12,-6},
+                {58,-6},{58,-4},{66,-4}},                 color={158,66,200}));
+        connect(Mg.port_a, bloodVessel.substances.Mg) annotation (Line(points={{-6,-48},
+                {-58,-48},{-58,-4}},          color={158,66,200}));
+        connect(Mg.port_b, dialysateVessel.substances.Mg) annotation (Line(points={{14,-48},
+                {66,-48},{66,-4}},                  color={158,66,200}));
+        connect(Ca.port_a, bloodVessel.substances.Ca) annotation (Line(points={{-6,-26},
+                {-58,-26},{-58,-4}},          color={158,66,200}));
+        connect(Ca.port_b, dialysateVessel.substances.Ca) annotation (Line(points={{14,-26},
+                {66,-26},{66,-4}},                  color={158,66,200}));
+        connect(H2O.port_a, bloodVessel.substances.H2O) annotation (Line(points={{-6,-72},
+                {-58,-72},{-58,-4}},          color={158,66,200}));
+        connect(H2O.port_b, dialysateVessel.substances.H2O) annotation (Line(points={{14,-72},
+                {66,-72},{66,-4}},                     color={158,66,200}));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Rectangle(extent = {{-100, 100}, {0, -100}}, lineColor = {255, 255, 0}, fillColor = {238, 46, 47}, fillPattern = FillPattern.VerticalCylinder), Rectangle(extent = {{0, 100}, {100, -100}}, lineColor = {255, 255, 0}, fillPattern = FillPattern.VerticalCylinder, fillColor = {28, 108, 200})}),
           Diagram(coordinateSystem(preserveAspectRatio = false)));
@@ -2768,9 +2830,9 @@ as signal.
       connect(upperRespiratoryTract.q_in[3], Temperature_upperRespiratory.port) annotation (
         Line(points={{-318.1,0.866667},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,
               30}},                                                                                     color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
+      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances.H2O) annotation (
         Line(points = {{-344, 24}, {-334, 24}, {-334, 0}, {-328, 0}}, color = {158, 66, 200}));
-    connect(evaporation.gas_port, upperRespiratoryTract.substances[Air.i("H2O")])
+    connect(evaporation.gas_port, upperRespiratoryTract.substances.H2O)
       annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
             200}));
       annotation (
@@ -2841,15 +2903,15 @@ as signal.
       connect(XO2.port, blood.q_in[3]) annotation (
         Line(points={{54,-20},{54,-50},{20,-50},{20,-56},{4,-56},{4,-46},{3.9,
               -46},{3.9,-41.1333}},                                                                                  color = {127, 0, 0}, thickness = 0.5));
-      connect(CO2_GasSolubility.liquid_port, blood.substances[Blood.i("CO2")]) annotation (
+      connect(CO2_GasSolubility.liquid_port, blood.substances.CO2) annotation (
         Line(points={{-30,-20},{-30,-42},{-6,-42}},        color = {158, 66, 200}));
-      connect(pO2.port_a, blood.substances[Blood.i("O2")]) annotation (
+      connect(pO2.port_a, blood.substances.O2) annotation (
         Line(points={{-58,-60},{-34,-60},{-34,-42},{-6,-42}},          color = {158, 66, 200}));
-      connect(O2_GasSolubility.liquid_port, blood.substances[Blood.i("O2")]) annotation (
+      connect(O2_GasSolubility.liquid_port, blood.substances.O2) annotation (
         Line(points={{-48,-20},{-46,-20},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
-      connect(CO_GasSolubility.liquid_port, blood.substances[Blood.i("CO")]) annotation (
+      connect(CO_GasSolubility.liquid_port, blood.substances.CO) annotation (
         Line(points={{-12,-20},{-12,-42},{-6,-42}},        color = {158, 66, 200}));
-      connect(pH.port_a, blood.substances[Blood.i("H+")]) annotation (
+      connect(pH.port_a, blood.substances.H) annotation (
         Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-6,-42}},              color = {158, 66, 200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -3221,17 +3283,17 @@ as signal.
           Line(points={{-50.1,-196},{-50.1,-188},{-55.8,-188},{-55.8,-182}},              color = {127, 0, 0}, thickness = 0.5));
         connect(venous.b_port, rightHeartPump.q_in) annotation (
           Line(points = {{-55.8, -169.8}, {-55.8, -164.9}, {-50, -164.9}, {-50, -160}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(systemicVeins.substances[Blood.i("O2")], venous.O2) annotation (
+        connect(systemicVeins.substances.O2, venous.O2) annotation (
           Line(points = {{-60, -196}, {-72, -196}, {-72, -186}}, color = {158, 66, 200}));
-        connect(venous.CO2, systemicVeins.substances[Blood.i("CO2")]) annotation (
+        connect(venous.CO2, systemicVeins.substances.CO2) annotation (
           Line(points = {{-66, -186}, {-66, -196}, {-60, -196}}, color = {158, 66, 200}));
-        connect(venous.H_plus, systemicVeins.substances[Blood.i("H+")]) annotation (
+        connect(venous.H_plus, systemicVeins.substances.H) annotation (
           Line(points = {{-60, -186}, {-60, -196}}, color = {158, 66, 200}));
-        connect(arterial.H_plus, systemicArteries.substances[Blood.i("H+")]) annotation (
+        connect(arterial.H_plus, systemicArteries.substances.H) annotation (
           Line(points = {{48, -186}, {48, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.CO2, systemicArteries.substances[Blood.i("CO2")]) annotation (
+        connect(arterial.CO2, systemicArteries.substances.CO2) annotation (
           Line(points = {{54, -186}, {54, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.O2, systemicArteries.substances[Blood.i("O2")]) annotation (
+        connect(arterial.O2, systemicArteries.substances.O2) annotation (
           Line(points = {{60, -186}, {60, -196}, {46, -196}}, color = {158, 66, 200}));
 
         annotation (
@@ -3309,15 +3371,15 @@ as signal.
           Line(points = {{44.2, -18.2}, {44.2, -32}, {-48, -32}, {-48, -1.66533e-15}, {-54, -1.66533e-15}}, color = {127, 0, 0}, thickness = 0.5));
         connect(tissue.sO2, sO2) annotation (
           Line(points = {{49, -3.55271e-15}, {50, -3.55271e-15}, {50, 26}, {66, 26}}, color = {0, 0, 127}));
-        connect(tissue.O2, systemicCapillaries.substances[Blood.i("O2")]) annotation (
+        connect(tissue.O2, systemicCapillaries.substances.O2) annotation (
           Line(points = {{28, -2}, {14, -2}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.CO2, systemicCapillaries.substances[Blood.i("CO2")]) annotation (
+        connect(tissue.CO2, systemicCapillaries.substances.CO2) annotation (
           Line(points = {{28, -8}, {14, -8}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.H_plus, systemicCapillaries.substances[Blood.i("H+")]) annotation (
+        connect(tissue.H_plus, systemicCapillaries.substances.H) annotation (
           Line(points = {{28, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(O2_left.port_a, systemicCapillaries.substances[Blood.i("O2")]) annotation (
+        connect(O2_left.port_a, systemicCapillaries.substances.O2) annotation (
           Line(points = {{-60, -38}, {14, -38}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(systemicCapillaries.substances[Blood.i("CO2")], CO2_left.port_b) annotation (
+        connect(systemicCapillaries.substances.CO2, CO2_left.port_b) annotation (
           Line(points = {{8, -14}, {14, -14}, {14, -38}, {60, -38}}, color = {158, 66, 200}));
         annotation (
           Diagram(coordinateSystem(extent = {{-90, -50}, {90, 50}})),
@@ -3580,9 +3642,9 @@ as signal.
         points={{-160,-26},{-170,-26},{-170,-1.675},{-135.9,-1.675}},
         color={127,0,0},
         thickness=0.5));
-      connect(CO2_produce.port_b, lungs.substances[Air.i("CO2")]) annotation (
+      connect(CO2_produce.port_b, lungs.substances.CO2) annotation (
           Line(points={{-114,-14},{-126,-14},{-126,-2}}, color={158,66,200}));
-      connect(O2_consume.port_a, lungs.substances[Air.i("O2")]) annotation (
+      connect(O2_consume.port_a, lungs.substances.O2) annotation (
           Line(points={{-114,14},{-126,14},{-126,-2}}, color={158,66,200}));
       connect(pCO2.port_a, CO2_produce.port_b) annotation (Line(points={{-126,
               -52},{-126,-14},{-114,-14}}, color={158,66,200}));
@@ -3743,7 +3805,8 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
+          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));
@@ -3886,19 +3949,19 @@ as signal.
             -288,30}},                                                                               color = {127, 0, 0}, thickness = 0.5));
       connect(rightAlveoli.q_in[6], Temperature_alveolar.port) annotation (
         Line(points={{-146.1,-46.9167},{-100,-46.9167},{-100,-40}},        color = {127, 0, 0}, thickness = 0.5));
-      connect(upperRespiratoryTract.substances[Air.i("H2O")], pH2O_upperRespiratory.port_a) annotation (
+      connect(upperRespiratoryTract.substances.H2O, pH2O_upperRespiratory.port_a) annotation (
         Line(points = {{-328, 0}, {-334, 0}, {-334, 24}, {-344, 24}}, color = {158, 66, 200}));
-      connect(gasSolubility1.gas_port, upperRespiratoryTract.substances[Air.i("H2O")]) annotation (
+      connect(gasSolubility1.gas_port, upperRespiratoryTract.substances.H2O) annotation (
         Line(points = {{-352, -28}, {-352, 0}, {-328, 0}}, color = {158, 66, 200}));
-      connect(CO2_left.port_b, leftAlveoli.substances[Air.i("CO2")]) annotation (
+      connect(CO2_left.port_b, leftAlveoli.substances.CO2) annotation (
         Line(points={{-180,-4},{-170,-4},{-170,26},{-162,26}},          color = {158, 66, 200}));
-      connect(O2_left.port_a, leftAlveoli.substances[Air.i("O2")]) annotation (
+      connect(O2_left.port_a, leftAlveoli.substances.O2) annotation (
         Line(points={{-164,-4},{-170,-4},{-170,26},{-162,26}},          color = {158, 66, 200}));
-      connect(CO2_right.port_b, rightAlveoli.substances[Air.i("CO2")]) annotation (
+      connect(CO2_right.port_b, rightAlveoli.substances.CO2) annotation (
         Line(points = {{-200, -86}, {-172, -86}, {-172, -48}, {-156, -48}}, color = {158, 66, 200}));
-      connect(rightAlveoli.substances[Air.i("O2")], O2_right.port_a) annotation (
+      connect(rightAlveoli.substances.O2, O2_right.port_a) annotation (
         Line(points = {{-156, -48}, {-172, -48}, {-172, -86}, {-158, -86}}, color = {158, 66, 200}));
-      connect(rightAlveoli.substances[Air.i("H2O")], pH2O_alveolar.port_a) annotation (
+      connect(rightAlveoli.substances.H2O, pH2O_alveolar.port_a) annotation (
         Line(points = {{-156, -48}, {-102, -48}, {-102, -76}}, color = {158, 66, 200}));
     connect(leftPleuralSpace.externalPressure, respiratoryMusclePressureCycle.val)
       annotation (Line(points={{-73,37},{-73,48},{-2,48},{-2,82},{-14,82}},
@@ -3944,10 +4007,6 @@ as signal.
         volume_start=0.002,
         Compliance=7.5006157584566e-08)
         annotation (Placement(transformation(extent={{56,-12},{76,8}})));
-      Chemical.Components.Membrane membrane[Blood.nS](KC={0,0.01,0.01,0.01,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0})
-        annotation (Placement(transformation(extent={{4,-56},{24,-36}})));
         /*
     .* {0,1,1,1,
     0,0,0,0,0,0,0,
@@ -3967,11 +4026,31 @@ as signal.
     */
       inner Modelica.Fluid.System system(T_ambient=310.15)
         annotation (Placement(transformation(extent={{64,66},{84,86}})));
+      Chemical.Components.Membrane O2(KC=0.01)
+        annotation (Placement(transformation(extent={{-10,72},{10,92}})));
+      Chemical.Components.Membrane CO2(KC=0.01)
+        annotation (Placement(transformation(extent={{-10,54},{10,74}})));
+      Chemical.Components.Membrane H2O(KC=0.01)
+        annotation (Placement(transformation(extent={{-12,12},{8,32}})));
+      Chemical.Components.Membrane CO(KC=0.01)
+        annotation (Placement(transformation(extent={{-10,32},{10,52}})));
     equation
-      connect(Artys.substances, membrane.port_a) annotation (Line(points={{-72,-7},{
-              -76,-7},{-76,12},{-6,12},{-6,-46},{4,-46}}, color={158,66,200}));
-      connect(membrane.port_b, Veins.substances) annotation (Line(points={{24,-46},{
-              42,-46},{42,-2},{56,-2}}, color={158,66,200}));
+      connect(O2.port_a, Artys.substances.O2) annotation (Line(points={{-10,82},
+              {-72,82},{-72,-7}},  color={158,66,200}));
+      connect(O2.port_b, Veins.substances.O2) annotation (Line(points={{10,82},
+              {56,82},{56,40},{56,40},{56,-2}},  color={158,66,200}));
+      connect(CO2.port_a, Artys.substances.CO2) annotation (Line(points={{-10,64},
+              {-76,64},{-76,-7},{-72,-7}},     color={158,66,200}));
+      connect(CO2.port_b, Veins.substances.CO2) annotation (Line(points={{10,64},
+              {56,64},{56,-2}},   color={158,66,200}));
+      connect(CO.port_a, Artys.substances.CO) annotation (Line(points={{-10,42},
+              {-72,42},{-72,-7}},  color={158,66,200}));
+      connect(CO.port_b, Veins.substances.CO) annotation (Line(points={{10,42},
+              {56,42},{56,-2}},   color={158,66,200}));
+      connect(H2O.port_a, Artys.substances.H2O) annotation (Line(points={{-12,22},
+              {-72,22},{-72,-7}},  color={158,66,200}));
+      connect(H2O.port_b, Veins.substances.H2O) annotation (Line(points={{8,22},{
+              56,22},{56,-2}},    color={158,66,200}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         experiment(

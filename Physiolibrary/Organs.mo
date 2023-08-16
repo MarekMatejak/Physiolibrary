@@ -1397,8 +1397,8 @@ vector of pressure-flow connectors.
             Medium =
               Blood, substanceName="Thyroxine")
           annotation (Placement(transformation(extent={{-16,34},{4,54}})));
-        Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium
-            = Blood)
+        Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium =
+              Blood)
           annotation (Placement(transformation(extent={{-46,34},{-26,54}})));
         Blocks.Factors.Spline Thyroid(data={{0,0.7,0},{8,1.0,0.4},{40,1.5,0}}, Xscale=
              1) "8 ug/dl = 8e-9/1e-4 kg/m3"
@@ -1606,26 +1606,6 @@ vector of pressure-flow connectors.
         Physiolibrary.Organs.Components.ViscosityConductance viscosity(
             redeclare package Blood = Blood) annotation (Placement(
               transformation(rotation=0, extent={{-10,6},{-30,26}})));
-        Fluid.Components.ElasticVessel interstitium(redeclare package Medium = Blood,
-          useSubstances=true) annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=270,
-              origin={2,-74})));
-        Fluid.Components.ElasticVessel cells(redeclare package Medium = Blood,
-          useSubstances=true) annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=270,
-              origin={82,-70})));
-        Physiolibrary.Organs.Components.Membrane capyMembrane(redeclare package
-            MediumA = Blood, redeclare package MediumB = Blood)
-                                                              annotation (
-            Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=0,
-              origin={-34,-70})));
-        Physiolibrary.Organs.Components.Membrane cellMembrane(redeclare package
-            MediumA = Blood, redeclare package MediumB = Blood)
-          annotation (Placement(transformation(extent={{24,-80},{44,-60}})));
       equation
         connect(vasopressin.C, ADHEffect2.u) annotation (Line(points={{41,68},{
                 62,68}},          color={0,0,127}));
@@ -1639,7 +1619,7 @@ vector of pressure-flow connectors.
                 {54,38},{54,30},{62,30}},             color={0,0,127}));
         connect(pO2.partialPressure, Vasculature.u)
           annotation (Line(points={{40,38},{60,38}},         color={0,0,127}));
-        connect(capillarries.substances[Blood.i("O2")], pO2.port_a) annotation (
+        connect(capillarries.substances.O2, pO2.port_a) annotation (
             Line(points={{20,0},{20,24},{14,24},{14,38},{20,38}}, color={158,66,
                 200}));
         connect(anesthesiaVascularConductance.port, capillarries.q_in[3])
@@ -1727,18 +1707,6 @@ vector of pressure-flow connectors.
             points={{80,0},{110,0}},
             color={127,0,0},
             thickness=0.5));
-        connect(capyMembrane.ports_a, capillarries.substances) annotation (Line(
-              points={{-44,-64.2},{-50,-64.2},{-50,-18},{16,-18},{16,-4},{20,-4},
-                {20,0}}, color={158,66,200}));
-        connect(capyMembrane.ports_b, interstitium.substances) annotation (Line(
-              points={{-24,-64.2},{-16,-64.2},{-16,-48},{2,-48},{2,-64}}, color=
-               {158,66,200}));
-        connect(cellMembrane.ports_a, interstitium.substances) annotation (Line(
-              points={{24,-64.2},{16,-64.2},{16,-48},{2,-48},{2,-64}}, color={
-                158,66,200}));
-        connect(cellMembrane.ports_b, cells.substances) annotation (Line(points=
-               {{44,-64.2},{50,-64.2},{50,-48},{82,-48},{82,-60}}, color={158,
-                66,200}));
         annotation (Icon(graphics={Text(
                 extent={{-160,-100},{160,-140}},
                 textColor={127,0,0},
@@ -1830,8 +1798,8 @@ vector of pressure-flow connectors.
           NormalExternalPressure(displayUnit="mmHg") = -445.2967739661,
           AmbientPressure=101325.0144354)
           annotation (Placement(transformation(extent={{-28,14},{-8,34}})));
-        Fluid.Sensors.PressureMeasure pressureMeasure(redeclare package Medium
-            = Blood)
+        Fluid.Sensors.PressureMeasure pressureMeasure(redeclare package Medium =
+              Blood)
           annotation (Placement(transformation(extent={{52,-12},{72,8}})));
       equation
         connect(diastole.externalPressure, busConnector.Pericardium_Pressure)
@@ -2312,8 +2280,8 @@ vector of pressure-flow connectors.
         InternalSpace(displayUnit="l") = PleuralCavityVolume,
         nPorts=1) "Pleural space"
         annotation (Placement(transformation(extent={{-32,20},{-52,40}})));
-      Fluid.Sensors.PressureMeasure pleauralPressure(redeclare package Medium
-          = PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
+      Fluid.Sensors.PressureMeasure pleauralPressure(redeclare package Medium =
+            PleuralFluid, GetAbsolutePressure=false) "Pleaural pressure"
         annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=0,
@@ -2585,8 +2553,8 @@ vector of pressure-flow connectors.
           annotation (Placement(transformation(extent={{-54,-16},{-34,4}})));
         Chemical.Components.GasSolubility CO2_diffusion(KC=Diffusion)
           annotation (Placement(transformation(extent={{-22,-16},{-2,4}})));
-        Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium
-            = Blood)
+        Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium =
+              Blood)
           annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
 
 
@@ -2606,8 +2574,7 @@ vector of pressure-flow connectors.
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={48,74})));
-        Fluid.Interfaces.FluidPorts_a airways[nPorts](redeclare package Medium
-            =                                                                    Air)
+        Fluid.Interfaces.FluidPorts_a airways[nPorts](redeclare package Medium = Air)
           annotation (Placement(transformation(rotation=0, extent={{-6,82},{6,116}}),
               iconTransformation(extent={{-6,82},{6,116}})));
         Fluid.Interfaces.FluidPort_a blood_in(redeclare package Medium = Blood)
@@ -2636,29 +2603,29 @@ vector of pressure-flow connectors.
             points={{-51,-44},{10,-44},{10,-38.65},{9.9,-38.65}},
             color={127,0,0},
             thickness=0.5));
-        connect(O2_diffusion.gas_port,alveoli. substances[Air.i("O2")]) annotation (Line(
+        connect(O2_diffusion.gas_port,alveoli. substances.O2) annotation (Line(
               points={{-44,4},{-44,12},{-12,12},{-12,14},{-8.88178e-16,14}},
                                                                            color={158,
                 66,200}));
-        connect(CO2_diffusion.gas_port,alveoli. substances[Air.i("CO2")]) annotation (
+        connect(CO2_diffusion.gas_port,alveoli. substances.CO2) annotation (
             Line(points={{-12,4},{-12,14},{-8.88178e-16,14}},
                                                         color={158,66,200}));
         connect(alveolar.b_port, pulmCapys.q_in) annotation (Line(
             points={{48.2,-26.2},{48.2,-40},{64,-40}},
             color={127,0,0},
             thickness=0.5));
-        connect(pulmCapysVentilated.substances[Blood.i("O2")],O2_diffusion. liquid_port)
+        connect(pulmCapysVentilated.substances.O2,O2_diffusion. liquid_port)
           annotation (Line(points={{0,-38},{-44,-38},{-44,-16}},         color={
                 158,66,200}));
-        connect(pulmCapysVentilated.substances[Blood.i("CO2")],CO2_diffusion. liquid_port)
+        connect(pulmCapysVentilated.substances.CO2,CO2_diffusion. liquid_port)
           annotation (Line(points={{0,-38},{-12,-38},{-12,-16}},
               color={158,66,200}));
-        connect(alveolar.H_plus,pulmCapysVentilated. substances[Blood.i("H+")])
+        connect(alveolar.H_plus,pulmCapysVentilated. substances.H)
           annotation (Line(points={{32,-22},{0,-22},{0,-38}},  color={158,66,200}));
-        connect(alveolar.CO2,pulmCapysVentilated. substances[Blood.i("CO2")])
+        connect(alveolar.CO2,pulmCapysVentilated. substances.CO2)
           annotation (Line(points={{32,-16},{0,-16},{0,-38}},        color={158,
                 66,200}));
-        connect(alveolar.O2,pulmCapysVentilated. substances[Blood.i("O2")])
+        connect(alveolar.O2,pulmCapysVentilated. substances.O2)
           annotation (Line(points={{32,-10},{0,-10},{0,-38}},         color={158,
                 66,200}));
         connect(pulmCapysVentilated.q_in[2],alveolar. a_port) annotation (Line(
@@ -2887,14 +2854,14 @@ vector of pressure-flow connectors.
 
         //Can not be one port, because for example whole periferal resistance is taken as ResistorBases, but blood can accumulate inside
 
-      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium
-            = Blood)                                  "Blood inflow"
+      Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
+              Blood)                                  "Blood inflow"
         annotation ( Placement(transformation(extent={{-110,
                 -10},{-90,10}},  rotation=0),
                                         iconTransformation(extent={{-110,-10},{
                 -90,10}})));
-      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-            = Blood)                                   "Blood outflow"
+      Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
+              Blood)                                   "Blood outflow"
         annotation ( Placement(transformation(extent={{94,-10},
                 {114,10}},       rotation=0),
                                       iconTransformation(extent={{90,-10},{110,
@@ -5496,12 +5463,12 @@ QHP 2008 / Skin-Flow
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {98,-10},{118,10}}, rotation=0), iconTransformation(extent={{90,
                 -10},{110,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent=
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent=
                 {{-104,4},{-84,24}}, rotation=0), iconTransformation(extent={{-110,
                 -10},{-90,10}})));
 
@@ -5769,12 +5736,12 @@ QHP 2008 / Skin-Flow
       connect(pO2.port, systemicArtys.q_in[15]) annotation (Line(points={{84,
               -52},{84,-44},{64,-44},{64,-14},{60,-14},{60,1.774},{75.395,1.774}},
             color={0,127,255}));
-      connect(O2_left.port_a, systemicArtys.substances[Blood.i("O2")]) annotation (
+      connect(O2_left.port_a, systemicArtys.substances.O2) annotation (
          Line(points={{76,-80},{60,-80},{60,-16},{58,-16},{58,0.5},{65,0.5}},
             color={158,66,200}));
       connect(pO2.port_a, O2_left.port_a) annotation (Line(points={{74,-62},{74,
               -80},{76,-80}}, color={158,66,200}));
-      connect(CO2_left.port_b, systemicArtys.substances[Blood.i("CO2")])
+      connect(CO2_left.port_b, systemicArtys.substances.CO2)
         annotation (Line(points={{48,-80},{60,-80},{60,-16},{58,-16},{58,0.5},{
               65,0.5}}, color={158,66,200}));
       connect(pCO2.port_a, CO2_left.port_b) annotation (Line(points={{34,-60},{
@@ -6183,8 +6150,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           Medium = Blood) "Blood inflow" annotation (Placement(transformation(
               extent={{90,-10},{110,10}}, rotation=0), iconTransformation(
               extent={{90,-10},{110,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent=
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent=
                 {{-110,-10},{-90,10}}, rotation=0), iconTransformation(extent={
                 {-110,-10},{-90,10}})));
 
@@ -6358,12 +6325,12 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {98,-10},{118,10}}, rotation=0), iconTransformation(extent={{90,
                 -10},{110,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent=
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent=
                 {{-104,4},{-84,24}}, rotation=0), iconTransformation(extent={{-110,
                 -10},{-90,10}})));
 
@@ -7013,8 +6980,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       annotation (Placement(transformation(extent={{42,30},{22,50}})));
       Physiolibrary.Types.Constants.OneConst one1
         annotation (Placement(transformation(extent={{20,52},{28,60}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={{90,-100},
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={{90,-100},
                 {110,-80}}, rotation=0), iconTransformation(extent={{90,-10},{110,10}})));
     Physiolibrary.Fluid.Sensors.VolumeFlowMeasure
                                             volumeFlowMeasure(redeclare package
@@ -7022,8 +6989,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         Placement(transformation(
           extent={{10,-10},{-10,10}},
           origin={58,-90})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent={{-116,
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent={{-116,
                 -100},{-96,-80}}, rotation=0), iconTransformation(extent={{-110,-10},
                 {-90,10}})));
       Physiolibrary.Types.RealIO.VolumeFlowRateOutput
@@ -7207,7 +7174,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
               {-32,-10},{-32,-38},{-26,-38}}, color={0,0,127}));
       connect(pO2.partialPressure, pO2OnConductance.u) annotation (Line(points={{-64,
               -10},{-14,-10},{-14,-18},{-6,-18}}, color={0,0,127}));
-      connect(pCO2.port_a, elasticVessel.substances[Blood.i("CO2")]) annotation (Line(
+      connect(pCO2.port_a, elasticVessel.substances.CO2) annotation (Line(
             points={{-62,-46},{-64,-46},{-64,-90},{-60,-90}}, color={158,66,200}));
       connect(pCO2.partialPressure, PCO2OnTension.u)
         annotation (Line(points={{-42,-46},{-26,-46}}, color={0,0,127}));
@@ -7243,7 +7210,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
               {16,68},{16,-102},{-22,-102},{-22,-88},{-30,-88},{-30,-88.8444},{
               -50.1,-88.8444}},
                           color={0,127,255}));
-      connect(elasticVessel.substances[Blood.i("O2")], pO2.port_a) annotation (Line(
+      connect(elasticVessel.substances.O2, pO2.port_a) annotation (Line(
             points={{-60,-90},{-64,-90},{-64,-48},{-90,-48},{-90,-10},{-84,-10}},
             color={158,66,200}));
       connect(angiotensin2.C, A2Effect.u) annotation (Line(points={{-57,42},{-50,42},
@@ -7285,8 +7252,7 @@ Blood resistance in gastro interstitial tract.
                                rotation=0),
                                     iconTransformation(extent={{90,-10},{110,
               10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium
-          =                                                                     Blood) "Blood outflow"
+    Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium = Blood) "Blood outflow"
       annotation ( Placement(transformation(extent={{-108,-12},{-88,8}},
                                rotation=0),
                                       iconTransformation(extent={{-110,-10},{
@@ -8512,12 +8478,12 @@ Blood resistance in gastro interstitial tract.
 
     replaceable package Blood = Physiolibrary.Media.Blood  constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true); //BloodBySiggaardAndersen
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {100,-10},{120,10}}, rotation=0), iconTransformation(extent={{
                 150,-10},{170,10}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent=
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent=
                 {{-110,-10},{-90,10}}, rotation=0), iconTransformation(extent={
                 {-168,-10},{-148,10}})));
 
@@ -11812,8 +11778,8 @@ Blood flow variable resistor abstract model.
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
       Systems.CardioVascularSystem cardioVascularSystem2_1(
-                                                        redeclare package Blood
-          = Blood)
+                                                        redeclare package Blood =
+            Blood)
         annotation (Placement(transformation(extent={{34,-16},{54,4}})));
       Types.BusConnector busConnector
         annotation (Placement(transformation(extent={{-44,-4},{-4,36}})));
@@ -11850,8 +11816,8 @@ Blood flow variable resistor abstract model.
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
       Systems.Cardiovascular       cardioVascularSystem2_1(
-                                                        redeclare package Blood
-          = Blood, systemic(peripheral(bone(elasticVessel(
+                                                        redeclare package Blood =
+            Blood, systemic(peripheral(bone(elasticVessel(
                 use_concentration_start=true,
                 concentration_start=Blood.VenousDefault,
                 extraConcentration_start=Blood.ExtraSubstancesDefault)))))
