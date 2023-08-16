@@ -1,0 +1,3 @@
+[submodule "Chemical"]
+	path = Chemical
+	url = https://github.com/MarekMatejak/Chemical.git

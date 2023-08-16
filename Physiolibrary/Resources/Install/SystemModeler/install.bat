@@ -4,12 +4,19 @@ cls
 rem ****** Find paths *****
 
 set CurrentDirectory=%cd%
-echo %~dp0
-cd %~dp0\..\..\..
+set dp0=%~dp0
+echo %dp0%
+cd %dp0%\..\..\..\..\Chemical\Chemical
+set CHEMICALDIR=%cd%
+echo %CHEMICALDIR%
+cd %dp0%\..\..\..
 set PHYSIOLIBRARYDIR=%cd%
+echo %PHYSIOLIBRARYDIR%
 
 FOR /f "delims=!" %%i IN ("%PHYSIOLIBRARYDIR%") DO (set PHYSIOLIBRARY=%%~nxi)
 echo %PHYSIOLIBRARY%
+FOR /f "delims=!" %%i IN ("%CHEMICALDIR%") DO (set CHEMICAL=%%~nxi)
+echo %CHEMICAL%
 
 
 if "%1" == "EVEL" goto gotPrivileges
@@ -49,6 +56,8 @@ echo Selected SystemModeler directory is "%SYSTEMMODELERDIR%".
 
 mkdir "%SYSTEMMODELERDIR%\Libraries\%PHYSIOLIBRARY%"
 xcopy /S /Y "%PHYSIOLIBRARYDIR%" "%SYSTEMMODELERDIR%\Libraries\%PHYSIOLIBRARY%"
+mkdir "%SYSTEMMODELERDIR%\Libraries\%CHEMICAL%"
+xcopy /S /Y "%CHEMICALDIR%" "%SYSTEMMODELERDIR%\Libraries\%CHEMICAL%"
 
 cd "%CurrentDirectory%"
 set CurrentDirectory=
