@@ -2160,10 +2160,10 @@ vector of pressure-flow connectors.
 
       parameter Types.HydraulicResistance AirwaysResistances[NRU]=fill(NRU*147099.75,NRU)   "Airways resistances per respiratory unit" annotation (Dialog( group = "Ventilation"));
 
-      parameter Real ArterialBloodComposition[Blood.nS - 2] = Blood.ArterialDefault
+      parameter Real ArterialBloodComposition[Blood.nS - 1] = Blood.ArterialDefault
       "Initial composition of arterial blood" annotation (Dialog( group = "Perfusion"));
 
-      parameter Real VenousBloodComposition[Blood.nS - 2] = Blood.VenousDefault
+      parameter Real VenousBloodComposition[Blood.nS - 1] = Blood.VenousDefault
       "Initial composition of venous blood" annotation (Dialog( group = "Perfusion"));
 
       parameter Types.Volume ArteriesVolume_initial=0.000200488  "Initial volume of blood in arteries"
@@ -2496,7 +2496,7 @@ vector of pressure-flow connectors.
 
         parameter Types.Volume CapillariesVolume_initial=0.000200141 "Initial volume of blood in capillaries"
         annotation (Dialog( group = "Perfusion"));
-        parameter Real Blood_initial[Blood.nS - 2] = Blood.ArterialDefault "Initial composition of blood" annotation (Dialog( group = "Perfusion"));
+        parameter Real Blood_initial[Blood.nS - 1] = Blood.ArterialDefault "Initial composition of blood" annotation (Dialog( group = "Perfusion"));
         parameter Types.Volume CapillariesZeroPressureVolume=0.00014 "Maximal volume of blood capillaries zero at zero blood pressure inside"
         annotation (Dialog( group = "Perfusion"));
         parameter Types.HydraulicCompliance CapillariesCompliance=3.45028324889e-08   "Blood capillaries compliance"
@@ -3135,10 +3135,10 @@ vector of pressure-flow connectors.
         replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-        parameter Real ArterialBloodComposition[Blood.nS - 2] = Blood.ArterialDefault
+        parameter Real ArterialBloodComposition[Blood.nS - 1] = Blood.ArterialDefault
         "Initial composition of arterial blood" annotation (Dialog( group = "Perfusion"));
 
-        parameter Real VenousBloodComposition[Blood.nS - 2] = Blood.VenousDefault
+        parameter Real VenousBloodComposition[Blood.nS - 1] = Blood.VenousDefault
         "Initial composition of venous blood" annotation (Dialog( group = "Perfusion"));
 
 
@@ -3222,8 +3222,8 @@ vector of pressure-flow connectors.
         replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
-        parameter Real ArterialBloodComposition[Blood.nS - 2] = Blood.ArterialDefault "Initial composition of arterial blood";
-        parameter Real VenousBloodComposition[Blood.nS - 2] = Blood.VenousDefault "Initial composition of venous blood";
+        parameter Real ArterialBloodComposition[Blood.nS - 1] = Blood.ArterialDefault "Initial composition of arterial blood";
+        parameter Real VenousBloodComposition[Blood.nS - 1] = Blood.VenousDefault "Initial composition of venous blood";
 
         parameter Types.Frequency RespirationRate(displayUnit="1/min")=0.2     "Respiration rate";
         parameter Types.Pressure Pmin(displayUnit="Pa")=-1000

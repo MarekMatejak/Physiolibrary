@@ -13,7 +13,7 @@ package Media
         "Desglymidodrine","AlphaBlockers","BetaBlockers",
         "AnesthesiaVascularConductance",
         "Angiotensin2","Renin","Aldosterone",
-        "H+","H2O"},
+        "H2O"},
       reference_X=cat(
           1,
           Conc .* C2X[1:nS-1],
@@ -25,7 +25,7 @@ package Media
         D_Norepinephrine,D_Vasopressin,D_Insulin,D_Glucagon,D_Thyrotropin,
         D_Thyroxine,D_Leptin,1,1,1,D_AnesthesiaVascularConductance,D_Angiotensin2,
         D_Renin,D_Aldosterone,
-        1,1} ./
+        1} ./
         TimeScale,
       zb = {  0,0,0,0,0,0,0,0,0,0,0,
               0,-1,0,0,0,-1,
@@ -35,7 +35,7 @@ package Media
               0,0,0,
               0,
               0,0,0,
-              1,0},
+              0},
       MMb= {1098, 0.032, 0.044, 0.059, 65.494/4, 65.494/4, 65.494/4, 66.463, 1, 0.095, 0.266,
               0.1806, 0.09008, 0.06006, 0.1, 0.80645, 0.102,
               0.031,
@@ -44,7 +44,7 @@ package Media
               0.19723,0.3,0.26,
               1,
               1.046,48,0.36044,
-              0.019, 0.018},
+              0.018},
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       reducedX=false,
       singleState=true,
@@ -89,7 +89,7 @@ package Media
         0,0,0,
         0,
         0,0,0,
-        0,1};
+        1};
 
       Real x_add[nS]={0,aO2,aCO2,aCO,
         0,0,0,0,0,0,0,
@@ -100,7 +100,7 @@ package Media
         0,0,0,
         0,
         0,0,0,
-        0,0};
+        0};
 
       Real x[nS]=x_add .+ (X ./ C2X)/(sum(X .* composited ./ C2X)+sum(x_add)) "Mole fractions of substances";
       Real xx[nS]=x_add .+ (substanceMasses ./ MMb) / (sum(substanceMasses .* composited ./ MMb)+sum(x_add));
@@ -264,7 +264,6 @@ package Media
           0,0,0,
           0,
           0,0,0,
-          substances.H.q * Substances.H.MolarWeight + substances.H3O.q * Substances.H3O.MolarWeight,
           substances.H2O.q * Substances.Water.MolarWeight};
 
       substances.O2.u = uO2;
@@ -302,10 +301,9 @@ package Media
          0,0,0,
          0,
          0,0,0,
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.H,T,p,v,I),
          Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I)};
     end specificEnthalpies_TpvI;
-    constant Real ArterialDefault[nS - 2]={D_Hct,D_Arterial_O2,
+    constant Real ArterialDefault[nS - 1]={D_Hct,D_Arterial_O2,
         D_Arterial_CO2,D_CO,D_Hb,D_MetHb,D_HbF,D_Alb,D_Glb,D_PO4,D_DPG,D_Glucose,
         D_Lactate,D_Urea,D_AminoAcids,D_Lipids,D_Ketoacids,D_SID,
         D_Epinephrine, D_Norepinephrine, D_Vasopressin, D_Insulin, D_Glucagon,
@@ -315,7 +313,7 @@ package Media
         D_Renin, D_Aldosterone}
       "Default composition of arterial blood";
 
-    constant Real VenousDefault[nS - 2]={D_Hct,D_Venous_O2,D_Venous_CO2,
+    constant Real VenousDefault[nS - 1]={D_Hct,D_Venous_O2,D_Venous_CO2,
         D_CO,D_Hb,D_MetHb,D_HbF,D_Alb,D_Glb,D_PO4,D_DPG,D_Glucose,D_Lactate,
         D_Urea,D_AminoAcids,D_Lipids,D_Ketoacids,D_SID,
         D_Epinephrine, D_Norepinephrine, D_Vasopressin, D_Insulin, D_Glucagon,
@@ -403,9 +401,9 @@ package Media
     1,0,0,
     0,
     1,1,1,
-    0,1}./TimeScale;
+    1}./TimeScale;
 
-    constant Modelica.Units.SI.Concentration Conc[nS - 1] = cat(1,ArterialDefault,{-ArterialDefault*zb[1:nS-2]}) "Default concentrations of substance base molecules except water";
+    constant Modelica.Units.SI.Concentration Conc[nS - 1] = ArterialDefault "Default concentrations of substance base molecules except water";
 
     constant Real C2X[nS]= MMb ./ density_pTC(reference_p, reference_T, ArterialDefault) "Default concentrations to mass fractions coefficients X[i]=C[i]*C2X[i]  [kg/kg = mmol/L * (kg/mol)/(kg/m3)]";
 
@@ -826,6 +824,47 @@ package Media
 </html>"));
     end pressure;
 
+    package Sensors
+      model Norepinephrine "Ideal one port sensor for Norepinephrine"
+        extends Modelica.Icons.RoundSensor;
+        extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
+
+        Physiolibrary.Types.RealIO.MassFractionOutput Xi "Mass fraction in port medium" annotation (
+          Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      protected
+        parameter String substanceName = "Norepinephrine" "Name of mass fraction";
+
+        parameter Integer ind(fixed = false) "Index of species in vector of independent mass fractions";
+        Medium.MassFraction XiVec[Medium.nS] "Mass fraction vector, needed because indexed argument for the operator inStream is not supported";
+      initial algorithm
+        ind := -1;
+        for i in 1:Medium.nS loop
+          if Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i], substanceName) then
+            ind := i;
+          end if;
+        end for;
+        assert(ind > 0, "Mass fraction '" + substanceName + "' is not present in medium '" + Medium.mediumName + "'.\n" + "Check sensor parameter and medium model.");
+      equation
+        XiVec[1:Medium.nXi] = inStream(port.Xi_outflow);
+        if Medium.reducedX then
+          XiVec[Medium.nX] = 1 - sum(XiVec[1:Medium.nXi]);
+        end if;
+        Xi = XiVec[ind];
+        annotation (
+          defaultComponentName = "massFraction",
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}}, textString = "Xi"), Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
+          Documentation(info = "<html>
+        <p>
+        This component monitors the mass fraction contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        </html>", revisions = "<html>
+        <ul>
+        <li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
+        </ul>
+        </html>"));
+      end Norepinephrine;
+    end Sensors;
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
@@ -864,8 +903,8 @@ package Media
        Modelica.Electrical.Analog.Interfaces.Pin catode "Electric catode";
        Modelica.Electrical.Analog.Interfaces.Pin anode "Electric anode";
     end SubstancesPort;
-  public
 
+  public
     redeclare replaceable model extends ChemicalSolution
     protected
         Real I = 0 "mole-fraction-based ionic strength";
@@ -928,8 +967,8 @@ package Media
           {Substances.Water},
           T,p,v,I);
     end specificEnthalpies_TpvI;
-  public
 
+  public
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
@@ -1130,8 +1169,8 @@ Modelica source.
               substanceData,
               T,p,v,I);
       end specificEnthalpies_TpvI;
-  public
 
+  public
       redeclare replaceable record extends ThermodynamicState
         "A selection of variables that uniquely defines the thermodynamic state"
         extends Modelica.Icons.Record;
@@ -1343,8 +1382,8 @@ Modelica source.
      Chemical.Interfaces.SubstancePort_a Mg "Free magnesium ion Mg++";
      Chemical.Interfaces.SubstancePort_a H2O "Free H2O molecule";
     end SubstancesPort;
-  public
 
+  public
     redeclare replaceable model extends ChemicalSolution
     protected
       Real I = 0 "mole-fraction-based ionic strength";
@@ -1443,8 +1482,8 @@ Modelica source.
             substanceData,
             T,p,v,I);
     end specificEnthalpies_TpvI;
-  public
 
+  public
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 

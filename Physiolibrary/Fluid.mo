@@ -3067,8 +3067,8 @@ as signal.
         parameter Integer NA=1  "Number of pulmonary alveolar units";
         parameter Integer NT=1  "Number of systemic tissue units";
       public
-        parameter Real ArterialBloodComposition[Blood.nS - 2] = Blood.ArterialDefault "Initial composition of arterial blood";
-        parameter Real VenousBloodComposition[Blood.nS - 2] = Blood.VenousDefault "Initial composition of venous blood";
+        parameter Real ArterialBloodComposition[Blood.nS - 1] = Blood.ArterialDefault "Initial composition of arterial blood";
+        parameter Real VenousBloodComposition[Blood.nS - 1] = Blood.VenousDefault "Initial composition of venous blood";
         parameter Types.Fraction AirO2=0.21   "O2 content in inspired air";
         parameter Types.Fraction AirCO2=0.0003   "CO2 content in inspired air";
         parameter Types.Fraction AirH2O=0.06   "H2O content in inspired air";
@@ -3310,7 +3310,7 @@ as signal.
         parameter Types.Fraction ArteriesViensResistanceRatio = 7 / 8 "Ratio between arteries and veins resistance";
         parameter Types.Volume bloodVolume_start = 0.0003;
         parameter Types.Volume bloodV0 = 0.0002;
-        parameter Real BloodComposition[Blood.nS - 2] = Blood.VenousDefault; //{0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
+        parameter Real BloodComposition[Blood.nS - 1] = Blood.VenousDefault; //{0.44, 8.16865, 21.2679, 1.512e-6, 8.4, 0.042, 0.042, 0.66, 28, 0.153, 5.4, 37.67} "Initial composition of blood in tissue";
         parameter Types.HydraulicCompliance Compliance = 3.0002463033826e-08 "Compliance of tissue blood vessels";
         Components.Resistor systemicArteriesResistance(redeclare package Medium = Blood, Resistance = 1 / Conductance * ArteriesViensResistanceRatio) annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 40})));
@@ -3805,8 +3805,7 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
-          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));
