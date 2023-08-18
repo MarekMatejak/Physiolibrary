@@ -883,22 +883,22 @@ package Media
        R := density(state) * state.X[i("Angiotensin2")]  / plasmacrit(state);
     end angiotensin2;
 
-    function alphaBlockers "AlphaBlockers in blood plasma"
+    function alphaBlockers "Alpha blockers effect in blood plasma"
       extends GetFraction;
     algorithm
-      F := state.X[i("AlphaBlockers")]/1e-5;
+      F := state.X[i("AlphaBlockers")]/1e-6;
     end alphaBlockers;
 
-    function betaBlockers "BetaBlockers in blood plasma"
+    function betaBlockers "Beta blockers effect in blood plasma"
       extends GetFraction;
     algorithm
-      F := state.X[i("BetaBlockers")]/1e-5;
+      F := state.X[i("BetaBlockers")]/1e-6;
     end betaBlockers;
 
-    function anesthesiaVascularConductance "AnesthesiaVascularConductance in blood plasma"
+    function anesthesiaVascularConductance "Anesthesia vascular conductance effect in blood plasma"
       extends GetFraction;
     algorithm
-      F := state.X[i("AnesthesiaVascularConductance")]/1e-5;
+      F := state.X[i("AnesthesiaVascularConductance")]/1e-6;
     end anesthesiaVascularConductance;
 
     function aldosterone "Aldosterone in blood plasma"
@@ -1020,10 +1020,10 @@ package Media
       X[i("Leptin")] := plasmacrit*(leptin)/density;
       X[i("Desglymidodrine")] := plasmacrit*(
         desglymidodrine)/density;
-      X[i("AlphaBlockers")] := 1e-5 * alphaBlockers;
-      X[i("BetaBlockers")] := 1e-5 * betaBlockers;
+      X[i("AlphaBlockers")] := 1e-6 * alphaBlockers;
+      X[i("BetaBlockers")] := 1e-6 * betaBlockers;
       X[i("AnesthesiaVascularConductance")] :=
-        1e-5 * anesthesiaVascularConductance;
+        1e-6 * anesthesiaVascularConductance;
       X[i("Angiotensin2")] := plasmacrit*(angiotensin2)/
         density;
       X[i("Renin")] := plasmacrit*(1e-12*0.6*11.2*renin)/

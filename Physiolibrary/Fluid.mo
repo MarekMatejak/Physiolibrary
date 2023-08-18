@@ -1272,7 +1272,7 @@ as signal.
     model Concentration "Ideal one port concentration sensor"
       extends Modelica.Icons.RoundSensor;
       extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          package                                                                    Medium =
+          replaceable package Medium =
             Physiolibrary.Media.Blood);
 
       Physiolibrary.Types.RealIO.ConcentrationOutput C "Concentration in port medium" annotation (
@@ -1308,7 +1308,7 @@ as signal.
     model MassConcentration "Ideal one port mass concentration sensor"
       extends Modelica.Icons.RoundSensor;
       extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          package Medium =
+          replaceable package Medium =
             Physiolibrary.Media.Blood);
 
       Physiolibrary.Types.RealIO.MassConcentrationOutput R "Mass concentration in port medium" annotation (
@@ -1343,7 +1343,7 @@ as signal.
     model Fraction "Ideal one port fraction sensor"
       extends Modelica.Icons.RoundSensor;
       extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          package Medium =
+          replaceable package Medium =
             Physiolibrary.Media.Blood);
 
       Physiolibrary.Types.RealIO.FractionOutput F "Fraction in port medium" annotation (
@@ -1378,7 +1378,7 @@ as signal.
     model Activity "Ideal one port activity sensor"
       extends Modelica.Icons.RoundSensor;
       extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
-          package Medium =
+          replaceable package Medium =
             Physiolibrary.Media.Blood);
 
       Modelica.Blocks.Interfaces.RealOutput A "Substance activity in port medium" annotation (
@@ -3014,7 +3014,7 @@ as signal.
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package
           Medium =                                                                  Blood,
-        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=5,   useSubstances = true, use_mass_start = true) annotation (
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=3,   useSubstances = true, use_mass_start = true) annotation (
         Placement(transformation(extent={{-6,-52},{14,-32}})));
 
       // massFractions_start=zeros(Blood.nS - 1),
@@ -3039,15 +3039,10 @@ as signal.
         substanceData=Chemical.Substances.Oxygen_gas(),
         redeclare package Medium = Media.Blood) "Partial pressure of O2 in blood"
         annotation (Placement(transformation(extent={{-78,-70},{-58,-50}})));
-      Sensors.Fraction sO2(redeclare function GetFraction =
+      Sensors.Fraction sO2(redeclare package Medium = Physiolibrary.Media.Blood,
+                           redeclare function GetFraction =
             Physiolibrary.Media.Blood.sO2)
-        annotation (Placement(transformation(extent={{44,-22},{64,-2}})));
-      Sensors.Concentration ADH(redeclare function GetConcentration =
-            Physiolibrary.Media.Blood.vasopressin)
-        annotation (Placement(transformation(extent={{66,20},{86,40}})));
-      Sensors.MassConcentration A2(redeclare function GetMassConcentration =
-            Physiolibrary.Media.Blood.angiotensin2)
-        annotation (Placement(transformation(extent={{48,42},{68,62}})));
+        annotation (Placement(transformation(extent={{44,-20},{64,0}})));
     equation
       connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
         Line(points={{-76,26},{-48,26},{-48,0}},        color = {158, 66, 200}));
@@ -3056,13 +3051,13 @@ as signal.
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
         Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
       connect(pH.port, blood.q_in[1]) annotation (Line(
-          points={{64,-74},{64,-78},{6,-78},{6,-46},{3.9,-46},{3.9,-43.04}},
+          points={{64,-74},{64,-78},{6,-78},{6,-46},{3.9,-46},{3.9,-42.8667}},
           color={127,0,0},
           thickness=0.5));
 
       connect(pO2.port, blood.q_in[2]) annotation (Line(
           points={{-68,-70},{-32,-70},{-32,-60},{4,-60},{4,-46},{3.9,-46},{3.9,
-              -42.52}},
+              -42}},
           color={127,0,0},
           thickness=0.5));
       connect(CO2_GasSolubility.liquid_port, blood.substances.CO2) annotation (
@@ -3076,17 +3071,7 @@ as signal.
       connect(pH.port_a, blood.substances.H) annotation (
         Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-6,-42}},              color = {158, 66, 200}));
       connect(blood.q_in[3], sO2.port) annotation (Line(
-          points={{3.9,-42},{54,-42},{54,-22}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(blood.q_in[4], ADH.port) annotation (Line(
-          points={{3.9,-41.48},{3.9,-46},{6,-46},{6,-78},{86,-78},{86,20},{76,
-              20}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(blood.q_in[5], A2.port) annotation (Line(
-          points={{3.9,-40.96},{3.9,-46},{6,-46},{6,-78},{86,-78},{86,16},{58,
-              16},{58,42}},
+          points={{3.9,-41.1333},{54,-41.1333},{54,-20}},
           color={127,0,0},
           thickness=0.5));
       annotation (
@@ -3984,8 +3969,7 @@ as signal.
       Physiolibrary.Fluid.Sensors.PressureMeasure rightAlveolarPressure(redeclare
           package Medium =                                                                         Air) "Right Alveolar pressure" annotation (
         Placement(transformation(extent = {{-134, -38}, {-114, -18}})));
-      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium
-          =                                                                      Air,  Resistance = 0.5 * TracheaResistance,
+      Physiolibrary.Fluid.Components.Resistor trachea(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance,
         q_in(m_flow(start=0.056451696970642506), p(start=105795.1786534674,
               displayUnit="bar")))                                                                                                                             annotation (
         Placement(transformation(extent={{-298,-12},{-278,8}})));
