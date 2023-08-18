@@ -19,7 +19,7 @@ package Media
         "H2O_P"},
       reference_X=X(),
       SubstanceFlowNominal=X() ./ Constants.TimeScale,
-      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
       reducedX=false,
       singleState=true,
       reference_T=310.15,
@@ -48,6 +48,19 @@ package Media
          Chemical.Interfaces.SubstancePort_a H "Free protons";
          Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
     end SubstancesPort;
+
+    redeclare replaceable record extends ThermodynamicState
+      "A selection of variables that uniquely defines the thermodynamic state"
+      extends Modelica.Icons.Record;
+      AbsolutePressure p "Absolute pressure of medium";
+      SpecificEnthalpy h "Specific enthalpy";
+      MassFraction X[nS] "Mass fractions of substances";
+      Types.ElectricPotential v "Electric potential of the substance";
+      Types.MoleFraction I "Ionic strengh (mole fraction based)";
+      annotation (Documentation(info="<html>
+<p>Thermodynamic state of blood is represented by pressure, temperature and base substances composition.</p>
+</html>"));
+    end ThermodynamicState;
 
     package stateOfMatter = Chemical.Interfaces.Incompressible
       "Substances model to translate data into substance properties";
@@ -247,178 +260,6 @@ package Media
 </html>"));
     end ChemicalSolution;
 
-    redeclare function extends specificEnthalpies_TpvI
-    algorithm
-      specificEnthalpy:={0,
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO,T,p,v,I),
-         0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-         0,0,0,
-         0,0,0,0,0,
-         0,0,0,
-         0,
-         0,0,0,
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I)};
-    end specificEnthalpies_TpvI;
-
-
-
-
-   // constant Real ExtraSubstancesDefault[nC]= fill(Modelica.Constants.small,nC)
-   //                      "Default amounts of extra substances per kilogram";
-
-
-
-   // constant Modelica.Units.SI.Concentration Conc[nS - 1] = ArterialDefault "Default concentrations of substance base molecules except water";
-
-
-    constant SpecificHeatCapacity _cp=3490 "specific heat capacity of blood";
-
-  /*  constant Real CapyllaryMembrane_KC[nS](each final unit="mol2.s-1.J-1")={
-  0,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,1,
-  1,1,1,
-  1,1,1,1,1,
-  1,0,0,
-  0,
-  1,1,1,
-  1}./TimeScale;
-*/
-    replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
-      input Real pH "acidity";
-      input Real pO2 "oxygen partial pressure";
-      input Real pCO2(min=Modelica.Constants.small) "carbon dioxide partial pressure";
-      input Real pCO "carbon monoxide partial pressure";
-      input Real T "temperature";
-      input Real tHb "total hemoglobin";
-      input Real cDPG "diphosphoglicerate";
-      input Real FMetHb "methemoglobin fraction";
-      input Real FHbF "foethel hemoglobin fraction";
-      output Real sO2CO "oxygen and carbon monoxide saturation";
-    protected
-      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
-      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
-      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
-      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
-        "normal CO2 partial pressure";
-
-      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
-      parameter Real dadcDPG0=0.3 "used by a";
-      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
-      parameter Real dadpH=-0.88 "used by a";
-      parameter Real dadlnpCO2=0.048 "used by a";
-      parameter Real dadxMetHb=-0.7 "used by a";
-      parameter Real dadxHbF=-0.25 "used by a";
-
-      Real aO2;
-      Real cdO2;
-      Physiolibrary.Types.Fraction sO2;
-      Physiolibrary.Types.Pressure pO2CO(min=Modelica.Constants.small);
-      Physiolibrary.Types.Concentration cO2Hb;
-      Physiolibrary.Types.Fraction sCO;
-      Physiolibrary.Types.Concentration ceHb;
-      Real a;
-      Real k;
-      Real x;
-      Real y;
-      Real h;
-      Physiolibrary.Types.Fraction FCOHb;
-    algorithm
-
-      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
-      k := 0.5342857;
-      h := 3.5 + a;
-
-      pO2CO := pO2 + 218*pCO;
-      x := log(pO2CO/7000) - a - 0.055*(T - T0);
-      y := 1.8747 + x + h*tanh(k*x);
-
-      sO2CO := exp(y)/(1 + exp(y));
-
-      annotation (
-      derivative = hemoglobinDissociationCurve_der,
-      Documentation(info="<html>
-<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
-<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
-</html>"));
-    end hemoglobinDissociationCurve;
-
-    replaceable function hemoglobinDissociationCurve_der "Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
-      input Real pH "acidity";
-      input Real pO2 "oxygen partial pressure";
-      input Real pCO2 "carbon dioxide partial pressure";
-      input Real pCO "carbon monoxide partial pressure";
-      input Real T "temperature";
-      input Real tHb "total hemoglobin";
-      input Real cDPG "diphosphoglicerate";
-      input Real FMetHb "methemoglobin fraction";
-      input Real FHbF "foethel hemoglobin fraction";
-      input Real der_pH "derivative of acidity";
-      input Real der_pO2 "derivative of oxygen partial pressure";
-      input Real der_pCO2 "derivative of carbon dioxide partial pressure";
-      input Real der_pCO "derivative of carbon monoxide partial pressure";
-      input Real der_T "derivative of temperature";
-      input Real der_tHb "derivative of total hemoglobin";
-      input Real der_cDPG "derivative of diphosphoglicerate";
-      input Real der_FMetHb "derivative of methemoglobin fraction";
-      input Real der_FHbF "derivative of foethel hemoglobin fraction";
-      output Real der_sO2CO "derivative of oxygen and carbon monoxide saturation";
-    protected
-      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
-      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
-      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
-      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
-        "normal CO2 partial pressure";
-
-      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
-      parameter Real dadcDPG0=0.3 "used by a";
-      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
-      parameter Real dadpH=-0.88 "used by a";
-      parameter Real dadlnpCO2=0.048 "used by a";
-      parameter Real dadxMetHb=-0.7 "used by a";
-      parameter Real dadxHbF=-0.25 "used by a";
-
-      Real aO2;
-      Real cdO2;
-      Physiolibrary.Types.Fraction sO2;
-      Physiolibrary.Types.Pressure pO2CO;
-      Physiolibrary.Types.Concentration cO2Hb;
-      Physiolibrary.Types.Fraction sCO;
-      Physiolibrary.Types.Concentration ceHb;
-      Real a, a_der;
-      Real k;
-      Real x,x_der;
-      Real y,y_der;
-      Real h;
-      Physiolibrary.Types.Fraction FCOHb;
-    algorithm
-
-      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
-
-      a_der := dadpH*der_pH + dadlnpCO2*(der_pCO2/pCO20)/(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*der_FMetHb +
-        (dadcDPGxHbF*der_FHbF)*(cDPG/cDPG0 - 1)+(dadcDPG0 + dadcDPGxHbF*FHbF)*(der_cDPG/cDPG0);
-
-      k := 0.5342857;
-      h := 3.5 + a;
-
-      pO2CO := pO2 + 218*pCO;
-      x := log(pO2CO/7000) - a - 0.055*(T - T0);
-
-      x_der := (der_pO2 + 218*der_pCO)/(pO2CO) - a_der - 0.055*der_T;
-      y := 1.8747 + x + h*tanh(k*x);
-      y_der := x_der + a_der*tanh(k*x) + h*(k*4*x_der/((exp(k*x)+exp(-k*x))^2));
-
-      der_sO2CO := y_der*exp(y)/((1 + exp(y))^2);
-
-      annotation (Documentation(info="<html>
-<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
-<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
-</html>"));
-    end hemoglobinDissociationCurve_der;
-
     replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
       input Physiolibrary.Media.Blood.ThermodynamicState state "blood";
       input Modelica.Units.SI.Pressure p=101325 "Pressure";
@@ -580,19 +421,6 @@ package Media
 </html>"));
     end BloodGases;
 
-    redeclare replaceable record extends ThermodynamicState
-      "A selection of variables that uniquely defines the thermodynamic state"
-      extends Modelica.Icons.Record;
-      AbsolutePressure p "Absolute pressure of medium";
-      SpecificEnthalpy h "Specific enthalpy";
-      MassFraction X[nS] "Mass fractions of substances";
-      Types.ElectricPotential v "Electric potential of the substance";
-      Types.MoleFraction I "Ionic strengh (mole fraction based)";
-      annotation (Documentation(info="<html>
-<p>Thermodynamic state of blood is represented by pressure, temperature and base substances composition.</p>
-</html>"));
-    end ThermodynamicState;
-
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
@@ -619,6 +447,159 @@ package Media
 <p>Constant density and constant heat capacity</p>
 </html>"));
     end BaseProperties;
+
+    redeclare function extends specificEnthalpies_TpvI
+    algorithm
+      specificEnthalpy:={0,
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO,T,p,v,I),
+         0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         0,0,0,
+         0,0,0,0,0,
+         0,0,0,
+         0,
+         0,0,0,
+         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I)};
+    end specificEnthalpies_TpvI;
+
+
+
+
+    replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
+      input Real pH "acidity";
+      input Real pO2 "oxygen partial pressure";
+      input Real pCO2(min=Modelica.Constants.small) "carbon dioxide partial pressure";
+      input Real pCO "carbon monoxide partial pressure";
+      input Real T "temperature";
+      input Real tHb "total hemoglobin";
+      input Real cDPG "diphosphoglicerate";
+      input Real FMetHb "methemoglobin fraction";
+      input Real FHbF "foethel hemoglobin fraction";
+      output Real sO2CO "oxygen and carbon monoxide saturation";
+    protected
+      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
+      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
+      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
+      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
+        "normal CO2 partial pressure";
+
+      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
+      parameter Real dadcDPG0=0.3 "used by a";
+      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
+      parameter Real dadpH=-0.88 "used by a";
+      parameter Real dadlnpCO2=0.048 "used by a";
+      parameter Real dadxMetHb=-0.7 "used by a";
+      parameter Real dadxHbF=-0.25 "used by a";
+
+      Real aO2;
+      Real cdO2;
+      Physiolibrary.Types.Fraction sO2;
+      Physiolibrary.Types.Pressure pO2CO(min=Modelica.Constants.small);
+      Physiolibrary.Types.Concentration cO2Hb;
+      Physiolibrary.Types.Fraction sCO;
+      Physiolibrary.Types.Concentration ceHb;
+      Real a;
+      Real k;
+      Real x;
+      Real y;
+      Real h;
+      Physiolibrary.Types.Fraction FCOHb;
+    algorithm
+
+      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
+      k := 0.5342857;
+      h := 3.5 + a;
+
+      pO2CO := pO2 + 218*pCO;
+      x := log(pO2CO/7000) - a - 0.055*(T - T0);
+      y := 1.8747 + x + h*tanh(k*x);
+
+      sO2CO := exp(y)/(1 + exp(y));
+
+      annotation (
+      derivative = hemoglobinDissociationCurve_der,
+      Documentation(info="<html>
+<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+</html>"));
+    end hemoglobinDissociationCurve;
+
+    replaceable function hemoglobinDissociationCurve_der "Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
+      input Real pH "acidity";
+      input Real pO2 "oxygen partial pressure";
+      input Real pCO2 "carbon dioxide partial pressure";
+      input Real pCO "carbon monoxide partial pressure";
+      input Real T "temperature";
+      input Real tHb "total hemoglobin";
+      input Real cDPG "diphosphoglicerate";
+      input Real FMetHb "methemoglobin fraction";
+      input Real FHbF "foethel hemoglobin fraction";
+      input Real der_pH "derivative of acidity";
+      input Real der_pO2 "derivative of oxygen partial pressure";
+      input Real der_pCO2 "derivative of carbon dioxide partial pressure";
+      input Real der_pCO "derivative of carbon monoxide partial pressure";
+      input Real der_T "derivative of temperature";
+      input Real der_tHb "derivative of total hemoglobin";
+      input Real der_cDPG "derivative of diphosphoglicerate";
+      input Real der_FMetHb "derivative of methemoglobin fraction";
+      input Real der_FHbF "derivative of foethel hemoglobin fraction";
+      output Real der_sO2CO "derivative of oxygen and carbon monoxide saturation";
+    protected
+      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
+      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
+      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
+      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
+        "normal CO2 partial pressure";
+
+      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
+      parameter Real dadcDPG0=0.3 "used by a";
+      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
+      parameter Real dadpH=-0.88 "used by a";
+      parameter Real dadlnpCO2=0.048 "used by a";
+      parameter Real dadxMetHb=-0.7 "used by a";
+      parameter Real dadxHbF=-0.25 "used by a";
+
+      Real aO2;
+      Real cdO2;
+      Physiolibrary.Types.Fraction sO2;
+      Physiolibrary.Types.Pressure pO2CO;
+      Physiolibrary.Types.Concentration cO2Hb;
+      Physiolibrary.Types.Fraction sCO;
+      Physiolibrary.Types.Concentration ceHb;
+      Real a, a_der;
+      Real k;
+      Real x,x_der;
+      Real y,y_der;
+      Real h;
+      Physiolibrary.Types.Fraction FCOHb;
+    algorithm
+
+      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
+
+      a_der := dadpH*der_pH + dadlnpCO2*(der_pCO2/pCO20)/(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+        dadxMetHb*der_FMetHb +
+        (dadcDPGxHbF*der_FHbF)*(cDPG/cDPG0 - 1)+(dadcDPG0 + dadcDPGxHbF*FHbF)*(der_cDPG/cDPG0);
+
+      k := 0.5342857;
+      h := 3.5 + a;
+
+      pO2CO := pO2 + 218*pCO;
+      x := log(pO2CO/7000) - a - 0.055*(T - T0);
+
+      x_der := (der_pO2 + 218*der_pCO)/(pO2CO) - a_der - 0.055*der_T;
+      y := 1.8747 + x + h*tanh(k*x);
+      y_der := x_der + a_der*tanh(k*x) + h*(k*4*x_der/((exp(k*x)+exp(-k*x))^2));
+
+      der_sO2CO := y_der*exp(y)/((1 + exp(y))^2);
+
+      annotation (Documentation(info="<html>
+<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+</html>"));
+    end hemoglobinDissociationCurve_der;
 
     redeclare replaceable function extends setState_pTX "Thermodynamic state"
       input Types.ElectricPotential v=0 "electric potential";
@@ -666,7 +647,7 @@ package Media
 
     redeclare replaceable function extends specificHeatCapacityCp "Specific heat capacityReturn specific heat capacity at constant pressure"
     algorithm
-      cp := _cp;
+      cp := 3490;
       annotation (Documentation(info="<html>
 <p>Constant specific heat capacity</p>
 </html>"));
@@ -904,7 +885,7 @@ package Media
     function aldosterone "Aldosterone in blood plasma"
       extends GetConcentration(C(displayUnit="nmol/L",nominal=SubstanceFlowNominal[i("Aldosterone")]));
     algorithm
-      aldosterone := (density(state) * state.X[i("Aldosterone")] / Constants.MM_Aldosterone) / plasmacrit(state);
+      C := (density(state) * state.X[i("Aldosterone")] / Constants.MM_Aldosterone) / plasmacrit(state);
     end aldosterone;
 
 
@@ -1238,7 +1219,7 @@ Modelica source.
   end Water;
 
     package Air
-
+      import Physiolibrary.Media.Substances.*;
       extends Interfaces.PartialMedium(
          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
          reducedX = false,
@@ -1473,6 +1454,8 @@ Modelica source.
     end Air;
 
   package BodyFluid "Simplified Human body fluid"
+    import Physiolibrary.Media.Substances.*;
+    import Physiolibrary.Media.Substances.InitialValues.*;
     extends Interfaces.PartialMedium(
       mediumName="SimpleBodyFluid (Physiolibrary)",
       substanceNames={"Na","HCO3","K","Glucose","Urea","Cl","Ca","Mg","Alb",

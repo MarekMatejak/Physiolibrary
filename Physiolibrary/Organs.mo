@@ -1390,10 +1390,7 @@ vector of pressure-flow connectors.
                                                          redeclare package
             Medium =
               Blood)
-          annotation (Placement(transformation(extent={{-16,34},{4,54}})));
-        Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium
-            = Blood)
-          annotation (Placement(transformation(extent={{-46,34},{-26,54}})));
+          annotation (Placement(transformation(extent={{-46,56},{-26,76}})));
         Blocks.Factors.Spline Thyroid(data={{0,0.7,0},{8,1.0,0.4},{40,1.5,0}}, Xscale
             =1e-5)
                 "8 ug/dl = 8e-9/1e-4 kg/m3"
@@ -1430,17 +1427,24 @@ vector of pressure-flow connectors.
 
           parameter Types.Fraction MotionEffeciency = 0.37 "Motion effeciency without basal metabolism";
         Modelica.Blocks.Interfaces.RealOutput y annotation (Placement(transformation(
-                rotation=0, extent={{30,-110},{50,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port(redeclare package Medium = Blood)
-          annotation (Placement(transformation(rotation=0, extent={{-110,90},{-90,110}})));
+                rotation=0, extent={{96,70},{116,90}})));
+        Physiolibrary.Fluid.Interfaces.FluidPort_a a_port(redeclare package
+            Medium =                                                                 Blood) annotation (
+          Placement(transformation(extent={{90,-10},{110,10}}),         iconTransformation(extent={{90,-10},
+                  {110,10}})));
+        Physiolibrary.Fluid.Interfaces.FluidPort_b b_port(redeclare package
+            Medium =                                                                 Blood) annotation (
+          Placement(transformation(extent={{-110,-10},{-90,10}}),     iconTransformation(extent={{-110,
+                  -10},{-90,10}})));
+
         Types.RealIO.PowerInput motionPower "Power needed for motion"
-          annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+          annotation (Placement(transformation(extent={{-122,60},{-82,100}})));
         Modelica.Blocks.Math.Gain motionHeat(k=1 - MotionEffeciency)
           annotation (Placement(transformation(extent={{-20,-26},{0,-6}})));
+        Physiolibrary.Fluid.Sensors.Temperature temperature1(redeclare package
+            Medium = Blood)
+          annotation (Placement(transformation(extent={{-16,38},{4,58}})));
       equation
-        connect(temperature.T, HeatMetabolism_Skin.u) annotation (Line(points={{-29,44},
-                {-22,44},{-22,30},{16,30},{16,28},{50,28},{50,22},{62,22}}, color={0,0,
-                127}));
         connect(Thyroid.y,HeatMetabolism_Skin. yBase)       annotation (Line(
             points={{70,24},{70,24}},
             color={0,0,127},
@@ -1457,21 +1461,35 @@ vector of pressure-flow connectors.
                 70,-10},{70.7333,-10},{70.7333,-15.2}},        color={0,0,127}));
         connect(structureEffect.y,StructureEffect__. u) annotation (Line(points={{48.6,18},
                 {54,18},{54,10},{62,10}},   color={0,0,127}));
-        connect(y, TotalCaloriesUse.y) annotation (Line(points={{40,-100},{40,-62},{71,
-                -62},{71,-24.4}}, color={0,0,127}));
-        connect(port, temperature.port) annotation (Line(points={{-100,100},{-100,32},
-                {-36,32},{-36,34}}, color={127,0,0}));
-        connect(port, thyroxine.port) annotation (Line(points={{-100,100},{-100,32},{-6,
-                32},{-6,34}}, color={127,0,0}));
-        connect(motionPower, TotalCaloriesUse.u[2]) annotation (Line(points={{-100,0},
-                {72,0},{72,-15.2},{71,-15.2}}, color={0,0,127}));
+        connect(y, TotalCaloriesUse.y) annotation (Line(points={{106,80},{90,80},
+                {90,14},{114,14},{114,-30},{71,-30},{71,-24.4}},
+                                  color={0,0,127}));
+        connect(motionPower, TotalCaloriesUse.u[2]) annotation (Line(points={{-102,80},
+                {84,80},{84,-10},{71,-10},{71,-15.2}},
+                                               color={0,0,127}));
         connect(motionHeat.y, TotalCaloriesUse.u[3]) annotation (Line(points={{1,-16},
                 {62,-16},{62,-8},{71.2667,-8},{71.2667,-15.2}},
                                                       color={0,0,127}));
-        connect(motionPower, motionHeat.u) annotation (Line(points={{-100,0},{-28,0},{
-                -28,-16},{-22,-16}}, color={0,0,127}));
-        connect(thyroxine.R, Thyroid.u) annotation (Line(points={{5,44},{52,44},
-                {52,28},{62,28}}, color={0,0,127}));
+        connect(motionPower, motionHeat.u) annotation (Line(points={{-102,80},{
+                -60,80},{-60,-16},{-22,-16}},
+                                     color={0,0,127}));
+        connect(thyroxine.R, Thyroid.u) annotation (Line(points={{-25,66},{56,
+                66},{56,36},{54,36},{54,28},{62,28}},
+                                  color={0,0,127}));
+        connect(a_port, thyroxine.port) annotation (Line(
+            points={{100,0},{-36,0},{-36,56}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(a_port, b_port) annotation (Line(
+            points={{100,0},{-100,0}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(a_port, temperature1.port) annotation (Line(
+            points={{100,0},{-6,0},{-6,38}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(HeatMetabolism_Skin.u, temperature1.T) annotation (Line(points=
+                {{62,22},{52,22},{52,48},{5,48}}, color={0,0,127}));
       end Metabolism;
 
       model Tissue "Heart tissue"
@@ -1505,24 +1523,24 @@ vector of pressure-flow connectors.
           redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
           substanceData=Chemical.Substances.Oxygen_gas(),
           redeclare package Medium = Blood)
-          annotation (Placement(transformation(extent={{40,28},{20,48}})));
+          annotation (Placement(transformation(extent={{-8,28},{-28,48}})));
         Fluid.Sensors.Concentration            vasopressin(redeclare function
             GetConcentration = Physiolibrary.Media.Blood.vasopressin,
                                                            redeclare package
             Medium =
               Blood)
-          annotation (Placement(transformation(extent={{20,58},{40,78}})));
+          annotation (Placement(transformation(extent={{-38,58},{-18,78}})));
         Fluid.Sensors.Fraction                 anesthesiaVascularConductance(
             redeclare function GetFraction =
               Physiolibrary.Media.Blood.anesthesiaVascularConductance,
             redeclare package Medium = Blood)
-          annotation (Placement(transformation(extent={{20,64},{40,84}})));
+          annotation (Placement(transformation(extent={{-54,78},{-34,98}})));
         Types.RealIO.PowerInput motionPower(displayUnit="cal/min")
           "Total rate of motion energy (external work per time)" annotation (
             Placement(transformation(
               rotation=0,
               extent={{-10,-10},{10,10}},
-              origin={0,-34}),   iconTransformation(
+              origin={14,24}),   iconTransformation(
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-70,90})));
@@ -1547,7 +1565,7 @@ vector of pressure-flow connectors.
         annotation (Placement(transformation(extent={{60,66},{80,86}})));
       Types.Constants.HydraulicConductanceConst
         LargeVesselBasicConductance(k=BasicLargeVeselsConductance)
-        annotation (Placement(transformation(extent={{-6,18},{-18,30}})));
+        annotation (Placement(transformation(extent={{-54,18},{-66,30}})));
       Types.Constants.HydraulicConductanceConst
         SmallVesselBasicConductance(k=BasicSmallVeselsConductance)
         annotation (Placement(transformation(extent={{90,86},{78,98}})));
@@ -1571,14 +1589,14 @@ vector of pressure-flow connectors.
       Fluid.Components.Conductor               resistor2_2(redeclare package
             Medium =
               Blood, useConductanceInput=true)
-        annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+        annotation (Placement(transformation(extent={{-78,-10},{-58,10}})));
         Fluid.Components.ElasticVessel capillarries(
           redeclare package Medium = Blood,
           useSubstances=true,
           volume_start=1e-06,
           Compliance=7.5006157584566e-10,
-          nPorts=8)
-          annotation (Placement(transformation(extent={{20,-10},{40,10}})));
+          nPorts=7)
+          annotation (Placement(transformation(extent={{-28,-10},{-8,10}})));
 
         Physiolibrary.Organs.Components.AlphaReceptors
           aplhaReceptorsActivityFactor2_1(redeclare package Blood = Blood)
@@ -1598,34 +1616,36 @@ vector of pressure-flow connectors.
           TissueSize=TissueSize,
           MotionEffeciency=MotionEffeciency)
                                  annotation (Placement(transformation(rotation=0,
-                extent={{26,-44},{46,-24}})));
+                extent={{18,-10},{38,10}})));
         Types.RealIO.FrequencyInput Ganglia
           "Sympathetic ganglia general neural activity" annotation (Placement(
               transformation(extent={{30,40},{50,60}}),iconTransformation(
                 extent={{30,40},{50,60}})));
         Physiolibrary.Organs.Components.ViscosityConductance viscosity(
             redeclare package Blood = Blood) annotation (Placement(
-              transformation(rotation=0, extent={{-10,6},{-30,26}})));
+              transformation(rotation=0, extent={{-58,6},{-78,26}})));
       equation
         connect(CalToO2.y, MetabolismEffect.u) annotation (Line(points={{56.4,20},{62,
                 20}},                                   color={0,0,127}));
-        connect(pO2.port, capillarries.q_in[3]) annotation (Line(
-            points={{30,28},{30,26},{29.9,26},{29.9,-0.4875}},
+        connect(pO2.port, capillarries.q_in[2]) annotation (Line(
+            points={{-18,28},{-18,26},{-18.1,26},{-18.1,-0.742857}},
             color={127,0,0},
             thickness=0.5));
-        connect(pO2.partialPressure, PO2Effect.u) annotation (Line(points={{40,38},
+        connect(pO2.partialPressure, PO2Effect.u) annotation (Line(points={{-8,38},
                 {54,38},{54,30},{62,30}},             color={0,0,127}));
         connect(pO2.partialPressure, Vasculature.u)
-          annotation (Line(points={{40,38},{60,38}},         color={0,0,127}));
+          annotation (Line(points={{-8,38},{60,38}},         color={0,0,127}));
         connect(capillarries.substances.O2, pO2.port_a) annotation (
-            Line(points={{20,0},{20,26},{14,26},{14,38},{20,38}}, color={158,66,
+            Line(points={{-28,0},{-28,26},{-34,26},{-34,38},{-28,38}},
+                                                                  color={158,66,
                 200}));
-        connect(anesthesiaVascularConductance.port, capillarries.q_in[3])
-          annotation (Line(points={{30,64},{30,-0.4875},{29.9,-0.4875}}, color=
+        connect(anesthesiaVascularConductance.port, capillarries.q_in[2])
+          annotation (Line(points={{-44,78},{-44,16},{-18.1,16},{-18.1,0}},
+                                                                         color=
                 {0,127,255}));
         connect(LargeVesselBasicConductance.y, viscosity.yBase) annotation (
             Line(
-            points={{-19.5,24},{-19.5,21},{-20,21},{-20,18}},
+            points={{-67.5,24},{-67.5,21},{-68,21},{-68,18}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Viscosity.y,Anesthesia. yBase) annotation (Line(
@@ -1654,7 +1674,7 @@ vector of pressure-flow connectors.
             color={0,0,127},
             smooth=Smooth.None));
         connect(port_b, resistor2_2.q_in) annotation (Line(
-            points={{-100,0},{-30,0}},
+            points={{-100,0},{-78,0}},
             color={0,0,0},
             thickness=1,
             smooth=Smooth.None));
@@ -1663,15 +1683,11 @@ vector of pressure-flow connectors.
             color={0,0,127},
             smooth=Smooth.None));
         connect(resistor2_2.cond, viscosity.y) annotation (Line(
-            points={{-20,6},{-20,12}},
+            points={{-68,6},{-68,12}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(resistor2_1.q_in, capillarries.q_in[1]) annotation (Line(
-            points={{60,0},{28,0},{28,-1.1375},{29.9,-1.1375}},
-            color={127,0,0},
-            thickness=0.5));
-        connect(resistor2_2.q_out, capillarries.q_in[2]) annotation (Line(
-            points={{-10,0},{-10,-0.8125},{29.9,-0.8125}},
+        connect(resistor2_2.q_out, capillarries.q_in[1]) annotation (Line(
+            points={{-58,0},{-58,-1.11429},{-18.1,-1.11429}},
             color={127,0,0},
             thickness=0.5));
         connect(ADHEffect2.y,aplhaReceptorsActivityFactor2_1. yBase) annotation (Line(
@@ -1679,34 +1695,42 @@ vector of pressure-flow connectors.
         connect(Vasculature.yBase, aplhaReceptorsActivityFactor2_1.y)
           annotation (Line(points={{70,46},{70,49}}, color={0,0,127}));
         connect(CalToO2.u, metabolism.y) annotation (Line(points={{47.2,20},{44,
-                20},{44,12},{48,12},{48,-44},{40,-44}},
+                20},{44,8},{38.6,8}},
                                 color={0,0,127}));
-        connect(metabolism.port, capillarries.q_in[4]) annotation (Line(points=
-                {{26,-24},{18,-24},{18,-8},{30,-8},{30,-0.1625},{29.9,-0.1625}},
-              color={0,127,255}));
         connect(motionPower, metabolism.motionPower)
-          annotation (Line(points={{0,-34},{26,-34}},   color={0,0,127}));
+          annotation (Line(points={{14,24},{17.8,24},{17.8,8}},
+                                                        color={0,0,127}));
         connect(Ganglia, aplhaReceptorsActivityFactor2_1.GangliaGeneral)
           annotation (Line(points={{40,50},{60.2,50}}, color={0,0,127}));
-        connect(Viscosity.port, capillarries.q_in[5]) annotation (Line(points={
-                {60,84},{30,84},{30,0.1625},{29.9,0.1625}}, color={0,127,255}));
-        connect(viscosity.port, capillarries.q_in[6]) annotation (Line(points={
-                {-10,16},{30,16},{30,0.4875},{29.9,0.4875}}, color={0,127,255}));
-        connect(aplhaReceptorsActivityFactor2_1.port_a, capillarries.q_in[7])
-          annotation (Line(points={{60,54},{30,54},{30,2},{29.9,2},{29.9,0.8125}},
+        connect(Viscosity.port, capillarries.q_in[3]) annotation (Line(points={{60,84},
+                {4,84},{4,18},{-18,18},{-18,0},{-18.1,0},{-18.1,-0.371429}},
+                                                            color={0,127,255}));
+        connect(viscosity.port, capillarries.q_in[4]) annotation (Line(points={{-58,16},
+                {-18,16},{-18,-5.55112e-17},{-18.1,-5.55112e-17}},
+                                                             color={0,127,255}));
+        connect(aplhaReceptorsActivityFactor2_1.port_a, capillarries.q_in[5])
+          annotation (Line(points={{60,54},{4,54},{4,18},{-18.1,18},{-18.1,
+                0.371429}},
               color={0,127,255}));
-        connect(Viscosity.port, anesthesiaVascularConductance.port) annotation (
-           Line(points={{60,84},{30,84},{30,64}}, color={0,127,255}));
-        connect(vasopressin.port, capillarries.q_in[8]) annotation (Line(points=
-               {{30,58},{29.9,58},{29.9,1.1375}}, color={0,127,255}));
+        connect(vasopressin.port, capillarries.q_in[6]) annotation (Line(points={{-28,58},
+                {-44,58},{-44,16},{-18.1,16},{-18.1,0.742857}},
+                                                  color={0,127,255}));
         connect(resistor2_1.q_out, port_a) annotation (Line(
             points={{80,0},{110,0}},
             color={127,0,0},
             thickness=0.5));
         connect(anesthesiaVascularConductance.F, Anesthesia.u) annotation (Line(
-              points={{41,74},{54,74},{54,76},{62,76}}, color={0,0,127}));
+              points={{-33,88},{6,88},{6,76},{62,76}},  color={0,0,127}));
         connect(vasopressin.C, ADHEffect2.u)
-          annotation (Line(points={{41,68},{62,68}}, color={0,0,127}));
+          annotation (Line(points={{-17,68},{62,68}},color={0,0,127}));
+        connect(metabolism.a_port, resistor2_1.q_in) annotation (Line(
+            points={{38,0},{60,0}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(metabolism.b_port, capillarries.q_in[7]) annotation (Line(
+            points={{18,0},{-18,0},{-18,1.11429},{-18.1,1.11429}},
+            color={127,0,0},
+            thickness=0.5));
         annotation (Icon(graphics={Text(
                 extent={{-160,-100},{160,-140}},
                 textColor={127,0,0},
@@ -1738,21 +1762,21 @@ vector of pressure-flow connectors.
                annotation (Placement(transformation(extent={{46,-56},{2,-12}})));
         Fluid.Sources.PressureSource rightAtrium(pressure_start(displayUnit=
                 "mmHg") = 101422.97689116, redeclare package Medium = Blood)
-          annotation (Placement(transformation(extent={{-62,-28},{-42,-8}})));
+          annotation (Placement(transformation(extent={{-62,-8},{-42,-28}})));
         Fluid.Sources.PressureSource pulmonaryArtery(pressure_start(displayUnit=
                "mmHg") = 102991.54427809, redeclare package Medium = Blood)
-          annotation (Placement(transformation(extent={{-58,2},{-38,22}})));
+          annotation (Placement(transformation(extent={{-58,22},{-38,2}})));
         Components.SA_Node SA_node
           annotation (Placement(transformation(extent={{-54,30},{-34,50}})));
         Types.Constants.PressureConst pericardium(k=-445.2967739661)
           annotation (Placement(transformation(extent={{-90,68},{-82,76}})));
         Types.Constants.FrequencyConst Sympathicus(k(displayUnit="Hz") = 1.5)
-          annotation (Placement(transformation(extent={{-90,52},{-82,60}})));
+          annotation (Placement(transformation(extent={{-90,60},{-82,52}})));
         Types.Constants.FrequencyConst Parasymphaticus(k(displayUnit="Hz") = 2)
           annotation (Placement(transformation(extent={{-90,30},{-82,38}})));
       equation
         connect(rightAtrium.y, rightVentricle.port_a) annotation (Line(
-            points={{-42,-18},{-16,-18},{-16,-10},{19.6,-10},{19.6,-16.4}},
+            points={{-42,-18},{-16,-18},{-16,-18},{19.6,-18},{19.6,-16.4}},
             color={127,0,0},
             thickness=0.5));
         connect(rightVentricle.port_b, pulmonaryArtery.y) annotation (Line(
@@ -1982,6 +2006,41 @@ vector of pressure-flow connectors.
         </html>"),
           experiment(StopTime = 5));
       end RightAtriumTest;
+
+      model RightHearTissue
+        Components.Tissue rightHeartTissue(redeclare package Blood =
+              Physiolibrary.Media.Blood)
+          annotation (Placement(transformation(extent={{-20,0},{0,20}})));
+        Fluid.Sources.PressureSource rightAtrium(pressure_start(displayUnit=
+                "mmHg") = 101422.97689116, redeclare package Medium =
+              Physiolibrary.Media.Blood)
+          annotation (Placement(transformation(extent={{-78,18},{-58,-2}})));
+        Fluid.Sources.PressureSource systemicArtery(pressure_start(displayUnit=
+                "mmHg") = 114657.2531769, redeclare package Medium =
+              Physiolibrary.Media.Blood)
+          annotation (Placement(transformation(extent={{36,72},{56,52}})));
+        Types.Constants.FrequencyConst Sympathicus(k(displayUnit="Hz") = 1.5)
+          annotation (Placement(transformation(extent={{-22,62},{-14,54}})));
+        Types.Constants.PowerConst power(k(displayUnit="W") = 0.15)
+          annotation (Placement(transformation(extent={{-64,38},{-56,46}})));
+        inner Modelica.Fluid.System system(T_ambient=310.15)
+          annotation (Placement(transformation(extent={{66,-74},{86,-54}})));
+      equation
+        connect(rightAtrium.y, rightHeartTissue.port_b) annotation (Line(
+            points={{-58,8},{-40,8},{-40,10},{-25.8,10}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(systemicArtery.y, rightHeartTissue.port_a) annotation (Line(
+            points={{56,62},{68,62},{68,10},{6,10}},
+            color={127,0,0},
+            thickness=0.5));
+        connect(Sympathicus.y, rightHeartTissue.Ganglia) annotation (Line(
+              points={{-13,58},{-6,58},{-6,15}}, color={0,0,127}));
+        connect(power.y, rightHeartTissue.motionPower) annotation (Line(points=
+                {{-55,42},{-17,42},{-17,19}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end RightHearTissue;
     end Examples;
 
     class References "References"
@@ -6972,8 +7031,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
       annotation (Placement(transformation(extent={{42,30},{22,50}})));
       Physiolibrary.Types.Constants.OneConst one1
         annotation (Placement(transformation(extent={{18,50},{26,58}})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
-          = Blood) "Blood inflow" annotation (Placement(transformation(extent={{90,-100},
+    Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
+            Blood) "Blood inflow" annotation (Placement(transformation(extent={{90,-100},
                 {110,-80}}, rotation=0), iconTransformation(extent={{90,-10},{110,10}})));
     Physiolibrary.Fluid.Sensors.VolumeFlowMeasure
                                             volumeFlowMeasure(redeclare package
@@ -6981,8 +7040,8 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
         Placement(transformation(
           extent={{10,-10},{-10,10}},
           origin={58,-90})));
-    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
-          = Blood) "Blood outflow" annotation (Placement(transformation(extent={{-116,
+    Physiolibrary.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
+            Blood) "Blood outflow" annotation (Placement(transformation(extent={{-116,
                 -100},{-96,-80}}, rotation=0), iconTransformation(extent={{-110,-10},
                 {-90,10}})));
       Physiolibrary.Types.RealIO.VolumeFlowRateOutput

@@ -902,46 +902,6 @@ as signal.
         </html>"));
     end PressureMeasure;
 
-    model MassFractions "Ideal one port mass fraction sensor"
-      extends Modelica.Icons.RoundSensor;
-      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
-
-      parameter String substanceName = "CO2" "Name of mass fraction";
-      Physiolibrary.Types.RealIO.MassFractionOutput Xi "Mass fraction in port medium" annotation (
-        Placement(transformation(extent = {{100, -10}, {120, 10}})));
-    protected
-      parameter Integer ind(fixed = false) "Index of species in vector of independent mass fractions";
-      Medium.MassFraction XiVec[Medium.nS] "Mass fraction vector, needed because indexed argument for the operator inStream is not supported";
-    initial algorithm
-      ind := -1;
-      for i in 1:Medium.nS loop
-        if Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i], substanceName) then
-          ind := i;
-        end if;
-      end for;
-      assert(ind > 0, "Mass fraction '" + substanceName + "' is not present in medium '" + Medium.mediumName + "'.\n" + "Check sensor parameter and medium model.");
-    equation
-      XiVec[1:Medium.nXi] = inStream(port.Xi_outflow);
-      if Medium.reducedX then
-        XiVec[Medium.nX] = 1 - sum(XiVec[1:Medium.nXi]);
-      end if;
-      Xi = XiVec[ind];
-      annotation (
-        defaultComponentName = "massFraction",
-        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}}, textString = "Xi"), Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
-        Documentation(info = "<html>
-        <p>
-        This component monitors the mass fraction contained in the fluid passing its port.
-        The sensor is ideal, i.e., it does not influence the fluid.
-        </p>
-        </html>",
-                revisions = "<html>
-        <ul>
-        <li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
-        </ul>
-        </html>"));
-    end MassFractions;
-
     /*
       	  model MolarConcentrations "Ideal one port molarity sensor"
       	    extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare
@@ -1030,22 +990,81 @@ as signal.
     end PartialPressure;
 
     model Temperature "Temperature sensor"
-      extends Modelica.Icons.RoundSensor;
+
       extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
 
       Physiolibrary.Types.RealIO.TemperatureOutput T "Temperature" annotation (
         Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Real inX[:] = inStream( port.Xi_outflow);
     equation
-      T = Medium.temperature_phX(port.p, inStream(port.h_outflow), inStream(port.Xi_outflow));
-      annotation (
-        defaultComponentName = "temperature",
-        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 80}, {150, 120}}, lineColor = {162, 29, 33}, textString = "%name"), Text(extent = {{160, -30}, {60, -60}}, textString = "T", textColor = {0, 0, 0}), Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
-        Documentation(info = "<html>
-        <p>
-        This component monitors the temperature contained in the fluid passing its port.
-        The sensor is ideal, i.e., it does not influence the fluid.
-        </p>
-        </html>"));
+      T = Medium.temperature_phX(port.p, inStream(port.h_outflow), inX);
+
+      annotation (defaultComponentName="temperature",
+        Documentation(info="<html>
+<p>
+This component monitors the temperature of the fluid passing its port.
+The sensor is ideal, i.e., it does not influence the fluid.
+</p>
+</html>"),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}), graphics={
+            Line(points={{0,-70},{0,-100}}, color={0,0,127}),
+            Ellipse(
+              extent={{-20,-98},{20,-60}},
+              lineThickness=0.5,
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-12,40},{12,-68}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-12,40},{-12,80},{-10,86},{-6,88},{0,90},{6,88},{10,86},{
+                  12,80},{12,40},{-12,40}},
+              lineThickness=0.5),
+            Line(
+              points={{-12,40},{-12,-64}},
+              thickness=0.5),
+            Line(
+              points={{12,40},{12,-64}},
+              thickness=0.5),
+            Line(points={{-40,-20},{-12,-20}}),
+            Line(points={{-40,20},{-12,20}}),
+            Line(points={{-40,60},{-12,60}}),
+            Line(points={{12,0},{60,0}}, color={0,0,127})}),
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}}), graphics={
+            Ellipse(
+              extent={{-20,-88},{20,-50}},
+              lineThickness=0.5,
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-12,50},{12,-58}},
+              lineColor={191,0,0},
+              fillColor={191,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-12,50},{-12,90},{-10,96},{-6,98},{0,100},{6,98},{10,96},{
+                  12,90},{12,50},{-12,50}},
+              lineThickness=0.5),
+            Line(
+              points={{-12,50},{-12,-54}},
+              thickness=0.5),
+            Line(
+              points={{12,50},{12,-54}},
+              thickness=0.5),
+            Line(points={{-40,-10},{-12,-10}}),
+            Line(points={{-40,30},{-12,30}}),
+            Line(points={{-40,70},{-12,70}}),
+            Text(
+              extent={{126,-30},{6,-60}},
+              textString="T"),
+            Text(
+              extent={{-150,110},{150,150}},
+              textString="%name",
+              textColor={0,0,255}),
+            Line(points={{12,0},{60,0}}, color={0,0,127})}));
     end Temperature;
 
     model pH "Measure of pH (acidity) of the solution"
@@ -1095,6 +1114,8 @@ as signal.
       Physiolibrary.Fluid.Interfaces.FluidPort_a a_port(redeclare package
           Medium =                                                                 Medium) annotation (
         Placement(transformation(extent = {{-70, -112}, {-50, -92}}), iconTransformation(extent = {{-70, -112}, {-50, -92}})));
+      Physiolibrary.Fluid.Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
+        Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(redeclare package
           stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                       substanceData = Chemical.Substances.Oxygen_gas(), redeclare
@@ -1124,8 +1145,7 @@ as signal.
         Placement(transformation(extent = {{100, 30}, {120, 50}}), iconTransformation(extent = {{100, 30}, {120, 50}})));
       Physiolibrary.Types.RealIO.PressureOutput pCO2 annotation (
         Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
-      Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
-        Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
+
       Types.RealIO.FractionOutput sO2 "Oxygen saturation (amount of oxygen per amount of hemoglobin units)" annotation (
         Placement(transformation(extent = {{100, 70}, {120, 90}}), iconTransformation(extent = {{100, 70}, {120, 90}})));
       Modelica.Units.SI.SpecificEnthalpy h;
@@ -1268,6 +1288,46 @@ as signal.
         </html>"),
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-25, -11}, {34, -70}}, lineColor = {0, 0, 0}, textString = "V'")}));
     end VolumeFlowMeasure;
+
+    model MassFractions "Ideal one port mass fraction sensor"
+      extends Modelica.Icons.RoundSensor;
+      extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
+
+      parameter String substanceName = "CO2" "Name of mass fraction";
+      Physiolibrary.Types.RealIO.MassFractionOutput Xi "Mass fraction in port medium" annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+    protected
+      parameter Integer ind(fixed = false) "Index of species in vector of independent mass fractions";
+      Medium.MassFraction XiVec[Medium.nS] "Mass fraction vector, needed because indexed argument for the operator inStream is not supported";
+    initial algorithm
+      ind := -1;
+      for i in 1:Medium.nS loop
+        if Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i], substanceName) then
+          ind := i;
+        end if;
+      end for;
+      assert(ind > 0, "Mass fraction '" + substanceName + "' is not present in medium '" + Medium.mediumName + "'.\n" + "Check sensor parameter and medium model.");
+    equation
+      XiVec[1:Medium.nXi] = inStream(port.Xi_outflow);
+      if Medium.reducedX then
+        XiVec[Medium.nX] = 1 - sum(XiVec[1:Medium.nXi]);
+      end if;
+      Xi = XiVec[ind];
+      annotation (
+        defaultComponentName = "massFraction",
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}}, textString = "Xi"), Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
+        Documentation(info = "<html>
+        <p>
+        This component monitors the mass fraction contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        </html>",
+                revisions = "<html>
+        <ul>
+        <li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
+        </ul>
+        </html>"));
+    end MassFractions;
 
     model Concentration "Ideal one port concentration sensor"
       extends Modelica.Icons.RoundSensor;
