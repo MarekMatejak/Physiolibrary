@@ -804,62 +804,62 @@ package Media
     end ketoAcids;
 
     function epinephrine "Epinephrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/L",nominal=SubstanceFlowNominal[i("Epinephrine")]));
+      extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Epinephrine")]));
     algorithm
       R := density(state) * state.X[i("Epinephrine")]  / plasmacrit(state);
     end epinephrine;
 
     function norepinephrine "Norepinephrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/L",nominal=SubstanceFlowNominal[i("Norepinephrine")]));
+      extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Norepinephrine")]));
     algorithm
       R := density(state) * state.X[i("Norepinephrine")]  / plasmacrit(state);
     end norepinephrine;
 
     function vasopressin "Vasopressin in blood plasma"
-      extends GetConcentration(C(displayUnit="pmol/L",nominal=SubstanceFlowNominal[i("Vasopressin")]));
+      extends GetConcentration(C(displayUnit="pmol/l",nominal=SubstanceFlowNominal[i("Vasopressin")]));
     algorithm
       C := (density(state) * state.X[i("Vasopressin")] / Constants.MM_Vasopressin) / plasmacrit(state);
     end vasopressin;
 
     function insulin "Insulin in blood plasma"
-      extends GetActivity(A(unit="mU/L",displayUnit="mU/L"));
+      extends GetActivity(A(unit="U/m3",displayUnit="mU/l"));
     algorithm
       A := (density(state) * (state.X[i("Insulin")] / 6e-9) / Constants.MM_Insulin) / plasmacrit(state) "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
     end insulin;
 
     function glucagon "Glucagon in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/L",nominal=SubstanceFlowNominal[i("Glucagon")]));
+      extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Glucagon")]));
     algorithm
       R := density(state) * state.X[i("Glucagon")]  / plasmacrit(state);
     end glucagon;
 
     function thyrotropin "Thyrotropin in blood plasma"
-      extends GetConcentration(C(displayUnit="pmol/L",nominal=SubstanceFlowNominal[i("Thyrotropin")]));
+      extends GetConcentration(C(displayUnit="pmol/l",nominal=SubstanceFlowNominal[i("Thyrotropin")]));
     algorithm
       C := (density(state) * state.X[i("Thyrotropin")] / Constants.MM_Thyrotropin) / plasmacrit(state);
     end thyrotropin;
 
     function thyroxine "Thyroxine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/L",nominal=SubstanceFlowNominal[i("Thyroxine")]));
+      extends GetMassConcentration(R(displayUnit="ug/l",nominal=SubstanceFlowNominal[i("Thyroxine")]));
     algorithm
       R := density(state) * state.X[i("Thyroxine")]  / plasmacrit(state);
     end thyroxine;
 
     function leptin "Leptin in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/L",nominal=SubstanceFlowNominal[i("Leptin")]));
+      extends GetMassConcentration(R(displayUnit="ug/l",nominal=SubstanceFlowNominal[i("Leptin")]));
     algorithm
       R := density(state) * state.X[i("Leptin")]  / plasmacrit(state);
     end leptin;
 
     function desglymidodrine "Desglymidodrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/L"));
+      extends GetMassConcentration(R(displayUnit="ug/l"));
     algorithm
       R := density(state) * state.X[i("Desglymidodrine")]  / plasmacrit(state);
     end desglymidodrine;
 
 
     function angiotensin2 "Angiotensin2 in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/L",nominal=SubstanceFlowNominal[i("Angiotensin2")]));
+      extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Angiotensin2")]));
     algorithm
        R := density(state) * state.X[i("Angiotensin2")]  / plasmacrit(state);
     end angiotensin2;
@@ -883,14 +883,14 @@ package Media
     end anesthesiaVascularConductance;
 
     function aldosterone "Aldosterone in blood plasma"
-      extends GetConcentration(C(displayUnit="nmol/L",nominal=SubstanceFlowNominal[i("Aldosterone")]));
+      extends GetConcentration(C(displayUnit="nmol/l",nominal=SubstanceFlowNominal[i("Aldosterone")]));
     algorithm
       C := (density(state) * state.X[i("Aldosterone")] / Constants.MM_Aldosterone) / plasmacrit(state);
     end aldosterone;
 
 
     function renin "Renin PRA in blood plasma"
-      extends GetActivity(A(unit="ng/mL/h",displayUnit="ng/mL/h"));
+      extends GetActivity(A(unit="ng/ml/h",displayUnit="ng/ml/h"));
     algorithm
       A := (density(state) * (state.X[i("Renin")] / (1e-12 * 0.6 * 11.2)))  / plasmacrit(state) "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
     end renin;

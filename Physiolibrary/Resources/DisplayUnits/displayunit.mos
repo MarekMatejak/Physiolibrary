@@ -31,6 +31,10 @@ defineUnitConversion("1/m3", "iu/l", 1e-3 );
 defineUnitConversion("1/s", "iu/min", 60 );
 defineUnitConversion("J", "cal/iu", 1/4.1868 );
 defineUnitConversion("1", "Gu", 1 );   // Glodblatt unit: for renin 1Gu = 1 ng AI/hr (production of 1 ng of AngionensinI per hour)
+defineUnitConversion("1", "U", 1 );
+defineUnitConversion("1", "mU", 1e3 );
+defineUnitConversion("1/l", "U/l", 1e-3 );
+defineUnitConversion("1/l", "mU/l", 1 );
 defineUnitConversion("1/m3", "Gu/l", 1e-3 );
 defineUnitConversion("1/s", "Gu/min", 60 );
 defineUnitConversion("J", "cal/Gu", 1/4.1868 );
