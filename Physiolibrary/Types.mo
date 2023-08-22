@@ -1521,8 +1521,7 @@ package Types "Physiological units with nominals"
             Connector with one input signal of type PopulationChangePerMember.
             </p>
             </html>"));
-    connector PopulationChangePerMemberOutput = output
-        PopulationChangePerMember                                                "output PopulationChangePerMember as connector" annotation (
+    connector PopulationChangePerMemberOutput = output PopulationChangePerMember "output PopulationChangePerMember as connector" annotation (
       defaultComponentName = "populationChangePerMember",
       Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {1, 1}), graphics={  Polygon(points = {{-100, 100}, {100, 0}, {-100, -100}, {-100, 100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid)}),
       Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {1, 1}), graphics={  Polygon(points = {{-100, 50}, {0, 0}, {-100, -50}, {-100, 50}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{30, 110}, {30, 60}}, lineColor = {0, 0, 127}, textString = "%name")}),

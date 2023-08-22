@@ -1185,32 +1185,22 @@ The sensor is ideal, i.e., it does not influence the fluid.
       replaceable package Medium =
         Physiolibrary.Media.Blood                             "Blood" annotation (
         choicesAllMatching = true);
-      Physiolibrary.Fluid.Interfaces.FluidPort_a a_port(redeclare package
-          Medium =                                                                 Medium) annotation (
+      Physiolibrary.Fluid.Interfaces.FluidPort_a a_port(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-70, -112}, {-50, -92}}), iconTransformation(extent = {{-70, -112}, {-50, -92}})));
       Physiolibrary.Fluid.Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(redeclare package
-          stateOfMatter =
+      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(redeclare package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                       substanceData = Chemical.Substances.Oxygen_gas(), redeclare
           package Medium =                                                                                                                                                                                 Medium) annotation (
         Placement(transformation(extent = {{50, 50}, {30, 70}})));
       Physiolibrary.Fluid.Sensors.pH pH_measure(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-24, -70}, {-44, -50}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure(redeclare package
-                  stateOfMatter =
+      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure(redeclare package stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                        substanceData = Chemical.Substances.CarbonDioxide_gas(), redeclare
           package Medium =                                                                                                                                                                                         Medium) annotation (
         Placement(transformation(extent = {{12, -10}, {-8, 10}})));
-      Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureSystemicCapillaries(redeclare package
-                  Medium =                                                                                      Medium) annotation (
+      Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureSystemicCapillaries(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {78, -76})));
-      Chemical.Interfaces.SubstancePort_a CO2 annotation (
-        Placement(transformation(extent = {{-110, -10}, {-90, 10}})));
-      Chemical.Interfaces.SubstancePort_a H_plus "H+" annotation (
-        Placement(transformation(extent = {{-110, -70}, {-90, -50}})));
-      Chemical.Interfaces.SubstancePort_a O2 annotation (
-        Placement(transformation(extent = {{-110, 50}, {-90, 70}})));
       Physiolibrary.Types.RealIO.PressureOutput pressure annotation (
         Placement(transformation(extent = {{100, -90}, {120, -70}}), iconTransformation(extent = {{100, -90}, {120, -70}})));
       Physiolibrary.Types.RealIO.pHOutput pH annotation (
@@ -1226,6 +1216,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Modelica.Units.SI.MassFraction X[Medium.nXi];
       Modelica.Units.SI.Density d;
       Medium.ThermodynamicState state;
+      Medium.SubstancesDecomposition substancesDecomposition annotation (Placement(transformation(extent={{-64,-10},{-44,10}})));
+      Medium.SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
     equation
       state = Medium.setState_phX(a_port.p,h,X,0,0);
       h = actualStream(a_port.h_outflow);
@@ -1246,12 +1238,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
           points={{40,50},{40,-84},{-60,-84},{-60,-102}},
           color={127,0,0},
           thickness=0.5));
-      connect(pCO2_measure.port_a, CO2) annotation (
-        Line(points = {{-8, 0}, {-100, 0}}, color = {158, 66, 200}));
-      connect(H_plus, pH_measure.port_a) annotation (
-        Line(points = {{-100, -60}, {-44, -60}}, color = {158, 66, 200}));
-      connect(pO2_measure.port_a, O2) annotation (
-        Line(points = {{30, 60}, {-100, 60}}, color = {158, 66, 200}));
       connect(pressureMeasureSystemicCapillaries.pressure, pressure) annotation (
         Line(points = {{84, -80}, {96, -80}, {96, -80}, {110, -80}}, color = {0, 0, 127}));
       connect(pO2_measure.partialPressure, pO2) annotation (
@@ -1262,6 +1248,14 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Line(points = {{-24, -60}, {42, -60}, {42, -40}, {110, -40}}, color = {0, 0, 127}));
       connect(a_port, b_port) annotation (
         Line(points = {{-60, -102}, {-60, -100}, {62, -100}, {62, -102}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(substancesDecomposition.substances, substances) annotation (Line(
+          points={{-64,0},{-100,0}},
+          color={0,0,255},
+          thickness=0.5));
+      connect(substancesDecomposition.O2, pO2_measure.port_a) annotation (Line(points={{-44,6},{-28,6},{-28,60},{30,60}}, color={158,66,200}));
+      connect(substancesDecomposition.CO2, pCO2_measure.port_a) annotation (Line(points={{-44,10},{-14,10},{-14,0},{-8,0}}, color={158,66,200}));
+      connect(substancesDecomposition.H, pH_measure.port_a)
+        annotation (Line(points={{-44,-6},{-40,-6},{-40,-46},{-48,-46},{-48,-60},{-44,-60}}, color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Text(extent = {{-150, 80}, {150, 120}}, textString = "%name", lineColor = {162, 29, 33})}),
         Diagram(coordinateSystem(preserveAspectRatio = false)));
@@ -3489,8 +3483,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
           Line(points = {{49, -150}, {71, -150}}, color = {0, 0, 127}));
         for i in 1:NT loop
           connect(tissueUnit[i].q_in, systemicArteries.q_in[i+1]) annotation (
-            Line(points={{13.6611,-195.21},{28,-195.21},{28,-196},{36.1,-196},{
-                  36.1,-196}},                                                                           color = {127, 0, 0}, thickness = 0.5));
+            Line(points={{13.6611,-195.21},{28,-195.21},{28,-196},{36.1,-196},{36.1,-196}},              color = {127, 0, 0}, thickness = 0.5));
           connect(tissueUnit[i].q_out, systemicVeins.q_in[i+2]) annotation (
             Line(points={{-15.2278,-194.93},{-50.1,-194.93},{-50.1,-196}},        color = {127, 0, 0}, thickness = 0.5));
         end for;
@@ -3510,19 +3503,17 @@ The sensor is ideal, i.e., it does not influence the fluid.
           Line(points={{-50.1,-196},{-50.1,-188},{-55.8,-188},{-55.8,-182}},              color = {127, 0, 0}, thickness = 0.5));
         connect(venous.b_port, rightHeartPump.q_in) annotation (
           Line(points = {{-55.8, -169.8}, {-55.8, -164.9}, {-50, -164.9}, {-50, -160}}, color = {127, 0, 0}, thickness = 0.5));
-        connect(systemicVeins.substances.O2, venous.O2) annotation (
-          Line(points = {{-60, -196}, {-72, -196}, {-72, -186}}, color = {158, 66, 200}));
-        connect(venous.CO2, systemicVeins.substances.CO2) annotation (
-          Line(points = {{-66, -186}, {-66, -196}, {-60, -196}}, color = {158, 66, 200}));
-        connect(venous.H_plus, systemicVeins.substances.H) annotation (
-          Line(points = {{-60, -186}, {-60, -196}}, color = {158, 66, 200}));
-        connect(arterial.H_plus, systemicArteries.substances.H) annotation (
-          Line(points = {{48, -186}, {48, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.CO2, systemicArteries.substances.CO2) annotation (
-          Line(points = {{54, -186}, {54, -196}, {46, -196}}, color = {158, 66, 200}));
-        connect(arterial.O2, systemicArteries.substances.O2) annotation (
-          Line(points = {{60, -186}, {60, -196}, {46, -196}}, color = {158, 66, 200}));
 
+        connect(systemicArteries.substances, arterial.substances)
+          annotation (Line(
+            points={{46,-196},{54,-196},{54,-186}},
+            color={158,66,200},
+            thickness=0.5));
+        connect(systemicVeins.substances, venous.substances)
+          annotation (Line(
+            points={{-60,-196},{-66,-196},{-66,-186}},
+            color={158,66,200},
+            thickness=0.5));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -220}, {100, 40}})),
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -220}, {100, 40}})),
@@ -3597,16 +3588,15 @@ The sensor is ideal, i.e., it does not influence the fluid.
           Line(points = {{44.2, -18.2}, {44.2, -32}, {-48, -32}, {-48, -1.66533e-15}, {-54, -1.66533e-15}}, color = {127, 0, 0}, thickness = 0.5));
         connect(tissue.sO2, sO2) annotation (
           Line(points = {{49, -3.55271e-15}, {50, -3.55271e-15}, {50, 26}, {66, 26}}, color = {0, 0, 127}));
-        connect(tissue.O2, systemicCapillaries.substances.O2) annotation (
-          Line(points = {{28, -2}, {14, -2}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.CO2, systemicCapillaries.substances.CO2) annotation (
-          Line(points = {{28, -8}, {14, -8}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
-        connect(tissue.H_plus, systemicCapillaries.substances.H) annotation (
-          Line(points = {{28, -14}, {8, -14}}, color = {158, 66, 200}));
         connect(O2_left.port_a, systemicCapillaries.substances.O2) annotation (
           Line(points = {{-60, -38}, {14, -38}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
         connect(systemicCapillaries.substances.CO2, CO2_left.port_b) annotation (
           Line(points = {{8, -14}, {14, -14}, {14, -38}, {60, -38}}, color = {158, 66, 200}));
+        connect(tissue.substances, systemicCapillaries.substances)
+          annotation (Line(
+            points={{28,-8},{16,-8},{16,-14},{8,-14}},
+            color={158,66,200},
+            thickness=0.5));
         annotation (
           Diagram(coordinateSystem(extent = {{-90, -50}, {90, 50}})),
           Icon(coordinateSystem(extent = {{-90, -50}, {90, 50}})));

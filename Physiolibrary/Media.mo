@@ -49,6 +49,25 @@ package Media
          Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
     end SubstancesPort;
 
+    redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
+      Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
+      Chemical.Interfaces.SubstancePort_a CO2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
+      Chemical.Interfaces.SubstancePort_a CO annotation (Placement(transformation(extent={{90,10},{110,30}})));
+      Chemical.Interfaces.SubstancePort_a HCO3 annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+      Chemical.Interfaces.SubstancePort_a H3O annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
+      Chemical.Interfaces.SubstancePort_a H annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
+      Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
+    equation
+      connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
+      connect(CO2, substances.CO2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
+      connect(CO, substances.CO) annotation (Line(points={{100,20},{-70,20},{-70,0},{-100,0}},      color={158,66,200}));
+      connect(HCO3, substances.HCO3) annotation (Line(points={{0,100},{-82,100},{-82,0},{-100,0}},      color={158,66,200}));
+      connect(H3O, substances.H3O) annotation (Line(points={{0,-60},{-78,-60},{-78,0},{-100,0}},      color={158,66,200}));
+      connect(H, substances.H) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},      color={158,66,200}));
+      connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{-82,-100},{-82,0},{-100,0}},      color={158,66,200}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+    end SubstancesDecomposition;
+
     redeclare replaceable record extends ThermodynamicState
       "A selection of variables that uniquely defines the thermodynamic state"
       extends Modelica.Icons.Record;
@@ -1053,9 +1072,29 @@ package Media
        Chemical.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
        Chemical.Interfaces.SubstancePort_a H2 "Free hydrogen molecule";
        Chemical.Interfaces.SubstancePort_a OH "Free hydroxide molecule OH-";
-       Modelica.Electrical.Analog.Interfaces.Pin catode "Electric catode";
+       Modelica.Electrical.Analog.Interfaces.Pin cathode "Electric cathode";
        Modelica.Electrical.Analog.Interfaces.Pin anode "Electric anode";
     end SubstancesPort;
+
+  redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
+    Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
+    Chemical.Interfaces.SubstancePort_a H annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
+    Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
+    Chemical.Interfaces.SubstancePort_a H2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
+    Chemical.Interfaces.SubstancePort_a OH annotation (Placement(transformation(extent={{92,-10},{112,10}})));
+    Modelica.Electrical.Analog.Interfaces.PositivePin cathode annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+    Modelica.Electrical.Analog.Interfaces.NegativePin anode annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+  equation
+    connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{56,-100},{56,-70},{-80,-70},{-80,0},{-100,0}},
+                                                                                                        color={158,66,200}));
+    connect(H, substances.H) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},      color={158,66,200}));
+    connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
+    connect(H2, substances.H2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
+    connect(OH, substances.OH) annotation (Line(points={{102,0},{-100,0}},                        color={158,66,200}));
+    connect(cathode, substances.cathode) annotation (Line(points={{0,100},{-100,100},{-100,0},{-100,0}}, color={0,0,255}));
+    connect(anode, substances.anode) annotation (Line(points={{0,-100},{-100,-100},{-100,0}},                     color={0,0,255}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+  end SubstancesDecomposition;
 
   public
     redeclare replaceable model extends ChemicalSolution
@@ -1063,9 +1102,9 @@ package Media
         Real I = 0 "mole-fraction-based ionic strength";
         Real logH,logOH,logO2,logH2,eq;
     equation
-      v=substances.catode.v-substances.anode.v;
-      0=substances.catode.i+substances.anode.i;
-      _i = substances.catode.i;
+      v=substances.cathode.v-substances.anode.v;
+      0=substances.cathode.i+substances.anode.i;
+      _i = substances.cathode.i;
       _i + (-1)*Modelica.Constants.F*eq = 0 "electric current is flow of electrons";
 
       T = stateOfMatter.solution_temperature(
@@ -1256,6 +1295,21 @@ Modelica source.
        Chemical.Interfaces.SubstancePort_a H2O "Gaseous H2O molecule";
        Chemical.Interfaces.SubstancePort_a N2 "Gaseaous nitrogen molecule";
       end SubstancesPort;
+
+      redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
+
+      Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
+      Chemical.Interfaces.SubstancePort_a CO2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
+      Chemical.Interfaces.SubstancePort_a N2 annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
+      Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
+      equation
+      connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
+      connect(CO2, substances.CO2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
+      connect(N2, substances.N2) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},   color={158,66,200}));
+      connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{-82,-100},{-82,0},{-100,0}},      color={158,66,200}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+      end SubstancesDecomposition;
+
 
       redeclare replaceable model extends ChemicalSolution
     protected
@@ -1535,6 +1589,32 @@ Modelica source.
      Chemical.Interfaces.SubstancePort_a Mg "Free magnesium ion Mg++";
      Chemical.Interfaces.SubstancePort_a H2O "Free H2O molecule";
     end SubstancesPort;
+
+
+  redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
+    Chemical.Interfaces.SubstancePort_a Na annotation (Placement(transformation(extent={{90,50},{110,70}})));
+    Chemical.Interfaces.SubstancePort_a HCO3 annotation (Placement(transformation(extent={{92,-70},{112,-50}})));
+    Chemical.Interfaces.SubstancePort_a K annotation (Placement(transformation(extent={{90,90},{110,110}})));
+    Chemical.Interfaces.SubstancePort_a Glucose annotation (Placement(transformation(extent={{-10,10},{10,30}})));
+    Chemical.Interfaces.SubstancePort_a Urea annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
+    Chemical.Interfaces.SubstancePort_a Cl annotation (Placement(transformation(extent={{92,-110},{112,-90}}),iconTransformation(extent={{92,-110},{112,-90}})));
+    Chemical.Interfaces.SubstancePort_a Ca annotation (Placement(transformation(extent={{92,10},{112,30}})));
+    Chemical.Interfaces.SubstancePort_a Mg   annotation (Placement(transformation(extent={{92,-30},{112,-10}})));
+    Chemical.Interfaces.SubstancePort_a H2O  annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+  equation
+    connect(Na, substances.Na) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
+    connect(HCO3, substances.HCO3) annotation (Line(points={{102,-60},{16,-60},{16,0},{-100,0}},      color={158,66,200}));
+    connect(K, substances.K) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
+    connect(Glucose, substances.Glucose) annotation (Line(points={{0,20},{-70,20},{-70,0},{-100,0}},        color={158,66,200}));
+    connect(Urea, substances.Urea) annotation (Line(points={{0,-60},{-78,-60},{-78,0},{-100,0}},      color={158,66,200}));
+    connect(Cl, substances.Cl) annotation (Line(points={{102,-100},{-86,-100},{-86,0},{-100,0}},                      color={158,66,200}));
+    connect(Ca, substances.Ca) annotation (Line(points={{102,20},{18,20},{18,4},{-68,4},{-68,0},{-100,0}},
+                                                                                                      color={158,66,200}));
+    connect(Mg, substances.Mg) annotation (Line(points={{102,-20},{-70,-20},{-70,-4},{-76,-4},{-76,0},{-100,0}}, color={158,66,200}));
+    connect(H2O, substances.H2O) annotation (Line(points={{0,100},{-82,100},{-82,0},{-100,0}}, color={158,66,200}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+  end SubstancesDecomposition;
+
 
   public
     redeclare replaceable model extends ChemicalSolution
@@ -1850,7 +1930,11 @@ Modelica source.
       replaceable connector SubstancesPort
 
       annotation (
-          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}, initialScale = 0.2), graphics={  Rectangle(extent = {{-20, 2}, {20, -2}}, lineColor = {0, 0, 255}, lineThickness = 0.5), Polygon(points = {{-80, 50}, {80, 50}, {100, 30}, {80, -40}, {60, -50}, {-60, -50}, {-80, -40}, {-100, 30}, {-80, 50}}, lineColor = {0, 0, 0}, fillColor = {158,66,200}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-65, 25}, {-55, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-5, 25}, {5, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{55, 25}, {65, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-35, -15}, {-25, -25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{25, -15}, {35, -25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid)}),
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}, initialScale = 0.2), graphics={  Rectangle(
+                extent={{-20,2},{20,-2}},
+                lineColor={158,66,200},
+                lineThickness=0.5),                                                                                                                                                                                                      Polygon(points={{-80,50},
+                    {80,50},{100,30},{80,-40},{60,-50},{-60,-50},{-80,-40},{-100,30},{-80,50}},                                                                                                                                                                                                        lineColor = {0, 0, 0}, fillColor = {158,66,200}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-65, 25}, {-55, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-5, 25}, {5, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{55, 25}, {65, 15}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-35, -15}, {-25, -25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{25, -15}, {35, -25}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid)}),
           Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}, initialScale = 0.2), graphics={  Polygon(points = {{-40, 25}, {40, 25}, {50, 15}, {40, -20}, {30, -25}, {-30, -25}, {-40, -20}, {-50, 15}, {-40, 25}}, lineColor = {0, 0, 0}, fillColor = {158,66,200}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-32.5, 7.5}, {-27.5, 12.5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-2.5, 12.5}, {2.5, 7.5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{27.5, 12.5}, {32.5, 7.5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-17.5, -7.5}, {-12.5, -12.5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{12.5, -7.5}, {17.5, -12.5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Text(extent = {{-150, 70}, {150, 40}}, lineColor = {0, 0, 0}, textString = "%name")}),
           Documentation(info = "<html>
         <p>
@@ -1859,6 +1943,12 @@ Modelica source.
         </p>
         </html>"));
       end SubstancesPort;
+
+      replaceable partial model SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
+        SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+      equation
+
+      end SubstancesDecomposition;
 
       replaceable partial model ChemicalSolution
         "Adaptor between selected free base chemical substances and medium substances"

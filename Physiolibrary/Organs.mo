@@ -2671,14 +2671,6 @@ vector of pressure-flow connectors.
         connect(pulmCapysVentilated.substances.CO2,CO2_diffusion. liquid_port)
           annotation (Line(points={{0,-38},{-12,-38},{-12,-16}},
               color={158,66,200}));
-        connect(alveolar.H_plus,pulmCapysVentilated. substances.H)
-          annotation (Line(points={{32,-22},{0,-22},{0,-38}},  color={158,66,200}));
-        connect(alveolar.CO2,pulmCapysVentilated. substances.CO2)
-          annotation (Line(points={{32,-16},{0,-16},{0,-38}},        color={158,
-                66,200}));
-        connect(alveolar.O2,pulmCapysVentilated. substances.O2)
-          annotation (Line(points={{32,-10},{0,-10},{0,-38}},         color={158,
-                66,200}));
         connect(pulmCapysVentilated.q_in[2],alveolar. a_port) annotation (Line(
             points={{9.9,-37.35},{36,-37.35},{36,-26.2}},
             color={127,0,0},
@@ -2694,6 +2686,11 @@ vector of pressure-flow connectors.
         connect(thoraxPressure, pulmCapysVentilated.externalPressure) annotation (
             Line(points={{-41,77},{-41,50},{18,50},{18,-29},{17,-29}}, color={0,0,127}));
 
+        connect(alveolar.substances, pulmCapysVentilated.substances)
+          annotation (Line(
+            points={{32,-16},{0,-16},{0,-38},{0,-38}},
+            color={158,66,200},
+            thickness=0.5));
            annotation (Dialog( group = "Perfusion"));
       end RespiratoryUnit;
 
@@ -7235,28 +7232,22 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           points={{-72,-90},{-52,-90},{-52,-90.8667},{-50.1,-90.8667}},
           color={127,0,0},
           thickness=0.5));
-      connect(pCO2.port, elasticVessel.q_in[3]) annotation (Line(points={{-52,-56},
-              {-52,-74},{-50,-74},{-50,-90.5778},{-50.1,-90.5778}},color={0,127,255}));
-      connect(pO2.port, elasticVessel.q_in[4]) annotation (Line(points={{-74,-20},
-              {-74,-74},{-50,-74},{-50,-90.2889},{-50.1,-90.2889}},
+      connect(pCO2.port, elasticVessel.q_in[3]) annotation (Line(points={{-52,-56},{-52,-74},{-50,-74},{-50,-90.5778},{-50.1,-90.5778}},
+                                                                   color={0,127,255}));
+      connect(pO2.port, elasticVessel.q_in[4]) annotation (Line(points={{-74,-20},{-74,-74},{-50,-74},{-50,-90.2889},{-50.1,-90.2889}},
                                                                color={0,127,255}));
       connect(vasopressin.port, elasticVessel.q_in[5]) annotation (Line(points={{-34,32},
               {-34,-62},{-52,-62},{-52,-76},{-50,-76},{-50,-90},{-50.1,-90}},
             color={0,127,255}));
-      connect(angiotensin2.port, elasticVessel.q_in[6]) annotation (Line(points={{-68,32},
-              {-68,22},{-36,22},{-36,4},{-34,4},{-34,-62},{-52,-62},{-52,-74},{
-              -50,-74},{-50,-89.7111},{-50.1,-89.7111}},
-                                                     color={0,127,255}));
+      connect(angiotensin2.port, elasticVessel.q_in[6]) annotation (Line(points={{-68,32},{-68,22},{-36,22},{-36,4},{-34,4},{-34,-62},{-52,-62},{-52,-74},{-50,
+              -74},{-50,-89.7111},{-50.1,-89.7111}}, color={0,127,255}));
       connect(anesthesiaVascularConductance.port, elasticVessel.q_in[7])
-        annotation (Line(points={{-84,50},{-84,26},{-66,26},{-66,22},{-34,22},{
-              -34,-62},{-50,-62},{-50,-89.4222},{-50.1,-89.4222}},
+        annotation (Line(points={{-84,50},{-84,26},{-66,26},{-66,22},{-34,22},{-34,-62},{-50,-62},{-50,-89.4222},{-50.1,-89.4222}},
                                                           color={0,127,255}));
-      connect(AplhaReceptors.port_a, elasticVessel.q_in[8]) annotation (Line(points={{-8,24},
-              {-8,-89.1333},{-50.1,-89.1333}},         color={0,127,255}));
-      connect(Viscosity.port, elasticVessel.q_in[9]) annotation (Line(points={{12,68},
-              {16,68},{16,-102},{-22,-102},{-22,-88},{-30,-88},{-30,-88.8444},{
-              -50.1,-88.8444}},
-                          color={0,127,255}));
+      connect(AplhaReceptors.port_a, elasticVessel.q_in[8]) annotation (Line(points={{-8,24},{-8,-89.1333},{-50.1,-89.1333}},
+                                                       color={0,127,255}));
+      connect(Viscosity.port, elasticVessel.q_in[9]) annotation (Line(points={{12,68},{16,68},{16,-102},{-22,-102},{-22,-88},{-30,-88},{-30,-88.8444},{-50.1,
+              -88.8444}}, color={0,127,255}));
       connect(elasticVessel.substances.O2, pO2.port_a) annotation (Line(
             points={{-60,-90},{-64,-90},{-64,-48},{-90,-48},{-90,-10},{-84,-10}},
             color={158,66,200}));
