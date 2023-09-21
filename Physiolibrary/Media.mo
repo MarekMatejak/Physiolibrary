@@ -16,7 +16,7 @@ package Media
         "Desglymidodrine","AlphaBlockers","BetaBlockers",
         "AnesthesiaVascularConductance",
         "Angiotensin2","Renin","Aldosterone",
-        "H2O_P"},
+        "H2O_P","Other_E"},
       reference_X=X(),
       SubstanceFlowNominal=X() ./ Constants.TimeScale,
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
@@ -270,25 +270,42 @@ package Media
        substances.KetoAcids.q * actualStream(substances.KetoAcids.h_outflow)
        "enthalpy from substances";
 
+       massFlows[i("H2O_E")]= 0;
+       massFlows[i("O2")]=  substances.O2.q * Substances.O2.MolarWeight;
+       massFlows[i("CO2")]= substances.CO2.q * Substances.CO2.MolarWeight  + substances.HCO3.q .* Substances.CO2.MolarWeight;
+       massFlows[i("CO")]= substances.CO.q * Substances.CO.MolarWeight;
+       massFlows[i("Hb")]= 0;
+       massFlows[i("MetHb")]= 0;
+       massFlows[i("HbF")]= 0;
+       massFlows[i("Alb")]= 0;
+       massFlows[i("Glb")]= 0;
+       massFlows[i("PO4")]= 0;
+       massFlows[i("DPG")]= 0;
+       massFlows[i("Glucose")]= substances.Glucose.q * Substances.Glucose.MolarWeight;
+       massFlows[i("Lactate")]= substances.Lactate.q * Constants.MM_Lactate;
+       massFlows[i("Urea")]= substances.Urea.q * Substances.Urea.MolarWeight;
+       massFlows[i("AminoAcids")]= substances.AminoAcids.q * Constants.MM_AminoAcids;
+       massFlows[i("Lipids")]= substances.Lipids.q * Constants.MM_Lipids;
+       massFlows[i("KetoAcids")]= substances.KetoAcids.q * Constants.MM_KetoAcids;
+       massFlows[i("SID")]= 0;
+       massFlows[i("Epinephrine")]= 0;
+       massFlows[i("Norepinephrine")]= 0;
+       massFlows[i("Vasopressin")]= 0;
+       massFlows[i("Insulin")]= 0;
+       massFlows[i("Glucagon")]= 0;
+       massFlows[i("Thyrotropin")]= 0;
+       massFlows[i("Thyroxine")]= 0;
+       massFlows[i("Leptin")]= 0;
+       massFlows[i("Desglymidodrine")]= 0;
+       massFlows[i("AlphaBlockers")]= 0;
+       massFlows[i("BetaBlockers")]= 0;
+       massFlows[i("AnesthesiaVascularConductance")]= 0;
+       massFlows[i("Angiotensin2")]= 0;
+       massFlows[i("Renin")]= 0;
+       massFlows[i("Aldosterone")]= 0;
+       massFlows[i("H2O_P")]= substances.H2O.q * Substances.Water.MolarWeight;
+       massFlows[i("Other_E")]= 0;
 
-      massFlows = {
-          0,substances.O2.q * Substances.O2.MolarWeight,
-          substances.CO2.q * Substances.CO2.MolarWeight  + substances.HCO3.q .* Substances.CO2.MolarWeight,
-          substances.CO.q * Substances.CO.MolarWeight,
-          0,0,0,0,0,0,0,
-          substances.Glucose.q * Substances.Glucose.MolarWeight,
-          substances.Lactate.q * Constants.MM_Lactate,
-          substances.Urea.q * Substances.Urea.MolarWeight,
-          substances.AminoAcids.q * Constants.MM_AminoAcids,
-          substances.Lipids.q * Constants.MM_Lipids,
-          substances.KetoAcids.q * Constants.MM_KetoAcids,
-          0,
-          0,0,0,
-          0,0,0,0,0,
-          0,0,0,
-          0,
-          0,0,0,
-          substances.H2O.q * Substances.Water.MolarWeight};
 
 
       annotation (Documentation(info="<html>
@@ -482,21 +499,42 @@ package Media
 
     redeclare function extends specificEnthalpies_TpvI
     algorithm
-      specificEnthalpy:={0,
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2_g,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2_g,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO_g,T,p,v,I),
-         0,0,0,0,0,0,0,
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Glucose,T,p,v,I),
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Lactate,T,p,v,I),
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Urea,T,p,v,I),0,0,0,
-         0,
-         0,0,0,
-         0,0,0,0,0,
-         0,0,0,
-         0,
-         0,0,0,
-         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I)};
+       specificEnthalpy[i("H2O_E")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I);
+       specificEnthalpy[i("O2")]:=Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2_g,T,p,v,I);
+       specificEnthalpy[i("CO2")]:=Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2_g,T,p,v,I);
+       specificEnthalpy[i("CO")]:=Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO_g,T,p,v,I);
+       specificEnthalpy[i("Hb")]:=0;
+       specificEnthalpy[i("MetHb")]:=0;
+       specificEnthalpy[i("HbF")]:=0;
+       specificEnthalpy[i("Alb")]:=0;
+       specificEnthalpy[i("Glb")]:=0;
+       specificEnthalpy[i("PO4")]:=0;
+       specificEnthalpy[i("DPG")]:=0;
+       specificEnthalpy[i("Glucose")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Glucose,T,p,v,I);
+       specificEnthalpy[i("Lactate")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Lactate,T,p,v,I);
+       specificEnthalpy[i("Urea")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Urea,T,p,v,I);
+       specificEnthalpy[i("AminoAcids")]:=0;
+       specificEnthalpy[i("Lipids")]:=0;
+       specificEnthalpy[i("KetoAcids")]:=0;
+       specificEnthalpy[i("SID")]:=0;
+       specificEnthalpy[i("Epinephrine")]:=0;
+       specificEnthalpy[i("Norepinephrine")]:=0;
+       specificEnthalpy[i("Vasopressin")]:=0;
+       specificEnthalpy[i("Insulin")]:=0;
+       specificEnthalpy[i("Glucagon")]:=0;
+       specificEnthalpy[i("Thyrotropin")]:=0;
+       specificEnthalpy[i("Thyroxine")]:=0;
+       specificEnthalpy[i("Leptin")]:=0;
+       specificEnthalpy[i("Desglymidodrine")]:=0;
+       specificEnthalpy[i("AlphaBlockers")]:=0;
+       specificEnthalpy[i("BetaBlockers")]:=0;
+       specificEnthalpy[i("AnesthesiaVascularConductance")]:=0;
+       specificEnthalpy[i("Angiotensin2")]:=0;
+       specificEnthalpy[i("Renin")]:=0;
+       specificEnthalpy[i("Aldosterone")]:=0;
+       specificEnthalpy[i("H2O_P")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I);
+       specificEnthalpy[i("Other_E")]:=0;
+
     end specificEnthalpies_TpvI;
 
 
@@ -926,60 +964,62 @@ package Media
 
     function X "To set mass fractions in blood"
 
-      input Types.Fraction hematocrit = 0.44;
-      input Types.Concentration tO2 = 8.16865,
-              tCO2 = 21.2679 "Total carbon dioxide in arterial blood",
-              tCO = 1.512e-6,
-              tHb = 8.4;
-      input Types.Fraction FMetHb=0.005,
-              FHbF=0.005;
-      input Types.Concentration tAlb = 0.66;
-      input Types.MassConcentration tGlb = 28;
+      input Types.VolumeFraction hematocrit = 0.44 "Hematocrit [ml/ml]";
+      input Types.Concentration tO2 = 8.16865 "Total oxygen in blood",
+              tCO2 = 21.2679 "Total carbon dioxide in blood",
+              tCO = 1.512e-6 "Total carbon monoxide in blood",
+              tHb = 8.4 "Total hemoglobin in blood";
+      input Types.Fraction FMetHb=0.005 "Methemoglobin fraction",
+              FHbF=0.005 "Foetal hemoglobin fraction";
+      input Types.Concentration tAlb = 0.66 "Total albumin in blood plasma";
+      input Types.MassConcentration tGlb = 28 "Total globulin in blood plasma";
 
-      input Types.Concentration tPO4 = 0.153,
-              cDPG = 5.4,
-              glucose = 6.08,
-              lactate = 1.04,
-              urea = 6.64,
-              aminoAcids = 4.97,
-              lipids = 1.23,
-              ketoacids = 4.88e-2,
-              BEox = 0;
+      input Types.Concentration tPO4 = 0.153 "Total inorganic phosphate in blood plasma",
+              cDPG = 5.4 "Diphosphoglycerate in red cells",
+              glucose = 6.08 "Glucose in blood plasma",
+              lactate = 1.04 "Lactate in blood plasma",
+              urea = 6.64 "Urea in blood plasma",
+              aminoAcids = 4.97 "Amino acids in blood plasma",
+              lipids = 1.23 "Fatty acids in blood plasma",
+              ketoacids = 4.88e-2 "Keto acids in blood plasma",
+              BEox = 0 "Base excess of oxygenated blood";
 
        input Types.MassConcentration
-              epinephrine(displayUnit="ng/L")=40e-9,
-              norepinephrine(displayUnit="ng/L")=240e-9;
+              epinephrine(displayUnit="ng/L")=40e-9 "Epinephrine in blood plasma",
+              norepinephrine(displayUnit="ng/L")=240e-9 "Norepinephrine in blood plasma";
        input Types.Concentration
-              vasopressin(displayUnit="pmol/L")=1.84e-9;
+              vasopressin(displayUnit="pmol/L")=1.84e-9 "ADH in blood plasma";
        input Real
-              insulin(displayUnit="mU/L")=19.91;
+              insulin(displayUnit="mU/L")=19.91 "Insulin in blood plasma";
        input Types.MassConcentration
-              glucagon(displayUnit="ng/L")=69.68e-9;
+              glucagon(displayUnit="ng/L")=69.68e-9 "Glucagon in blood plasma";
        input Types.Concentration
-              thyrotropin(displayUnit="pmol/L")=4.03e-9;
+              thyrotropin(displayUnit="pmol/L")=4.03e-9 "Thyrotropin in blood plasma";
        input Types.MassConcentration
-              thyroxine(displayUnit="ug/L")=79.6e-6,
-              leptin(displayUnit="ug/L")=7.96e-6,
-              desglymidodrine(displayUnit="ug/L")=1e-11;
+              thyroxine(displayUnit="ug/L")=79.6e-6 "Thyroxine blood plasma",
+              leptin(displayUnit="ug/L")=7.96e-6 "Leptin in blood plasma",
+              desglymidodrine(displayUnit="ug/L")=1e-11 "Desglymidodrine in blood plasma";
       input Types.Fraction
-              alphaBlockers = Modelica.Constants.small,
-              betaBlockers = Modelica.Constants.small,
-              anesthesiaVascularConductance = 1;
+              alphaBlockers = Modelica.Constants.small "Alpha blockers efffect",
+              betaBlockers = Modelica.Constants.small "Beta blockers efffect",
+              anesthesiaVascularConductance = 1 "Anesthesia vasodilatation efffect";
       input Types.MassConcentration
-              angiotensin2(displayUnit="ng/L")=20e-9;
-      input Real renin(displayUnit="ng/mL/h")=2;
+              angiotensin2(displayUnit="ng/L")=20e-9 "A2 in blood plasma";
+      input Real renin(displayUnit="ng/mL/h")=2 "Renin in blood plasma";
       input Types.Concentration
-              aldosterone(displayUnit="nmol/L")=0.33e-6;
-      input Types.MassConcentration H2O_plasma = 932.75;
-      input Types.MassConcentration H2O_ery = 694;
+              aldosterone(displayUnit="nmol/L")=0.33e-6 "Aldosterone in blood plasma";
+      input Types.MassConcentration H2O_plasma = 932.75 "Water in blood plasma";
+      input Types.MassConcentration H2O_ery = 694 "Water in blood red cells";
       output Types.MassFraction X[nS];
-     // output Types.Fraction XE,XP,Hct;
+
     protected
-      Types.Density density;
+      Types.Density density,plasmaDensity;
       Types.Fraction plasmacrit;
       Types.Concentration NSID;
+      Types.Fraction XE,XP,PMF;
     algorithm
-      density := 1054;
+      density := 1057;
+      plasmaDensity := 1025;
       plasmacrit := 1-hematocrit;
       NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE);
 
@@ -1041,12 +1081,14 @@ package Media
         "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
       X[i("Aldosterone")] := plasmacrit*(aldosterone*
         Constants.MM_Aldosterone)/density;
-     /*
- XP := X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
-   X[i("PO4")] + X[i("Lactate")] + X[i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[i("Keannotation 0toAcids")];
-  XE := X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")];
-  Hct := XE/ (XE + XP);
-  */
+
+      PMF := plasmacrit * plasmaDensity/density;
+      XP := X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
+       X[i("PO4")] + X[i("Lactate")] + X[i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[i("KetoAcids")];
+      XE := XP*(1-PMF)/PMF;
+      X[i("Other_E")] := XE - (X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")]);
+
+
     end X;
 
     function plasmacrit "Blood plasmacrit [mL/mL]"
@@ -1093,7 +1135,7 @@ package Media
     algorithm
       XP := state.X[i("H2O_P")] + state.X[i("CO2")] + state.X[i("Alb")] + state.X[i("Glb")] + state.X[i("Glucose")] +
        state.X[i("PO4")] + state.X[i("Lactate")] + state.X[i("Urea")] + state.X[i("AminoAcids")] + state.X[i("Lipids")] + state.X[i("KetoAcids")];
-      XE := state.X[i("H2O_E")] + state.X[i("Hb")] + state.X[i("DPG")];
+      XE := state.X[i("H2O_E")] + state.X[i("Hb")] + state.X[i("DPG")] + state.X[i("Other_E")];
       F := XE/ (XE + XP);
     end formedElementsMassFraction;
 

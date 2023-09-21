@@ -790,6 +790,7 @@ Connector with one flow signal of type Real.
       parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
 
       parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
+      parameter Modelica.Units.SI.Mass massOffset = tm_start - sum(m_start);
       Modelica.Units.SI.ElectricCurrent i;
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
@@ -873,7 +874,7 @@ Connector with one flow signal of type Real.
       der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
 
 
-      mass = sum(substanceMasses);
+      mass = sum(substanceMasses) + massOffset;
 
       massFractions = substanceMasses[1:Medium.nXi] ./ mass;
 
@@ -4404,7 +4405,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         useSubstances=true,
         Compliance=7.5006157584566e-08,
         nPorts=13)
-        annotation (Placement(transformation(extent={{-18,-16},{-38,6}})));
+        annotation (Placement(transformation(extent={{-16,-16},{-36,6}})));
       Components.ElasticVessel Veins(
         redeclare package Medium = Blood,
         massFractions_start=Blood.VenousDefault,
@@ -4527,40 +4528,40 @@ The sensor is ideal, i.e., it does not influence the fluid.
             Physiolibrary.Media.Blood.formedElementsDensity)
         annotation (Placement(transformation(extent={{-232,-12},{-212,8}})));
     equation
-      connect(O2.port_a, Artys.substances.O2) annotation (Line(points={{-10,82},
-              {-18,82},{-18,-5}},  color={158,66,200}));
+      connect(O2.port_a, Artys.substances.O2) annotation (Line(points={{-10,82},{-16,
+              82},{-16,-5}},       color={158,66,200}));
       connect(O2.port_b, Veins.substances.O2) annotation (Line(points={{10,82},
               {56,82},{56,-2},{22,-2}},          color={158,66,200}));
-      connect(CO2.port_a, Artys.substances.CO2) annotation (Line(points={{-10,64},
-              {-18,64},{-18,-5}},              color={158,66,200}));
+      connect(CO2.port_a, Artys.substances.CO2) annotation (Line(points={{-10,64},{-16,
+              64},{-16,-5}},                   color={158,66,200}));
       connect(CO2.port_b, Veins.substances.CO2) annotation (Line(points={{10,64},
               {22,64},{22,-2}},   color={158,66,200}));
-      connect(CO.port_a, Artys.substances.CO) annotation (Line(points={{-10,42},
-              {-18,42},{-18,-5}},  color={158,66,200}));
+      connect(CO.port_a, Artys.substances.CO) annotation (Line(points={{-10,42},{-16,
+              42},{-16,-5}},       color={158,66,200}));
       connect(CO.port_b, Veins.substances.CO) annotation (Line(points={{10,42},
               {22,42},{22,-2}},   color={158,66,200}));
-      connect(H2O.port_a, Artys.substances.H2O) annotation (Line(points={{-12,22},
-              {-18,22},{-18,-5}},  color={158,66,200}));
+      connect(H2O.port_a, Artys.substances.H2O) annotation (Line(points={{-12,22},{-16,
+              22},{-16,-5}},       color={158,66,200}));
       connect(H2O.port_b, Veins.substances.H2O) annotation (Line(points={{8,22},{
               22,22},{22,-2}},    color={158,66,200}));
 
       connect(Glucose.port_a, Artys.substances.Glucose) annotation (Line(points={{-14,-4},
-              {-14,-6},{-18,-6},{-18,-4},{-20,-4},{-20,-5},{-18,-5}},
+              {-14,-6},{-18,-6},{-18,-4},{-20,-4},{-20,-5},{-16,-5}},
                                    color={158,66,200}));
       connect(Glucose.port_b, Veins.substances.Glucose) annotation (Line(points={{6,-4},{
               22,-4},{22,-2}},    color={158,66,200}));
       connect(Lactate.port_a, Artys.substances.Lactate) annotation (Line(points={{-14,-24},
-              {-20,-24},{-20,-5},{-18,-5}},
+              {-20,-24},{-20,-5},{-16,-5}},
                                    color={158,66,200}));
       connect(Lactate.port_b, Veins.substances.Lactate) annotation (Line(points={{6,-24},
               {22,-24},{22,-2}},  color={158,66,200}));
       connect(Urea.port_a, Artys.substances.Urea) annotation (Line(points={{-16,-44},
-              {-20,-44},{-20,-5},{-18,-5}},
+              {-20,-44},{-20,-5},{-16,-5}},
                                    color={158,66,200}));
       connect(Urea.port_b, Veins.substances.Urea) annotation (Line(points={{4,-44},
               {22,-44},{22,-2}},  color={158,66,200}));
       connect(AminoAcids.port_a, Artys.substances.AminoAcids) annotation (Line(points={{-16,-72},
-              {-20,-72},{-20,-5},{-18,-5}},
+              {-20,-72},{-20,-5},{-16,-5}},
                                    color={158,66,200}));
       connect(AminoAcids.port_b, Veins.substances.AminoAcids) annotation (Line(points={{4,-72},
               {22,-72},{22,-2}},  color={158,66,200}));
@@ -4569,13 +4570,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(pO2_artys.port_a, O2.port_a) annotation (Line(points={{-72,84},{
               -70,84},{-70,82},{-10,82}},                      color={158,66,
               200}));
-      connect(pO2_artys.port, Artys.q_in[1]) annotation (Line(points={{-82,74},
-              {-82,-8},{-50,-8},{-50,-6.32},{-27.9,-6.32}},     color={0,127,
+      connect(pO2_artys.port, Artys.q_in[1]) annotation (Line(points={{-82,74},{-82,
+              -8},{-50,-8},{-50,-6.32},{-25.9,-6.32}},          color={0,127,
               255}));
       connect(pCO2_artys.port_a, CO2.port_a) annotation (Line(points={{-54,64},
               {-10,64}},                    color={158,66,200}));
-      connect(pCO2_artys.port, Artys.q_in[2]) annotation (Line(points={{-64,54},
-              {-64,-8},{-54,-8},{-54,-6.1},{-27.9,-6.1}},
+      connect(pCO2_artys.port, Artys.q_in[2]) annotation (Line(points={{-64,54},{-64,
+              -8},{-54,-8},{-54,-6.1},{-25.9,-6.1}},
                                            color={0,127,255}));
       connect(pO2_veins.port_a, O2.port_b) annotation (Line(points={{34,82},{10,
               82}},                     color={158,66,200}));
@@ -4588,18 +4589,18 @@ The sensor is ideal, i.e., it does not influence the fluid.
               {46,50},{44,50},{44,12},{46,12},{46,-16},{31.9,-16},{31.9,
               -2.74286}},
                        color={0,127,255}));
-      connect(ArtysGlu.port, Artys.q_in[3]) annotation (Line(points={{-90,-12},
-              {-90,-14},{-54,-14},{-54,-5.88},{-27.9,-5.88}},
+      connect(ArtysGlu.port, Artys.q_in[3]) annotation (Line(points={{-90,-12},{-90,
+              -14},{-54,-14},{-54,-5.88},{-25.9,-5.88}},
                           color={0,127,255}));
       connect(VeinsGlu.port, Veins.q_in[3]) annotation (Line(points={{88,-16},{
               88,-18},{64,-18},{64,-4},{46,-4},{46,-16},{31.9,-16},{31.9,
               -2.37143}},                                         color={0,127,
               255}));
-      connect(ArtysUrea.port, Artys.q_in[4]) annotation (Line(points={{-90,-50},
-              {-90,-52},{-60,-52},{-60,-44},{-52,-44},{-52,-5.66},{-27.9,-5.66}},
+      connect(ArtysUrea.port, Artys.q_in[4]) annotation (Line(points={{-90,-50},{-90,
+              -52},{-60,-52},{-60,-44},{-52,-44},{-52,-5.66},{-25.9,-5.66}},
             color={0,127,255}));
-      connect(ArtysLactate.port, Artys.q_in[5]) annotation (Line(points={{-70,-40},
-              {-70,-42},{-54,-42},{-54,-5.44},{-27.9,-5.44}},            color=
+      connect(ArtysLactate.port, Artys.q_in[5]) annotation (Line(points={{-70,-40},{
+              -70,-42},{-54,-42},{-54,-5.44},{-25.9,-5.44}},             color=
               {0,127,255}));
       connect(VeinsUrea.port, Veins.q_in[4]) annotation (Line(points={{78,-52},
               {78,-54},{31.9,-54},{31.9,-2}}, color={0,127,255}));
@@ -4607,34 +4608,33 @@ The sensor is ideal, i.e., it does not influence the fluid.
               -42},{50,-44},{31.9,-44},{31.9,-1.62857}}, color={0,127,255}));
       connect(VeinsAA.port, Veins.q_in[6]) annotation (Line(points={{78,-80},{
               78,-82},{31.9,-82},{31.9,-1.25714}}, color={0,127,255}));
-      connect(ArtysAA.port, Artys.q_in[6]) annotation (Line(points={{-74,-80},{
-              -74,-82},{-54,-82},{-54,-5.22},{-27.9,-5.22}},       color={0,127,
+      connect(ArtysAA.port, Artys.q_in[6]) annotation (Line(points={{-74,-80},{-74,-82},
+              {-54,-82},{-54,-5.22},{-25.9,-5.22}},                color={0,127,
               255}));
-      connect(ArtysH2O.port, Artys.q_in[7]) annotation (Line(points={{-74,16},{
-              -74,-10},{-54,-10},{-54,-5},{-27.9,-5}},             color={0,127,
+      connect(ArtysH2O.port, Artys.q_in[7]) annotation (Line(points={{-74,16},{-74,-10},
+              {-54,-10},{-54,-5},{-25.9,-5}},                      color={0,127,
               255}));
       connect(VeinsH2O.port, Veins.q_in[7]) annotation (Line(points={{70,14},{
               70,-4},{46,-4},{46,-16},{31.9,-16},{31.9,-0.885714}}, color={0,
               127,255}));
-      connect(plasmacrit.port, Artys.q_in[8]) annotation (Line(points={{-156,26},
-              {-156,18},{-106,18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,
-              -4.78},{-27.9,-4.78}}, color={0,127,255}));
-      connect(plasmaMassFraction.port, Artys.q_in[9]) annotation (Line(points={
-              {-160,-6},{-160,-8},{-106,-8},{-106,-16},{-88,-16},{-88,-14},{-54,
-              -14},{-54,-4.56},{-27.9,-4.56}}, color={0,127,255}));
-      connect(hematocrit.port, Artys.q_in[10]) annotation (Line(points={{-160,
-              -44},{-160,-46},{-106,-46},{-106,-16},{-88,-16},{-88,-14},{-54,
-              -14},{-54,-4.34},{-27.9,-4.34}}, color={0,127,255}));
+      connect(plasmacrit.port, Artys.q_in[8]) annotation (Line(points={{-156,26},{-156,
+              18},{-106,18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,-4.78},{-25.9,
+              -4.78}}, color={0,127,255}));
+      connect(plasmaMassFraction.port, Artys.q_in[9]) annotation (Line(points={{-160,-6},
+              {-160,-8},{-106,-8},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,-4.56},
+              {-25.9,-4.56}},        color={0,127,255}));
+      connect(hematocrit.port, Artys.q_in[10]) annotation (Line(points={{-160,-44},{
+              -160,-46},{-106,-46},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,-4.34},
+              {-25.9,-4.34}}, color={0,127,255}));
       connect(formedElementsMassFraction.port, Artys.q_in[11]) annotation (Line(
-            points={{-160,-80},{-160,-82},{-54,-82},{-54,-4.12},{-27.9,-4.12}},
+            points={{-160,-80},{-160,-82},{-54,-82},{-54,-4.12},{-25.9,-4.12}},
             color={0,127,255}));
-      connect(plasmaDensity.port, Artys.q_in[12]) annotation (Line(points={{
-              -224,28},{-224,22},{-172,22},{-172,20},{-156,20},{-156,18},{-106,
-              18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,-3.9},{-27.9,
-              -3.9}}, color={0,127,255}));
-      connect(formedElementsDensity.port, Artys.q_in[13]) annotation (Line(
-            points={{-222,-12},{-222,-18},{-106,-18},{-106,-16},{-88,-16},{-88,
-              -14},{-54,-14},{-54,-3.68},{-27.9,-3.68}}, color={0,127,255}));
+      connect(plasmaDensity.port, Artys.q_in[12]) annotation (Line(points={{-224,28},
+              {-224,22},{-172,22},{-172,20},{-156,20},{-156,18},{-106,18},{-106,-16},
+              {-88,-16},{-88,-14},{-54,-14},{-54,-3.9},{-25.9,-3.9}}, color={0,127,255}));
+      connect(formedElementsDensity.port, Artys.q_in[13]) annotation (Line(points={{-222,
+              -12},{-222,-18},{-106,-18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,
+              -3.68},{-25.9,-3.68}},      color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         experiment(
