@@ -1066,9 +1066,9 @@ as signal.
       volumeOutflowRate = massFlow / density_outflow;
       annotation (
         Documentation(revisions = "<html>
-	<p><i>2009-2018</i></p>
-	<p>Marek Matejak, marek@matfyz.cz </p>
-	</html>"),
+        <p><i>2009-2018</i></p>
+        <p>Marek Matejak, marek@matfyz.cz </p>
+        </html>"),
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-25, -11}, {34, -70}}, lineColor = {0, 0, 0}, textString = "V'")}));
     end FlowMeasure;
 
@@ -1093,59 +1093,59 @@ as signal.
     end PressureMeasure;
 
     /*
-      	  model MolarConcentrations "Ideal one port molarity sensor"
-      	    extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare
-      		package Medium = Physiolibrary.Media.SimpleWater);
-      	    extends Modelica.Icons.RotationalSensor;
-      	    parameter String substanceName = "CO2" "Name of substance";
+                model MolarConcentrations "Ideal one port molarity sensor"
+                  extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare
+                      package Medium = Physiolibrary.Media.SimpleWater);
+                  extends Modelica.Icons.RotationalSensor;
+                  parameter String substanceName = "CO2" "Name of substance";
       
-      	    Types.RealIO.ConcentrationOutput c "Molar concentration in port medium"
-      	      annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+                  Types.RealIO.ConcentrationOutput c "Molar concentration in port medium"
+                    annotation (Placement(transformation(extent={{100,-10},{120,10}})));
       
-      	  protected
-      	    parameter Integer ind(fixed=false)
-      	      "Index of species in vector of independent mass fractions";
-      	    Types.Concentration cVec[Medium.nCS]
-      	      "Concentration vector, needed because indexed argument for the operator inStream is not supported";
-      	    Medium.ThermodynamicState state = Medium.setState_phX(port.p,inStream(port.h_outflow));
+                protected
+                  parameter Integer ind(fixed=false)
+                    "Index of species in vector of independent mass fractions";
+                  Types.Concentration cVec[Medium.nCS]
+                    "Concentration vector, needed because indexed argument for the operator inStream is not supported";
+                  Medium.ThermodynamicState state = Medium.setState_phX(port.p,inStream(port.h_outflow));
       
-      	  initial algorithm
-      	    ind:= -1;
-      	    for i in 1:Medium.nXi loop
-      	      if ( Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i], substanceName)) then
-      		ind := i;
-      	      end if;
-      	    end for;
-      	    assert(ind > 0, "Mass fraction '" + substanceName + "' is not present in medium '"
-      		   + Medium.mediumName + "'.\n"
-      		   + "Check sensor parameter and medium model.");
-      	  equation
-      	    cVec = Medium.concentration(state,inStream(port.Xi_outflow),inStream(port.C_outflow));
-      	    c = cVec[ind];
-      	  annotation (defaultComponentName="massFraction",
-      	    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-      		      100}}), graphics={
-      		  Line(points={{0,-70},{0,-100}}, color={0,0,127}),
-      		  Text(
-      		    extent={{-150,80},{150,120}},
-      		    textString="%name",
-      		    lineColor={0,0,255}),
-      		  Text(
-      		    extent={{160,-30},{60,-60}},
-      		    textString="Xi"),
-      		  Line(points={{70,0},{100,0}}, color={0,0,127})}),
-      	    Documentation(info="<html>
-      	<p>
-      	This component monitors the mass fraction contained in the fluid passing its port.
-      	The sensor is ideal, i.e., it does not influence the fluid.
-      	</p>
-      	</html>",   revisions="<html>
-      	<ul>
-      	<li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
-      	</ul>
-      	</html>"));
-      	end MolarConcentrations;
-      	*/
+                initial algorithm
+                  ind:= -1;
+                  for i in 1:Medium.nXi loop
+                    if ( Modelica.Utilities.Strings.isEqual(Medium.substanceNames[i], substanceName)) then
+                      ind := i;
+                    end if;
+                  end for;
+                  assert(ind > 0, "Mass fraction '" + substanceName + "' is not present in medium '"
+                         + Medium.mediumName + "'.\n"
+                         + "Check sensor parameter and medium model.");
+                equation
+                  cVec = Medium.concentration(state,inStream(port.Xi_outflow),inStream(port.C_outflow));
+                  c = cVec[ind];
+                annotation (defaultComponentName="massFraction",
+                  Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                            100}}), graphics={
+                        Line(points={{0,-70},{0,-100}}, color={0,0,127}),
+                        Text(
+                          extent={{-150,80},{150,120}},
+                          textString="%name",
+                          lineColor={0,0,255}),
+                        Text(
+                          extent={{160,-30},{60,-60}},
+                          textString="Xi"),
+                        Line(points={{70,0},{100,0}}, color={0,0,127})}),
+                  Documentation(info="<html>
+              <p>
+              This component monitors the mass fraction contained in the fluid passing its port.
+              The sensor is ideal, i.e., it does not influence the fluid.
+              </p>
+              </html>",   revisions="<html>
+              <ul>
+              <li>2011-12-14: Stefan Wischhusen: Initial Release.</li>
+              </ul>
+              </html>"));
+              end MolarConcentrations;
+              */
 
     model PartialPressure "Measure of partial pressure of the substance"
       extends Modelica.Icons.RoundSensor;
@@ -1307,19 +1307,20 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Physiolibrary.Fluid.Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(redeclare package
-                                                                                stateOfMatter =
+          stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                       substanceData = Chemical.Substances.Oxygen_gas(), redeclare
           package Medium =                                                                                                                                                                                 Medium) annotation (
         Placement(transformation(extent = {{50, 50}, {30, 70}})));
       Physiolibrary.Fluid.Sensors.pH pH_measure(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-24, -70}, {-44, -50}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure(redeclare
-          package                                                                stateOfMatter =
+          package
+          stateOfMatter =
           Chemical.Interfaces.IdealGas,                                                                                        substanceData = Chemical.Substances.CarbonDioxide_gas(), redeclare
           package Medium =                                                                                                                                                                                         Medium) annotation (
         Placement(transformation(extent = {{12, -10}, {-8, 10}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureSystemicCapillaries(redeclare
-          package                                                                                      Medium = Medium) annotation (
+          package Medium =                                                                                      Medium) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {78, -76})));
       Physiolibrary.Types.RealIO.PressureOutput pressure annotation (
         Placement(transformation(extent = {{100, -90}, {120, -70}}), iconTransformation(extent = {{100, -90}, {120, -70}})));
@@ -1336,14 +1337,34 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Modelica.Units.SI.MassFraction X[Medium.nXi];
       Modelica.Units.SI.Density d;
       Medium.ThermodynamicState state;
-      Medium.SubstancesDecomposition substancesDecomposition annotation (Placement(transformation(extent={{-64,-10},{-44,10}})));
       Medium.SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
     equation
       state = Medium.setState_phX(a_port.p,h,X,0,0);
       h = actualStream(a_port.h_outflow);
       X = actualStream(a_port.Xi_outflow);
       d = Medium.density_phX(a_port.p, h, X);
-      sO2 = Medium.tO2(state)/Medium.tHb(state);
+      sO2 = Medium.sO2(state);
+
+
+      substances.CO.q=0;
+      substances.CO.h_outflow=0;
+      substances.HCO3.q=0;
+      substances.HCO3.h_outflow=0;
+      substances.H2O.q=0;
+      substances.H2O.h_outflow=0;
+      substances.Glucose.q=0;
+      substances.Glucose.h_outflow=0;
+      substances.Lactate.q=0;
+      substances.Lactate.h_outflow=0;
+      substances.Urea.q=0;
+      substances.Urea.h_outflow=0;
+      substances.AminoAcids.q=0;
+      substances.AminoAcids.h_outflow=0;
+      substances.Lipids.q=0;
+      substances.Lipids.h_outflow=0;
+      substances.KetoAcids.q=0;
+      substances.KetoAcids.h_outflow=0;
+
       connect(pressureMeasureSystemicCapillaries.port, a_port) annotation (
         Line(points={{78,-86},{78,-90},{40,-90},{40,-84},{-60,-84},{-60,-102}},              color = {127, 0, 0}, thickness = 0.5));
       connect(pCO2_measure.port, a_port) annotation (Line(
@@ -1368,14 +1389,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Line(points = {{-24, -60}, {42, -60}, {42, -40}, {110, -40}}, color = {0, 0, 127}));
       connect(a_port, b_port) annotation (
         Line(points = {{-60, -102}, {-60, -100}, {62, -100}, {62, -102}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(substancesDecomposition.substances, substances) annotation (Line(
-          points={{-64,0},{-100,0}},
-          color={0,0,255},
-          thickness=0.5));
-      connect(substancesDecomposition.O2, pO2_measure.port_a) annotation (Line(points={{-44,6},{-28,6},{-28,60},{30,60}}, color={158,66,200}));
-      connect(substancesDecomposition.CO2, pCO2_measure.port_a) annotation (Line(points={{-44,10},{-14,10},{-14,0},{-8,0}}, color={158,66,200}));
-      connect(substancesDecomposition.H, pH_measure.port_a)
-        annotation (Line(points={{-44,-6},{-40,-6},{-40,-46},{-48,-46},{-48,-60},{-44,-60}}, color={158,66,200}));
+      connect(substances.O2, pO2_measure.port_a) annotation (Line(points={{-99.9,0.1},
+              {-28,0.1},{-28,60},{30,60}},                                                                   color={158,66,200}));
+      connect(substances.CO2, pCO2_measure.port_a) annotation (Line(points={{-99.9,0.1},
+              {-14,0.1},{-14,0},{-8,0}},                                                                       color={158,66,200}));
+      connect(substances.H, pH_measure.port_a)
+        annotation (Line(points={{-99.9,0.1},{-40,0.1},{-40,-46},{-48,-46},{-48,-60},
+              {-44,-60}},                                                                    color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Text(extent = {{-150, 80}, {150, 120}}, textString = "%name", lineColor = {162, 29, 33})}),
         Diagram(coordinateSystem(preserveAspectRatio = false)));
@@ -1658,6 +1678,42 @@ The sensor is ideal, i.e., it does not influence the fluid.
         </ul>
         </html>"));
     end Activity;
+
+    model Density "Ideal one port density sensor"
+    extends Modelica.Icons.RoundSensor;
+    extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare
+          replaceable package
+                            Medium =
+          Physiolibrary.Media.Blood);
+
+    Physiolibrary.Types.RealIO.DensityOutput ro "Density in port medium" annotation (
+      Placement(transformation(extent = {{100, -10}, {120, 10}})));
+
+    replaceable function GetDensity =
+        Physiolibrary.Media.Blood.plasmaDensity
+      constrainedby Medium.GetDensity
+      "Get density from medium state"
+        annotation (choicesAllMatching=true);
+
+    equation
+    ro = GetDensity(Medium.setState_phX(port.p,inStream(port.h_outflow),inStream(port.Xi_outflow)));
+    annotation (
+      defaultComponentName = "density",
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}},
+            textString="R",
+            textColor={0,0,0}),                                                                                                                                                                                                        Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
+      Documentation(info = "<html>
+        <p>
+        This component monitors the density contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        </html>",
+              revisions = "<html>
+        <ul>
+        <li>2023-09-21: Marek Matejak: Initial Release.</li>
+        </ul>
+        </html>"));
+    end Density;
   end Sensors;
 
   package Sources
@@ -4347,16 +4403,16 @@ The sensor is ideal, i.e., it does not influence the fluid.
         massFractions_start=Blood.ArterialDefault,
         useSubstances=true,
         Compliance=7.5006157584566e-08,
-        nPorts=2)
-        annotation (Placement(transformation(extent={{-72,-18},{-52,4}})));
+        nPorts=13)
+        annotation (Placement(transformation(extent={{-18,-16},{-38,6}})));
       Components.ElasticVessel Veins(
         redeclare package Medium = Blood,
         massFractions_start=Blood.VenousDefault,
         useSubstances=true,
         volume_start=0.002,
         Compliance=7.5006157584566e-08,
-        nPorts=2)
-        annotation (Placement(transformation(extent={{56,-12},{76,8}})));
+        nPorts=7)
+        annotation (Placement(transformation(extent={{22,-12},{42,8}})));
         /*
     .* {0,1,1,1,
     0,0,0,0,0,0,0,
@@ -4375,12 +4431,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
       D_Renin, D_Aldosterone}
     */
       inner Modelica.Fluid.System system(T_ambient=310.15)
-        annotation (Placement(transformation(extent={{64,66},{84,86}})));
+        annotation (Placement(transformation(extent={{78,74},{98,94}})));
       Chemical.Components.Membrane O2(KC=1e-5)
         annotation (Placement(transformation(extent={{-10,72},{10,92}})));
       Chemical.Components.Membrane CO2(KC=1e-5)
         annotation (Placement(transformation(extent={{-10,54},{10,74}})));
-      Chemical.Components.Membrane H2O(KC=1e-5)
+      Chemical.Components.Membrane H2O(KC=1)
         annotation (Placement(transformation(extent={{-12,12},{8,32}})));
       Chemical.Components.Membrane CO(KC=1e-5)
         annotation (Placement(transformation(extent={{-10,32},{10,52}})));
@@ -4388,59 +4444,197 @@ The sensor is ideal, i.e., it does not influence the fluid.
         redeclare package Medium = Blood,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Physiolibrary.Media.Substances.O2_g)
-        annotation (Placement(transformation(extent={{-96,-58},{-76,-38}})));
+        annotation (Placement(transformation(extent={{-92,74},{-72,94}})));
       Sensors.PartialPressure pCO2_artys(
         redeclare package Medium = Blood,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Physiolibrary.Media.Substances.CO2_g)
-        annotation (Placement(transformation(extent={{-96,-92},{-76,-72}})));
+        annotation (Placement(transformation(extent={{-74,54},{-54,74}})));
       Sensors.PartialPressure pO2_veins(
         redeclare package Medium = Blood,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Physiolibrary.Media.Substances.O2_g)
-        annotation (Placement(transformation(extent={{56,-54},{76,-34}})));
+        annotation (Placement(transformation(extent={{54,72},{34,92}})));
       Sensors.PartialPressure pCO2_veins(
         redeclare package Medium = Blood,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Physiolibrary.Media.Substances.CO2_g)
-        annotation (Placement(transformation(extent={{58,-86},{78,-66}})));
+        annotation (Placement(transformation(extent={{56,52},{36,72}})));
+      Chemical.Components.Membrane Glucose(KC=1e-5)
+        annotation (Placement(transformation(extent={{-14,-14},{6,6}})));
+      Chemical.Components.Membrane Lactate(KC=1e-5)
+        annotation (Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Components.Membrane Urea(KC=1e-5)
+        annotation (Placement(transformation(extent={{-16,-54},{4,-34}})));
+      Chemical.Components.Membrane AminoAcids(KC=1e-5)
+        annotation (Placement(transformation(extent={{-16,-82},{4,-62}})));
+      Sensors.Concentration ArtysGlu(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetConcentration =
+            Physiolibrary.Media.Blood.glucose)
+        annotation (Placement(transformation(extent={{-100,-12},{-80,8}})));
+      Sensors.Concentration VeinsGlu(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration = Media.Blood.glucose)
+        annotation (Placement(transformation(extent={{78,-16},{98,4}})));
+      Sensors.Concentration ArtysLactate(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration =
+            Physiolibrary.Media.Blood.lactate)
+        annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
+      Sensors.Concentration ArtysUrea(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration = Physiolibrary.Media.Blood.urea)
+        annotation (Placement(transformation(extent={{-100,-50},{-80,-30}})));
+      Sensors.Concentration VeinsLactate(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration = Physiolibrary.Media.Blood.urea)
+        annotation (Placement(transformation(extent={{40,-42},{60,-22}})));
+      Sensors.Concentration VeinsUrea(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration = Physiolibrary.Media.Blood.urea)
+        annotation (Placement(transformation(extent={{68,-52},{88,-32}})));
+      Sensors.Concentration VeinsAA(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration =
+            Physiolibrary.Media.Blood.aminoAcids)
+        annotation (Placement(transformation(extent={{68,-80},{88,-60}})));
+      Sensors.Concentration ArtysAA(redeclare package Medium = Media.Blood,
+          redeclare function GetConcentration =
+            Physiolibrary.Media.Blood.aminoAcids)
+        annotation (Placement(transformation(extent={{-84,-80},{-64,-60}})));
+      Sensors.MassFractions ArtysH2O(redeclare package Medium =
+            Physiolibrary.Media.Blood, substanceName="H2O_P")
+        annotation (Placement(transformation(extent={{-84,16},{-64,36}})));
+      Sensors.MassFractions VeinsH2O(redeclare package Medium = Media.Blood,
+          substanceName="H2O_P")
+        annotation (Placement(transformation(extent={{60,14},{80,34}})));
+      Sensors.Fraction plasmacrit(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetFraction =
+            Physiolibrary.Media.Blood.plasmacrit)
+        annotation (Placement(transformation(extent={{-166,26},{-146,46}})));
+      Sensors.Fraction plasmaMassFraction(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetFraction =
+            Physiolibrary.Media.Blood.plasmaMassFraction)
+        annotation (Placement(transformation(extent={{-170,-6},{-150,14}})));
+      Sensors.Fraction hematocrit(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetFraction =
+            Physiolibrary.Media.Blood.hematocrit)
+        annotation (Placement(transformation(extent={{-170,-44},{-150,-24}})));
+      Sensors.Fraction formedElementsMassFraction(redeclare package Medium =
+            Media.Blood, redeclare function GetFraction =
+            Physiolibrary.Media.Blood.formedElementsMassFraction)
+        annotation (Placement(transformation(extent={{-170,-80},{-150,-60}})));
+      Sensors.Density plasmaDensity(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetDensity =
+            Physiolibrary.Media.Blood.plasmaDensity)
+        annotation (Placement(transformation(extent={{-234,28},{-214,48}})));
+      Sensors.Density formedElementsDensity(redeclare package Medium =
+            Physiolibrary.Media.Blood, redeclare function GetDensity =
+            Physiolibrary.Media.Blood.formedElementsDensity)
+        annotation (Placement(transformation(extent={{-232,-12},{-212,8}})));
     equation
       connect(O2.port_a, Artys.substances.O2) annotation (Line(points={{-10,82},
-              {-72,82},{-72,-7}},  color={158,66,200}));
+              {-18,82},{-18,-5}},  color={158,66,200}));
       connect(O2.port_b, Veins.substances.O2) annotation (Line(points={{10,82},
-              {56,82},{56,40},{56,40},{56,-2}},  color={158,66,200}));
+              {56,82},{56,-2},{22,-2}},          color={158,66,200}));
       connect(CO2.port_a, Artys.substances.CO2) annotation (Line(points={{-10,64},
-              {-76,64},{-76,-7},{-72,-7}},     color={158,66,200}));
+              {-18,64},{-18,-5}},              color={158,66,200}));
       connect(CO2.port_b, Veins.substances.CO2) annotation (Line(points={{10,64},
-              {56,64},{56,-2}},   color={158,66,200}));
+              {22,64},{22,-2}},   color={158,66,200}));
       connect(CO.port_a, Artys.substances.CO) annotation (Line(points={{-10,42},
-              {-72,42},{-72,-7}},  color={158,66,200}));
+              {-18,42},{-18,-5}},  color={158,66,200}));
       connect(CO.port_b, Veins.substances.CO) annotation (Line(points={{10,42},
-              {56,42},{56,-2}},   color={158,66,200}));
+              {22,42},{22,-2}},   color={158,66,200}));
       connect(H2O.port_a, Artys.substances.H2O) annotation (Line(points={{-12,22},
-              {-72,22},{-72,-7}},  color={158,66,200}));
+              {-18,22},{-18,-5}},  color={158,66,200}));
       connect(H2O.port_b, Veins.substances.H2O) annotation (Line(points={{8,22},{
-              56,22},{56,-2}},    color={158,66,200}));
-      connect(pO2_artys.port_a, O2.port_a) annotation (Line(points={{-76,-48},{
-              -72,-48},{-72,-22},{-80,-22},{-80,82},{-10,82}}, color={158,66,
+              22,22},{22,-2}},    color={158,66,200}));
+
+      connect(Glucose.port_a, Artys.substances.Glucose) annotation (Line(points={{-14,-4},
+              {-14,-6},{-18,-6},{-18,-4},{-20,-4},{-20,-5},{-18,-5}},
+                                   color={158,66,200}));
+      connect(Glucose.port_b, Veins.substances.Glucose) annotation (Line(points={{6,-4},{
+              22,-4},{22,-2}},    color={158,66,200}));
+      connect(Lactate.port_a, Artys.substances.Lactate) annotation (Line(points={{-14,-24},
+              {-20,-24},{-20,-5},{-18,-5}},
+                                   color={158,66,200}));
+      connect(Lactate.port_b, Veins.substances.Lactate) annotation (Line(points={{6,-24},
+              {22,-24},{22,-2}},  color={158,66,200}));
+      connect(Urea.port_a, Artys.substances.Urea) annotation (Line(points={{-16,-44},
+              {-20,-44},{-20,-5},{-18,-5}},
+                                   color={158,66,200}));
+      connect(Urea.port_b, Veins.substances.Urea) annotation (Line(points={{4,-44},
+              {22,-44},{22,-2}},  color={158,66,200}));
+      connect(AminoAcids.port_a, Artys.substances.AminoAcids) annotation (Line(points={{-16,-72},
+              {-20,-72},{-20,-5},{-18,-5}},
+                                   color={158,66,200}));
+      connect(AminoAcids.port_b, Veins.substances.AminoAcids) annotation (Line(points={{4,-72},
+              {22,-72},{22,-2}},  color={158,66,200}));
+
+
+      connect(pO2_artys.port_a, O2.port_a) annotation (Line(points={{-72,84},{
+              -70,84},{-70,82},{-10,82}},                      color={158,66,
               200}));
-      connect(pO2_artys.port, Artys.q_in[1]) annotation (Line(points={{-86,-58},
-              {-86,-56},{-54,-56},{-54,-7.715},{-62.1,-7.715}}, color={0,127,
+      connect(pO2_artys.port, Artys.q_in[1]) annotation (Line(points={{-82,74},
+              {-82,-8},{-50,-8},{-50,-6.32},{-27.9,-6.32}},     color={0,127,
               255}));
-      connect(pCO2_artys.port_a, CO2.port_a) annotation (Line(points={{-76,-82},
-              {-48,-82},{-48,64},{-10,64}}, color={158,66,200}));
-      connect(pCO2_artys.port, Artys.q_in[2]) annotation (Line(points={{-86,-92},
-              {-86,-94},{-104,-94},{-104,-64},{-62,-64},{-62,-56},{-54,-56},{
-              -54,-6.285},{-62.1,-6.285}}, color={0,127,255}));
-      connect(pO2_veins.port_a, O2.port_b) annotation (Line(points={{76,-44},{
-              92,-44},{92,82},{10,82}}, color={158,66,200}));
-      connect(pCO2_veins.port_a, CO2.port_b) annotation (Line(points={{78,-76},
-              {84,-76},{84,60},{10,60},{10,64}}, color={158,66,200}));
-      connect(pO2_veins.port, Veins.q_in[1]) annotation (Line(points={{66,-54},
-              {48,-54},{48,-18},{65.9,-18},{65.9,-2.65}}, color={0,127,255}));
-      connect(pCO2_veins.port, Veins.q_in[2]) annotation (Line(points={{68,-86},
-              {68,-88},{50,-88},{50,-50},{48,-50},{48,-18},{65.9,-18},{65.9,
-              -1.35}}, color={0,127,255}));
+      connect(pCO2_artys.port_a, CO2.port_a) annotation (Line(points={{-54,64},
+              {-10,64}},                    color={158,66,200}));
+      connect(pCO2_artys.port, Artys.q_in[2]) annotation (Line(points={{-64,54},
+              {-64,-8},{-54,-8},{-54,-6.1},{-27.9,-6.1}},
+                                           color={0,127,255}));
+      connect(pO2_veins.port_a, O2.port_b) annotation (Line(points={{34,82},{10,
+              82}},                     color={158,66,200}));
+      connect(pCO2_veins.port_a, CO2.port_b) annotation (Line(points={{36,62},{
+              22,62},{22,64},{10,64}},           color={158,66,200}));
+      connect(pO2_veins.port, Veins.q_in[1]) annotation (Line(points={{44,72},{
+              44,12},{46,12},{46,-16},{31.9,-16},{31.9,-3.11429}},
+                                                          color={0,127,255}));
+      connect(pCO2_veins.port, Veins.q_in[2]) annotation (Line(points={{46,52},
+              {46,50},{44,50},{44,12},{46,12},{46,-16},{31.9,-16},{31.9,
+              -2.74286}},
+                       color={0,127,255}));
+      connect(ArtysGlu.port, Artys.q_in[3]) annotation (Line(points={{-90,-12},
+              {-90,-14},{-54,-14},{-54,-5.88},{-27.9,-5.88}},
+                          color={0,127,255}));
+      connect(VeinsGlu.port, Veins.q_in[3]) annotation (Line(points={{88,-16},{
+              88,-18},{64,-18},{64,-4},{46,-4},{46,-16},{31.9,-16},{31.9,
+              -2.37143}},                                         color={0,127,
+              255}));
+      connect(ArtysUrea.port, Artys.q_in[4]) annotation (Line(points={{-90,-50},
+              {-90,-52},{-60,-52},{-60,-44},{-52,-44},{-52,-5.66},{-27.9,-5.66}},
+            color={0,127,255}));
+      connect(ArtysLactate.port, Artys.q_in[5]) annotation (Line(points={{-70,-40},
+              {-70,-42},{-54,-42},{-54,-5.44},{-27.9,-5.44}},            color=
+              {0,127,255}));
+      connect(VeinsUrea.port, Veins.q_in[4]) annotation (Line(points={{78,-52},
+              {78,-54},{31.9,-54},{31.9,-2}}, color={0,127,255}));
+      connect(VeinsLactate.port, Veins.q_in[5]) annotation (Line(points={{50,
+              -42},{50,-44},{31.9,-44},{31.9,-1.62857}}, color={0,127,255}));
+      connect(VeinsAA.port, Veins.q_in[6]) annotation (Line(points={{78,-80},{
+              78,-82},{31.9,-82},{31.9,-1.25714}}, color={0,127,255}));
+      connect(ArtysAA.port, Artys.q_in[6]) annotation (Line(points={{-74,-80},{
+              -74,-82},{-54,-82},{-54,-5.22},{-27.9,-5.22}},       color={0,127,
+              255}));
+      connect(ArtysH2O.port, Artys.q_in[7]) annotation (Line(points={{-74,16},{
+              -74,-10},{-54,-10},{-54,-5},{-27.9,-5}},             color={0,127,
+              255}));
+      connect(VeinsH2O.port, Veins.q_in[7]) annotation (Line(points={{70,14},{
+              70,-4},{46,-4},{46,-16},{31.9,-16},{31.9,-0.885714}}, color={0,
+              127,255}));
+      connect(plasmacrit.port, Artys.q_in[8]) annotation (Line(points={{-156,26},
+              {-156,18},{-106,18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,
+              -4.78},{-27.9,-4.78}}, color={0,127,255}));
+      connect(plasmaMassFraction.port, Artys.q_in[9]) annotation (Line(points={
+              {-160,-6},{-160,-8},{-106,-8},{-106,-16},{-88,-16},{-88,-14},{-54,
+              -14},{-54,-4.56},{-27.9,-4.56}}, color={0,127,255}));
+      connect(hematocrit.port, Artys.q_in[10]) annotation (Line(points={{-160,
+              -44},{-160,-46},{-106,-46},{-106,-16},{-88,-16},{-88,-14},{-54,
+              -14},{-54,-4.34},{-27.9,-4.34}}, color={0,127,255}));
+      connect(formedElementsMassFraction.port, Artys.q_in[11]) annotation (Line(
+            points={{-160,-80},{-160,-82},{-54,-82},{-54,-4.12},{-27.9,-4.12}},
+            color={0,127,255}));
+      connect(plasmaDensity.port, Artys.q_in[12]) annotation (Line(points={{
+              -224,28},{-224,22},{-172,22},{-172,20},{-156,20},{-156,18},{-106,
+              18},{-106,-16},{-88,-16},{-88,-14},{-54,-14},{-54,-3.9},{-27.9,
+              -3.9}}, color={0,127,255}));
+      connect(formedElementsDensity.port, Artys.q_in[13]) annotation (Line(
+            points={{-222,-12},{-222,-18},{-106,-18},{-106,-16},{-88,-16},{-88,
+              -14},{-54,-14},{-54,-3.68},{-27.9,-3.68}}, color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         experiment(
@@ -4448,6 +4642,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
           Tolerance=1e-08,
           __Dymola_Algorithm="Dassl"));
     end CapillaryMembrane;
+
   end Examples;
   annotation (
     Documentation(info = "<html>

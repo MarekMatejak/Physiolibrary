@@ -44,29 +44,16 @@ package Media
          Chemical.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
          Chemical.Interfaces.SubstancePort_a CO "Free carbon monoxide moelcule";
          Chemical.Interfaces.SubstancePort_a HCO3 "Free bicarbonate molecule";
-         Chemical.Interfaces.SubstancePort_a H3O "Free hydronium molecule";
          Chemical.Interfaces.SubstancePort_a H "Free protons";
          Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
-    end SubstancesPort;
 
-    redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
-      Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
-      Chemical.Interfaces.SubstancePort_a CO2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
-      Chemical.Interfaces.SubstancePort_a CO annotation (Placement(transformation(extent={{90,10},{110,30}})));
-      Chemical.Interfaces.SubstancePort_a HCO3 annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-      Chemical.Interfaces.SubstancePort_a H3O annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
-      Chemical.Interfaces.SubstancePort_a H annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
-      Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-    equation
-      connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
-      connect(CO2, substances.CO2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
-      connect(CO, substances.CO) annotation (Line(points={{100,20},{-70,20},{-70,0},{-100,0}},      color={158,66,200}));
-      connect(HCO3, substances.HCO3) annotation (Line(points={{0,100},{-82,100},{-82,0},{-100,0}},      color={158,66,200}));
-      connect(H3O, substances.H3O) annotation (Line(points={{0,-60},{-78,-60},{-78,0},{-100,0}},      color={158,66,200}));
-      connect(H, substances.H) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},      color={158,66,200}));
-      connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{-82,-100},{-82,0},{-100,0}},      color={158,66,200}));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
-    end SubstancesDecomposition;
+         Chemical.Interfaces.SubstancePort_a Glucose,Lactate,Urea,AminoAcids,Lipids,KetoAcids;
+          /*"Epinephrine", "Norepinephrine","Vasopressin",
+      "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
+      "Desglymidodrine","AlphaBlockers","BetaBlockers",
+      "AnesthesiaVascularConductance",
+      "Angiotensin2","Renin","Aldosterone",*/
+    end SubstancesPort;
 
     redeclare replaceable record extends ThermodynamicState
       "A selection of variables that uniquely defines the thermodynamic state"
@@ -84,39 +71,25 @@ package Media
     package stateOfMatter = Chemical.Interfaces.Incompressible
       "Substances model to translate data into substance properties";
 
-    redeclare replaceable model extends ChemicalSolution
+    redeclare replaceable model extends ChemicalSolution( substances(H2O(u(nominal=-225057)),Glucose(u(nominal=-910549))))
       "Free chemical substances"
 
-      Real I = 0 "mole-fraction-based ionic strength";
-      ThermodynamicState state;
+      Real I = 0 "Mole-fraction-based ionic strength";
+      ThermodynamicState state "State of blood";
       BloodGases bloodGases(
-        p=p,
         T=T,
-        state=state);
-      Modelica.Units.SI.MoleFraction aO2;
-      Modelica.Units.SI.MoleFraction aCO2;
-      Modelica.Units.SI.MoleFraction aHCO3;
-      Modelica.Units.SI.MoleFraction aCO;
-      Modelica.Units.SI.MoleFraction aH_plus;
-      Modelica.Units.SI.ChemicalPotential uO2;
-      Modelica.Units.SI.ChemicalPotential uCO2;
-      Modelica.Units.SI.ChemicalPotential uHCO3;
-      Modelica.Units.SI.ChemicalPotential uCO;
-      Modelica.Units.SI.ChemicalPotential uH_plus;
-      Modelica.Units.SI.MolarEnthalpy hO2;
-      Modelica.Units.SI.MolarEnthalpy hCO2;
-      Modelica.Units.SI.MolarEnthalpy hHCO3;
-      Modelica.Units.SI.MolarEnthalpy hCO;
-      Modelica.Units.SI.MolarEnthalpy hH_plus;
+        state=state) "Model of blood gases";
+      Modelica.Units.SI.MoleFraction aO2 "Gaseous O2 activity";
+      Modelica.Units.SI.MoleFraction aCO2 "Gaseous CO2 activity";
+      Modelica.Units.SI.MoleFraction aHCO3 "Mole fraction of HCO3- in blood plasma";
+      Modelica.Units.SI.MoleFraction aCO "Gaseous CO activity";
+      Modelica.Units.SI.MoleFraction aH_plus "Mole fraction of hydronium in blood plasma";
 
-      Modelica.Units.SI.MolarVolume molarVolume;
 
     public
-         Real water_S, water_H, water_G, water_G0, water_H0, u_water;
-
-        Types.Fraction pct "Plasmacrit";
-        Real fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
-        Real x_P "Amount of free particles in 1 kg of blood plasma [mol/kg]";
+        Types.MassFraction pct "Plasmacrit [kg/kg]";
+        Modelica.Units.SI.Molality fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+        Modelica.Units.SI.Molality x_P "Amount of free particles in 1 kg of blood plasma [mol/kg]";
 
 
     equation
@@ -132,93 +105,13 @@ package Media
       aCO2 = bloodGases.pCO2/p;
       aCO = bloodGases.pCO/p;
       aH_plus = 10^(-bloodGases.pH);
-      aHCO3 = bloodGases.cHCO3 / molarVolume;
+      aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity(state));
 
-      molarVolume = 0.001 "0.001 L/mmol";
 
-      uO2 = Modelica.Constants.R*T*log(aO2) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.O2_g,
-          T,
-          p,
-          v,
-          I);
-      uCO2 = Modelica.Constants.R*T*log(aCO2) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.CO2_g,
-          T,
-          p,
-          v,
-          I);
-      uHCO3 = Modelica.Constants.R*T*log(aHCO3) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.HCO3,
-          T,
-          p,
-          v,
-          I);
-
-      uCO = Modelica.Constants.R*T*log(aCO) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.CO_g,
-          T,
-          p,
-          v,
-          I);
-      uH_plus = Modelica.Constants.R*T*log(aH_plus) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
-          Substances.H,
-          T,
-          p,
-          v,
-          I);
-
-      hO2 = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.O2_g,
-          T,
-          p,
-          v,
-          I);
-      hCO2 = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.CO2_g,
-          T,
-          p,
-          v,
-          I);
-      hHCO3 = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.HCO3,
-          T,
-          p,
-          v,
-          I);
-      hCO = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.CO,
-          T,
-          p,
-          v,
-          I);
-      hH_plus = Chemical.Interfaces.Incompressible.molarEnthalpy(
-          Substances.H,
-          T,
-          p,
-          v,
-          I);
-
-      water_S=Chemical.Interfaces.Incompressible.molarEntropyPure(
-          Substances.Water, T, p, v, I);
-      water_H=Chemical.Interfaces.Incompressible.molarEnthalpyElectroneutral(
-          Substances.Water, T, p, v, I);
-      water_G=Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
-          Substances.Water, T, p, v, I);
-
-      water_H0=Chemical.Interfaces.Incompressible.molarEnthalpy(
-          Substances.Water, 310.15, 101325, 0, 0);
-      water_G0=Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
-          Substances.Water, 310.15, 101325, 0, 0);
-
-      pct = plasmacrit(state);
+      pct =plasmaMassFraction(state);
 
       fH2O_P = state.X[i("H2O_P")]/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+
       x_P =
        fH2O_P +
        (state.X[i("CO2")]/CO2.MolarWeight +
@@ -232,7 +125,135 @@ package Media
        state.X[i("Lipids")]/Constants.MM_Lipids +
        state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/pct "Amount of free particles in 1 kg of blood plasma [mol/kg]";
 
-      u_water = Modelica.Constants.R*T*log(fH2O_P/x_P)  +  water_G;
+      substances.H2O.u = Modelica.Constants.R*T*log(fH2O_P/x_P)  +
+            Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+              Substances.Water, T, p, v, I);
+      substances.H2O.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Water,
+          T,
+          p,
+          v,
+          I);
+
+      substances.O2.u = Modelica.Constants.R*T*log(aO2) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          Substances.O2_g,
+          T,
+          p,
+          v,
+          I);
+      substances.O2.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          Substances.O2_g,
+          T,
+          p,
+          v,
+          I);
+
+
+      substances.CO2.u = Modelica.Constants.R*T*log(aCO2) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          Substances.CO2_g,
+          T,
+          p,
+          v,
+          I);
+      substances.CO2.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          Substances.CO2_g,
+          T,
+          p,
+          v,
+          I);
+      substances.HCO3.u = Modelica.Constants.R*T*log(aHCO3) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          Substances.HCO3,
+          T,
+          p,
+          v,
+          I);
+      substances.HCO3.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          Substances.CO2_g,
+          T,
+          p,
+          v,
+          I);
+
+
+      substances.CO.u = Modelica.Constants.R*T*log(aCO) +
+        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+          Substances.CO_g,
+          T,
+          p,
+          v,
+          I);
+      substances.CO.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
+          Substances.CO_g,
+          T,
+          p,
+          v,
+          I);
+
+
+      substances.H.u = Modelica.Constants.R*T*log(aH_plus) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.H,
+          T,
+          p,
+          v,
+          I);
+      substances.H.h_outflow = 0;
+
+
+      substances.Glucose.u = Modelica.Constants.R*T*log(((state.X[i("Glucose")]/pct)/Constants.MM_Glucose)/x_P) +
+         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.Glucose,
+          T,
+          p,
+          v,
+          I);
+      substances.Glucose.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Glucose,
+          T,
+          p,
+          v,
+          I);
+
+      substances.Lactate.u = Modelica.Constants.R*T*log((state.X[i("Lactate")]/pct)/Constants.MM_Lactate/x_P) +
+         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.Lactate,
+          T,
+          p,
+          v,
+          I);
+      substances.Lactate.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Lactate,
+          T,
+          p,
+          v,
+          I);
+
+      substances.Urea.u = Modelica.Constants.R*T*log(state.X[i("Urea")]/Constants.MM_Urea/x_P/pct) +
+         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.Urea,
+          T,
+          p,
+          v,
+          I);
+      substances.Urea.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Urea,
+          T,
+          p,
+          v,
+          I);
+
+      substances.AminoAcids.u = Modelica.Constants.R*T*log(state.X[i("AminoAcids")]/Constants.MM_AminoAcids/x_P/pct);
+      substances.AminoAcids.h_outflow = 0;
+
+      substances.Lipids.u = Modelica.Constants.R*T*log(state.X[i("Lipids")]/Constants.MM_Lipids/x_P/pct);
+      substances.Lipids.h_outflow = 0;
+
+      substances.KetoAcids.u = Modelica.Constants.R*T*log(state.X[i("KetoAcids")]/Constants.MM_KetoAcids/x_P/pct);
+      substances.KetoAcids.h_outflow = 0;
+
 
      enthalpyFromSubstances =
        substances.O2.q * actualStream(substances.O2.h_outflow) +
@@ -240,16 +261,27 @@ package Media
        substances.CO.q * actualStream(substances.CO.h_outflow) +
        substances.HCO3.q * actualStream(substances.HCO3.h_outflow) +
        substances.H.q * actualStream(substances.H.h_outflow) +
-       substances.H3O.q * actualStream(substances.H3O.h_outflow) +
-       substances.H2O.q * actualStream(substances.H2O.h_outflow)
+       substances.H2O.q * actualStream(substances.H2O.h_outflow) +
+       substances.Glucose.q * actualStream(substances.Glucose.h_outflow) +
+       substances.Lactate.q * actualStream(substances.Lactate.h_outflow) +
+       substances.Urea.q * actualStream(substances.Urea.h_outflow) +
+       substances.AminoAcids.q * actualStream(substances.AminoAcids.h_outflow) +
+       substances.Lipids.q * actualStream(substances.Lipids.h_outflow) +
+       substances.KetoAcids.q * actualStream(substances.KetoAcids.h_outflow)
        "enthalpy from substances";
+
 
       massFlows = {
           0,substances.O2.q * Substances.O2.MolarWeight,
           substances.CO2.q * Substances.CO2.MolarWeight  + substances.HCO3.q .* Substances.CO2.MolarWeight,
           substances.CO.q * Substances.CO.MolarWeight,
           0,0,0,0,0,0,0,
-          0,0,0,0,0,0,
+          substances.Glucose.q * Substances.Glucose.MolarWeight,
+          substances.Lactate.q * Constants.MM_Lactate,
+          substances.Urea.q * Substances.Urea.MolarWeight,
+          substances.AminoAcids.q * Constants.MM_AminoAcids,
+          substances.Lipids.q * Constants.MM_Lipids,
+          substances.KetoAcids.q * Constants.MM_KetoAcids,
           0,
           0,0,0,
           0,0,0,0,0,
@@ -258,21 +290,6 @@ package Media
           0,0,0,
           substances.H2O.q * Substances.Water.MolarWeight};
 
-      substances.O2.u = uO2;
-      substances.CO2.u = uCO2;
-      substances.CO.u = uCO;
-      substances.HCO3.u = uHCO3;
-      substances.H3O.u = uH_plus;
-      substances.H.u = uH_plus;
-      substances.H2O.u = u_water;
-
-      substances.O2.h_outflow = hO2;
-      substances.CO2.h_outflow = hCO2;
-      substances.CO.h_outflow = hCO;
-      substances.HCO3.h_outflow = hHCO3;
-      substances.H3O.h_outflow = hH_plus;
-      substances.H.h_outflow = hH_plus;
-      substances.H2O.h_outflow = water_H;
 
       annotation (Documentation(info="<html>
 <p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
@@ -280,19 +297,15 @@ package Media
     end ChemicalSolution;
 
     replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
-      input Physiolibrary.Media.Blood.ThermodynamicState state "blood";
-      input Modelica.Units.SI.Pressure p=101325 "Pressure";
+      input Physiolibrary.Media.Blood.ThermodynamicState state(p=101325)  "blood";
       input Modelica.Units.SI.Temperature T=310.15 "Temperature";
-      input Modelica.Units.SI.ElectricPotential electricPotential=0 "Electric potential";
-      input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0
-        "Mole-fraction based ionic strength";
       output Modelica.Units.SI.Pressure pO2(start=101325*87/760)
         "Oxygen partial pressure";
       output Modelica.Units.SI.Pressure pCO2(start=101325*40/760)
         "Carbon dioxide partial pressure";
       output Modelica.Units.SI.Pressure pCO(start=1e-5)
         "Carbon monoxide partial pressure";
-      output Physiolibrary.Types.pH pH
+      output Physiolibrary.Types.pH pH(start=7.4)
         "Blood plasma acidity";
       // protected
       Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
@@ -332,12 +345,12 @@ package Media
 
       Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
         "solubility of CO2 in blood plasma at 37 degC";
-      Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*10^(-0.0092*(T - 310.15))
+      Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*(10^(-0.0092*(T - 310.15)))
         "solubility of CO2 in blood plasma";
       Physiolibrary.Types.GasSolubilityPa aCO2_ery(displayUnit="mmol/l/mmHg") = 0.000195
         "solubility 0.23 (mmol/l)/kPa at 25degC";
       Physiolibrary.Types.GasSolubilityPa aO2=exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*
-          0.00042*(T - T0)^2)/1000 "oxygen solubility in blood";
+          0.00042*((T - T0)^2))/1000 "oxygen solubility in blood";
       Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2
         "carbon monoxide solubility in blood";
 
@@ -470,10 +483,14 @@ package Media
     redeclare function extends specificEnthalpies_TpvI
     algorithm
       specificEnthalpy:={0,
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2,T,p,v,I),
-         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO,T,p,v,I),
-         0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2_g,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO2_g,T,p,v,I),
+         Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.CO_g,T,p,v,I),
+         0,0,0,0,0,0,0,
+         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Glucose,T,p,v,I),
+         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Lactate,T,p,v,I),
+         Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Urea,T,p,v,I),0,0,0,
+         0,
          0,0,0,
          0,0,0,0,0,
          0,0,0,
@@ -656,14 +673,6 @@ package Media
 </html>"));
     end density;
 
-    redeclare replaceable function extends specificEnthalpy "Specific enthalpy"
-    algorithm
-      h := state.h;
-      annotation (Documentation(info="<html>
-<p>Heat energy from temperature based on constant heat capacity</p>
-</html>"));
-    end specificEnthalpy;
-
     redeclare replaceable function extends specificHeatCapacityCp "Specific heat capacityReturn specific heat capacity at constant pressure"
     algorithm
       cp := 3490;
@@ -688,22 +697,6 @@ package Media
 </html>"));
     end pressure;
 
-    function hematocrit "Blood hematocrit"
-      extends GetFraction;
-    protected
-      Types.MassFraction XP "Mass fraction of blood plasma in blood", XE "Mass fraction of red cells in blood";
-    algorithm
-      XP := state.X[i("H2O_P")] + state.X[i("CO2")] + state.X[i("Alb")] + state.X[i("Glb")] + state.X[i("Glucose")] +
-       state.X[i("PO4")] + state.X[i("Lactate")] + state.X[i("Urea")] + state.X[i("AminoAcids")] + state.X[i("Lipids")] + state.X[i("KetoAcids")];
-      XE := state.X[i("H2O_E")] + state.X[i("Hb")] + state.X[i("DPG")];
-      F := XE/ (XE + XP);
-    end hematocrit;
-
-    function plasmacrit "Blood plasmacrit"
-      extends GetFraction;
-    algorithm
-      F := 1 - hematocrit(state);
-    end plasmacrit;
 
 
     function tO2 "Total oxygen in blood"
@@ -751,19 +744,20 @@ package Media
     function ctHb_ery "Total hemoglobine in erythrocytes"
       extends GetConcentration;
     algorithm
-      C := tHb(state) / hematocrit(state);
+      C :=tHb(state)/hematocrit(state);
     end ctHb_ery;
 
     function tAlb "Total albumine in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("Alb")] / Constants.MM_Alb) / plasmacrit(state);
+      C :=plasmaDensity(state)*(state.X[i("Alb")]/Constants.MM_Alb)/
+        plasmaMassFraction(state);
     end tAlb;
 
     function tGlb "Total globulin in blood plasma [g/L]"
       extends GetMassConcentration;
     algorithm
-      R := (density(state) * state.X[i("Glb")])  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Glb")]/plasmaMassFraction(state);
     end tGlb;
 
 
@@ -771,13 +765,15 @@ package Media
     function tPO4 "Total anorganic phosphates in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("PO4")] / PO4.MolarWeight) / plasmacrit(state);
+      C :=plasmaDensity(state)*(state.X[i("PO4")]/PO4.MolarWeight)/
+        plasmaMassFraction(state);
     end tPO4;
 
     function cDPG "Total diphosphoglycerate in erythrocytes"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("DPG")] / Constants.MM_DPG) / hematocrit(state);
+      C :=formedElementsDensity(state)*(state.X[i("DPG")]/Constants.MM_DPG)/
+        formedElementsMassFraction(state);
     end cDPG;
 
     function SID "Strong ion difference of blood"
@@ -789,98 +785,110 @@ package Media
     function glucose "Total glucose in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("Glucose")] / Constants.MM_Glucose) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Glucose")]/Constants.MM_Glucose)/
+        plasmaMassFraction(state);
     end glucose;
 
     function lactate "Total lactate in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("Lactate")] / Constants.MM_Lactate) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Lactate")]/Constants.MM_Lactate)/
+        plasmaMassFraction(state);
     end lactate;
 
     function urea "Total urea in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("Urea")] / Constants.MM_Urea) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Urea")]/Constants.MM_Urea)/
+        plasmaMassFraction(state);
     end urea;
 
     function aminoAcids "Total amino acids in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("AminoAcids")] / Constants.MM_AminoAcids) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("AminoAcids")]/Constants.MM_AminoAcids)/
+        plasmaMassFraction(state);
     end aminoAcids;
 
     function lipids "Total faty acids in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("Lipids")] / Constants.MM_Lipids) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Lipids")]/Constants.MM_Lipids)/
+        plasmaMassFraction(state);
     end lipids;
 
     function ketoAcids "Total ketoacids in blood plasma"
       extends GetConcentration;
     algorithm
-      C := (density(state) * state.X[i("KetoAcids")] / Constants.MM_KetoAcids) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/
+        plasmaMassFraction(state);
     end ketoAcids;
 
     function epinephrine "Epinephrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Epinephrine")]));
     algorithm
-      R := density(state) * state.X[i("Epinephrine")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Epinephrine")]/plasmaMassFraction(state);
     end epinephrine;
 
     function norepinephrine "Norepinephrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Norepinephrine")]));
     algorithm
-      R := density(state) * state.X[i("Norepinephrine")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Norepinephrine")]/plasmaMassFraction(
+        state);
     end norepinephrine;
 
     function vasopressin "Vasopressin in blood plasma"
       extends GetConcentration(C(displayUnit="pmol/l",nominal=SubstanceFlowNominal[i("Vasopressin")]));
     algorithm
-      C := (density(state) * state.X[i("Vasopressin")] / Constants.MM_Vasopressin) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Vasopressin")]/Constants.MM_Vasopressin)
+        /plasmaMassFraction(state);
     end vasopressin;
 
     function insulin "Insulin in blood plasma"
       extends GetActivity(A(unit="U/m3",displayUnit="mU/l"));
     algorithm
-      A := (density(state) * (state.X[i("Insulin")] / 6e-9) / Constants.MM_Insulin) / plasmacrit(state) "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
+      A :=(plasmaDensity(state)*(state.X[i("Insulin")]/6e-9)/Constants.MM_Insulin)
+        /plasmaMassFraction(state)                                                                            "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
     end insulin;
 
     function glucagon "Glucagon in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Glucagon")]));
     algorithm
-      R := density(state) * state.X[i("Glucagon")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Glucagon")]/plasmaMassFraction(state);
     end glucagon;
 
     function thyrotropin "Thyrotropin in blood plasma"
       extends GetConcentration(C(displayUnit="pmol/l",nominal=SubstanceFlowNominal[i("Thyrotropin")]));
     algorithm
-      C := (density(state) * state.X[i("Thyrotropin")] / Constants.MM_Thyrotropin) / plasmacrit(state);
+      C :=(plasmaDensity(state)*state.X[i("Thyrotropin")]/Constants.MM_Thyrotropin)
+        /plasmaMassFraction(state);
     end thyrotropin;
 
     function thyroxine "Thyroxine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l",nominal=SubstanceFlowNominal[i("Thyroxine")]));
     algorithm
-      R := density(state) * state.X[i("Thyroxine")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Thyroxine")]/plasmaMassFraction(state);
     end thyroxine;
 
     function leptin "Leptin in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l",nominal=SubstanceFlowNominal[i("Leptin")]));
     algorithm
-      R := density(state) * state.X[i("Leptin")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Leptin")]/plasmaMassFraction(state);
     end leptin;
 
     function desglymidodrine "Desglymidodrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l"));
     algorithm
-      R := density(state) * state.X[i("Desglymidodrine")]  / plasmacrit(state);
+      R :=plasmaDensity(state)*state.X[i("Desglymidodrine")]/plasmaMassFraction(
+        state);
     end desglymidodrine;
 
 
     function angiotensin2 "Angiotensin2 in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l",nominal=SubstanceFlowNominal[i("Angiotensin2")]));
     algorithm
-       R := density(state) * state.X[i("Angiotensin2")]  / plasmacrit(state);
+       R :=plasmaDensity(state)*state.X[i("Angiotensin2")]/plasmaMassFraction(
+        state);
     end angiotensin2;
 
     function alphaBlockers "Alpha blockers effect in blood plasma"
@@ -904,14 +912,16 @@ package Media
     function aldosterone "Aldosterone in blood plasma"
       extends GetConcentration(C(displayUnit="nmol/l",nominal=SubstanceFlowNominal[i("Aldosterone")]));
     algorithm
-      C := (density(state) * state.X[i("Aldosterone")] / Constants.MM_Aldosterone) / plasmacrit(state);
+      C :=plasmaDensity(state)*(state.X[i("Aldosterone")]/Constants.MM_Aldosterone)
+        /plasmaMassFraction(state);
     end aldosterone;
 
 
     function renin "Renin PRA in blood plasma"
-      extends GetActivity(A(unit="ng/ml/h",displayUnit="ng/ml/h"));
+      extends GetActivity(A(unit="ng/(ml.h)",displayUnit="ng/(ml.h)"));
     algorithm
-      A := (density(state) * (state.X[i("Renin")] / (1e-12 * 0.6 * 11.2)))  / plasmacrit(state) "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
+      A :=plasmaDensity(state)*((state.X[i("Renin")]/(1e-12*0.6*11.2)))/
+        plasmaMassFraction(state)                                                                     "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
     end renin;
 
     function X "To set mass fractions in blood"
@@ -1039,6 +1049,54 @@ package Media
   */
     end X;
 
+    function plasmacrit "Blood plasmacrit [mL/mL]"
+      extends GetFraction;
+    algorithm
+      F := plasmaMassFraction(state)*(density(state)/plasmaDensity(state));
+    end plasmacrit;
+
+    function plasmaDensity "Density of blood plasma"
+      extends GetDensity;
+    algorithm
+      d := 1025;
+      annotation (Documentation(info="<html>
+<p>constant density</p>
+</html>"));
+    end plasmaDensity;
+
+    function plasmaMassFraction "Blood plasmacrit [kg/kg]"
+      extends GetFraction;
+    algorithm
+      F :=1 - formedElementsMassFraction(state);
+    end plasmaMassFraction;
+
+    function hematocrit "Blood hematocrit [mL/mL]"
+      extends GetFraction;
+    algorithm
+      F := 1-plasmacrit(state);
+    end hematocrit;
+
+    function formedElementsDensity
+      "Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)"
+      extends GetDensity;
+    algorithm
+      d :=formedElementsMassFraction(state)*(density(state)/hematocrit(state));
+      annotation (Documentation(info="<html>
+<p>constant density</p>
+</html>"));
+    end formedElementsDensity;
+
+    function formedElementsMassFraction "Blood hematocrit [kg/kg]"
+      extends GetFraction;
+    protected
+      Types.MassFraction XP "Mass fraction of blood plasma in blood", XE "Mass fraction of red cells in blood";
+    algorithm
+      XP := state.X[i("H2O_P")] + state.X[i("CO2")] + state.X[i("Alb")] + state.X[i("Glb")] + state.X[i("Glucose")] +
+       state.X[i("PO4")] + state.X[i("Lactate")] + state.X[i("Urea")] + state.X[i("AminoAcids")] + state.X[i("Lipids")] + state.X[i("KetoAcids")];
+      XE := state.X[i("H2O_E")] + state.X[i("Hb")] + state.X[i("DPG")];
+      F := XE/ (XE + XP);
+    end formedElementsMassFraction;
+
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
@@ -1075,26 +1133,6 @@ package Media
        Modelica.Electrical.Analog.Interfaces.Pin cathode "Electric cathode";
        Modelica.Electrical.Analog.Interfaces.Pin anode "Electric anode";
     end SubstancesPort;
-
-  redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
-    Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-    Chemical.Interfaces.SubstancePort_a H annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
-    Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
-    Chemical.Interfaces.SubstancePort_a H2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
-    Chemical.Interfaces.SubstancePort_a OH annotation (Placement(transformation(extent={{92,-10},{112,10}})));
-    Modelica.Electrical.Analog.Interfaces.PositivePin cathode annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-    Modelica.Electrical.Analog.Interfaces.NegativePin anode annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
-  equation
-    connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{56,-100},{56,-70},{-80,-70},{-80,0},{-100,0}},
-                                                                                                        color={158,66,200}));
-    connect(H, substances.H) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},      color={158,66,200}));
-    connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
-    connect(H2, substances.H2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
-    connect(OH, substances.OH) annotation (Line(points={{102,0},{-100,0}},                        color={158,66,200}));
-    connect(cathode, substances.cathode) annotation (Line(points={{0,100},{-100,100},{-100,0},{-100,0}}, color={0,0,255}));
-    connect(anode, substances.anode) annotation (Line(points={{0,-100},{-100,-100},{-100,0}},                     color={0,0,255}));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
-  end SubstancesDecomposition;
 
   public
     redeclare replaceable model extends ChemicalSolution
@@ -1295,20 +1333,6 @@ Modelica source.
        Chemical.Interfaces.SubstancePort_a H2O "Gaseous H2O molecule";
        Chemical.Interfaces.SubstancePort_a N2 "Gaseaous nitrogen molecule";
       end SubstancesPort;
-
-      redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
-
-      Chemical.Interfaces.SubstancePort_a O2 annotation (Placement(transformation(extent={{90,50},{110,70}})));
-      Chemical.Interfaces.SubstancePort_a CO2 annotation (Placement(transformation(extent={{90,90},{110,110}})));
-      Chemical.Interfaces.SubstancePort_a N2 annotation (Placement(transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},{110,-50}})));
-      Chemical.Interfaces.SubstancePort_a H2O annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-      equation
-      connect(O2, substances.O2) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
-      connect(CO2, substances.CO2) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
-      connect(N2, substances.N2) annotation (Line(points={{100,-60},{88,-60},{88,-46},{-76,-46},{-76,0},{-100,0}},   color={158,66,200}));
-      connect(H2O, substances.H2O) annotation (Line(points={{100,-100},{-82,-100},{-82,0},{-100,0}},      color={158,66,200}));
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
-      end SubstancesDecomposition;
 
 
       redeclare replaceable model extends ChemicalSolution
@@ -1590,30 +1614,6 @@ Modelica source.
      Chemical.Interfaces.SubstancePort_a H2O "Free H2O molecule";
     end SubstancesPort;
 
-
-  redeclare replaceable model extends SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
-    Chemical.Interfaces.SubstancePort_a Na annotation (Placement(transformation(extent={{90,50},{110,70}})));
-    Chemical.Interfaces.SubstancePort_a HCO3 annotation (Placement(transformation(extent={{92,-70},{112,-50}})));
-    Chemical.Interfaces.SubstancePort_a K annotation (Placement(transformation(extent={{90,90},{110,110}})));
-    Chemical.Interfaces.SubstancePort_a Glucose annotation (Placement(transformation(extent={{-10,10},{10,30}})));
-    Chemical.Interfaces.SubstancePort_a Urea annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
-    Chemical.Interfaces.SubstancePort_a Cl annotation (Placement(transformation(extent={{92,-110},{112,-90}}),iconTransformation(extent={{92,-110},{112,-90}})));
-    Chemical.Interfaces.SubstancePort_a Ca annotation (Placement(transformation(extent={{92,10},{112,30}})));
-    Chemical.Interfaces.SubstancePort_a Mg   annotation (Placement(transformation(extent={{92,-30},{112,-10}})));
-    Chemical.Interfaces.SubstancePort_a H2O  annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-  equation
-    connect(Na, substances.Na) annotation (Line(points={{100,60},{-72,60},{-72,0},{-100,0}},      color={158,66,200}));
-    connect(HCO3, substances.HCO3) annotation (Line(points={{102,-60},{16,-60},{16,0},{-100,0}},      color={158,66,200}));
-    connect(K, substances.K) annotation (Line(points={{100,100},{22,100},{22,80},{-76,80},{-76,0},{-100,0},{-100,0}},     color={158,66,200}));
-    connect(Glucose, substances.Glucose) annotation (Line(points={{0,20},{-70,20},{-70,0},{-100,0}},        color={158,66,200}));
-    connect(Urea, substances.Urea) annotation (Line(points={{0,-60},{-78,-60},{-78,0},{-100,0}},      color={158,66,200}));
-    connect(Cl, substances.Cl) annotation (Line(points={{102,-100},{-86,-100},{-86,0},{-100,0}},                      color={158,66,200}));
-    connect(Ca, substances.Ca) annotation (Line(points={{102,20},{18,20},{18,4},{-68,4},{-68,0},{-100,0}},
-                                                                                                      color={158,66,200}));
-    connect(Mg, substances.Mg) annotation (Line(points={{102,-20},{-70,-20},{-70,-4},{-76,-4},{-76,0},{-100,0}}, color={158,66,200}));
-    connect(H2O, substances.H2O) annotation (Line(points={{0,100},{-82,100},{-82,0},{-100,0}}, color={158,66,200}));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
-  end SubstancesDecomposition;
 
 
   public
@@ -1944,12 +1944,6 @@ Modelica source.
         </html>"));
       end SubstancesPort;
 
-      replaceable partial model SubstancesDecomposition "Just because Modelica in today version cannot work properly with nested connectors"
-        SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
-      equation
-
-      end SubstancesDecomposition;
-
       replaceable partial model ChemicalSolution
         "Adaptor between selected free base chemical substances and medium substances"
         outer Modelica.Fluid.System system "System wide properties";
@@ -1973,16 +1967,8 @@ Modelica source.
 
         Real logm[nS] "natutal logarithm of medium substance masses (as state variables)";
       initial equation
-        //substanceMasses = startSubstanceMasses;
         logm = log(startSubstanceMasses);
       equation
-      /* 
-  enthalpyFromSubstances = 
-   substances.*.q * actualStream(substances.*.h_outflow) "enthalpy from substances";
- 
-
-  massFlows = substances.\(*\).q .* MMb[\1];
-*/
 
         //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
         // However, the numerical solvers can handle it in form of log(m) much better. :-)
@@ -2052,6 +2038,11 @@ Modelica source.
          input ThermodynamicState state;
          output Real A;
        end GetActivity;
+
+       partial function GetDensity
+         input ThermodynamicState state;
+         output Types.Density d;
+       end GetDensity;
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
@@ -2226,5 +2217,14 @@ Modelica source.
            Chemical.Substances.Urea_aqueous();
       constant Chemical.Interfaces.Incompressible.SubstanceData Water=
            Chemical.Substances.Water_liquid();
+
+      constant Chemical.Interfaces.Incompressible.SubstanceData Lactate=
+      Chemical.Interfaces.Incompressible.SubstanceData(
+        MolarWeight=0.0903,
+        DfH=-694080,
+        DfG=-430620,
+        References={
+            "https://www.chemeo.com/cid/11-815-4/L-Lactic-acid"});
+
   end Substances;
 end Media;
