@@ -1365,6 +1365,31 @@ The sensor is ideal, i.e., it does not influence the fluid.
       substances.Lipids.h_outflow=0;
       substances.KetoAcids.q=0;
       substances.KetoAcids.h_outflow=0;
+      substances.Epinephrine.q = 0;
+      substances.Norepinephrine.q = 0;
+      substances.Vasopressin.q = 0;
+      substances.Insulin.q = 0;
+      substances.Glucagon.q = 0;
+      substances.Thyrotropin.q = 0;
+      substances.Thyroxine.q = 0;
+      substances.Leptin.q = 0;
+      substances.Desglymidodrine.q = 0;
+      substances.Angiotensin2.q = 0;
+      substances.Renin.q = 0;
+      substances.Aldosterone.q = 0;
+      substances.Epinephrine.h_outflow = 0;
+      substances.Norepinephrine.h_outflow = 0;
+      substances.Vasopressin.h_outflow = 0;
+      substances.Insulin.h_outflow = 0;
+      substances.Glucagon.h_outflow = 0;
+      substances.Thyrotropin.h_outflow = 0;
+      substances.Thyroxine.h_outflow = 0;
+      substances.Leptin.h_outflow = 0;
+      substances.Desglymidodrine.h_outflow = 0;
+      substances.Angiotensin2.h_outflow = 0;
+      substances.Renin.h_outflow = 0;
+      substances.Aldosterone.h_outflow = 0;
+
 
       connect(pressureMeasureSystemicCapillaries.port, a_port) annotation (
         Line(points={{78,-86},{78,-90},{40,-90},{40,-84},{-60,-84},{-60,-102}},              color = {127, 0, 0}, thickness = 0.5));
