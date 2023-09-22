@@ -48,11 +48,11 @@ package Media
          Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
 
          Chemical.Interfaces.SubstancePort_a Glucose,Lactate,Urea,AminoAcids,Lipids,KetoAcids;
-          /*"Epinephrine", "Norepinephrine","Vasopressin",
-      "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
-      "Desglymidodrine","AlphaBlockers","BetaBlockers",
-      "AnesthesiaVascularConductance",
-      "Angiotensin2","Renin","Aldosterone",*/
+
+         Chemical.Interfaces.SubstancePort_a Epinephrine,Norepinephrine,Vasopressin;
+         Chemical.Interfaces.SubstancePort_a Insulin,Glucagon,Thyrotropin,Thyroxine,Leptin;
+         Chemical.Interfaces.SubstancePort_a Desglymidodrine;
+         Chemical.Interfaces.SubstancePort_a Angiotensin2,Renin,Aldosterone;
     end SubstancesPort;
 
     redeclare replaceable record extends ThermodynamicState
@@ -254,6 +254,31 @@ package Media
       substances.KetoAcids.u = Modelica.Constants.R*T*log(state.X[i("KetoAcids")]/Constants.MM_KetoAcids/x_P/pct);
       substances.KetoAcids.h_outflow = 0;
 
+      substances.Epinephrine.u = Modelica.Constants.R*T*log(state.X[i("Epinephrine")]/ Constants.MM_Epinephrine/x_P/pct);
+      substances.Norepinephrine.u = Modelica.Constants.R*T*log(state.X[i("Norepinephrine")]/ Constants.MM_Norepinephrine/x_P/pct);
+      substances.Vasopressin.u = Modelica.Constants.R*T*log(state.X[i("Vasopressin")]/ Constants.MM_Vasopressin/x_P/pct);
+      substances.Insulin.u = Modelica.Constants.R*T*log(state.X[i("Insulin")]/ Constants.MM_Insulin/x_P/pct);
+      substances.Glucagon.u = Modelica.Constants.R*T*log(state.X[i("Glucagon")]/ Constants.MM_Glucagon/x_P/pct);
+      substances.Thyrotropin.u = Modelica.Constants.R*T*log(state.X[i("Thyrotropin")]/ Constants.MM_Thyrotropin/x_P/pct);
+      substances.Thyroxine.u = Modelica.Constants.R*T*log(state.X[i("Thyroxine")]/ Constants.MM_Thyroxine/x_P/pct);
+      substances.Leptin.u = Modelica.Constants.R*T*log(state.X[i("Leptin")]/ Constants.MM_Leptin/x_P/pct);
+      substances.Desglymidodrine.u = Modelica.Constants.R*T*log(state.X[i("Desglymidodrine")]/ Constants.MM_Desglymidodrine/x_P/pct);
+      substances.Angiotensin2.u = Modelica.Constants.R*T*log(state.X[i("Angiotensin2")]/ Constants.MM_Angiotensin2/x_P/pct);
+      substances.Renin.u = Modelica.Constants.R*T*log(state.X[i("Renin")]/ Constants.MM_Renin/x_P/pct);
+      substances.Aldosterone.u = Modelica.Constants.R*T*log(state.X[i("Aldosterone")]/ Constants.MM_Aldosterone/x_P/pct);
+
+      substances.Epinephrine.h_outflow = 0;
+      substances.Norepinephrine.h_outflow = 0;
+      substances.Vasopressin.h_outflow = 0;
+      substances.Insulin.h_outflow = 0;
+      substances.Glucagon.h_outflow = 0;
+      substances.Thyrotropin.h_outflow = 0;
+      substances.Thyroxine.h_outflow = 0;
+      substances.Leptin.h_outflow = 0;
+      substances.Desglymidodrine.h_outflow = 0;
+      substances.Angiotensin2.h_outflow = 0;
+      substances.Renin.h_outflow = 0;
+      substances.Aldosterone.h_outflow = 0;
 
      enthalpyFromSubstances =
        substances.O2.q * actualStream(substances.O2.h_outflow) +
@@ -288,21 +313,21 @@ package Media
        massFlows[i("Lipids")]= substances.Lipids.q * Constants.MM_Lipids;
        massFlows[i("KetoAcids")]= substances.KetoAcids.q * Constants.MM_KetoAcids;
        massFlows[i("SID")]= 0;
-       massFlows[i("Epinephrine")]= 0;
-       massFlows[i("Norepinephrine")]= 0;
-       massFlows[i("Vasopressin")]= 0;
-       massFlows[i("Insulin")]= 0;
-       massFlows[i("Glucagon")]= 0;
-       massFlows[i("Thyrotropin")]= 0;
-       massFlows[i("Thyroxine")]= 0;
-       massFlows[i("Leptin")]= 0;
-       massFlows[i("Desglymidodrine")]= 0;
+       massFlows[i("Epinephrine")]= substances.Epinephrine.q * Constants.MM_Epinephrine;
+       massFlows[i("Norepinephrine")]= substances.Norepinephrine.q * Constants.MM_Norepinephrine;
+       massFlows[i("Vasopressin")]= substances.Vasopressin.q * Constants.MM_Vasopressin;
+       massFlows[i("Insulin")]= substances.Insulin.q * Constants.MM_Insulin;
+       massFlows[i("Glucagon")]= substances.Glucagon.q * Constants.MM_Glucagon;
+       massFlows[i("Thyrotropin")]= substances.Thyrotropin.q * Constants.MM_Thyrotropin;
+       massFlows[i("Thyroxine")]= substances.Thyroxine.q * Constants.MM_Thyroxine;
+       massFlows[i("Leptin")]= substances.Leptin.q * Constants.MM_Leptin;
+       massFlows[i("Desglymidodrine")]= substances.Desglymidodrine.q * Constants.MM_Desglymidodrine;
        massFlows[i("AlphaBlockers")]= 0;
        massFlows[i("BetaBlockers")]= 0;
        massFlows[i("AnesthesiaVascularConductance")]= 0;
-       massFlows[i("Angiotensin2")]= 0;
-       massFlows[i("Renin")]= 0;
-       massFlows[i("Aldosterone")]= 0;
+       massFlows[i("Angiotensin2")]= substances.Angiotensin2.q * Constants.MM_Angiotensin2;
+       massFlows[i("Renin")]= substances.Renin.q * Constants.MM_Renin;
+       massFlows[i("Aldosterone")]= substances.Aldosterone.q * Constants.MM_Aldosterone;
        massFlows[i("H2O_P")]= substances.H2O.q * Substances.Water.MolarWeight;
        massFlows[i("Other_E")]= 0;
 
