@@ -339,7 +339,7 @@ package Media
     end ChemicalSolution;
 
     replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
-      input Physiolibrary.Media.Blood.ThermodynamicState state(p=101325)  "blood";
+      input Physiolibrary.Media.Blood.ThermodynamicState state(p=101325,h=ArterialDefault*specificEnthalpies_TpvI(T,101325),X=ArterialDefault)  "blood";
       input Modelica.Units.SI.Temperature T=310.15 "Temperature";
       output Modelica.Units.SI.Pressure pO2(start=101325*87/760)
         "Oxygen partial pressure";
@@ -447,6 +447,7 @@ package Media
         "CO2 saturation of hemoglobin amino-termini at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
       NSIDE =-(-cdCO2N*10^(pH_ery0 - pK) - _ctHb_ery*(betaOxyHb*(pH_ery0 - pIo) +
         sCO2N*(1 + 2*10^(pKzO - pH_ery0))/(1 + 10^(pKzO - pH_ery0)) + 0.82))
+        + zDPG*_cDPG + zOtherE
         "strong ion difference of red cells at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
 
       NSID = Hct*NSIDE + (1 - Hct)*NSIDP
@@ -1046,7 +1047,7 @@ package Media
       density := D_BloodDensity;
       plasmaDensity := D_BloodPlasmaDensity;
       plasmacrit := 1-hematocrit;
-      NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE);
+      NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE + zDPG*cDPG + zOtherE);
 
       X[i("H2O_P")] := (plasmacrit*H2O_plasma)/density;
       X[i("H2O_E")] := (hematocrit*H2O_ery)/density;
@@ -2232,12 +2233,24 @@ Modelica source.
     constant Types.VolumeFraction D_Hct = 0.44 "Default hematocrit [ml/ml]";
 
     constant Types.Concentration
-         D_Glucose = 6.08 "Default glucose [mmol/L]",
-         D_Lactate = 1.04 "Default lactate [mmol/L]",
-         D_Urea = 6.64 "Default urea [mmol/L]",
-         D_AminoAcids = 4.97 "Default amino acids [mmol/L]",
-         D_Lipids = 1.23 "Default lipids [mmol/L]",
-         D_Ketoacids = 4.88e-2 "Default keto acids [mmol/L]";
+         D_Na = 138.5 "Default sodium in blood plasma",
+         D_K = 4 "Default potassium in blood plasma",
+         D_Cl = 103 "Default chloride in blood plasma",
+         D_Na_RBC = 7 "Default sodium in blood red cells",
+         D_K_RBC = 96 "Default potassium in blood red cells",
+         D_Cl_RBC = 50 "Default chloride in blood red cells";
+
+
+    constant Real D_SID_P = D_Na+D_K-D_Cl;
+    constant Real D_SID_RBC = D_Na_RBC+D_K_RBC-D_Cl_RBC;
+
+    constant Types.Concentration
+         D_Glucose = 6.08 "Default glucose in blood plasma",
+         D_Lactate = 1.04 "Default lactate in blood plasma",
+         D_Urea = 6.64 "Default urea in blood plasma",
+         D_AminoAcids = 4.97 "Default amino acids in blood plasma",
+         D_Lipids = 1.23 "Default lipids in blood plasma",
+         D_Ketoacids = 4.88e-2 "Default keto acids in blood plasma";
 
     constant Types.Concentration  D_Arterial_O2 = 8.16865 "Default Total oxygenin arterial blood",
                                   D_Arterial_CO2 = 21.2679 "Default Total carbon dioxide in arterial blood",
@@ -2249,13 +2262,17 @@ Modelica source.
                                   D_HbF = 0.042 "Default Foetal hemoglobin",
                                   D_Alb = 0.66 "Default Albumin",
                                   D_PO4 = 0.153 "Default Inorganic phosphates",
-                                  D_DPG = 5.4 "Default Diphosphoglycerate";
+                                  D_DPG = 5.4 "Default Diphosphoglycerate in red blood cells";
 
-    constant Types.MassConcentration D_Glb = 28 "Default Globulins [g/L]";
+    constant Types.MassConcentration D_Glb = 28 "Default Globulins in blood plasma";
 
-    constant Real D_SID = D_NSID - D_BEox "Default Strong ion difference [mEq/L]";
+    constant Real D_SID = D_NSID - D_BEox "Default Strong ion difference in blood [mEq/L]";
     constant Real D_BEox = 0 "Default Base excess of oxygenated blood from normal arterial conditions [mEq/L]";
-    constant Real D_NSID = (1 - D_Hct) * (zAlbNAP * D_Alb + zGlbNAP * D_Glb + zPO4NAP * D_PO4 + ztCO2NAP) + D_Hct * (zHbNAE * (D_Hb / D_Hct) + ztCO2NAE)
+
+    constant Real D_NSID_P = zAlbNAP * D_Alb + zGlbNAP * D_Glb + zPO4NAP * D_PO4 + ztCO2NAP;
+    constant Real D_NSID_E = zHbNAE * (D_Hb / D_Hct) + ztCO2NAE + zDPG * D_DPG + zOtherE;
+
+    constant Real D_NSID = (1 - D_Hct) * (zAlbNAP * D_Alb + zGlbNAP * D_Glb + zPO4NAP * D_PO4 + ztCO2NAP) + D_Hct * (zHbNAE * (D_Hb / D_Hct) + ztCO2NAE + zDPG * D_DPG + zOtherE)
                          "Default Total charge number on buffers at normal arterial conditions per total volume [mEq/L]";
 
     constant Real zAlbNAP = 18.5565 "charge on albumin at normal arterial plasma conditions [Eq/mol]",
@@ -2263,40 +2280,42 @@ Modelica source.
                   zPO4NAP = 1.79924 "charge on inorganic phosphates at normal arterial plasma conditions [Eq/mol]",
                   ztCO2NAP = 24.4732 "charge of bicarbonate and carbonate at normal arterial plasma conditions [mEq/L]",
                   ztCO2NAE = 15.0901 "charge of bicarbonate and carbonate at normal arterial erythrocyte conditions [mEq/L]",
-                  zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial eruthrocyte conditions [Eq/mol]";
+                  zHbNAE = 1.06431 "relative charge on oxygenated hemoglobin at normal arterial erythrocyte conditions [Eq/mol]",
+                  zDPG = 2.2 "charge of diphosphoglycerate at normal arterial erythrocyte condition [mEq/mol]",
+                  zOtherE = 5.72 "charge of other anions in red blood cells at normal arterial erythrocyte condition [mEq/L]";
 
     constant Types.MassConcentration
-        D_Epinephrine_MC(displayUnit="ng/L")=40e-9 "Default epinephrine [kg/m3]",
-        D_Norepinephrine_MC(displayUnit="ng/L")=240e-9 "Dafault norepinephrine [kg/m3]",
-        D_Glucagon_MC(displayUnit="ng/L")=69.68e-9 "Default glucagon [kg/m3]",
-        D_Thyroxine_MC(displayUnit="ug/L")=79.6e-6 "Default thyroxin T3 and T4 [kg/m3]",
-        D_Leptin_MC(displayUnit="ug/L")=7.96e-6 "Default leptin [kg/m3]",
-        D_Desglymidodrine_MC(displayUnit="ug/L")=1e-11 "Default desglymidodrine [kg/m3]",
-        D_Angiotensin2_MC(displayUnit="ng/L")=20e-9 "Default angiotensin II [kg/m3]";
+        D_Epinephrine_MC(displayUnit="ng/L")=40e-9 "Default epinephrine in blood plasma",
+        D_Norepinephrine_MC(displayUnit="ng/L")=240e-9 "Dafault norepinephrine in blood plasma",
+        D_Glucagon_MC(displayUnit="ng/L")=69.68e-9 "Default glucagon in blood plasma",
+        D_Thyroxine_MC(displayUnit="ug/L")=79.6e-6 "Default thyroxin T3 and T4 in blood plasma",
+        D_Leptin_MC(displayUnit="ug/L")=7.96e-6 "Default leptin in blood plasma",
+        D_Desglymidodrine_MC(displayUnit="ug/L")=1e-11 "Default desglymidodrine in blood plasma",
+        D_Angiotensin2_MC(displayUnit="ng/L")=20e-9 "Default angiotensin II in blood plasma";
 
     constant Real
-        D_Insulin_A(displayUnit="mU/L")=19.91 "Default insulin activity [mU/L]",
-        D_AlphaBlockers_f=Modelica.Constants.small "Default aplpha blockers effect [%/L]",
-        D_BetaBlockers_f=Modelica.Constants.small "Default beta blockers effect [%/L]",
-        D_AnesthesiaVascularConductance_f=1 "Default effect of anesthesia to vascular conductance [%/L]",
-        D_Renin_PRA(displayUnit="ng/(mL.h)")=2 "Default prasma renin activity [ng/mL/h]";
+        D_Insulin_A(displayUnit="mU/L")=19.91 "Default insulin activity in blood plasma [mU/L]",
+        D_AlphaBlockers_f=Modelica.Constants.small "Default aplpha blockers effect in blood plasma [%/L]",
+        D_BetaBlockers_f=Modelica.Constants.small "Default beta blockers effect in blood plasma [%/L]",
+        D_AnesthesiaVascularConductance_f=1 "Default effect of anesthesia to vascular conductance in blood plasma [%/L]",
+        D_Renin_PRA(displayUnit="ng/(mL.h)")=2 "Default prasma renin activity in blood plasma [ng/mL/h]";
 
     constant Types.Concentration
-        D_Epinephrine(displayUnit="pmol/L") = D_Epinephrine_MC / Constants.MM_Epinephrine "Default epinephrine [mmol/L]",
-        D_Norepinephrine(displayUnit="pmol/L") = D_Norepinephrine_MC / Constants.MM_Norepinephrine "Dafault norepinephrine [mmol/L]",
-        D_Vasopressin(displayUnit="pmol/L") = 1.84e-9 "Defaul vasopresin (ADH) [mmol/L]",
-        D_Insulin(displayUnit="pmol/L") = 6e-9 * D_Insulin_A "Default insulin [mmol/L] - conversion factor for human insulin is 1 mU/L = 6.00 pmol/L",
-        D_Glucagon(displayUnit="pmol/L") = D_Glucagon_MC / Constants.MM_Glucagon "Default glucagon [mmol/L]",
-        D_Thyrotropin(displayUnit="pmol/L") = 4.03e-9 "Default thyrotropin [mmol/L]",
-        D_Thyroxine(displayUnit="nmol/L") = D_Thyroxine_MC / Constants.MM_Thyroxine "Default thyroxin T3 and T4 [mmol/L]",
-        D_Leptin(displayUnit="nmol/L") = D_Leptin_MC / Constants.MM_Leptin "Default leptin [mmol/L]",
-        D_Desglymidodrine(displayUnit="nmol/L") = D_Desglymidodrine_MC / Constants.MM_Desglymidodrine "Default desglymidodrine [mmol/L]",
-        D_Angiotensin2(displayUnit="pmol/L") = D_Angiotensin2_MC / Constants.MM_Angiotensin2 "Default angiotensin II [mmol/L]",
-        D_Renin(displayUnit="fmol/L") = 1e-12 * 0.6 * 11.2 * D_Renin_PRA / Constants.MM_Renin "Default renin [mU/L] - conversion factor PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL",
-        D_Aldosterone(displayUnit="nmol/L") = 0.33e-6 "Default aldosterone [mmol/L]";
+        D_Epinephrine(displayUnit="pmol/L") = D_Epinephrine_MC / Constants.MM_Epinephrine "Default epinephrine in blood plasma",
+        D_Norepinephrine(displayUnit="pmol/L") = D_Norepinephrine_MC / Constants.MM_Norepinephrine "Dafault norepinephrine in blood plasma",
+        D_Vasopressin(displayUnit="pmol/L") = 1.84e-9 "Defaul vasopresin (ADH) in blood plasma",
+        D_Insulin(displayUnit="pmol/L") = 6e-9 * D_Insulin_A "Default insulin in blood plasma - conversion factor for human insulin is 1 mU/L = 6.00 pmol/L",
+        D_Glucagon(displayUnit="pmol/L") = D_Glucagon_MC / Constants.MM_Glucagon "Default glucagon in blood plasma",
+        D_Thyrotropin(displayUnit="pmol/L") = 4.03e-9 "Default thyrotropin in blood plasma",
+        D_Thyroxine(displayUnit="nmol/L") = D_Thyroxine_MC / Constants.MM_Thyroxine "Default thyroxin T3 and T4 in blood plasma",
+        D_Leptin(displayUnit="nmol/L") = D_Leptin_MC / Constants.MM_Leptin "Default leptin in blood plasma",
+        D_Desglymidodrine(displayUnit="nmol/L") = D_Desglymidodrine_MC / Constants.MM_Desglymidodrine "Default desglymidodrine in blood plasma",
+        D_Angiotensin2(displayUnit="pmol/L") = D_Angiotensin2_MC / Constants.MM_Angiotensin2 "Default angiotensin II in blood plasma",
+        D_Renin(displayUnit="fmol/L") = 1e-12 * 0.6 * 11.2 * D_Renin_PRA / Constants.MM_Renin "Default renin in blood plasma - conversion factor PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL",
+        D_Aldosterone(displayUnit="nmol/L") = 0.33e-6 "Default aldosterone in blood plasma";
 
-    constant Types.Concentration D_BloodPlasmaWater=932.75 "Default free particles of water in blood plasma [mmol/L]";
-    constant Types.Concentration D_BloodFormedElementsWater=694 "Default free particles of water in blood formed elements [mmol/L]";
+    constant Types.Concentration D_BloodPlasmaWater=932.75 "Default free particles of water in blood plasma";
+    constant Types.Concentration D_BloodFormedElementsWater=694 "Default free particles of water in blood formed elements";
 
   end InitialValues;
 end Media;
