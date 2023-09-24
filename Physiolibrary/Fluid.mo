@@ -713,7 +713,7 @@ Connector with one flow signal of type Real.
 
       outer Modelica.Fluid.System system "System wide properties";
       parameter Modelica.Units.SI.MassFraction massFractions_start[:] = Medium.reference_X "* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1." annotation (
-        Dialog(enable = not use_concentration_start, group = "Initialization of medium composition"));
+        Dialog(group = "Initialization of medium composition"));
       parameter Real extraConcentration_start[Medium.nC] = Medium.C_default "Extra substance amounts per kilogram of solution"
         annotation(Dialog(group = "Initialization of medium composition"));
       parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
@@ -4512,7 +4512,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
             Physiolibrary.Media.Blood, redeclare function GetDensity =
             Physiolibrary.Media.Blood.formedElementsDensity)
         annotation (Placement(transformation(extent={{-194,-6},{-174,14}})));
-      Chemical.Components.Membrane Hormones[12](KC=1e-12)
+      Chemical.Components.Membrane Hormones[12](each KC=1e-12)
         annotation (Placement(transformation(extent={{-10,-104},{10,-84}})));
       Sensors.MassConcentration ArtysEpi(redeclare package Medium =
             Physiolibrary.Media.Blood, redeclare function GetMassConcentration =
