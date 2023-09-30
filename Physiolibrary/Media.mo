@@ -17,8 +17,8 @@ package Media
         "AnesthesiaVascularConductance",
         "Angiotensin2","Renin","Aldosterone",
         "H2O_P","Other_E"},
-      reference_X=X(),
-      SubstanceFlowNominal=X() ./ Constants.TimeScale,
+      reference_X=ArterialDefault,
+      SubstanceFlowNominal=ArterialDefault ./ Constants.TimeScale,
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
       reducedX=false,
       singleState=true,
@@ -1231,6 +1231,219 @@ package Media
       F := XE/ (XE + XP);
     end formedElementsMassFraction;
 
+    model InitalComposition "To set mass fractions in blood"
+
+      input Types.Temperature T = 310.15;
+      input Types.Pressure p = 101325;
+      input Types.ElectricPotential v = 0;
+      input Real I=0;
+
+      input Types.VolumeFraction hematocrit = D_Hct "Hematocrit [ml/ml]";
+      input Types.Concentration tO2 = D_Arterial_O2 "Total oxygen in blood",
+              tCO2 = D_Arterial_CO2 "Total carbon dioxide in blood",
+              tCO = D_CO "Total carbon monoxide in blood",
+              tHb = D_Hb "Total hemoglobin in blood";
+      input Types.Fraction FMetHb=D_MetHb/D_Hb "Methemoglobin fraction",
+              FHbF=D_HbF/D_Hb "Foetal hemoglobin fraction";
+      input Types.Concentration tAlb = D_Alb "Total albumin in blood plasma";
+      input Types.MassConcentration tGlb = D_Glb "Total globulin in blood plasma";
+
+      input Types.Concentration tPO4 = D_PO4 "Total inorganic phosphate in blood plasma",
+              cDPG = D_DPG "Diphosphoglycerate in red cells",
+              glucose = D_Glucose "Glucose in blood plasma",
+              lactate = D_Lactate "Lactate in blood plasma",
+              urea = D_Urea "Urea in blood plasma",
+              aminoAcids = D_AminoAcids "Amino acids in blood plasma",
+              lipids = D_Lipids "Fatty acids in blood plasma",
+              ketoacids = D_Ketoacids "Keto acids in blood plasma",
+              BEox = D_BEox "Base excess of oxygenated blood";
+
+       input Types.MassConcentration
+              epinephrine(displayUnit="ng/L")=D_Epinephrine_MC "Epinephrine in blood plasma",
+              norepinephrine(displayUnit="ng/L")=D_Norepinephrine_MC "Norepinephrine in blood plasma";
+       input Types.Concentration
+              vasopressin(displayUnit="pmol/L")=D_Vasopressin "ADH in blood plasma";
+       input Real
+              insulin(displayUnit="mU/L")=D_Insulin_A "Insulin in blood plasma";
+       input Types.MassConcentration
+              glucagon(displayUnit="ng/L")=D_Glucagon_MC "Glucagon in blood plasma";
+       input Types.Concentration
+              thyrotropin(displayUnit="pmol/L")=D_Thyrotropin "Thyrotropin in blood plasma";
+       input Types.MassConcentration
+              thyroxine(displayUnit="ug/L")=D_Thyroxine_MC "Thyroxine blood plasma",
+              leptin(displayUnit="ug/L")=D_Leptin_MC "Leptin in blood plasma",
+              desglymidodrine(displayUnit="ug/L")=D_Desglymidodrine_MC "Desglymidodrine in blood plasma";
+      input Types.Fraction
+              alphaBlockers = D_AlphaBlockers_f "Alpha blockers efffect",
+              betaBlockers = D_BetaBlockers_f "Beta blockers efffect",
+              anesthesiaVascularConductance = D_AnesthesiaVascularConductance_f "Anesthesia vasodilatation efffect";
+      input Types.MassConcentration
+              angiotensin2(displayUnit="ng/L")=D_Angiotensin2_MC "A2 in blood plasma";
+      input Real renin(displayUnit="ng/mL/h")=D_Renin_PRA "Renin in blood plasma";
+      input Types.Concentration
+              aldosterone(displayUnit="nmol/L")=D_Aldosterone "Aldosterone in blood plasma";
+
+      input Types.MassFraction XH2O = D_H2O_B "Water in blood";
+      //input Types.MassConcentration H2O_plasma = D_BloodPlasmaWater "Water in blood plasma";
+      //input Types.MassConcentration H2O_ery = D_BloodFormedElementsWater "Water in blood red cells";
+
+      input Types.Concentration cNa_P = D_Na "Sodium in blood plasma";
+      input Types.Concentration cK_P = D_K "Potassium in blood plasma";
+      input Types.Concentration cNa_E = D_Na_RBC "Sodium in erythrocytes";
+      input Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
+
+      output Types.MassFraction X[nS];
+
+    //  output Types.MassFraction XH2O;
+
+    protected
+      Types.Density density,plasmaDensity;
+      Types.Fraction plasmacrit;
+      Types.Concentration NSID;
+      Types.Fraction XE,XP,PMF;
+
+      Types.SpecificEnthalpy h = X*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(T,p);
+      ThermodynamicState state = setState_phX(p, h, X) "State of blood";
+      Physiolibrary.Media.Blood.BloodGases bloodGases(
+        T=T,
+        state=state);
+
+         Types.MassFraction pct "Plasmacrit [kg/kg]";
+        Types.MassFraction hct "Hematocrit [kg/kg]";
+
+        Modelica.Units.SI.Molality fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+        Modelica.Units.SI.Molality x_P(start=1.2) "Amount of free particles in 1 kg of blood plasma [mol/kg]";
+        Modelica.Units.SI.Molality x_E(start=0.86) "Amount of free particles in 1 kg of blood erythrocytes [mol/kg]";
+
+        Types.MoleFraction aH2O_P,aH2O_E, aCl_P, aCl_E, aHCO3, aHCO3_E;
+        Types.MassConcentration H2O_plasma(start=D_BloodPlasmaWater) "Water in blood plasma";
+        Types.MassConcentration H2O_ery(start=D_BloodFormedElementsWater) "Water in blood red cells";
+
+         // debug of chloride shift:
+        Modelica.Units.SI.Concentration cCl_P = (aCl_P*x_P)*plasmaDensity "Chloride in blood plasma";
+        Modelica.Units.SI.Concentration cCl_E = (aCl_E*x_E)*formedElementsDensity(state) "Chloride in blood red cells";
+
+        Modelica.Units.SI.Concentration cHCO3_P = (aHCO3*x_P)*plasmaDensity "Bicarbonate in blood plasma";
+        Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
+    algorithm
+      density := D_BloodDensity;
+      plasmaDensity := D_BloodPlasmaDensity;
+      plasmacrit := 1-hematocrit;
+      NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE + zDPG*cDPG + zOtherE);
+
+      X[i("H2O_P")] := (plasmacrit*H2O_plasma)/density;
+      X[i("H2O_E")] := (hematocrit*H2O_ery)/density;
+      X[i("O2")] := (tO2*O2.MolarWeight)/density;
+      X[i("CO2")] := (tCO2*CO2.MolarWeight)/density;
+      X[i("CO")] := (tCO*CO.MolarWeight)/density;
+      X[i("Hb")] := (tHb*Constants.MM_Hb)/density;
+      X[i("MetHb")] := FMetHb*X[
+        i("Hb")];
+      X[i("HbF")] := FHbF*X[i("Hb")];
+      X[i("Alb")] := plasmacrit*(tAlb*Constants.MM_Alb)/
+        density;
+      X[i("Glb")] := plasmacrit*tGlb/density;
+      X[i("PO4")] := plasmacrit*(tPO4*PO4.MolarWeight)/
+        density;
+      X[i("DPG")] := hematocrit*(cDPG*Constants.MM_DPG)/
+        density;
+      X[i("Glucose")] := plasmacrit*(glucose*Constants.MM_Glucose)
+        /density;
+      X[i("Lactate")] := plasmacrit*(lactate*Constants.MM_Lactate)
+        /density;
+      X[i("Urea")] := plasmacrit*(urea*Constants.MM_Urea)
+        /density;
+      X[i("AminoAcids")] := plasmacrit*(aminoAcids*
+        Constants.MM_AminoAcids)/density;
+      X[i("Lipids")] := plasmacrit*(lipids*Constants.MM_Lipids)
+        /density;
+      X[i("KetoAcids")] := plasmacrit*(ketoacids*
+        Constants.MM_KetoAcids)/density;
+      X[i("Na_P")] := plasmacrit*(cNa_P*Na.MolarWeight)/density;
+      X[i("K_P")] := plasmacrit*(cK_P*K.MolarWeight)/density;
+      X[i("Na_E")] := hematocrit*(cNa_E*Na.MolarWeight)/density;
+      X[i("K_E")] := hematocrit*(cK_E*K.MolarWeight)/density;
+      X[i("Cl")] := -((NSID - BEox)-plasmacrit*(cNa_P+cK_P)-hematocrit*(cNa_E+cK_E))*Cl.MolarWeight/density "where blood SID = NSID - BEox";
+      X[i("Epinephrine")] := plasmacrit*(epinephrine)/
+        density;
+      X[i("Norepinephrine")] := plasmacrit*(
+        norepinephrine)/density;
+      X[i("Vasopressin")] := plasmacrit*(vasopressin*
+        Constants.MM_Vasopressin)/density;
+      X[i("Insulin")] := plasmacrit*(6e-9*insulin*
+        Constants.MM_Insulin)/density
+        "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
+      X[i("Glucagon")] := plasmacrit*(glucagon)/density;
+      X[i("Thyrotropin")] := plasmacrit*(thyrotropin*
+        Constants.MM_Thyrotropin)/density;
+      X[i("Thyroxine")] := plasmacrit*(thyroxine)/
+        density;
+      X[i("Leptin")] := plasmacrit*(leptin)/density;
+      X[i("Desglymidodrine")] := plasmacrit*(
+        desglymidodrine)/density;
+      X[i("AlphaBlockers")] := 1e-6 * alphaBlockers;
+      X[i("BetaBlockers")] := 1e-6 * betaBlockers;
+      X[i("AnesthesiaVascularConductance")] :=
+        1e-6 * anesthesiaVascularConductance;
+      X[i("Angiotensin2")] := plasmacrit*(angiotensin2)/
+        density;
+      X[i("Renin")] := plasmacrit*(1e-12*0.6*11.2*renin)/
+        density
+        "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
+      X[i("Aldosterone")] := plasmacrit*(aldosterone*
+        Constants.MM_Aldosterone)/density;
+
+      PMF := plasmacrit * plasmaDensity/density;
+      XP := X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
+       X[i("PO4")] + X[i("Lactate")] + X[i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[i("KetoAcids")];
+      XE := XP*(1-PMF)/PMF;
+      X[i("Other_E")] := XE - (X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")]);
+
+    equation
+      XH2O = X[i("H2O_P")] + X[i("H2O_E")];
+
+      aH2O_P = aH2O_E "osmolarity";
+
+      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I) / (pct*x_P);
+      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I) / (hct*x_E);
+
+      pct = plasmaMassFraction(state);
+      hct = formedElementsMassFraction(state);
+
+      fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+
+      x_P =fH2O_P +
+           aCl_P*x_P +
+           (
+           state.X[i("Na_P")]/Na.MolarWeight +
+           state.X[i("K_P")]/K.MolarWeight +
+           state.X[i("CO2")]/CO2.MolarWeight +
+           state.X[i("Alb")]/Constants.MM_Alb +
+           state.X[i("Glb")]/Constants.MM_Glb +
+           state.X[i("Glucose")]/Constants.MM_Glucose +
+           state.X[i("PO4")]/PO4.MolarWeight +
+           state.X[i("Lactate")]/Constants.MM_Lactate +
+           state.X[i("Urea")]/Constants.MM_Urea +
+           state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
+           state.X[i("Lipids")]/Constants.MM_Lipids +
+           state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/pct "Amount of free particles in 1 kg of blood plasma [mol/kg]";
+
+       x_E =
+           aCl_E*x_E +
+           (state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I) +
+           state.X[i("K_E")]/K.MolarWeight +
+           state.X[i("Na_E")]/Na.MolarWeight +
+           state.X[i("Hb")]/Constants.MM_Hb +
+           state.X[i("DPG")]/Constants.MM_DPG)
+            /hct  "Amount of free particles in 1 kg of intracellular fluid in erythrocytes [mol/kg]"; //+ 0.03
+
+      aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity);
+      aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
+
+      aHCO3*aCl_E = aCl_P*aHCO3_E "Chloride shift";
+      state.X[i("Cl")] = (aCl_P*x_P)*Cl.MolarWeight*pct + (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood";
+
+    end InitalComposition;
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
@@ -2383,6 +2596,7 @@ Modelica source.
 
     constant Types.Concentration D_BloodPlasmaWater=932.75 "Default free particles of water in blood plasma";
     constant Types.Concentration D_BloodFormedElementsWater=694 "Default free particles of water in blood formed elements";
+    constant Types.MassFraction D_H2O_B = 0.7342409 "Mass fraction of water in blood";
 
   end InitialValues;
 end Media;
