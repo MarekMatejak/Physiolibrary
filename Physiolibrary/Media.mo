@@ -1,5 +1,5 @@
 ﻿within Physiolibrary;
-package Media
+package Media "Models of physiological fluids"
   extends Modelica.Icons.Package;
 
   package Blood "Blood"
@@ -10,7 +10,7 @@ package Media
       mediumName = "Blood",
       substanceNames={"H2O_E","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG",
         "Glucose","Lactate","Urea","AminoAcids","Lipids","KetoAcids",
-        "Na_P","K_P","Na_E","K_E","Cl",
+        "Na_P","K_P","Na_E","K_E","Cl_P","Cl_E",
         "Epinephrine", "Norepinephrine","Vasopressin",
         "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
         "Desglymidodrine","AlphaBlockers","BetaBlockers",
@@ -33,13 +33,15 @@ package Media
         start=310.15,
         nominal=310.15));
 
-    constant Types.MassFraction ArterialDefault[nS]=X(tO2=D_Arterial_O2,tCO2=D_Arterial_CO2);
+    constant Types.MassFraction ArterialDefault[nS]={
+    0.24006872,0.00024730066,0.00088532415,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1e-20,1e-20,1e-06,1.0596027e-11,7.12053e-15,6.301733e-11,0.4941722,0.07920542};
 
-    constant Types.MassFraction VenousDefault[nS]=X(tO2=D_Venous_O2,tCO2=D_Venous_CO2);
+    constant Types.MassFraction VenousDefault[nS]={
+    0.24047989,0.0001659035, 0.0009894797, 4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1e-20,1e-20,1e-06,1.0596027e-11,7.12053e-15,6.301733e-11,0.493761,0.078535914};
 
 
   public
-    redeclare connector extends SubstancesPort
+    redeclare connector extends SubstancesPort "Blood chemical substances interface"
          Chemical.Interfaces.SubstancePort_a CO2 "Free carbon dioxide molecule";
          Chemical.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
          Chemical.Interfaces.SubstancePort_a CO "Free carbon monoxide moelcule";
@@ -53,6 +55,9 @@ package Media
          Chemical.Interfaces.SubstancePort_a Insulin,Glucagon,Thyrotropin,Thyroxine,Leptin;
          Chemical.Interfaces.SubstancePort_a Desglymidodrine;
          Chemical.Interfaces.SubstancePort_a Angiotensin2,Renin,Aldosterone;
+      annotation (Documentation(info="<html>
+<p><span style=\"font-family: Times New Roman;\">Electrochemical connections lead via free base substance forms. For example, the total mass fraction of carbon dioxide is represented as part of the composition of blood in fluid connector, but free dissolved carbon dioxide in blood plasma or bicarbonate in blood plasma are its electrochemical connectors proposed to model the electrochemical CO2 fluxes. Since the selected forms are precisely determined by the composition of the blood, it is not necessary to store them and pass them through the fluid connector. They are only expressed and calculated when needed.</span> </p>
+</html>"));
     end SubstancesPort;
 
     redeclare replaceable record extends ThermodynamicState
@@ -62,7 +67,6 @@ package Media
       SpecificEnthalpy h "Specific enthalpy";
       MassFraction X[nS] "Mass fractions of substances";
       Types.ElectricPotential v "Electric potential of the substance";
-      Types.MoleFraction I "Ionic strengh (mole fraction based)";
       annotation (Documentation(info="<html>
   <p>Thermodynamic state of blood is represented by pressure, temperature, base substances composition, electrical potential and ionic strengh.</p>
 </html>"));
@@ -88,6 +92,10 @@ package Media
                                                          "Mole fraction of Cl- in blood plasma";
       Modelica.Units.SI.MoleFraction aCl_E(start = 0.050)
                                                          "Mole fraction of Cl- in blood red cell";
+      Modelica.Units.SI.MoleFraction aH2O_E,aH2O_P;
+      Types.MolarFlowRate Cl_Ery2Plasma,H2O_Ery2Plasma;
+      parameter Real KC_Cl = 1e-5 "Rate of chloride shift equilibration";
+      parameter Real KC_H2O = 1e-2 "Rate of osmolarity equilibration";
 
 
       Modelica.Units.SI.MoleFraction aCO "Gaseous CO activity";
@@ -110,7 +118,7 @@ package Media
         Modelica.Units.SI.Molality bHCO3_P = (aHCO3*x_P) "Molality of bicarbonate in blood plasma [mol/kg]";
         Modelica.Units.SI.Molality bHCO3_E  = (aHCO3_E*x_E) "Molality of bicarbonate in blood red cells [mol/kg]";
 
-
+        Types.MassFraction expected_XCl_E,expected_XH2O_E;
     equation
 
 
@@ -127,11 +135,20 @@ package Media
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity(state));
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
-      aHCO3*aCl_E = aCl_P*aHCO3_E "Chloride shift";
-      state.X[i("Cl")] = (aCl_P*x_P)*Cl.MolarWeight*pct + (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood";
+      state.X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of Cl- in blood";
+      state.X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood";
+      Cl_Ery2Plasma = KC_Cl*(Modelica.Constants.R*T*log((aCl_E/aCl_P)*(aHCO3/aHCO3_E))) "Chloride shift";
+      expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.MolarWeight*hct "Debug of chloride shift rate";
+
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
+
+      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I);
+      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I);
+      H2O_Ery2Plasma = KC_H2O*(Modelica.Constants.R*T*log(aH2O_E/aH2O_P)) "Osmolarity equilibration rate";
+      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I) "Debug of osmolarity equilibration";
+
 
       fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v,I)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
 
@@ -332,7 +349,7 @@ package Media
        substances.KetoAcids.q * actualStream(substances.KetoAcids.h_outflow)
        "enthalpy from substances";
 
-       massFlows[i("H2O_E")]= 0;
+       massFlows[i("H2O_E")]= -H2O_Ery2Plasma * Substances.Water.MolarWeight;
        massFlows[i("O2")]=  substances.O2.q * Substances.O2.MolarWeight;
        massFlows[i("CO2")]= substances.CO2.q * Substances.CO2.MolarWeight  + substances.HCO3.q .* Substances.CO2.MolarWeight;
        massFlows[i("CO")]= substances.CO.q * Substances.CO.MolarWeight;
@@ -351,9 +368,10 @@ package Media
        massFlows[i("KetoAcids")]= substances.KetoAcids.q * Constants.MM_KetoAcids;
        massFlows[i("Na_P")]= 0;
        massFlows[i("K_P")]= 0;
+       massFlows[i("Cl_P")]= Cl_Ery2Plasma * Cl.MolarWeight;
        massFlows[i("Na_E")]= 0;
        massFlows[i("K_E")]= 0;
-       massFlows[i("Cl")]= 0;
+       massFlows[i("Cl_E")]= -Cl_Ery2Plasma * Cl.MolarWeight;
        massFlows[i("Epinephrine")]= substances.Epinephrine.q * Constants.MM_Epinephrine;
        massFlows[i("Norepinephrine")]= substances.Norepinephrine.q * Constants.MM_Norepinephrine;
        massFlows[i("Vasopressin")]= substances.Vasopressin.q * Constants.MM_Vasopressin;
@@ -369,7 +387,7 @@ package Media
        massFlows[i("Angiotensin2")]= substances.Angiotensin2.q * Constants.MM_Angiotensin2;
        massFlows[i("Renin")]= substances.Renin.q * Constants.MM_Renin;
        massFlows[i("Aldosterone")]= substances.Aldosterone.q * Constants.MM_Aldosterone;
-       massFlows[i("H2O_P")]= substances.H2O.q * Substances.Water.MolarWeight;
+       massFlows[i("H2O_P")]= substances.H2O.q * Substances.Water.MolarWeight + H2O_Ery2Plasma * Substances.Water.MolarWeight;
        massFlows[i("Other_E")]= 0;
 
 
@@ -382,35 +400,35 @@ package Media
     replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
       input Physiolibrary.Media.Blood.ThermodynamicState state(p=101325,h=ArterialDefault*specificEnthalpies_TpvI(T,101325),X=ArterialDefault)  "blood";
       input Modelica.Units.SI.Temperature T=310.15 "Temperature";
-      output Modelica.Units.SI.Pressure pO2(start=101325*87/760)
+      output Modelica.Units.SI.Pressure pO2(start=101325*87/760,min=1e-11)
         "Oxygen partial pressure";
       output Modelica.Units.SI.Pressure pCO2(start=101325*40/760)
         "Carbon dioxide partial pressure";
-      output Modelica.Units.SI.Pressure pCO(start=1e-5)
+      output Modelica.Units.SI.Pressure pCO(start=1e-5, min=1e-11)
         "Carbon monoxide partial pressure";
       output Physiolibrary.Types.pH pH(start=7.4)
         "Blood plasma acidity";
       // protected
-      Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
-      Types.Concentration _tO2=tO2(state) "oxygen content per volume of blood";
-      Types.Concentration _tCO2=tCO2(state)
+      input Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
+      input Types.Concentration _tO2=tO2(state) "oxygen content per volume of blood";
+      input Types.Concentration _tCO2=tCO2(state)
         "carbon dioxide content per volume of blood";
-      Types.Concentration _tCO=tCO(state)
+      input Types.Concentration _tCO=tCO(state)
         "carbon monoxide content per volume of blood";
-      Types.Concentration _tHb=tHb(state)
+      input Types.Concentration _tHb=tHb(state)
         "hemoglobin content per volume of blood";
-      Types.MoleFraction _FMetHb=FMetHb(state) "fraction of methemoglobin";
-      Types.MoleFraction _FHbF=FHbF(state) "fraction of foetalhemoglobin";
-      Types.Concentration _ctHb_ery=ctHb_ery(state)
+      input Types.MoleFraction _FMetHb(start=0.005)=FMetHb(state) "fraction of methemoglobin";
+      input Types.MoleFraction _FHbF(start=0.005)=FHbF(state) "fraction of foetalhemoglobin";
+      input Types.Concentration _ctHb_ery=ctHb_ery(state)
         "hemoglobin concentration in red cells";
-      Types.Concentration _tAlb=tAlb(state)
+      input Types.Concentration _tAlb=tAlb(state)
         "albumin concentration in blood plasma";
-      Types.MassConcentration _tGlb=tGlb(state)
+      input Types.MassConcentration _tGlb=tGlb(state)
         "globulin concentration in blood plasma";
-      Types.Concentration _tPO4=tPO4(state)
+      input Types.Concentration _tPO4=tPO4(state)
         "inorganic phosphates concentration in blood plasma";
-      Types.Concentration _cDPG=cDPG(state) "DPG concentration in blood plasma";
-      Types.Concentration _SID=SID(state) "strong ion difference of blood";
+      input Types.Concentration _cDPG=cDPG(state) "DPG concentration in blood plasma";
+      input Types.Concentration _SID=SID(state) "strong ion difference of blood";
 
       constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
       constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
@@ -426,19 +444,19 @@ package Media
 
       Physiolibrary.Types.pH pH_ery;
 
-      Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
+      input Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
         "solubility of CO2 in blood plasma at 37 degC";
-      Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*(10^(-0.0092*(T - 310.15)))
+      input Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*(10^(-0.0092*(T - 310.15)))
         "solubility of CO2 in blood plasma";
-      Physiolibrary.Types.GasSolubilityPa aCO2_ery(displayUnit="mmol/l/mmHg") = 0.000195
+      input Physiolibrary.Types.GasSolubilityPa aCO2_ery(displayUnit="mmol/l/mmHg") = 0.000195
         "solubility 0.23 (mmol/l)/kPa at 25degC";
-      Physiolibrary.Types.GasSolubilityPa aO2=exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*
+      input Physiolibrary.Types.GasSolubilityPa aO2=exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*
           0.00042*((T - T0)^2))/1000 "oxygen solubility in blood";
-      Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2
+      input Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2
         "carbon monoxide solubility in blood";
 
-      Real pK=6.1 + (-0.0026)*(T - 310.15) "Henderson-Hasselbalch";
-      Real pK_ery=6.125 - log10(1 + 10^(pH_ery - 7.84 - 0.06*sO2));
+      input Real pK=6.1 + (-0.0026)*(T - 310.15) "Henderson-Hasselbalch";
+      input Real pK_ery=6.125 - log10(1 + 10^(pH_ery - 7.84 - 0.06*sO2));
 
       parameter Real pKa1=2.1 "HPO4^2- dissociation";
       parameter Real pKa2=6.8 "H2PO4^- dissociation";
@@ -558,14 +576,13 @@ package Media
       state.h = h;
       state.X = X;
       state.v = v;
-      state.I = I;
       annotation (Documentation(info="<html>
 <p>Simplification of blood:</p>
 <p>Constant density and constant heat capacity</p>
 </html>"));
     end BaseProperties;
 
-    redeclare function extends specificEnthalpies_TpvI
+    redeclare function extends specificEnthalpies_TpvI "Specific enthalpies of blood substances"
     algorithm
        specificEnthalpy[i("H2O_E")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Water,T,p,v,I);
        specificEnthalpy[i("O2")]:=Chemical.Interfaces.IdealGas.specificEnthalpy(Substances.O2_g,T,p,v,I);
@@ -588,7 +605,8 @@ package Media
        specificEnthalpy[i("Na_E")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Na,T,p,v,I);
        specificEnthalpy[i("K_P")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.K,T,p,v,I);
        specificEnthalpy[i("K_E")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.K,T,p,v,I);
-       specificEnthalpy[i("Cl")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Cl,T,p,v,I);
+       specificEnthalpy[i("Cl_P")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Cl,T,p,v,I);
+       specificEnthalpy[i("Cl_E")]:=Chemical.Interfaces.Incompressible.specificEnthalpy(Substances.Cl,T,p,v,I);
        specificEnthalpy[i("Epinephrine")]:=0;
        specificEnthalpy[i("Norepinephrine")]:=0;
        specificEnthalpy[i("Vasopressin")]:=0;
@@ -761,7 +779,6 @@ package Media
       state.p := p;
       state.X := X;
       state.v := v;
-      state.I := I;
       annotation (Documentation(info="<html>
 <p>Set thermodynamic state</p>
 </html>"));
@@ -775,7 +792,7 @@ package Media
       state.h := h;
       state.X := X;
       state.v := v;
-      state.I := I;
+
       annotation (Documentation(info="<html>
 <p>Set thermodynamic state based on constant heat capacity</p>
 </html>"));
@@ -900,7 +917,8 @@ package Media
           state.X[i("Na_E")]/Na.MolarWeight +
           state.X[i("K_P")]/K.MolarWeight +
           state.X[i("K_E")]/K.MolarWeight -
-          state.X[i("Cl")]/Cl.MolarWeight);
+          state.X[i("Cl_P")]/Cl.MolarWeight -
+          state.X[i("Cl_E")]/Cl.MolarWeight);
     end SID;
 
     function glucose "Total glucose in blood plasma"
@@ -1045,144 +1063,6 @@ package Media
         plasmaMassFraction(state)                                                                     "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
     end renin;
 
-    function X "To set mass fractions in blood"
-
-      input Types.VolumeFraction hematocrit = D_Hct "Hematocrit [ml/ml]";
-      input Types.Concentration tO2 = D_Arterial_O2 "Total oxygen in blood",
-              tCO2 = D_Arterial_CO2 "Total carbon dioxide in blood",
-              tCO = D_CO "Total carbon monoxide in blood",
-              tHb = D_Hb "Total hemoglobin in blood";
-      input Types.Fraction FMetHb=D_MetHb/D_Hb "Methemoglobin fraction",
-              FHbF=D_HbF/D_Hb "Foetal hemoglobin fraction";
-      input Types.Concentration tAlb = D_Alb "Total albumin in blood plasma";
-      input Types.MassConcentration tGlb = D_Glb "Total globulin in blood plasma";
-
-      input Types.Concentration tPO4 = D_PO4 "Total inorganic phosphate in blood plasma",
-              cDPG = D_DPG "Diphosphoglycerate in red cells",
-              glucose = D_Glucose "Glucose in blood plasma",
-              lactate = D_Lactate "Lactate in blood plasma",
-              urea = D_Urea "Urea in blood plasma",
-              aminoAcids = D_AminoAcids "Amino acids in blood plasma",
-              lipids = D_Lipids "Fatty acids in blood plasma",
-              ketoacids = D_Ketoacids "Keto acids in blood plasma",
-              BEox = D_BEox "Base excess of oxygenated blood";
-
-       input Types.MassConcentration
-              epinephrine(displayUnit="ng/L")=D_Epinephrine_MC "Epinephrine in blood plasma",
-              norepinephrine(displayUnit="ng/L")=D_Norepinephrine_MC "Norepinephrine in blood plasma";
-       input Types.Concentration
-              vasopressin(displayUnit="pmol/L")=D_Vasopressin "ADH in blood plasma";
-       input Real
-              insulin(displayUnit="mU/L")=D_Insulin_A "Insulin in blood plasma";
-       input Types.MassConcentration
-              glucagon(displayUnit="ng/L")=D_Glucagon_MC "Glucagon in blood plasma";
-       input Types.Concentration
-              thyrotropin(displayUnit="pmol/L")=D_Thyrotropin "Thyrotropin in blood plasma";
-       input Types.MassConcentration
-              thyroxine(displayUnit="ug/L")=D_Thyroxine_MC "Thyroxine blood plasma",
-              leptin(displayUnit="ug/L")=D_Leptin_MC "Leptin in blood plasma",
-              desglymidodrine(displayUnit="ug/L")=D_Desglymidodrine_MC "Desglymidodrine in blood plasma";
-      input Types.Fraction
-              alphaBlockers = D_AlphaBlockers_f "Alpha blockers efffect",
-              betaBlockers = D_BetaBlockers_f "Beta blockers efffect",
-              anesthesiaVascularConductance = D_AnesthesiaVascularConductance_f "Anesthesia vasodilatation efffect";
-      input Types.MassConcentration
-              angiotensin2(displayUnit="ng/L")=D_Angiotensin2_MC "A2 in blood plasma";
-      input Real renin(displayUnit="ng/mL/h")=D_Renin_PRA "Renin in blood plasma";
-      input Types.Concentration
-              aldosterone(displayUnit="nmol/L")=D_Aldosterone "Aldosterone in blood plasma";
-      input Types.MassConcentration H2O_plasma = D_BloodPlasmaWater "Water in blood plasma";
-      input Types.MassConcentration H2O_ery = D_BloodFormedElementsWater "Water in blood red cells";
-
-      input Types.Concentration cNa_P = D_Na "Sodium in blood plasma";
-      input Types.Concentration cK_P = D_K "Potassium in blood plasma";
-      input Types.Concentration cNa_E = D_Na_RBC "Sodium in erythrocytes";
-      input Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
-
-      output Types.MassFraction X[nS];
-
-    protected
-      Types.Density density,plasmaDensity;
-      Types.Fraction plasmacrit;
-      Types.Concentration NSID;
-      Types.Fraction XE,XP,PMF;
-    algorithm
-      density := D_BloodDensity;
-      plasmaDensity := D_BloodPlasmaDensity;
-      plasmacrit := 1-hematocrit;
-      NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE + zDPG*cDPG + zOtherE);
-
-      X[i("H2O_P")] := (plasmacrit*H2O_plasma)/density;
-      X[i("H2O_E")] := (hematocrit*H2O_ery)/density;
-      X[i("O2")] := (tO2*O2.MolarWeight)/density;
-      X[i("CO2")] := (tCO2*CO2.MolarWeight)/density;
-      X[i("CO")] := (tCO*CO.MolarWeight)/density;
-      X[i("Hb")] := (tHb*Constants.MM_Hb)/density;
-      X[i("MetHb")] := FMetHb*X[
-        i("Hb")];
-      X[i("HbF")] := FHbF*X[i("Hb")];
-      X[i("Alb")] := plasmacrit*(tAlb*Constants.MM_Alb)/
-        density;
-      X[i("Glb")] := plasmacrit*tGlb/density;
-      X[i("PO4")] := plasmacrit*(tPO4*PO4.MolarWeight)/
-        density;
-      X[i("DPG")] := hematocrit*(cDPG*Constants.MM_DPG)/
-        density;
-      X[i("Glucose")] := plasmacrit*(glucose*Constants.MM_Glucose)
-        /density;
-      X[i("Lactate")] := plasmacrit*(lactate*Constants.MM_Lactate)
-        /density;
-      X[i("Urea")] := plasmacrit*(urea*Constants.MM_Urea)
-        /density;
-      X[i("AminoAcids")] := plasmacrit*(aminoAcids*
-        Constants.MM_AminoAcids)/density;
-      X[i("Lipids")] := plasmacrit*(lipids*Constants.MM_Lipids)
-        /density;
-      X[i("KetoAcids")] := plasmacrit*(ketoacids*
-        Constants.MM_KetoAcids)/density;
-      X[i("Na_P")] := plasmacrit*(cNa_P*Na.MolarWeight)/density;
-      X[i("K_P")] := plasmacrit*(cK_P*K.MolarWeight)/density;
-      X[i("Na_E")] := hematocrit*(cNa_E*Na.MolarWeight)/density;
-      X[i("K_E")] := hematocrit*(cK_E*K.MolarWeight)/density;
-      X[i("Cl")] := -((NSID - BEox)-plasmacrit*(cNa_P+cK_P)-hematocrit*(cNa_E+cK_E))*Cl.MolarWeight/density "where blood SID = NSID - BEox";
-      X[i("Epinephrine")] := plasmacrit*(epinephrine)/
-        density;
-      X[i("Norepinephrine")] := plasmacrit*(
-        norepinephrine)/density;
-      X[i("Vasopressin")] := plasmacrit*(vasopressin*
-        Constants.MM_Vasopressin)/density;
-      X[i("Insulin")] := plasmacrit*(6e-9*insulin*
-        Constants.MM_Insulin)/density
-        "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
-      X[i("Glucagon")] := plasmacrit*(glucagon)/density;
-      X[i("Thyrotropin")] := plasmacrit*(thyrotropin*
-        Constants.MM_Thyrotropin)/density;
-      X[i("Thyroxine")] := plasmacrit*(thyroxine)/
-        density;
-      X[i("Leptin")] := plasmacrit*(leptin)/density;
-      X[i("Desglymidodrine")] := plasmacrit*(
-        desglymidodrine)/density;
-      X[i("AlphaBlockers")] := 1e-6 * alphaBlockers;
-      X[i("BetaBlockers")] := 1e-6 * betaBlockers;
-      X[i("AnesthesiaVascularConductance")] :=
-        1e-6 * anesthesiaVascularConductance;
-      X[i("Angiotensin2")] := plasmacrit*(angiotensin2)/
-        density;
-      X[i("Renin")] := plasmacrit*(1e-12*0.6*11.2*renin)/
-        density
-        "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
-      X[i("Aldosterone")] := plasmacrit*(aldosterone*
-        Constants.MM_Aldosterone)/density;
-
-      PMF := plasmacrit * plasmaDensity/density;
-      XP := X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
-       X[i("PO4")] + X[i("Lactate")] + X[i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[i("KetoAcids")];
-      XE := XP*(1-PMF)/PMF;
-      X[i("Other_E")] := XE - (X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")]);
-
-
-    end X;
-
     function plasmacrit "Blood plasmacrit [mL/mL]"
       extends GetFraction;
     algorithm
@@ -1231,24 +1111,24 @@ package Media
       F := XE/ (XE + XP);
     end formedElementsMassFraction;
 
-    model InitalComposition "To set mass fractions in blood"
+    model ArterialComposition "To set mass fractions in blood"
 
-      input Types.Temperature T = 310.15;
-      input Types.Pressure p = 101325;
-      input Types.ElectricPotential v = 0;
-      input Real I=0;
+      Types.Temperature T = 310.15;
+      Types.Pressure p = 101325;
+      Types.ElectricPotential v = 0;
+      Real I=0;
 
-      input Types.VolumeFraction hematocrit = D_Hct "Hematocrit [ml/ml]";
-      input Types.Concentration tO2 = D_Arterial_O2 "Total oxygen in blood",
+      Types.VolumeFraction hematocrit = D_Hct "Hematocrit [ml/ml]";
+      Types.Concentration tO2 = D_Arterial_O2 "Total oxygen in blood",
               tCO2 = D_Arterial_CO2 "Total carbon dioxide in blood",
               tCO = D_CO "Total carbon monoxide in blood",
               tHb = D_Hb "Total hemoglobin in blood";
-      input Types.Fraction FMetHb=D_MetHb/D_Hb "Methemoglobin fraction",
+      Types.Fraction FMetHb=D_MetHb/D_Hb "Methemoglobin fraction",
               FHbF=D_HbF/D_Hb "Foetal hemoglobin fraction";
-      input Types.Concentration tAlb = D_Alb "Total albumin in blood plasma";
-      input Types.MassConcentration tGlb = D_Glb "Total globulin in blood plasma";
+      Types.Concentration tAlb = D_Alb "Total albumin in blood plasma";
+      Types.MassConcentration tGlb = D_Glb "Total globulin in blood plasma";
 
-      input Types.Concentration tPO4 = D_PO4 "Total inorganic phosphate in blood plasma",
+      Types.Concentration tPO4 = D_PO4 "Total inorganic phosphate in blood plasma",
               cDPG = D_DPG "Diphosphoglycerate in red cells",
               glucose = D_Glucose "Glucose in blood plasma",
               lactate = D_Lactate "Lactate in blood plasma",
@@ -1258,55 +1138,54 @@ package Media
               ketoacids = D_Ketoacids "Keto acids in blood plasma",
               BEox = D_BEox "Base excess of oxygenated blood";
 
-       input Types.MassConcentration
+       Types.MassConcentration
               epinephrine(displayUnit="ng/L")=D_Epinephrine_MC "Epinephrine in blood plasma",
               norepinephrine(displayUnit="ng/L")=D_Norepinephrine_MC "Norepinephrine in blood plasma";
-       input Types.Concentration
+       Types.Concentration
               vasopressin(displayUnit="pmol/L")=D_Vasopressin "ADH in blood plasma";
-       input Real
-              insulin(displayUnit="mU/L")=D_Insulin_A "Insulin in blood plasma";
-       input Types.MassConcentration
+       Real   insulin(displayUnit="mU/L")=D_Insulin_A "Insulin in blood plasma";
+       Types.MassConcentration
               glucagon(displayUnit="ng/L")=D_Glucagon_MC "Glucagon in blood plasma";
-       input Types.Concentration
+       Types.Concentration
               thyrotropin(displayUnit="pmol/L")=D_Thyrotropin "Thyrotropin in blood plasma";
-       input Types.MassConcentration
+       Types.MassConcentration
               thyroxine(displayUnit="ug/L")=D_Thyroxine_MC "Thyroxine blood plasma",
               leptin(displayUnit="ug/L")=D_Leptin_MC "Leptin in blood plasma",
               desglymidodrine(displayUnit="ug/L")=D_Desglymidodrine_MC "Desglymidodrine in blood plasma";
-      input Types.Fraction
+      Types.Fraction
               alphaBlockers = D_AlphaBlockers_f "Alpha blockers efffect",
               betaBlockers = D_BetaBlockers_f "Beta blockers efffect",
               anesthesiaVascularConductance = D_AnesthesiaVascularConductance_f "Anesthesia vasodilatation efffect";
-      input Types.MassConcentration
+      Types.MassConcentration
               angiotensin2(displayUnit="ng/L")=D_Angiotensin2_MC "A2 in blood plasma";
-      input Real renin(displayUnit="ng/mL/h")=D_Renin_PRA "Renin in blood plasma";
-      input Types.Concentration
+      Real renin(displayUnit="ng/mL/h")=D_Renin_PRA "Renin in blood plasma";
+      Types.Concentration
               aldosterone(displayUnit="nmol/L")=D_Aldosterone "Aldosterone in blood plasma";
 
-      input Types.MassFraction XH2O = D_H2O_B "Water in blood";
-      //input Types.MassConcentration H2O_plasma = D_BloodPlasmaWater "Water in blood plasma";
-      //input Types.MassConcentration H2O_ery = D_BloodFormedElementsWater "Water in blood red cells";
+      Types.MassFraction XH2O = D_H2O_B "Water in blood";
+      //Types.MassConcentration H2O_plasma = D_BloodPlasmaWater "Water in blood plasma";
+      //Types.MassConcentration H2O_ery = D_BloodFormedElementsWater "Water in blood red cells";
 
-      input Types.Concentration cNa_P = D_Na "Sodium in blood plasma";
-      input Types.Concentration cK_P = D_K "Potassium in blood plasma";
-      input Types.Concentration cNa_E = D_Na_RBC "Sodium in erythrocytes";
-      input Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
+      Types.Concentration cNa_P = D_Na "Sodium in blood plasma";
+      Types.Concentration cK_P = D_K "Potassium in blood plasma";
+      Types.Concentration cNa_E = D_Na_RBC "Sodium in erythrocytes";
+      Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
 
       output Types.MassFraction X[nS];
 
     //  output Types.MassFraction XH2O;
 
-    protected
+    //protected
       Types.Density density,plasmaDensity;
       Types.Fraction plasmacrit;
       Types.Concentration NSID;
       Types.Fraction XE,XP,PMF;
-
+    //(start=ArterialDefault*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(310,p))
       Types.SpecificEnthalpy h = X*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(T,p);
       ThermodynamicState state = setState_phX(p, h, X) "State of blood";
       Physiolibrary.Media.Blood.BloodGases bloodGases(
         T=T,
-        state=state);
+        state=state,pO2(start=11608.745),pCO(start=1.000545e-05));
 
          Types.MassFraction pct "Plasmacrit [kg/kg]";
         Types.MassFraction hct "Hematocrit [kg/kg]";
@@ -1316,8 +1195,8 @@ package Media
         Modelica.Units.SI.Molality x_E(start=0.86) "Amount of free particles in 1 kg of blood erythrocytes [mol/kg]";
 
         Types.MoleFraction aH2O_P,aH2O_E, aCl_P, aCl_E, aHCO3, aHCO3_E;
-        Types.MassConcentration H2O_plasma(start=D_BloodPlasmaWater) "Water in blood plasma";
-        Types.MassConcentration H2O_ery(start=D_BloodFormedElementsWater) "Water in blood red cells";
+        Types.Concentration H2O_plasma(start=D_BloodPlasmaWater) "Water in blood plasma";
+        Types.Concentration H2O_ery(start=D_BloodFormedElementsWater) "Water in blood red cells";
 
          // debug of chloride shift:
         Modelica.Units.SI.Concentration cCl_P = (aCl_P*x_P)*plasmaDensity "Chloride in blood plasma";
@@ -1325,81 +1204,79 @@ package Media
 
         Modelica.Units.SI.Concentration cHCO3_P = (aHCO3*x_P)*plasmaDensity "Bicarbonate in blood plasma";
         Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
-    algorithm
-      density := D_BloodDensity;
-      plasmaDensity := D_BloodPlasmaDensity;
-      plasmacrit := 1-hematocrit;
-      NSID := (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE + zDPG*cDPG + zOtherE);
+    equation
+      density = D_BloodDensity;
+      plasmaDensity = D_BloodPlasmaDensity;
+      plasmacrit = 1-hematocrit;
+      NSID = (1 - hematocrit) * (zAlbNAP * tAlb + zGlbNAP * tGlb + zPO4NAP * tPO4 + ztCO2NAP) + hematocrit * (zHbNAE * (tHb / hematocrit) + ztCO2NAE + zDPG*cDPG + zOtherE);
 
-      X[i("H2O_P")] := (plasmacrit*H2O_plasma)/density;
-      X[i("H2O_E")] := (hematocrit*H2O_ery)/density;
-      X[i("O2")] := (tO2*O2.MolarWeight)/density;
-      X[i("CO2")] := (tCO2*CO2.MolarWeight)/density;
-      X[i("CO")] := (tCO*CO.MolarWeight)/density;
-      X[i("Hb")] := (tHb*Constants.MM_Hb)/density;
-      X[i("MetHb")] := FMetHb*X[
+      X[i("H2O_P")] = (plasmacrit*H2O_plasma)/density;
+      X[i("H2O_E")] = (hematocrit*H2O_ery)/density;
+      X[i("O2")] = (tO2*O2.MolarWeight)/density;
+      X[i("CO2")] = (tCO2*CO2.MolarWeight)/density;
+      X[i("CO")] = (tCO*CO.MolarWeight)/density;
+      X[i("Hb")] = (tHb*Constants.MM_Hb)/density;
+      X[i("MetHb")] = FMetHb*X[
         i("Hb")];
-      X[i("HbF")] := FHbF*X[i("Hb")];
-      X[i("Alb")] := plasmacrit*(tAlb*Constants.MM_Alb)/
+      X[i("HbF")] = FHbF*X[i("Hb")];
+      X[i("Alb")] = plasmacrit*(tAlb*Constants.MM_Alb)/
         density;
-      X[i("Glb")] := plasmacrit*tGlb/density;
-      X[i("PO4")] := plasmacrit*(tPO4*PO4.MolarWeight)/
+      X[i("Glb")] = plasmacrit*tGlb/density;
+      X[i("PO4")] = plasmacrit*(tPO4*PO4.MolarWeight)/
         density;
-      X[i("DPG")] := hematocrit*(cDPG*Constants.MM_DPG)/
+      X[i("DPG")] = hematocrit*(cDPG*Constants.MM_DPG)/
         density;
-      X[i("Glucose")] := plasmacrit*(glucose*Constants.MM_Glucose)
+      X[i("Glucose")] = plasmacrit*(glucose*Constants.MM_Glucose)
         /density;
-      X[i("Lactate")] := plasmacrit*(lactate*Constants.MM_Lactate)
+      X[i("Lactate")] = plasmacrit*(lactate*Constants.MM_Lactate)
         /density;
-      X[i("Urea")] := plasmacrit*(urea*Constants.MM_Urea)
+      X[i("Urea")] = plasmacrit*(urea*Constants.MM_Urea)
         /density;
-      X[i("AminoAcids")] := plasmacrit*(aminoAcids*
+      X[i("AminoAcids")] = plasmacrit*(aminoAcids*
         Constants.MM_AminoAcids)/density;
-      X[i("Lipids")] := plasmacrit*(lipids*Constants.MM_Lipids)
+      X[i("Lipids")] = plasmacrit*(lipids*Constants.MM_Lipids)
         /density;
-      X[i("KetoAcids")] := plasmacrit*(ketoacids*
+      X[i("KetoAcids")] = plasmacrit*(ketoacids*
         Constants.MM_KetoAcids)/density;
-      X[i("Na_P")] := plasmacrit*(cNa_P*Na.MolarWeight)/density;
-      X[i("K_P")] := plasmacrit*(cK_P*K.MolarWeight)/density;
-      X[i("Na_E")] := hematocrit*(cNa_E*Na.MolarWeight)/density;
-      X[i("K_E")] := hematocrit*(cK_E*K.MolarWeight)/density;
-      X[i("Cl")] := -((NSID - BEox)-plasmacrit*(cNa_P+cK_P)-hematocrit*(cNa_E+cK_E))*Cl.MolarWeight/density "where blood SID = NSID - BEox";
-      X[i("Epinephrine")] := plasmacrit*(epinephrine)/
+      X[i("Na_P")] = plasmacrit*(cNa_P*Na.MolarWeight)/density;
+      X[i("K_P")] = plasmacrit*(cK_P*K.MolarWeight)/density;
+      X[i("Na_E")] = hematocrit*(cNa_E*Na.MolarWeight)/density;
+      X[i("K_E")] = hematocrit*(cK_E*K.MolarWeight)/density;
+      X[i("Epinephrine")] = plasmacrit*(epinephrine)/
         density;
-      X[i("Norepinephrine")] := plasmacrit*(
+      X[i("Norepinephrine")] = plasmacrit*(
         norepinephrine)/density;
-      X[i("Vasopressin")] := plasmacrit*(vasopressin*
+      X[i("Vasopressin")] = plasmacrit*(vasopressin*
         Constants.MM_Vasopressin)/density;
-      X[i("Insulin")] := plasmacrit*(6e-9*insulin*
+      X[i("Insulin")] = plasmacrit*(6e-9*insulin*
         Constants.MM_Insulin)/density
         "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
-      X[i("Glucagon")] := plasmacrit*(glucagon)/density;
-      X[i("Thyrotropin")] := plasmacrit*(thyrotropin*
+      X[i("Glucagon")] = plasmacrit*(glucagon)/density;
+      X[i("Thyrotropin")] = plasmacrit*(thyrotropin*
         Constants.MM_Thyrotropin)/density;
-      X[i("Thyroxine")] := plasmacrit*(thyroxine)/
+      X[i("Thyroxine")] = plasmacrit*(thyroxine)/
         density;
-      X[i("Leptin")] := plasmacrit*(leptin)/density;
-      X[i("Desglymidodrine")] := plasmacrit*(
+      X[i("Leptin")] = plasmacrit*(leptin)/density;
+      X[i("Desglymidodrine")] = plasmacrit*(
         desglymidodrine)/density;
-      X[i("AlphaBlockers")] := 1e-6 * alphaBlockers;
-      X[i("BetaBlockers")] := 1e-6 * betaBlockers;
-      X[i("AnesthesiaVascularConductance")] :=
+      X[i("AlphaBlockers")] = 1e-6 * alphaBlockers;
+      X[i("BetaBlockers")] = 1e-6 * betaBlockers;
+      X[i("AnesthesiaVascularConductance")] =
         1e-6 * anesthesiaVascularConductance;
-      X[i("Angiotensin2")] := plasmacrit*(angiotensin2)/
+      X[i("Angiotensin2")] = plasmacrit*(angiotensin2)/
         density;
-      X[i("Renin")] := plasmacrit*(1e-12*0.6*11.2*renin)/
+      X[i("Renin")] = plasmacrit*(1e-12*0.6*11.2*renin)/
         density
         "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
-      X[i("Aldosterone")] := plasmacrit*(aldosterone*
+      X[i("Aldosterone")] = plasmacrit*(aldosterone*
         Constants.MM_Aldosterone)/density;
 
-      PMF := plasmacrit * plasmaDensity/density;
-      XP := X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
+      PMF = plasmacrit * plasmaDensity/density;
+      XP = X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")] + X[i("Glucose")] +
        X[i("PO4")] + X[i("Lactate")] + X[i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[i("KetoAcids")];
-      XE := XP*(1-PMF)/PMF;
-      X[i("Other_E")] := XE - (X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")]);
+      XE = XP*(1-PMF)/PMF;
+      X[i("Other_E")] = XE - (X[i("H2O_E")] + X[i("Hb")] + X[i("DPG")]);
 
-    equation
       XH2O = X[i("H2O_P")] + X[i("H2O_E")];
 
       aH2O_P = aH2O_E "osmolarity";
@@ -1441,9 +1318,24 @@ package Media
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
       aHCO3*aCl_E = aCl_P*aHCO3_E "Chloride shift";
-      state.X[i("Cl")] = (aCl_P*x_P)*Cl.MolarWeight*pct + (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood";
+      X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of plasma Cl- in blood";
+      X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of erythrocyte's Cl- in blood";
+      X[i("Cl_P")]+X[i("Cl_E")] = -((NSID - BEox)-plasmacrit*(cNa_P+cK_P)-hematocrit*(cNa_E+cK_E))*Cl.MolarWeight/density "where blood SID = NSID - BEox";
 
-    end InitalComposition;
+      annotation (experiment(StopTime=1, __Dymola_Algorithm="Dassl"));
+    end ArterialComposition;
+
+    model VenousComposition
+      extends ArterialComposition(tO2=D_Venous_O2,tCO2=D_Venous_CO2);
+    end VenousComposition;
+
+    annotation (Documentation(info="<html>
+<p>Adding new substance to blood model:</p>
+<p><br>- add to Blood.substanceNames</p>
+<p>- modify functions: Blood.specificEnthalpies_TpvI</p>
+<p>- modify model: Blood.ArterialComposition, run it and resuled X set as ArterialDefault (and from VenousComposition -&gt; VenousDefault)</p>
+<p>- modify model: Blood.ChemicalSolution,</p>
+</html>"));
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
@@ -2312,15 +2204,10 @@ Modelica source.
 
         Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
 
-        Real logm[nS] "natutal logarithm of medium substance masses (as state variables)";
       initial equation
-        logm = log(startSubstanceMasses);
+        substanceMasses = startSubstanceMasses;
       equation
-
-        //The main accumulation equation is "der(substanceMasses)= substanceMassFlowsFromStream + massFlows"
-        // However, the numerical solvers can handle it in form of log(m) much better. :-)
-        der(logm) = ((substanceMassFlowsFromStream + massFlows)./substanceMasses) "accumulation of substances=exp(logm) [kg]";
-        substanceMasses = exp(logm);
+        der(substanceMasses) = substanceMassFlowsFromStream + massFlows;
       end ChemicalSolution;
 
       function i "Find index of substance"
@@ -2599,4 +2486,10 @@ Modelica source.
     constant Types.MassFraction D_H2O_B = 0.7342409 "Mass fraction of water in blood";
 
   end InitialValues;
+  annotation (Documentation(info="<html>
+<p><b><span style=\"font-family: Times New Roman;\">Water</b> &ndash; as pure incompressible water with constant heat capacity without any substance inside</span> </p>
+<p><b><span style=\"font-family: Times New Roman;\">Air </b>&ndash; as an ideal gas model with oxygen, carbon dioxide, nitrogen and water</span> </p>
+<p><b><span style=\"font-family: Times New Roman;\">Blood</b> &ndash; as an incompressible fluid containing many physiological substances such as blood gases, electrolytes, red cells, nutrients, proteins and hormones. Thanks to the shift of numerical tolerances with predefined nominal values for each substance, the calculation is numerically stable, even if the ratio between the mass fractions of substances is 10^9 (e.g. mass fraction of water / mass fraction of thyrotropin). Blood contains equations for haemoglobin oxygen saturation, acid-base balance, and carbon dioxide transfers to achieve physiological conditions in the transport of blood gases under variable conditions (Matej&aacute;k, Kulh&aacute;nek, and Matou&scaron;ek 2015). </span></p>
+<p><b><span style=\"font-family: Times New Roman;\">BodyFluid</b> &ndash; as an incompressible fluid that simplifies other physiological fluids such as interstitial fluid, intracellular fluid, cerebrospinal fluid, or urine. In Physiolibrary 3.0 this medium represents only a homogeneous chemical solution without special transfers or binding of substances inside.</span> </p>
+</html>"));
 end Media;
