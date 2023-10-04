@@ -488,40 +488,23 @@ package Fluid "Physiological fluids with static and dynamic properties"
       parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
           1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
 
-      Chemical.Components.Membrane Na(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Na")])
+      Chemical.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Na")])
         annotation (Placement(transformation(extent={{-10,76},{10,96}})));
-      Chemical.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "HCO3")])
+      Chemical.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("HCO3")])
         annotation (Placement(transformation(extent={{-10,58},{10,78}})));
-      Chemical.Components.Membrane K(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i("K")])
+      Chemical.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("K")])
         annotation (Placement(transformation(extent={{-8,40},{12,60}})));
-      Chemical.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Glucose")])
+      Chemical.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Glucose")])
         annotation (Placement(transformation(extent={{-8,22},{12,42}})));
-      Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Urea")])
+      Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Urea")])
         annotation (Placement(transformation(extent={{-8,2},{12,22}})));
-      Chemical.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Cl")])
+      Chemical.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Cl")])
         annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
-      Chemical.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Mg")])
+      Chemical.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Mg")])
         annotation (Placement(transformation(extent={{-6,-58},{14,-38}})));
-      Chemical.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "H2O")])
+      Chemical.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("H2O")])
         annotation (Placement(transformation(extent={{-6,-82},{14,-62}})));
-      Chemical.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=
-            Permeabilities[Physiolibrary.Media.BodyFluid.i(
-            "Ca")])
+      Chemical.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Ca")])
         annotation (Placement(transformation(extent={{-6,-36},{14,-16}})));
       Dialysate.SubstancesPort bodyFluid_b annotation (Placement(transformation(extent={{80,-20},{120,20}})));
       BloodPlasma.SubstancesPort bodyFluid_a annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
@@ -1604,7 +1587,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
           annotation (choicesAllMatching=true);
 
     equation
-      R = GetMassConcentration(Medium.setState_phX(port.p,inStream(port.h_outflow),inStream(port.Xi_outflow)));
+       R = GetMassConcentration(Medium.setState_phX(port.p,inStream(port.h_outflow),inStream(port.Xi_outflow)));
       annotation (
         defaultComponentName = "massConc",
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}},
