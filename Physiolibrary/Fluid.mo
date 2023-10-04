@@ -57,7 +57,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
     model ElasticVessel "Elastic compartment as chemical solution envelop"
       extends Physiolibrary.Icons.ElasticBalloon;
       extends Physiolibrary.Fluid.Interfaces.Accumulation(final pressure_start = p_initial);
-      parameter String stateName=getInstanceName();
+      parameter String stateName=getInstanceName() "State name in input/output files" annotation (Dialog(tab = "Advanced"));
       parameter Types.HydraulicCompliance Compliance = 1e+3
       "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false"                                                       annotation (
         Dialog(enable = not useComplianceInput));
@@ -496,7 +496,8 @@ package Fluid "Physiological fluids with static and dynamic properties"
         annotation (Placement(transformation(extent={{-8,40},{12,60}})));
       Chemical.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Glucose")])
         annotation (Placement(transformation(extent={{-8,22},{12,42}})));
-      Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Urea")])
+      Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Urea")],
+        kE=0)
         annotation (Placement(transformation(extent={{-8,2},{12,22}})));
       Chemical.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Cl")])
         annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
@@ -778,7 +779,7 @@ Connector with one flow signal of type Real.
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
 
-      Physiolibrary.Types.Enthalpy enthalpy( start = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start));
+      Physiolibrary.Types.Enthalpy enthalpy(start=m_start*Medium.specificEnthalpies_Tpv(temperature_start, pressure_start));
 
       Physiolibrary.Types.Mass mass(start = tm_start);
       Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
@@ -817,7 +818,10 @@ Connector with one flow signal of type Real.
         mass = tm_start;
       end if;
 
-      enthalpy = m_start * Medium.specificEnthalpies_TpvI(temperature_start,pressure_start,v);
+      enthalpy =m_start*Medium.specificEnthalpies_Tpv(
+        temperature_start,
+        pressure_start,
+        v);
 
     equation
 
@@ -1322,7 +1326,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Medium.ThermodynamicState state;
       Medium.SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
     equation
-      state = Medium.setState_phX(a_port.p,h,X,0,0);
+      state = Medium.setState_phX(a_port.p,h,X,0);
       h = actualStream(a_port.h_outflow);
       X = actualStream(a_port.Xi_outflow);
       d = Medium.density_phX(a_port.p, h, X);
@@ -2019,7 +2023,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(flowMeasure.q_out, veins.y) annotation (
         Line(points = {{2, 20}, {-30, 20}}, color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure.port, arteries.q_in[3]) annotation (
-        Line(points={{64,70},{26,70},{26,48.8667},{25.9,48.8667}},          color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{68,66},{26,66},{26,48.8667},{25.9,48.8667}},          color = {127, 0, 0}, thickness = 0.5));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-74, 90}, {46, 80}}, lineColor = {175, 175, 175}, textString = "3-element Windkessel model")}),
         Documentation(revisions = "<html>
@@ -2160,8 +2164,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(pulmonaryVeinsAndLeftAtrium.q_in[2], leftHeart.q_in) annotation (
         Line(points = {{13.9, 84}, {36, 84}, {36, 60}, {-12, 60}, {-12, 16}, {16, 16}}, color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure1.port, pulmonaryVeinsAndLeftAtrium.q_in[3]) annotation (
-        Line(points={{-2,30},{-12,30},{-12,60},{36,60},{36,84},{13.9,84},{
-            13.9,84.8667}},                                                                              color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{2,26},{-12,26},{-12,60},{36,60},{36,84},{13.9,84},{13.9,84.8667}},                 color = {127, 0, 0}, thickness = 0.5));
       connect(leftHeart.q_out, arteries.q_in[1]) annotation (
         Line(points={{36,16},{54,16},{54,-37.04},{23.9,-37.04}},          color = {127, 0, 0}, thickness = 0.5));
       connect(muscle.q_out, arteries.q_in[2]) annotation (
@@ -2183,9 +2186,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(rightAtrium.q_in[2], rightHeart.q_in) annotation (
         Line(points = {{-72.1, 18}, {-64, 18}, {-64, 18}, {-56, 18}}, color = {127, 0, 0}, thickness = 0.5));
       connect(rightAtrium.q_in[3],pressureMeasure.port)  annotation (
-        Line(points={{-72.1,18.8667},{-72,18.8667},{-72,30}},        color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-72.1,18.8667},{-68,18.8667},{-68,26}},        color = {127, 0, 0}, thickness = 0.5));
       connect(arteries.q_in[5],MeanArterialPressure.port)  annotation (
-        Line(points={{23.9,-34.96},{80,-34.96},{80,-30}},        color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{23.9,-34.96},{84,-34.96},{84,-34}},        color = {127, 0, 0}, thickness = 0.5));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-82, -80}, {80, -100}}, lineColor = {175, 175, 175}, textString = "Circulation part of Guyton-Coleman-Granger's model from 1972")}),
         Documentation(info = "<html>
@@ -3045,13 +3048,15 @@ The sensor is ideal, i.e., it does not influence the fluid.
           choicesAllMatching = true);
         replaceable package Dialysate = Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
           choicesAllMatching = true);
-        parameter Integer N = 5 "Number of parts";
-        parameter Modelica.Units.SI.MassFraction PlasmaSubstances[BloodPlasma.nS - 1](each displayUnit = "%") = {0.00310, 0.00146, 0.0002, 0.0009, 0.0018, 0.00376, 6e-05, 1e-05, 0.04655, 0.0532, 1e-11} "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing blood plasma";
+        parameter Integer N=5   "Number of parts";
+        parameter Modelica.Units.SI.MassFraction PlasmaSubstances[BloodPlasma.nS - 1](displayUnit="%")={0.0031,0.00146,0.0002,0.0009,0.0018,0.00376,6e-05,1e-05,
+          0.04655,0.0532,1e-11}                                                                                                                                                                           "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing blood plasma";
         //{135,24,5,5,30,106,1.5,0.5,0.7,0.8,1e-6};
-        parameter Modelica.Units.SI.MassFraction DialysateSubstances[Dialysate.nS - 1](each displayUnit = "%") = {0.00317, 0.00195, 0.000117, 0.0009, 6e-11, 0.004, 6e-05, 1e-05, 6e-08, 6e-08, 0.000281} "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing dialysate";
+        parameter Modelica.Units.SI.MassFraction DialysateSubstances[Dialysate.nS - 1](displayUnit="%")={0.00317,0.00195,0.000117,0.0009,6e-11,0.004,6e-05,
+          1e-05,6e-08,6e-08,0.000281}                                                                                                                                                                     "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing dialysate";
         /*{138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6};*/
-        parameter Modelica.Units.SI.Pressure InitialBloodPressure = 2399.80297347 "Initial blood pressure";
-        parameter Modelica.Units.SI.Pressure InitialDialysatePressure = 2000 + 7866.020857485 "Initial dialysate pressure";
+        parameter Modelica.Units.SI.Pressure InitialBloodPressure=2399.80297347   "Initial blood pressure";
+        parameter Modelica.Units.SI.Pressure InitialDialysatePressure=2000 + 7866.020857485   "Initial dialysate pressure";
         Physiolibrary.Fluid.Examples.Dialysis.DialysisMembrane dialysis[N](each InitialPlasma = PlasmaSubstances, each InitialDialysate = DialysateSubstances, InitialBloodPressure = {i * InitialBloodPressure / (N + 1) for i in 1:N}, InitialDialysatePressure = {(N - i + 1) * InitialDialysatePressure / (N + 1) for i in 1:N}, each Permeabilities = {1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1} * 1e-7, redeclare
             package BloodPlasma =
             BloodPlasma,                                                                                                                                                                                                        redeclare
@@ -3125,7 +3130,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false)),
           Diagram(coordinateSystem(preserveAspectRatio = false)),
-          experiment(StopTime = 30, Tolerance = 1e-05, __Dymola_Algorithm = "Dassl"));
+          experiment(
+            StopTime=30,
+            Tolerance=1e-08,
+            __Dymola_Algorithm="Dassl"));
       end Dialysis;
     end Dialysis;
 
@@ -3231,8 +3239,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package Medium = Blood,
-        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=4,   useSubstances = true, use_mass_start = true) annotation (
-        Placement(transformation(extent={{-6,-52},{14,-32}})));
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=2,   useSubstances = true, use_mass_start = true) annotation (
+        Placement(transformation(extent={{-6,-32},{14,-52}})));
 
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
@@ -3249,21 +3257,15 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{-70, 52}, {-50, 72}})));
       Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 34})));
-      Sensors.pH pH(redeclare package Medium = Media.Blood) "Acidity of blood"
-        annotation (Placement(transformation(extent={{54,-74},{74,-54}})));
       Sensors.PartialPressure pO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.Oxygen_gas(),
         redeclare package Medium = Media.Blood) "Partial pressure of O2 in blood"
-        annotation (Placement(transformation(extent={{-78,-70},{-58,-50}})));
+        annotation (Placement(transformation(extent={{-92,-60},{-72,-40}})));
       Sensors.Fraction sO2(redeclare package Medium = Physiolibrary.Media.Blood,
                            redeclare function GetFraction =
             Physiolibrary.Media.Blood.sO2)
-        annotation (Placement(transformation(extent={{44,-20},{64,0}})));
-      Sensors.PartialPressure pCO2(
-        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
-        substanceData=Chemical.Substances.CarbonDioxide_gas(),
-        redeclare package Medium = Media.Blood) "Partial pressure of CO2 in blood" annotation (Placement(transformation(extent={{-64,-104},{-44,-84}})));
+        annotation (Placement(transformation(extent={{48,-54},{68,-34}})));
     equation
       connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
         Line(points={{-76,26},{-48,26},{-48,0}},        color = {158, 66, 200}));
@@ -3271,36 +3273,23 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Line(points = {{-50, 62}, {-30, 62}, {-30, 0}}, color = {158, 66, 200}));
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
         Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
-      connect(pH.port, blood.q_in[1]) annotation (Line(
-          points={{64,-74},{64,-78},{6,-78},{6,-46},{3.9,-46},{3.9,-42.975}},
-          color={127,0,0},
-          thickness=0.5));
 
-      connect(pO2.port, blood.q_in[2]) annotation (Line(
-          points={{-68,-70},{-32,-70},{-32,-60},{4,-60},{4,-46},{3.9,-46},{3.9,-42.325}},
+      connect(pO2.port, blood.q_in[1]) annotation (Line(
+          points={{-82,-60},{-82,-68},{3.9,-68},{3.9,-41.35}},
           color={127,0,0},
           thickness=0.5));
       connect(CO2_GasSolubility.liquid_port, blood.substances.CO2) annotation (
         Line(points={{-30,-20},{-30,-42},{-6,-42}},        color = {158, 66, 200}));
       connect(pO2.port_a, blood.substances.O2) annotation (
-        Line(points={{-58,-60},{-34,-60},{-34,-42},{-6,-42}},          color = {158, 66, 200}));
+        Line(points={{-72,-50},{-46,-50},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
       connect(O2_GasSolubility.liquid_port, blood.substances.O2) annotation (
         Line(points={{-48,-20},{-46,-20},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
       connect(CO_GasSolubility.liquid_port, blood.substances.CO) annotation (
         Line(points={{-12,-20},{-12,-42},{-6,-42}},        color = {158, 66, 200}));
-      connect(pH.port_a, blood.substances.H) annotation (
-        Line(points={{74,-64},{82,-64},{82,-28},{-22,-28},{-22,-42},{-6,-42}},              color = {158, 66, 200}));
-      connect(blood.q_in[3], sO2.port) annotation (Line(
-          points={{3.9,-41.675},{54,-41.675},{54,-20}},
+      connect(blood.q_in[2], sO2.port) annotation (Line(
+          points={{3.9,-42.65},{3.9,-60},{58,-60},{58,-54}},
           color={127,0,0},
           thickness=0.5));
-      connect(blood.q_in[4], pCO2.port)
-        annotation (Line(
-          points={{3.9,-41.025},{2,-41.025},{2,-104},{-54,-104},{-54,-104}},
-          color={127,0,0},
-          thickness=0.5));
-      connect(pCO2.port_a, blood.substances.CO2) annotation (
-        Line(points={{-44,-94},{-34,-94},{-34,-42},{-6,-42}},          color = {158, 66, 200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -3308,9 +3297,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
           StopTime=100,
           __Dymola_fixedstepsize=0.1,
           __Dymola_Algorithm="Dassl"),
-        Documentation(info = "<html>
-<p>References:</p>
-<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+        Documentation(info="<html>
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
 </html>"));
     end BloodGasesEquilibrium;
 
@@ -3714,7 +3706,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
              nPorts = 2) annotation (
           Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-2, -14})));
         Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = O2_consumption) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-70, -38})));
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={-68,-38})));
         Chemical.Sources.SubstanceInflowT CO2_left(SubstanceFlow(displayUnit = "mmol/min") = CO2_production, redeclare package
                     stateOfMatter =
             Chemical.Interfaces.IdealGas,                                                                                                                                    substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
@@ -3759,7 +3751,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         connect(tissue.sO2, sO2) annotation (
           Line(points = {{49, -3.55271e-15}, {50, -3.55271e-15}, {50, 26}, {66, 26}}, color = {0, 0, 127}));
         connect(O2_left.port_a, systemicCapillaries.substances.O2) annotation (
-          Line(points = {{-60, -38}, {14, -38}, {14, -14}, {8, -14}}, color = {158, 66, 200}));
+          Line(points={{-58,-38},{14,-38},{14,-14},{8,-14}},          color = {158, 66, 200}));
         connect(systemicCapillaries.substances.CO2, CO2_left.port_b) annotation (
           Line(points = {{8, -14}, {14, -14}, {14, -38}, {60, -38}}, color = {158, 66, 200}));
         connect(tissue.substances, systemicCapillaries.substances)
@@ -3929,7 +3921,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent={{62,66},{82,86}})));
       Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package
           Medium =                                                                      Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
-        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
+        Placement(transformation(extent={{-352,74},{-332,94}})));
       Physiolibrary.Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
         Placement(transformation(extent = {{-54, 78}, {-46, 86}})));
       Physiolibrary.Fluid.Components.ElasticVessel lungs(
@@ -4002,7 +3994,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(frequency.y, respiratoryMusclePressureCycle.frequence) annotation (
         Line(points = {{-45, 82}, {-34, 82}}, color = {0, 0, 127}));
       connect(environment.y, flowMeasure.q_in) annotation (
-        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-332,84},{-318,84},{-318,76}},        color = {127, 0, 0}, thickness = 0.5));
     connect(lungs.fluidVolume, chest.internalSpace) annotation (Line(points={{-146,6},
               {-152,6},{-152,50},{-65,50}},        color={0,0,127}));
     connect(pleauralPressure.pressure, lungs.externalPressure) annotation (
@@ -4274,8 +4266,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(rightPleuralSpace.q_in[1],rightPleauralPressure.port)  annotation (
         Line(points={{-65.9,-48},{-65.9,-28},{-70,-28},{-70,-22}},          color = {127, 0, 0}, thickness = 0.5));
       connect(rightAlveoli.q_in[1],rightAlveolarPressure.port)  annotation (
-        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-124,-60},{
-              -124,-38}},                                                                            color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-146.1,-49.0833},{-148,-49.0833},{-148,-60},{-124,-60},{-124,-38}},            color = {127, 0, 0}, thickness = 0.5));
       connect(leftBronchi.q_out, leftAlveolarDuct.q_in) annotation (
         Line(points={{-232,32},{-228,32},{-228,30},{-222,30},{-222,32},{-210,
             32}},                               color = {127, 0, 0}, thickness = 0.5));
@@ -4302,8 +4293,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(pCO2.port_a, CO2_right.port_b) annotation (
         Line(points={{-196,-74},{-190,-74},{-190,-86},{-200,-86}},          color = {158, 66, 200}));
       connect(pCO2.port, rightAlveoli.q_in[3]) annotation (Line(
-          points={{-206,-64},{-184,-64},{-184,-44},{-148,-44},{-148,-49.3},{
-              -146.1,-49.3},{-146.1,-48.2167}},
+          points={{-206,-64},{-184,-64},{-184,-44},{-148,-44},{-148,-49.3},{-146.1,-49.3},{-146.1,-48.2167}},
           color={127,0,0},
           thickness=0.5));
       connect(pO2.port_a, O2_right.port_a) annotation (

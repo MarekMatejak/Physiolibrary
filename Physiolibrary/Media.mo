@@ -117,6 +117,13 @@ package Media "Models of physiological fluids"
         Modelica.Units.SI.Molality bHCO3_P = (aHCO3*x_P) "Molality of bicarbonate in blood plasma [mol/kg]";
         Modelica.Units.SI.Molality bHCO3_E  = (aHCO3_E*x_E) "Molality of bicarbonate in blood red cells [mol/kg]";
 
+         // debug of chloride shift:
+        Modelica.Units.SI.Concentration cCl_P = (aCl_P*x_P)*plasmaDensity(state) "Chloride in blood plasma";
+        Modelica.Units.SI.Concentration cCl_E = (aCl_E*x_E)*formedElementsDensity(state) "Chloride in blood red cells";
+
+        Modelica.Units.SI.Concentration cHCO3_P = (aHCO3*x_P)*plasmaDensity(state) "Bicarbonate in blood plasma";
+        Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
+
         Types.MassFraction expected_XCl_E,expected_XH2O_E;
     equation
 
@@ -381,7 +388,10 @@ package Media "Models of physiological fluids"
     end ChemicalSolution;
 
     replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
-      input Physiolibrary.Media.Blood.ThermodynamicState state(p=101325,h=ArterialDefault*specificEnthalpies_TpvI(T,101325),X=ArterialDefault)  "blood";
+      input Physiolibrary.Media.Blood.ThermodynamicState state(
+        p=101325,
+        h=ArterialDefault*specificEnthalpies_Tpv(T, 101325),
+        X=ArterialDefault) "blood";
       input Modelica.Units.SI.Temperature T=310.15 "Temperature";
       output Modelica.Units.SI.Pressure pO2(start=101325*87/760,min=1e-11)
         "Oxygen partial pressure";
@@ -550,7 +560,10 @@ package Media "Models of physiological fluids"
 
     equation
       d = 1057;
-      h = specificEnthalpies_TpvI(T,p,v)*X;
+      h =specificEnthalpies_Tpv(
+          T,
+          p,
+          v)*X;
       u = h - p/d;
       MM = 1;
       R_s = 8.3144;
@@ -564,7 +577,7 @@ package Media "Models of physiological fluids"
 </html>"));
     end BaseProperties;
 
-    redeclare function extends specificEnthalpies_TpvI "Specific enthalpies of blood substances"
+    redeclare function extends specificEnthalpies_Tpv "Specific enthalpies of blood substances"
     algorithm
       specificEnthalpy[i("H2O_E")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
           Substances.Water,
@@ -663,7 +676,7 @@ package Media "Models of physiological fluids"
           v);
       specificEnthalpy[i("Other_E")] := 0;
 
-    end specificEnthalpies_TpvI;
+    end specificEnthalpies_Tpv;
 
     redeclare function extends specificEnthalpy "Return specific enthalpy"
     algorithm
@@ -811,9 +824,11 @@ package Media "Models of physiological fluids"
 
     redeclare replaceable function extends setState_pTX "Thermodynamic state"
       input Types.ElectricPotential v=0 "electric potential";
-      input MassFraction I=0 "ionic strength";
     algorithm
-      state.h := specificEnthalpies_TpvI(T,p,v)*X;
+      state.h :=specificEnthalpies_Tpv(
+        T,
+        p,
+        v)*X;
       state.p := p;
       state.X := X;
       state.v := v;
@@ -824,7 +839,6 @@ package Media "Models of physiological fluids"
 
     redeclare replaceable function extends setState_phX "Thermodynamic state"
       input Types.ElectricPotential v=0 "electric potential";
-      input MassFraction I=0 "ionic strength";
     algorithm
       state.p := p;
       state.h := h;
@@ -1154,7 +1168,6 @@ package Media "Models of physiological fluids"
       Types.Temperature T = 310.15;
       Types.Pressure p = 101325;
       Types.ElectricPotential v = 0;
-      Real I=0;
 
       Types.VolumeFraction hematocrit = D_Hct "Hematocrit [ml/ml]";
       Types.Concentration tO2 = D_Arterial_O2 "Total oxygen in blood",
@@ -1219,7 +1232,7 @@ package Media "Models of physiological fluids"
       Types.Concentration NSID;
       Types.Fraction XE,XP,PMF;
     //(start=ArterialDefault*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(310,p))
-      Types.SpecificEnthalpy h = X*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(T,p);
+      Types.SpecificEnthalpy h = X*Physiolibrary.Media.Blood.specificEnthalpies_Tpv( T,p);
       ThermodynamicState state = setState_phX(p, h, X) "State of blood";
       Physiolibrary.Media.Blood.BloodGases bloodGases(
         T=T,
@@ -1450,12 +1463,12 @@ package Media "Models of physiological fluids"
         "mass change of water";
     end ChemicalSolution;
 
-    replaceable function extends specificEnthalpies_TpvI
+    replaceable function extends specificEnthalpies_Tpv
     algorithm
        specificEnthalpy:=stateOfMatter.specificEnthalpy(
           {Substances.Water},
           T,p,v);
-    end specificEnthalpies_TpvI;
+    end specificEnthalpies_Tpv;
 
   public
     redeclare model extends BaseProperties(final standardOrderComponents=true)
@@ -1657,12 +1670,12 @@ Modelica source.
 
       end ChemicalSolution;
 
-      redeclare function extends specificEnthalpies_TpvI
+      redeclare function extends specificEnthalpies_Tpv
       algorithm
            specificEnthalpy:=stateOfMatter.specificEnthalpy(
               substanceData,
               T,p,v);
-      end specificEnthalpies_TpvI;
+      end specificEnthalpies_Tpv;
 
   public
       redeclare replaceable record extends ThermodynamicState
@@ -1984,12 +1997,12 @@ Modelica source.
 
     end ChemicalSolution;
 
-    redeclare function extends specificEnthalpies_TpvI
+    redeclare function extends specificEnthalpies_Tpv
     algorithm
          specificEnthalpy:=stateOfMatter.specificEnthalpy(
             substanceData,
             T,p,v);
-    end specificEnthalpies_TpvI;
+    end specificEnthalpies_Tpv;
 
   public
     redeclare model extends BaseProperties(final standardOrderComponents=true)
@@ -2216,8 +2229,7 @@ Modelica source.
       constant Modelica.Units.SI.MassFlowRate SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
       constant Modelica.Units.SI.SpecificEnthalpy SpecificEnthalpyNominal=-1E6 "Nominal of specific enthalpy";
 
-       replaceable function specificEnthalpies_TpvI
-            "Specific enthalpies of medium substances"
+       replaceable function specificEnthalpies_Tpv "Specific enthalpies of medium substances"
              input Modelica.Units.SI.Temperature T=298.15 "Temperature";
              input Modelica.Units.SI.Pressure p=100000 "Pressure";
              input Modelica.Units.SI.ElectricPotential v=0
@@ -2225,7 +2237,7 @@ Modelica source.
              output Modelica.Units.SI.SpecificEnthalpy specificEnthalpy[nS]
                "Specific enthalpies of medium substances";
 
-       end specificEnthalpies_TpvI;
+       end specificEnthalpies_Tpv;
 
        function temperatureError  "To find u as temperature, where temperatureError(u,p,X,h)->0"
        extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
@@ -2235,7 +2247,7 @@ Modelica source.
       protected
           Real hs[nS];
        algorithm
-         hs:=specificEnthalpies_TpvI(u,p);
+         hs:=specificEnthalpies_Tpv(u, p);
          y:=h-sum(hs[i]*X[i] for i in 1:nS);
        end temperatureError;
 
