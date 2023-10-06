@@ -8,14 +8,14 @@ package Media "Models of physiological fluids"
 
     extends Media.Interfaces.PartialMedium(
       mediumName = "Blood",
-      substanceNames={"H2O_E","O2","CO2","CO","Hb","MetHb","HbF","Alb","Glb","PO4","DPG",
+      substanceNames={"H2O_P","H2O_E","O2","CO2_P","CO2_E","CO","eHb","MetHb","HbF","Alb","Glb","PO4","DPG",
         "Glucose","Lactate","Urea","AminoAcids","Lipids","KetoAcids",
         "Na_P","K_P","Na_E","K_E","Cl_P","Cl_E",
         "Epinephrine", "Norepinephrine","Vasopressin",
         "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
         "Desglymidodrine",
         "Angiotensin2","Renin","Aldosterone",
-        "H2O_P","Other_P","Other_E"},
+        "Other_P","Other_E"},
       extraPropertiesNames={
         "AlphaBlockers",
         "BetaBlockers",
@@ -38,10 +38,10 @@ package Media "Models of physiological fluids"
         nominal=310.15));
 
     constant Types.MassFraction ArterialDefault[nS]={
-    0.24006872,0.00024730066,0.00088532415,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.4941722,0.004679102,0.08213973};
+    0.47397342,0.2602675,0.00024730066,0.00060022215,0.00028510197,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.025162973,0.061655864};
 
     constant Types.MassFraction VenousDefault[nS]={
-    0.24047989,0.0001659035,0.0009894797,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.493761,0.0050182766,0.081777796};
+    0.47057825,0.26366264,0.0001659035,0.00065897073,0.00033050895,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.028531536,0.05826454};
 
     constant Types.MassFraction CDefault[nC]={
     1e-20,1e-20,1e-06};
@@ -98,9 +98,10 @@ package Media "Models of physiological fluids"
       Modelica.Units.SI.MoleFraction aCl_E(start = 0.050)
                                                          "Mole fraction of Cl- in blood red cell";
       Modelica.Units.SI.MoleFraction aH2O_E,aH2O_P;
-      Types.MolarFlowRate Cl_Ery2Plasma,H2O_Ery2Plasma;
+      Types.MolarFlowRate Cl_Ery2Plasma,H2O_Ery2Plasma,CO2_Ery2Plasma;
       parameter Real KC_Cl = 1e-5 "Rate of chloride shift equilibration";
       parameter Real KC_H2O = 1e-2 "Rate of osmolarity equilibration";
+      parameter Real KC_CO2 = 1e-5 "Rate of CO2 equilibration";
 
 
       Modelica.Units.SI.MoleFraction aCO "Gaseous CO activity";
@@ -130,6 +131,8 @@ package Media "Models of physiological fluids"
         Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
 
         Types.MassFraction expected_XCl_E,expected_XH2O_E;
+
+        Real aCO2_P,aCO2_E,cCO2_P,cCO2_E,cCO2_B,expected_tCO2_P,expected_tCO2_E;
     equation
 
 
@@ -151,6 +154,15 @@ package Media "Models of physiological fluids"
       Cl_Ery2Plasma = KC_Cl*(Modelica.Constants.R*T*log((aCl_E/aCl_P)*(aHCO3/aHCO3_E))) "Chloride shift";
       expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.MolarWeight*hct "Debug of chloride shift rate";
 
+      state.X[i("CO2_P")] = (aCO2_P*x_P)*CO2.MolarWeight*pct;
+      state.X[i("CO2_E")] = (aCO2_E*x_E)*CO2.MolarWeight*hct;
+      //expected:
+      expected_tCO2_P = bloodGases.tCO2_P;
+      expected_tCO2_E = bloodGases.tCO2_ery;
+      cCO2_P=(aCO2_P*x_P)*plasmaDensity(state);
+      CO2_Ery2Plasma = - KC_CO2*(Modelica.Constants.R*T*log(aCO2_P/(bloodGases.tCO2_P/(x_P*plasmaDensity(state)))));
+      cCO2_E=(aCO2_E*x_E)*formedElementsDensity(state);
+      cCO2_B= tCO2(state);
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
@@ -322,9 +334,10 @@ package Media "Models of physiological fluids"
 
       massFlows[i("H2O_E")] = -H2O_Ery2Plasma*Substances.Water.MolarWeight;
       massFlows[i("O2")] = substances.O2.q*Substances.O2.MolarWeight;
-      massFlows[i("CO2")] = substances.CO2.q*Substances.CO2.MolarWeight + substances.HCO3.q .* Substances.CO2.MolarWeight;
+      massFlows[i("CO2_P")] = substances.CO2.q*Substances.CO2.MolarWeight + substances.HCO3.q .* Substances.CO2.MolarWeight + CO2_Ery2Plasma*CO2.MolarWeight;
+      massFlows[i("CO2_E")] = -CO2_Ery2Plasma*CO2.MolarWeight;
       massFlows[i("CO")] = substances.CO.q*Substances.CO.MolarWeight;
-      massFlows[i("Hb")] = 0;
+      massFlows[i("eHb")] = 0;
       massFlows[i("MetHb")] = 0;
       massFlows[i("HbF")] = 0;
       massFlows[i("Alb")] = 0;
@@ -568,7 +581,12 @@ package Media "Models of physiological fluids"
           T,
           p,
           v);
-      specificEnthalpy[i("CO2")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
+      specificEnthalpy[i("CO2_P")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
+          Substances.CO2_g,
+          T,
+          p,
+          v);
+      specificEnthalpy[i("CO2_E")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
           Substances.CO2_g,
           T,
           p,
@@ -578,7 +596,7 @@ package Media "Models of physiological fluids"
           T,
           p,
           v);
-      specificEnthalpy[i("Hb")] := 0;
+      specificEnthalpy[i("eHb")] := 0;
       specificEnthalpy[i("MetHb")] := 0;
       specificEnthalpy[i("HbF")] := 0;
       specificEnthalpy[i("Alb")] := 0;
@@ -867,16 +885,16 @@ package Media "Models of physiological fluids"
       C := density(state) * state.X[i("O2")] / O2.MolarWeight;
     end tO2;
 
-    function sO2 "Oxygen saturation"
+    function sO2 "Oxygen saturation on effective hemoglobin"
       extends GetFraction;
     algorithm
-      F := (state.X[i("O2")] / O2.MolarWeight) / (state.X[i("Hb")] / Constants.MM_Hb);
+      F := (state.X[i("O2")] / O2.MolarWeight) / (state.X[i("eHb")] / Constants.MM_Hb);
     end sO2;
 
     function tCO2 "Total carbon dioxide in blood"
       extends GetConcentration;
     algorithm
-      C := density(state) * state.X[i("CO2")] / CO2.MolarWeight;
+      C := density(state) * (state.X[i("CO2_P")]+state.X[i("CO2_E")]) / CO2.MolarWeight;
     end tCO2;
 
     function tCO "Total carbon monoxide in blood"
@@ -888,19 +906,19 @@ package Media "Models of physiological fluids"
     function tHb "Total hemoglobine in blood"
       extends GetConcentration;
     algorithm
-      C := density(state) * state.X[i("Hb")] / Constants.MM_Hb;
+      C := density(state) * (state.X[i("eHb")] + state.X[i("MetHb")] + state.X[i("HbF")]) / Constants.MM_Hb;
     end tHb;
 
     function FMetHb "Methemoglobine fraction"
       extends GetFraction;
     algorithm
-      F := (state.X[i("MetHb")] / state.X[i("Hb")]);
+      F := (state.X[i("MetHb")] / tHb(state));
     end FMetHb;
 
     function FHbF "Foetalhemoglobine fraction"
       extends GetFraction;
     algorithm
-      F := (state.X[i("HbF")] / state.X[i("Hb")]);
+      F := (state.X[i("HbF")] / tHb(state));
     end FHbF;
 
     function ctHb_ery "Total hemoglobine in erythrocytes"
@@ -1181,7 +1199,7 @@ package Media "Models of physiological fluids"
       Types.Concentration cNa_E = D_Na_RBC "Sodium in erythrocytes";
       Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
 
-      output Types.MassFraction X[nS];
+      output Types.MassFraction X[nS];//(start = ArterialDefault);
       output Real C[nC];
 
       Types.Density density,plasmaDensity;
@@ -1215,6 +1233,7 @@ package Media "Models of physiological fluids"
         function rbcMFwO=formedElementsMassFraction(includeOther=false);
         function plasmaMFwO=plasmaMassFraction(includeOther=false);
 
+        Real aCO2_P;
     equation
       density = D_BloodDensity;
       plasmaDensity = D_BloodPlasmaDensity;
@@ -1224,11 +1243,11 @@ package Media "Models of physiological fluids"
       X[i("H2O_P")] = (plasmacrit*H2O_plasma)/density;
       X[i("H2O_E")] = (hematocrit*H2O_ery)/density;
       X[i("O2")] = (tO2*O2.MolarWeight)/density;
-      X[i("CO2")] = (tCO2*CO2.MolarWeight)/density;
+
       X[i("CO")] = (tCO*CO.MolarWeight)/density;
-      X[i("Hb")] = (tHb*Constants.MM_Hb)/density;
-      X[i("MetHb")] = FMetHb*X[i("Hb")];
-      X[i("HbF")] = FHbF*X[i("Hb")];
+      X[i("eHb")] + X[i("MetHb")] + X[i("HbF")] = (tHb*Constants.MM_Hb)/density;
+      X[i("MetHb")] = FMetHb*(tHb*Constants.MM_Hb)/density;
+      X[i("HbF")] = FHbF*(tHb*Constants.MM_Hb)/density;
       X[i("Alb")] = plasmacrit*(tAlb*Constants.MM_Alb)/density;
       X[i("Glb")] = plasmacrit*tGlb/density;
       X[i("PO4")] = plasmacrit*(tPO4*PO4.MolarWeight)/density;
@@ -1264,7 +1283,7 @@ package Media "Models of physiological fluids"
       XE = XP2*(1-PMF)/PMF;
 
       X[i("Other_P")] = PMF - plasmaMFwO(state);
-      X[i("Other_E")] = homotopy((1-PMF) - rbcMFwO(state), XE - rbcMFwO(state));
+      X[i("Other_E")] = (1-PMF) - rbcMFwO(state); //homotopy((1-PMF) - rbcMFwO(state), XE - rbcMFwO(state));
 
       XH2O =X[i("H2O_P")] + X[i("H2O_E")];
 
@@ -1279,16 +1298,20 @@ package Media "Models of physiological fluids"
       fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
 
       x_P =plasmaSpecificAmountOfParticles(
-            state,
-            T,
-            pct);
+          state,
+          T,
+          pct);
       x_E =formedElementsSpecificAmountOfParticles(
-            state,
-            T,
-            hct);
+          state,
+          T,
+          hct);
 
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity);
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
+
+      X[i("CO2_P")] + X[i("CO2_E")] = (tCO2*CO2.MolarWeight)/density;
+      state.X[i("CO2_P")] = homotopy((aCO2_P*x_P)*CO2.MolarWeight*pct,(26/plasmaDensity)*CO2.MolarWeight*pct);
+      bloodGases.tCO2_P=(aCO2_P*x_P)*plasmaDensity;
 
       aHCO3*aCl_E = aCl_P*aHCO3_E "Chloride shift";
       X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of plasma Cl- in blood";
@@ -1312,8 +1335,9 @@ package Media "Models of physiological fluids"
     algorithm
       F :=state.X[i("H2O_E")] +
           state.X[i("O2")] +
+          state.X[i("CO2_E")] +
           state.X[i("CO")] +
-          state.X[i("Hb")] +
+          state.X[i("eHb")] +
           state.X[i("MetHb")] +
           state.X[i("HbF")] +
           state.X[i("DPG")] +
@@ -1331,10 +1355,11 @@ package Media "Models of physiological fluids"
     algorithm
      B := (
      state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,state.p,state.v) +
+     state.X[i("CO2_E")]/CO2.MolarWeight +
      state.X[i("K_E")]/K.MolarWeight +
      state.X[i("Na_E")]/Na.MolarWeight +
      state.X[i("Cl_E")]/Cl.MolarWeight +
-     state.X[i("Hb")]/Constants.MM_Hb +
+     (state.X[i("eHb")] + state.X[i("MetHb")] + state.X[i("HbF")])/Constants.MM_Hb +
      state.X[i("DPG")]/Constants.MM_DPG)
       /hct;
     end formedElementsSpecificAmountOfParticles;
@@ -1344,7 +1369,7 @@ package Media "Models of physiological fluids"
       parameter Boolean includeOther=true;
     algorithm
       F := state.X[i("H2O_P")] +
-           state.X[i("CO2")] +
+           state.X[i("CO2_P")] +
            state.X[i("Alb")] +
            state.X[i("Glb")] +
            state.X[i("Glucose")] +
@@ -1382,7 +1407,7 @@ package Media "Models of physiological fluids"
      state.X[i("Cl_P")]/Cl.MolarWeight +
      state.X[i("Na_P")]/Na.MolarWeight +
      state.X[i("K_P")]/K.MolarWeight +
-     state.X[i("CO2")]/CO2.MolarWeight +
+     state.X[i("CO2_P")]/CO2.MolarWeight +
      state.X[i("Alb")]/Constants.MM_Alb +
      state.X[i("Glb")]/Constants.MM_Glb +
      state.X[i("Glucose")]/Constants.MM_Glucose +
