@@ -1700,6 +1700,40 @@ The sensor is ideal, i.e., it does not influence the fluid.
         </ul>
         </html>"));
     end Density;
+
+    model ExtraProperty "Ideal one port sensor for extra property"
+    extends Modelica.Icons.RoundSensor;
+    extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor(redeclare replaceable package Medium =
+          Physiolibrary.Media.Blood);
+
+          Modelica.Blocks.Interfaces.RealOutput e "Extra property in port medium" annotation (
+      Placement(transformation(extent = {{100, -10}, {120, 10}})));
+
+    replaceable function GetExtraProperty =
+        Physiolibrary.Media.Blood.betaBlockers
+      constrainedby Medium.GetExtraProperty
+      "Get beta blockers effect from medium state"
+        annotation (choicesAllMatching=true);
+
+    equation
+     e = GetExtraProperty(inStream(port.C_outflow));
+    annotation (
+      defaultComponentName = "density",
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{0, -70}, {0, -100}}, color = {0, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33}), Text(extent = {{160, -30}, {60, -60}},
+            textString="R",
+            textColor={0,0,0}),                                                                                                                                                                                                        Line(points = {{70, 0}, {100, 0}}, color = {0, 0, 127})}),
+      Documentation(info = "<html>
+        <p>
+        This component monitors the density contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        </html>",
+              revisions = "<html>
+        <ul>
+        <li>2023-09-21: Marek Matejak: Initial Release.</li>
+        </ul>
+        </html>"));
+    end ExtraProperty;
   end Sensors;
 
   package Sources

@@ -1521,8 +1521,7 @@ package Types "Physiological units with nominals"
             Connector with one input signal of type PopulationChangePerMember.
             </p>
             </html>"));
-    connector PopulationChangePerMemberOutput = output
-        PopulationChangePerMember                                                "output PopulationChangePerMember as connector" annotation (
+    connector PopulationChangePerMemberOutput = output PopulationChangePerMember "output PopulationChangePerMember as connector" annotation (
       defaultComponentName = "populationChangePerMember",
       Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {1, 1}), graphics={  Polygon(points = {{-100, 100}, {100, 0}, {-100, -100}, {-100, 100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid)}),
       Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {1, 1}), graphics={  Polygon(points = {{-100, 50}, {0, 0}, {-100, -50}, {-100, 50}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{30, 110}, {30, 60}}, lineColor = {0, 0, 127}, textString = "%name")}),
@@ -1595,6 +1594,7 @@ package Types "Physiological units with nominals"
   replaceable type MolarEnergy = Modelica.Units.SI.MolarEnergy(displayUnit = "kcal/mol", nominal = 4186.8) constrainedby Real "chemical internal energy, chemical enthalpy, Gibb's energy ..";
   type MassConcentration = Modelica.Units.SI.MassConcentration(displayUnit = "mg/l", nominal = 1e-3, min = ModelicaServices.Machine.small, max = Modelica.Constants.inf);
   type Osmolarity = Modelica.Units.SI.Concentration(displayUnit = "mosm/l", nominal = 1, min = ModelicaServices.Machine.small, max = Modelica.Constants.inf);
+  type Molality = Modelica.Units.SI.Molality(displayUnit = "mmol/kg", nominal = 1, min = ModelicaServices.Machine.small, max = Modelica.Constants.inf);
   type Heat = Modelica.Units.SI.Heat(displayUnit = "kcal", nominal = 4186800);
   //needed to heat 1 liter of water by 1 degC
   type Temperature = Modelica.Units.SI.Temperature(displayUnit = "degC", nominal = 1, min = 0);

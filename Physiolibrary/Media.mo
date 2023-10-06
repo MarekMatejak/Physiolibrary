@@ -13,11 +13,15 @@ package Media "Models of physiological fluids"
         "Na_P","K_P","Na_E","K_E","Cl_P","Cl_E",
         "Epinephrine", "Norepinephrine","Vasopressin",
         "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
-        "Desglymidodrine","AlphaBlockers","BetaBlockers",
-        "AnesthesiaVascularConductance",
+        "Desglymidodrine",
         "Angiotensin2","Renin","Aldosterone",
         "H2O_P","Other_E"},
+      extraPropertiesNames={
+        "AlphaBlockers",
+        "BetaBlockers",
+        "AnesthesiaVascularConductance"},
       reference_X=ArterialDefault,
+      C_default=CDefault,
       SubstanceFlowNominal=ArterialDefault ./ Constants.TimeScale,
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
       reducedX=false,
@@ -34,11 +38,13 @@ package Media "Models of physiological fluids"
         nominal=310.15));
 
     constant Types.MassFraction ArterialDefault[nS]={
-    0.24006872,0.00024730066,0.00088532415,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1e-20,1e-20,1e-06,1.0596027e-11,7.12053e-15,6.301733e-11,0.4941722,0.07920542};
+    0.24006872,0.00024730066,0.00088532415,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.4941722,0.07920542};
 
     constant Types.MassFraction VenousDefault[nS]={
-    0.24047989,0.0001659035, 0.0009894797, 4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1e-20,1e-20,1e-06,1.0596027e-11,7.12053e-15,6.301733e-11,0.493761,0.078535914};
+    0.24047989,0.0001659035, 0.0009894797, 4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.493761,0.078535914};
 
+    constant Types.MassFraction CDefault[nC]={
+    1e-20,1e-20,1e-06};
 
   public
     redeclare connector extends SubstancesPort "Blood chemical substances interface"
@@ -105,7 +111,6 @@ package Media "Models of physiological fluids"
         Types.MassFraction pct "Plasmacrit [kg/kg]";
         Types.MassFraction hct "Hematocrit [kg/kg]";
 
-        Modelica.Units.SI.Molality fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
         Modelica.Units.SI.Molality x_P(start=1.2) "Amount of free particles in 1 kg of blood plasma [mol/kg]";
         Modelica.Units.SI.Molality x_E(start=0.86) "Amount of free particles in 1 kg of blood erythrocytes [mol/kg]";
 
@@ -156,36 +161,12 @@ package Media "Models of physiological fluids"
       expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) "Debug of osmolarity equilibration";
 
 
-      fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+      x_P = plasmaSpecificAmountOfFreeSubstances(state);
 
-      x_P =
-       fH2O_P +
-       aCl_P*x_P +
-       (
-       state.X[i("Na_P")]/Na.MolarWeight +
-       state.X[i("K_P")]/K.MolarWeight +
-       state.X[i("CO2")]/CO2.MolarWeight +
-       state.X[i("Alb")]/Constants.MM_Alb +
-       state.X[i("Glb")]/Constants.MM_Glb +
-       state.X[i("Glucose")]/Constants.MM_Glucose +
-       state.X[i("PO4")]/PO4.MolarWeight +
-       state.X[i("Lactate")]/Constants.MM_Lactate +
-       state.X[i("Urea")]/Constants.MM_Urea +
-       state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
-       state.X[i("Lipids")]/Constants.MM_Lipids +
-       state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/pct "Amount of free particles in 1 kg of blood plasma [mol/kg]";
-
-      x_E =
-       aCl_E*x_E +
-       (state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) +
-       state.X[i("K_E")]/K.MolarWeight +
-       state.X[i("Na_E")]/Na.MolarWeight +
-       state.X[i("Hb")]/Constants.MM_Hb +
-       state.X[i("DPG")]/Constants.MM_DPG)
-        /hct "Amount of free particles in 1 kg of intracellular fluid in erythrocytes [mol/kg]";
+      x_E = formedElementsSpecificAmountOfFreeSubstances(state);
 
 
-      substances.H2O.u = Modelica.Constants.R*T*log(fH2O_P/x_P)  +
+      substances.H2O.u = Modelica.Constants.R*T*log(aH2O_P)  +
             Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
               Substances.Water, T, p, v);
       substances.H2O.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
@@ -371,9 +352,6 @@ package Media "Models of physiological fluids"
       massFlows[i("Thyroxine")] = substances.Thyroxine.q*Constants.MM_Thyroxine;
       massFlows[i("Leptin")] = substances.Leptin.q*Constants.MM_Leptin;
       massFlows[i("Desglymidodrine")] = substances.Desglymidodrine.q*Constants.MM_Desglymidodrine;
-      massFlows[i("AlphaBlockers")] = 0;
-      massFlows[i("BetaBlockers")] = 0;
-      massFlows[i("AnesthesiaVascularConductance")] = 0;
       massFlows[i("Angiotensin2")] = substances.Angiotensin2.q*Constants.MM_Angiotensin2;
       massFlows[i("Renin")] = substances.Renin.q*Constants.MM_Renin;
       massFlows[i("Aldosterone")] = substances.Aldosterone.q*Constants.MM_Aldosterone;
@@ -663,9 +641,6 @@ package Media "Models of physiological fluids"
       specificEnthalpy[i("Thyroxine")] := 0;
       specificEnthalpy[i("Leptin")] := 0;
       specificEnthalpy[i("Desglymidodrine")] := 0;
-      specificEnthalpy[i("AlphaBlockers")] := 0;
-      specificEnthalpy[i("BetaBlockers")] := 0;
-      specificEnthalpy[i("AnesthesiaVascularConductance")] := 0;
       specificEnthalpy[i("Angiotensin2")] := 0;
       specificEnthalpy[i("Renin")] := 0;
       specificEnthalpy[i("Aldosterone")] := 0;
@@ -1082,22 +1057,22 @@ package Media "Models of physiological fluids"
         state);
     end angiotensin2;
 
-    function alphaBlockers "Alpha blockers effect in blood plasma"
-      extends GetFraction;
+    function alphaBlockers "Alpha blockers effect"
+      extends GetExtraProperty;
     algorithm
-      F := state.X[i("AlphaBlockers")]/1e-6;
+      e := C[j("AlphaBlockers")]/1e-6;
     end alphaBlockers;
 
-    function betaBlockers "Beta blockers effect in blood plasma"
-      extends GetFraction;
+    function betaBlockers "Beta blockers effect"
+      extends GetExtraProperty;
     algorithm
-      F := state.X[i("BetaBlockers")]/1e-6;
+      e := C[j("BetaBlockers")]/1e-6;
     end betaBlockers;
 
-    function anesthesiaVascularConductance "Anesthesia vascular conductance effect in blood plasma"
-      extends GetFraction;
+    function anesthesiaVascularConductance "Anesthesia vascular conductance effect"
+      extends GetExtraProperty;
     algorithm
-      F := state.X[i("AnesthesiaVascularConductance")]/1e-6;
+      e := C[j("AnesthesiaVascularConductance")]/1e-6;
     end anesthesiaVascularConductance;
 
     function aldosterone "Aldosterone in blood plasma"
@@ -1136,6 +1111,28 @@ package Media "Models of physiological fluids"
       F :=1 - formedElementsMassFraction(state);
     end plasmaMassFraction;
 
+    function plasmaSpecificAmountOfFreeSubstances "Amount of free particles in 1 kg of blood plasma"
+      extends GetMolality;
+      input Types.Temperature T = temperature(state);
+      input Types.MassFraction pct = plasmaMassFraction(state);
+    algorithm
+     B := (
+     state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,state.p,state.v) +
+     state.X[i("Cl_P")]/Cl.MolarWeight +
+     state.X[i("Na_P")]/Na.MolarWeight +
+     state.X[i("K_P")]/K.MolarWeight +
+     state.X[i("CO2")]/CO2.MolarWeight +
+     state.X[i("Alb")]/Constants.MM_Alb +
+     state.X[i("Glb")]/Constants.MM_Glb +
+     state.X[i("Glucose")]/Constants.MM_Glucose +
+     state.X[i("PO4")]/PO4.MolarWeight +
+     state.X[i("Lactate")]/Constants.MM_Lactate +
+     state.X[i("Urea")]/Constants.MM_Urea +
+     state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
+     state.X[i("Lipids")]/Constants.MM_Lipids +
+     state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/pct;
+    end plasmaSpecificAmountOfFreeSubstances;
+
     function hematocrit "Blood hematocrit [mL/mL]"
       extends GetFraction;
     algorithm
@@ -1162,6 +1159,22 @@ package Media "Models of physiological fluids"
       XE := state.X[i("H2O_E")] + state.X[i("Hb")] + state.X[i("DPG")] + state.X[i("Other_E")];
       F := XE/ (XE + XP);
     end formedElementsMassFraction;
+
+    function formedElementsSpecificAmountOfFreeSubstances "Amount of free particles in 1 kg of blood formed elements"
+      extends GetMolality;
+      input Types.Temperature T= temperature(state);
+      input Types.MassFraction hct= formedElementsMassFraction(state);
+    algorithm
+     B := (
+     state.X[i("Cl_E")]/Cl.MolarWeight +
+     state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,state.p,state.v) +
+     state.X[i("K_E")]/K.MolarWeight +
+     state.X[i("Na_E")]/Na.MolarWeight +
+     state.X[i("Hb")]/Constants.MM_Hb +
+     state.X[i("DPG")]/Constants.MM_DPG)
+      /hct;
+    end formedElementsSpecificAmountOfFreeSubstances;
+
 
     model ArterialComposition "To set mass fractions in blood"
 
@@ -1214,8 +1227,6 @@ package Media "Models of physiological fluids"
               aldosterone(displayUnit="nmol/L")=D_Aldosterone "Aldosterone in blood plasma";
 
       Types.MassFraction XH2O = D_H2O_B "Water in blood";
-      //Types.MassConcentration H2O_plasma = D_BloodPlasmaWater "Water in blood plasma";
-      //Types.MassConcentration H2O_ery = D_BloodFormedElementsWater "Water in blood red cells";
 
       Types.Concentration cNa_P = D_Na "Sodium in blood plasma";
       Types.Concentration cK_P = D_K "Potassium in blood plasma";
@@ -1223,6 +1234,7 @@ package Media "Models of physiological fluids"
       Types.Concentration cK_E = D_K_RBC "Potassium in erythrocytes";
 
       output Types.MassFraction X[nS];
+      output Real C[nC];
 
     //  output Types.MassFraction XH2O;
 
@@ -1230,7 +1242,7 @@ package Media "Models of physiological fluids"
       Types.Density density,plasmaDensity;
       Types.Fraction plasmacrit;
       Types.Concentration NSID;
-      Types.Fraction XE,XP,PMF;
+      Types.Fraction XE(start=0.46),XP(start=0.54),PMF(start=0.54),XP2(start=0.54),XP3(start=0.54),XE2(start=0.46),XE3;
     //(start=ArterialDefault*Physiolibrary.Media.Blood.specificEnthalpies_TpvI(310,p))
       Types.SpecificEnthalpy h = X*Physiolibrary.Media.Blood.specificEnthalpies_Tpv( T,p);
       ThermodynamicState state = setState_phX(p, h, X) "State of blood";
@@ -1255,6 +1267,9 @@ package Media "Models of physiological fluids"
 
         Modelica.Units.SI.Concentration cHCO3_P = (aHCO3*x_P)*plasmaDensity "Bicarbonate in blood plasma";
         Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
+
+        function rbcMFwO=formedElementsMassFraction2(includeOtherE=false);
+        Real otherP,one;
     equation
       density = D_BloodDensity;
       plasmaDensity = D_BloodPlasmaDensity;
@@ -1293,23 +1308,28 @@ package Media "Models of physiological fluids"
       X[i("Thyroxine")] = plasmacrit*(thyroxine)/density;
       X[i("Leptin")] = plasmacrit*(leptin)/density;
       X[i("Desglymidodrine")] = plasmacrit*(desglymidodrine)/density;
-      X[i("AlphaBlockers")] = 1e-6*alphaBlockers;
-      X[i("BetaBlockers")] = 1e-6*betaBlockers;
-      X[i("AnesthesiaVascularConductance")] = 1e-6*anesthesiaVascularConductance;
+
       X[i("Angiotensin2")] = plasmacrit*(angiotensin2)/density;
       X[i("Renin")] = plasmacrit*(1e-12*0.6*11.2*renin)/density
         "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
       X[i("Aldosterone")] = plasmacrit*(aldosterone*Constants.MM_Aldosterone)/density;
 
       PMF = plasmacrit * plasmaDensity/density;
-      XP =X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")]
+      XP2 = plasmaMassFraction2(state);
+      otherP = PMF - XP2;
+      one = PMF + XE;
+      XP3 = plasmaMassFraction(state);
+      XP = X[i("H2O_P")] + X[i("CO2")] + X[i("Alb")] + X[i("Glb")]
          + X[i("Glucose")] + X[i("PO4")] + X[i("Lactate")] + X[
         i("Urea")] + X[i("AminoAcids")] + X[i("Lipids")] + X[
         i("KetoAcids")];
-      XE = XP*(1-PMF)/PMF;
-      X[i("Other_E")] = XE - (X[i("H2O_E")] + X[i("Hb")] + X[
-        i("DPG")]);
-
+      XE = XP2*(1-PMF)/PMF;
+      XE2 = rbcMFwO(state) +  X[i("Other_E")];
+      XE3 = formedElementsMassFraction(state);
+      X[i("Other_E")] = XE - rbcMFwO(state);
+     /* X[i("Other_E")] = XE - (X[i("H2O_E")] + X[i("Hb")] + X[
+    i("DPG")]);
+*/
       XH2O =X[i("H2O_P")] + X[i("H2O_E")];
 
       aH2O_P = aH2O_E "osmolarity";
@@ -1322,30 +1342,8 @@ package Media "Models of physiological fluids"
 
       fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
 
-      x_P =fH2O_P +
-           aCl_P*x_P +
-           (
-           state.X[i("Na_P")]/Na.MolarWeight +
-           state.X[i("K_P")]/K.MolarWeight +
-           state.X[i("CO2")]/CO2.MolarWeight +
-           state.X[i("Alb")]/Constants.MM_Alb +
-           state.X[i("Glb")]/Constants.MM_Glb +
-           state.X[i("Glucose")]/Constants.MM_Glucose +
-           state.X[i("PO4")]/PO4.MolarWeight +
-           state.X[i("Lactate")]/Constants.MM_Lactate +
-           state.X[i("Urea")]/Constants.MM_Urea +
-           state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
-           state.X[i("Lipids")]/Constants.MM_Lipids +
-           state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/pct "Amount of free particles in 1 kg of blood plasma [mol/kg]";
-
-       x_E =
-           aCl_E*x_E +
-           (state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) +
-           state.X[i("K_E")]/K.MolarWeight +
-           state.X[i("Na_E")]/Na.MolarWeight +
-           state.X[i("Hb")]/Constants.MM_Hb +
-           state.X[i("DPG")]/Constants.MM_DPG)
-            /hct  "Amount of free particles in 1 kg of intracellular fluid in erythrocytes [mol/kg]"; //+ 0.03
+      x_P = plasmaSpecificAmountOfFreeSubstances(state,T,pct);
+      x_E = formedElementsSpecificAmountOfFreeSubstances(state, T, hct);
 
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity);
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
@@ -1356,6 +1354,9 @@ package Media "Models of physiological fluids"
       X[i("Cl_P")] + X[i("Cl_E")] = -((NSID - BEox) - plasmacrit*(cNa_P + cK_P) - hematocrit*(cNa_E + cK_E))*Cl.MolarWeight
         /density "where blood SID = NSID - BEox";
 
+      C[j("AlphaBlockers")] = 1e-6*alphaBlockers;
+      C[j("BetaBlockers")] = 1e-6*betaBlockers;
+      C[j("AnesthesiaVascularConductance")] = 1e-6*anesthesiaVascularConductance;
       annotation (experiment(StopTime=1, __Dymola_Algorithm="Dassl"));
     end ArterialComposition;
 
@@ -1363,6 +1364,57 @@ package Media "Models of physiological fluids"
       extends ArterialComposition(tO2=D_Venous_O2,tCO2=D_Venous_CO2);
     end VenousComposition;
 
+    function formedElementsMassFraction2 "Blood hematocrit [kg/kg]"
+      extends GetFraction;
+      parameter Boolean includeOtherE=true;
+    algorithm
+      F :=state.X[i("H2O_E")] +
+          state.X[i("O2")] +
+          state.X[i("CO")] +
+          state.X[i("Hb")] +
+          state.X[i("MetHb")] +
+          state.X[i("HbF")] +
+          state.X[i("DPG")] +
+          state.X[i("Na_E")] +
+          state.X[i("K_E")] +
+          state.X[i("Cl_E")] +
+          (if (includeOtherE) then state.X[i("Other_E")] else 0);
+
+    end formedElementsMassFraction2;
+
+    function plasmaMassFraction2 "Blood plasmacrit [kg/kg]"
+      extends GetFraction;
+    algorithm
+      F := state.X[i("H2O_P")] +
+           state.X[i("CO2")] +
+           state.X[i("Alb")] +
+           state.X[i("Glb")] +
+           state.X[i("Glucose")] +
+           state.X[i("PO4")] +
+           state.X[i("Lactate")] +
+           state.X[i("Urea")] +
+           state.X[i("AminoAcids")] +
+           state.X[i("Lipids")] +
+           state.X[i("KetoAcids")] +
+           state.X[i("Na_P")] +
+           state.X[i("K_P")] +
+           state.X[i("Cl_P")] +
+           state.X[i("Epinephrine")] +
+           state.X[i("Norepinephrine")] +
+           state.X[i("Vasopressin")] +
+           state.X[i("Insulin")] +
+           state.X[i("Glucagon")] +
+           state.X[i("Thyrotropin")] +
+           state.X[i("Thyroxine")] +
+           state.X[i("Leptin")] +
+           state.X[i("Desglymidodrine")] +
+           state.X[i("Angiotensin2")] +
+           state.X[i("Renin")] +
+           state.X[i("Aldosterone")];
+      /*  "AlphaBlockers","BetaBlockers",
+      "AnesthesiaVascularConductance",
+   */
+    end plasmaMassFraction2;
     annotation (Documentation(info="<html>
 <p>Adding new substance to blood model:</p>
 <p><br>- add to Blood.substanceNames</p>
@@ -2225,6 +2277,21 @@ Modelica source.
              + "Check parameters and medium model.");
       end i;
 
+      function j "Find index of extra property"
+        input String searchName "Name of extra property to find in extraPropertiesNames";
+        output Integer index "Index of searchName in extraPropertiesNames";
+      algorithm
+          index := -1;
+          for i in 1:nC loop
+            if ( Modelica.Utilities.Strings.isEqual(extraPropertiesNames[i], searchName)) then
+             index := i;
+            end if;
+          end for;
+          assert(index > 0, "Extra property '" + searchName + "' is not present between extraPropertiesNames in Medium\n"
+             + "Check parameters and medium model.");
+      end j;
+
+
 
       constant Modelica.Units.SI.MassFlowRate SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
       constant Modelica.Units.SI.SpecificEnthalpy SpecificEnthalpyNominal=-1E6 "Nominal of specific enthalpy";
@@ -2256,6 +2323,11 @@ Modelica source.
          output Types.Concentration C;
        end GetConcentration;
 
+       partial function GetMolality
+         input ThermodynamicState state;
+         output Types.Molality B;
+       end GetMolality;
+
        partial function GetMassConcentration
          input ThermodynamicState state;
          output Types.MassConcentration R;
@@ -2275,6 +2347,11 @@ Modelica source.
          input ThermodynamicState state;
          output Types.Density d;
        end GetDensity;
+
+       partial function GetExtraProperty
+         input Real C[:] "Extra properties values";
+         output Real e;
+       end GetExtraProperty;
 
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
