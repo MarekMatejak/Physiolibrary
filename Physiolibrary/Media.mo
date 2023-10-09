@@ -212,13 +212,13 @@ package Media "Models of physiological fluids"
           p,
           v);
       substances.HCO3.u = Modelica.Constants.R*T*log(aHCO3) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
           Substances.HCO3,
           T,
           p,
           v);
-      substances.HCO3.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.CO2_g,
+      substances.HCO3.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.HCO3,
           T,
           p,
           v);
@@ -544,7 +544,7 @@ package Media "Models of physiological fluids"
     redeclare model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
-      InputElectricPotential v "electric potential";
+      InputElectricPotential v=0 "electric potential";
 
       // Local connector definition, used for equation balancing check
       connector InputElectricPotential = input Types.ElectricPotential
@@ -1230,8 +1230,10 @@ package Media "Models of physiological fluids"
         Modelica.Units.SI.Concentration cHCO3_P = (aHCO3*x_P)*plasmaDensity "Bicarbonate in blood plasma";
         Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
 
-        function rbcMFwO=formedElementsMassFraction(includeOther=false);
-        function plasmaMFwO=plasmaMassFraction(includeOther=false);
+        function rbcMFwO=formedElementsMassFractionWithoutOther;
+        //formedElementsMassFraction(includeOther=false);
+        function plasmaMFwO= plasmaMassFractionWithoutOther;
+        //plasmaMassFraction(includeOther=false);
 
         Real aCO2_P;
     equation
@@ -1329,9 +1331,14 @@ package Media "Models of physiological fluids"
       extends ArterialComposition(tO2=D_Venous_O2,tCO2=D_Venous_CO2);
     end VenousComposition;
 
+    function formedElementsMassFractionWithoutOther "Blood hematocrit without unknown substances in formed elements [kg/kg]"
+      extends formedElementsMassFraction(includeOther=false);
+    end formedElementsMassFractionWithoutOther;
+
     function formedElementsMassFraction "Blood hematocrit [kg/kg]"
       extends GetFraction;
-      parameter Boolean includeOther=true;
+    protected
+      constant Boolean includeOther=true;
     algorithm
       F :=state.X[i("H2O_E")] +
           state.X[i("O2")] +
@@ -1366,7 +1373,8 @@ package Media "Models of physiological fluids"
 
     function plasmaMassFraction "Blood plasmacrit [kg/kg]"
       extends GetFraction;
-      parameter Boolean includeOther=true;
+    protected
+      constant Boolean includeOther=true;
     algorithm
       F := state.X[i("H2O_P")] +
            state.X[i("CO2_P")] +
@@ -1396,6 +1404,10 @@ package Media "Models of physiological fluids"
            state.X[i("Aldosterone")] +
            (if (includeOther) then state.X[i("Other_P")] else 0);
     end plasmaMassFraction;
+    
+    function plasmaMassFractionWithoutOther "Blood plasmacrit without unknown substances in blood plasma [kg/kg]"
+    extends plasmaMassFraction(includeOther=false);
+  end plasmaMassFractionWithoutOther;
 
     function plasmaSpecificAmountOfParticles "Amount of free particles in 1 kg of blood plasma"
       extends GetMolality;
@@ -2352,7 +2364,7 @@ Modelica source.
        end GetDensity;
 
        partial function GetExtraProperty
-         input Real C[:] "Extra properties values";
+         input Real C[nC] "Extra properties values";
          output Real e;
        end GetExtraProperty;
 

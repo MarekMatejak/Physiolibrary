@@ -48,7 +48,7 @@ package Organs "Prototypes of human physiological organ models"
         parameter Physiolibrary.Types.Pressure RV_NormalFillingPressure=
           95.9921189388
       "Typical value of filling pressure relative to pericardium pressure"
-        annotation (Dialog(tab="Right heart", group="Diastole"));                   //(0.00051*101325/760)*(RV_NormalEndDiastolicVolume^(1/RV_n_Diastole))
+        annotation (Dialog(tab="Right heart", group="Diastole"));                         //(0.00051*101325/760)*(RV_NormalEndDiastolicVolume^(1/RV_n_Diastole))
         parameter Physiolibrary.Types.Fraction RV_stiffnes=1
       "Relative stiffnes (1 if normal)"
         annotation (Dialog(tab="Right heart", group="Diastole"));
@@ -61,14 +61,14 @@ package Organs "Prototypes of human physiological organ models"
         annotation (Dialog(tab="Right heart",group="Systole"));
         parameter Physiolibrary.Types.Volume RV_NormalEndSystolicVolume=5.122e-05
       "Typical value of blood volume in ventricle after ejection"
-        annotation (Dialog(tab="Right heart",group="Systole"));                //(RV_NormalSystolicPressure/(17.39*101325/760))^(RV_n_Systole)
+        annotation (Dialog(tab="Right heart",group="Systole"));                      //(RV_NormalSystolicPressure/(17.39*101325/760))^(RV_n_Systole)
         parameter Physiolibrary.Types.Pressure RV_additionalPressure_Systolic=
           1199.901486735
       "Pressure difference between mean and systolic pressure"
-        annotation (Dialog(tab="Right heart",group="Systole"));     //= 24
+        annotation (Dialog(tab="Right heart",group="Systole"));           //= 24
         parameter Physiolibrary.Types.Fraction RV_contractilityBasic=1
       "Relative contractility (1 if normal)"
-         annotation (Dialog(tab="Right heart",group="Systole"));       //= 1
+         annotation (Dialog(tab="Right heart",group="Systole"));             //= 1
         parameter Physiolibrary.Types.Fraction RV_n_Systole(displayUnit="1")=
         0.5
       "Exponent of P-V characteristic of ESV curve on systolic pressure"
@@ -83,7 +83,7 @@ package Organs "Prototypes of human physiological organ models"
         parameter Physiolibrary.Types.Pressure LV_NormalFillingPressure=
           615.9494298573
       "Typical value of filling pressure relative to pericardium pressure"
-        annotation (Dialog(tab="Left heart", group="Diastole"));                   //(0.00051*101325/760)*(LV_NormalEndDiastolicVolume^(1/LV_n_Diastole))
+        annotation (Dialog(tab="Left heart", group="Diastole"));                         //(0.00051*101325/760)*(LV_NormalEndDiastolicVolume^(1/LV_n_Diastole))
         parameter Physiolibrary.Types.Fraction LV_stiffnes=1
       "Relative stiffnes (1 if normal)"
         annotation (Dialog(tab="Left heart", group="Diastole"));
@@ -96,14 +96,14 @@ package Organs "Prototypes of human physiological organ models"
         annotation (Dialog(tab="Left heart",group="Systole"));
         parameter Physiolibrary.Types.Volume LV_NormalEndSystolicVolume=5.087e-05
       "Typical value of blood volume in ventricle after ejection"
-        annotation (Dialog(tab="Left heart",group="Systole"));                //(LV_NormalSystolicPressure/(17.39*101325/760))^(LV_n_Systole)
+        annotation (Dialog(tab="Left heart",group="Systole"));                      //(LV_NormalSystolicPressure/(17.39*101325/760))^(LV_n_Systole)
         parameter Physiolibrary.Types.Pressure LV_additionalPressure_Systolic=
           3199.73729796
       "Pressure difference between mean and systolic pressure"
-        annotation (Dialog(tab="Left heart",group="Systole"));     //= 24
+        annotation (Dialog(tab="Left heart",group="Systole"));           //= 24
         parameter Physiolibrary.Types.Fraction LV_contractilityBasic=1
       "Relative contractility (1 if normal)"
-         annotation (Dialog(tab="Left heart",group="Systole"));       //= 1
+         annotation (Dialog(tab="Left heart",group="Systole"));             //= 1
         parameter Physiolibrary.Types.Fraction LV_n_Systole(displayUnit="1")=
         0.5
       "Exponent of P-V characteristic of ESV curve on systolic pressure"
@@ -112,19 +112,19 @@ package Organs "Prototypes of human physiological organ models"
         "time adaptation coeficient of average ventricle blood volume"
         annotation (Dialog(tab="Left heart", group="Ventricle"));
 
-     //
-    //
-    //    Abasic_Diastole=0.00026,
-    //    Abasic_Systole=3.53,
-    //    MaxContractionCompliance(displayUnit="ml/mmHg") = 1.5001231516913e-08,
-    //    Cond1=60000000,
-    //    Cond2=60000000,
-     //
-     //
-     //   MaxContractionCompliance(displayUnit="ml/mmHg") = 3.0002463033826e-09,
-       // Abasic_Diastole=0.00051,
-    //    Cond1(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
-    //    Cond2(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
+//
+      //
+      //    Abasic_Diastole=0.00026,
+      //    Abasic_Systole=3.53,
+      //    MaxContractionCompliance(displayUnit="ml/mmHg") = 1.5001231516913e-08,
+      //    Cond1=60000000,
+      //    Cond2=60000000,
+      //
+      //
+      //   MaxContractionCompliance(displayUnit="ml/mmHg") = 3.0002463033826e-09,
+      // Abasic_Diastole=0.00051,
+      //    Cond1(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
+      //    Cond2(displayUnit="ml/(mmHg.min)") = 0.0075006157584566,
     Physiolibrary.Fluid.Interfaces.FluidPort_a rightAtrium(redeclare package Medium =
             Blood)
       "blood inflow to right atrium" annotation (Placement(transformation(
@@ -260,8 +260,8 @@ package Organs "Prototypes of human physiological organ models"
             rotation=0,
             origin={11,-87})));
     equation
-    //  rightHeart.atriumBlood = sum3.u[1];
-    //  leftHeart.atriumBlood = sum2.u[1];
+//  rightHeart.atriumBlood = sum3.u[1];
+//  leftHeart.atriumBlood = sum2.u[1];
       connect(leftVentricle, leftVentricle) annotation (Line(
           points={{18,82},{18,82}},
           color={127,0,0},
@@ -441,7 +441,7 @@ package Organs "Prototypes of human physiological organ models"
 
       model Ventricle
       // extends Physiolibrary.Organs.Heart.Interfaces.IVentricle(q_in(redeclare
-      //        package Medium = Medium), q_out(redeclare package Medium = Medium));
+        //        package Medium = Medium), q_out(redeclare package Medium = Medium));
        extends Physiolibrary.Fluid.Interfaces.CompositionSetup(redeclare package Medium =
               Physiolibrary.Media.Blood);
 
@@ -454,7 +454,6 @@ package Organs "Prototypes of human physiological organ models"
         parameter Physiolibrary.Types.Volume initialVol=9e-05
         "Initial blood volume in ventricle";
       //  parameter Physiolibrary.Types.Volume initialESV = 50e-6;
-
       parameter Physiolibrary.Types.Volume NormalEndDiastolicVolume=7e-05
         "Typical value of blood volume in ventricle after filling"
           annotation (Dialog(group="Diastole"));
@@ -468,9 +467,8 @@ package Organs "Prototypes of human physiological organ models"
         "Exponent of P-V characteristic of EDV curve on filling pressure"
           annotation (Dialog(group="Diastole"));
       //parameter Real Abasic_Diastole = 0.00051
-      //    "parametrization of end diastolic volume curve"
-      //    annotation (Dialog(group="Diastole"));
-
+        //    "parametrization of end diastolic volume curve"
+        //    annotation (Dialog(group="Diastole"));
       parameter Physiolibrary.Types.Pressure NormalSystolicPressure=15998.684210526
         "Typical value of systolic pressure relative to pericardium pressure"
           annotation (Dialog(group="Systole"));
@@ -478,13 +476,13 @@ package Organs "Prototypes of human physiological organ models"
         "Typical value of blood volume in ventricle after ejection"
           annotation (Dialog(group="Systole"));
       //parameter Real Abasic_Systole = 17.39
-      //    "parametrization of end systolic volume curve";
+        //    "parametrization of end systolic volume curve";
       parameter Physiolibrary.Types.Pressure additionalPressure_Systolic
         "Pressure difference between mean and systolic pressure"
-          annotation (Dialog(group="Systole"));     //= 24
+          annotation (Dialog(group="Systole"));             //= 24
       parameter Physiolibrary.Types.Fraction contractilityBasic
         "Relative contractility (1 if normal)"
-           annotation (Dialog(group="Systole"));       //= 1
+           annotation (Dialog(group="Systole"));               //= 1
       parameter Physiolibrary.Types.Fraction n_Systole(displayUnit="1")=0.5
         "Exponent of P-V characteristic of ESV curve on systolic pressure"
           annotation (Dialog(group="Systole"));
@@ -492,16 +490,14 @@ package Organs "Prototypes of human physiological organ models"
       parameter Physiolibrary.Types.Frequency K
         "time adaptation coeficient of average ventricle blood volume";
                                                     // = 1
-      parameter Physiolibrary.Types.HydraulicCompliance BasicCompliance; //(final quantity="Compliance", final displayUnit="ml/mmHg") = 1;
-
+      parameter Physiolibrary.Types.HydraulicCompliance BasicCompliance; 
+//(final quantity="Compliance", final displayUnit="ml/mmHg") = 1;
       parameter Physiolibrary.Types.Pressure NormalExternalPressure=-446
         "Typical value of pericardium cavity pressure (relative to environment ambient pressure)";
                                                                                //-446 Pa = -3.34522 mmHg
-
-      //parameter Physiolibrary.Types.HydraulicCompliance MaxContractionCompliance; //=1;
-      //parameter Physiolibrary.Types.HydraulicConductance Cond1;//=1;
-      //parameter Physiolibrary.Types.HydraulicConductance Cond2;//=1;
-
+        //parameter Physiolibrary.Types.HydraulicCompliance MaxContractionCompliance; //=1;
+        //parameter Physiolibrary.Types.HydraulicConductance Cond1;//=1;
+        //parameter Physiolibrary.Types.HydraulicConductance Cond2;//=1;
       Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package
             Medium =                                                               Medium) annotation (Placement(transformation(extent={{-110,-10},{-90,10}},
                 rotation=0), iconTransformation(extent={{10,70},{30,90}})));
@@ -535,7 +531,6 @@ package Organs "Prototypes of human physiological organ models"
           AmbientPressure=AmbientPressure)
           annotation (Placement(transformation(extent={{-76,-44},{-56,-24}})));
       //    ,Abasic_Diastole=Abasic_Diastole
-
         Components.Systole systole(
           redeclare package Medium = Medium,
           n_Systole=n_Systole,
@@ -546,7 +541,6 @@ package Organs "Prototypes of human physiological organ models"
           AmbientPressure=AmbientPressure)
           annotation (Placement(transformation(extent={{52,-44},{72,-24}})));
        //   Abasic_Systole=Abasic_Systole,
-
         Modelica.Blocks.Math.Feedback StrokeVolume
           annotation (Placement(transformation(extent={{-10,-10},{10,10}},
               origin={-8,-6})));
@@ -558,8 +552,7 @@ package Organs "Prototypes of human physiological organ models"
           redeclare package Medium = Medium)
           annotation (Placement(transformation(extent={{-8,70},{12,90}})));
         //  BasicCompliance=BasicCompliance,
-      //
-
+        //
         Modelica.Blocks.Math.Product BloodFlow     annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
@@ -830,9 +823,8 @@ SYSTOLE
       model ANP
         extends Physiolibrary.Icons.Heart;
       // outer parameter Real ECF_Vol(final displayUnit="ml");
-
-      //  stateName="ANPPool.Mass",
-      //  useNormalizedVolume=false,
+        //  stateName="ANPPool.Mass",
+        //  useNormalizedVolume=false,
       Physiolibrary.Blocks.Factors.Spline LAPEffect(data={{0.0,0.0,0},{8.0,1.0,
             0.4},{20.0,10.0,0}}, Xscale=101325/760)
         annotation (Placement(transformation(extent={{54,62},{34,82}})));
@@ -1138,9 +1130,9 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow annotation (
               origin={100,80})));
 
       equation
-      //  inflow.q = 0;
-      //  P = inflow.pressure;
-      //  EDV = ((inflow.pressure-externalPressure)/(stiffnes*Abasic_Diastole))^(1/n_Diastole);
+//  inflow.q = 0;
+//  P = inflow.pressure;
+//  EDV = ((inflow.pressure-externalPressure)/(stiffnes*Abasic_Diastole))^(1/n_Diastole);
         EDV = NormalEndDiastolicVolume*((port.p-externalPressure-AmbientPressure)/(stiffnes*(NormalFillingPressure-NormalExternalPressure)))^(1/n_Diastole);
 
         //  Stiffness = stiffnes;
@@ -1180,8 +1172,8 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a inflow annotation (
       model Systole
         extends Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor;
 
-      //  Real iconPoint[20,2](each final displayUnit="mm");
-      //  Real iconActualPoint[2,2](each final displayUnit="mm");
+//  Real iconPoint[20,2](each final displayUnit="mm");
+        //  Real iconActualPoint[2,2](each final displayUnit="mm");
       /*
 Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
     Placement(transformation(extent={{80,20},{120,60}}),
@@ -1224,9 +1216,9 @@ Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b outflow annotation (
                 Physiolibrary.Types.Pressure systolicPressure;
                 Real coef;
       equation
-      //  outflow.q = 0;
-      //  P=outflow.pressure;
-      //  ESV = ((outflow.pressure+additionalPressure_Systolic-externalPressure)/(contractility*Abasic_Systole))^(1/n_Systole);
+//  outflow.q = 0;
+//  P=outflow.pressure;
+//  ESV = ((outflow.pressure+additionalPressure_Systolic-externalPressure)/(contractility*Abasic_Systole))^(1/n_Systole);
         systolicPressure= (port.p-AmbientPressure);
         coef=(port.p+additionalPressure_Systolic-externalPressure-AmbientPressure)/(contractility*(NormalSystolicPressure+additionalPressure_Systolic-NormalExternalPressure));
         ESV = NormalEndSystolicVolume*((port.p+additionalPressure_Systolic-externalPressure-AmbientPressure)/(contractility*(NormalSystolicPressure+additionalPressure_Systolic-NormalExternalPressure)))^(1/n_Systole);
@@ -1497,7 +1489,6 @@ vector of pressure-flow connectors.
 
         replaceable package Blood = Physiolibrary.Media.Blood   constrainedby Physiolibrary.Media.Interfaces.PartialMedium                 annotation ( choicesAllMatching = true);
           //Physiolibrary.Media.BloodBySiggaardAndersen
-
         parameter Physiolibrary.Types.HydraulicConductance BasicLargeVeselsConductance( displayUnit="ml/(min.mmHg)") = 5.0004105056377e-09;
         parameter Physiolibrary.Types.HydraulicConductance BasicSmallVeselsConductance( displayUnit="ml/(min.mmHg)") = 3.1252565660236e-10;
 
@@ -2247,10 +2238,9 @@ vector of pressure-flow connectors.
       parameter Volume PleuralFluidVolume_initial=0.0001   "Initial volume of pleural fluid volume" annotation(Dialog( group = "Thorax"));
       parameter Volume PleuralCavityVolume = PleuralFluidVolume_initial + LungsAirVolume_initial "Volume of relaxed pleural cavity" annotation(Dialog( group = "Thorax"));
 
-
-     // parameter MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
-     // parameter MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
-     // parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
+// parameter MolarFlowRate O2_consumption=1.666666666666667e-05*(2*7.71)       "Tissue consumption of O2 by metabolism";
+      // parameter MolarFlowRate CO2_production=1.666666666666667e-05*(2*6.17)       "Tissue production of CO2 by metabolism";
+      // parameter Pressure IntrathoraxPressure=-700   "Intrathorax pressure relative to ambient pressure";
       //parameter Volume ResidualVolume = 0.0013 "Lungs residual volume" annotation(Dialog( group = "Ventilation"));
       //parameter Volume TotalLungCapacity = 0.00623 "Total Lung Capacity" annotation(Dialog( group = "Ventilation"));
       //parameter Volume BaseTidalVolume = 0.0005 "Base Tidal Volume" annotation(Dialog( group = "Ventilation"));
@@ -2258,17 +2248,16 @@ vector of pressure-flow connectors.
       //parameter Volume FunctionalResidualCapacity = 0.00231 "Functional residual capacity" annotation(Dialog( group = "Ventilation"));
       //parameter HydraulicResistance TotalResistance=147099.75   "Total lungs pathways resistance" annotation(Dialog( group = "Ventilation"));
       /*
-  parameter Real BronchiResistanceFraction = 0.3 annotation(Dialog( group = "Ventilation"));
-  parameter Real AlveoliDuctResistanceFraction = 0.2 annotation(Dialog( group = "Ventilation"));
-  parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2 annotation(Dialog( group = "Ventilation"));
-  parameter HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
-  parameter HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
-  parameter HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
-  parameter HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
-  parameter HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
-  */
-      //parameter HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Total lungs compliance" annotation(Dialog( group = "Ventilation"));
-
+        parameter Real BronchiResistanceFraction = 0.3 annotation(Dialog( group = "Ventilation"));
+        parameter Real AlveoliDuctResistanceFraction = 0.2 annotation(Dialog( group = "Ventilation"));
+        parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2 annotation(Dialog( group = "Ventilation"));
+        parameter HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+        parameter HydraulicResistance LeftBronchiResistance = TotalResistance * BronchiResistanceFraction "Left Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+        parameter HydraulicResistance LeftAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Left Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
+        parameter HydraulicResistance RightBronchiResistance = TotalResistance * BronchiResistanceFraction "Right Bronchi Resistance" annotation(Dialog( group = "Ventilation"));
+        parameter HydraulicResistance RightAlveoliResistance = TotalResistance * AlveoliDuctResistanceFraction "Right Alveoli Resistance" annotation(Dialog( group = "Ventilation"));
+        */
+  //parameter HydraulicCompliance TotalCompliance=1.0197162129779e-06   "Total lungs compliance" annotation(Dialog( group = "Ventilation"));
     public
     Physiolibrary.Fluid.Components.ElasticVessel pulmArty(
         redeclare package Medium = Blood,
@@ -2694,8 +2683,8 @@ vector of pressure-flow connectors.
           annotation (Placement(transformation(extent={{-120,40},{-80,80}})));
 
         parameter Physiolibrary.Types.Fraction BasicRLShuntFraction(displayUnit="%") =  0.02
-        "basic percentage of total blood flow not exposed to lung air";                                                            //
-      //  parameter Real BasicRLShunt(final displayUnit="ml/min") =  110; // 220.0;
+        "basic percentage of total blood flow not exposed to lung air";                                                                  //
+        //  parameter Real BasicRLShunt(final displayUnit="ml/min") =  110; // 220.0;
         parameter Physiolibrary.Types.Pressure RightHemithorax_Pressure( displayUnit="mmHg") =   -533.28954966;
         parameter Physiolibrary.Types.Pressure LeftHemithorax_Pressure( displayUnit="mmHg") =   -533.28954966;
 
@@ -2717,15 +2706,14 @@ vector of pressure-flow connectors.
         Physiolibrary.Types.VolumeFlowRate Alveolar(displayUnit="ml/min")
         "blood flow exposed to lung air without dammage effect";
 
-      //  Real RightLungTotal(final displayUnit="ml/min") "right lung blood flow exposed to lung air without dammage effect";
-      //  Real RightLungVentilated(final displayUnit="ml/min") "right lung blood flow exposed to lung air";
-      //  Real RightLungShunt(final displayUnit="ml/min");
-      //  Real LeftLungTotal(final displayUnit="ml/min");
-      //  Real LeftLungVentilated(final displayUnit="ml/min");
-      //  Real LeftLungShunt(final displayUnit="ml/min");
-      //  Real AlveolarShunt(final displayUnit="ml/min");
-      //  Real TotalShunt(final displayUnit="ml/min");
-
+//  Real RightLungTotal(final displayUnit="ml/min") "right lung blood flow exposed to lung air without dammage effect";
+        //  Real RightLungVentilated(final displayUnit="ml/min") "right lung blood flow exposed to lung air";
+        //  Real RightLungShunt(final displayUnit="ml/min");
+        //  Real LeftLungTotal(final displayUnit="ml/min");
+        //  Real LeftLungVentilated(final displayUnit="ml/min");
+        //  Real LeftLungShunt(final displayUnit="ml/min");
+        //  Real AlveolarShunt(final displayUnit="ml/min");
+        //  Real TotalShunt(final displayUnit="ml/min");
         parameter Real[:,3] PressureOnInflation =   {{ -4.0,  1.0,  0}, {  4.0,  0.0,  0}};
         parameter Real[:,3] PressureGradientOnFlowDist =   {{ -25,  0.0,  0}, {   0,  0.5,  0.03}, {  25,  1.0,  0}};
 
@@ -2753,31 +2741,30 @@ vector of pressure-flow connectors.
         annotation (Placement(transformation(extent={{-2,-24},{18,-4}})));
       equation
              PressureGradientRightLeft  =  RightHemithorax_Pressure - LeftHemithorax_Pressure;
-
-      //division between left and rigth lung blood flow by hemithorax pressure
-             Thorax_PressureGradientOnFlowDist.u = PressureGradientRightLeft;
+//division between left and rigth lung blood flow by hemithorax pressure
+        Thorax_PressureGradientOnFlowDist.u = PressureGradientRightLeft;
              Thorax_LeftLungFlowFract  =  Thorax_PressureGradientOnFlowDist.val;
              Thorax_RightLungFlowFract  =  1.0 - Thorax_LeftLungFlowFract;
-
-      //damage effect of hemithorax pressure
-             Thorax_PressureOnInflationR.u = RightHemithorax_Pressure;
+//damage effect of hemithorax pressure
+        Thorax_PressureOnInflationR.u = RightHemithorax_Pressure;
              RightHemithorax_LungInflation = Thorax_PressureOnInflationR.val;
              Thorax_PressureOnInflationL.u = LeftHemithorax_Pressure;
              LeftHemithorax_LungInflation = Thorax_PressureOnInflationL.val;
 
              Total  =  CardiacOutput;
-             RightLeftShunt  = BasicRLShuntFraction*Total; //min(BasicRLShunt,Total);
-             Alveolar  =  Total - RightLeftShunt;
-      //       RightLungTotal  =  Alveolar * Thorax_RightLungFlowFract;
-      //       RightLungVentilated  =  RightLungTotal * RightHemithorax_LungInflation;
-      //       RightLungShunt  =  RightLungTotal - RightLungVentilated;
-      //       LeftLungTotal  =  Alveolar * Thorax_LeftLungFlowFract;
-      //       LeftLungVentilated  =  LeftLungTotal * LeftHemithorax_LungInflation;
-      //       LeftLungShunt  =  LeftLungTotal - LeftLungVentilated;
-      //       AlveolarVentilated  =  RightLungVentilated + LeftLungVentilated;
-      //       AlveolarShunt  =  RightLungShunt + LeftLungShunt;
-      //       TotalShunt  =  RightLeftShunt + AlveolarShunt;
-             AlveolarVentilated  = Alveolar * ( Thorax_RightLungFlowFract * RightHemithorax_LungInflation + Thorax_LeftLungFlowFract * LeftHemithorax_LungInflation);
+             RightLeftShunt  = BasicRLShuntFraction*Total;
+//min(BasicRLShunt,Total);
+        Alveolar = Total - RightLeftShunt;
+//       RightLungTotal  =  Alveolar * Thorax_RightLungFlowFract;
+//       RightLungVentilated  =  RightLungTotal * RightHemithorax_LungInflation;
+//       RightLungShunt  =  RightLungTotal - RightLungVentilated;
+//       LeftLungTotal  =  Alveolar * Thorax_LeftLungFlowFract;
+//       LeftLungVentilated  =  LeftLungTotal * LeftHemithorax_LungInflation;
+//       LeftLungShunt  =  LeftLungTotal - LeftLungVentilated;
+//       AlveolarVentilated  =  RightLungVentilated + LeftLungVentilated;
+//       AlveolarShunt  =  RightLungShunt + LeftLungShunt;
+//       TotalShunt  =  RightLeftShunt + AlveolarShunt;
+        AlveolarVentilated = Alveolar * (Thorax_RightLungFlowFract * RightHemithorax_LungInflation + Thorax_LeftLungFlowFract * LeftHemithorax_LungInflation);
         annotation ( Documentation(revisions="<html>
 
 <table>
@@ -2815,11 +2802,10 @@ vector of pressure-flow connectors.
 
       model Angiotensine2
       //  extends Library.Interfaces.Tissues.Liver;
-      //  extends Library.Interfaces.Tissues.Kidney;
+        //  extends Library.Interfaces.Tissues.Kidney;
         extends Physiolibrary.Icons.Lungs;
 
-      // outer parameter Real ECF_Vol(final displayUnit="ml");
-
+// outer parameter Real ECF_Vol(final displayUnit="ml");
       Physiolibrary.Blocks.Factors.Normalization A2 annotation (Placement(transformation(extent={{-2,-2},{18,18}})));
       Physiolibrary.Types.Constants.ConcentrationConst A2CONC(k=0.3333e-9/
             1.046) "0.3333 pg/ml = 0.3333*1e-15/1e-6 kg/m3"
@@ -2894,8 +2880,7 @@ vector of pressure-flow connectors.
             Physiolibrary.Media.Blood                                            constrainedby
           Physiolibrary.Media.Interfaces.PartialMedium                                                                                      annotation ( choicesAllMatching = true);
 
-        //Can not be one port, because for example whole periferal resistance is taken as ResistorBases, but blood can accumulate inside
-
+//Can not be one port, because for example whole periferal resistance is taken as ResistorBases, but blood can accumulate inside
       Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
               Blood)                                  "Blood inflow"
         annotation ( Placement(transformation(extent={{-110,
@@ -3915,9 +3900,7 @@ QHP 2008 / Kidney-Flow
     model EPO
       extends Physiolibrary.Icons.Kidney;
     // outer parameter Real ECF_Vol(final displayUnit="ml");
-
       //NominalSolute=Substances.Erythropoietin.molpIU
-
     Physiolibrary.Blocks.Factors.Normalization CountEffect
       annotation (Placement(transformation(extent={{56,24},{76,44}})));
     Physiolibrary.Types.Constants.FractionConst             hormoneFlowConstant(k=1)
@@ -3925,7 +3908,7 @@ QHP 2008 / Kidney-Flow
     Physiolibrary.Blocks.Factors.Spline PO2Effect(data={{0.0,4.0,0},{35.0,0.0,-0.14},
           {60.0,-1.0,0}}, Xscale=101325/760)
       "cortex pO2=50 mmHg; medulla pO2 = 10-20 mmHg [Brezis&Rosen1995]; erythropoietin-producing cells are in the interstitium of the cortex and outer medulla [Maxwell1993]"
-      annotation (Placement(transformation(extent={{-24,14},{-4,34}})));    //(toAnotherUnitCoef=1000, unitsString="U/l")
+      annotation (Placement(transformation(extent={{-24,14},{-4,34}})));          //(toAnotherUnitCoef=1000, unitsString="U/l")
       Modelica.Blocks.Math.Gain K(k(unit="1/s")=0.00555/60)
         annotation (Placement(transformation(extent={{-3,-3},{3,3}},
             origin={-31,-77})));
@@ -5385,7 +5368,6 @@ QHP 2008 / Skin-Flow
     model Cardiovascular
       extends Physiolibrary.Icons.CardioVascular;
       //  extends Physiomodel.Library.Utilities.DynamicState(stateName="BloodVol.Vol", initType=Library.Utilities.Init.NoInit);
-
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
@@ -5445,9 +5427,7 @@ QHP 2008 / Skin-Flow
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-
-    //  stateValue = bloodProperties.BloodVolume1.y;
-
+//  stateValue = bloodProperties.BloodVolume1.y;
       connect(heart.Pericardium, busConnector.Pericardium_Pressure) annotation (
          Line(points={{16.2,20},{16.2,24},{-27,24},{-27,1}}, color={0,0,127}));
       connect(heart.Sympathicus, busConnector.GangliaGeneral_NA) annotation (
@@ -5850,7 +5830,7 @@ QHP 2008 / Skin-Flow
       extends Physiolibrary.Icons.PeripheralCirculation;
 
     replaceable package Blood = Physiolibrary.Media.Blood  constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true); //BloodBySiggaardAndersen
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true);       //BloodBySiggaardAndersen
     Physiolibrary.Fluid.Interfaces.FluidPort_a port_a[8](redeclare package
           Medium = Blood) "Blood inflow" annotation (Placement(transformation(
               extent={{90,-10},{110,10}}, rotation=0), iconTransformation(
@@ -6792,7 +6772,6 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
     model CardioVascularSystem
       extends Physiolibrary.Icons.CardioVascular;
       //  extends Physiomodel.Library.Utilities.DynamicState(stateName="BloodVol.Vol", initType=Library.Utilities.Init.NoInit);
-
       replaceable package Blood = Physiolibrary.Media.Blood                   constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
 
@@ -6854,9 +6833,7 @@ Blood resistance in peripheral organs except hepatic artery, gastro interstition
           color={0,0,0},
           thickness=1,
           smooth=Smooth.None));
-
-    //  stateValue = bloodProperties.BloodVolume1.y;
-
+//  stateValue = bloodProperties.BloodVolume1.y;
       connect(bloodProperties.busConnector, busConnector) annotation (Line(
           points={{-36.6,-33.2},{-36.6,-32},{-27,-32},{-27,1}},
           color={0,0,255},
@@ -7519,8 +7496,8 @@ Blood resistance in gastro interstitial tract.
             rotation=90,
             origin={-68,100})));
 
-      parameter Physiolibrary.Types.Volume initialSystemisVeinsVol = 2329.57e-6; // = 2200;// = 2980;
-
+      parameter Physiolibrary.Types.Volume initialSystemisVeinsVol = 2329.57e-6; 
+// = 2200;// = 2980;
       Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure(redeclare package
                   Medium = Medium)
         annotation (Placement(transformation(extent={{16,-20},{36,0}})));
@@ -7945,10 +7922,10 @@ Blood resistance in gastro interstitial tract.
                  extent={{-10,-10},{10,10}},         rotation=270,         origin={0,40})));
 
     Physiolibrary.Types.Fraction myogenicEffect;
-    Physiolibrary.Types.Pressure pressureChange(start=InitialPressureChange); //(start=0.161874);
-  //  Real pressureChangeSteadyState;
-   // Real adaptedPressure; //(start=77.9546);
-  //  Real interlobarPressure;
+    Physiolibrary.Types.Pressure pressureChange(start=InitialPressureChange);   //(start=0.161874);
+      //  Real pressureChangeSteadyState;
+      // Real adaptedPressure; //(start=77.9546);
+      //  Real interlobarPressure;
     parameter Physiolibrary.Types.Pressure InitialPressureChange=0;
 
     parameter Physiolibrary.Types.Frequency K_PressureChange(displayUnit="1/min") =  2.0/60;
@@ -7969,17 +7946,17 @@ Blood resistance in gastro interstitial tract.
     //der(adaptedPressure) = 0;
    // der(pressureChange) = 0;
   equation
-    //q_in.q + q_out.q = 0;
+//q_in.q + q_out.q = 0;
+      volumeFlowRate = myogenicEffect * cond * (q_in.p - q_out.p);
+    kidneyMyogenic.InterlobarPressure = (q_in.p + q_out.p)/2;
+//stredny tlak v arteriole
+// der(adaptedPressure) = (1/(60*Tau_PressureAdoption)) * (interlobarPressure-adaptedPressure); //receptory sa adaptuju na tlak (polcas adaptacie nastane za 2hod a 45min)
+// pressureChangeSteadyState = interlobarPressure-adaptedPressure;  //zmena tlaku sa taktiez adaptuje - neviem preco? => potom to vizera, ze stimulacia receptorov je postupny proces (polcas nabudenia stimulacie je 20 sekund)
+      der(pressureChange) = K_PressureChange * (kidneyMyogenic.PressureChange_SteadyState - pressureChange);
 
-    volumeFlowRate = myogenicEffect * cond * (q_in.p - q_out.p);
-    kidneyMyogenic.InterlobarPressure = (q_in.p + q_out.p)/2;  //stredny tlak v arteriole
-   // der(adaptedPressure) = (1/(60*Tau_PressureAdoption)) * (interlobarPressure-adaptedPressure); //receptory sa adaptuju na tlak (polcas adaptacie nastane za 2hod a 45min)
-   // pressureChangeSteadyState = interlobarPressure-adaptedPressure;  //zmena tlaku sa taktiez adaptuje - neviem preco? => potom to vizera, ze stimulacia receptorov je postupny proces (polcas nabudenia stimulacie je 20 sekund)
-
-    der(pressureChange)=K_PressureChange * (kidneyMyogenic.PressureChange_SteadyState - pressureChange);
-
-    PressureChangeOnCondEffect.u = pressureChange; //zmena tlaku aktivuje receptory
-    myogenicEffect = PressureChangeOnCondEffect.val; //stimulacia receptorov ma vplyv na vodivost (odpor) krvi aferentnej arterie
+    PressureChangeOnCondEffect.u = pressureChange;
+//zmena tlaku aktivuje receptory
+      myogenicEffect = PressureChangeOnCondEffect.val; //stimulacia receptorov ma vplyv na vodivost (odpor) krvi aferentnej arterie
     annotation ( Icon(graphics={
             Text(
               extent={{-110,-68},{106,-32}},
@@ -8032,7 +8009,6 @@ Blood resistance in gastro interstitial tract.
 
     model AlphaReceptors
       //extends Library.BaseFactor2;
-
       replaceable package Blood = Physiolibrary.Media.Blood                         constrainedby
         Physiolibrary.Media.Interfaces.PartialMedium "Blood medium model" annotation ( choicesAllMatching = true);
 
@@ -8211,7 +8187,6 @@ Blood resistance in gastro interstitial tract.
 
     model BetaReceptors
       //extends Library.BaseFactor2;
-
       replaceable package Blood = Physiolibrary.Media.Blood
          constrainedby Physiolibrary.Media.Interfaces.PartialMedium
                                                      "Blood medium model" annotation ( choicesAllMatching = true);
@@ -8226,8 +8201,8 @@ Blood resistance in gastro interstitial tract.
             rotation=270,
             origin={86,90}),
             iconTransformation(extent={{-10,-10},{10,10}},rotation=270,
-            origin={0,70})));                   //=base
-                                                     // if useBase
+            origin={0,70})));                                                                        //=base
+      // if useBase
       Modelica.Blocks.Interfaces.RealOutput y
                             annotation (Placement(transformation(extent={{-10,-10},
                 {10,10}},
@@ -8408,106 +8383,6 @@ Blood resistance in gastro interstitial tract.
       connect(Hct.F, HtcOnVisc.u)
         annotation (Line(points={{-69,24},{-60,24}}, color={0,0,127}));
     end ViscosityConductance;
-
-    model Membrane
-      extends Icons.Membrane;
-
-      replaceable package MediumA = Physiolibrary.Media.Blood   constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
-      replaceable package MediumB = Physiolibrary.Media.Blood   constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                     annotation ( choicesAllMatching = true);
-
-      Chemical.Interfaces.SubstancePorts_a ports_a[MediumA.nS]
-        annotation (Placement(transformation(extent={{-110,18},{-90,98}})));
-      Chemical.Interfaces.SubstancePorts_b ports_b[MediumB.nS]
-        annotation (Placement(transformation(extent={{90,18},{110,98}})));
-      Chemical.Components.Membrane membrane[size(substanceNames,1)](KC=KC)
-        annotation (Placement(transformation(extent={{-6,48},{14,68}})));
-      parameter String substanceNames[:]={"O2","CO2"};
-      parameter Real KC[size(substanceNames,1)](each final unit="mol2.s-1.J-1")=fill(1,size(substanceNames,1));
-      parameter String extraSubstanceNames[:]={"Epinephrine","Angiotensin2","Renin"};
-      parameter Real EKC[size(extraSubstanceNames,1)]=fill(1,size(extraSubstanceNames,1));
-
-    protected
-      parameter Integer iSA[size(substanceNames,1)] = findIndieces(substanceNames,MediumA.substanceNames)
-        "Indieces of substances in vector of substances of medium A";
-
-      parameter Integer iSB[size(substanceNames,1)] = findIndieces(substanceNames,MediumB.substanceNames)
-        "Indieces of substances in vector of substances of medium B";
-
-
-
-      parameter Integer ioSA[MediumA.nS-size(substanceNames,1)] = findOtherIndiecies(MediumA.nS,iSA)
-        "Indieces of substances in vector of substances of medium A";
-
-      parameter Integer ioSB[MediumB.nS-size(substanceNames,1)] = findOtherIndiecies(MediumB.nS,iSB)
-        "Indieces of substances in vector of substances of medium B";
-
-
-
-      function findIndieces
-        input String searchNames[:];
-        input String vectorNames[:];
-        output Integer indieces[size(searchNames,1)];
-      algorithm
-        for j in 1:size(searchNames,1) loop
-          indieces[j]:= -1;
-          for i in 1:size(vectorNames,1) loop
-            if ( Modelica.Utilities.Strings.isEqual(vectorNames[i], searchNames[j])) then
-             indieces[j] := i;
-            end if;
-          end for;
-          assert(indieces[j] > 0, "Substance '" + searchNames[j] + "' is not present between Substances in Medium\n"
-             + "Check parameters and medium model.");
-        end for;
-      end findIndieces;
-
-      function findOtherIndiecies
-        input Integer n "Length of vector";
-        input Integer indiecies[:] "Indiecies in vector";
-        output Integer otherIndiecies[n-size(indiecies,1)] "Other indiecies";
-      protected
-        Integer k,e;
-      algorithm
-        k:=1;
-        for i in 1:n loop
-          e:=1;
-          for j in i:size(indiecies,1) loop
-            if (indiecies[j]==i) then e:=0; end if;
-          end for;
-          if (e==1) then
-            otherIndiecies[k]:=i;
-            k:=k+1;
-          end if;
-        end for;
-      end findOtherIndiecies;
-
-    equation
-
-      for j in 1:size(substanceNames,1) loop
-        connect(membrane[j].port_a, ports_a[iSA[j]])
-          annotation (Line(points={{-6,58},{-100,58}}, color={158,66,200}));
-        connect(membrane[j].port_b, ports_b[iSB[j]])
-          annotation (Line(points={{14,58},{100,58}}, color={158,66,200}));
-      end for;
-
-      for oj in 1:size(ioSA,1) loop
-        ports_a[ioSA[oj]].q=0;
-        ports_a[ioSA[oj]].h_outflow=0;
-        ports_b[ioSB[oj]].q=0;
-        ports_b[ioSB[oj]].h_outflow=0;
-      end for;
-
-
-
-
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              extent={{-140,-124},{140,-104}},
-              textColor={102,44,145},
-              textString="%name")}),                                 Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Membrane;
   end Components;
 
   package Interfaces
@@ -8516,7 +8391,7 @@ Blood resistance in gastro interstitial tract.
     extends Physiolibrary.Icons.PerfusionDO;
 
     replaceable package Blood = Physiolibrary.Media.Blood  constrainedby
-        Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true); //BloodBySiggaardAndersen
+        Physiolibrary.Media.Interfaces.PartialMedium                                                                                   annotation ( choicesAllMatching = true);       //BloodBySiggaardAndersen
     Physiolibrary.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
             Blood) "Blood inflow" annotation (Placement(transformation(extent={
                 {100,-10},{120,10}}, rotation=0), iconTransformation(extent={{
