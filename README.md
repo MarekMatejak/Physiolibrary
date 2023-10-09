@@ -38,9 +38,17 @@ Library contains also the icons for higher level (HumMod) subsystem implementati
 
 ## Current release
 
-Download [Physiolibrary 2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
+Download [Physiolibrary 3.0.0 (2023-10-09)](../../archive/v3.0.0.zip)
 
 #### Release notes
+
+*  [Version v3.0.0 (2023-10-09)](../../archive/v3.0.0.zip)
+ * using Chemical 1.4 instead of Physiolibrary.Chemical and Physiolibrary.Osmotic
+ * support of Modelica.Fluid and Modelica.Media concept instead of Physiolibrary.Hydraulic
+ * model of Blood using blood plasma and red cells composition with Henderson-Hasselbalch;Hemoglobin-O2,CO2,H+,CO binding;Chloride shift;Osmosis
+ * support of modeling of respiratory and cardiovascular blood gases transport
+ * obsolete previous Physiolibrary steady state concept
+
 
 *  [Version v2.3.1 (2015-09-15)](../../archive/v2.3.1.zip)
  * Change of license to [BSD](http://opensource.org/licenses/BSD-3-Clause): 

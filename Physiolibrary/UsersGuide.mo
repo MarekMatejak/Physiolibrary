@@ -79,17 +79,19 @@ package UsersGuide "User's Guide"
   end Connectors;
 
   package ReleaseNotes "Release notes"
-    class Version_3_0_0alpha "Version 3.0-alpha (Nov. 26, 2020)"
+    class Version_3_0_0 "Version 3.0.0 (Oct. 10, 2023)"
       extends Modelica.Icons.ReleaseNotes;
       annotation (
-        Documentation(info = "<html>
+        Documentation(info="<html>
 <ul>
-<li>using Chemical 1.4 instead of Physiolibrary.Chemical and Physiolibrary.Osmotic</li>
-<li>support of Modelica.Fluid and Modelica.Media concept instead of Physiolibrary.Hydraulic</li>
-<li>obsolete previous Physiolibrary steady state concept</li>
+<li> using Chemical 1.4 instead of Physiolibrary.Chemical and Physiolibrary.Osmotic</li>
+<li> support of Modelica.Fluid and Modelica.Media concept instead of Physiolibrary.Hydraulic</li>
+<li> model of Blood using blood plasma and red cells composition with Henderson-Hasselbalch;Hemoglobin-O2,CO2,H+,CO binding;Chloride shift;Osmosis</li>
+<li> support of modeling of respiratory and cardiovascular blood gases transport</li>
+<li> obsolete previous Physiolibrary steady state concept</li>
 </ul>
 </html>"));
-    end Version_3_0_0alpha;
+    end Version_3_0_0;
 
     extends Modelica.Icons.ReleaseNotes;
 

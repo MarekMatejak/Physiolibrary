@@ -6,7 +6,7 @@ LibraryInfoMenuCommand(
     text = "Physiolibrary",
     reference = "Physiolibrary",
     isModel = true,
-    description = "Physiology Library 3.0",
+    description = "System biology, integrative physiology and pathophysiology (3.0)",
     version = "3.0.0",
-    ModelicaVersion = ">=3.2",
+    ModelicaVersion = ">=4.0",
     pos = 3753);

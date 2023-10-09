@@ -12,9 +12,9 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
   annotation (
     preferredView = "info",
-    version = "3.0.0-beta1",
-    versionDate = "2022-08-24",
-    dateModified = "2022-08-24 17:14:41Z",
+    version = "3.0.0",
+    versionDate = "2023-10-10",
+    dateModified = "2023-10-10 1:00:00Z",
     uses(Modelica(version = "4.0.0"), Complex(version = "4.0.0"), Chemical(version = "1.4.0")),
     conversion(
       from(version = "BioChem-1.0.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos", to = "3.0.0"),
