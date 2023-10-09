@@ -32,12 +32,12 @@ package Fluid "Physiological fluids with static and dynamic properties"
 <p>Marek Matejak, http://www.physiolib.com </p>
 <p>All rights reserved. </p>
 </html>",
-        info = "<html>
-<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium volume is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
+        info="<html>
+<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium mass is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
 </html>"));
     end Conductor;
 
-    model Resistor
+    model Resistor "Hydraulic resistor"
       extends Physiolibrary.Fluid.Components.Conductor(final Conductance = 1 / Resistance, final useConductanceInput = false, final GenerateConductanceConnection = false);
       parameter Physiolibrary.Types.HydraulicResistance Resistance = Modelica.Constants.inf "Hydraulic conductance if useConductanceInput=false" annotation (
         Dialog(enable = not useResistanceInput));
@@ -52,6 +52,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
       if not useResistanceInput then
         c = 1 / Resistance;
       end if;
+      annotation (Documentation(info="<html>
+<p><span style=\"font-family: Arial;\">This hydraulic resistance element contains two connector sides. No hydraulic medium mass is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by&nbsp;<b>Ohm&apos;s law</b>. </span></p>
+</html>"));
     end Resistor;
 
     model ElasticVessel "Elastic compartment as chemical solution envelop"
@@ -94,7 +97,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
         HideResult = true,
         choices(checkBox = true),
         Dialog(group = "Conditional inputs"));
-      parameter Boolean isExternalPressureAbsolute = false "external pressure as absolute pressure? Relative to ambient otherwise." annotation (
+      parameter Boolean isExternalPressureAbsolute = false "External pressure as absolute pressure? Relative to ambient otherwise." annotation (
         Evaluate = true,
         HideResult = true,
         choices(checkBox = true),
@@ -105,7 +108,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={70,90})));
       Types.RealIO.VolumeOutput fluidVolume= volume annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {116, -60}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {100, -80})));
-      parameter Boolean useSigmoidCompliance = false "sigmoid compliance e.g. lungs" annotation (
+      parameter Boolean useSigmoidCompliance = false "Sigmoid compliance e.g. lungs" annotation (
         Evaluate = true,
         choices(checkBox = true),
         Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
@@ -188,16 +191,16 @@ package Fluid "Physiological fluids with static and dynamic properties"
         Documentation(revisions = "<html>
 <p>2020 by Marek Matejak, http://www.physiolib.com </p>
 </html>",
-        info = "<html>
-<h4>amountOfSolution = &sum; amountOfSubstances</h4>
+        info="<html>
 <h4>mass = &sum; massOfSubstances</h4>
-<h4>volume = &sum; volumeOfSubstances</h4>
-<h4>freeGibbsEnergy = &sum; freeGibbsEnergiesOfSubstances</h4>
-<p>To calculate the sum of extensive substance's properties is misused the Modelica \"flow\" prefix even there are not real physical flows. </p>
+<p>constant compliance</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p>sigmoid compliance</p>
+<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
 </html>"));
     end ElasticVessel;
 
-    model ElasticVesselElastance
+    model ElasticVesselElastance "Elastic compartment as chemical solution envelop"
       extends Physiolibrary.Fluid.Components.ElasticVessel(final Compliance = 1 / Elastance, final useComplianceInput = false, final GenerateComplianceConnection = false);
       parameter Physiolibrary.Types.HydraulicElastance Elastance = 1 "Elastance if useComplianceInput=false" annotation (
         Dialog(enable = not useComplianceInput));
@@ -212,14 +215,21 @@ package Fluid "Physiological fluids with static and dynamic properties"
       if not useElastanceInput then
         c = 1 / Elastance;
       end if;
+      annotation (Documentation(info="<html>
+<h4>mass = &sum; massOfSubstances</h4>
+<h4>constant compliance</h4>
+<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<h4>sigmoid compliance</h4>
+<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
+</html>"));
     end ElasticVesselElastance;
 
     model HydrostaticColumn "Hydrostatic column pressure between two connectors (with specific muscle pump effect)"
       extends Physiolibrary.Icons.HydrostaticGradient;
       extends Interfaces.OnePort_UpDown;
       replaceable package Medium = Media.Water constrainedby
-        Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
-         choicesAllMatching = true);
+        Media.Interfaces.PartialMedium  "Medium model" annotation (
+         choicesAllMatching = true, Documentation(info=""));
       outer Modelica.Fluid.System system "System wide properties";
       parameter Boolean useHeightInput = false "=true, if height input is used" annotation (
         Evaluate = true,
@@ -256,8 +266,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
 <p><i>2017-2018</i></p>
 <p>Marek Matejak, http://www.physiolib.com </p>
 </html>",
-        info = "<html>
+        info="<html>
 <p>The hydrostatic pressure is proportional to height of the column.&nbsp;</p>
+<p>Archimedes law</p>
 </html>"),
         Icon(graphics={  Text(extent = {{-210, -66}, {210, -106}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}));
     end HydrostaticColumn;
@@ -284,7 +295,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
         Icon(graphics={  Text(extent = {{-212, -58}, {208, -98}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}));
     end Inertia;
 
-    model IdealValve
+    model IdealValve "Ideal valve"
       extends Icons.IdealValve;
       extends Physiolibrary.Fluid.Interfaces.OnePort;
       Boolean open(start = true) "Switching state";
@@ -331,9 +342,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
 </html>"));
     end IdealValve;
 
-    model IdealValveResistance
+    model IdealValveResistance "Ideal valve"
       extends Physiolibrary.Fluid.Components.IdealValve(final _Gon = 1 / _Ron, final _Goff = 1 / _Roff, final useLimitationInputs = false, GenerateConductanceConnection = false);
-      parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit = "(mmHg.min)/l") = 79.993432449 "forward state resistance" annotation (
+      parameter Physiolibrary.Types.HydraulicResistance _Ron(displayUnit = "(mmHg.min)/l") = 79.993432449 "Forward state resistance" annotation (
         Dialog(enable = not useResistanceInputs));
       parameter Physiolibrary.Types.HydraulicResistance _Roff = 799934324490.0 "Backward state-off resistance (closed valve resistance)" annotation (
         Dialog(enable = not useResistanceInputs));
@@ -351,6 +362,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
         gon = 1 / _Ron;
         goff = 1 / _Roff;
       end if;
+      annotation (Documentation(info="<html>
+<p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
+</html>"));
     end IdealValveResistance;
 
     model MassPump "Prescribed mass flow"
@@ -451,12 +465,12 @@ package Fluid "Physiological fluids with static and dynamic properties"
       0 = Inflow.m_flow * Inflow.h_outflow + Outflow.m_flow * actualStream(Outflow.h_outflow) + Reabsorption.m_flow * actualStream(Reabsorption.h_outflow);
       0 = Inflow.m_flow * actualStream(Inflow.h_outflow) + Outflow.m_flow * Outflow.h_outflow + Reabsorption.m_flow * actualStream(Reabsorption.h_outflow);
       0 = Inflow.m_flow * actualStream(Inflow.h_outflow) + Outflow.m_flow * actualStream(Outflow.h_outflow) + Reabsorption.m_flow * Reabsorption.h_outflow;
-      zeros(Inflow.Medium.nXi) = Inflow.m_flow * Inflow.Xi_outflow + Outflow.m_flow * actualStream(Outflow.Xi_outflow) + Reabsorption.m_flow * actualStream(Reabsorption.Xi_outflow);
-      zeros(Outflow.Medium.nXi) = Inflow.m_flow * actualStream(Inflow.Xi_outflow) + Outflow.m_flow * Outflow.Xi_outflow + Reabsorption.m_flow * actualStream(Reabsorption.Xi_outflow);
-      zeros(Reabsorption.Medium.nXi) = Inflow.m_flow * actualStream(Inflow.Xi_outflow) + Outflow.m_flow * actualStream(Outflow.Xi_outflow) + Reabsorption.m_flow * Reabsorption.Xi_outflow;
-      zeros(Inflow.Medium.nC) = Inflow.m_flow * Inflow.C_outflow + Outflow.m_flow * actualStream(Outflow.C_outflow) + Reabsorption.m_flow * actualStream(Reabsorption.C_outflow);
-      zeros(Outflow.Medium.nC) = Inflow.m_flow * actualStream(Inflow.C_outflow) + Outflow.m_flow * Outflow.C_outflow + Reabsorption.m_flow * actualStream(Reabsorption.C_outflow);
-      zeros(Reabsorption.Medium.nC) = Inflow.m_flow * actualStream(Inflow.C_outflow) + Outflow.m_flow * actualStream(Outflow.C_outflow) + Reabsorption.m_flow * Reabsorption.C_outflow;
+      zeros(Medium.nXi) = Inflow.m_flow * Inflow.Xi_outflow + Outflow.m_flow * actualStream(Outflow.Xi_outflow) + Reabsorption.m_flow * actualStream(Reabsorption.Xi_outflow);
+      zeros(Medium.nXi) = Inflow.m_flow * actualStream(Inflow.Xi_outflow) + Outflow.m_flow * Outflow.Xi_outflow + Reabsorption.m_flow * actualStream(Reabsorption.Xi_outflow);
+      zeros(Medium.nXi) = Inflow.m_flow * actualStream(Inflow.Xi_outflow) + Outflow.m_flow * actualStream(Outflow.Xi_outflow) + Reabsorption.m_flow * Reabsorption.Xi_outflow;
+      zeros(Medium.nC) = Inflow.m_flow * Inflow.C_outflow + Outflow.m_flow * actualStream(Outflow.C_outflow) + Reabsorption.m_flow * actualStream(Reabsorption.C_outflow);
+      zeros(Medium.nC) = Inflow.m_flow * actualStream(Inflow.C_outflow) + Outflow.m_flow * Outflow.C_outflow + Reabsorption.m_flow * actualStream(Reabsorption.C_outflow);
+      zeros(Medium.nC) = Inflow.m_flow * actualStream(Inflow.C_outflow) + Outflow.m_flow * actualStream(Outflow.C_outflow) + Reabsorption.m_flow * Reabsorption.C_outflow;
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-100, 130}, {100, 108}}, lineColor = {127, 0, 0}, textString = "%name")}),
         Documentation(revisions = "<html>
@@ -476,7 +490,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
 </html>"));
     end Reabsorption;
 
-    model BodyFluidMembrane
+    model BodyFluidMembrane "Membrane for BodyFluid medium"
       import Physiolibrary;
       extends Physiolibrary.Icons.Membrane;
 
@@ -531,7 +545,10 @@ package Fluid "Physiological fluids with static and dynamic properties"
       connect(H2O.port_b, bodyFluid_b.H2O) annotation (Line(points={{14,-72},{76,-72},{76,0.1},{100.1,0.1}}, color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false)));
+        Diagram(coordinateSystem(preserveAspectRatio = false)),
+        Documentation(info="<html>
+<p>Semipermeable membrane for substances of BodyFluid medium.</p>
+</html>"));
     end BodyFluidMembrane;
     annotation (
       Documentation(info = "<html>
@@ -1028,15 +1045,14 @@ as signal.
   package Sensors
     extends Modelica.Icons.SensorsPackage;
 
-    model FlowMeasure "Volumetric flow between ports"
+    model FlowMeasure "Mass flow between ports"
       extends Physiolibrary.Fluid.Interfaces.OnePort;
-      // extends Icons.FlowMeasure;
       extends Modelica.Icons.RoundSensor;
       Physiolibrary.Types.RealIO.MassFlowRateOutput massFlow
       "Actual mass flow rate"                                                        annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {0, 120})));
-      Physiolibrary.Types.VolumeFlowRate volumeInflowRate;
-      Physiolibrary.Types.VolumeFlowRate volumeOutflowRate;
+      Physiolibrary.Types.VolumeFlowRate volumeInflowRate "Volumetric inflow rate";
+      Physiolibrary.Types.VolumeFlowRate volumeOutflowRate "Volumetric outflow rate";
     protected
       Medium.ThermodynamicState state_inflow "state for medium inflowing through q_in";
       Medium.ThermodynamicState state_outflow "state for medium outflowing through q_out";
@@ -1056,7 +1072,9 @@ as signal.
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
         <p>Marek Matejak, marek@matfyz.cz </p>
-        </html>"),
+        </html>", info="<html>
+<p>Present the mass flow of the medium flowing through the component.</p>
+</html>"),
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-25, -11}, {34, -70}}, lineColor = {0, 0, 0}, textString = "V'")}));
     end FlowMeasure;
 
@@ -1065,7 +1083,7 @@ as signal.
       extends Fluid.Interfaces.PartialAbsoluteSensor;
 
       outer Modelica.Fluid.System system "System wide properties";
-      parameter Boolean GetAbsolutePressure = false "if false then output pressure is relative to ambient pressure" annotation (
+      parameter Boolean GetAbsolutePressure = false "If false then output pressure is relative to ambient pressure" annotation (
         Evaluate = true,
         choices(checkBox = true));
       Physiolibrary.Types.RealIO.PressureOutput pressure "Pressure" annotation (
@@ -1077,7 +1095,10 @@ as signal.
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
         <p>Marek Matejak, marek@matfyz.cz </p>
-        </html>"));
+        </html>",     info="<html>
+<p>Present the relative pressure to system.p of the medium if <span style=\"font-family: Courier New;\">GetAbsolutePressure&nbsp;=&nbsp;false.</span></p>
+<p>Otherwise it present absolute pressure of the medium.</p>
+</html>"));
     end PressureMeasure;
 
     /*
@@ -1165,6 +1186,8 @@ as signal.
         Documentation(revisions = "<html>
 <p><i>2009-2015</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p><span style=\"font-family: Courier New;\">Presen partial pressure of the substance in the medium.</span></p>
 </html>"));
     end PartialPressure;
 
@@ -1281,10 +1304,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Documentation(revisions = "<html>
 <p><i>2009-2015</i></p>
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
+</html>", info="<html>
+<p><span style=\"font-family: Courier New;\">Present acidity of the medium.</span></p>
 </html>"));
     end pH;
 
-    model BloodGasesMeasurement
+    model BloodGasesMeasurement "Blood gases measurement"
       extends Modelica.Icons.RoundSensor;
       outer Modelica.Fluid.System system;
       replaceable package Medium =
@@ -1410,7 +1435,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
               {-44,-60}},                                                                    color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Text(extent = {{-150, 80}, {150, 120}}, textString = "%name", lineColor = {162, 29, 33})}),
-        Diagram(coordinateSystem(preserveAspectRatio = false)));
+        Diagram(coordinateSystem(preserveAspectRatio = false)),
+        Documentation(info="<html>
+<p><span style=\"font-family: Courier New;\">Present blood properties conneceted with blood gases transport.</span></p>
+</html>"));
     end BloodGasesMeasurement;
 
     model Power "Power as pressure multiplied by volumetric flow between ports"
@@ -1425,7 +1453,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
         <p>Marek Matejak, marek@matfyz.cz </p>
-        </html>"),
+        </html>", info="<html>
+<p><span style=\"font-family: Courier New;\">Present power.</span></p>
+</html>"),
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-25, -11}, {34, -70}}, lineColor = {0, 0, 0}, textString = "V'")}));
     end Power;
 
@@ -1469,12 +1499,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
         <p>Marek Matejak, marek@matfyz.cz </p>
-        </html>"));
+        </html>", info="<html>
+<p><span style=\"font-family: Courier New;\">Present systolic/mean/diastolic blood pressure from oscilating pressure signal.</span></p>
+</html>"));
     end Sphygmomanometer;
 
     model VolumeFlowMeasure "Volumetric flow between ports"
       extends Physiolibrary.Fluid.Interfaces.OnePort;
-      // extends Icons.FlowMeasure;
       extends Modelica.Icons.RoundSensor;
       Types.RealIO.VolumeFlowRateOutput volumeFlow "Actual volume flow rate"
         annotation (Placement(transformation(
@@ -1505,7 +1536,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Documentation(revisions = "<html>
         <p><i>2009-2018</i></p>
         <p>Marek Matejak, marek@matfyz.cz </p>
-        </html>"),
+        </html>", info="<html>
+<p>Present the volumetric flow of the medium flowing through the component.</p>
+</html>"),
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-25, -11}, {34, -70}}, lineColor = {0, 0, 0}, textString = "V'")}));
     end VolumeFlowMeasure;
 
@@ -1969,7 +2002,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Documentation(revisions = "<html>
 	<p><i>2014-2018</i></p>
 	<p>Marek Matejak, marek@matfyz.cz </p>
-	</html>"),
+	</html>", info="<html>
+<p>Minimal circulation driven by cardiac output.</p>
+</html>"),
         experiment(StopTime = 10));
     end MinimalCirculation;
 
@@ -2110,7 +2145,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(arteries.q_in[3], resistance.q_in) annotation (
         Line(points={{25.9,48.325},{48,48.325},{48,44}},      color = {127, 0, 0}, thickness = 0.5));
       connect(pressureMeasure.port, arteries.q_in[4]) annotation (
-        Line(points={{68,68},{25.9,68},{25.9,48.975}},       color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{72,64},{25.9,64},{25.9,48.975}},       color = {127, 0, 0}, thickness = 0.5));
       connect(resistance.q_out, flowMeasure.q_in) annotation (
         Line(points = {{48, 24}, {48, 20}, {24, 20}}, color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_out, veins.y) annotation (
@@ -2240,18 +2275,18 @@ The sensor is ideal, i.e., it does not influence the fluid.
     package Utilities "Utility components used by package Examples"
       extends Modelica.Icons.UtilitiesPackage;
 
-      model Pulses "example pulse flow generator"
+      model Pulses "Example pulse flow generator"
         import Physiolibrary.Types.*;
         Physiolibrary.Types.RealIO.MassFlowRateOutput massflowrate annotation (
           Placement(transformation(extent = {{80, -10}, {100, 10}}), iconTransformation(extent = {{80, -10}, {100, 10}})));
-        discrete Time T0 "beginning of cardiac cycle";
+        discrete Time T0 "Beginning of cardiac cycle";
         Boolean b(start = false);
-        discrete Time HP "duration of cardiac cycle";
-        parameter Frequency HR = 1.2;
-        Time tc "relative time in carciac cycle";
-        parameter Time TD1 = 0.07 "relative time of start of systole";
-        discrete Time TD2 "relative time of end of systole";
-        parameter MassFlowRate QP = 0.424 "peak mass flowrate";
+        discrete Time HP "Duration of cardiac cycle";
+        parameter Frequency HR = 1.2 "Heart rate";
+        Time tc "Relative time in carciac cycle";
+        parameter Time TD1 = 0.07 "Relative time of start of systole";
+        discrete Time TD2 "Relative time of end of systole";
+        parameter MassFlowRate QP = 0.424 "Peak mass flowrate";
       initial equation
         T0 = 0 "set beginning of cardiac cycle";
         HP = 1 / HR "update length of carciac cycle";
@@ -2266,11 +2301,14 @@ The sensor is ideal, i.e., it does not influence the fluid.
         tc = time - T0 "relative time in carciac cycle";
         massflowrate = if tc < TD1 then 0 else if tc < TD2 then sin((tc - TD1) / (TD2 - TD1) * Modelica.Constants.pi) * QP else 0 "zero before and after systole, otherwise sin up to peak flow";
         annotation (
-          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-80, 80}, {80, -80}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 170}, fillPattern = FillPattern.Solid), Line(points = {{-70, 0}, {-50, 0}, {-48, 2}, {-42, 52}, {-36, 60}, {-28, 52}, {-24, 2}, {-20, 0}, {14, 0}, {18, 2}, {24, 48}, {24, 54}, {32, 58}, {40, 50}, {44, 2}, {50, 0}, {74, 0}}, color = {0, 0, 255}, smooth = Smooth.Bezier), Text(extent = {{-80, 108}, {80, 88}}, lineColor = {0, 0, 255}, textString = "%name"), Text(extent = {{-80, -92}, {78, -112}}, lineColor = {0, 0, 255}, textString = "rate=%HR")}));
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-80, 80}, {80, -80}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 170}, fillPattern = FillPattern.Solid), Line(points = {{-70, 0}, {-50, 0}, {-48, 2}, {-42, 52}, {-36, 60}, {-28, 52}, {-24, 2}, {-20, 0}, {14, 0}, {18, 2}, {24, 48}, {24, 54}, {32, 58}, {40, 50}, {44, 2}, {50, 0}, {74, 0}}, color = {0, 0, 255}, smooth = Smooth.Bezier), Text(extent = {{-80, 108}, {80, 88}}, lineColor = {0, 0, 255}, textString = "%name"), Text(extent = {{-80, -92}, {78, -112}}, lineColor = {0, 0, 255}, textString = "rate=%HR")}),
+            Documentation(info="<html>
+<p>Pulse&nbsp;flow&nbsp;generator.</p>
+</html>"));
       end Pulses;
     end Utilities;
 
-    package Kofranek2014 "models of cardiovascular system used in www.physiome.cz/atlas"
+    package Kofranek2014 "Models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
 
       model NonPulsatileCirculation
@@ -2343,8 +2381,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         connect(PulmonaryVeins.q_in[2], leftHeart.q_in) annotation (
           Line(points={{51.9,38.65},{74,38.65},{74,0}},      color = {127, 0, 0}, thickness = 0.5));
         connect(leftHeart.q_out, SystemicArteries.q_in[1]) annotation (
-          Line(points={{52,2.22045e-16},{50,2.22045e-16},{50,-60.8667},{45.9,
-                -60.8667}},                                                                       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{52,2.22045e-16},{50,2.22045e-16},{50,-60.8667},{45.9,-60.8667}},          color = {127, 0, 0}, thickness = 0.5));
         connect(SystemicArteries.q_in[2], TotalSystemicResistance.q_in) annotation (
           Line(points = {{45.9, -60}, {30, -60}, {30, -60}, {16, -60}}, color = {127, 0, 0}, thickness = 0.5));
         connect(TotalSystemicResistance.q_out, SystemicVeins.q_in[1]) annotation (
@@ -2352,21 +2389,21 @@ The sensor is ideal, i.e., it does not influence the fluid.
         connect(SystemicVeins.q_in[2], rightHeart.q_in) annotation (
           Line(points={{-36.1,-59.35},{-80,-59.35},{-80,3},{-72,3}},        color = {127, 0, 0}, thickness = 0.5));
         connect(SystemicArteries.q_in[3],pressureMeasure.port)  annotation (
-          Line(points={{45.9,-59.1333},{60,-59.1333},{60,-62},{74,-62}},          color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{45.9,-59.1333},{60,-59.1333},{60,-66},{78,-66}},          color = {127, 0, 0}, thickness = 0.5));
         connect(RT.y, TotalSystemicResistance.resistance) annotation (
           Line(points = {{-2.75, -45}, {-2.75, -44.5}, {6, -44.5}, {6, -54}}, color = {0, 0, 127}));
         connect(RP.y, TotalPulmonaryResistance.resistance) annotation (
           Line(points = {{1.5, 65}, {1.5, 65.5}, {8, 65.5}, {8, 44}}, color = {0, 0, 127}));
         annotation (
           Documentation(info = "<html>
-	<p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it. </p>
-	<ul>
-	<li>J. Kofranek, S. Matousek, J. Rusz, P. Stodulka, P. Privitzer,M. Matejak, M. Tribula, The Atlas of Physiology and Pathophysiology: Web-based multimedia enabled interactive simulations., Comput. Methods Programs Biomed. 104 (2) (2011) 143&ndash;53. doi:10.1016/j.cmpb.2010.12.007.</li>
-	<li>Kofr&aacute;nek J, Matej&aacute;k M, Je~ek F, Privitzer P, &Scaron;ilar J. V&yacute;ukov&yacute; webov&yacute; simulator krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2011: 106-121. </li>
-	<li>Tribula M, Je~ek F, Privitzer P, Kofr&aacute;nek J, Kolman J. Webov&yacute; v&yacute;ukov&yacute; simul&aacute;tor krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2013: 197-204.</li>
-	<li><a href=\"http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html\">http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html</a></li>
-	</ul>
-	</html>"),
+        <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it. </p>
+        <ul>
+        <li>J. Kofranek, S. Matousek, J. Rusz, P. Stodulka, P. Privitzer,M. Matejak, M. Tribula, The Atlas of Physiology and Pathophysiology: Web-based multimedia enabled interactive simulations., Comput. Methods Programs Biomed. 104 (2) (2011) 143&ndash;53. doi:10.1016/j.cmpb.2010.12.007.</li>
+        <li>Kofr&aacute;nek J, Matej&aacute;k M, Je~ek F, Privitzer P, &Scaron;ilar J. V&yacute;ukov&yacute; webov&yacute; simulator krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2011: 106-121. </li>
+        <li>Tribula M, Je~ek F, Privitzer P, Kofr&aacute;nek J, Kolman J. Webov&yacute; v&yacute;ukov&yacute; simul&aacute;tor krevn&iacute;ho obhu. In: Sborn&iacute;k PY&iacute;spvko MEDSOFT 2013: 197-204.</li>
+        <li><a href=\"http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html\">http://physiome.cz/atlas/cirkulace/05/SimpleUncontrolledSimulation.html</a></li>
+        </ul>
+        </html>"),
           experiment(StopTime = 5));
       end NonPulsatileCirculation;
 
@@ -2374,12 +2411,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         extends NonPulsatileCirculation(redeclare Parts.PulsatileHeartPump rightHeart(pulses(QP = 0.338)), redeclare Parts.PulsatileHeartPump leftHeart(pulses(QP = 0.338)), CAS(k = 7.2755972857029e-9), SystemicArteries(volume_start = 0.603e-3), SystemicVeins(volume_start = 3.991e-3));
         annotation (
           Documentation(info = "<html>
-	<p>Extension of the model of cardiovascular system with pulsatile dynamics</p>
-	<ul>
-	<li>Kulh&aacute;nek T, Tribula M, Kofr&aacute;nek J, Matej&aacute;k M. Simple models of the cardiovascular system for educational and research purposes. MEFANET Journal 2014. Available at WWW:<a href=\"
-	 http://mj.mefanet.cz/mj-04140914\"> http://mj.mefanet.cz/mj-04140914</a>.</li>
-	</ul>
-	</html>"),
+        <p>Extension of the model of cardiovascular system with pulsatile dynamics</p>
+        <ul>
+        <li>Kulh&aacute;nek T, Tribula M, Kofr&aacute;nek J, Matej&aacute;k M. Simple models of the cardiovascular system for educational and research purposes. MEFANET Journal 2014. Available at WWW:<a href=\"
+         http://mj.mefanet.cz/mj-04140914\"> http://mj.mefanet.cz/mj-04140914</a>.</li>
+        </ul>
+        </html>"),
           experiment(StopTime = 5));
       end PulsatileCirculation;
 
@@ -2401,15 +2438,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         model PulsatileHeartPump "Heart as pump, which flowrate is determined
           \t  by the StarlingSlope and filling pressure."
           extends HeartInterface;
-          replaceable package Medium = Media.Water constrainedby
-            Media.Interfaces.PartialMedium                                                      "Medium model" annotation (
+          replaceable package Medium = Media.Water constrainedby Media.Interfaces.PartialMedium "Medium model" annotation (
              choicesAllMatching = true);
-          Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package
-              Medium =
+          Physiolibrary.Fluid.Interfaces.FluidPort_a q_in(redeclare package Medium =
               Media.Water)                                                                        annotation (
             Placement(transformation(extent = {{-64, 0}, {-44, 20}}), iconTransformation(extent = {{-110, -10}, {-90, 10}})));
-          Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package
-              Medium =
+          Physiolibrary.Fluid.Interfaces.FluidPort_b q_out(redeclare package Medium =
               Media.Water)                                                                         annotation (
             Placement(transformation(extent = {{42, 2}, {62, 22}}), iconTransformation(extent = {{42, 2}, {62, 22}})));
           Utilities.Pulses pulses annotation (
@@ -2435,8 +2469,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       end Parts;
       annotation (
         Documentation(info = "<html>
-	<p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it.</p>
-	</html>"));
+        <p>Model of cardiovascular system using to demonstrate elastic and resistance features of veins and arteries in pulmonary and systemic circulation and influence of cardiac output on it.</p>
+        </html>"));
     end Kofranek2014;
 
     package Fernandez2013 "Model of CVS introduced by Fernandez de Canete et al. 2013"
@@ -2603,14 +2637,14 @@ The sensor is ideal, i.e., it does not influence the fluid.
 
         model TimeVaryingElastance
           outer Modelica.Fluid.System system "System wide properties";
-          parameter Physiolibrary.Types.HydraulicElastance Ed "elastance of diastole";
-          parameter Physiolibrary.Types.HydraulicElastance Es "elastance of systole";
-          parameter Physiolibrary.Types.Pressure Pi0 "peak isovolumic pressure";
+          parameter Physiolibrary.Types.HydraulicElastance Ed "Elastance of diastole";
+          parameter Physiolibrary.Types.HydraulicElastance Es "Elastance of systole";
+          parameter Physiolibrary.Types.Pressure Pi0 "Peak isovolumic pressure";
           parameter Physiolibrary.Types.Frequency HR_start = 1 "Initial hear rate";
-          Physiolibrary.Types.Time tm "relative time from the beginning of cardiac cycle";
-          discrete Physiolibrary.Types.Time HP "heart period";
-          discrete Physiolibrary.Types.Time t0 "time of beginning of the cardiac cycle";
-          discrete Physiolibrary.Types.Time ts "duration of systole";
+          Physiolibrary.Types.Time tm "Relative time from the beginning of cardiac cycle";
+          discrete Physiolibrary.Types.Time HP "Heart period";
+          discrete Physiolibrary.Types.Time t0 "Time of beginning of the cardiac cycle";
+          discrete Physiolibrary.Types.Time ts "Duration of systole";
           Real a;
           Physiolibrary.Types.RealIO.HydraulicComplianceOutput C annotation (
             Placement(transformation(extent = {{-4, -102}, {16, -82}}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {0, -90})));
@@ -2644,7 +2678,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       end Parts;
     end Fernandez2013;
 
-    package MeursModel2011 "models of cardiovascular system used in www.physiome.cz/atlas"
+    package MeursModel2011 "Models of cardiovascular system used in www.physiome.cz/atlas"
       extends Modelica.Icons.ExamplesPackage;
 
       package Parts "Utility components used by package KofranekModels2013"
@@ -2983,7 +3017,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       end HemodynamicsMeurs_flatNorm;
       annotation (
         Documentation(info = "<html>
-	</html>"));
+        </html>"));
     end MeursModel2011;
 
     package Dialysis
@@ -3003,12 +3037,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
             1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
         parameter Modelica.Units.SI.MassFraction InitialPlasma[BloodPlasma.nS - 1](
-            displayUnit="%")={0.0031,0.0015,0.0002,0.0009,0.0018,0.0038,6e-05,1.2e-05,
+            each displayUnit="%")={0.0031,0.0015,0.0002,0.0009,0.0018,0.0038,6e-05,1.2e-05,
           0.047,0.053,1e-11}                                                                                                                                                                       "Initial blood plasma substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
           Dialog(group = "Initialization"));
         //concentrations: { 135,24,5,5,30,105,1.5,0.5,0.7,0.8,1e-06} mmmol/L
         parameter Modelica.Units.SI.MassFraction InitialDialysate[Dialysate.nS - 1](
-            displayUnit="%")={0.0032,0.002,0.00012,0.0009,1e-11,0.004,6e-05,1.2e-05,1e-08,
+            each displayUnit="%")={0.0032,0.002,0.00012,0.0009,1e-11,0.004,6e-05,1.2e-05,1e-08,
           1e-08,0.00028}                                                                                                                                                                            "Initial dialysate substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}" annotation (
           Dialog(group = "Initialization"));
         //concantrations: {138,32,3,5,1e-06,111,1e-06,1e-06,1e-06,1e-06,1e-06} mmol/L
@@ -3417,14 +3451,11 @@ The sensor is ideal, i.e., it does not influence the fluid.
       parameter Types.HydraulicConductance TotalSystemicConductance = 1.250102626409427e-07 * (1 / 20) "Total systemic blood circulation conductance";
       parameter Integer NA = 1 "Number of pulmonary alveolar units";
       parameter Integer NT = 1 "Number of systemic tissue units";
-      Physiolibrary.Fluid.Components.VolumePump deadSpaceVentilation(redeclare package
-                  Medium =                                                                      Air, useSolutionFlowInput = false, SolutionFlow = DV * RR) annotation (
+      Physiolibrary.Fluid.Components.VolumePump deadSpaceVentilation(redeclare package Medium = Air, useSolutionFlowInput = false, SolutionFlow = DV * RR) annotation (
         Placement(transformation(extent = {{-6, 6}, {14, 26}})));
-      Physiolibrary.Fluid.Sources.PressureSource pressureSource(redeclare package
-                  Medium =                                                                 Air) annotation (
+      Physiolibrary.Fluid.Sources.PressureSource pressureSource(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-90, 6}, {-70, 26}})));
-      Physiolibrary.Fluid.Sources.VolumeOutflowSource ventilation(useSolutionFlowInput = false, SolutionFlow = TV * RR, redeclare package
-                  Medium =                                                                                                                         Air) annotation (
+      Physiolibrary.Fluid.Sources.VolumeOutflowSource ventilation(useSolutionFlowInput = false, SolutionFlow = TV * RR, redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{70, 6}, {90, 26}})));
       inner Modelica.Fluid.System system(T_ambient = 310.15) annotation (
         Placement(transformation(extent = {{-44, 46}, {-24, 66}})));

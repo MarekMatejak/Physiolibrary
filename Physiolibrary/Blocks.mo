@@ -461,7 +461,7 @@ input <i>u</i>:
       parameter Boolean UsePositiveLog10 = false "x = if u/scaleX <=1 then 0 else log10(u/scaleX)";
       Physiolibrary.Types.Fraction effect "Multiplication coeffecient for yBase to reach y";
     protected
-      parameter Real a[:, :] = if enabled then Interpolation.SplineCoefficients(data[:, 1], data[:, 2] * Yscale, data[:, 3] * Yscale) else zeros(1, 1) "Cubic polynom coefficients of curve segments between interpolating points";
+      parameter Real a[:, :] = if enabled then Interpolation.SplineCoefficients(data[:, 1], data[:, 2] * Yscale, data[:, 3] * Yscale) else zeros(1, 4) "Cubic polynom coefficients of curve segments between interpolating points";
     equation
       effect = if not enabled then 1 elseif UsePositiveLog10 then Interpolation.Spline(data[:, 1], a, if u / Xscale <= 1 then 0 else log10(u / Xscale)) else Interpolation.Spline(data[:, 1], a, u / Xscale);
       y = effect * yBase;
@@ -681,7 +681,7 @@ input <i>u</i>:
       import Modelica.Constants.pi;
       input Real f[:] "equidistant-sampled function";
       input Integer nfi = div(size(f, 1), 2) + 1 "";
-      output Complex c[nfi] "Fourier series coeficient";
+      output Complex c[:] "Fourier series coeficient";
     protected
       Real Ai[nfi] "FFT amplitudes of interested frequency points";
       Real Phii[nfi] "FFT phases of interested frequency points";
