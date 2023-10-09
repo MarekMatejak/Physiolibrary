@@ -72,7 +72,7 @@ package Media "Models of physiological fluids"
       AbsolutePressure p "Absolute pressure of medium";
       SpecificEnthalpy h "Specific enthalpy";
       MassFraction X[nS] "Mass fractions of substances";
-      Types.ElectricPotential v "Electric potential of the substance";
+      Types.ElectricPotential v "Electric potential";
       annotation (Documentation(info="<html>
   <p>Thermodynamic state of blood is represented by pressure, temperature, base substances composition, electrical potential and ionic strengh.</p>
 </html>"));
