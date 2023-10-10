@@ -19,4 +19,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Parse the library
-        run: moparser -v 3.4 -r Physiolibrary
+        run: moparser -v 3.4 -r "Physiolibrary 3.0.0"
