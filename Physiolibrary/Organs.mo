@@ -1025,7 +1025,7 @@ SYSTOLE
           annotation (Placement(transformation(extent={{80,-20},{120,20}})));
         parameter Physiolibrary.Types.Pressure AdaptivePressure(displayUnit="mmHg");
         parameter Physiolibrary.Types.Time Tau(displayUnit="h")=3600;
-        parameter Real PressureChangeOnNA[3,:];
+        parameter Real PressureChangeOnNA[3,:]={{-4.0,0.0,0},{0.0,1.0,0.3},{12.0,4.0,0}};
 
         Modelica.Blocks.Math.Feedback rightAtrium_TMP
           annotation (Placement(transformation(extent={{-78,52},{-62,68}})));
@@ -7627,7 +7627,7 @@ Blood resistance in gastro interstitial tract.
 
     parameter Physiolibrary.Types.Volume initialVol
       "initial compartment blood volume";
-     parameter Real[:,3] data;
+     parameter Real[:,3] data={{0,-100,2.00},{150,11,0.11},{600,50,0.15}};
 
     Physiolibrary.Blocks.Interpolation.Curve curve(
       x=data[:, 1],

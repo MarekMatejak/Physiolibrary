@@ -56,7 +56,7 @@ package Media "Models of physiological fluids"
     constant Types.MassFraction CDefault[nC]={
     1e-20,1e-20,1e-06};
 
-    replaceable function plasmaMassFraction "Blood plasmacrit [kg/kg]"
+    function plasmaMassFraction "Blood plasmacrit [kg/kg]"
       extends GetFraction;
     protected
       constant Boolean includeOther=true;
@@ -118,7 +118,7 @@ package Media "Models of physiological fluids"
 </html>"));
     end plasmaSpecificAmountOfParticles;
 
-    replaceable function formedElementsMassFraction "Blood hematocrit [kg/kg]"
+    function formedElementsMassFraction "Blood hematocrit [kg/kg]"
       extends GetFraction;
     protected
       constant Boolean includeOther=true;
@@ -160,7 +160,7 @@ package Media "Models of physiological fluids"
 </html>"));
     end formedElementsSpecificAmountOfParticles;
 
-    replaceable model ArterialComposition "To set mass fractions in blood"
+    model ArterialComposition "To set mass fractions in blood"
 
       Types.Temperature T = 310.15;
       Types.Pressure p = 101325;
@@ -1597,7 +1597,7 @@ package Media "Models of physiological fluids"
       "Return thermodynamic state as function of p, h and composition X or Xi"
     algorithm
       state.p := p;
-      state.T := stateOfMatter.solution_temperature(
+      state.T := Chemical.Interfaces.Incompressible.solution_temperature(
           {Substances.Water},
           h,
           {1},
