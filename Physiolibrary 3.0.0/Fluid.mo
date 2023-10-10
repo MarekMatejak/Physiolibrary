@@ -194,9 +194,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
         info="<html>
 <h4>mass = &sum; massOfSubstances</h4>
 <p>constant compliance</p>
-<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p><br><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
 <p>sigmoid compliance</p>
-<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
+<p><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
 </html>"));
     end ElasticVessel;
 
@@ -218,9 +218,9 @@ package Fluid "Physiological fluids with static and dynamic properties"
       annotation (Documentation(info="<html>
 <h4>mass = &sum; massOfSubstances</h4>
 <h4>constant compliance</h4>
-<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
 <h4>sigmoid compliance</h4>
-<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
+<p><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
 </html>"));
     end ElasticVesselElastance;
 
@@ -477,11 +477,11 @@ package Fluid "Physiological fluids with static and dynamic properties"
 <p><h4><font color=\"#008000\">Hydraulic Reabsorption</font></h4></p>
 <p>If useOutflowMin=false then the next schema is used.</p>
 <p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
+<li><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/HydraulicReabsorption.png\"/></li>
 </ul></p>
 <p><br/>If  useOutflowMin=true then the extended schema is used:</p>
 <p><ul>
-<li><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
+<li><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png\"/></li>
 </ul></p>
 </html>"));
     end Reabsorption;
@@ -3331,7 +3331,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
 <p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
 <p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
 <p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
-<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
+<p><br><img src=\"modelica://Physiolibrary 3.0.0/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
 </html>"));
     end BloodGasesEquilibrium;
 

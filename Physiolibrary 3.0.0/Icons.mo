@@ -5,265 +5,265 @@ package Icons "Icons for physiological models"
 
   class Golem
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -98}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/golem.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -98}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/golem.png")}));
   end Golem;
 
   class CardioVascular
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/csv.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/csv.png")}));
   end CardioVascular;
 
   class Water
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/indexVoda.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/indexVoda.png")}));
   end Water;
 
   class Electrolytes
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/electrolytes.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/electrolytes.png")}));
   end Electrolytes;
 
   class Proteins
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/protein.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/protein.png")}));
   end Proteins;
 
   class Gases
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/gases.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/gases.png")}));
   end Gases;
 
   class NutrientsMetabolism
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/vyziva.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/vyziva.png")}));
   end NutrientsMetabolism;
 
   class Heat
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/ohen.png")}));
   end Heat;
 
   class Hormones
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/hormony.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/hormony.png")}));
   end Hormones;
 
   class Nerves
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/nervyNeuron.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/nervyNeuron.png")}));
   end Nerves;
 
   class Setup
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/setup.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/setup.png")}));
   end Setup;
 
   class Status
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/tissueFitness.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/tissueFitness.png")}));
   end Status;
 
   class SkeletalMuscle
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary/Resources/Icons/sval.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sval.png")}));
   end SkeletalMuscle;
 
   class Bone
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-88, -84}, {52, 96}}, fileName = "modelica://Physiolibrary/Resources/Icons/bone.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-88, -84}, {52, 96}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/bone.png")}));
   end Bone;
 
   class OtherTissue
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-74, -94}, {48, 60}}, fileName = "modelica://Physiolibrary/Resources/Icons/pojivovaTkan.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-74, -94}, {48, 60}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/pojivovaTkan.png")}));
   end OtherTissue;
 
   class RespiratoryMuscle
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-66, -86}, {44, 86}}, fileName = "modelica://Physiolibrary/Resources/Icons/respiracniSvaly.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-66, -86}, {44, 86}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/respiracniSvaly.png")}));
   end RespiratoryMuscle;
 
   class Fat
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-84, -68}, {38, 86}}, fileName = "modelica://Physiolibrary/Resources/Icons/tukovaBunka.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-84, -68}, {38, 86}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/tukovaBunka.png")}));
   end Fat;
 
   class Skin
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-74, -84}, {48, 56}}, fileName = "modelica://Physiolibrary/Resources/Icons/skin.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-74, -84}, {48, 56}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/skin.png")}));
   end Skin;
 
   class Brain
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-78, -92}, {44, 62}}, fileName = "modelica://Physiolibrary/Resources/Icons/brain.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-78, -92}, {44, 62}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/brain.png")}));
   end Brain;
 
   class GITract
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-80, -80}, {42, 74}}, fileName = "modelica://Physiolibrary/Resources/Icons/traviciTrakt.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-80, -80}, {42, 74}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/traviciTrakt.png")}));
   end GITract;
 
   class LeftHeart
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -100}, {24, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/srdceLeva.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -100}, {24, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/srdceLeva.png")}));
   end LeftHeart;
 
   class RightHeart
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-26, -100}, {92, 66}}, fileName = "modelica://Physiolibrary/Resources/Icons/srdceprava.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-26, -100}, {92, 66}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/srdceprava.png")}));
   end RightHeart;
 
   class Liver
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-84, -100}, {86, 34}}, fileName = "modelica://Physiolibrary/Resources/Icons/jatra.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-84, -100}, {86, 34}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/jatra.png")}));
   end Liver;
 
   class Kidney
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary/Resources/Icons/kidney.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/kidney.png")}));
   end Kidney;
 
   class Bladder
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary/Resources/Icons/mocovyMechyr.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/mocovyMechyr.png")}));
   end Bladder;
 
   class GILumen
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/traviciTrakt2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/traviciTrakt2.png")}));
   end GILumen;
 
   class ThyroidGland
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary/Resources/Icons/stitnaZlaza.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-92, -88}, {40, 86}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/stitnaZlaza.png")}));
   end ThyroidGland;
 
   class Pancreas
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/pankreas.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/pankreas.png")}));
   end Pancreas;
 
   class AdrenalGland
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/nadledviny.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/nadledviny.png")}));
   end AdrenalGland;
 
   class Lungs
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary/Resources/Icons/plice.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/plice.png")}));
   end Lungs;
 
   class Tissues
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-46, 26}, {32, 98}}, fileName = "modelica://Physiolibrary/Resources/Icons/bone.png"), Bitmap(extent = {{-62, -92}, {50, -10}}, fileName = "modelica://Physiolibrary/Resources/Icons/skin.png"), Bitmap(extent = {{-38, -20}, {64, 90}}, fileName = "modelica://Physiolibrary/Resources/Icons/sval.png"), Bitmap(extent = {{-10, -56}, {102, 36}}, fileName = "modelica://Physiolibrary/Resources/Icons/traviciTrakt.png"), Text(extent = {{64, -66}, {94, -96}}, lineColor = {0, 0, 0}, textString = "..."), Bitmap(extent = {{-98, -30}, {-24, 36}}, fileName = "modelica://Physiolibrary/Resources/Icons/brain.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-46, 26}, {32, 98}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/bone.png"), Bitmap(extent = {{-62, -92}, {50, -10}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/skin.png"), Bitmap(extent = {{-38, -20}, {64, 90}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sval.png"), Bitmap(extent = {{-10, -56}, {102, 36}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/traviciTrakt.png"), Text(extent = {{64, -66}, {94, -96}}, lineColor = {0, 0, 0}, textString = "..."), Bitmap(extent = {{-98, -30}, {-24, 36}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/brain.png")}));
   end Tissues;
 
   class Peritoneum
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary/Resources/Icons/peritoneum.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/peritoneum.png")}));
   end Peritoneum;
 
   class Plasma
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary/Resources/Icons/plazma.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-70, -80}, {40, 92}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/plazma.png")}));
   end Plasma;
 
   class Hypophysis
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/hypofyza.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/hypofyza.png")}));
   end Hypophysis;
 
   class Heart
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/heartPict.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/heartPict.png")}));
   end Heart;
 
   class SweatGland
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/potniZlaza.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/potniZlaza.png")}));
   end SweatGland;
 
   class Cell
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/OsmothicCell.png")}));
   end Cell;
 
   package HeatLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -82}, {76, 44}}, fileName = "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -82}, {76, 44}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/ohen.png")}));
   end HeatLib;
 
   package StatusLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, 40}, {72, -96}}, fileName = "modelica://Physiolibrary/Resources/Icons/tissueFitness.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, 40}, {72, -96}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/tissueFitness.png")}));
   end StatusLib;
 
   package NervesLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/nervyNeuron.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/nervyNeuron.png")}));
   end NervesLib;
 
   package NutrientsMetabolismLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {80, 40}}, fileName = "modelica://Physiolibrary/Resources/Icons/vyziva.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -100}, {80, 40}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/vyziva.png")}));
   end NutrientsMetabolismLib;
 
   package OxygenLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -98}, {78, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/O2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -98}, {78, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/O2.png")}));
   end OxygenLib;
 
   package ProteinsLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -98}, {76, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/protein.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-98, -98}, {76, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/protein.png")}));
   end ProteinsLib;
 
   package SetupLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-94, -98}, {72, 44}}, fileName = "modelica://Physiolibrary/Resources/Icons/setup.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-94, -98}, {72, 44}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/setup.png")}));
   end SetupLib;
 
   package CardioVascularLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -100}, {76, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/csv.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -100}, {76, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/csv.png")}));
   end CardioVascularLib;
 
   package WaterLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-90, -84}, {72, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/indexVoda.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-90, -84}, {72, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/indexVoda.png")}));
   end WaterLib;
 
   package KidneyLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/Kidney.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Kidney.png")}));
   end KidneyLib;
 
   package ElectrolytesLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-78, -94}, {64, 38}}, fileName = "modelica://Physiolibrary/Resources/Icons/electrolytes.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-78, -94}, {64, 38}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/electrolytes.png")}));
   end ElectrolytesLib;
 
   package GasesLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-88, -82}, {66, 34}}, fileName = "modelica://Physiolibrary/Resources/Icons/gases.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-88, -82}, {66, 34}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/gases.png")}));
   end GasesLib;
 
   partial package GolemLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -98}, {78, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/golem.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -98}, {78, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/golem.png")}));
   end GolemLib;
 
   partial package BaseLib
@@ -273,13 +273,13 @@ package Icons "Icons for physiological models"
   package HormonesLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-88, -88}, {74, 30}}, fileName = "modelica://Physiolibrary/Resources/Icons/hormony.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-88, -88}, {74, 30}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/hormony.png")}));
   end HormonesLib;
 
   package AutonomicControlLib
     extends Modelica.Icons.Package;
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary/Resources/Icons/sympatetickeNervy.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-96, -96}, {72, 42}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sympatetickeNervy.png")}));
   end AutonomicControlLib;
 
   partial class Resistor
@@ -289,233 +289,233 @@ package Icons "Icons for physiological models"
 
   class Lymph
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Lymph.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Lymph.png")}));
   end Lymph;
 
   class RespiratoryCenter
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/respiracniCentrum.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/respiracniCentrum.png")}));
   end RespiratoryCenter;
 
   class Oxygen
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/O2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/O2.png")}));
   end Oxygen;
 
   class CarbonDioxide
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/prvkyCO2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/prvkyCO2.png")}));
   end CarbonDioxide;
 
   class AcidBase
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/acidobaze.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/acidobaze.png")}));
   end AcidBase;
 
   class Ventilation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/dychani.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/dychani.png")}));
   end Ventilation;
 
   class PeripheralChemoreceptors
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/baroreflex.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/baroreflex.png")}));
   end PeripheralChemoreceptors;
 
   class HeatCore
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, 100}, {100, -100}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, 100}, {100, -100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo2.png")}));
   end HeatCore;
 
   class Glycogen
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/glykogen.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, -100}, {100, 100}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/glykogen.png")}));
   end Glycogen;
 
   class Lipids
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/FattyAcid.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/FattyAcid.png")}));
   end Lipids;
 
   class KetoAcids
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/KetoAcid.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/KetoAcid.png")}));
   end KetoAcids;
 
   class Glucose
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/glucose.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/glucose.png")}));
   end Glucose;
 
   class Lactate
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Lactate.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Lactate.png")}));
   end Lactate;
 
   class AminoAcids
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/AminoAcid.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/AminoAcid.png")}));
   end AminoAcids;
 
   class Urea
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Urea.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Urea.png")}));
   end Urea;
 
   class MetabolismPart
     annotation (
       Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 120}}), graphics={  Bitmap(extent={{28,44},
-              {98,120}},                                                                                                                         fileName = "modelica://Physiolibrary/Resources/Icons/ohen.png")}));
+              {98,120}},                                                                                                                         fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/ohen.png")}));
   end MetabolismPart;
 
   class CellularMetabolism
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/cellularMetabolism.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/cellularMetabolism.png")}));
   end CellularMetabolism;
 
   class FemaleSex
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/hormonesFemaleSex.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/hormonesFemaleSex.png")}));
   end FemaleSex;
 
   class Barroreceptor
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/baroreflex.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/baroreflex.png")}));
   end Barroreceptor;
 
   class NervusVagus
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/vagus.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/vagus.png")}));
   end NervusVagus;
 
   class SympatheticNerves
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/sympatetickeNervy.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sympatetickeNervy.png")}));
   end SympatheticNerves;
 
   class PhysicalExercise
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/cviceni.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/cviceni.png")}));
   end PhysicalExercise;
 
   class SinoatrialNode
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/SANode.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/SANode.png")}));
   end SinoatrialNode;
 
   block StatusNormal
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaNormal.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaNormal.png")}));
   end StatusNormal;
 
   block StatusConfused
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaZmateni.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaZmateni.png")}));
   end StatusConfused;
 
   block StatusImpaired
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaVaznejsiStav.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaVaznejsiStav.png")}));
   end StatusImpaired;
 
   block StatusNotBreathing
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaNedychaSam.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaNedychaSam.png")}));
   end StatusNotBreathing;
 
   block StatusComatose
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaKoma.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaKoma.png")}));
   end StatusComatose;
 
   block StatusMayBeDead
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaSkoroMrtvy.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaSkoroMrtvy.png")}));
   end StatusMayBeDead;
 
   block StatusIsReallyDead
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/siluetaMrtvy.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/siluetaMrtvy.png")}));
   end StatusIsReallyDead;
 
   class SkeletalMuscleAcidity
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/kyselostVeSvalech.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/kyselostVeSvalech.png")}));
   end SkeletalMuscleAcidity;
 
   class Sodium
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Na.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Na.png")}));
   end Sodium;
 
   class Potassium
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/K.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/K.png")}));
   end Potassium;
 
   class Phosphate
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/fosfat.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/fosfat.png")}));
   end Phosphate;
 
   class Sulphate
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/sulfat02.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sulfat02.png")}));
   end Sulphate;
 
   class Amonium
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/NH4.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/NH4.png")}));
   end Amonium;
 
   class Chloride
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Cl.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Cl.png")}));
   end Chloride;
 
   class LungShunt
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/lungBloodFlow.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/lungBloodFlow.png")}));
   end LungShunt;
 
   class Hydrostatics
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/pressureMeassure.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/pressureMeassure.png")}));
   end Hydrostatics;
 
   class UpperTorso
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo1.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo1.png")}));
   end UpperTorso;
 
   class MiddleTorso
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo2.png")}));
   end MiddleTorso;
 
   class LowerTorso
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo3.png")}));
   end LowerTorso;
 
   class RedCells
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/cervenaKrvinka.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/cervenaKrvinka.png")}));
   end RedCells;
 
   class SystemicCirculation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/krevniRecisteSiluetacloveka.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/krevniRecisteSiluetacloveka.png")}));
   end SystemicCirculation;
 
   class PulmonaryCirculation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/krevniRecistePlice.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/krevniRecistePlice.png")}));
   end PulmonaryCirculation;
 
   class Blood
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/bloodProperties.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/bloodProperties.png")}));
   end Blood;
 
   class BaseFactorIcon0
@@ -584,122 +584,122 @@ package Icons "Icons for physiological models"
 
   partial class Diffusion
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/diffusion.png")}));
+      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/diffusion.png")}));
   end Diffusion;
 
   class Substance
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Concentration.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Concentration.png")}));
   end Substance;
 
   class Speciation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Speciation.png"), Text(extent = {{-182, -84}, {60, -118}}, lineColor = {0, 0, 255}, textString = "%name")}));
+      Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Speciation.png"), Text(extent = {{-182, -84}, {60, -118}}, lineColor = {0, 0, 255}, textString = "%name")}));
   end Speciation;
 
   class MolarFlowMeasure
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/molarFlowMeassure.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/molarFlowMeassure.png")}));
   end MolarFlowMeasure;
 
   class GasSolubility
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/GasSolubility.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/GasSolubility.png")}));
   end GasSolubility;
 
   class Reabsorption
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/reabsorption.svg")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/reabsorption.svg")}));
   end Reabsorption;
 
   class Reabsorption2
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/reabsorption.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/reabsorption.png")}));
   end Reabsorption2;
 
   class Dilution
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -101}, {100, 101}}, fileName = "modelica://Physiolibrary/Resources/Icons/dilution.png", origin = {0, 33}, rotation = 270)}));
+      Icon(graphics={  Bitmap(extent = {{-100, -101}, {100, 101}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/dilution.png", origin = {0, 33}, rotation = 270)}));
   end Dilution;
 
   partial class ElasticBalloon
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/elastic_vessel.svg")}));
+      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/elastic_vessel.svg")}));
   end ElasticBalloon;
 
   class BloodElasticCompartment
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/elastickyKompartment.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/elastickyKompartment.png")}));
   end BloodElasticCompartment;
 
   class BloodSequesteredCompartment
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/sequerestedVolume.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/sequerestedVolume.png")}));
   end BloodSequesteredCompartment;
 
   partial class HydraulicResistor
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-120, -42}, {120, 44}}, fileName = "modelica://Physiolibrary/Resources/Icons/resistor.svg")}));
+      Icon(graphics={  Bitmap(extent = {{-120, -42}, {120, 44}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/resistor.svg")}));
   end HydraulicResistor;
 
   class FlowMeasure
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/flowMeassure.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/flowMeassure.png")}));
   end FlowMeasure;
 
   class Membrane
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/membrane.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/membrane.png")}));
   end Membrane;
 
   class PressureMeasure
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/pressureMeassure.png")}));
+      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/pressureMeassure.png")}));
   end PressureMeasure;
 
   class InternalElasticBalloon
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/elastic_membrane.svg")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/elastic_membrane.svg")}));
   end InternalElasticBalloon;
 
   class Inertance
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/inertia.svg")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/inertia.svg")}));
   end Inertance;
 
   class HydrostaticGradient
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {102, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/hydrostatic_column.svg")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {102, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/hydrostatic_column.svg")}));
   end HydrostaticGradient;
 
   class Radiator
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Radiator.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Radiator.png")}));
   end Radiator;
 
   class MichaelisMenten
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-80, -84}, {86, 26}}, fileName = "modelica://Physiolibrary/Resources/Icons/MichaelisMenten.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-80, -84}, {86, 26}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/MichaelisMenten.png")}));
   end MichaelisMenten;
 
   class HeatAccumulation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/HeatAccumulation.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/HeatAccumulation.png")}));
   end HeatAccumulation;
 
   class OsmoticCell
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/OsmothicCell.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/OsmothicCell.png")}));
   end OsmoticCell;
 
   class IdealGas
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/IdealGas.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/IdealGas.png")}));
   end IdealGas;
 
   class PartialPressure
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/PartialPressure.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/PartialPressure.png")}));
   end PartialPressure;
 
   class ConservationLaw
@@ -709,127 +709,127 @@ package Icons "Icons for physiological models"
 
   class Nephron
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Nefron.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Nefron.png")}));
   end Nephron;
 
   class Torso
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-28, 58}, {28, 98}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo1.png"), Bitmap(extent = {{-40, -24}, {40, 56}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo2.png"), Bitmap(extent = {{-40, -98}, {40, -18}}, fileName = "modelica://Physiolibrary/Resources/Icons/torzo3.png")}));
+      Icon(graphics={  Bitmap(extent = {{-28, 58}, {28, 98}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo1.png"), Bitmap(extent = {{-40, -24}, {40, 56}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo2.png"), Bitmap(extent = {{-40, -98}, {40, -18}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/torzo3.png")}));
   end Torso;
 
   class PerfusionOD
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-160, -100}, {152, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/perfusion.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-160, -100}, {152, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/perfusion.png")}));
   end PerfusionOD;
 
   class PerfusionDO
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-160, -100}, {160, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/perfusion2.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-160, -100}, {160, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/perfusion2.png")}));
   end PerfusionDO;
 
   class CollapsingVessel
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/kolaps.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/kolaps.png")}));
   end CollapsingVessel;
 
   class PeripheralCirculation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/krevniReciste.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/krevniReciste.png")}));
   end PeripheralCirculation;
 
   class HeartVentricle
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/komoraSrdce.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/komoraSrdce.png")}));
   end HeartVentricle;
 
   class Population
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Populace.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Populace.png")}));
   end Population;
 
   class FlowFiltration
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -74}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/flowFiltration.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -74}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/flowFiltration.png")}));
   end FlowFiltration;
 
   class Microcirculation
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -98}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/microcirculation.png")}));
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Bitmap(extent = {{-100, -98}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/microcirculation.png")}));
   end Microcirculation;
 
   class IdealValve
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/ideal_valve.svg")}));
+      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/ideal_valve.svg")}));
   end IdealValve;
 
   class Pump
     annotation (
-      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/pump.svg")}));
+      Icon(graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/pump.svg")}));
   end Pump;
 
   model Arteries
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-87.243, -87.3037}, {87.243, 87.3037}}, fileName = "modelica://Physiolibrary/Resources/Icons/Arteries.png", origin = {4.25124, 18.8661}, rotation = 75)}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-87.243, -87.3037}, {87.243, 87.3037}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Arteries.png", origin = {4.25124, 18.8661}, rotation = 75)}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Arteries;
 
   class Atrium
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Atrium.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Atrium.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Atrium;
 
   class Cardio
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Cardio.png"), Bitmap(extent = {{-50, -38}, {52, 62}}, fileName = "modelica://Physiolibrary/Resources/Icons/Cross.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Cardio.png"), Bitmap(extent = {{-50, -38}, {52, 62}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Cross.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Cardio;
 
   class ECMO
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/ECMO.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/ECMO.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end ECMO;
 
   class Heart_detailed
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Heart_detailed.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Heart_detailed.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Heart_detailed;
 
   class O2
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/O2.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/O2.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end O2;
 
   class Screw
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Screw.png", origin = {2, -4}, rotation = 90)}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Screw.png", origin = {2, -4}, rotation = 90)}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Screw;
 
   class Settings
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Settings.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Settings.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Settings;
 
   class Valve
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Valve.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Valve.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Valve;
 
   class Ventricle
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary/Resources/Icons/Ventricle.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-100, -100}, {100, 100}}, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Ventricle.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Ventricle;
 
   class Vessels
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-130.465, -88.1195}, {130.465, 88.1195}}, origin = {0.99971, 8.9994}, rotation = -68, fileName = "modelica://Physiolibrary/Resources/Icons/Vessels.png")}),
+      Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Bitmap(extent = {{-130.465, -88.1195}, {130.465, 88.1195}}, origin = {0.99971, 8.9994}, rotation = -68, fileName = "modelica://Physiolibrary 3.0.0/Resources/Icons/Vessels.png")}),
       Diagram(coordinateSystem(preserveAspectRatio = false)));
   end Vessels;
   annotation (

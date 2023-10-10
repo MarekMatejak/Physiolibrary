@@ -5,7 +5,7 @@ cls
 set CurrentDirectory=%cd%
 set dp0=%~dp0
 echo %dp0%
-cd %dp0%\..\..\..\..\Chemical\Chemical
+cd %dp0%\..\..\..\..\"Chemical 1.4.0"\Chemical
 set CHEMICALDIR=%cd%
 echo %CHEMICALDIR%
 cd %dp0%\..\..\..
