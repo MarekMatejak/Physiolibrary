@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Organs.Lungs</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Lungs<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Organs.Lungs"></a><a href="Physiolibrary_Organs.html#Physiolibrary.Organs"
+>Physiolibrary.Organs</a>.Lungs</h2>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Organs.Lungs.LungsS.png" alt="Physiolibrary.Organs.Lungs.Lungs" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Lungs.html#Physiolibrary.Organs.Lungs.Lungs"
+>Lungs</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Blocks.SourceS.png" alt="Physiolibrary.Organs.Lungs.Components" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Lungs_Components.html#Physiolibrary.Organs.Lungs.Components"
+>Components</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Blocks.SourceS.png" alt="Physiolibrary.Organs.Lungs.Examples" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Lungs_Examples.html#Physiolibrary.Organs.Lungs.Examples"
+>Examples</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Lungs<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Organs.Lungs.LungsI.png" alt="Physiolibrary.Organs.Lungs.Lungs" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Organs.Lungs.Lungs"></a><a href="Physiolibrary_Organs_Lungs.html#Physiolibrary.Organs.Lungs"
+>Physiolibrary.Organs.Lungs</a>.Lungs</h2>
+<h3>Information</h3>
+
+<p>Blood volume (and pressures) distribution between </p>
+<p><ul>
+<li>pulmonary arteries, </li>
+<li>pulmonary veins and </li>
+<li>pulmonary capilaries.</li>
+</ul></p>
+<p>Blood flow through ventilated alveoli.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Lungs"
+>Icons.Lungs</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>NRU</td><td>Number of respiratory units</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Ventilation</td></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>LungsAirVolume_initial</td><td>Initial volume of alveolar space [m3]</td></tr>
+<tr><td>Air_initial[Air.nS]</td><td>Initial composition of air inside alveoli</td></tr>
+<tr><td>FunctionalResidualCapacity</td><td>Functional residual capacity [m3]</td></tr>
+<tr><td>TotalCompliance</td><td>Pulmonary compliance [m3/Pa]</td></tr>
+<tr><td>ResidualVolume</td><td>Residual volume [m3]</td></tr>
+<tr><td>TotalLungCapacity</td><td>Total Capacity [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Base Tidal Volume [m3]</td></tr>
+<tr><td>AirwaysResistances[NRU]</td><td>Airways resistances per respiratory unit [(Pa.s)/m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Thorax</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+<tr><td>PleuralFluidVolume_initial</td><td>Initial volume of pleural fluid volume [m3]</td></tr>
+<tr><td>PleuralCavityVolume</td><td>Volume of relaxed pleural cavity [m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Perfusion</td></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+<tr><td>ArterialBloodComposition[Blood.nS]</td><td>Initial composition of arterial blood</td></tr>
+<tr><td>VenousBloodComposition[Blood.nS]</td><td>Initial composition of venous blood</td></tr>
+<tr><td>ArteriesVolume_initial</td><td>Initial volume of blood in arteries [m3]</td></tr>
+<tr><td>ArteriesZeroPressureVolume</td><td>Blood arteries zero pressure volume [m3]</td></tr>
+<tr><td>ArteriesCompliance</td><td>Blood arteries compliance [m3/Pa]</td></tr>
+<tr><td>ArteriesConductance</td><td>Blood arteries conductance [m3/(Pa.s)]</td></tr>
+<tr><td>CapillariesVolume_initial</td><td>Initial volume of blood in capillaries [m3]</td></tr>
+<tr><td>CapillariesZeroPressureVolume</td><td>Maximal volume of blood capillaries zero at zero blood pressure inside [m3]</td></tr>
+<tr><td>CapillariesCompliance</td><td>Blood capillaries compliance [m3/Pa]</td></tr>
+<tr><td>CapillariesConductance</td><td>Blood capillaries conductance [m3/(Pa.s)]</td></tr>
+<tr><td>VeinsVolume_initial</td><td>Initial volume of blood in veins [m3]</td></tr>
+<tr><td>VeinsZeroPressureVolume</td><td>Blood venous zero pressure volume [m3]</td></tr>
+<tr><td>VeinsCompliance</td><td>Blood venous compliance [m3/Pa]</td></tr>
+<tr><td>VeinsConductance</td><td>Blood venous conductance [m3/(Pa.s)]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Diffusion</td></tr>
+<tr><td>Diffusions[NRU]</td><td>Gasses diffussions per respiratory unit [mol2.s-1.J-1]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>busConnector</td><td>signals of organ bood flow resistence</td></tr>
+<tr><td>blood_in</td><td>&nbsp;</td></tr>
+<tr><td>blood_out</td><td>&nbsp;</td></tr>
+<tr><td>respiratotyMusclePressure</td><td>[Pa]</td></tr>
+<tr><td>airways[nPorts]</td><td>&nbsp;</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Ventilation</td></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Thorax</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Perfusion</td></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:26 2023.
+</address>
+</body>
+</html>

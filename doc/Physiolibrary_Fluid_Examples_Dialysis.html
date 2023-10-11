@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Fluid.Examples.Dialysis</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Dialysis<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Examples.Dialysis"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.Dialysis</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp7a4bc22363476e7fbraneS.png" alt="Physiolibrary.Fluid.Examples.Dialysis.DialysisMembrane" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Dialysis.html#Physiolibrary.Fluid.Examples.Dialysis.DialysisMembrane"
+>DialysisMembrane</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.Dialysis.Dialysis" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Dialysis.html#Physiolibrary.Fluid.Examples.Dialysis.Dialysis"
+>Dialysis</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE DialysisMembrane<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp7a4bc22363476e7fbraneI.png" alt="Physiolibrary.Fluid.Examples.Dialysis.DialysisMembrane" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Dialysis.DialysisMembrane"></a><a href="Physiolibrary_Fluid_Examples_Dialysis.html#Physiolibrary.Fluid.Examples.Dialysis"
+>Physiolibrary.Fluid.Examples.Dialysis</a>.DialysisMembrane</h2>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+<tr><td>Compliance</td><td>Hydraulic compliance [m3/Pa]</td></tr>
+<tr><td>Resistance</td><td>Hydraulic resistance [(Pa.s)/m3]</td></tr>
+<tr><td>Permeabilities[BloodPlasma.nS]</td><td>Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O} [mol2.s-1.J-1]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>InitialPlasma[BloodPlasma.nS - 1]</td><td>Initial blood plasma substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O} [1]</td></tr>
+<tr><td>InitialDialysate[Dialysate.nS - 1]</td><td>Initial dialysate substances mass fractions {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O} [1]</td></tr>
+<tr><td>InitialBloodPressure</td><td>Initial relative blood pressure [Pa]</td></tr>
+<tr><td>InitialDialysatePressure</td><td>Initial relative dialysate pressure [Pa]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+<tr><td>blood_in</td><td>&nbsp;</td></tr>
+<tr><td>blood_out</td><td>&nbsp;</td></tr>
+<tr><td>dialysate_in</td><td>&nbsp;</td></tr>
+<tr><td>dialysate_out</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Dialysis<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.Dialysis.Dialysis" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Dialysis.Dialysis"></a><a href="Physiolibrary_Fluid_Examples_Dialysis.html#Physiolibrary.Fluid.Examples.Dialysis"
+>Physiolibrary.Fluid.Examples.Dialysis</a>.Dialysis</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+<tr><td>N</td><td>Number of parts</td></tr>
+<tr><td>PlasmaSubstances[BloodPlasma.nS - 1]</td><td>Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing blood plasma [1]</td></tr>
+<tr><td>DialysateSubstances[Dialysate.nS - 1]</td><td>Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing dialysate [1]</td></tr>
+<tr><td>InitialBloodPressure</td><td>Initial blood pressure [Pa]</td></tr>
+<tr><td>InitialDialysatePressure</td><td>Initial dialysate pressure [Pa]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:22 2023.
+</address>
+</body>
+</html>

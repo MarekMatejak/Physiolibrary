@@ -1,0 +1,2285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Media.Blood</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Blood&quot;">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Blood<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood"></a><a href="Physiolibrary_Media.html#Physiolibrary.Media"
+>Physiolibrary.Media</a>.Blood</h2>
+<p>
+<span class="ModelicaDescription">Blood</span>
+</p>
+<h3>Information</h3>
+
+<p>Adding new substance to blood model:</p>
+<p><br>- add to Blood.substanceNames</p>
+<p>- modify {plasma/formedElements}{MassFraction+SpecificAmountOfParticles}</p>
+<p>- modify functions: Blood.specificEnthalpies_Tpv</p>
+<p>- modify model: Blood.ArterialComposition, run it and resuled X set as ArterialDefault (and from VenousComposition -&gt; VenousDefault)</p>
+<p>- modify model: Blood.ChemicalSolution,</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Media.Interfaces.PartialMedium</a>.</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>ArterialDefault={0.47397342,0.2602675,0.00024730066,0.00060022215,0.00028510197,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.025162973,0.061655864}</td>
+<td>Default mass fraction in arterial blood</td>
+</tr>
+<tr>
+<td>VenousDefault={0.47057825,0.26366264,0.0001659035,0.00065897073,0.00033050895,4.0067286e-11,0.13012053,0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,7.12053e-15,6.301733e-11,0.028531536,0.05826454}</td>
+<td>Default mass fraction in venous blood</td>
+</tr>
+<tr>
+<td>CDefault={1e-20,1e-20,1e-06}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.plasmaMassFraction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmaMassFraction"
+>plasmaMassFraction</a>
+</td>
+<td>Blood plasmacrit [kg/kg]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.plasmaSpecificAmountOfParticles" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmaSpecificAmountOfParticles"
+>plasmaSpecificAmountOfParticles</a>
+</td>
+<td>Amount of free particles in 1 kg of blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.formedElementsMassFraction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.formedElementsMassFraction"
+>formedElementsMassFraction</a>
+</td>
+<td>Blood hematocrit [kg/kg]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.formedElementsSpecificAmountOfParticles" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.formedElementsSpecificAmountOfParticles"
+>formedElementsSpecificAmountOfParticles</a>
+</td>
+<td>Amount of free particles in 1 kg of blood formed elements</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Physiolibrary.Media.Blood.ArterialComposition" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ArterialComposition"
+>ArterialComposition</a>
+</td>
+<td>To set mass fractions in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Physiolibrary.Media.Blood.VenousComposition" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.VenousComposition"
+>VenousComposition</a>
+</td>
+<td>To set mass fractions in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood.SubstancesPortS.png" alt="Physiolibrary.Media.Blood.SubstancesPort" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.SubstancesPort"
+>SubstancesPort</a>
+</td>
+<td>Blood chemical substances interface</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood7fe0080aca1133a1StateS.png" alt="Physiolibrary.Media.Blood.ThermodynamicState" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ThermodynamicState"
+>ThermodynamicState</a>
+</td>
+<td>A selection of variables that uniquely defines the thermodynamic state</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.OrgansS.png" alt="Physiolibrary.Media.Blood.stateOfMatter" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood_stateOfMatter.html#Physiolibrary.Media.Blood.stateOfMatter"
+>stateOfMatter</a>
+</td>
+<td>Substances model to translate data into substance properties</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Physiolibrary.Media.Blood.ChemicalSolution" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ChemicalSolution"
+>ChemicalSolution</a>
+</td>
+<td>Free chemical substances</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Physiolibrary.Media.Blood.BloodGases" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.BloodGases"
+>BloodGases</a>
+</td>
+<td>Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood.BasePropertiesS.png" alt="Physiolibrary.Media.Blood.BaseProperties" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.BaseProperties"
+>BaseProperties</a>
+</td>
+<td>Base properties of medium</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.specificEnthalpies_Tpv" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.specificEnthalpies_Tpv"
+>specificEnthalpies_Tpv</a>
+</td>
+<td>Specific enthalpies of blood substances</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.specificEnthalpy" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.specificEnthalpy"
+>specificEnthalpy</a>
+</td>
+<td>Return specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.hemoglobinDissociationCurve" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.hemoglobinDissociationCurve"
+>hemoglobinDissociationCurve</a>
+</td>
+<td>Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.hemoglobinDissociationCurve_der" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.hemoglobinDissociationCurve_der"
+>hemoglobinDissociationCurve_der</a>
+</td>
+<td>Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.setState_pTX" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.setState_pTX"
+>setState_pTX</a>
+</td>
+<td>Thermodynamic state</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.setState_phX" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.setState_phX"
+>setState_phX</a>
+</td>
+<td>Thermodynamic state</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.density" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.density"
+>density</a>
+</td>
+<td>Density</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.plasmaDensity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmaDensity"
+>plasmaDensity</a>
+</td>
+<td>Density of blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.specificHeatCapacityCp" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.specificHeatCapacityCp"
+>specificHeatCapacityCp</a>
+</td>
+<td>Specific heat capacityReturn specific heat capacity at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.temperature" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.temperature"
+>temperature</a>
+</td>
+<td>Temperature</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Blood.pressure" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.pressure"
+>pressure</a>
+</td>
+<td>Pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tO2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tO2"
+>tO2</a>
+</td>
+<td>Total oxygen in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.sO2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.sO2"
+>sO2</a>
+</td>
+<td>Oxygen saturation on effective hemoglobin</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tCO2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tCO2"
+>tCO2</a>
+</td>
+<td>Total carbon dioxide in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tCO" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tCO"
+>tCO</a>
+</td>
+<td>Total carbon monoxide in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tHb" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tHb"
+>tHb</a>
+</td>
+<td>Total hemoglobine in blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.FMetHb" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.FMetHb"
+>FMetHb</a>
+</td>
+<td>Methemoglobine fraction</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.FHbF" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.FHbF"
+>FHbF</a>
+</td>
+<td>Foetalhemoglobine fraction</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.ctHb_ery" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ctHb_ery"
+>ctHb_ery</a>
+</td>
+<td>Total hemoglobine in erythrocytes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tAlb" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tAlb"
+>tAlb</a>
+</td>
+<td>Total albumine in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tGlb" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tGlb"
+>tGlb</a>
+</td>
+<td>Total globulin in blood plasma [g/L]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.tPO4" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.tPO4"
+>tPO4</a>
+</td>
+<td>Total anorganic phosphates in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.cDPG" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.cDPG"
+>cDPG</a>
+</td>
+<td>Total diphosphoglycerate in erythrocytes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.SID" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.SID"
+>SID</a>
+</td>
+<td>Strong ion difference of blood</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.glucose" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.glucose"
+>glucose</a>
+</td>
+<td>Total glucose in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.lactate" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.lactate"
+>lactate</a>
+</td>
+<td>Total lactate in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.urea" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.urea"
+>urea</a>
+</td>
+<td>Total urea in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.aminoAcids" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.aminoAcids"
+>aminoAcids</a>
+</td>
+<td>Total amino acids in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.lipids" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.lipids"
+>lipids</a>
+</td>
+<td>Total faty acids in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.ketoAcids" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ketoAcids"
+>ketoAcids</a>
+</td>
+<td>Total ketoacids in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.epinephrine" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.epinephrine"
+>epinephrine</a>
+</td>
+<td>Epinephrine in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.norepinephrine" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.norepinephrine"
+>norepinephrine</a>
+</td>
+<td>Norepinephrine in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.vasopressin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.vasopressin"
+>vasopressin</a>
+</td>
+<td>Vasopressin in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.insulin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.insulin"
+>insulin</a>
+</td>
+<td>Insulin in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.glucagon" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.glucagon"
+>glucagon</a>
+</td>
+<td>Glucagon in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.thyrotropin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.thyrotropin"
+>thyrotropin</a>
+</td>
+<td>Thyrotropin in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.thyroxine" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.thyroxine"
+>thyroxine</a>
+</td>
+<td>Thyroxine in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.leptin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.leptin"
+>leptin</a>
+</td>
+<td>Leptin in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.desglymidodrine" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.desglymidodrine"
+>desglymidodrine</a>
+</td>
+<td>Desglymidodrine in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.angiotensin2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.angiotensin2"
+>angiotensin2</a>
+</td>
+<td>Angiotensin2 in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.alphaBlockers" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.alphaBlockers"
+>alphaBlockers</a>
+</td>
+<td>Alpha blockers effect</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.betaBlockers" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.betaBlockers"
+>betaBlockers</a>
+</td>
+<td>Beta blockers effect</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.anesthesiaVascularConductance" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.anesthesiaVascularConductance"
+>anesthesiaVascularConductance</a>
+</td>
+<td>Anesthesia vascular conductance effect</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.aldosterone" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.aldosterone"
+>aldosterone</a>
+</td>
+<td>Aldosterone in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.renin" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.renin"
+>renin</a>
+</td>
+<td>Renin PRA in blood plasma</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.plasmacrit" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmacrit"
+>plasmacrit</a>
+</td>
+<td>Blood plasmacrit [mL/mL]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.hematocrit" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.hematocrit"
+>hematocrit</a>
+</td>
+<td>Blood hematocrit [mL/mL]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.formedElementsDensity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.formedElementsDensity"
+>formedElementsDensity</a>
+</td>
+<td>Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.formedElementsMassFractionWithoutOther" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.formedElementsMassFractionWithoutOther"
+>formedElementsMassFractionWithoutOther</a>
+</td>
+<td>Blood hematocrit without unknown substances in formed elements [kg/kg]</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Blood.plasmaMassFractionWithoutOther" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmaMassFractionWithoutOther"
+>plasmaMassFractionWithoutOther</a>
+</td>
+<td>Blood plasmacrit without unknown substances in blood plasma [kg/kg]</td>
+</tr>
+<tr>
+<th colspan="2">Inherited</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.i" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.i"
+>i</a>
+</td>
+<td>Find index of substance</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.j" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.j"
+>j</a>
+</td>
+<td>Find index of extra property</td>
+</tr>
+<tr>
+<td>SubstanceFlowNominal=ArterialDefault ./ Constants.TimeScale</td>
+<td>Nominal of substance flow</td>
+</tr>
+<tr>
+<td>SpecificEnthalpyNominal=-1E6</td>
+<td>Nominal of specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.temperatureError" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.temperatureError"
+>temperatureError</a>
+</td>
+<td>To find u as temperature, where temperatureError(u,p,X,h)-&gt;0</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetMolality" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMolality"
+>GetMolality</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetFraction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetActivity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetActivity"
+>GetActivity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetDensity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetDensity"
+>GetDensity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"
+>GetExtraProperty</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX</td>
+<td>Enumeration type for independent variables</td>
+</tr>
+<tr>
+<td>mediumName=&quot;Blood&quot;</td>
+<td>Name of the medium</td>
+</tr>
+<tr>
+<td>substanceNames={&quot;H2O_P&quot;,&quot;H2O_E&quot;,&quot;O2&quot;,&quot;CO2_P&quot;,&quot;CO2_E&quot;,&quot;CO&quot;,&quot;eHb&quot;,&quot;MetHb&quot;,&quot;HbF&quot;,&quot;Alb&quot;,&quot;Glb&quot;,&quot;PO4&quot;,&quot;DPG&quot;,&quot;Glucose&quot;,&quot;Lactate&quot;,&quot;Urea&quot;,&quot;AminoAcids&quot;,&quot;Lipids&quot;,&quot;KetoAcids&quot;,&quot;Na_P&quot;,&quot;K_P&quot;,&quot;Na_E&quot;,&quot;K_E&quot;,&quot;Cl_P&quot;,&quot;Cl_E&quot;,&quot;Epinephrine&quot;,&quot;Norepinephrine&quot;,&quot;Vasopressin&quot;,&quot;Insulin&quot;,&quot;Glucagon&quot;,&quot;Thyrotropin&quot;,&quot;Thyroxine&quot;,&quot;Leptin&quot;,&quot;Desglymidodrine&quot;,&quot;Angiotensin2&quot;,&quot;Renin&quot;,&quot;Aldosterone&quot;,&quot;Other_P&quot;,&quot;Other_E&quot;}</td>
+<td>Names of the mixture substances. Set substanceNames={mediumName} if only one substance.</td>
+</tr>
+<tr>
+<td>extraPropertiesNames={&quot;AlphaBlockers&quot;,&quot;BetaBlockers&quot;,&quot;AnesthesiaVascularConductance&quot;}</td>
+<td>Names of the additional (extra) transported properties. Set extraPropertiesNames=fill(&quot;&quot;,0) if unused</td>
+</tr>
+<tr>
+<td>singleState=true</td>
+<td>= true, if u and d are not a function of pressure</td>
+</tr>
+<tr>
+<td>reducedX=false</td>
+<td>= true if medium contains the equation sum(X) = 1.0; set reducedX=true if only one substance (see docu for details)</td>
+</tr>
+<tr>
+<td>fixedX=false</td>
+<td>= true if medium contains the equation X = reference_X</td>
+</tr>
+<tr>
+<td>reference_p=101325</td>
+<td>Reference pressure of Medium: default 1 atmosphere</td>
+</tr>
+<tr>
+<td>reference_T=310.15</td>
+<td>Reference temperature of Medium: default 25 deg Celsius</td>
+</tr>
+<tr>
+<td>reference_X=ArterialDefault</td>
+<td>Default mass fractions of medium</td>
+</tr>
+<tr>
+<td>p_default=101325</td>
+<td>Default value for pressure of medium (for initialization)</td>
+</tr>
+<tr>
+<td>T_default=Modelica.Units.Conversions.from_degC(20)</td>
+<td>Default value for temperature of medium (for initialization)</td>
+</tr>
+<tr>
+<td>h_default=specificEnthalpy_pTX(p_default, T_default, X_default)</td>
+<td>Default value for specific enthalpy of medium (for initialization)</td>
+</tr>
+<tr>
+<td>X_default=reference_X</td>
+<td>Default value for mass fractions of medium (for initialization)</td>
+</tr>
+<tr>
+<td>C_default=CDefault</td>
+<td>Default value for trace substances of medium (for initialization)</td>
+</tr>
+<tr>
+<td>nS=size(substanceNames, 1)</td>
+<td>Number of substances</td>
+</tr>
+<tr>
+<td>nX=nS</td>
+<td>Number of mass fractions</td>
+</tr>
+<tr>
+<td>nXi=if fixedX then 0 else if reducedX then nS - 1 else nS</td>
+<td>Number of structurally independent mass fractions (see docu for details)</td>
+</tr>
+<tr>
+<td>nC=size(extraPropertiesNames, 1)</td>
+<td>Number of extra (outside of standard mass-balance) transported properties</td>
+</tr>
+<tr>
+<td>C_nominal=1.0e-6*ones(nC)</td>
+<td>Default for the nominal values for the extra properties</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.PartialMedium.FluidConstants" width="20" height="20" align="top">&nbsp;FluidConstants</td>
+<td>Critical, triple, molecular and other standard data of fluid</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_psX" width="20" height="20" align="top">&nbsp;setState_psX</td>
+<td>Return thermodynamic state as function of p, s and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_dTX" width="20" height="20" align="top">&nbsp;setState_dTX</td>
+<td>Return thermodynamic state as function of d, T and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setSmoothState" width="20" height="20" align="top">&nbsp;setSmoothState</td>
+<td>Return thermodynamic state so that it smoothly approximates: if x &gt; 0 then state_a else state_b</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.dynamicViscosity" width="20" height="20" align="top">&nbsp;dynamicViscosity</td>
+<td>Return dynamic viscosity</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.thermalConductivity" width="20" height="20" align="top">&nbsp;thermalConductivity</td>
+<td>Return thermal conductivity</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.prandtlNumber" width="20" height="20" align="top">&nbsp;prandtlNumber</td>
+<td>Return the Prandtl number</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificInternalEnergy" width="20" height="20" align="top">&nbsp;specificInternalEnergy</td>
+<td>Return specific internal energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEntropy" width="20" height="20" align="top">&nbsp;specificEntropy</td>
+<td>Return specific entropy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificGibbsEnergy" width="20" height="20" align="top">&nbsp;specificGibbsEnergy</td>
+<td>Return specific Gibbs energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificHelmholtzEnergy" width="20" height="20" align="top">&nbsp;specificHelmholtzEnergy</td>
+<td>Return specific Helmholtz energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.heatCapacity_cp" width="20" height="20" align="top">&nbsp;heatCapacity_cp</td>
+<td>Alias for deprecated name</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificHeatCapacityCv" width="20" height="20" align="top">&nbsp;specificHeatCapacityCv</td>
+<td>Return specific heat capacity at constant volume</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.heatCapacity_cv" width="20" height="20" align="top">&nbsp;heatCapacity_cv</td>
+<td>Alias for deprecated name</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isentropicExponent" width="20" height="20" align="top">&nbsp;isentropicExponent</td>
+<td>Return isentropic exponent</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isentropicEnthalpy" width="20" height="20" align="top">&nbsp;isentropicEnthalpy</td>
+<td>Return isentropic enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.velocityOfSound" width="20" height="20" align="top">&nbsp;velocityOfSound</td>
+<td>Return velocity of sound</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isobaricExpansionCoefficient" width="20" height="20" align="top">&nbsp;isobaricExpansionCoefficient</td>
+<td>Return overall the isobaric expansion coefficient beta</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.beta" width="20" height="20" align="top">&nbsp;beta</td>
+<td>Alias for isobaricExpansionCoefficient for user convenience</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isothermalCompressibility" width="20" height="20" align="top">&nbsp;isothermalCompressibility</td>
+<td>Return overall the isothermal compressibility factor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.kappa" width="20" height="20" align="top">&nbsp;kappa</td>
+<td>Alias of isothermalCompressibility for user convenience</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derp_h" width="20" height="20" align="top">&nbsp;density_derp_h</td>
+<td>Return density derivative w.r.t. pressure at const specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derh_p" width="20" height="20" align="top">&nbsp;density_derh_p</td>
+<td>Return density derivative w.r.t. specific enthalpy at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derp_T" width="20" height="20" align="top">&nbsp;density_derp_T</td>
+<td>Return density derivative w.r.t. pressure at const temperature</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derT_p" width="20" height="20" align="top">&nbsp;density_derT_p</td>
+<td>Return density derivative w.r.t. temperature at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derX" width="20" height="20" align="top">&nbsp;density_derX</td>
+<td>Return density derivative w.r.t. mass fraction</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.molarMass" width="20" height="20" align="top">&nbsp;molarMass</td>
+<td>Return the molar mass of the medium</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEnthalpy_pTX" width="20" height="20" align="top">&nbsp;specificEnthalpy_pTX</td>
+<td>Return specific enthalpy from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEntropy_pTX" width="20" height="20" align="top">&nbsp;specificEntropy_pTX</td>
+<td>Return specific enthalpy from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_pTX" width="20" height="20" align="top">&nbsp;density_pTX</td>
+<td>Return density from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.temperature_phX" width="20" height="20" align="top">&nbsp;temperature_phX</td>
+<td>Return temperature from p, h, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_phX" width="20" height="20" align="top">&nbsp;density_phX</td>
+<td>Return density from p, h, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.temperature_psX" width="20" height="20" align="top">&nbsp;temperature_psX</td>
+<td>Return temperature from p,s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_psX" width="20" height="20" align="top">&nbsp;density_psX</td>
+<td>Return density from p, s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEnthalpy_psX" width="20" height="20" align="top">&nbsp;specificEnthalpy_psX</td>
+<td>Return specific enthalpy from p, s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.PartialMedium.MassFlowRate" width="20" height="20" align="top">&nbsp;MassFlowRate</td>
+<td>Type for mass flow rate with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.AbsolutePressure" width="20" height="20" align="top">&nbsp;AbsolutePressure</td>
+<td>Type for absolute pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.Density" width="20" height="20" align="top">&nbsp;Density</td>
+<td>Type for density with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DynamicViscosity" width="20" height="20" align="top">&nbsp;DynamicViscosity</td>
+<td>Type for dynamic viscosity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.EnthalpyFlowRate" width="20" height="20" align="top">&nbsp;EnthalpyFlowRate</td>
+<td>Type for enthalpy flow rate with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MassFraction" width="20" height="20" align="top">&nbsp;MassFraction</td>
+<td>Type for mass fraction with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MoleFraction" width="20" height="20" align="top">&nbsp;MoleFraction</td>
+<td>Type for mole fraction with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MolarMass" width="20" height="20" align="top">&nbsp;MolarMass</td>
+<td>Type for molar mass with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MolarVolume" width="20" height="20" align="top">&nbsp;MolarVolume</td>
+<td>Type for molar volume with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.IsentropicExponent" width="20" height="20" align="top">&nbsp;IsentropicExponent</td>
+<td>Type for isentropic exponent with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEnergy" width="20" height="20" align="top">&nbsp;SpecificEnergy</td>
+<td>Type for specific energy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificInternalEnergy" width="20" height="20" align="top">&nbsp;SpecificInternalEnergy</td>
+<td>Type for specific internal energy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEnthalpy" width="20" height="20" align="top">&nbsp;SpecificEnthalpy</td>
+<td>Type for specific enthalpy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEntropy" width="20" height="20" align="top">&nbsp;SpecificEntropy</td>
+<td>Type for specific entropy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificHeatCapacity" width="20" height="20" align="top">&nbsp;SpecificHeatCapacity</td>
+<td>Type for specific heat capacity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SurfaceTension" width="20" height="20" align="top">&nbsp;SurfaceTension</td>
+<td>Type for surface tension with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.Temperature" width="20" height="20" align="top">&nbsp;Temperature</td>
+<td>Type for temperature with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ThermalConductivity" width="20" height="20" align="top">&nbsp;ThermalConductivity</td>
+<td>Type for thermal conductivity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.PrandtlNumber" width="20" height="20" align="top">&nbsp;PrandtlNumber</td>
+<td>Type for Prandtl number with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.VelocityOfSound" width="20" height="20" align="top">&nbsp;VelocityOfSound</td>
+<td>Type for velocity of sound with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ExtraProperty" width="20" height="20" align="top">&nbsp;ExtraProperty</td>
+<td>Type for unspecified, mass-specific property transported by flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.CumulativeExtraProperty" width="20" height="20" align="top">&nbsp;CumulativeExtraProperty</td>
+<td>Type for conserved integral of unspecified, mass specific property</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ExtraPropertyFlowRate" width="20" height="20" align="top">&nbsp;ExtraPropertyFlowRate</td>
+<td>Type for flow rate of unspecified, mass-specific property</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.IsobaricExpansionCoefficient" width="20" height="20" align="top">&nbsp;IsobaricExpansionCoefficient</td>
+<td>Type for isobaric expansion coefficient with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DipoleMoment" width="20" height="20" align="top">&nbsp;DipoleMoment</td>
+<td>Type for dipole moment with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByPressure" width="20" height="20" align="top">&nbsp;DerDensityByPressure</td>
+<td>Type for partial derivative of density with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByEnthalpy" width="20" height="20" align="top">&nbsp;DerDensityByEnthalpy</td>
+<td>Type for partial derivative of density with respect to enthalpy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerEnthalpyByPressure" width="20" height="20" align="top">&nbsp;DerEnthalpyByPressure</td>
+<td>Type for partial derivative of enthalpy with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByTemperature" width="20" height="20" align="top">&nbsp;DerDensityByTemperature</td>
+<td>Type for partial derivative of density with respect to temperature with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerTemperatureByPressure" width="20" height="20" align="top">&nbsp;DerTemperatureByPressure</td>
+<td>Type for partial derivative of temperature with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.Types.SaturationProperties" width="20" height="20" align="top">&nbsp;SaturationProperties</td>
+<td>Saturation properties of two phase medium</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.Types.FluidLimits" width="20" height="20" align="top">&nbsp;FluidLimits</td>
+<td>Validity limits for fluid model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.FixedPhase" width="20" height="20" align="top">&nbsp;FixedPhase</td>
+<td>Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.Basic" width="20" height="20" align="top">&nbsp;Basic</td>
+<td>The most basic version of a record used in several degrees of detail</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.IdealGas" width="20" height="20" align="top">&nbsp;IdealGas</td>
+<td>The ideal gas version of a record used in several degrees of detail</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.TwoPhase" width="20" height="20" align="top">&nbsp;TwoPhase</td>
+<td>The two phase fluid version of a record used in several degrees of detail</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE plasmaMassFraction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.plasmaMassFraction"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.plasmaMassFraction</h2>
+<p>
+<span class="ModelicaDescription">Blood plasmacrit [kg/kg]</span>
+</p>
+<h3>Information</h3>
+
+<p>Mass of blood plasma per mass of blood. </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE plasmaSpecificAmountOfParticles<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.plasmaSpecificAmountOfParticles"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.plasmaSpecificAmountOfParticles</h2>
+<p>
+<span class="ModelicaDescription">Amount of free particles in 1 kg of blood plasma</span>
+</p>
+<h3>Information</h3>
+
+<p>Amount of particles in blood plasma per mass of blood plasma. </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMolality"
+>GetMolality</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+<tr><td>T</td><td>[K]</td></tr>
+<tr><td>pct</td><td>[1]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>B</td><td>[mol/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE formedElementsMassFraction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.formedElementsMassFraction"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.formedElementsMassFraction</h2>
+<p>
+<span class="ModelicaDescription">Blood hematocrit [kg/kg]</span>
+</p>
+<h3>Information</h3>
+
+<p>Mass of formed elements per mass of blood.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE formedElementsSpecificAmountOfParticles<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.formedElementsSpecificAmountOfParticles"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.formedElementsSpecificAmountOfParticles</h2>
+<p>
+<span class="ModelicaDescription">Amount of free particles in 1 kg of blood formed elements</span>
+</p>
+<h3>Information</h3>
+
+<p>Amount of particles in red cells per mass of red cells.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMolality"
+>GetMolality</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+<tr><td>T</td><td>[K]</td></tr>
+<tr><td>hct</td><td>[1]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>B</td><td>[mol/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ArterialComposition<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.ArterialComposition"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.ArterialComposition</h2>
+<p>
+<span class="ModelicaDescription">To set mass fractions in blood</span>
+</p>
+<h3>Information</h3>
+
+<p>Calculate state of the medium from more human-like setting.</p>
+
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE VenousComposition<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.VenousComposition"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.VenousComposition</h2>
+<p>
+<span class="ModelicaDescription">To set mass fractions in blood</span>
+</p>
+<h3>Information</h3>
+
+<p>Calculate state of the medium from more human-like setting.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.ArterialComposition"
+>ArterialComposition</a> (To set mass fractions in blood).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>tO2</td><td>Total oxygen in blood [mol/m3]</td></tr>
+<tr><td>tCO2</td><td>Total carbon dioxide in blood [mol/m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>XE</td><td>[1]</td></tr>
+<tr><td>XP2</td><td>[1]</td></tr>
+<tr><td>PMF</td><td>[1]</td></tr>
+<tr><td>x_P</td><td>Amount of free particles in 1 kg of blood plasma [mol/kg] [mol/kg]</td></tr>
+<tr><td>x_E</td><td>Amount of free particles in 1 kg of blood erythrocytes [mol/kg] [mol/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SubstancesPort<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood.SubstancesPortI.png" alt="Physiolibrary.Media.Blood.SubstancesPort" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.SubstancesPort"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.SubstancesPort</h2>
+<p>
+<span class="ModelicaDescription">Blood chemical substances interface</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Times New Roman;">Electrochemical connections lead via free base substance forms. For example, the total mass fraction of carbon dioxide is represented as part of the composition of blood in fluid connector, but free dissolved carbon dioxide in blood plasma or bicarbonate in blood plasma are its electrochemical connectors proposed to model the electrochemical CO2 fluxes. Since the selected forms are precisely determined by the composition of the blood, it is not necessary to store them and pass them through the fluid connector. They are only expressed and calculated when needed.</span> </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.SubstancesPort"
+></a>.</span></p>
+<h3>Contents</h3>
+<table summary="Contents" class="ModelicaTableContents">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>CO2</td><td>Free carbon dioxide molecule</td></tr>
+<tr><td>O2</td><td>Free oxygen molecule</td></tr>
+<tr><td>CO</td><td>Free carbon monoxide moelcule</td></tr>
+<tr><td>HCO3</td><td>Free bicarbonate molecule</td></tr>
+<tr><td>H</td><td>Free protons</td></tr>
+<tr><td>H2O</td><td>Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)</td></tr>
+<tr><td>Glucose</td><td>&nbsp;</td></tr>
+<tr><td>Lactate</td><td>&nbsp;</td></tr>
+<tr><td>Urea</td><td>&nbsp;</td></tr>
+<tr><td>AminoAcids</td><td>&nbsp;</td></tr>
+<tr><td>Lipids</td><td>&nbsp;</td></tr>
+<tr><td>KetoAcids</td><td>&nbsp;</td></tr>
+<tr><td>Epinephrine</td><td>&nbsp;</td></tr>
+<tr><td>Norepinephrine</td><td>&nbsp;</td></tr>
+<tr><td>Vasopressin</td><td>&nbsp;</td></tr>
+<tr><td>Insulin</td><td>&nbsp;</td></tr>
+<tr><td>Glucagon</td><td>&nbsp;</td></tr>
+<tr><td>Thyrotropin</td><td>&nbsp;</td></tr>
+<tr><td>Thyroxine</td><td>&nbsp;</td></tr>
+<tr><td>Leptin</td><td>&nbsp;</td></tr>
+<tr><td>Desglymidodrine</td><td>&nbsp;</td></tr>
+<tr><td>Angiotensin2</td><td>&nbsp;</td></tr>
+<tr><td>Renin</td><td>&nbsp;</td></tr>
+<tr><td>Aldosterone</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ThermodynamicState<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood7fe0080aca1133a1StateI.png" alt="Physiolibrary.Media.Blood.ThermodynamicState" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.ThermodynamicState"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.ThermodynamicState</h2>
+<p>
+<span class="ModelicaDescription">A selection of variables that uniquely defines the thermodynamic state</span>
+</p>
+<h3>Information</h3>
+
+  <p>Thermodynamic state of blood is represented by pressure, temperature, base substances composition, electrical potential and ionic strengh.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Record (Icon for records),  (Minimal variable set that is available as input argument to every medium function).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ChemicalSolution<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.ChemicalSolution"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.ChemicalSolution</h2>
+<p>
+<span class="ModelicaDescription">Free chemical substances</span>
+</p>
+<h3>Information</h3>
+
+<p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.ChemicalSolution"
+></a> (Adaptor between selected free base chemical substances and medium substances).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>substances</td><td>free base chemical substances</td></tr>
+<tr><td>startSubstanceMasses[nS]</td><td>Initial value of medium substance masses [kg]</td></tr>
+<tr><td>KC_Cl</td><td>Rate of chloride shift equilibration</td></tr>
+<tr><td>KC_H2O</td><td>Rate of osmolarity equilibration</td></tr>
+<tr><td>KC_CO2</td><td>Rate of CO2 equilibration</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>substances</td><td>free base chemical substances</td></tr>
+<tr><td>p</td><td>pressure [Pa]</td></tr>
+<tr><td>h</td><td>specific enthalpy [J/kg]</td></tr>
+<tr><td>X[nS]</td><td>mass fractions of medium substances [1]</td></tr>
+<tr><td>_i</td><td>electric current from substances [A]</td></tr>
+<tr><td>substanceMassFlowsFromStream[nS]</td><td>flow of medium substances [kg/s]</td></tr>
+<tr><td>substanceMasses[nS]</td><td>mass od medium substances [kg]</td></tr>
+<tr><td>massFlows[nS]</td><td>mass flows trough substancesPort [kg/s]</td></tr>
+<tr><td>T</td><td>temperature [K]</td></tr>
+<tr><td>enthalpyFromSubstances</td><td>enthalpy from substances [W]</td></tr>
+<tr><td>v</td><td>electric potential [V]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BloodGases<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.BloodGases"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.BloodGases</h2>
+<p>
+<span class="ModelicaDescription">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood</span>
+</p>
+<h3>Information</h3>
+
+<p><a href="https://www.siggaard-andersen.dk/">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+<p><a href="https://www.creativeconnections.cz/medsoft/2013/Medsoft_2013_Matejak.pdf">Medsoft_2013_Matejak.pdf (creativeconnections.cz)</a></p>
+
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>pKa1</td><td>HPO4^2- dissociation</td></tr>
+<tr><td>pKa2</td><td>H2PO4^- dissociation</td></tr>
+<tr><td>pKa3</td><td>H3PO4 dissociation</td></tr>
+<tr><td>betaOxyHb</td><td>Buffer value for oxygenated Hb without CO2</td></tr>
+<tr><td>pIo</td><td>Isoelectric pH for oxygenated Hb without CO2</td></tr>
+<tr><td>pKzD</td><td>Coefficient pKa for NH3+ end of deoxygenated hemoglobin chain</td></tr>
+<tr><td>pKzO</td><td>Coefficient pKa for NH3+ end of oxygenated hemoglobin chain</td></tr>
+<tr><td>pKcD</td><td>10^(pH-pKcR) is the dissociation constatnt for HbNH2 + CO2 &lt;-&gt; HbNHCOO- + H+ </td></tr>
+<tr><td>pKcO</td><td>10^(pH-pKcO) is the dissociation constatnt for O2HbNH2 + CO2 &lt;-&gt; O2HbNHCOO- + H+ </td></tr>
+<tr><td>pKhD</td><td>10^(pH-pKhD) is the dissociation constatnt for HbAH &lt;-&gt; HbA- + H+ </td></tr>
+<tr><td>pKhO</td><td>10^(pH-pKhO) is the dissociation constatnt for O2HbAH &lt;-&gt; O2HbA- + H+ </td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BaseProperties<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood.BasePropertiesI.png" alt="Physiolibrary.Media.Blood.BaseProperties" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.BaseProperties"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.BaseProperties</h2>
+<p>
+<span class="ModelicaDescription">Base properties of medium</span>
+</p>
+<h3>Information</h3>
+
+<p>Simplification of blood:</p>
+<p>Constant density and constant heat capacity</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Base properties (p, d, T, h, u, R_s, MM and, if applicable, X and Xi) of a medium).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>standardOrderComponents</td><td>If true, and reducedX = true, the last element of X will be computed from the other ones</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr><td>preferredMediumStates</td><td>= true if StateSelect.prefer shall be used for the independent property variables of the medium</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE specificEnthalpies_Tpv<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.specificEnthalpies_Tpv"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.specificEnthalpies_Tpv</h2>
+<p>
+<span class="ModelicaDescription">Specific enthalpies of blood substances</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.specificEnthalpies_Tpv"
+></a> (Specific enthalpies of medium substances).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>T</td><td>Temperature [K]</td></tr>
+<tr><td>p</td><td>Pressure [Pa]</td></tr>
+<tr><td>v</td><td>Electric potential of the substance [V]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>specificEnthalpy[nS]</td><td>Specific enthalpies of medium substances [J/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE specificEnthalpy<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.specificEnthalpy" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.specificEnthalpy"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.specificEnthalpy</h2>
+<p>
+<span class="ModelicaDescription">Return specific enthalpy</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from  (Return specific enthalpy).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>h</td><td>Specific enthalpy [J/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE hemoglobinDissociationCurve<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.hemoglobinDissociationCurve"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.hemoglobinDissociationCurve</h2>
+<p>
+<span class="ModelicaDescription">Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-size: 8pt;">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href="https://www.siggaard-andersen.dk/">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>pH</td><td>acidity</td></tr>
+<tr><td>pO2</td><td>oxygen partial pressure</td></tr>
+<tr><td>pCO2</td><td>carbon dioxide partial pressure</td></tr>
+<tr><td>pCO</td><td>carbon monoxide partial pressure</td></tr>
+<tr><td>T</td><td>temperature</td></tr>
+<tr><td>tHb</td><td>total hemoglobin</td></tr>
+<tr><td>cDPG</td><td>diphosphoglicerate</td></tr>
+<tr><td>FMetHb</td><td>methemoglobin fraction</td></tr>
+<tr><td>FHbF</td><td>foethel hemoglobin fraction</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>sO2CO</td><td>oxygen and carbon monoxide saturation</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE hemoglobinDissociationCurve_der<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.hemoglobinDissociationCurve_der"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.hemoglobinDissociationCurve_der</h2>
+<p>
+<span class="ModelicaDescription">Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-size: 8pt;">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href="https://www.siggaard-andersen.dk/">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>pH</td><td>acidity</td></tr>
+<tr><td>pO2</td><td>oxygen partial pressure</td></tr>
+<tr><td>pCO2</td><td>carbon dioxide partial pressure</td></tr>
+<tr><td>pCO</td><td>carbon monoxide partial pressure</td></tr>
+<tr><td>T</td><td>temperature</td></tr>
+<tr><td>tHb</td><td>total hemoglobin</td></tr>
+<tr><td>cDPG</td><td>diphosphoglicerate</td></tr>
+<tr><td>FMetHb</td><td>methemoglobin fraction</td></tr>
+<tr><td>FHbF</td><td>foethel hemoglobin fraction</td></tr>
+<tr><td>der_pH</td><td>derivative of acidity</td></tr>
+<tr><td>der_pO2</td><td>derivative of oxygen partial pressure</td></tr>
+<tr><td>der_pCO2</td><td>derivative of carbon dioxide partial pressure</td></tr>
+<tr><td>der_pCO</td><td>derivative of carbon monoxide partial pressure</td></tr>
+<tr><td>der_T</td><td>derivative of temperature</td></tr>
+<tr><td>der_tHb</td><td>derivative of total hemoglobin</td></tr>
+<tr><td>der_cDPG</td><td>derivative of diphosphoglicerate</td></tr>
+<tr><td>der_FMetHb</td><td>derivative of methemoglobin fraction</td></tr>
+<tr><td>der_FHbF</td><td>derivative of foethel hemoglobin fraction</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>der_sO2CO</td><td>derivative of oxygen and carbon monoxide saturation</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE setState_pTX<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.setState_pTX" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.setState_pTX"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.setState_pTX</h2>
+<p>
+<span class="ModelicaDescription">Thermodynamic state</span>
+</p>
+<h3>Information</h3>
+
+<p>Set thermodynamic state</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return thermodynamic state as function of p, T and composition X or Xi).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>p</td><td>Pressure [Pa]</td></tr>
+<tr><td>T</td><td>Temperature [K]</td></tr>
+<tr><td>X[:]</td><td>Mass fractions [kg/kg]</td></tr>
+<tr><td>v</td><td>electric potential [V]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE setState_phX<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.setState_phX" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.setState_phX"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.setState_phX</h2>
+<p>
+<span class="ModelicaDescription">Thermodynamic state</span>
+</p>
+<h3>Information</h3>
+
+<p>Set thermodynamic state based on constant heat capacity</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return thermodynamic state as function of p, h and composition X or Xi).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>p</td><td>Pressure [Pa]</td></tr>
+<tr><td>h</td><td>Specific enthalpy [J/kg]</td></tr>
+<tr><td>X[:]</td><td>Mass fractions [kg/kg]</td></tr>
+<tr><td>v</td><td>electric potential [V]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE density<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.density" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.density"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.density</h2>
+<p>
+<span class="ModelicaDescription">Density</span>
+</p>
+<h3>Information</h3>
+
+<p>constant density</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return density).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>d</td><td>Density [kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE plasmaDensity<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.plasmaDensity"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.plasmaDensity</h2>
+<p>
+<span class="ModelicaDescription">Density of blood plasma</span>
+</p>
+<h3>Information</h3>
+
+<p>constant density</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetDensity"
+>GetDensity</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>d</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE specificHeatCapacityCp<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.specificHeatCapacityCp" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.specificHeatCapacityCp"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.specificHeatCapacityCp</h2>
+<p>
+<span class="ModelicaDescription">Specific heat capacityReturn specific heat capacity at constant pressure</span>
+</p>
+<h3>Information</h3>
+
+<p>Constant specific heat capacity</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return specific heat capacity at constant pressure).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>cp</td><td>Specific heat capacity at constant pressure [J/(kg.K)]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE temperature<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.temperature" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.temperature"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.temperature</h2>
+<p>
+<span class="ModelicaDescription">Temperature</span>
+</p>
+<h3>Information</h3>
+
+<p>Temperature</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return temperature).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>T</td><td>Temperature [K]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE pressure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Blood.pressure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Blood.pressure"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.pressure</h2>
+<p>
+<span class="ModelicaDescription">Pressure</span>
+</p>
+<h3>Information</h3>
+
+<p>Pressure</p>
+
+<p><span class="ModelicaBaseClass">Extends from  (Return pressure).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>Thermodynamic state record</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>p</td><td>Pressure [Pa]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tO2<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tO2"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tO2</h2>
+<p>
+<span class="ModelicaDescription">Total oxygen in blood</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE sO2<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.sO2"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.sO2</h2>
+<p>
+<span class="ModelicaDescription">Oxygen saturation on effective hemoglobin</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tCO2<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tCO2"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tCO2</h2>
+<p>
+<span class="ModelicaDescription">Total carbon dioxide in blood</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tCO<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tCO"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tCO</h2>
+<p>
+<span class="ModelicaDescription">Total carbon monoxide in blood</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tHb<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tHb"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tHb</h2>
+<p>
+<span class="ModelicaDescription">Total hemoglobine in blood</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE FMetHb<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.FMetHb"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.FMetHb</h2>
+<p>
+<span class="ModelicaDescription">Methemoglobine fraction</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE FHbF<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.FHbF"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.FHbF</h2>
+<p>
+<span class="ModelicaDescription">Foetalhemoglobine fraction</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ctHb_ery<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.ctHb_ery"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.ctHb_ery</h2>
+<p>
+<span class="ModelicaDescription">Total hemoglobine in erythrocytes</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tAlb<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tAlb"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tAlb</h2>
+<p>
+<span class="ModelicaDescription">Total albumine in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tGlb<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tGlb"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tGlb</h2>
+<p>
+<span class="ModelicaDescription">Total globulin in blood plasma [g/L]</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE tPO4<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.tPO4"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.tPO4</h2>
+<p>
+<span class="ModelicaDescription">Total anorganic phosphates in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE cDPG<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.cDPG"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.cDPG</h2>
+<p>
+<span class="ModelicaDescription">Total diphosphoglycerate in erythrocytes</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SID<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.SID"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.SID</h2>
+<p>
+<span class="ModelicaDescription">Strong ion difference of blood</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE glucose<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.glucose"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.glucose</h2>
+<p>
+<span class="ModelicaDescription">Total glucose in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE lactate<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.lactate"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.lactate</h2>
+<p>
+<span class="ModelicaDescription">Total lactate in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE urea<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.urea"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.urea</h2>
+<p>
+<span class="ModelicaDescription">Total urea in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE aminoAcids<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.aminoAcids"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.aminoAcids</h2>
+<p>
+<span class="ModelicaDescription">Total amino acids in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE lipids<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.lipids"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.lipids</h2>
+<p>
+<span class="ModelicaDescription">Total faty acids in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ketoAcids<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.ketoAcids"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.ketoAcids</h2>
+<p>
+<span class="ModelicaDescription">Total ketoacids in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE epinephrine<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.epinephrine"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.epinephrine</h2>
+<p>
+<span class="ModelicaDescription">Epinephrine in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE norepinephrine<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.norepinephrine"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.norepinephrine</h2>
+<p>
+<span class="ModelicaDescription">Norepinephrine in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE vasopressin<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.vasopressin"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.vasopressin</h2>
+<p>
+<span class="ModelicaDescription">Vasopressin in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE insulin<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.insulin"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.insulin</h2>
+<p>
+<span class="ModelicaDescription">Insulin in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetActivity"
+>GetActivity</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>A</td><td>[U/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE glucagon<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.glucagon"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.glucagon</h2>
+<p>
+<span class="ModelicaDescription">Glucagon in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE thyrotropin<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.thyrotropin"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.thyrotropin</h2>
+<p>
+<span class="ModelicaDescription">Thyrotropin in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE thyroxine<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.thyroxine"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.thyroxine</h2>
+<p>
+<span class="ModelicaDescription">Thyroxine in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE leptin<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.leptin"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.leptin</h2>
+<p>
+<span class="ModelicaDescription">Leptin in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE desglymidodrine<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.desglymidodrine"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.desglymidodrine</h2>
+<p>
+<span class="ModelicaDescription">Desglymidodrine in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE angiotensin2<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.angiotensin2"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.angiotensin2</h2>
+<p>
+<span class="ModelicaDescription">Angiotensin2 in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE alphaBlockers<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.alphaBlockers"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.alphaBlockers</h2>
+<p>
+<span class="ModelicaDescription">Alpha blockers effect</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"
+>GetExtraProperty</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C[nC]</td><td>Extra properties values</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>e</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE betaBlockers<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.betaBlockers"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.betaBlockers</h2>
+<p>
+<span class="ModelicaDescription">Beta blockers effect</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"
+>GetExtraProperty</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C[nC]</td><td>Extra properties values</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>e</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE anesthesiaVascularConductance<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.anesthesiaVascularConductance"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.anesthesiaVascularConductance</h2>
+<p>
+<span class="ModelicaDescription">Anesthesia vascular conductance effect</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"
+>GetExtraProperty</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C[nC]</td><td>Extra properties values</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>e</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE aldosterone<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.aldosterone"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.aldosterone</h2>
+<p>
+<span class="ModelicaDescription">Aldosterone in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE renin<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.renin"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.renin</h2>
+<p>
+<span class="ModelicaDescription">Renin PRA in blood plasma</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetActivity"
+>GetActivity</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>A</td><td>[ng/(ml.h)]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE plasmacrit<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.plasmacrit"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.plasmacrit</h2>
+<p>
+<span class="ModelicaDescription">Blood plasmacrit [mL/mL]</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE hematocrit<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.hematocrit"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.hematocrit</h2>
+<p>
+<span class="ModelicaDescription">Blood hematocrit [mL/mL]</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE formedElementsDensity<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.formedElementsDensity"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.formedElementsDensity</h2>
+<p>
+<span class="ModelicaDescription">Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)</span>
+</p>
+<h3>Information</h3>
+
+<p>constant density</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetDensity"
+>GetDensity</a>.</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>d</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE formedElementsMassFractionWithoutOther<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.formedElementsMassFractionWithoutOther"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.formedElementsMassFractionWithoutOther</h2>
+<p>
+<span class="ModelicaDescription">Blood hematocrit without unknown substances in formed elements [kg/kg]</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.formedElementsMassFraction"
+>formedElementsMassFraction</a> (Blood hematocrit [kg/kg]).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE plasmaMassFractionWithoutOther<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Blood.plasmaMassFractionWithoutOther"></a><a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood"
+>Physiolibrary.Media.Blood</a>.plasmaMassFractionWithoutOther</h2>
+<p>
+<span class="ModelicaDescription">Blood plasmacrit without unknown substances in blood plasma [kg/kg]</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Media_Blood.html#Physiolibrary.Media.Blood.plasmaMassFraction"
+>plasmaMassFraction</a> (Blood plasmacrit [kg/kg]).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:18 2023.
+</address>
+</body>
+</html>

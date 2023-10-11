@@ -6,15 +6,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="&quot;User&#39;s Guide&quot;">
 <style type="text/css">
-*       { font-size: 10pt; font-family: Arial, sans-serif; }
-.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
-h4      { font-size: 10pt; font-weight: bold; color: green; }
-h3      { font-size: 11pt; font-weight: bold; color: green; }
-h2      { font-size: 13pt; font-weight: bold; color: green; }
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
 address { font-weight: normal; }
-td      { border: 1px solid #808080; vertical-align: top; }
-th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
-table   { border: 1px solid #808080; border-collapse: collapse; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
 </style>
 </head>
 <body>
@@ -24,53 +45,50 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <h2><img src="Physiolibrary.Types.UsersGuideI.png" alt="Physiolibrary.Types.UsersGuide" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Types.UsersGuide"></a><a href="Physiolibrary_Types.html#Physiolibrary.Types"
 >Physiolibrary.Types</a>.UsersGuide</h2>
-<p>
-</p>
 
-<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href="http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
-<p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
-<table cellspacing="0" cellpadding="2" border="1"><tr>
-<td valign="top"><p>Types </p></td>
-<td valign="top"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Blocks</p></td>
-<td valign="top"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Chemical</p></td>
-<td valign="top"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Hydraulic</p></td>
-<td valign="top"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Thermal</p></td>
-<td valign="top"><p>Library of termoregulation support.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Osmotic</p></td>
-<td valign="top"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Mixed</p></td>
-<td valign="top"><p>Library to join domains above together.</p></td>
-</tr>
-<tr>
-<td valign="top"><p>Icons</p></td>
-<td valign="top"><p>Icons</p></td>
-</tr>
-<tr>
-<td valign="top"><p>FileUtilities</p></td>
-<td valign="top"><p>Read/write values from/to file. </p></td>
-</tr>
-</table>
-
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Information"
->Modelica.Icons.Information</a> (Icon for general information packages).</p>
+	<p>Package <b>Physiolibrary</b> is a modelica package for <b>Human Physiology</b> that is developed from <b>HumMod</b> modelica implementation, see <a href="http://patf-biokyb.lf1.cuni.cz/wiki/hummod/hummod">http://hummod.org</a>. It provides constants, types, connectors, partial models and model components fitted for physiological models of human body. </p>
+	<p>This is a short <b>User&apos;s Guide</b> for the overall library. Some of the main sublibraries have their own User&apos;s Guides that can be accessed by the following links: </p>
+	<table cellspacing="0" cellpadding="2" border="1"><tr>
+	<td valign="top"><p>Types </p></td>
+	<td valign="top"><p>Physiological types. Physiological unit vs. SI units, nominals, inputs/outputs, typed constants.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Blocks</p></td>
+	<td valign="top"><p>Useful blocks, that are missing in package Modelica.Blocks (MSL 3.2), cubic interpolation curves, multiplication factors.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Chemical</p></td>
+	<td valign="top"><p>Library to chemical subsystems such as intravascular, interstitial or intracellular chemical substances in fluxes and interactions.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Hydraulic</p></td>
+	<td valign="top"><p>Library to hydraulic subsystems such as in cardiovascular system.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Thermal</p></td>
+	<td valign="top"><p>Library of termoregulation support.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Osmotic</p></td>
+	<td valign="top"><p>Library to model water fluxes through semipermeable membrane caused by osmotic pressure.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Mixed</p></td>
+	<td valign="top"><p>Library to join domains above together.</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>Icons</p></td>
+	<td valign="top"><p>Icons</p></td>
+	</tr>
+	<tr>
+	<td valign="top"><p>FileUtilities</p></td>
+	<td valign="top"><p>Read/write values from/to file. </p></td>
+	</tr>
+	</table>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Information (Icon for general information packages).</span></p>
 <h3>Package Content</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<table summary="Package Content" class="ModelicaTablePackageContent">
 <tr>
 <th>Name</th>
 <th>Description</th>
@@ -82,34 +100,28 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Adding new type</td>
 </tr>
 </table>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE NewType<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.Types.UsersGuideI.png" alt="Physiolibrary.Types.UsersGuide.NewType" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Types.UsersGuide.NewType"></a><a href="Physiolibrary_Types_UsersGuide.html#Physiolibrary.Types.UsersGuide"
 >Physiolibrary.Types.UsersGuide</a>.NewType</h2>
-<p>
-<br><img src="Physiolibrary.Types.UsersGuideD.png" alt="Physiolibrary.Types.UsersGuide.NewType">
-</p>
 
-<p>Definition of new type (&QUOT;QuantityX&QUOT;) in Physiolibrary:</p>
-<ul>
-<li>Define base type Types.QuantityX with SI units in &QUOT;final unit&QUOT;, default display units and nominal (e.g. value of one display unit at SI units). </li>
-</ul>
-<p>Optional: </p>
-<ul>
-<li>Define typed input and output connectors for QuantityX: Types.RealIO.QuantityXInput and Types.RealIO.QuantityXOutput. </li>
-<li>Define typed constant for QuantityX: Types.Constants.QuantityXConst </li>
-<li>Define typed RealInputParameter for QuantityX: Types.RealInputParameters.QuantityX </li>
-<li>Define typed replaceable variable RealTypes for QuantityX: Types.RealTypes.QuantityX </li>
-</ul>
-
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Information"
->Modelica.Icons.Information</a> (Icon for general information packages).</p>
-<hr>
+	<p>Definition of new type (&quot;QuantityX&quot;) in Physiolibrary:</p>
+	<ul>
+	<li>Define base type Types.QuantityX with SI units in &quot;final unit&quot;, default display units and nominal (e.g. value of one display unit at SI units). </li>
+	</ul>
+	<p>Optional: </p>
+	<ul>
+	<li>Define typed input and output connectors for QuantityX: Types.RealIO.QuantityXInput and Types.RealIO.QuantityXOutput. </li>
+	<li>Define typed constant for QuantityX: Types.Constants.QuantityXConst </li>
+	<li>Define typed RealInputParameter for QuantityX: Types.RealInputParameters.QuantityX </li>
+	<li>Define typed replaceable variable RealTypes for QuantityX: Types.RealTypes.QuantityX </li>
+	</ul>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Information (Icon for general information packages).</span></p>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:27 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:25 2023.
 </address>
 </body>
 </html>

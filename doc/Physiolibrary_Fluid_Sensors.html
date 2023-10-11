@@ -1,0 +1,648 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Fluid.Sensors</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Sensors<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Sensors"></a><a href="Physiolibrary_Fluid.html#Physiolibrary.Fluid"
+>Physiolibrary.Fluid</a>.Sensors</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.SensorsPackage (Icon for packages containing sensors).</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.FlowMeasureS.png" alt="Physiolibrary.Fluid.Sensors.FlowMeasure" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.FlowMeasure"
+>FlowMeasure</a>
+</td>
+<td>Mass flow between ports</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Senso120ffbc9911cc85dasureS.png" alt="Physiolibrary.Fluid.Sensors.PressureMeasure" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.PressureMeasure"
+>PressureMeasure</a>
+</td>
+<td>Hydraulic pressure at port</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Senso0933e00a23d657ddssureS.png" alt="Physiolibrary.Fluid.Sensors.PartialPressure" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.PartialPressure"
+>PartialPressure</a>
+</td>
+<td>Measure of partial pressure of the substance</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.TemperatureS.png" alt="Physiolibrary.Fluid.Sensors.Temperature" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Temperature"
+>Temperature</a>
+</td>
+<td>Temperature sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.pHS.png" alt="Physiolibrary.Fluid.Sensors.pH" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.pH"
+>pH</a>
+</td>
+<td>Measure of pH (acidity) of the solution</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Senso586478c725446a6eementS.png" alt="Physiolibrary.Fluid.Sensors.BloodGasesMeasurement" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.BloodGasesMeasurement"
+>BloodGasesMeasurement</a>
+</td>
+<td>Blood gases measurement</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.FlowMeasureS.png" alt="Physiolibrary.Fluid.Sensors.Power" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Power"
+>Power</a>
+</td>
+<td>Power as pressure multiplied by volumetric flow between ports</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Senso087ef7d12412a238meterS.png" alt="Physiolibrary.Fluid.Sensors.Sphygmomanometer" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Sphygmomanometer"
+>Sphygmomanometer</a>
+</td>
+<td>Systolic, diastolic and mean pressure measurement with latency of measurement time</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.FlowMeasureS.png" alt="Physiolibrary.Fluid.Sensors.VolumeFlowMeasure" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.VolumeFlowMeasure"
+>VolumeFlowMeasure</a>
+</td>
+<td>Volumetric flow between ports</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensoa4293551886a09aationsS.png" alt="Physiolibrary.Fluid.Sensors.MassFractions" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.MassFractions"
+>MassFractions</a>
+</td>
+<td>Ideal one port mass fraction sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Senso92991b3d0c42b272ationS.png" alt="Physiolibrary.Fluid.Sensors.Concentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Concentration"
+>Concentration</a>
+</td>
+<td>Ideal one port concentration sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationS.png" alt="Physiolibrary.Fluid.Sensors.MassConcentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.MassConcentration"
+>MassConcentration</a>
+</td>
+<td>Ideal one port mass concentration sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.FractionS.png" alt="Physiolibrary.Fluid.Sensors.Fraction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Fraction"
+>Fraction</a>
+</td>
+<td>Ideal one port fraction sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensors.ActivityS.png" alt="Physiolibrary.Fluid.Sensors.Activity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Activity"
+>Activity</a>
+</td>
+<td>Ideal one port activity sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationS.png" alt="Physiolibrary.Fluid.Sensors.Density" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.Density"
+>Density</a>
+</td>
+<td>Ideal one port density sensor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationS.png" alt="Physiolibrary.Fluid.Sensors.ExtraProperty" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors.ExtraProperty"
+>ExtraProperty</a>
+</td>
+<td>Ideal one port sensor for extra property</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE FlowMeasure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.FlowMeasureI.png" alt="Physiolibrary.Fluid.Sensors.FlowMeasure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.FlowMeasure"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.FlowMeasure</h2>
+<p>
+<span class="ModelicaDescription">Mass flow between ports</span>
+</p>
+<h3>Information</h3>
+
+<p>Present the mass flow of the medium flowing through the component.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), Modelica.Icons.RoundSensor (Icon representing a round measurement device).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>massFlow</td><td>Actual mass flow rate [kg/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE PressureMeasure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Senso120ffbc9911cc85dasureI.png" alt="Physiolibrary.Fluid.Sensors.PressureMeasure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.PressureMeasure"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.PressureMeasure</h2>
+<p>
+<span class="ModelicaDescription">Hydraulic pressure at port</span>
+</p>
+<h3>Information</h3>
+
+<p>Present the relative pressure to system.p of the medium if <span style="font-family: Courier New;">GetAbsolutePressure&nbsp;=&nbsp;false.</span></p>
+<p>Otherwise it present absolute pressure of the medium.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
+>Physiolibrary.Icons.PressureMeasure</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>GetAbsolutePressure</td><td>If false then output pressure is relative to ambient pressure</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>pressure</td><td>Pressure [Pa]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE PartialPressure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Senso0933e00a23d657ddssureI.png" alt="Physiolibrary.Fluid.Sensors.PartialPressure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.PartialPressure"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.PartialPressure</h2>
+<p>
+<span class="ModelicaDescription">Measure of partial pressure of the substance</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Courier New;">Presen partial pressure of the substance in the medium.</span></p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialGasSubstance"
+>Fluid.Interfaces.PartialGasSubstance</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable package stateOfMatter</td><td>Substance model to translate data into substance properties</td></tr>
+<tr><td>substanceData</td><td>Definition of the substance</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>port_a</td><td>The substance</td></tr>
+<tr><td>partialPressure</td><td>Partial pressure of the substance in gaseous solution [Pa]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Temperature<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.TemperatureI.png" alt="Physiolibrary.Fluid.Sensors.Temperature" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Temperature"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Temperature</h2>
+<p>
+<span class="ModelicaDescription">Temperature sensor</span>
+</p>
+<h3>Information</h3>
+
+<p>
+This component monitors the temperature of the fluid passing its port.
+The sensor is ideal, i.e., it does not influence the fluid.
+</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>T</td><td>Temperature [K]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE pH<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.pHI.png" alt="Physiolibrary.Fluid.Sensors.pH" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.pH"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.pH</h2>
+<p>
+<span class="ModelicaDescription">Measure of pH (acidity) of the solution</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Courier New;">Present acidity of the medium.</span></p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable), Chemical.Interfaces.PartialSubstance.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable package stateOfMatter</td><td>Substance model to translate data into substance properties</td></tr>
+<tr><td>substanceData</td><td>Definition of the substance</td></tr>
+<tr><td>useHydronium</td><td>Measured substance is H3O+ instead of H+</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>port_a</td><td>The substance</td></tr>
+<tr><td>replaceable package stateOfMatter</td><td>Substance model to translate data into substance properties</td></tr>
+<tr><td>pH</td><td>Acidity of the solution [1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BloodGasesMeasurement<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Senso586478c725446a6eementI.png" alt="Physiolibrary.Fluid.Sensors.BloodGasesMeasurement" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.BloodGasesMeasurement"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.BloodGasesMeasurement</h2>
+<p>
+<span class="ModelicaDescription">Blood gases measurement</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Courier New;">Present blood properties conneceted with blood gases transport.</span></p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Blood</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Blood</td></tr>
+<tr><td>a_port</td><td>&nbsp;</td></tr>
+<tr><td>b_port</td><td>&nbsp;</td></tr>
+<tr><td>pressure</td><td>[Pa]</td></tr>
+<tr><td>pH</td><td>[1]</td></tr>
+<tr><td>pO2</td><td>[Pa]</td></tr>
+<tr><td>pCO2</td><td>[Pa]</td></tr>
+<tr><td>sO2</td><td>Oxygen saturation (amount of oxygen per amount of hemoglobin units) [1]</td></tr>
+<tr><td>substances</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Power<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.FlowMeasureI.png" alt="Physiolibrary.Fluid.Sensors.Power" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Power"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Power</h2>
+<p>
+<span class="ModelicaDescription">Power as pressure multiplied by volumetric flow between ports</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Courier New;">Present power.</span></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), Modelica.Icons.RoundSensor (Icon representing a round measurement device).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>power</td><td>Actual power [W]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Sphygmomanometer<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Senso087ef7d12412a238meterI.png" alt="Physiolibrary.Fluid.Sensors.Sphygmomanometer" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Sphygmomanometer"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Sphygmomanometer</h2>
+<p>
+<span class="ModelicaDescription">Systolic, diastolic and mean pressure measurement with latency of measurement time</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Courier New;">Present systolic/mean/diastolic blood pressure from oscilating pressure signal.</span></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.PressureMeasure"
+>Physiolibrary.Icons.PressureMeasure</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>MeasurementTime</td><td>Measurement time period [s]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>diastolic</td><td>Diastolic pressure [Pa]</td></tr>
+<tr><td>systolic</td><td>Systolic pressure [Pa]</td></tr>
+<tr><td>mean</td><td>Mean pressure [Pa]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE VolumeFlowMeasure<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.FlowMeasureI.png" alt="Physiolibrary.Fluid.Sensors.VolumeFlowMeasure" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.VolumeFlowMeasure"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.VolumeFlowMeasure</h2>
+<p>
+<span class="ModelicaDescription">Volumetric flow between ports</span>
+</p>
+<h3>Information</h3>
+
+<p>Present the volumetric flow of the medium flowing through the component.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), Modelica.Icons.RoundSensor (Icon representing a round measurement device).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>volumeFlow</td><td>Actual volume flow rate [m3/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MassFractions<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensoa4293551886a09aationsI.png" alt="Physiolibrary.Fluid.Sensors.MassFractions" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.MassFractions"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.MassFractions</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port mass fraction sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the mass fraction contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>substanceName</td><td>Name of mass fraction</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>Xi</td><td>Mass fraction in port medium [1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Concentration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Senso92991b3d0c42b272ationI.png" alt="Physiolibrary.Fluid.Sensors.Concentration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Concentration"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Concentration</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port concentration sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the concentration contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetConcentration</td><td>Get concentration from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>C</td><td>Concentration in port medium [mol/m3]</td></tr>
+<tr><td>replaceable function GetConcentration</td><td>Get concentration from medium state</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MassConcentration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationI.png" alt="Physiolibrary.Fluid.Sensors.MassConcentration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.MassConcentration"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.MassConcentration</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port mass concentration sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the mass concentration contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetMassConcentration</td><td>Get mass concentration from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>R</td><td>Mass concentration in port medium [kg/m3]</td></tr>
+<tr><td>replaceable function GetMassConcentration</td><td>Get mass concentration from medium state</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Fraction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.FractionI.png" alt="Physiolibrary.Fluid.Sensors.Fraction" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Fraction"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Fraction</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port fraction sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the fraction contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetFraction</td><td>Get fraction from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>F</td><td>Fraction in port medium [1]</td></tr>
+<tr><td>replaceable function GetFraction</td><td>Get fraction from medium state</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Activity<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensors.ActivityI.png" alt="Physiolibrary.Fluid.Sensors.Activity" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Activity"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Activity</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port activity sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the activity contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetActivity</td><td>Get substance activity from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>A</td><td>Substance activity in port medium</td></tr>
+<tr><td>replaceable function GetActivity</td><td>Get substance activity from medium state</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Density<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationI.png" alt="Physiolibrary.Fluid.Sensors.Density" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.Density"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.Density</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port density sensor</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the density contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetDensity</td><td>Get density from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>ro</td><td>Density in port medium [kg/m3]</td></tr>
+<tr><td>replaceable function GetDensity</td><td>Get density from medium state</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ExtraProperty<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Sensobc4ac9393d0f3e18ationI.png" alt="Physiolibrary.Fluid.Sensors.ExtraProperty" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Sensors.ExtraProperty"></a><a href="Physiolibrary_Fluid_Sensors.html#Physiolibrary.Fluid.Sensors"
+>Physiolibrary.Fluid.Sensors</a>.ExtraProperty</h2>
+<p>
+<span class="ModelicaDescription">Ideal one port sensor for extra property</span>
+</p>
+<h3>Information</h3>
+
+        <p>
+        This component monitors the density contained in the fluid passing its port.
+        The sensor is ideal, i.e., it does not influence the fluid.
+        </p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.RoundSensor (Icon representing a round measurement device), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor"
+>Physiolibrary.Fluid.Interfaces.PartialAbsoluteSensor</a> (Partial component to model a sensor that measures a potential variable).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>replaceable function GetExtraProperty</td><td>Get beta blockers effect from medium state</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium in the sensor</td></tr>
+<tr><td>port</td><td>&nbsp;</td></tr>
+<tr><td>e</td><td>Extra property in port medium</td></tr>
+<tr><td>replaceable function GetExtraProperty</td><td>Get beta blockers effect from medium state</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:21 2023.
+</address>
+</body>
+</html>

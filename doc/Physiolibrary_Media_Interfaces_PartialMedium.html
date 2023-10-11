@@ -1,0 +1,802 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Media.Interfaces.PartialMedium</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE PartialMedium<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium"></a><a href="Physiolibrary_Media_Interfaces.html#Physiolibrary.Media.Interfaces"
+>Physiolibrary.Media.Interfaces</a>.PartialMedium</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Media.Interfaces.PartialMedium (Partial medium properties (base package of all media packages)).</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood.SubstancesPortS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.SubstancesPort" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.SubstancesPort"
+>SubstancesPort</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.ChemicalSolution" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.ChemicalSolution"
+>ChemicalSolution</a>
+</td>
+<td>Adaptor between selected free base chemical substances and medium substances</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.i" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.i"
+>i</a>
+</td>
+<td>Find index of substance</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.j" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.j"
+>j</a>
+</td>
+<td>Find index of extra property</td>
+</tr>
+<tr>
+<td>SubstanceFlowNominal=ones(nS)</td>
+<td>Nominal of substance flow</td>
+</tr>
+<tr>
+<td>SpecificEnthalpyNominal=-1E6</td>
+<td>Nominal of specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.specificEnthalpies_Tpv" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.specificEnthalpies_Tpv"
+>specificEnthalpies_Tpv</a>
+</td>
+<td>Specific enthalpies of medium substances</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.temperatureError" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.temperatureError"
+>temperatureError</a>
+</td>
+<td>To find u as temperature, where temperatureError(u,p,X,h)-&gt;0</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetMolality" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMolality"
+>GetMolality</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"
+>GetMassConcentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetFraction" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"
+>GetFraction</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetActivity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetActivity"
+>GetActivity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetDensity" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetDensity"
+>GetDensity</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"
+>GetExtraProperty</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood30972d3dfd7683d4ctionS.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"
+>GetConcentration</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th colspan="2">Inherited</th>
+</tr>
+<tr>
+<td>ThermoStates</td>
+<td>Enumeration type for independent variables</td>
+</tr>
+<tr>
+<td>mediumName=&quot;unusablePartialMedium&quot;</td>
+<td>Name of the medium</td>
+</tr>
+<tr>
+<td>substanceNames={mediumName}</td>
+<td>Names of the mixture substances. Set substanceNames={mediumName} if only one substance.</td>
+</tr>
+<tr>
+<td>extraPropertiesNames=fill(&quot;&quot;, 0)</td>
+<td>Names of the additional (extra) transported properties. Set extraPropertiesNames=fill(&quot;&quot;,0) if unused</td>
+</tr>
+<tr>
+<td>singleState</td>
+<td>= true, if u and d are not a function of pressure</td>
+</tr>
+<tr>
+<td>reducedX=true</td>
+<td>= true if medium contains the equation sum(X) = 1.0; set reducedX=true if only one substance (see docu for details)</td>
+</tr>
+<tr>
+<td>fixedX=false</td>
+<td>= true if medium contains the equation X = reference_X</td>
+</tr>
+<tr>
+<td>reference_p=101325</td>
+<td>Reference pressure of Medium: default 1 atmosphere</td>
+</tr>
+<tr>
+<td>reference_T=298.15</td>
+<td>Reference temperature of Medium: default 25 deg Celsius</td>
+</tr>
+<tr>
+<td>reference_X=fill(1/nX, nX)</td>
+<td>Default mass fractions of medium</td>
+</tr>
+<tr>
+<td>p_default=101325</td>
+<td>Default value for pressure of medium (for initialization)</td>
+</tr>
+<tr>
+<td>T_default=Modelica.Units.Conversions.from_degC(20)</td>
+<td>Default value for temperature of medium (for initialization)</td>
+</tr>
+<tr>
+<td>h_default=specificEnthalpy_pTX(p_default, T_default, X_default)</td>
+<td>Default value for specific enthalpy of medium (for initialization)</td>
+</tr>
+<tr>
+<td>X_default=reference_X</td>
+<td>Default value for mass fractions of medium (for initialization)</td>
+</tr>
+<tr>
+<td>C_default=fill(0, nC)</td>
+<td>Default value for trace substances of medium (for initialization)</td>
+</tr>
+<tr>
+<td>nS=size(substanceNames, 1)</td>
+<td>Number of substances</td>
+</tr>
+<tr>
+<td>nX=nS</td>
+<td>Number of mass fractions</td>
+</tr>
+<tr>
+<td>nXi=if fixedX then 0 else if reducedX then nS - 1 else nS</td>
+<td>Number of structurally independent mass fractions (see docu for details)</td>
+</tr>
+<tr>
+<td>nC=size(extraPropertiesNames, 1)</td>
+<td>Number of extra (outside of standard mass-balance) transported properties</td>
+</tr>
+<tr>
+<td>C_nominal=1.0e-6*ones(nC)</td>
+<td>Default for the nominal values for the extra properties</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.PartialMedium.FluidConstants" width="20" height="20" align="top">&nbsp;FluidConstants</td>
+<td>Critical, triple, molecular and other standard data of fluid</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.PartialMedium.ThermodynamicState" width="20" height="20" align="top">&nbsp;ThermodynamicState</td>
+<td>Minimal variable set that is available as input argument to every medium function</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood.BasePropertiesS.png" alt="Modelica.Media.Interfaces.PartialMedium.BaseProperties" width="20" height="20" align="top">&nbsp;BaseProperties</td>
+<td>Base properties (p, d, T, h, u, R_s, MM and, if applicable, X and Xi) of a medium</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_pTX" width="20" height="20" align="top">&nbsp;setState_pTX</td>
+<td>Return thermodynamic state as function of p, T and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_phX" width="20" height="20" align="top">&nbsp;setState_phX</td>
+<td>Return thermodynamic state as function of p, h and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_psX" width="20" height="20" align="top">&nbsp;setState_psX</td>
+<td>Return thermodynamic state as function of p, s and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setState_dTX" width="20" height="20" align="top">&nbsp;setState_dTX</td>
+<td>Return thermodynamic state as function of d, T and composition X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.setSmoothState" width="20" height="20" align="top">&nbsp;setSmoothState</td>
+<td>Return thermodynamic state so that it smoothly approximates: if x &gt; 0 then state_a else state_b</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.dynamicViscosity" width="20" height="20" align="top">&nbsp;dynamicViscosity</td>
+<td>Return dynamic viscosity</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.thermalConductivity" width="20" height="20" align="top">&nbsp;thermalConductivity</td>
+<td>Return thermal conductivity</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.prandtlNumber" width="20" height="20" align="top">&nbsp;prandtlNumber</td>
+<td>Return the Prandtl number</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.pressure" width="20" height="20" align="top">&nbsp;pressure</td>
+<td>Return pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.temperature" width="20" height="20" align="top">&nbsp;temperature</td>
+<td>Return temperature</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density" width="20" height="20" align="top">&nbsp;density</td>
+<td>Return density</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEnthalpy" width="20" height="20" align="top">&nbsp;specificEnthalpy</td>
+<td>Return specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificInternalEnergy" width="20" height="20" align="top">&nbsp;specificInternalEnergy</td>
+<td>Return specific internal energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEntropy" width="20" height="20" align="top">&nbsp;specificEntropy</td>
+<td>Return specific entropy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificGibbsEnergy" width="20" height="20" align="top">&nbsp;specificGibbsEnergy</td>
+<td>Return specific Gibbs energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificHelmholtzEnergy" width="20" height="20" align="top">&nbsp;specificHelmholtzEnergy</td>
+<td>Return specific Helmholtz energy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificHeatCapacityCp" width="20" height="20" align="top">&nbsp;specificHeatCapacityCp</td>
+<td>Return specific heat capacity at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.heatCapacity_cp" width="20" height="20" align="top">&nbsp;heatCapacity_cp</td>
+<td>Alias for deprecated name</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificHeatCapacityCv" width="20" height="20" align="top">&nbsp;specificHeatCapacityCv</td>
+<td>Return specific heat capacity at constant volume</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.heatCapacity_cv" width="20" height="20" align="top">&nbsp;heatCapacity_cv</td>
+<td>Alias for deprecated name</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isentropicExponent" width="20" height="20" align="top">&nbsp;isentropicExponent</td>
+<td>Return isentropic exponent</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isentropicEnthalpy" width="20" height="20" align="top">&nbsp;isentropicEnthalpy</td>
+<td>Return isentropic enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.velocityOfSound" width="20" height="20" align="top">&nbsp;velocityOfSound</td>
+<td>Return velocity of sound</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isobaricExpansionCoefficient" width="20" height="20" align="top">&nbsp;isobaricExpansionCoefficient</td>
+<td>Return overall the isobaric expansion coefficient beta</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.beta" width="20" height="20" align="top">&nbsp;beta</td>
+<td>Alias for isobaricExpansionCoefficient for user convenience</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.isothermalCompressibility" width="20" height="20" align="top">&nbsp;isothermalCompressibility</td>
+<td>Return overall the isothermal compressibility factor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.kappa" width="20" height="20" align="top">&nbsp;kappa</td>
+<td>Alias of isothermalCompressibility for user convenience</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derp_h" width="20" height="20" align="top">&nbsp;density_derp_h</td>
+<td>Return density derivative w.r.t. pressure at const specific enthalpy</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derh_p" width="20" height="20" align="top">&nbsp;density_derh_p</td>
+<td>Return density derivative w.r.t. specific enthalpy at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derp_T" width="20" height="20" align="top">&nbsp;density_derp_T</td>
+<td>Return density derivative w.r.t. pressure at const temperature</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derT_p" width="20" height="20" align="top">&nbsp;density_derT_p</td>
+<td>Return density derivative w.r.t. temperature at constant pressure</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_derX" width="20" height="20" align="top">&nbsp;density_derX</td>
+<td>Return density derivative w.r.t. mass fraction</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.molarMass" width="20" height="20" align="top">&nbsp;molarMass</td>
+<td>Return the molar mass of the medium</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEnthalpy_pTX" width="20" height="20" align="top">&nbsp;specificEnthalpy_pTX</td>
+<td>Return specific enthalpy from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEntropy_pTX" width="20" height="20" align="top">&nbsp;specificEntropy_pTX</td>
+<td>Return specific enthalpy from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_pTX" width="20" height="20" align="top">&nbsp;density_pTX</td>
+<td>Return density from p, T, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.temperature_phX" width="20" height="20" align="top">&nbsp;temperature_phX</td>
+<td>Return temperature from p, h, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_phX" width="20" height="20" align="top">&nbsp;density_phX</td>
+<td>Return density from p, h, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.temperature_psX" width="20" height="20" align="top">&nbsp;temperature_psX</td>
+<td>Return temperature from p,s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.density_psX" width="20" height="20" align="top">&nbsp;density_psX</td>
+<td>Return density from p, s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyS.png" alt="Modelica.Media.Interfaces.PartialMedium.specificEnthalpy_psX" width="20" height="20" align="top">&nbsp;specificEnthalpy_psX</td>
+<td>Return specific enthalpy from p, s, and X or Xi</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.PartialMedium.MassFlowRate" width="20" height="20" align="top">&nbsp;MassFlowRate</td>
+<td>Type for mass flow rate with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.AbsolutePressure" width="20" height="20" align="top">&nbsp;AbsolutePressure</td>
+<td>Type for absolute pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.Density" width="20" height="20" align="top">&nbsp;Density</td>
+<td>Type for density with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DynamicViscosity" width="20" height="20" align="top">&nbsp;DynamicViscosity</td>
+<td>Type for dynamic viscosity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.EnthalpyFlowRate" width="20" height="20" align="top">&nbsp;EnthalpyFlowRate</td>
+<td>Type for enthalpy flow rate with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MassFraction" width="20" height="20" align="top">&nbsp;MassFraction</td>
+<td>Type for mass fraction with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MoleFraction" width="20" height="20" align="top">&nbsp;MoleFraction</td>
+<td>Type for mole fraction with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MolarMass" width="20" height="20" align="top">&nbsp;MolarMass</td>
+<td>Type for molar mass with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.MolarVolume" width="20" height="20" align="top">&nbsp;MolarVolume</td>
+<td>Type for molar volume with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.IsentropicExponent" width="20" height="20" align="top">&nbsp;IsentropicExponent</td>
+<td>Type for isentropic exponent with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEnergy" width="20" height="20" align="top">&nbsp;SpecificEnergy</td>
+<td>Type for specific energy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificInternalEnergy" width="20" height="20" align="top">&nbsp;SpecificInternalEnergy</td>
+<td>Type for specific internal energy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEnthalpy" width="20" height="20" align="top">&nbsp;SpecificEnthalpy</td>
+<td>Type for specific enthalpy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificEntropy" width="20" height="20" align="top">&nbsp;SpecificEntropy</td>
+<td>Type for specific entropy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SpecificHeatCapacity" width="20" height="20" align="top">&nbsp;SpecificHeatCapacity</td>
+<td>Type for specific heat capacity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.SurfaceTension" width="20" height="20" align="top">&nbsp;SurfaceTension</td>
+<td>Type for surface tension with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.Temperature" width="20" height="20" align="top">&nbsp;Temperature</td>
+<td>Type for temperature with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ThermalConductivity" width="20" height="20" align="top">&nbsp;ThermalConductivity</td>
+<td>Type for thermal conductivity with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.PrandtlNumber" width="20" height="20" align="top">&nbsp;PrandtlNumber</td>
+<td>Type for Prandtl number with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.VelocityOfSound" width="20" height="20" align="top">&nbsp;VelocityOfSound</td>
+<td>Type for velocity of sound with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ExtraProperty" width="20" height="20" align="top">&nbsp;ExtraProperty</td>
+<td>Type for unspecified, mass-specific property transported by flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.CumulativeExtraProperty" width="20" height="20" align="top">&nbsp;CumulativeExtraProperty</td>
+<td>Type for conserved integral of unspecified, mass specific property</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.ExtraPropertyFlowRate" width="20" height="20" align="top">&nbsp;ExtraPropertyFlowRate</td>
+<td>Type for flow rate of unspecified, mass-specific property</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.IsobaricExpansionCoefficient" width="20" height="20" align="top">&nbsp;IsobaricExpansionCoefficient</td>
+<td>Type for isobaric expansion coefficient with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DipoleMoment" width="20" height="20" align="top">&nbsp;DipoleMoment</td>
+<td>Type for dipole moment with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByPressure" width="20" height="20" align="top">&nbsp;DerDensityByPressure</td>
+<td>Type for partial derivative of density with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByEnthalpy" width="20" height="20" align="top">&nbsp;DerDensityByEnthalpy</td>
+<td>Type for partial derivative of density with respect to enthalpy with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerEnthalpyByPressure" width="20" height="20" align="top">&nbsp;DerEnthalpyByPressure</td>
+<td>Type for partial derivative of enthalpy with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerDensityByTemperature" width="20" height="20" align="top">&nbsp;DerDensityByTemperature</td>
+<td>Type for partial derivative of density with respect to temperature with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.DerTemperatureByPressure" width="20" height="20" align="top">&nbsp;DerTemperatureByPressure</td>
+<td>Type for partial derivative of temperature with respect to pressure with medium specific attributes</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.Types.SaturationProperties" width="20" height="20" align="top">&nbsp;SaturationProperties</td>
+<td>Saturation properties of two phase medium</td>
+</tr>
+<tr>
+<td><img src="Modelica.Media.Interfacese9f75c735072d8e8tantsS.png" alt="Modelica.Media.Interfaces.Types.FluidLimits" width="20" height="20" align="top">&nbsp;FluidLimits</td>
+<td>Validity limits for fluid model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Media.Blood5c95c3990e98fe12itionS.png" alt="Modelica.Media.Interfaces.Types.FixedPhase" width="20" height="20" align="top">&nbsp;FixedPhase</td>
+<td>Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.Basic" width="20" height="20" align="top">&nbsp;Basic</td>
+<td>The most basic version of a record used in several degrees of detail</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.IdealGas" width="20" height="20" align="top">&nbsp;IdealGas</td>
+<td>The ideal gas version of a record used in several degrees of detail</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.MediaS.png" alt="Modelica.Media.Interfaces.Types.TwoPhase" width="20" height="20" align="top">&nbsp;TwoPhase</td>
+<td>The two phase fluid version of a record used in several degrees of detail</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SubstancesPort<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood.SubstancesPortI.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.SubstancesPort" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Interfaces.PartialMedium.SubstancesPort"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.SubstancesPort</h2>
+<h3>Information</h3>
+
+        <p>
+        This connector defines the "substances port" that
+        is used for cross-membrane transports of selected free base chemical substances.
+        </p>
+        
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ChemicalSolution<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.ChemicalSolution"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.ChemicalSolution</h2>
+<p>
+<span class="ModelicaDescription">Adaptor between selected free base chemical substances and medium substances</span>
+</p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>startSubstanceMasses[nS]</td><td>Initial value of medium substance masses [kg]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>substances</td><td>free base chemical substances</td></tr>
+<tr><td>p</td><td>pressure [Pa]</td></tr>
+<tr><td>h</td><td>specific enthalpy [J/kg]</td></tr>
+<tr><td>X[nS]</td><td>mass fractions of medium substances [1]</td></tr>
+<tr><td>_i</td><td>electric current from substances [A]</td></tr>
+<tr><td>substanceMassFlowsFromStream[nS]</td><td>flow of medium substances [kg/s]</td></tr>
+<tr><td>substanceMasses[nS]</td><td>mass od medium substances [kg]</td></tr>
+<tr><td>massFlows[nS]</td><td>mass flows trough substancesPort [kg/s]</td></tr>
+<tr><td>T</td><td>temperature [K]</td></tr>
+<tr><td>enthalpyFromSubstances</td><td>enthalpy from substances [W]</td></tr>
+<tr><td>v</td><td>electric potential [V]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE i<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.i"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.i</h2>
+<p>
+<span class="ModelicaDescription">Find index of substance</span>
+</p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>searchName</td><td>Name of substance to find in substanceNames</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>index</td><td>Index of searchName in substanceNames</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE j<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.j"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.j</h2>
+<p>
+<span class="ModelicaDescription">Find index of extra property</span>
+</p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>searchName</td><td>Name of extra property to find in extraPropertiesNames</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>index</td><td>Index of searchName in extraPropertiesNames</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE specificEnthalpies_Tpv<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.specificEnthalpies_Tpv"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.specificEnthalpies_Tpv</h2>
+<p>
+<span class="ModelicaDescription">Specific enthalpies of medium substances</span>
+</p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>T</td><td>Temperature [K]</td></tr>
+<tr><td>p</td><td>Pressure [Pa]</td></tr>
+<tr><td>v</td><td>Electric potential of the substance [V]</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>specificEnthalpy[nS]</td><td>Specific enthalpies of medium substances [J/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE temperatureError<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Media.Blood22e5f468b11ffd8dhalpyI.png" alt="Physiolibrary.Media.Interfaces.PartialMedium.temperatureError" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Media.Interfaces.PartialMedium.temperatureError"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.temperatureError</h2>
+<p>
+<span class="ModelicaDescription">To find u as temperature, where temperatureError(u,p,X,h)-&gt;0</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Math.Nonlinear.Interfaces.partialScalarFunction (Interface for a function with one input and one output Real signal).</span></p>
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Independent variable</td></tr>
+<tr><td>p</td><td>&nbsp;</td></tr>
+<tr><td>X[nS]</td><td>&nbsp;</td></tr>
+<tr><td>h</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>y</td><td>Dependent variable y=f(u)</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetMolality<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetMolality"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetMolality</h2>
+<h3>Information</h3>
+
+<p>Molality function for Fluid.Sensors.Molality sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>B</td><td>[mol/kg]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetMassConcentration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetMassConcentration"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetMassConcentration</h2>
+<h3>Information</h3>
+
+<p>MassConcentration for Fluid.Sensors.MassConcentration sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>R</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetFraction<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetFraction"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetFraction</h2>
+<h3>Information</h3>
+
+<p>Fraction function used for Fluid.Sensors.Fraction sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>F</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetActivity<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetActivity"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetActivity</h2>
+<h3>Information</h3>
+
+<p>Activity function for Fluid.Sensors.Activity sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>A</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetDensity<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetDensity"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetDensity</h2>
+<h3>Information</h3>
+
+<p>Density function for Fluid.Sensors.Density sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>d</td><td>[kg/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetExtraProperty<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetExtraProperty"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetExtraProperty</h2>
+<h3>Information</h3>
+
+<p>Extra property function for Fluid.Sensors.ExtraProperty sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C[nC]</td><td>Extra properties values</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>e</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE GetConcentration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Media.Interfaces.PartialMedium.GetConcentration"></a><a href="Physiolibrary_Media_Interfaces_PartialMedium.html#Physiolibrary.Media.Interfaces.PartialMedium"
+>Physiolibrary.Media.Interfaces.PartialMedium</a>.GetConcentration</h2>
+<h3>Information</h3>
+
+<p>Concentration function for Fluid.Sensors.Concentration sensor.</p>
+
+<h3>Inputs</h3>
+<table summary="Inputs" class="ModelicaTableInputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>state</td><td>&nbsp;</td></tr>
+</table>
+<h3>Outputs</h3>
+<table summary="Outputs" class="ModelicaTableOutputs">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>C</td><td>[mol/m3]</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:20 2023.
+</address>
+</body>
+</html>

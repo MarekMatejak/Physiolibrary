@@ -6,15 +6,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="&quot;Examples that demonstrate usage of the Population models&quot;">
 <style type="text/css">
-*       { font-size: 10pt; font-family: Arial, sans-serif; }
-.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
-h4      { font-size: 10pt; font-weight: bold; color: green; }
-h3      { font-size: 11pt; font-weight: bold; color: green; }
-h2      { font-size: 13pt; font-weight: bold; color: green; }
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
 address { font-weight: normal; }
-td      { border: 1px solid #808080; vertical-align: top; }
-th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
-table   { border: 1px solid #808080; border-collapse: collapse; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
 </style>
 </head>
 <body>
@@ -24,84 +45,36 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <h2><a name="Physiolibrary.Population.Examples"></a><a href="Physiolibrary_Population.html#Physiolibrary.Population"
 >Physiolibrary.Population</a>.Examples</h2>
 <p>
-<b>Examples that demonstrate usage of the Population models</b><br>
+<span class="ModelicaDescription">Examples that demonstrate usage of the Population models</span>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_ExamplesPackage.html#Modelica.Icons.ExamplesPackage"
->Modelica.Icons.ExamplesPackage</a> (Icon for packages containing runnable examples).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</span></p>
 <h3>Package Content</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<table summary="Package Content" class="ModelicaTablePackageContent">
 <tr>
 <th>Name</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyS.png" alt="Physiolibrary.Population.Examples.PredatorPrey" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Population_Examples.html#Physiolibrary.Population.Examples.PredatorPrey"
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Population.Examples.PredatorPrey" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Population_Examples.html#Physiolibrary.Population.Examples.PredatorPrey"
 >PredatorPrey</a>
 </td>
-<td>Lotka–Volterra equations</td>
+<td>LotkaVolterra equations</td>
 </tr>
 </table>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE PredatorPrey<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyI.png" alt="Physiolibrary.Population.Examples.PredatorPrey" align="right" style="border: 1px solid" width="80" height="80">
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Population.Examples.PredatorPrey" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Population.Examples.PredatorPrey"></a><a href="Physiolibrary_Population_Examples.html#Physiolibrary.Population.Examples"
 >Physiolibrary.Population.Examples</a>.PredatorPrey</h2>
 <p>
-<b>Lotka–Volterra equations</b>
-<br>
-<br><img src="Physiolibrary.Population.74e84e80d60ac5dfrPreyD.png" alt="Physiolibrary.Population.Examples.PredatorPrey">
+<span class="ModelicaDescription">LotkaVolterra equations</span>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a> (Icon for runnable examples).</p>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> PredatorPrey <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Lotka–Volterra equations&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.Example"
->Modelica.Icons.Example</a>;
-
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
->Components.Population</a> predator(population_start=2);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
->Components.Reproduction</a> reproduction2(useChangePerMemberInput=true);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
->Components.Mortality</a> mortality2(LifeTime(displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Reproduction"
->Components.Reproduction</a> reproduction1(LifeTime(displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Mortality"
->Components.Mortality</a> mortality1(useChangePerMemberInput=true);
-  <a href="Physiolibrary_Population_Components.html#Physiolibrary.Population.Components.Population"
->Components.Population</a> prey(population_start=1);
-  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
->Types.Constants.PopulationChangePerMemberConst</a>
-                                        preyMortality(LifeTime(displayUnit=
-          &quot;s&quot;) = 1);
-  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
->Blocks.Factors.Normalization</a> predatorEffect;
-  <a href="Physiolibrary_Types_Constants.html#Physiolibrary.Types.Constants.PopulationChangePerMemberConst"
->Types.Constants.PopulationChangePerMemberConst</a>
-                                        predatorReproduction(LifeTime(
-        displayUnit=&quot;s&quot;) = 1);
-  <a href="Physiolibrary_Blocks_Factors.html#Physiolibrary.Blocks.Factors.Normalization"
->Blocks.Factors.Normalization</a> preyEffekt;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(preyMortality.y, predatorEffect.yBase);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(predator.population, predatorEffect.u);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(predatorReproduction.y, preyEffekt.yBase);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(prey.population, preyEffekt.u);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(reproduction2.port_b, predator.port);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(predator.port, mortality2.port_a);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(reproduction1.port_b, prey.port);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(prey.port, mortality1.port_a);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(preyEffekt.y, reproduction2.changePerMember);
-  <span style="color: red; font-weight: normal; font-style: normal;">connect</span>(predatorEffect.y, mortality1.changePerMember);
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>PredatorPrey;
-</div>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:53:55 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:23 2023.
 </address>
 </body>
 </html>

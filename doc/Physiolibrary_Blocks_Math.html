@@ -6,15 +6,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="&quot;Modelica.Math extension&quot;">
 <style type="text/css">
-*       { font-size: 10pt; font-family: Arial, sans-serif; }
-.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
-h4      { font-size: 10pt; font-weight: bold; color: green; }
-h3      { font-size: 11pt; font-weight: bold; color: green; }
-h2      { font-size: 13pt; font-weight: bold; color: green; }
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
 address { font-weight: normal; }
-td      { border: 1px solid #808080; vertical-align: top; }
-th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
-table   { border: 1px solid #808080; border-collapse: collapse; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
 </style>
 </head>
 <body>
@@ -24,13 +45,12 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <h2><a name="Physiolibrary.Blocks.Math"></a><a href="Physiolibrary_Blocks.html#Physiolibrary.Blocks"
 >Physiolibrary.Blocks</a>.Math</h2>
 <p>
-<b>Modelica.Math extension</b><br>
+<span class="ModelicaDescription">Modelica.Math extension</span>
 </p>
 <h3>Information</h3>
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons_Package.html#Modelica.Icons.Package"
->Modelica.Icons.Package</a> (Icon for standard packages).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Package (Icon for standard packages).</span></p>
 <h3>Package Content</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<table summary="Package Content" class="ModelicaTablePackageContent">
 <tr>
 <th>Name</th>
 <th>Description</th>
@@ -60,7 +80,7 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>b ^ u</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.Blocks.Math.MinS.png" alt="Physiolibrary.Blocks.Math.Min" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Min"
+<td><img src="Physiolibrary.Blocks.Math.ReciprocalS.png" alt="Physiolibrary.Blocks.Math.Min" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Min"
 >Min</a>
 </td>
 <td>Pass through the smallest signal</td>
@@ -72,13 +92,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>min( 0, log10(u) )</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.Blocks.Math.PartsS.png" alt="Physiolibrary.Blocks.Math.Parts" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Parts"
+<td><img src="Physiolibrary.Blocks.Math.ReciprocalS.png" alt="Physiolibrary.Blocks.Math.Parts" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.Parts"
 >Parts</a>
 </td>
 <td>Divide the input value by weights</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.Blocks.Math.PartsS.png" alt="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker"
+<td><img src="Physiolibrary.Blocks.Math.ReciprocalS.png" alt="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker"
 >HomotopyStrongComponentBreaker</a>
 </td>
 <td>Break the strong component in normalized signal with independent default constant value</td>
@@ -96,7 +116,6 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <td>Output the fraction of the input signal</td>
 </tr>
 </table>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Integrator<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -104,82 +123,49 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <a name="Physiolibrary.Blocks.Math.Integrator"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Integrator</h2>
 <p>
-<b>Integrator with support of steady state calculation.</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.IntegratorD.png" alt="Physiolibrary.Blocks.Math.Integrator">
+<span class="ModelicaDescription">Integrator with support of steady state calculation.</span>
 </p>
 <h3>Information</h3>
 
-<p>
-This blocks computes output <b>y</b> (element-wise) as
-<i>integral</i> of the input <b>u</b> multiplied with
-the gain <i>k</i>:
-</p>
-<pre>
-         k
-     y = - u
-         s
-</pre>
+        <p>
+        This blocks computes output <b>y</b> (element-wise) as
+        <i>integral</i> of the input <b>u</b> multiplied with
+        the gain <i>k</i>:
+        </p>
+        <pre>
+                 k
+             y = - u
+                 s
+        </pre>
 
-<p>
-It might be difficult to initialize the integrator in steady state.
-This is discussed in the description of package
-<a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/Blocks/Continuous">Continuous</a>.
-</p>
+        <p>
+        It might be difficult to initialize the integrator in steady state.
+        This is discussed in the description of package
+        <a  >Continuous</a>.
+        </p>
 
-<pre>
-</pre>
-<p>Extends from <a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
->SteadyStates.Interfaces.SteadyState</a> (Abstract class for any dynamic state calculation (for any derivation), which is driven by SimulationType option.), <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a> (Single Input Single Output continuous control block).</p>
+        <pre>
+        </pre>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.SISO (Single Input Single Output continuous control block).</span></p>
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Real</td><td>k</td><td>1</td><td>Integrator gain</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
-<tr><td>Real</td><td>y_start</td><td>0</td><td>Initial or guess value of output (= state)</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>IO</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Functions to read or store</td></tr>
-<tr><td colspan="2">replaceable package Utilities</td><td>Types.FilesUtilities (direct...</td><td>How to store or load the values</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Initialization</td></tr>
-<tr><td>Real</td><td>state_start</td><td>y_start</td><td>State start or init value</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Value I/O</td></tr>
-<tr><td>String</td><td>storeUnit</td><td>&quot;&quot;</td><td>Unit in Utilities input/output function</td></tr>
-<tr><td>String</td><td>stateName</td><td>getInstanceName()</td><td>Name in Utilities input/output function</td></tr>
-<tr><td>Boolean</td><td>LOAD_STARTS</td><td>false</td><td>Load start value of state</td></tr>
-<tr><td>Boolean</td><td>SAVE_RESULTS</td><td>false</td><td>Save final state values</td></tr>
-<tr><td>Boolean</td><td>SAVE_COMPARISON</td><td>false</td><td>Compare final state values with original values</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Equilibrium</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Simulation</td></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.SimulationType"
->SimulationType</a></td><td>Simulation</td><td>Types.SimulationType.NormalI...</td><td>Dynamic with Initialization or Steady State</td></tr>
-<tr><td>Boolean</td><td>isDependent</td><td>false</td><td>=true, If zero flow is propagated in eqiulibrium through resistors, impedances, reactions, etc.</td></tr>
-<tr style="background-color: #c0c0c0"><td colspan="4"><b>Solver</b></td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">Numerical support of very small concentrations</td></tr>
-<tr><td>Real</td><td>NominalValue</td><td>1</td><td>Numerical scale. For some substances such as hormones, hydronium or hydroxide ions should be set.</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>k</td><td>Integrator gain</td></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
+<tr><td>stateName</td><td>&nbsp;</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>y_start</td><td>Initial or guess value of output (= state)</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Solver</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Numerical support of very small concentrations</td></tr>
+<tr><td>NominalValue</td><td>Numerical scale. For some substances such as hormones, hydronium or hydroxide ions should be set.</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">model</span> Integrator <span style="color: #006400; font-weight: normal; font-style: normal;">
-  &quot;Integrator with support of steady state calculation.&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="Physiolibrary_SteadyStates_Interfaces.html#Physiolibrary.SteadyStates.Interfaces.SteadyState"
->SteadyStates.Interfaces.SteadyState</a>(
-                                     state_start=y_start, state(nominal=NominalValue));
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real k=1 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Integrator gain&quot;</span>;
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real y_start=0 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Initial or guess value of output (= state)&quot;</span>;
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a>(u(nominal=NominalValue/k),y(nominal=NominalValue));
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real NominalValue = 1 <span style="color: #006400; font-weight: normal; font-style: normal;">
-    &quot;Numerical scale. For some substances such as hormones, hydronium or hydroxide ions should be set.&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  state = y;<span style="color: #006400; font-weight: normal; font-style: normal;">  //der(y) = k*u</span>
-  change = k*u;
-
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Integrator;
-</div>
-<hr>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
+</table>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Add<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -187,43 +173,24 @@ This is discussed in the description of package
 <a name="Physiolibrary.Blocks.Math.Add"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Add</h2>
 <p>
-<b>u + parameter</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.AddD.png" alt="Physiolibrary.Blocks.Math.Add">
+<span class="ModelicaDescription">u + parameter</span>
 </p>
 <h3>Information</h3>
 
-<p>This block computes output <i>y</i> as <i>sum</i> of offset <i>k</i> with the input <i>u</i>: </p>
-<p><code>    y = k + u;</code> </p>
-
+	<p>This block computes output <i>y</i> as <i>sum</i> of offset <i>k</i> with the input <i>u</i>: </p>
+	<p><code>    y = k + u;</code> </p>
+	
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Real</td><td>k</td><td>&nbsp;</td><td>value added to input signal</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>k</td><td>value added to input signal</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Input signal connector</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Output signal connector</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Input signal connector</td></tr>
+<tr><td>y</td><td>Output signal connector</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Add <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;u + parameter&quot;</span>
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real k(start=1) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;value added to input signal&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->Modelica.Blocks.Interfaces.RealInput</a> u <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Input signal connector&quot;</span>;
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->Modelica.Blocks.Interfaces.RealOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Output signal connector&quot;</span>;
-
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y = k+u;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Add;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Reciprocal<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -231,34 +198,20 @@ This is discussed in the description of package
 <a name="Physiolibrary.Blocks.Math.Reciprocal"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Reciprocal</h2>
 <p>
-<b>1 / u</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.ReciprocalD.png" alt="Physiolibrary.Blocks.Math.Reciprocal">
+<span class="ModelicaDescription">1 / u</span>
 </p>
 <h3>Information</h3>
 
-<p>This blocks computes the output <b>y</b> as <i>reciprocal value</i> of the input <b>u</b>: </p>
-<p><code>    y = 1 / u ;</code> </p>
-
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a> (Single Input Single Output continuous control block).</p>
+	<p>This blocks computes the output <b>y</b> as <i>reciprocal value</i> of the input <b>u</b>: </p>
+	<p><code>    y = 1 / u ;</code> </p>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.SISO (Single Input Single Output continuous control block).</span></p>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Connector of Real input signal</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Reciprocal <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;1 / u&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a>;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y = 1/u;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Reciprocal;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Power<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -266,67 +219,34 @@ This is discussed in the description of package
 <a name="Physiolibrary.Blocks.Math.Power"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Power</h2>
 <p>
-<b>b ^ u</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.PowerD.png" alt="Physiolibrary.Blocks.Math.Power">
+<span class="ModelicaDescription">b ^ u</span>
 </p>
 <h3>Information</h3>
 
 <p>y = base^exponent</p>
 
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Real</td><td>Base</td><td>10</td><td>exponential base if useBaseInput=false</td></tr>
-<tr style="background-color: #e0e0e0"><td colspan="4">External inputs/outputs</td></tr>
-<tr><td>Boolean</td><td>useBaseInput</td><td>false</td><td>=true, if exponential base input is used instead of parameter Base</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>Base</td><td>exponential base if useBaseInput=false</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useBaseInput</td><td>=true, if exponential base input is used instead of parameter Base</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>&nbsp;</td></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>base</td><td>&nbsp;</td></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>exponent</td><td>&nbsp;</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>y</td><td>&nbsp;</td></tr>
+<tr><td>base</td><td>&nbsp;</td></tr>
+<tr><td>exponent</td><td>&nbsp;</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Power <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;b ^ u&quot;</span>
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Boolean useBaseInput = false <span style="color: #006400; font-weight: normal; font-style: normal;">
-    &quot;=true, if exponential base input is used instead of parameter Base&quot;</span>;
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real Base=10 <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;exponential base if useBaseInput=false&quot;</span>;
-
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->Modelica.Blocks.Interfaces.RealOutput</a> y;
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->Modelica.Blocks.Interfaces.RealInput</a> base(start=Base) = b <span style="color: blue; font-weight: normal; font-style: normal;">if </span>useBaseInput;
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->Modelica.Blocks.Interfaces.RealInput</a> exponent;
-
-<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
-  Real b <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Current exponential base&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">if </span><span style="color: blue; font-weight: normal; font-style: normal;">not </span>useBaseInput<span style="color: blue; font-weight: normal; font-style: normal;"> then</span>
-    b = Base;
-  <span style="color: blue; font-weight: normal; font-style: normal;">end if</span>;
-
-  y = b^exponent;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Power;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Min<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Blocks.Math.MinI.png" alt="Physiolibrary.Blocks.Math.Min" align="right" style="border: 1px solid" width="80" height="80">
+<h2><img src="Physiolibrary.Blocks.Math.ReciprocalI.png" alt="Physiolibrary.Blocks.Math.Min" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Blocks.Math.Min"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Min</h2>
 <p>
-<b>Pass through the smallest signal</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.MinD.png" alt="Physiolibrary.Blocks.Math.Min">
+<span class="ModelicaDescription">Pass through the smallest signal</span>
 </p>
 <h3>Information</h3>
 
@@ -337,31 +257,19 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 <pre>    y = <b>min</b> ( u );
 </pre>
 <pre>
-</pre>
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.MISO"
->Modelica.Blocks.Interfaces.MISO</a> (Multiple Input Single Output continuous control block).</p>
+          </pre>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.MISO (Multiple Input Single Output continuous control block).</span></p>
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>nin</td><td>1</td><td>Number of inputs</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>nin</td><td>Number of inputs</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u[nin]</td><td>Connector of Real input signals</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u[nin]</td><td>Connector of Real input signals</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Min <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Pass through the smallest signal&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.MISO"
->Modelica.Blocks.Interfaces.MISO</a>;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-   y =<span style="color: red; font-weight: normal; font-style: normal;"> min</span>(u);
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Min;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Log10AsEffect<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -369,45 +277,28 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 <a name="Physiolibrary.Blocks.Math.Log10AsEffect"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Log10AsEffect</h2>
 <p>
-<b>min( 0, log10(u) )</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.Log10AsEffectD.png" alt="Physiolibrary.Blocks.Math.Log10AsEffect">
+<span class="ModelicaDescription">min( 0, log10(u) )</span>
 </p>
 <h3>Information</h3>
 
-<p>This blocks computes the output <b>y</b> as the <i>base 10 logarithm</i> of the input <b>u </b>if <b>u&GT;1</b> or 0 otherwise </p>
-<p><code>    y = if(u&GT;1) <b>log10</b>( u ) else 0;</code></p>
+<p>This blocks computes the output <b>y</b> as the <i>base 10 logarithm</i> of the input <b>u </b>if <b>u&gt;1</b> or 0 otherwise </p>
+<p><code>    y = if(u&gt;1) <b>log10</b>( u ) else 0;</code></p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a> (Single Input Single Output continuous control block).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.SISO (Single Input Single Output continuous control block).</span></p>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Connector of Real input signal</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Log10AsEffect <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;min( 0, log10(u) )&quot;</span>
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a>;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y = <span style="color: blue; font-weight: normal; font-style: normal;">if </span>u&gt;1<span style="color: blue; font-weight: normal; font-style: normal;"> then </span><span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log10</span>(u)<span style="color: blue; font-weight: normal; font-style: normal;"> else </span>0;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Log10AsEffect;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Parts<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Blocks.Math.PartsI.png" alt="Physiolibrary.Blocks.Math.Parts" align="right" style="border: 1px solid" width="80" height="80">
+<h2><img src="Physiolibrary.Blocks.Math.ReciprocalI.png" alt="Physiolibrary.Blocks.Math.Parts" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Blocks.Math.Parts"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.Parts</h2>
 <p>
-<b>Divide the input value by weights</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Math.PartsD.png" alt="Physiolibrary.Blocks.Math.Parts">
+<span class="ModelicaDescription">Divide the input value by weights</span>
 </p>
 <h3>Information</h3>
 
@@ -420,49 +311,27 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 
 <p><code>     y[1]=u/3,  y[2]=u/3,  y[3]=u/3;</code> </p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SIMO"
->Modelica.Blocks.Interfaces.SIMO</a> (Single Input Multiple Output continuous control block).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.SIMO (Single Input Multiple Output continuous control block).</span></p>
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Integer</td><td>nout</td><td>1</td><td>Number of outputs</td></tr>
-<tr><td>Real</td><td>w[nout]</td><td>ones(nout)</td><td>Optional: weight coefficients</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>nout</td><td>Number of outputs</td></tr>
+<tr><td>w[nout]</td><td>Optional: weight coefficients</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Connector of Real input signal</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y[nout]</td><td>Connector of Real output signals</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y[nout]</td><td>Connector of Real output signals</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> Parts <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Divide the input value by weights&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SIMO"
->Modelica.Blocks.Interfaces.SIMO</a>;
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real w[nout]=<span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nout) <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Optional: weight coefficients&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">protected </span>
- Real coef;
- Real weight[nout];
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  <span style="color: red; font-weight: normal; font-style: normal;">ones</span>(nout)*weight = 1;
-  <span style="color: blue; font-weight: normal; font-style: normal;">for </span>i<span style="color: blue; font-weight: normal; font-style: normal;"> in </span>1:nout<span style="color: blue; font-weight: normal; font-style: normal;"> loop</span>
-      weight[i] = w[i] * coef;
-      y[i] = u * weight[i];
-  <span style="color: blue; font-weight: normal; font-style: normal;">end for</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>Parts;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE HomotopyStrongComponentBreaker<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
-<h2><img src="Physiolibrary.Blocks.Math.PartsI.png" alt="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker" align="right" style="border: 1px solid" width="80" height="80">
+<h2><img src="Physiolibrary.Blocks.Math.ReciprocalI.png" alt="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.HomotopyStrongComponentBreaker</h2>
 <p>
-<b>Break the strong component in normalized signal with independent default constant value</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Mathe65cb118441e2642eakerD.png" alt="Physiolibrary.Blocks.Math.HomotopyStrongComponentBreaker">
+<span class="ModelicaDescription">Break the strong component in normalized signal with independent default constant value</span>
 </p>
 <h3>Information</h3>
 
@@ -471,35 +340,19 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 <p> </p>
 <p>E=f(L(E)) can be rewritten to E=f(L( H )), where H is output from this block with input E. </p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a> (Single Input Single Output continuous control block).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Blocks.Interfaces.SISO (Single Input Single Output continuous control block).</span></p>
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td>Real</td><td>defaultValue</td><td>1</td><td>&nbsp;</td></tr>
-<tr><td>Real</td><td>defaultSlope</td><td>0</td><td>&nbsp;</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>defaultValue</td><td>&nbsp;</td></tr>
+<tr><td>defaultSlope</td><td>&nbsp;</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Connector of Real input signal</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Connector of Real output signal</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Connector of Real input signal</td></tr>
+<tr><td>y</td><td>Connector of Real output signal</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> HomotopyStrongComponentBreaker <span style="color: #006400; font-weight: normal; font-style: normal;">
-  &quot;Break the strong component in normalized signal with independent default constant value&quot;</span>
-  <span style="color: blue; font-weight: normal; font-style: normal;">extends </span><a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.SISO"
->Modelica.Blocks.Interfaces.SISO</a>;
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real defaultValue=1;
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span>Real defaultSlope=0;
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y =<span style="color: red; font-weight: normal; font-style: normal;"> homotopy</span>(u,defaultValue + defaultSlope*(u-defaultValue));
-  <span style="color: #006400; font-weight: normal; font-style: normal;">//y = homotopy(u,defaultValue);</span>
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>HomotopyStrongComponentBreaker;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE DegradationGain<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -507,9 +360,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
 <a name="Physiolibrary.Blocks.Math.DegradationGain"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.DegradationGain</h2>
 <p>
-<b>Output the degradation flow from HalfTime and the amount as the input signal</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Mathfa1008341ea166e5nGainD.png" alt="Physiolibrary.Blocks.Math.DegradationGain">
+<span class="ModelicaDescription">Output the degradation flow from HalfTime and the amount as the input signal</span>
 </p>
 <h3>Information</h3>
 
@@ -524,37 +375,16 @@ input <i>u</i>:
 
 
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
->Time</a></td><td>HalfTime</td><td>&nbsp;</td><td>Half time to compute degradation from amount or mass [s]</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>HalfTime</td><td>Half time to compute degradation from amount or mass [s]</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Input signal connector</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Output signal connector</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Input signal connector</td></tr>
+<tr><td>y</td><td>Output signal connector</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> DegradationGain <span style="color: #006400; font-weight: normal; font-style: normal;">
-  &quot;Output the degradation flow from HalfTime and the amount as the input signal&quot;</span>
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Time"
->Types.Time</a> HalfTime <span style="color: #006400; font-weight: normal; font-style: normal;">
-    &quot;Half time to compute degradation from amount or mass&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->Modelica.Blocks.Interfaces.RealInput</a> u <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Input signal connector&quot;</span>;
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->Modelica.Blocks.Interfaces.RealOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Output signal connector&quot;</span>;
-
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y = (<span style="color: red; font-weight: normal; font-style: normal;">Modelica.Math.log</span>(2)/HalfTime)*u;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>DegradationGain;
-</div>
-<hr>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE FractionGain<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
@@ -562,9 +392,7 @@ input <i>u</i>:
 <a name="Physiolibrary.Blocks.Math.FractionGain"></a><a href="Physiolibrary_Blocks_Math.html#Physiolibrary.Blocks.Math"
 >Physiolibrary.Blocks.Math</a>.FractionGain</h2>
 <p>
-<b>Output the fraction of the input signal</b>
-<br>
-<br><img src="Physiolibrary.Blocks.Mathfa1008341ea166e5nGainD.png" alt="Physiolibrary.Blocks.Math.FractionGain">
+<span class="ModelicaDescription">Output the fraction of the input signal</span>
 </p>
 <h3>Information</h3>
 
@@ -579,38 +407,18 @@ input <i>u</i>:
 
 
 <h3>Parameters</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Parameters">
-<tr><th>Type</th><th>Name</th><th>Default</th><th>Description</th></tr>
-<tr><td><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Fraction</a></td><td>f</td><td>&nbsp;</td><td>Half time to compute degradation from amount or mass [1]</td></tr>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>f</td><td>Half time to compute degradation from amount or mass [1]</td></tr>
 </table>
 <h3>Connectors</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Connectors">
-<tr><th>Type</th><th>Name</th><th>Description</th></tr>
-<tr><td>input <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->RealInput</a></td><td>u</td><td>Input signal connector</td></tr>
-<tr><td>output <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->RealOutput</a></td><td>y</td><td>Output signal connector</td></tr>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>u</td><td>Input signal connector</td></tr>
+<tr><td>y</td><td>Output signal connector</td></tr>
 </table>
-<h3>Modelica definition</h3>
-<div class="modelica"><span style="color: blue; font-weight: normal; font-style: normal;">block</span> FractionGain <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Output the fraction of the input signal&quot;</span>
-
-  <span style="color: blue; font-weight: normal; font-style: normal;">parameter </span><a href="Physiolibrary_Types.html#Physiolibrary.Types.Fraction"
->Types.Fraction</a> f <span style="color: #006400; font-weight: normal; font-style: normal;">
-    &quot;Half time to compute degradation from amount or mass&quot;</span>;
-<span style="color: blue; font-weight: normal; font-style: normal;">public </span>
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealInput"
->Modelica.Blocks.Interfaces.RealInput</a> u <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Input signal connector&quot;</span>;
-  <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Blocks_Interfaces.html#Modelica.Blocks.Interfaces.RealOutput"
->Modelica.Blocks.Interfaces.RealOutput</a> y <span style="color: #006400; font-weight: normal; font-style: normal;">&quot;Output signal connector&quot;</span>;
-
-<span style="color: blue; font-weight: normal; font-style: normal;">equation </span>
-  y = f*u;
-<span style="color: blue; font-weight: normal; font-style: normal;">end </span>FractionGain;
-</div>
-<hr>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:54:48 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:26 2023.
 </address>
 </body>
 </html>

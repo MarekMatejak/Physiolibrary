@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Organs.Heart</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Heart Components&quot;">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Heart<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Organs.Heart"></a><a href="Physiolibrary_Organs.html#Physiolibrary.Organs"
+>Physiolibrary.Organs</a>.Heart</h2>
+<p>
+<span class="ModelicaDescription">Heart Components</span>
+</p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Organs.Heart.HeartS.png" alt="Physiolibrary.Organs.Heart.Heart" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Heart.html#Physiolibrary.Organs.Heart.Heart"
+>Heart</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Blocks.SourceS.png" alt="Physiolibrary.Organs.Heart.Components" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Heart_Components.html#Physiolibrary.Organs.Heart.Components"
+>Components</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Blocks.SourceS.png" alt="Physiolibrary.Organs.Heart.Examples" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Heart_Examples.html#Physiolibrary.Organs.Heart.Examples"
+>Examples</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Organs.ReferencesS.png" alt="Physiolibrary.Organs.Heart.References" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Organs_Heart.html#Physiolibrary.Organs.Heart.References"
+>References</a>
+</td>
+<td>References</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Heart<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Organs.Heart.HeartI.png" alt="Physiolibrary.Organs.Heart.Heart" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Organs.Heart.Heart"></a><a href="Physiolibrary_Organs_Heart.html#Physiolibrary.Organs.Heart"
+>Physiolibrary.Organs.Heart</a>.Heart</h2>
+<h3>Information</h3>
+
+<p>Calculates hearth pumping (left and right atria and ventricles, as wel as coronary circulation). By pressure-flow connectors communicate with pulmonary and systemic circulation.</p>
+<p>Blood volume (and pressure) distributions between </p>
+<ul>
+<li>right/left atrium and</li>
+<li>right/left ventricle.</li>
+</ul>
+<p>Generate average blood flow throught ventricles.</p>
+<p>On the contrary of Tom Coleman models: coronary circulation outflows to right atrium, average blood volume in the hearth are calculated more simple (with the same results in steady state).</p>
+<p><h4></p><p>New heart energy balance</h4></p>
+<p><br>left: 1.41 W(const BasalCals), HR*P*V 1.4 W </p>
+<p>right: 0.21 W (const BasalCals), HR*P*V 0.19 W </p>
+<p><br>Effeciency by</p>
+<p>https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.660639</p>
+<p>is 25&percnt; (basal metabolism included).</p>
+<p><br>Optimal values:</p>
+<p>Left heart:</p>
+<p>90mmHg= 12000Pa</p>
+<p>75ml = 0.000075m3</p>
+<p>75bpm = 1.25Hz</p>
+<p>= 1.125 W (mechanical work)</p>
+<p>4.5 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>1.41 W (basal metabolism)</p>
+<p>36&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br>Right heart:</p>
+<p>12.4mmHg=1653Pa</p>
+<p>75ml= 0.000075m3</p>
+<p>75bpm=1.25Hz</p>
+<p>= 0.155 W (mechanical work)</p>
+<p>/0.25 = 0.62 W (total energy for 25&percnt; effeciency with basal metabolism)</p>
+<p>0.21 W (basal metabolism)</p>
+<p>38&percnt; motion effeciency without basal metabolism (new parameter for heart)</p>
+<p><br><b>Old estimation of heart energy balance</b></p>
+<p><br>left: 1.67 W (const MotionCals) , 6.07 W (const HeatCals), 1.41 W(const BasalCals) = 7.74 W + 1.41 W = 9.15 W</p>
+<p>right: 0.35 W (const MotionCals) , 1.19 W (const HeatCals), 0.21 W (const BasalCals) = 1.54 W + 0.21 W</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Heart"
+>Physiolibrary.Icons.Heart</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>Blood medium model</td></tr>
+<tr><td>NormalPericardiumPressure</td><td>Typical value of pericardium cavity pressure (relative to environment ambient pressure) [Pa]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Sinoatrial node</td></tr>
+<tr><td>BaseHeartRate</td><td>Base heart rate [Hz]</td></tr>
+<tr><td>SA_SympatheticRateIncrease[:, 3]</td><td>Heart rate increase on sympathetic neural activity</td></tr>
+<tr><td>SA_ParasympatheticRateIncrease[:, 3]</td><td>Heart rate increase on parasympathetic neural activity</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Baroreceptors</td></tr>
+<tr><td>AdaptationOnNA[:, 3]</td><td>Neural activity effect based on mean atrial pressure change</td></tr>
+<tr><td>AdaptivePressure</td><td>Initial value of adapted mean atrial pressure [Pa]</td></tr>
+<tr><td>AdaptationTau</td><td>Delay coefficient of baroreceptors adaptation [s]</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Right heart</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Coronary blood suply</td></tr>
+<tr><td>RightCoronaryLarge</td><td>Conductance of lagre coronary vessels [m3/(Pa.s)]</td></tr>
+<tr><td>RightCoronarySmall</td><td>Conductance of small coronary vessels [m3/(Pa.s)]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Atrium</td></tr>
+<tr><td>RightAtriumBlood_initial</td><td>Initial blood volume in right atrium [m3]</td></tr>
+<tr><td>RightAtriumCompliance</td><td>Mean compliance of right atrium [m3/Pa]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Ventricle</td></tr>
+<tr><td>RightVentricle_initial</td><td>Initial blood volume in right ventricle [m3]</td></tr>
+<tr><td>RightVentricleBasicCompliance</td><td>Basic compliance od right ventricle [m3/Pa]</td></tr>
+<tr><td>RV_K</td><td>time adaptation coeficient of average ventricle blood volume [Hz]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Diastole</td></tr>
+<tr><td>RV_NormalEndDiastolicVolume</td><td>Typical value of blood volume in ventricle after filling [m3]</td></tr>
+<tr><td>RV_NormalFillingPressure</td><td>Typical value of filling pressure relative to pericardium pressure [Pa]</td></tr>
+<tr><td>RV_stiffnes</td><td>Relative stiffnes (1 if normal) [1]</td></tr>
+<tr><td>RV_n_Diastole</td><td>Exponent of P-V characteristic of EDV curve on filling pressure [1]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Systole</td></tr>
+<tr><td>RV_NormalSystolicPressure</td><td>Typical value of systolic pressure relative to pericardium pressure [Pa]</td></tr>
+<tr><td>RV_NormalEndSystolicVolume</td><td>Typical value of blood volume in ventricle after ejection [m3]</td></tr>
+<tr><td>RV_additionalPressure_Systolic</td><td>Pressure difference between mean and systolic pressure [Pa]</td></tr>
+<tr><td>RV_contractilityBasic</td><td>Relative contractility (1 if normal) [1]</td></tr>
+<tr><td>RV_n_Systole</td><td>Exponent of P-V characteristic of ESV curve on systolic pressure [1]</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Left heart</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Coronary blood suply</td></tr>
+<tr><td>LeftCoronaryLarge</td><td>Conductance of lagre coronary vessels [m3/(Pa.s)]</td></tr>
+<tr><td>LeftCoronarySmall</td><td>Conductance of small coronary vessels [m3/(Pa.s)]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Atrium</td></tr>
+<tr><td>LeftAtriumBlood_initial</td><td>Initial blood volume in left atrium [m3]</td></tr>
+<tr><td>LeftAtriumCompliance</td><td>Mean compliance of left atrium [m3/Pa]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Ventricle</td></tr>
+<tr><td>LeftVentricle_initial</td><td>Initial blood volume in left ventricle [m3]</td></tr>
+<tr><td>LeftVentricleBasicCompliance</td><td>Basic compliance od left ventricle [m3/Pa]</td></tr>
+<tr><td>LV_K</td><td>time adaptation coeficient of average ventricle blood volume [Hz]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Diastole</td></tr>
+<tr><td>LV_NormalEndDiastolicVolume</td><td>Typical value of blood volume in ventricle after filling [m3]</td></tr>
+<tr><td>LV_NormalFillingPressure</td><td>Typical value of filling pressure relative to pericardium pressure [Pa]</td></tr>
+<tr><td>LV_stiffnes</td><td>Relative stiffnes (1 if normal) [1]</td></tr>
+<tr><td>LV_n_Diastole</td><td>Exponent of P-V characteristic of EDV curve on filling pressure [1]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Systole</td></tr>
+<tr><td>LV_NormalSystolicPressure</td><td>Typical value of systolic pressure relative to pericardium pressure [Pa]</td></tr>
+<tr><td>LV_NormalEndSystolicVolume</td><td>Typical value of blood volume in ventricle after ejection [m3]</td></tr>
+<tr><td>LV_additionalPressure_Systolic</td><td>Pressure difference between mean and systolic pressure [Pa]</td></tr>
+<tr><td>LV_contractilityBasic</td><td>Relative contractility (1 if normal) [1]</td></tr>
+<tr><td>LV_n_Systole</td><td>Exponent of P-V characteristic of ESV curve on systolic pressure [1]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>Blood medium model</td></tr>
+<tr><td>rightAtrium</td><td>blood inflow to right atrium</td></tr>
+<tr><td>rightVentricle</td><td>blood outflow to pulmonary circulation</td></tr>
+<tr><td>leftVentricle</td><td>blood outflow to aorta</td></tr>
+<tr><td>leftAtrium</td><td>blood inflow to left atrium</td></tr>
+<tr><td>Pericardium</td><td>pericardium pressure [Pa]</td></tr>
+<tr><td>Sympathicus</td><td>Ganglia general neural activity [Hz]</td></tr>
+<tr><td>Parasympathicus</td><td>Vagus neural activity [Hz]</td></tr>
+<tr><td>AtrialLowPressureReceptors</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE References<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Organs.ReferencesI.png" alt="Physiolibrary.Organs.Heart.References" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Organs.Heart.References"></a><a href="Physiolibrary_Organs_Heart.html#Physiolibrary.Organs.Heart"
+>Physiolibrary.Organs.Heart</a>.References</h2>
+<p>
+<span class="ModelicaDescription">References</span>
+</p>
+<h3>Information</h3>
+
+<table>
+
+	<tr>
+		<td>[Bazett1997]</td>
+		<td>H. C. Bazett, "AN ANALYSIS OF THE TIME-RELATIONS OF ELECTROCARDIOGRAMS," Annals of Noninvasive Electrocardiology, vol. 2, pp. 177-194, 1997. </td>
+	</tr>
+	<tr>
+		<td>[Bootsma1994]</td>
+		<td>M. Bootsma, C. A. Swenne, H. H. Van Bolhuis, P. C. Chang, V. M. Cats, and A. Bruschke, "Heart rate and heart rate variability as indexes of sympathovagal balance," American Journal of Physiology, vol. 266, pp. H1565-H1565, 1994. </td>
+	</tr>
+	<tr>
+		<td>[Braunwald1976]</td>
+		<td>E. Braunwald, J. Ross, and E. H. Sonnenblick, Mechanisms of contraction of the normal and failing heart: Little, Brown Boston, 1976. </td>
+	</tr>
+	<tr>
+		<td>[Carter1998]</td>
+		<td>Y. M. Carter, C. X. Jia, P. F. Soto, J. P. Starr, D. G. Rabkin, D. T. Hsu, et al., "Diastolic properties, myocardial water content, and histologic condition of the rat left ventricle: effect of varied osmolarity of a coronary perfusate," The Journal of heart and lung transplantation : the official publication of the International Society for Heart Transplantation, vol. 17, pp. 140-149, 1998/02// 1998. </td>
+	</tr>
+	<tr>
+		<td>[Collins-Nakai1994]</td>
+		<td>R. L. Collins-Nakai, D. Noseworthy, and G. D. Lopaschuk, "Epinephrine increases ATP production in hearts by preferentially increasing glucose metabolism," Am J Physiol, vol. 267, pp. H1862-71, Nov 1994. </td>
+	</tr>
+	<tr>
+		<td>[Fatema2002]</td>
+		<td>K. Fatema, O. Hirono, Y. Takeishi, J. Nitobe, K. Kaneko, M. Ito, et al., "Hemodialysis improves myocardial interstitial edema and left ventricular diastolic function in patients with end-stage renal disease: noninvasive assessment by ultrasonic tissue characterization," Heart and vessels, vol. 16, pp. 227-231, 2002. </td>
+	</tr>
+	<tr>
+		<td>[Ferguson1985]</td>
+		<td>D. W. Ferguson, F. M. Abboud, and A. L. Mark, "Relative contribution of aortic and carotid baroreflexes to heart rate control in man during steady state and dynamic increases in arterial pressure," The Journal of Clinical Investigation, vol. 76, pp. 2265-2274, 1985. </td>
+	</tr>
+	<tr>
+		<td>[Gaasch1975]</td>
+		<td>W. H. Gaasch, J. S. Cole, M. A. Quinones, and J. Alexander, "Dynamic determinants of letf ventricular diastolic pressure-volume relations in man," Circulation, vol. 51, pp. 317-323, 1975. </td>
+	</tr>
+	<tr>
+		<td>[Guyton1961]</td>
+		<td>A. C. Guyton and K. Sagawa, "Compensations of cardiac output and other circulatory functions in areflex dogs with large AV fistulas," The American journal of physiology, vol. 200, p. 1157, 1961. </td>
+	</tr>
+	<tr>
+		<td>[Kumagai1994]</td>
+		<td>K. Kumagai and I. A. Reid, "Angiotensin II exerts differential actions on renal nerve activity and heart rate," Hypertension, vol. 24, pp. 451-456, 1994. </td>
+	</tr>
+	<tr>
+		<td>[Langer1997]</td>
+		<td>G. A. Langer, The myocardium: Academic Press, 1997. </td>
+	</tr>
+	<tr>
+		<td>[Little1993]</td>
+		<td>W. C. Little and C. P. Cheng, "Effect of exercise on left ventricular-arterial coupling assessed in the pressure-volume plane," AMERICAN JOURNAL OF PHYSIOLOGY, vol. 264, pp. H1629-H1629, 1993. </td>
+	</tr>
+	<tr>
+		<td>[McKeever1958]</td>
+		<td>W. McKeever, D. Gregg, and P. Canney, "Oxygen uptake of the nonworking left ventricle," Circulation research, vol. 6, pp. 612-623, 1958. </td>
+	</tr>
+	<tr>
+		<td>[MCKEEVER1958]</td>
+		<td>W. P. MCKEEVER, D. E. GREGG, and P. C. CANNEY, "Oxygen Uptake of the Nonworking Left Ventricle," Circulation Research, vol. 6, pp. 612-623, September 1, 1958 1958. </td>
+	</tr>
+	<tr>
+		<td>[MONROE1960]</td>
+		<td>R. G. MONROE and G. FRENCH, "Ventricular Pressure-Volume Relationships and Oxygen Consumption in Fibrillation and Arrest," Circulation Research, vol. 8, pp. 260-266, January 1, 1960 1960. </td>
+	</tr>
+	<tr>
+		<td>[MONROE1961]</td>
+		<td>R. G. MONROE and G. N. FRENCH, "Left ventricular pressure-volume relationships and myocardial oxygen consumption in the isolated heart," Circulation research, vol. 9, pp. 362-373, 1961. </td>
+	</tr>
+	<tr>
+		<td>[Murphy2008]</td>
+		<td>E. Murphy and C. Steenbergen, "Ion transport and energetics during cell death and protection," Physiology (Bethesda), vol. 23, pp. 115-23, Apr 2008. </td>
+	</tr>
+	<tr>
+		<td>[NODA1993]</td>
+		<td>T. NODA, C.-P. CHENG, P. P. DE TOMBE, and W. C. LITTLE, "Curvilinearity of LV end-systolic pressure-volume and dP/dt,-end-diastolic volume relations," 1993. </td>
+	</tr>
+	<tr>
+		<td>[Pogátsa1982]</td>
+		<td>G. Pogátsa, M. Z. Koltai, and G. Grósz, "The role of the myocardial water content in heart function," Acta physiologica Academiae Scientiarum Hungaricae, vol. 59, pp. 305-309, 1982 1982. </td>
+	</tr>
+	<tr>
+		<td>[Prabhu1993]</td>
+		<td>S. D. Prabhu and G. L. Freeman, "Left ventricular energetics in closed-chest dogs," Am J Physiol, vol. 265, pp. H1048-55, Oct 1993. </td>
+	</tr>
+	<tr>
+		<td>[Raeder1995]</td>
+		<td>E. A. Raeder, P. Albrecht, M. Perrott, and R. J. Cohen, "Kinetics of Cycle Length Dependence of Ventricular Repolarization," Journal of Cardiovascular Electrophysiology, vol. 6, pp. 163-169, 1995. </td>
+	</tr>
+	<tr>
+		<td>[ROSS1965]</td>
+		<td>J. ROSS, J. W. LINHART, and E. BRAUNWALD, "Effects of Changing Heart Rate in Man by Electrical Stimulation of the Right Atrium: Studies at Rest, during Exercise, and with Isoproterenol," Circulation, vol. 32, pp. 549-558, October 1, 1965 1965. </td>
+	</tr>
+	<tr>
+		<td>[Sagawa1988]</td>
+		<td>K. Sagawa, L. Maughan, H. Suga, and K. Sunagawa, Cardiac contraction and the pressure-volume relationship vol. 480: Oxford University Press New York, 1988. </td>
+	</tr>
+	<tr>
+		<td>[Suga1979]</td>
+		<td>H. Suga, Total mechanical energy of a ventricle model and cardiac oxygen consumption vol. 236, 1979. </td>
+	</tr>
+	<tr>
+		<td>[SUGA1974]</td>
+		<td>H. SUGA and K. SAGAWA, "Instantaneous Pressure-Volume Relationships and Their Ratio in the Excised, Supported Canine Left Ventricle," Circulation Research, vol. 35, pp. 117-126, July 1, 1974 1974. </td>
+	</tr>
+	<tr>
+		<td>[SUGA1976]</td>
+		<td>H. SUGA, K. SAGAWA, and D. P. KOSTIUK, "Controls of ventricular contractility assessed by pressure-volume ratio, Emax," Cardiovascular Research, vol. 10, pp. 582-592, September 1, 1976 1976. </td>
+	</tr>
+	<tr>
+		<td>[Sugimoto1966]</td>
+		<td>T. Sugimoto, K. Sagawa, and A. Guyton, Effect of tachycardia on cardiac output during normal and increased venous return vol. 211, 1966. </td>
+	</tr>
+	<tr>
+		<td>[Takeshita1979]</td>
+		<td>A. Takeshita, A. L. Mark, D. L. Eckberg, and F. M. Abboud, Effect of central venous pressure on arterial baroreflex control of heart rate vol. 236, 1979. </td>
+	</tr>
+	<tr>
+		<td>[Warner1962]</td>
+		<td>H. R. Warner and A. Cox, A mathematical model of heart rate control by sympathetic and vagus efferent information vol. 17, 1962. </td>
+	</tr>
+	<tr>
+		<td>[Weber1977]</td>
+		<td>K. T. Weber and J. S. Janicki, Myocardial oxygen consumption: the role of wall force and shortening vol. 233, 1977. </td>
+	</tr>
+	<tr>
+		<td>[Woo1972]</td>
+		<td>S. L. Y. Woo, A. S. Kobayashi, C. Lawrence, and W. A. Schlegel, "Mathematical model of the corneo-scleral shell as applied to intraocular pressure-volume relations and applanation tonometry," Annals of Biomedical Engineering, vol. 1, pp. 87-98, 1972/09/01 1972. </td>
+	</tr>
+	<tr>
+		<td>[Xenopoulos1994]</td>
+		<td>N. P. Xenopoulos and R. J. Applegate, "The effect of vagal stimulation on left ventricular systolic and diastolic performance," American Journal of Physiology-Heart and Circulatory Physiology, vol. 35, p. H2167, 1994.  </td>
+	</tr>
+
+</table>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.References (Icon for external references).</span></p>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:26 2023.
+</address>
+</body>
+</html>

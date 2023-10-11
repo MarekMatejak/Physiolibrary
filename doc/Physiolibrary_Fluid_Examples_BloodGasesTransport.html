@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Fluid.Examples.BloodGasesTransport</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Transport of O2 and CO2 through respiration and circulation in human body&quot;">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BloodGasesTransport<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Examples.BloodGasesTransport"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.BloodGasesTransport</h2>
+<p>
+<span class="ModelicaDescription">Transport of O2 and CO2 through respiration and circulation in human body</span>
+</p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Exampf4052b55149e5a09rfaceS.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport.BloodyMary" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport.BloodyMary"
+>BloodyMary</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp66495b9138cca285eUnitS.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport.TissueUnit" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport.TissueUnit"
+>TissueUnit</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp7ed4e363cd570ad2enterS.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport.RespiratoryCenter" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport.RespiratoryCenter"
+>RespiratoryCenter</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BloodyMary<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Examples.BloodGasesTransport.BloodyMary"></a><a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport"
+>Physiolibrary.Fluid.Examples.BloodGasesTransport</a>.BloodyMary</h2>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>RR</td><td>Respiration rate [Hz]</td></tr>
+<tr><td>TV</td><td>Tidal volume [m3]</td></tr>
+<tr><td>DV</td><td>Dead space volume [m3]</td></tr>
+<tr><td>CO</td><td>Cardiac output [m3/s]</td></tr>
+<tr><td>cShunt</td><td>[m3/(Pa.s)]</td></tr>
+<tr><td>cTotalVentilation</td><td>[m3/(Pa.s)]</td></tr>
+<tr><td>cTotalCirculation</td><td>[m3/(Pa.s)]</td></tr>
+<tr><td>LungsCompliance</td><td>Lungs compliance [m3/Pa]</td></tr>
+<tr><td>ResidualVolume</td><td>Lungs residual volume [m3]</td></tr>
+<tr><td>TotalCapacity</td><td>Lungs total capacity [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Lungs base tidal volume [m3]</td></tr>
+<tr><td>alveolarVolume_start</td><td>initial volume of air in alveoli [m3]</td></tr>
+<tr><td>alveolarV0</td><td>volume of air in alveoli, which does not generate air pressure [m3]</td></tr>
+<tr><td>lungCapyVolume_start</td><td>initial volume of blood in alveolar capillaries [m3]</td></tr>
+<tr><td>lungCapyV0</td><td>volume of blood in alveolar capillaries, which does not generate blood pressure [m3]</td></tr>
+<tr><td>tissueBloodVolume_start</td><td>initial volume of blood in tissues [m3]</td></tr>
+<tr><td>tissueV0</td><td>volume of blood in tissues, which does not generate blood pressure [m3]</td></tr>
+<tr><td>CapillariesCompliance</td><td>Systemic capillaries compliance [m3/Pa]</td></tr>
+<tr><td>O2_consumption</td><td>Tissue consumption of O2 by metabolism [mol/s]</td></tr>
+<tr><td>CO2_production</td><td>Tissue production of CO2 by metabolism [mol/s]</td></tr>
+<tr><td>TotalSystemicConductance</td><td>Total systemic blood circulation conductance [m3/(Pa.s)]</td></tr>
+<tr><td>NA</td><td>Number of pulmonary alveolar units</td></tr>
+<tr><td>NT</td><td>Number of systemic tissue units</td></tr>
+<tr><td>ArterialBloodComposition[Blood.nS]</td><td>Initial composition of arterial blood [1]</td></tr>
+<tr><td>VenousBloodComposition[Blood.nS]</td><td>Initial composition of venous blood [1]</td></tr>
+<tr><td>AirO2</td><td>O2 content in inspired air [1]</td></tr>
+<tr><td>AirCO2</td><td>CO2 content in inspired air [1]</td></tr>
+<tr><td>AirH2O</td><td>H2O content in inspired air [1]</td></tr>
+<tr><td>AirN2</td><td>N2 content in inspired air [1]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE TissueUnit<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp66495b9138cca285eUnitI.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport.TissueUnit" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.BloodGasesTransport.TissueUnit"></a><a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport"
+>Physiolibrary.Fluid.Examples.BloodGasesTransport</a>.TissueUnit</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.SystemicCirculation"
+>Physiolibrary.Icons.SystemicCirculation</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>O2_consumption</td><td>Tissue consumption of O2 by metabolism [mol/s]</td></tr>
+<tr><td>CO2_production</td><td>Tissue production of CO2 by metabolism [mol/s]</td></tr>
+<tr><td>Conductance</td><td>Tissue blood flow conductance [m3/(Pa.s)]</td></tr>
+<tr><td>ArteriesViensResistanceRatio</td><td>Ratio between arteries and veins resistance [1]</td></tr>
+<tr><td>bloodVolume_start</td><td>[m3]</td></tr>
+<tr><td>bloodV0</td><td>[m3]</td></tr>
+<tr><td>BloodComposition[Blood.nS]</td><td>Initial composition of blood in tissue [1]</td></tr>
+<tr><td>Compliance</td><td>Compliance of tissue blood vessels [m3/Pa]</td></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+<tr><td>q_in</td><td>&nbsp;</td></tr>
+<tr><td>q_out</td><td>&nbsp;</td></tr>
+<tr><td>pressure</td><td>[Pa]</td></tr>
+<tr><td>pO2</td><td>[Pa]</td></tr>
+<tr><td>pCO2</td><td>[Pa]</td></tr>
+<tr><td>pH</td><td>[1]</td></tr>
+<tr><td>sO2</td><td>Oxygen saturation (amount of oxygen per amount of hemoglobin units) [1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE RespiratoryCenter<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp7ed4e363cd570ad2enterI.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport.RespiratoryCenter" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.BloodGasesTransport.RespiratoryCenter"></a><a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport"
+>Physiolibrary.Fluid.Examples.BloodGasesTransport</a>.RespiratoryCenter</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.RespiratoryCenter"
+>Physiolibrary.Icons.RespiratoryCenter</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>pCO2_ZeroVentilation</td><td>Long term adaptation for pCO2 during acidosis/alcalosis [Pa]</td></tr>
+<tr><td>DV</td><td>Deadspace volume [m3]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>deadSpaceVentilation</td><td>&nbsp;</td></tr>
+<tr><td>pCO2</td><td>Arterial pCO2</td></tr>
+<tr><td>pO2</td><td>Arterial pO2</td></tr>
+<tr><td>ventilation</td><td>&nbsp;</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:23 2023.
+</address>
+</body>
+</html>

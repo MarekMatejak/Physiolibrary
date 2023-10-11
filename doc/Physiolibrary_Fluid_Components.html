@@ -1,0 +1,627 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Fluid.Components</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Components<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Components"></a><a href="Physiolibrary_Fluid.html#Physiolibrary.Fluid"
+>Physiolibrary.Fluid</a>.Components</h2>
+<h3>Information</h3>
+
+<p>Main components for physiological fluid modeling.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Package (Icon for standard packages).</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Components.ConductorS.png" alt="Physiolibrary.Fluid.Components.Conductor" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.Conductor"
+>Conductor</a>
+</td>
+<td>Hydraulic resistor, where conductance=1/resistance</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Components.ResistorS.png" alt="Physiolibrary.Fluid.Components.Resistor" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.Resistor"
+>Resistor</a>
+</td>
+<td>Hydraulic resistor</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo141e79b6a129991aesselS.png" alt="Physiolibrary.Fluid.Components.ElasticVessel" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.ElasticVessel"
+>ElasticVessel</a>
+</td>
+<td>Elastic compartment as chemical solution envelop</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo487b47a892521458tanceS.png" alt="Physiolibrary.Fluid.Components.ElasticVesselElastance" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.ElasticVesselElastance"
+>ElasticVesselElastance</a>
+</td>
+<td>Elastic compartment as chemical solution envelop</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo073cf5c760e693c0olumnS.png" alt="Physiolibrary.Fluid.Components.HydrostaticColumn" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.HydrostaticColumn"
+>HydrostaticColumn</a>
+</td>
+<td>Hydrostatic column pressure between two connectors (with specific muscle pump effect)</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Components.InertiaS.png" alt="Physiolibrary.Fluid.Components.Inertia" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.Inertia"
+>Inertia</a>
+</td>
+<td>Inertia of the volumetric flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo99a6fab8005d8002ValveS.png" alt="Physiolibrary.Fluid.Components.IdealValve" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.IdealValve"
+>IdealValve</a>
+</td>
+<td>Ideal valve</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo0bd0e0a9a17313fctanceS.png" alt="Physiolibrary.Fluid.Components.IdealValveResistance" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.IdealValveResistance"
+>IdealValveResistance</a>
+</td>
+<td>Ideal valve</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Components.MassPumpS.png" alt="Physiolibrary.Fluid.Components.MassPump" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.MassPump"
+>MassPump</a>
+</td>
+<td>Prescribed mass flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Components.MassPumpS.png" alt="Physiolibrary.Fluid.Components.VolumePump" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.VolumePump"
+>VolumePump</a>
+</td>
+<td>Prescribed mass flow</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compoc30b8e171d45b679ptionS.png" alt="Physiolibrary.Fluid.Components.Reabsorption" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.Reabsorption"
+>Reabsorption</a>
+</td>
+<td>Divide inflow to outflow and reabsorption</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Compo0ce17eba23b6629ebraneS.png" alt="Physiolibrary.Fluid.Components.BodyFluidMembrane" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.BodyFluidMembrane"
+>BodyFluidMembrane</a>
+</td>
+<td>Membrane for BodyFluid medium</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Conductor<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Components.ConductorI.png" alt="Physiolibrary.Fluid.Components.Conductor" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.Conductor"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.Conductor</h2>
+<p>
+<span class="ModelicaDescription">Hydraulic resistor, where conductance=1/resistance</span>
+</p>
+<h3>Information</h3>
+
+<p>This hydraulic conductance (resistance) element contains two connector sides. No hydraulic medium mass is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by <b>Ohm&apos;s law</b>. It is used conductance (=1/resistance) because it could be numerical zero better then infinity in resistance. </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.HydraulicResistor"
+>Physiolibrary.Icons.HydraulicResistor</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>Conductance</td><td>Hydraulic conductance if useConductanceInput=false [m3/(Pa.s)]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useConductanceInput</td><td>=true, if external conductance value is used</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>cond</td><td>[m3/(Pa.s)]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Resistor<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Components.ResistorI.png" alt="Physiolibrary.Fluid.Components.Resistor" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.Resistor"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.Resistor</h2>
+<p>
+<span class="ModelicaDescription">Hydraulic resistor</span>
+</p>
+<h3>Information</h3>
+
+<p><span style="font-family: Arial;">This hydraulic resistance element contains two connector sides. No hydraulic medium mass is changing in this element during simulation. That means that sum of flow in both connector sides is zero. The flow through element is determined by&nbsp;<b>Ohm&apos;s law</b>. </span></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.Conductor"
+>Physiolibrary.Fluid.Components.Conductor</a> (Hydraulic resistor, where conductance=1/resistance).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>Conductance</td><td>Hydraulic conductance if useConductanceInput=false [m3/(Pa.s)]</td></tr>
+<tr><td>Resistance</td><td>Hydraulic conductance if useConductanceInput=false [(Pa.s)/m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useConductanceInput</td><td>=true, if external conductance value is used</td></tr>
+<tr><td>useResistanceInput</td><td>=true, if external resistance value is used</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>cond</td><td>[m3/(Pa.s)]</td></tr>
+<tr><td>resistance</td><td>[(Pa.s)/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ElasticVessel<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo141e79b6a129991aesselI.png" alt="Physiolibrary.Fluid.Components.ElasticVessel" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.ElasticVessel"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.ElasticVessel</h2>
+<p>
+<span class="ModelicaDescription">Elastic compartment as chemical solution envelop</span>
+</p>
+<h3>Information</h3>
+
+<h4>mass = &sum; massOfSubstances</h4>
+<p>constant compliance</p>
+<p><br><img src="../Resources/Images/UserGuide/ElasticVessel_PV.png"/></p>
+<p>sigmoid compliance</p>
+<p><img src="../Resources/Images/UserGuide/sigmoidCompliance.png"/></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.ElasticBalloon"
+>Physiolibrary.Icons.ElasticBalloon</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.Accumulation"
+>Physiolibrary.Fluid.Interfaces.Accumulation</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>onElectricGround</td><td>=true, if electric potencial is zero</td></tr>
+<tr><td>Compliance</td><td>Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false [m3/Pa]</td></tr>
+<tr><td>ZeroPressureVolume</td><td>Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false [m3]</td></tr>
+<tr><td>ExternalPressure</td><td>External pressure if useExternalPressureInput=false. [Pa]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization of medium composition</td></tr>
+<tr><td>massFractions_start[:]</td><td>* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1. [1]</td></tr>
+<tr><td>extraConcentration_start[Medium.nC]</td><td>Extra substance amounts per kilogram of solution</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>temperature_start</td><td>Initial temperature [K]</td></tr>
+<tr><td>pressure_start</td><td>Initial pressure [Pa]</td></tr>
+<tr><td>use_mass_start</td><td>Use mass_start, otherwise volume_start</td></tr>
+<tr><td>volume_start</td><td>Total volume of solution start value [m3]</td></tr>
+<tr><td>mass_start</td><td>Total mass of solution start value [kg]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useSubstances</td><td>=true, if substance ports are used</td></tr>
+<tr><td>useThermalPort</td><td>Is thermal port pressent?</td></tr>
+<tr><td>useV0Input</td><td>=true, if zero-pressure-fluid_volume input is used</td></tr>
+<tr><td>useComplianceInput</td><td>=true, if compliance input is used</td></tr>
+<tr><td>useExternalPressureInput</td><td>=true, if external pressure input is used</td></tr>
+<tr><td>isExternalPressureAbsolute</td><td>External pressure as absolute pressure? Relative to ambient otherwise.</td></tr>
+<tr><td>useInternalSpaceInput</td><td>=true, if internal space input is used</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr><td>stateName</td><td>State name in input/output files</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Pressure-Volume relationship</td></tr>
+<tr><td>ResidualVolume</td><td>Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model [m3]</td></tr>
+<tr><td>useSigmoidCompliance</td><td>Sigmoid compliance e.g. lungs</td></tr>
+<tr><td>VitalCapacity</td><td>Relative volume capacity if useSigmoidCompliance [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Base value of tidal volume [m3]</td></tr>
+<tr><td>InternalSpace</td><td>Internal space if there is no pressure gradient [m3]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in[nPorts]</td><td>&nbsp;</td></tr>
+<tr><td>substances</td><td>&nbsp;</td></tr>
+<tr><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td>zeroPressureVolume</td><td>[m3]</td></tr>
+<tr><td>compliance</td><td>[m3/Pa]</td></tr>
+<tr><td>externalPressure</td><td>[Pa]</td></tr>
+<tr><td>fluidVolume</td><td>[m3]</td></tr>
+<tr><td>internalSpace</td><td>additional internal volume (e.g. another inserted compartment inside) [m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE ElasticVesselElastance<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo487b47a892521458tanceI.png" alt="Physiolibrary.Fluid.Components.ElasticVesselElastance" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.ElasticVesselElastance"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.ElasticVesselElastance</h2>
+<p>
+<span class="ModelicaDescription">Elastic compartment as chemical solution envelop</span>
+</p>
+<h3>Information</h3>
+
+<h4>mass = &sum; massOfSubstances</h4>
+<h4>constant compliance</h4>
+<p><img src="../Resources/Images/UserGuide/ElasticVessel_PV.png"/></p>
+<h4>sigmoid compliance</h4>
+<p><img src="../Resources/Images/UserGuide/sigmoidCompliance.png"/></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.ElasticVessel"
+>Physiolibrary.Fluid.Components.ElasticVessel</a> (Elastic compartment as chemical solution envelop).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>onElectricGround</td><td>=true, if electric potencial is zero</td></tr>
+<tr><td>Compliance</td><td>Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false [m3/Pa]</td></tr>
+<tr><td>ZeroPressureVolume</td><td>Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false [m3]</td></tr>
+<tr><td>ExternalPressure</td><td>External pressure if useExternalPressureInput=false. [Pa]</td></tr>
+<tr><td>Elastance</td><td>Elastance if useComplianceInput=false [Pa/m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization of medium composition</td></tr>
+<tr><td>massFractions_start[:]</td><td>* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1. [1]</td></tr>
+<tr><td>extraConcentration_start[Medium.nC]</td><td>Extra substance amounts per kilogram of solution</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>temperature_start</td><td>Initial temperature [K]</td></tr>
+<tr><td>use_mass_start</td><td>Use mass_start, otherwise volume_start</td></tr>
+<tr><td>volume_start</td><td>Total volume of solution start value [m3]</td></tr>
+<tr><td>mass_start</td><td>Total mass of solution start value [kg]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useSubstances</td><td>=true, if substance ports are used</td></tr>
+<tr><td>useThermalPort</td><td>Is thermal port pressent?</td></tr>
+<tr><td>useV0Input</td><td>=true, if zero-pressure-fluid_volume input is used</td></tr>
+<tr><td>useComplianceInput</td><td>=true, if compliance input is used</td></tr>
+<tr><td>useExternalPressureInput</td><td>=true, if external pressure input is used</td></tr>
+<tr><td>isExternalPressureAbsolute</td><td>External pressure as absolute pressure? Relative to ambient otherwise.</td></tr>
+<tr><td>useInternalSpaceInput</td><td>=true, if internal space input is used</td></tr>
+<tr><td>useElastanceInput</td><td>=true, if elastance input is used</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr><td>stateName</td><td>State name in input/output files</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Pressure-Volume relationship</td></tr>
+<tr><td>ResidualVolume</td><td>Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model [m3]</td></tr>
+<tr><td>useSigmoidCompliance</td><td>Sigmoid compliance e.g. lungs</td></tr>
+<tr><td>VitalCapacity</td><td>Relative volume capacity if useSigmoidCompliance [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Base value of tidal volume [m3]</td></tr>
+<tr><td>InternalSpace</td><td>Internal space if there is no pressure gradient [m3]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in[nPorts]</td><td>&nbsp;</td></tr>
+<tr><td>substances</td><td>&nbsp;</td></tr>
+<tr><td>heatPort</td><td>&nbsp;</td></tr>
+<tr><td>zeroPressureVolume</td><td>[m3]</td></tr>
+<tr><td>compliance</td><td>[m3/Pa]</td></tr>
+<tr><td>externalPressure</td><td>[Pa]</td></tr>
+<tr><td>fluidVolume</td><td>[m3]</td></tr>
+<tr><td>internalSpace</td><td>additional internal volume (e.g. another inserted compartment inside) [m3]</td></tr>
+<tr><td>elastance</td><td>[Pa/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE HydrostaticColumn<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo073cf5c760e693c0olumnI.png" alt="Physiolibrary.Fluid.Components.HydrostaticColumn" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.HydrostaticColumn"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.HydrostaticColumn</h2>
+<p>
+<span class="ModelicaDescription">Hydrostatic column pressure between two connectors (with specific muscle pump effect)</span>
+</p>
+<h3>Information</h3>
+
+<p>The hydrostatic pressure is proportional to height of the column.&nbsp;</p>
+<p>Archimedes law</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.HydrostaticGradient"
+>Physiolibrary.Icons.HydrostaticGradient</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort_UpDown"
+>Interfaces.OnePort_UpDown</a> (OnePort with different position of connectors).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>H</td><td>Height of hydrostatic column if useHeightInput=false [m]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useHeightInput</td><td>=true, if height input is used</td></tr>
+<tr><td>usePumpEffect</td><td>=true, if musce pump effect is used</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_up</td><td>Top site</td></tr>
+<tr><td>q_down</td><td>Bottom site</td></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>height</td><td>Vertical distance between top and bottom connector [m]</td></tr>
+<tr><td>pumpEffect</td><td>[1]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Inertia<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Components.InertiaI.png" alt="Physiolibrary.Fluid.Components.Inertia" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.Inertia"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.Inertia</h2>
+<p>
+<span class="ModelicaDescription">Inertia of the volumetric flow</span>
+</p>
+<h3>Information</h3>
+
+<p>Inertance I of the simple tube could be calculated as I=ro*l/A, where ro is fuid density, l is tube length and A is tube cross-section area.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Inertance"
+>Physiolibrary.Icons.Inertance</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>I</td><td>Inertance [Pa.s2/kg]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>massFlow_start</td><td>Mass flow start value [kg/s]</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE IdealValve<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo99a6fab8005d8002ValveI.png" alt="Physiolibrary.Fluid.Components.IdealValve" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.IdealValve"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.IdealValve</h2>
+<p>
+<span class="ModelicaDescription">Ideal valve</span>
+</p>
+<h3>Information</h3>
+
+<p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.IdealValve"
+>Icons.IdealValve</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>_Gon</td><td>Forward state-on conductance (open valve conductance) [m3/(Pa.s)]</td></tr>
+<tr><td>_Goff</td><td>Backward state-off conductance (closed valve conductance) [m3/(Pa.s)]</td></tr>
+<tr><td>Pknee</td><td>Forward threshold pressure [Pa]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useLimitationInputs</td><td>=true, if Gon and Goff are from inputs</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>Gon</td><td>open valve conductance = infinity for ideal case [m3/(Pa.s)]</td></tr>
+<tr><td>Goff</td><td>closed valve conductance = zero for ideal case [m3/(Pa.s)]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE IdealValveResistance<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo0bd0e0a9a17313fctanceI.png" alt="Physiolibrary.Fluid.Components.IdealValveResistance" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.IdealValveResistance"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.IdealValveResistance</h2>
+<p>
+<span class="ModelicaDescription">Ideal valve</span>
+</p>
+<h3>Information</h3>
+
+<p>Ideal Valve allows a volumetric flow in one direction in case of pressure gradient is greater. </p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components.IdealValve"
+>Physiolibrary.Fluid.Components.IdealValve</a> (Ideal valve).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>_Gon</td><td>Forward state-on conductance (open valve conductance) [m3/(Pa.s)]</td></tr>
+<tr><td>_Goff</td><td>Backward state-off conductance (closed valve conductance) [m3/(Pa.s)]</td></tr>
+<tr><td>Pknee</td><td>Forward threshold pressure [Pa]</td></tr>
+<tr><td>_Ron</td><td>Forward state resistance [(Pa.s)/m3]</td></tr>
+<tr><td>_Roff</td><td>Backward state-off resistance (closed valve resistance) [(Pa.s)/m3]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Initialization</td></tr>
+<tr><td>open</td><td>Switching state</td></tr>
+<tr><td>passableVariable</td><td>Auxiliary variable for actual position on the ideal diode characteristic [1]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useLimitationInputs</td><td>=true, if Gon and Goff are from inputs</td></tr>
+<tr><td>useResistanceInputs</td><td>=true, if Ron and Roff are from inputs</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>Gon</td><td>open valve conductance = infinity for ideal case [m3/(Pa.s)]</td></tr>
+<tr><td>Goff</td><td>closed valve conductance = zero for ideal case [m3/(Pa.s)]</td></tr>
+<tr><td>Ron</td><td>open valve resistancece = zero for ideal case [(Pa.s)/m3]</td></tr>
+<tr><td>Roff</td><td>closed valve resistance = infinity for ideal case [(Pa.s)/m3]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MassPump<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Components.MassPumpI.png" alt="Physiolibrary.Fluid.Components.MassPump" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.MassPump"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.MassPump</h2>
+<p>
+<span class="ModelicaDescription">Prescribed mass flow</span>
+</p>
+<h3>Information</h3>
+
+<p><font style="font-size: 9pt; ">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style="font-size: 9pt; ">hydraulic volume flow</font></b><font style="font-size: 9pt; "> variable, which is set to value of input signal variable. </font></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Pump"
+>Icons.Pump</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.ConditionalMassFlow"
+>Physiolibrary.Fluid.Interfaces.ConditionalMassFlow</a> (Input of solution mass flow vs. parametric solution mass flow).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>SolutionFlow</td><td>Mass flow of solution if useSolutionFlowInput=false [kg/s]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>solutionFlow</td><td>[kg/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE VolumePump<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Components.MassPumpI.png" alt="Physiolibrary.Fluid.Components.VolumePump" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.VolumePump"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.VolumePump</h2>
+<p>
+<span class="ModelicaDescription">Prescribed mass flow</span>
+</p>
+<h3>Information</h3>
+
+<p><font style="font-size: 9pt; ">This element needs to be connected only to next hydraulic elements, which contain calculation of hydraulic pressure in connector. It is because equation contains only </font><b><font style="font-size: 9pt; ">hydraulic volume flow</font></b><font style="font-size: 9pt; "> variable, which is set to value of input signal variable. </font></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Pump"
+>Icons.Pump</a>, <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.OnePort"
+>Physiolibrary.Fluid.Interfaces.OnePort</a> (Hydraulical OnePort), <a href="Physiolibrary_Fluid_Interfaces.html#Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow"
+>Physiolibrary.Fluid.Interfaces.ConditionalVolumeFlow</a> (Input of solution volume flow vs. parametric solution volume flow).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>SolutionFlow</td><td>Mass flow of solution if useSolutionFlowInput=false [m3/s]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useSolutionFlowInput</td><td>=true, if solution flow input is used instead of parameter SolutionFlow</td></tr>
+<tr class="ModelicaVariability::ParameterTab"><td colspan="2">Advanced</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Performance</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>q_in</td><td>Inflow</td></tr>
+<tr><td>q_out</td><td>Outflow</td></tr>
+<tr><td>solutionFlow</td><td>[m3/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Reabsorption<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compoc30b8e171d45b679ptionI.png" alt="Physiolibrary.Fluid.Components.Reabsorption" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.Reabsorption"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.Reabsorption</h2>
+<p>
+<span class="ModelicaDescription">Divide inflow to outflow and reabsorption</span>
+</p>
+<h3>Information</h3>
+
+<p><h4><font color="#008000">Hydraulic Reabsorption</font></h4></p>
+<p>If useOutflowMin=false then the next schema is used.</p>
+<p><ul>
+<li><img src="../Resources/Images/UserGuide/HydraulicReabsorption.png"/></li>
+</ul></p>
+<p><br/>If  useOutflowMin=true then the extended schema is used:</p>
+<p><ul>
+<li><img src="../Resources/Images/UserGuide/HydraulicReabsorptionWithOutflowMin.png"/></li>
+</ul></p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Reabsorption"
+>Physiolibrary.Icons.Reabsorption</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>OutflowMin</td><td>Minimal outflow if useExternalOutflowMin=false [m3/s]</td></tr>
+<tr class="ModelicaVariability::ParameterGroup"><td colspan="2">Conditional inputs</td></tr>
+<tr><td>useExternalOutflowMin</td><td>=true, if minimal outflow is garanted</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Medium</td><td>Medium model</td></tr>
+<tr><td>Inflow</td><td>&nbsp;</td></tr>
+<tr><td>Outflow</td><td>&nbsp;</td></tr>
+<tr><td>Reabsorption</td><td>&nbsp;</td></tr>
+<tr><td>FractReab</td><td>[1]</td></tr>
+<tr><td>outflowMin</td><td>[m3/s]</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BodyFluidMembrane<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Compo0ce17eba23b6629ebraneI.png" alt="Physiolibrary.Fluid.Components.BodyFluidMembrane" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Components.BodyFluidMembrane"></a><a href="Physiolibrary_Fluid_Components.html#Physiolibrary.Fluid.Components"
+>Physiolibrary.Fluid.Components</a>.BodyFluidMembrane</h2>
+<p>
+<span class="ModelicaDescription">Membrane for BodyFluid medium</span>
+</p>
+<h3>Information</h3>
+
+<p>Semipermeable membrane for substances of BodyFluid medium.</p>
+
+<p><span class="ModelicaBaseClass">Extends from <a href="Physiolibrary_Icons.html#Physiolibrary.Icons.Membrane"
+>Physiolibrary.Icons.Membrane</a>.</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+<tr><td>Permeabilities[BloodPlasma.nS]</td><td>Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O} [mol2.s-1.J-1]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package BloodPlasma</td><td>Medium model of blood plasma</td></tr>
+<tr><td>replaceable package Dialysate</td><td>Medium model of dialysate</td></tr>
+<tr><td>bodyFluid_b</td><td>&nbsp;</td></tr>
+<tr><td>bodyFluid_a</td><td>&nbsp;</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:21 2023.
+</address>
+</body>
+</html>

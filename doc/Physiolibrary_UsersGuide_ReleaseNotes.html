@@ -6,15 +6,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="&quot;Release notes&quot;">
 <style type="text/css">
-*       { font-size: 10pt; font-family: Arial, sans-serif; }
-.modelica, .modelica * { font-size: 9pt; font-family: Courier, monospace; white-space: pre; }
-h4      { font-size: 10pt; font-weight: bold; color: green; }
-h3      { font-size: 11pt; font-weight: bold; color: green; }
-h2      { font-size: 13pt; font-weight: bold; color: green; }
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
 address { font-weight: normal; }
-td      { border: 1px solid #808080; vertical-align: top; }
-th      { border: 1px solid #808080; vertical-align: top; font-weight: bold; }
-table   { border: 1px solid #808080; border-collapse: collapse; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
 </style>
 </head>
 <body>
@@ -24,84 +45,99 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes"></a><a href="Physiolibrary_UsersGuide.html#Physiolibrary.UsersGuide"
 >Physiolibrary.UsersGuide</a>.ReleaseNotes</h2>
-<p>
-</p>
 
 <p>This section summarizes the changes that have been performed on the Physiolibrary. </p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <h3>Package Content</h3>
-<table border="1" cellspacing="0" cellpadding="2" summary="Package Content">
+<table summary="Package Content" class="ModelicaTablePackageContent">
 <tr>
 <th>Name</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_3_0_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_3_0_0"
+>Version_3_0_0</a>
+</td>
+<td>Version 3.0.0 (Oct. 10, 2023)</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1"
 >Version_2_3_1</a>
 </td>
 <td>Version 2.3.1 (Sep. 15, 2015)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0"
 >Version_2_3_0</a>
 </td>
 <td>Version 2.3.0 (Feb. 16, 2015)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0"
 >Version_2_2_0</a>
 </td>
 <td>Version 2.2.0 (Sep. 06, 2014)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1"
 >Version_2_1_1</a>
 </td>
 <td>Version 2.1.1 (May. 02, 2014)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1"
 >Version_2_1</a>
 </td>
 <td>Version 2.1 (Feb. 28, 2014)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0"
 >Version_2_0</a>
 </td>
 <td>Version 2.0 (Jan. 26, 2014)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2"
 >Version_1_2</a>
 </td>
 <td>Version 1.2 (Jan 15, 2014)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1"
 >Version_1_1</a>
 </td>
 <td>Version 1.1 (Dec. 30, 2013)</td>
 </tr>
 <tr>
-<td><img src="Physiolibrary.UsersGuide.3fc96ad8f92734252_3_1S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0"
+<td><img src="Physiolibrary.UsersGuide.5156580df93738243_0_0S.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0"
 >Version_1_0</a>
 </td>
 <td>Version 1.0.0 (Dec. 09, 2013)</td>
 </tr>
 </table>
-<hr>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Version_3_0_0<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_3_0_0" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_3_0_0"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
+>Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_3_0_0</h2>
+
+<ul>
+<li> using Chemical 1.4 instead of Physiolibrary.Chemical and Physiolibrary.Osmotic</li>
+<li> support of Modelica.Fluid and Modelica.Media concept instead of Physiolibrary.Hydraulic</li>
+<li> model of Blood using blood plasma and red cells composition with Henderson-Hasselbalch;Hemoglobin-O2,CO2,H+,CO binding;Chloride shift;Osmosis</li>
+<li> support of modeling of respiratory and cardiovascular blood gases transport</li>
+<li> obsolete previous Physiolibrary steady state concept</li>
+</ul>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_3_1<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_3_1</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_1">
-</p>
 
 <ul>
 <li>Change of license to <a href="http://opensource.org/licenses/BSD-3-Clause">BSD</a>: </li>
@@ -117,18 +153,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li>Support of [Physiomodel 1.0.0] (https://github.com/physiology/Physiomodel/releases/tag/v1.0.0)</li>
 </ul>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_3_0<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_3_0</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_3_0">
-</p>
 
 <ul>
 <li><font style="color: #333333; ">New:</font></li>
@@ -156,18 +187,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </ul></li>
 </ul>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_2_0<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_2_0</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_2_0">
-</p>
 
 <ul>
 <li><font style="color: #333333; ">New:</font></li>
@@ -191,18 +217,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </ul></li>
 </ul>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_1_1<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_1_1</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1_1">
-</p>
 
 <ul>
 <li><font style="color: #333333; ">New:</font></li>
@@ -217,18 +238,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </ul></li>
 </ul>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_1<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_1</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_1">
-</p>
 
 <ul>
 <li><font style="color: #333333; ">Upgrade to MSL 3.2.1 (still compatible with MSL 3.2)</font></li>
@@ -252,18 +268,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 </ul></li>
 </ul>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_2_0<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_2_0</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_2_0">
-</p>
 
 <p><ul>
 <li><font style="color: #333333; ">Renamed classes</font></li>
@@ -273,18 +284,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li><font style="color: #333333; ">New icons and examples</font></li>
 </ul></p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_1_2<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_1_2</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_2">
-</p>
 
 <p><ul>
 <li><font style="color: #333333; ">Package structure Physiolibrary.{domain}.[Examples|Components|Sources|Interfaces].{component}</font></li>
@@ -293,18 +299,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li><font style="color: #333333; ">New examples: Guyton-Coleman-Granger cardiovascular model, Coleman thermal energy transfers</font></li>
 </ul></p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_1_1<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_1_1</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_1">
-</p>
 
 <p><ul>
 <li><font style="color: #333333; ">Heat connector compatibility between Thermal package and Modelica.Thermal.HeatTransfer package (MSL 3.2)</font></li>
@@ -313,18 +314,13 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li><font style="color: #333333; ">New examples</font></li>
 </ul></p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <!--[if supportFields]><span style="mso-element:field-begin"></span>
 <span style="mso-spacerun:yes"></span>XE Version_1_0<![endif]-->
 <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
 <h2><img src="Physiolibrary.UsersGuide.ReleaseNotesI.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0" align="right" style="border: 1px solid" width="80" height="80">
 <a name="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0"></a><a href="Physiolibrary_UsersGuide_ReleaseNotes.html#Physiolibrary.UsersGuide.ReleaseNotes"
 >Physiolibrary.UsersGuide.ReleaseNotes</a>.Version_1_0</h2>
-<p>
-<br><img src="Physiolibrary.UsersGuideD.png" alt="Physiolibrary.UsersGuide.ReleaseNotes.Version_1_0">
-</p>
 
 <p><ul>
 <li>migration to GITHub https://github.com/MarekMatejak/Physiolibrary from http://patf-biokyb.lf1.cuni.cz/repos/Modelica/Physiolibrary svn repository, commit 4947 </li>
@@ -336,11 +332,9 @@ table   { border: 1px solid #808080; border-collapse: collapse; }
 <li><font style="color: #333333; ">Support for expandable inputs/outputs/tests lists</font></li>
 </ul></p>
 
-<p>Extends from <a href="file:///C:/Program%20Files%20(x86)/Dymola%202015%20FD01/Modelica/Library/Modelica%203.2.1/help/Modelica_Icons.html#Modelica.Icons.ReleaseNotes"
->Modelica.Icons.ReleaseNotes</a> (Icon for release notes in documentation).</p>
-<hr>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ReleaseNotes (Icon for release notes in documentation).</span></p>
 <address>
-<a href="http://www.3ds.com/">Automatically generated</a> Tue Sep 15 22:52:14 2015.
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:17 2023.
 </address>
 </body>
 </html>

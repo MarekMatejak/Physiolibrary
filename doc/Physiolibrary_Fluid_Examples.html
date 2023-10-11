@@ -1,0 +1,516 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Physiolibrary.Fluid.Examples</title>
+<meta name="HTML-Generator" content="Dymola">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="&quot;Examples that demonstrate usage of the Pressure flow components&quot;">
+<style type="text/css">
+*       { font-size: 100%; font-family: Arial, sans-serif; }
+.modelica, .modelica * { font-size: 90%; font-family: Courier, monospace; white-space: pre; } /* For the Modelica code (in exported html). */
+h4      { font-size: 100%; font-weight: bold; color: green; } 
+h3      { font-size: 110%; font-weight: bold; color: green; }
+h2      { font-size: 130%; font-weight: bold; color: green; }
+address { font-weight: normal; }
+td      { padding: 2px; vertical-align: top; }
+th      { padding: 2px; vertical-align: top; font-weight: bold; }
+table   { border-collapse: collapse; }
+table[class^="ModelicaTable"] td { border: 1px solid #808080; }
+table[class^="ModelicaTable"] th { border: 1px solid #808080; }
+pre, code {font-family: "Courier New", monospace;}
+pre {white-space: pre; overflow-x : hidden;}
+.ModelicaDescription {font-weight: bold;} /* For the description string of the class. */
+.ModelicaBaseClass {} /* For the list of base-classes at the of the description. */
+.ModelicaKeyword { color: blue; font-weight: normal; font-style: normal; } /* Keywords in Modelica. */
+.ModelicaComment { color: #006400;  font-weight: normal; font-style: normal;} /* All three variants of comments in Modelica.  */
+.ModelicaString { color: #006400;  font-weight: normal; font-style: normal;} /* String constants. */
+.ModelicaClass { color: red; font-weight: normal; font-style: normal;} /* Formatting the names of referenced classes (for base-class and components). */
+.ModelicaFunction { color: red; font-weight: normal; font-style: normal;} /* Formatting for called functions. */
+.ModelicaTablePackageContent { } /* The table of contents for each package. */
+.ModelicaTableCrossReference { } /* The optional cross-reference table. */
+.ModelicaTableInputs {} /* The table of inputs for a function. */
+.ModelicaTableOutputs {} /* The table of outputs for a function. */
+.ModelicaTableParameters {} /* The table of parameters for a model/block. */
+.ModelicaTableConnectors {} /* The table of connectors for a model/block. */
+.ModelicaTableContents {} /* The table of contents for a connector. */
+.ModelicaStartAttribute { font-weight: bold; } /* The formatting used for start-attribute in the table of parameters, to separate them from parameter values. */
+.ModelicaParameterTab { background-color: #c0c0c0; font-weight: bold; } /* The tab-heading in the table of parameters */
+.ModelicaParameterGroup { background-color: #e0e0e0; } /* The group-heading in the table of parameters */
+</style>
+</head>
+<body>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Examples<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><a name="Physiolibrary.Fluid.Examples"></a><a href="Physiolibrary_Fluid.html#Physiolibrary.Fluid"
+>Physiolibrary.Fluid</a>.Examples</h2>
+<p>
+<span class="ModelicaDescription">Examples that demonstrate usage of the Pressure flow components</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.ExamplesPackage (Icon for packages containing runnable examples).</span></p>
+<h3>Package Content</h3>
+<table summary="Package Content" class="ModelicaTablePackageContent">
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.MinimalCirculation" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.MinimalCirculation"
+>MinimalCirculation</a>
+</td>
+<td>Minimal circulation models driven by cardiac output</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.Windkessel_2element" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.Windkessel_2element"
+>Windkessel_2element</a>
+</td>
+<td>Two-element Windkessel model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.Windkessel_3element" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.Windkessel_3element"
+>Windkessel_3element</a>
+</td>
+<td>Three-element windkessel model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.Windkessel_4element" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.Windkessel_4element"
+>Windkessel_4element</a>
+</td>
+<td>Four-element windkessel model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.CardiovascularSystem_GCG" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.CardiovascularSystem_GCG"
+>CardiovascularSystem_GCG</a>
+</td>
+<td>Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examples.UtilitiesS.png" alt="Physiolibrary.Fluid.Examples.Utilities" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Utilities.html#Physiolibrary.Fluid.Examples.Utilities"
+>Utilities</a>
+</td>
+<td>Utility components used by package Examples</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp21ed13fadf1b9ec4k2014S.png" alt="Physiolibrary.Fluid.Examples.Kofranek2014" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Kofranek2014.html#Physiolibrary.Fluid.Examples.Kofranek2014"
+>Kofranek2014</a>
+</td>
+<td>Models of cardiovascular system used in www.physiome.cz/atlas</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp21ed13fadf1b9ec4k2014S.png" alt="Physiolibrary.Fluid.Examples.Fernandez2013" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Fernandez2013.html#Physiolibrary.Fluid.Examples.Fernandez2013"
+>Fernandez2013</a>
+</td>
+<td>Model of CVS introduced by Fernandez de Canete et al. 2013</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp21ed13fadf1b9ec4k2014S.png" alt="Physiolibrary.Fluid.Examples.MeursModel2011" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_MeursModel2011.html#Physiolibrary.Fluid.Examples.MeursModel2011"
+>MeursModel2011</a>
+</td>
+<td>Models of cardiovascular system used in www.physiome.cz/atlas</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp21ed13fadf1b9ec4k2014S.png" alt="Physiolibrary.Fluid.Examples.Dialysis" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_Dialysis.html#Physiolibrary.Fluid.Examples.Dialysis"
+>Dialysis</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.AirWaterSaturation" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.AirWaterSaturation"
+>AirWaterSaturation</a>
+</td>
+<td>Human respiration model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.BloodGasesEquilibrium" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.BloodGasesEquilibrium"
+>BloodGasesEquilibrium</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.MinimalRespiration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.MinimalRespiration"
+>MinimalRespiration</a>
+</td>
+<td>Minimal respiration model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.MeanRespiration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.MeanRespiration"
+>MeanRespiration</a>
+</td>
+<td>Non-oscilating ventilation model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Exampc1c1b08e0af1aa28sportS.png" alt="Physiolibrary.Fluid.Examples.BloodGasesTransport" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples_BloodGasesTransport.html#Physiolibrary.Fluid.Examples.BloodGasesTransport"
+>BloodGasesTransport</a>
+</td>
+<td>Transport of O2 and CO2 through respiration and circulation in human body</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.SimpleRespiration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.SimpleRespiration"
+>SimpleRespiration</a>
+</td>
+<td>Human respiration model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationS.png" alt="Physiolibrary.Fluid.Examples.Respiration" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.Respiration"
+>Respiration</a>
+</td>
+<td>Human respiration model</td>
+</tr>
+<tr>
+<td><img src="Physiolibrary.Fluid.Examp67872a66ecbda213braneS.png" alt="Physiolibrary.Fluid.Examples.CapillaryMembrane" width="20" height="20" align="top">&nbsp;<a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples.CapillaryMembrane"
+>CapillaryMembrane</a>
+</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MinimalCirculation<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.MinimalCirculation" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.MinimalCirculation"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.MinimalCirculation</h2>
+<p>
+<span class="ModelicaDescription">Minimal circulation models driven by cardiac output</span>
+</p>
+<h3>Information</h3>
+
+<p>Minimal circulation driven by cardiac output.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Windkessel_2element<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.Windkessel_2element" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Windkessel_2element"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.Windkessel_2element</h2>
+<p>
+<span class="ModelicaDescription">Two-element Windkessel model</span>
+</p>
+<h3>Information</h3>
+
+	<p>Two-element windkessel model consisting of resistance and compliance element.</p>
+	<ul>
+	<li>Frank O (1899) Die Grundform des arteriellen Pulses. Z Biol 37:483&ndash;526</li>
+	<li>Westerhof, N., Lankhaar, J.-W., &amp; Westerhof, B. E. (2009). The arterial Windkessel. <i>Medical &amp; Biological Engineering &amp; Computing</i>, <i>47</i>(2), 131&ndash;41. doi:10.1007/s11517-008-0359-2</li>
+	<li><a href="http://en.wikipedia.org/wiki/Windkessel_effect">http://en.wikipedia.org/wiki/Windkessel_effect</a></li>
+	</ul>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Windkessel_3element<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.Windkessel_3element" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Windkessel_3element"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.Windkessel_3element</h2>
+<p>
+<span class="ModelicaDescription">Three-element windkessel model</span>
+</p>
+<h3>Information</h3>
+
+	<p>Three-element windkessel model, updated two-element windkessel model with an impedance element. Impedance can be approximated by resistance.</p>
+	<ul>
+	<li>Westerhof N, Elzinga G (1991) Normalized input impedance and arterial decay time over heart period are independent of animal size. Am J Physiol 261:R126&ndash;R133</li>
+	<li>Westerhof, N., Lankhaar, J.-W., &amp; Westerhof, B. E. (2009). The arterial Windkessel. <i>Medical &amp; Biological Engineering &amp; Computing</i>, <i>47</i>(2), 131&ndash;41. doi:10.1007/s11517-008-0359-2</li>
+	</ul>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Windkessel_4element<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.Windkessel_4element" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Windkessel_4element"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.Windkessel_4element</h2>
+<p>
+<span class="ModelicaDescription">Four-element windkessel model</span>
+</p>
+<h3>Information</h3>
+
+	<p>Four-element windkessel model, updated three-element windkessel model with an inertia element. </p>
+	<ul>
+	<li>Stergiopulos N, Westerhof BE, Westerhof N (1999) Total arterial inertance as the fourth element of the windkessel model. Am J Physiol 276:H81&ndash;H88</li>
+	<li>Westerhof, N., Lankhaar, J.-W., &amp; Westerhof, B. E. (2009). The arterial Windkessel. <i>Medical &amp; Biological Engineering &amp; Computing</i>, <i>47</i>(2), 131&ndash;41. doi:10.1007/s11517-008-0359-2</li>
+	</ul>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE CardiovascularSystem_GCG<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.CardiovascularSystem_GCG" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.CardiovascularSystem_GCG"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.CardiovascularSystem_GCG</h2>
+<p>
+<span class="ModelicaDescription">Cardiovascular part of Guyton-Coleman-Granger&#39;s model from 1972</span>
+</p>
+<h3>Information</h3>
+
+	<p>Cardiovascular subsystem in famous Guyton-Coleman-Granger model from 1972. </p>
+	<p><br/>Model, all parameters and all initial values are from article: </p>
+	<p>A.C. Guyton, T.G. Coleman, H.J. Granger (1972). &quot;Circulation: overall regulation.&quot; Annual review of physiology 34(1): 13-44.</p>
+	
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE AirWaterSaturation<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.AirWaterSaturation" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.AirWaterSaturation"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.AirWaterSaturation</h2>
+<p>
+<span class="ModelicaDescription">Human respiration model</span>
+</p>
+<h3>Information</h3>
+
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>TotalResistance</td><td>Total lungs pathways resistance [(Pa.s)/m3]</td></tr>
+<tr><td>BronchiResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>AlveoliDuctResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistance</td><td>Left Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>TotalCompliance</td><td>Total lungs compliance [m3/Pa]</td></tr>
+<tr><td>CoreTemperature</td><td>body temperature [K]</td></tr>
+<tr><td>EnvironmentTemperature</td><td>external air temperature [K]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE BloodGasesEquilibrium<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.BloodGasesEquilibrium" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.BloodGasesEquilibrium"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.BloodGasesEquilibrium</h2>
+<h3>Information</h3>
+
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src="../Resources/Images/Examples/BloodGasesEquilibrium.bmp"/></p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MinimalRespiration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.MinimalRespiration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.MinimalRespiration"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.MinimalRespiration</h2>
+<p>
+<span class="ModelicaDescription">Minimal respiration model</span>
+</p>
+<h3>Information</h3>
+
+        <p>References:</p>
+        <p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+        
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>RespirationRate</td><td>Respiration rate [Hz]</td></tr>
+<tr><td>ResidualVolume</td><td>Lungs residual volume [m3]</td></tr>
+<tr><td>FunctionalResidualCapacity</td><td>Functional residual capacity [m3]</td></tr>
+<tr><td>TotalResistance</td><td>Total lungs pathways conductance [(Pa.s)/m3]</td></tr>
+<tr><td>TotalCompliance</td><td>Total lungs compliance [m3/Pa]</td></tr>
+<tr><td>Pmin</td><td>Relative external lungs pressure minimum caused by respiratory muscles [Pa]</td></tr>
+<tr><td>Pmax</td><td>Relative external lungs pressure maximum [Pa]</td></tr>
+<tr><td>RespiratoryMusclePressureCycle[:, 3]</td><td>External lungs pressure during respiration cycle scaled to time period (0,1)</td></tr>
+<tr><td>LungsAirVolume_initial</td><td>[m3]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE MeanRespiration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.MeanRespiration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.MeanRespiration"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.MeanRespiration</h2>
+<p>
+<span class="ModelicaDescription">Non-oscilating ventilation model</span>
+</p>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>RR</td><td>Respiration rate [Hz]</td></tr>
+<tr><td>TV</td><td>Tidal volume [m3]</td></tr>
+<tr><td>DV</td><td>Dead space volume [m3]</td></tr>
+<tr><td>CO</td><td>Cardiac output [m3/s]</td></tr>
+<tr><td>cTotalVentilation</td><td>[m3/(Pa.s)]</td></tr>
+<tr><td>alveolarVolume_start</td><td>initial volume of air in alveoli [m3]</td></tr>
+<tr><td>alveolarV0</td><td>volume of air in alveoli, which does not generate air pressure [m3]</td></tr>
+<tr><td>lungCapyVolume_start</td><td>initial volume of blood in alveolar capillaries [m3]</td></tr>
+<tr><td>lungCapyV0</td><td>volume of blood in alveolar capillaries, which does not generate blood pressure [m3]</td></tr>
+<tr><td>tissueBloodVolume_start</td><td>initial volume of blood in tissues [m3]</td></tr>
+<tr><td>tissueV0</td><td>volume of blood in tissues, which does not generate blood pressure [m3]</td></tr>
+<tr><td>O2_consumption</td><td>Tissue consumption of O2 by metabolism [mol/s]</td></tr>
+<tr><td>CO2_production</td><td>Tissue production of CO2 by metabolism [mol/s]</td></tr>
+<tr><td>TotalSystemicConductance</td><td>Total systemic blood circulation conductance [m3/(Pa.s)]</td></tr>
+<tr><td>NA</td><td>Number of pulmonary alveolar units</td></tr>
+<tr><td>NT</td><td>Number of systemic tissue units</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE SimpleRespiration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.SimpleRespiration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.SimpleRespiration"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.SimpleRespiration</h2>
+<p>
+<span class="ModelicaDescription">Human respiration model</span>
+</p>
+<h3>Information</h3>
+
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+<tr><td>O2_consumption</td><td>Tissue consumption of O2 by metabolism [mol/s]</td></tr>
+<tr><td>CO2_production</td><td>Tissue production of CO2 by metabolism [mol/s]</td></tr>
+<tr><td>EnthalpyNotUsed</td><td>&nbsp;</td></tr>
+<tr><td>IntrathoraxPressure</td><td>Intrathorax pressure relative to ambient pressure [Pa]</td></tr>
+<tr><td>RespirationRate</td><td>Respiration rate [Hz]</td></tr>
+<tr><td>ResidualVolume</td><td>Lungs residual volume [m3]</td></tr>
+<tr><td>TotalLungCapacity</td><td>Total Lung Capacity [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Base Tidal Volume [m3]</td></tr>
+<tr><td>LungsAirVolume_initial</td><td>Initial volume of alveolar space [m3]</td></tr>
+<tr><td>PleuralFluidVolume_initial</td><td>Initial volume of pleural fluid volume [m3]</td></tr>
+<tr><td>PleuralCavityVolume_initial</td><td>Initial volume of pleural cavity [m3]</td></tr>
+<tr><td>FunctionalResidualCapacity</td><td>Functional residual capacity [m3]</td></tr>
+<tr><td>TotalResistance</td><td>Total lungs pathways resistance [(Pa.s)/m3]</td></tr>
+<tr><td>BronchiResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>AlveoliDuctResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistance</td><td>Left Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>LeftBronchiResistance</td><td>Left Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>LeftAlveoliResistance</td><td>Left Alveoli Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>RightBronchiResistance</td><td>Right Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>RightAlveoliResistance</td><td>Right Alveoli Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>TotalCompliance</td><td>Total lungs compliance [m3/Pa]</td></tr>
+<tr><td>Pmin</td><td>Negative pressure gradient caused by respiratory muscles [Pa]</td></tr>
+<tr><td>Pmax</td><td>Positive presure gradient caused by respiratory muscles [Pa]</td></tr>
+<tr><td>RespiratoryMusclePressureCycle[:, 3]</td><td>Absolute external lungs pressure during respiration cycle scaled to time period (0,1)</td></tr>
+<tr><td>CoreTemperature</td><td>body temperature [K]</td></tr>
+<tr><td>EnvironmentTemperature</td><td>external air temperature [K]</td></tr>
+<tr><td>m_initial</td><td>[kg]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE Respiration<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp0d2f23005d001867ationI.png" alt="Physiolibrary.Fluid.Examples.Respiration" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.Respiration"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.Respiration</h2>
+<p>
+<span class="ModelicaDescription">Human respiration model</span>
+</p>
+<h3>Information</h3>
+
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+<tr><td>IntrathoraxPressure</td><td>[Pa]</td></tr>
+<tr><td>RespirationRate</td><td>Respiration rate [Hz]</td></tr>
+<tr><td>ResidualVolume</td><td>Lungs residual volume [m3]</td></tr>
+<tr><td>TotalLungCapacity</td><td>Total Lung Capacity [m3]</td></tr>
+<tr><td>BaseTidalVolume</td><td>Base Tidal Volume [m3]</td></tr>
+<tr><td>LungsAirVolume_initial</td><td>Initial volume of alveolar space [m3]</td></tr>
+<tr><td>pleuralVolume_initial</td><td>Initial volume of pleural fluid [m3]</td></tr>
+<tr><td>FunctionalResidualCapacity</td><td>Functional residual capacity [m3]</td></tr>
+<tr><td>TotalResistance</td><td>Total lungs pathways resistance [(Pa.s)/m3]</td></tr>
+<tr><td>BronchiResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>AlveoliDuctResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistanceFraction</td><td>&nbsp;</td></tr>
+<tr><td>TracheaResistance</td><td>Left Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>LeftBronchiResistance</td><td>Left Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>LeftAlveoliResistance</td><td>Left Alveoli Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>RightBronchiResistance</td><td>Right Bronchi Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>RightAlveoliResistance</td><td>Right Alveoli Resistance [(Pa.s)/m3]</td></tr>
+<tr><td>TotalCompliance</td><td>Total lungs compliance [m3/Pa]</td></tr>
+<tr><td>Pmin</td><td>Relative external lungs pressure minimum caused by respiratory muscles [Pa]</td></tr>
+<tr><td>Pmax</td><td>Relative external lungs pressure maximum [Pa]</td></tr>
+<tr><td>RespiratoryMusclePressureCycle[:, 3]</td><td>Absolute external lungs pressure during respiration cycle scaled to time period (0,1)</td></tr>
+<tr><td>CoreTemperature</td><td>body temperature [K]</td></tr>
+<tr><td>EnvironmentTemperature</td><td>external air temperature [K]</td></tr>
+<tr><td>m_initial</td><td>[kg]</td></tr>
+<tr><td>RelaxedLungsCavitySpace</td><td>[m3]</td></tr>
+<tr><td>LeftLungsSizeFraction</td><td>[1]</td></tr>
+<tr><td>RightLungsSizeFraction</td><td>[1]</td></tr>
+<tr><td>LeftPleuralSizeFraction</td><td>[1]</td></tr>
+<tr><td>RightPleuralSizeFraction</td><td>[1]</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Air</td><td>&nbsp;</td></tr>
+<tr><td>replaceable package PleuralFluid</td><td>&nbsp;</td></tr>
+</table>
+<!--[if supportFields]><span style="mso-element:field-begin"></span>
+<span style="mso-spacerun:yes"></span>XE CapillaryMembrane<![endif]-->
+<!--[if supportFields]><span style="mso-element:field-end"></span><![endif]-->
+<h2><img src="Physiolibrary.Fluid.Examp67872a66ecbda213braneI.png" alt="Physiolibrary.Fluid.Examples.CapillaryMembrane" align="right" style="border: 1px solid" width="80" height="80">
+<a name="Physiolibrary.Fluid.Examples.CapillaryMembrane"></a><a href="Physiolibrary_Fluid_Examples.html#Physiolibrary.Fluid.Examples"
+>Physiolibrary.Fluid.Examples</a>.CapillaryMembrane</h2>
+<h3>Information</h3>
+<p><span class="ModelicaBaseClass">Extends from Modelica.Icons.Example (Icon for runnable examples).</span></p>
+<h3>Parameters</h3>
+<table summary="Parameters" class="ModelicaTableParameters">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<h3>Connectors</h3>
+<table summary="Connectors" class="ModelicaTableConnectors">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>replaceable package Blood</td><td>&nbsp;</td></tr>
+</table>
+<address>
+<a href="http://www.3ds.com/">Automatically generated</a> Wed Oct 11 14:54:22 2023.
+</address>
+</body>
+</html>
