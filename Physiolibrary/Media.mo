@@ -445,7 +445,7 @@ package Media "Models of physiological fluids"
 
         Types.MassFraction expected_XCl_E,expected_XH2O_E;
 
-        Real aCO2_P,aCO2_E,cCO2_P,cCO2_E,cCO2_B,expected_tCO2_P,expected_tCO2_E;
+        Real atCO2_P,atCO2_E,ctCO2_P,ctCO2_E,ctCO2_B,expected_tCO2_P,expected_tCO2_E;
 
         Modelica.Units.SI.MoleFraction aNa_P,aK_P,aSO4_P,aPO4_P,aOH_P, pK_WaterSelfIonization,
         pOH=-log10(aOH_P), pHpOH=bloodGases.pH+pOH;
@@ -464,7 +464,8 @@ package Media "Models of physiological fluids"
       aCO2 = bloodGases.pCO2/p;
       aCO = bloodGases.pCO/p;
       aH_plus = 10^(-bloodGases.pH);
-      //aOH_P*aH_plus/aH2O_P = exp((/)/(Modelica.Constants.R*T))
+
+      //bloodGases.sCO2*
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity(state));
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
@@ -478,15 +479,15 @@ package Media "Models of physiological fluids"
       Cl_Ery2Plasma = KC_Cl*(Modelica.Constants.R*T*log((aCl_E/aCl_P)*(aHCO3/aHCO3_E))) "Chloride shift";
       expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.MolarWeight*hct "Debug of chloride shift rate";
 
-      state.X[i("CO2_P")] = (aCO2_P*x_P)*CO2.MolarWeight*pct;
-      state.X[i("CO2_E")] = (aCO2_E*x_E)*CO2.MolarWeight*hct;
+      state.X[i("CO2_P")] = (atCO2_P*x_P)*CO2.MolarWeight*pct;
+      state.X[i("CO2_E")] = (atCO2_E*x_E)*CO2.MolarWeight*hct;
       //expected:
       expected_tCO2_P = bloodGases.tCO2_P;
       expected_tCO2_E = bloodGases.tCO2_ery;
-      cCO2_P=(aCO2_P*x_P)*plasmaDensity(state);
-      CO2_Ery2Plasma = - KC_CO2*(Modelica.Constants.R*T*log(aCO2_P/(bloodGases.tCO2_P/(x_P*plasmaDensity(state)))));
-      cCO2_E=(aCO2_E*x_E)*formedElementsDensity(state);
-      cCO2_B= tCO2(state);
+      ctCO2_P=(atCO2_P*x_P)*plasmaDensity(state);
+      CO2_Ery2Plasma = - KC_CO2*(Modelica.Constants.R*T*log(atCO2_P/(bloodGases.tCO2_P/(x_P*plasmaDensity(state)))));
+      ctCO2_E=(atCO2_E*x_E)*formedElementsDensity(state);
+      ctCO2_B= tCO2(state);
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
@@ -978,7 +979,7 @@ package Media "Models of physiological fluids"
       cdCO2*10^(pH - pK) = cHCO3;
 
       tCO2_P = cHCO3 + cdCO2;
-      tCO2_ery = aCO2_ery*pCO2*(1 + 10^(pH_ery - pK_ery));
+      tCO2_ery = aCO2_ery*pCO2*(1 + 10^(pH_ery - pK_ery)) + sCO2*ceHb;
       cHCO3_E = aCO2_ery*pCO2*(10^(pH_ery - pK_ery));
       _tCO2 = tCO2_ery*Hct + tCO2_P*(1 - Hct);
 

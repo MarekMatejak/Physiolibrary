@@ -12,10 +12,11 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
   annotation (
     preferredView = "info",
-    version = "3.0.0",
+    version = "3.1.0-alpha",
     versionDate = "2023-10-10",
     dateModified = "2023-10-10 1:00:00Z",
-    uses(Modelica(version = "4.0.0"), Complex(version = "4.0.0"), Chemical(version = "1.4.0")),
+    uses(Modelica(version = "4.0.0"), Complex(version = "4.0.0"),
+      Chemical(version="1.5.0-alpha")),
     conversion(
       from(version = "BioChem-1.0.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos", to = "3.0.0"),
       from(version = "0.4980", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos", to = "3.0.0"),
