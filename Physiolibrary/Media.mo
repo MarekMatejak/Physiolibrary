@@ -8,7 +8,7 @@ package Media "Models of physiological fluids"
 
     extends Media.Interfaces.PartialMedium(
       mediumName = "Blood",
-      substanceNames={"H2O_P","H2O_E","O2","CO2_P","CO2_E","CO","eHb","MetHb","HbF","Alb","Glb","PO4","DPG",
+      substanceNames={"H2O_P","H2O_E","O2","CO2_P","CO2_E","CO","eHb","MetHb","HbF","Alb","Glb","PO4","SO4_P","DPG",
         "Glucose","Lactate","Urea","AminoAcids","Lipids","KetoAcids",
         "Na_P","K_P","Na_E","K_E","Cl_P","Cl_E",
         "Epinephrine", "Norepinephrine","Vasopressin",
@@ -38,20 +38,23 @@ package Media "Models of physiological fluids"
         nominal=310.15));
 
     constant Types.MassFraction ArterialDefault[nS]={
-    0.47397342,0.2602675,0.00024730066,0.00060022215,0.00028510197,4.0067286e-11,0.13012053,
-    0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,
+    0.47412413,0.2601168,0.00024730066,0.00060046016,0.00028486399,4.0067286e-11,0.12881933,
+    0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,7.125722e-06,0.0005979338,0.00058174727,
     4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,
-    6.699073e-05,0.0015625204,0.0018235744,0.0008487089,2.1192053e-11,1.2715232e-10,1.0567206e-12,
+    6.699073e-05,0.0015625204,0.001824165,0.00084811833,2.1192053e-11,1.2715232e-10,1.0567206e-12,
     3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,
-    7.12053e-15,6.301733e-11,0.025162973,0.061655864} "Default mass fraction in arterial blood";
+    7.12053e-15,6.301733e-11,0.025004309,0.06310861} "Default mass fraction in arterial blood";
+
+
 
     constant Types.MassFraction VenousDefault[nS]={
-    0.47057825,0.26366264,0.0001659035,0.00065897073,0.00033050895,4.0067286e-11,0.13012053,
-    0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,0.0005979338,0.00058174727,
+    0.47074193,0.26349896,0.0001659035,0.00065926806,0.00033021162,4.0067286e-11,0.12881933,
+    0.0006506026,0.0006506026,0.023240043,0.0148344375,7.7006625e-06,7.125722e-06,0.0005979338,0.00058174727,
     4.9633483e-05,0.00021128391,0.00026331126,0.0005255277,2.637139e-06,0.0016869484,8.2860926e-05,
-    6.699073e-05,0.0015625204,0.0017914142,0.00088086916,2.1192053e-11,1.2715232e-10,1.0567206e-12,
+    6.699073e-05,0.0015625204,0.001792111,0.0008801724,2.1192053e-11,1.2715232e-10,1.0567206e-12,
     3.675887e-10,3.6916557e-11,5.978278e-11,4.2172186e-08,4.2172186e-09,5.298013e-15,1.0596027e-11,
-    7.12053e-15,6.301733e-11,0.028531536,0.05826454} "Default mass fraction in venous blood";
+    7.12053e-15,6.301733e-11,0.028359752,0.059730403} "Default mass fraction in venous blood";
+
 
     constant Types.MassFraction CDefault[nC]={
     1e-20,1e-20,1e-06};
@@ -67,6 +70,7 @@ package Media "Models of physiological fluids"
            state.X[i("Glb")] +
            state.X[i("Glucose")] +
            state.X[i("PO4")] +
+           state.X[i("SO4_P")] +
            state.X[i("Lactate")] +
            state.X[i("Urea")] +
            state.X[i("AminoAcids")] +
@@ -108,6 +112,7 @@ package Media "Models of physiological fluids"
      state.X[i("Glb")]/Constants.MM_Glb +
      state.X[i("Glucose")]/Constants.MM_Glucose +
      state.X[i("PO4")]/PO4.MolarWeight +
+     state.X[i("SO4_P")]/SO4.MolarWeight +
      state.X[i("Lactate")]/Constants.MM_Lactate +
      state.X[i("Urea")]/Constants.MM_Urea +
      state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
@@ -171,12 +176,14 @@ package Media "Models of physiological fluids"
               tCO2 = D_Arterial_CO2 "Total carbon dioxide in blood",
               tCO = D_CO "Total carbon monoxide in blood",
               tHb = D_Hb "Total hemoglobin in blood";
+
       Types.Fraction FMetHb=D_MetHb/D_Hb "Methemoglobin fraction",
               FHbF=D_HbF/D_Hb "Foetal hemoglobin fraction";
       Types.Concentration tAlb = D_Alb "Total albumin in blood plasma";
       Types.MassConcentration tGlb = D_Glb "Total globulin in blood plasma";
 
       Types.Concentration tPO4 = D_PO4 "Total inorganic phosphate in blood plasma",
+              tSO4 = D_SO4 "Total inorganic sulphate in blood plasma",
               cDPG = D_DPG "Diphosphoglycerate in red cells",
               glucose = D_Glucose "Glucose in blood plasma",
               lactate = D_Lactate "Lactate in blood plasma",
@@ -233,11 +240,12 @@ package Media "Models of physiological fluids"
         Types.MassFraction pct "Plasmacrit [kg/kg]";
         Types.MassFraction hct "Hematocrit [kg/kg]";
 
-        Modelica.Units.SI.Molality fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
+       // Modelica.Units.SI.Molality fH2O_P "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
         Modelica.Units.SI.Molality x_P(start=1.2) "Amount of free particles in 1 kg of blood plasma [mol/kg]";
         Modelica.Units.SI.Molality x_E(start=0.86) "Amount of free particles in 1 kg of blood erythrocytes [mol/kg]";
 
-        Types.MoleFraction aH2O_P,aH2O_E, aCl_P, aCl_E, aHCO3, aHCO3_E;
+        Types.MoleFraction aH2O_P,aH2O_E;
+        Types.MoleFraction  aCl_P, aCl_E, aHCO3, aHCO3_E;
         Types.Concentration H2O_plasma(start=D_BloodPlasmaWater) "Water in blood plasma";
         Types.Concentration H2O_ery(start=D_BloodFormedElementsWater) "Water in blood red cells";
 
@@ -266,6 +274,7 @@ package Media "Models of physiological fluids"
       X[i("Alb")] = plasmacrit*(tAlb*Constants.MM_Alb)/density;
       X[i("Glb")] = plasmacrit*tGlb/density;
       X[i("PO4")] = plasmacrit*(tPO4*PO4.MolarWeight)/density;
+      X[i("SO4_P")] = plasmacrit*(tSO4*SO4.MolarWeight)/density;
       X[i("DPG")] = hematocrit*(cDPG*Constants.MM_DPG)/density;
       X[i("Glucose")] = plasmacrit*(glucose*Constants.MM_Glucose)/density;
       X[i("Lactate")] = plasmacrit*(lactate*Constants.MM_Lactate)/density;
@@ -304,13 +313,11 @@ package Media "Models of physiological fluids"
 
       aH2O_P = aH2O_E "osmolarity";
 
-      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) / (pct*x_P);
-      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) / (hct*x_E);
+      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule((state.X[i("H2O_P")]/pct)*1,x_P*1,Substances.Water,T,p,v) / (pct*x_P);
+      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule((state.X[i("H2O_E")]/hct)*1,x_E*1,Substances.Water,T,p,v) / (hct*x_E);
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
-
-      fH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v)/pct  "Amount of free H2O particles in 1 kg of blood plasma [mol/kg]";
 
       x_P =plasmaSpecificAmountOfParticles(
           state,
@@ -356,7 +363,10 @@ package Media "Models of physiological fluids"
          Chemical.Interfaces.SubstancePort_a CO "Free carbon monoxide moelcule";
          Chemical.Interfaces.SubstancePort_a HCO3 "Free bicarbonate molecule";
          Chemical.Interfaces.SubstancePort_a H "Free protons";
+         Chemical.Interfaces.SubstancePort_a OH "Free hydroxide";
          Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
+
+         Chemical.Interfaces.SubstancePort_a Na,K,Cl,SO4,PO4;
 
          Chemical.Interfaces.SubstancePort_a Glucose,Lactate,Urea,AminoAcids,Lipids,KetoAcids;
 
@@ -436,6 +446,11 @@ package Media "Models of physiological fluids"
         Types.MassFraction expected_XCl_E,expected_XH2O_E;
 
         Real aCO2_P,aCO2_E,cCO2_P,cCO2_E,cCO2_B,expected_tCO2_P,expected_tCO2_E;
+
+        Modelica.Units.SI.MoleFraction aNa_P,aK_P,aSO4_P,aPO4_P,aOH_P, pK_WaterSelfIonization,
+        pOH=-log10(aOH_P), pHpOH=bloodGases.pH+pOH;
+
+         Real massH2O_P, massH2O_E, nSolution_P, nSolution_E;
     equation
 
 
@@ -449,11 +464,17 @@ package Media "Models of physiological fluids"
       aCO2 = bloodGases.pCO2/p;
       aCO = bloodGases.pCO/p;
       aH_plus = 10^(-bloodGases.pH);
+      //aOH_P*aH_plus/aH2O_P = exp((/)/(Modelica.Constants.R*T))
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity(state));
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
-      state.X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of Cl- in blood";
-      state.X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood";
+      state.X[i("Na_P")] = (aNa_P*x_P)*Na.MolarWeight*pct "Mass fraction of Na+ in blood plasma";
+      state.X[i("K_P")] = (aK_P*x_P)*K.MolarWeight*pct "Mass fraction of K+ in blood plasma";
+      state.X[i("SO4_P")] = (aSO4_P*x_P)*SO4.MolarWeight*pct "Mass fraction of SO4-- in blood plasma";
+      state.X[i("PO4")] = (aPO4_P*x_P)*PO4.MolarWeight*pct "Mass fraction of PO4--- in blood plasma";
+
+      state.X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of Cl- in blood plasma";
+      state.X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood red cells";
       Cl_Ery2Plasma = KC_Cl*(Modelica.Constants.R*T*log((aCl_E/aCl_P)*(aHCO3/aHCO3_E))) "Chloride shift";
       expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.MolarWeight*hct "Debug of chloride shift rate";
 
@@ -470,10 +491,17 @@ package Media "Models of physiological fluids"
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
 
-      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v);
-      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v);
+
+      state.X[i("H2O_P")] = massH2O_P*pct;
+      state.X[i("H2O_E")] = massH2O_E*hct;
+      nSolution_P = x_P;
+      nSolution_E = x_E;
+
+
+      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_P,nSolution_P,Substances.Water,T,p,v);
+      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_E,nSolution_E,Substances.Water,T,p,v);
       H2O_Ery2Plasma = KC_H2O*(Modelica.Constants.R*T*log(aH2O_E/aH2O_P)) "Osmolarity equilibration rate";
-      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,p,v) "Debug of osmolarity equilibration";
+      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_E,nSolution_E,Substances.Water,T,p,v) "Debug of osmolarity equilibration";
 
 
       x_P =plasmaSpecificAmountOfParticles(state);
@@ -547,6 +575,89 @@ package Media "Models of physiological fluids"
           p,
           v);
       substances.H.h_outflow = 0;
+
+      //just for debug (should be the same as pHpOH):
+      pK_WaterSelfIonization = -log10(exp((Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+              Substances.Water, T, p, v)
+              + Modelica.Constants.R*T*log(
+                (Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_P,nSolution_P,Substances.Water, T, p, v)
+                * massH2O_P)/nSolution_P)
+              - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.OH, T, p, v)
+              - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.H, T, p, v))/(Modelica.Constants.R*T)))
+              "water self disociation pK shifted to water activity=1";
+
+      substances.OH.u + substances.H.u = substances.H2O.u;
+      substances.OH.u = Modelica.Constants.R*T*log(aOH_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.OH,
+          T,
+          p,
+          v);
+      substances.OH.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.OH,
+          T,
+          p,
+          v);
+
+      substances.Na.u = Modelica.Constants.R*T*log(aNa_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.Na,
+          T,
+          p,
+          v);
+      substances.Na.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Na,
+          T,
+          p,
+          v);
+
+      substances.K.u = Modelica.Constants.R*T*log(aK_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.K,
+          T,
+          p,
+          v);
+      substances.K.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.K,
+          T,
+          p,
+          v);
+
+      substances.Cl.u = Modelica.Constants.R*T*log(aCl_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.Cl,
+          T,
+          p,
+          v);
+      substances.Cl.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.Cl,
+          T,
+          p,
+          v);
+
+      substances.SO4.u = Modelica.Constants.R*T*log(aSO4_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.SO4,
+          T,
+          p,
+          v);
+      substances.SO4.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.SO4,
+          T,
+          p,
+          v);
+
+      substances.PO4.u = Modelica.Constants.R*T*log(aPO4_P) +
+        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+          Substances.PO4,
+          T,
+          p,
+          v);
+      substances.PO4.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          Substances.PO4,
+          T,
+          p,
+          v);
 
 
       substances.Glucose.u = Modelica.Constants.R*T*log(((state.X[i("Glucose")]/pct)/Constants.MM_Glucose)/x_P) +
@@ -626,7 +737,13 @@ package Media "Models of physiological fluids"
        substances.CO.q * actualStream(substances.CO.h_outflow) +
        substances.HCO3.q * actualStream(substances.HCO3.h_outflow) +
        substances.H.q * actualStream(substances.H.h_outflow) +
+       substances.OH.q * actualStream(substances.OH.h_outflow) +
        substances.H2O.q * actualStream(substances.H2O.h_outflow) +
+       substances.Na.q * actualStream(substances.Na.h_outflow) +
+       substances.K.q * actualStream(substances.K.h_outflow) +
+       substances.Cl.q * actualStream(substances.Cl.h_outflow) +
+       substances.SO4.q * actualStream(substances.SO4.h_outflow) +
+       substances.PO4.q * actualStream(substances.PO4.h_outflow) +
        substances.Glucose.q * actualStream(substances.Glucose.h_outflow) +
        substances.Lactate.q * actualStream(substances.Lactate.h_outflow) +
        substances.Urea.q * actualStream(substances.Urea.h_outflow) +
@@ -645,7 +762,8 @@ package Media "Models of physiological fluids"
       massFlows[i("HbF")] = 0;
       massFlows[i("Alb")] = 0;
       massFlows[i("Glb")] = 0;
-      massFlows[i("PO4")] = 0;
+      massFlows[i("PO4")] = substances.PO4.q*Substances.PO4.MolarWeight;
+      massFlows[i("SO4_P")] = substances.SO4.q*Substances.SO4.MolarWeight;
       massFlows[i("DPG")] = 0;
       massFlows[i("Glucose")] = substances.Glucose.q*Substances.Glucose.MolarWeight;
       massFlows[i("Lactate")] = substances.Lactate.q*Constants.MM_Lactate;
@@ -653,9 +771,9 @@ package Media "Models of physiological fluids"
       massFlows[i("AminoAcids")] = substances.AminoAcids.q*Constants.MM_AminoAcids;
       massFlows[i("Lipids")] = substances.Lipids.q*Constants.MM_Lipids;
       massFlows[i("KetoAcids")] = substances.KetoAcids.q*Constants.MM_KetoAcids;
-      massFlows[i("Na_P")] = 0;
-      massFlows[i("K_P")] = 0;
-      massFlows[i("Cl_P")] = Cl_Ery2Plasma*Cl.MolarWeight;
+      massFlows[i("Na_P")] = substances.Na.q*Substances.Na.MolarWeight;
+      massFlows[i("K_P")] = substances.K.q*Substances.K.MolarWeight;
+      massFlows[i("Cl_P")] = substances.Cl.q*Substances.Cl.MolarWeight + Cl_Ery2Plasma*Cl.MolarWeight;
       massFlows[i("Na_E")] = 0;
       massFlows[i("K_E")] = 0;
       massFlows[i("Cl_E")] = -Cl_Ery2Plasma*Cl.MolarWeight;
@@ -671,7 +789,7 @@ package Media "Models of physiological fluids"
       massFlows[i("Angiotensin2")] = substances.Angiotensin2.q*Constants.MM_Angiotensin2;
       massFlows[i("Renin")] = substances.Renin.q*Constants.MM_Renin;
       massFlows[i("Aldosterone")] = substances.Aldosterone.q*Constants.MM_Aldosterone;
-      massFlows[i("H2O_P")] = substances.H2O.q*Substances.Water.MolarWeight + H2O_Ery2Plasma*Substances.Water.MolarWeight;
+      massFlows[i("H2O_P")] = substances.OH.q*Substances.OH.MolarWeight + substances.H2O.q*Substances.Water.MolarWeight + H2O_Ery2Plasma*Substances.Water.MolarWeight;
       massFlows[i("Other_P")] = 0;
       massFlows[i("Other_E")] = 0;
 
@@ -696,6 +814,13 @@ package Media "Models of physiological fluids"
         "Carbon monoxide partial pressure";
       output Physiolibrary.Types.pH pH(start=7.4)
         "Blood plasma acidity";
+
+      output Physiolibrary.Types.Fraction fzcO
+        "expected fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
+      output Physiolibrary.Types.Fraction fzcD
+        "expected fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
+      output Physiolibrary.Types.Fraction sCO2
+        "expected CO2 saturation of hemoglobin amino-termini";
       // protected
       input Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
       input Types.Concentration _tO2=tO2(state) "oxygen content per volume of blood";
@@ -780,6 +905,18 @@ package Media "Models of physiological fluids"
       Physiolibrary.Types.Concentration tCO2_P(displayUnit="mmol/l");
       Physiolibrary.Types.Concentration tCO2_ery(displayUnit="mmol/l");
 
+      Physiolibrary.Types.Fraction sCO2O
+        "CO2 saturation of oxy-hemoglobin amino-termini";
+      Physiolibrary.Types.Fraction sCO2D
+        "CO2 saturation of deoxy-hemoglobin amino-termini";
+
+      Real dHh "Bohr's protons of reaction h";
+      Real dHz "Bohr's protons of reaction z";
+      Real dHc "Bohr's protons of reaction c";
+
+      Real dH  "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
+      Real dTH "Total titration shift with Bohr protons and carbamination";
+
     equation
       cdCO2N = aCO2N*pCO20 "free disolved CO2 concentration at pCO2=40mmHg and T=37degC";
 
@@ -800,7 +937,7 @@ package Media "Models of physiological fluids"
       NSID = Hct*NSIDE + (1 - Hct)*NSIDP
         "strong ion difference of blood at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
 
-      BEox =NSID - _SID "base excess of oxygenated blood";
+      BEox = _SID - NSID "base excess of oxygenated blood";
 
       beta =2.3*_tHb + 8*_tAlb + 0.075*_tGlb + 0.309*_tPO4
                                                         "buffer value of blood";
@@ -809,7 +946,7 @@ package Media "Models of physiological fluids"
         "Van Slyke (simplified electroneutrality equation)";
       pH_ery = 7.19 + 0.77*(pH - 7.4) + 0.035*(1 - sO2);
 
-      sO2CO =hemoglobinDissociationCurve(
+      sO2CO =homotopy(hemoglobinDissociationCurve(
           pH,
           pO2,
           pCO2,
@@ -818,7 +955,16 @@ package Media "Models of physiological fluids"
           _tHb,
           _cDPG,
           _FMetHb,
-          _FHbF);
+          _FHbF),hemoglobinDissociationCurve(
+          pH0,
+          pO2,
+          pCO20,
+          1e-5,
+          310,
+          8.4,
+          5,
+          0.005,
+          0.005));
 
       sCO*(pO2 + 218*pCO) = 218*sO2CO*(pCO);
       FCOHb =sCO*(1 - _FMetHb);
@@ -836,6 +982,36 @@ package Media "Models of physiological fluids"
       cHCO3_E = aCO2_ery*pCO2*(10^(pH_ery - pK_ery));
       _tCO2 = tCO2_ery*Hct + tCO2_P*(1 - Hct);
 
+      fzcO = 1/(1 + 10^(pKzO - pH_ery) + cdCO2*10^(pH_ery - pKcO))
+        "fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
+      fzcD = 1/(1 + 10^(pKzD - pH_ery) + cdCO2*10^(pH_ery - pKcD))
+        "fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
+
+      sCO2 = 10^(pH_ery - pKcO)*fzcO*cdCO2*sO2 + 10^(pH_ery - pKcD)*fzcD*cdCO2*(1-sO2)
+        "CO2 saturation of hemoglobin amino-termini";
+
+      sCO2O = 10^(pH_ery - pKcO)*fzcO*cdCO2
+        "CO2 saturation of oxy-hemoglobin amino-termini";
+      sCO2D = 10^(pH_ery - pKcD)*fzcD*cdCO2
+        "CO2 saturation of deoxy-hemoglobin amino-termini";
+
+      dHh = - ((1/(1 + 10^(pKhD - pH_ery)))-(1/(1 + 10^(pKhO - pH_ery))))
+        "Bohr's protons of reaction h";
+      dHz = (10^(pKzD - pH_ery))*fzcD - (10^(pKzO - pH_ery))*fzcO
+        "Bohr's protons of reaction z";
+      dHc = - (aCO2_ery*pCO2*(10^(pH_ery - pKcD))*fzcD - aCO2_ery*pCO2*(10^(pH_ery - pKcO))*fzcO)
+        "Bohr's protons of reaction c";
+
+      dH = dHh + dHz + dHc
+        "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
+      dTH = sO2*dH + sCO2D*(1+1/(1+10^(pH-pKzD)))
+        "Total titration shift with Bohr protons and carbamination";
+      /*
+  sHO =
+    "H+ saturation of oxy-hemoglobin";
+  sHD =
+  "H+ saturation of deoxy-hemoglobin";
+  */
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
@@ -1273,7 +1449,8 @@ package Media "Models of physiological fluids"
           state.X[i("K_P")]/K.MolarWeight +
           state.X[i("K_E")]/K.MolarWeight -
           state.X[i("Cl_P")]/Cl.MolarWeight -
-          state.X[i("Cl_E")]/Cl.MolarWeight);
+          state.X[i("Cl_E")]/Cl.MolarWeight -
+          SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight);
     end SID;
 
     replaceable function glucose "Total glucose in blood plasma"
@@ -1708,7 +1885,7 @@ Modelica source.
 
         NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
-        x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p)./(X*NpM);
+        x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(0,0,substanceData,T=T,p=p)./(X*NpM);
 
         T = stateOfMatter.solution_temperature(
             substanceData,
@@ -1974,11 +2151,12 @@ Modelica source.
           Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
           Modelica.Units.SI.ChargeNumberOfIon z[nS] "Charge of base molecule of substance";
 
-
+          Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
     equation
           NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
-          x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p)./(X*NpM);
+          nSolution = X*NpM;
+          x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(X,nSolution,substanceData,T=T,p=p)./(X*NpM);
 
           T = stateOfMatter.solution_temperature(
               substanceData,
@@ -2501,6 +2679,8 @@ Modelica source.
 
       constant Chemical.Interfaces.Incompressible.SubstanceData PO4=
             Chemical.Substances.Phosphate_aqueous();
+      constant Chemical.Interfaces.Incompressible.SubstanceData SO4=
+            Chemical.Substances.Sulphates_aqueous();
 
       constant Chemical.Interfaces.Incompressible.SubstanceData HCO3=
             Chemical.Substances.Bicarbonate_aqueous();
@@ -2560,6 +2740,7 @@ Modelica source.
                                   D_HbF = 0.042 "Default Foetal hemoglobin",
                                   D_Alb = 0.66 "Default Albumin",
                                   D_PO4 = 0.153 "Default Inorganic phosphates",
+                                  D_SO4 = 0.14 "Default Inorganic sulphates",
                                   D_DPG = 5.4 "Default Diphosphoglycerate in red blood cells";
 
     constant Types.MassConcentration D_Glb = 28 "Default Globulins in blood plasma";

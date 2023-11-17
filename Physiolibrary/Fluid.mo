@@ -1350,8 +1350,20 @@ The sensor is ideal, i.e., it does not influence the fluid.
       substances.CO.h_outflow=0;
       substances.HCO3.q=0;
       substances.HCO3.h_outflow=0;
+      substances.Na.q=0;
+      substances.Na.h_outflow=0;
+      substances.K.q=0;
+      substances.K.h_outflow=0;
+      substances.Cl.q=0;
+      substances.Cl.h_outflow=0;
+      substances.SO4.q=0;
+      substances.SO4.h_outflow=0;
+      substances.PO4.q=0;
+      substances.PO4.h_outflow=0;
       substances.H2O.q=0;
       substances.H2O.h_outflow=0;
+      substances.OH.q=0;
+      substances.OH.h_outflow=0;
       substances.Glucose.q=0;
       substances.Glucose.h_outflow=0;
       substances.Lactate.q=0;
@@ -4674,6 +4686,225 @@ The sensor is ideal, i.e., it does not influence the fluid.
           __Dymola_Algorithm="Dassl"));
     end CapillaryMembrane;
 
+    model BloodTitrationByHCl
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Chemical.Media.SimpleAir_C;
+      //Chemical.Media.Air_MixtureGasNasa;
+      replaceable package Blood = Physiolibrary.Media.Blood;
+      inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
+        Placement(transformation(extent={{68,52},{88,72}})));
+      Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package Medium = Blood,
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=3,   useSubstances = true, use_mass_start = true) annotation (
+        Placement(transformation(extent={{2,-46},{22,-66}})));
+
+      // massFractions_start=zeros(Blood.nS - 1),
+      // massPartition_start=zeros(Blood.nS),
+      // amountPartition_start=zeros(Blood.nS),
+
+      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-8)   annotation (
+        Placement(transformation(extent={{-50,-34},{-30,-14}})));
+      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-4)   annotation (
+        Placement(transformation(extent={{-32,-34},{-12,-14}})));
+      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-9)   annotation (
+        Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false,
+        PartialPressure(displayUnit="mmHg") = 15998.6864898)                                                                                                                                  annotation (
+        Placement(transformation(extent={{-88,2},{-68,22}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
+        Placement(transformation(extent={{-54,6},{-34,26}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={12,10})));
+      Sensors.PartialPressure pO2(
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        redeclare package Medium = Media.Blood) "Partial pressure of O2 in blood"
+        annotation (Placement(transformation(extent={{-84,-74},{-64,-54}})));
+      Sensors.Fraction sO2(redeclare package Medium = Physiolibrary.Media.Blood,
+                           redeclare function GetFraction =
+            Physiolibrary.Media.Blood.sO2)
+        annotation (Placement(transformation(extent={{56,-68},{76,-48}})));
+      Media.Blood.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-42,-94},{-2,-54}})));
+      Sensors.pH pH(redeclare package Medium = Physiolibrary.Media.Blood) annotation (Placement(transformation(extent={{60,-26},{40,-6}})));
+      Chemical.Sources.PureSubstance Cl(substanceData=Physiolibrary.Media.Substances.Cl) annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
+      Chemical.Sources.PureSubstance H(substanceData=Chemical.Substances.Proton_aqueous()) annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
+      Chemical.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
+      Chemical.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
+      Types.Constants.pHConst pH69(k=6.9) annotation (Placement(transformation(extent={{26,46},{34,54}})));
+      Modelica.Blocks.Math.Feedback feedback annotation (Placement(transformation(extent={{-10,10},{10,-10}},
+            rotation=180,
+            origin={40,72})));
+      Modelica.Blocks.Math.Gain gain(k=0.01) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={8,72})));
+    equation
+      connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
+        Line(points={{-68,12},{-60,12},{-60,-8},{-40,-8},{-40,-14}},
+                                                        color = {158, 66, 200}));
+      connect(CO2.port_a, CO2_GasSolubility.gas_port) annotation (
+        Line(points={{-34,16},{-22,16},{-22,-14}},      color = {158, 66, 200}));
+      connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
+        Line(points={{2,10},{-4,10},{-4,-14}},         color = {158, 66, 200}));
+
+      connect(pO2.port, blood.q_in[1]) annotation (Line(
+          points={{-74,-74},{-74,-76},{-48,-76},{-48,-42},{11.9,-42},{11.9,-55.1333}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(blood.q_in[2], sO2.port) annotation (Line(
+          points={{11.9,-56},{50,-56},{50,-68},{66,-68}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(substancesPort, substancesPort) annotation (Line(
+          points={{-22,-74},{-22,-74}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(substancesPort, blood.substances)
+        annotation (Line(
+          points={{-22,-74},{-22,-42},{2,-42},{2,-56}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(pO2.port_a, substancesPort.O2) annotation (Line(points={{-64,-64},{-48,-64},{-48,-73.9},{-21.9,-73.9}}, color={158,66,200}));
+      connect(O2_GasSolubility.liquid_port, substancesPort.O2) annotation (Line(points={{-40,-34},{-40,-50},{-21.9,-50},{-21.9,-73.9}}, color={158,66,200}));
+      connect(CO2_GasSolubility.liquid_port, substancesPort.CO2) annotation (Line(points={{-22,-34},{-22,-54},{-22,-73.9},{-21.9,-73.9}}, color={158,66,200}));
+      connect(CO_GasSolubility.liquid_port, substancesPort.CO) annotation (Line(points={{-4,-34},{-4,-48},{-21.9,-48},{-21.9,-73.9}},   color={158,66,200}));
+      connect(pH.port, blood.q_in[3]) annotation (Line(points={{50,-26},{50,-56.8667},{11.9,-56.8667}},     color={0,127,255}));
+      connect(pH.port_a, substancesPort.H) annotation (Line(points={{40,-16},{28,-16},{28,-73.9},{-21.9,-73.9}},         color={158,66,200}));
+      connect(Cl.port_a, substancePump.port_a) annotation (Line(points={{-62,46},{-54,46}},color={158,66,200}));
+      connect(substancePump.port_b, substancesPort.Cl) annotation (Line(points={{-34,46},{-30,46},{-30,-10},{-54,-10},{-54,-73.9},{-21.9,-73.9}},
+                                                                                                                                   color={0,0,127}));
+      connect(H.port_a, substancePump1.port_a) annotation (Line(points={{-62,78},{-50,78}},
+                                                                                          color={158,66,200}));
+      connect(substancePump1.port_b, substancesPort.H) annotation (Line(points={{-30,78},{-26,78},{-26,-10},{-54,-10},{-54,-73.9},{-21.9,-73.9}},
+                                                                                                                                        color={158,66,200}));
+      connect(pH.pH, feedback.u1) annotation (Line(points={{60,-16},{68,-16},{68,48},{58,48},{58,72},{48,72}},               color={0,0,127}));
+      connect(pH69.y, feedback.u2) annotation (Line(points={{35,50},{35,58},{40,58},{40,64}},         color={0,0,127}));
+      connect(feedback.y, gain.u) annotation (Line(points={{31,72},{20,72}},  color={0,0,127}));
+      connect(gain.y, substancePump.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,50},{-40,50}},         color={0,0,127}));
+      connect(gain.y, substancePump1.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,82},{-36,82}},  color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        experiment(
+          StopTime=100,
+          __Dymola_fixedstepsize=0.1,
+          __Dymola_Algorithm="Dassl"),
+        Documentation(info="<html>
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
+</html>"));
+    end BloodTitrationByHCl;
+
+    model BloodTitrationByNaOH
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Chemical.Media.SimpleAir_C;
+      //Chemical.Media.Air_MixtureGasNasa;
+      replaceable package Blood = Physiolibrary.Media.Blood;
+      inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
+        Placement(transformation(extent={{68,52},{88,72}})));
+      Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package Medium = Blood,
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,                                            massFractions_start = Blood.ArterialDefault, mass_start = 1, nPorts=3,   useSubstances = true, use_mass_start = true) annotation (
+        Placement(transformation(extent={{2,-46},{22,-66}})));
+
+      // massFractions_start=zeros(Blood.nS - 1),
+      // massPartition_start=zeros(Blood.nS),
+      // amountPartition_start=zeros(Blood.nS),
+
+      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-8)   annotation (
+        Placement(transformation(extent={{-50,-34},{-30,-14}})));
+      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-4)   annotation (
+        Placement(transformation(extent={{-32,-34},{-12,-14}})));
+      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-9)   annotation (
+        Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false,
+        PartialPressure(displayUnit="mmHg") = 15998.6864898)                                                                                                                                  annotation (
+        Placement(transformation(extent={{-88,2},{-68,22}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
+        Placement(transformation(extent={{-54,6},{-34,26}})));
+      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={12,10})));
+      Sensors.PartialPressure pO2(
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        redeclare package Medium = Media.Blood) "Partial pressure of O2 in blood"
+        annotation (Placement(transformation(extent={{-84,-74},{-64,-54}})));
+      Sensors.Fraction sO2(redeclare package Medium = Physiolibrary.Media.Blood,
+                           redeclare function GetFraction =
+            Physiolibrary.Media.Blood.sO2)
+        annotation (Placement(transformation(extent={{56,-68},{76,-48}})));
+      Media.Blood.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-42,-94},{-2,-54}})));
+      Sensors.pH pH(redeclare package Medium = Physiolibrary.Media.Blood) annotation (Placement(transformation(extent={{60,-26},{40,-6}})));
+      Chemical.Sources.PureSubstance OH(substanceData=Chemical.Substances.Hydroxide_aqueous())
+                                                                                         annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
+      Chemical.Sources.PureSubstance Na(substanceData=Chemical.Substances.Sodium_aqueous()) annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
+      Chemical.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
+      Chemical.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
+      Types.Constants.pHConst pH8(k=8) annotation (Placement(transformation(extent={{46,88},{54,96}})));
+      Modelica.Blocks.Math.Feedback feedback annotation (Placement(transformation(extent={{-10,10},{10,-10}},
+            rotation=180,
+            origin={40,72})));
+      Modelica.Blocks.Math.Gain gain(k=0.01) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={8,72})));
+    equation
+      connect(O2.port_a, O2_GasSolubility.gas_port) annotation (
+        Line(points={{-68,12},{-60,12},{-60,-8},{-40,-8},{-40,-14}},
+                                                        color = {158, 66, 200}));
+      connect(CO2.port_a, CO2_GasSolubility.gas_port) annotation (
+        Line(points={{-34,16},{-22,16},{-22,-14}},      color = {158, 66, 200}));
+      connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
+        Line(points={{2,10},{-4,10},{-4,-14}},         color = {158, 66, 200}));
+
+      connect(pO2.port, blood.q_in[1]) annotation (Line(
+          points={{-74,-74},{-74,-76},{-48,-76},{-48,-42},{11.9,-42},{11.9,-55.1333}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(blood.q_in[2], sO2.port) annotation (Line(
+          points={{11.9,-56},{50,-56},{50,-68},{66,-68}},
+          color={127,0,0},
+          thickness=0.5));
+      connect(substancesPort, substancesPort) annotation (Line(
+          points={{-22,-74},{-22,-74}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(substancesPort, blood.substances)
+        annotation (Line(
+          points={{-22,-74},{-22,-42},{2,-42},{2,-56}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(pO2.port_a, substancesPort.O2) annotation (Line(points={{-64,-64},{-48,-64},{-48,-73.9},{-21.9,-73.9}}, color={158,66,200}));
+      connect(O2_GasSolubility.liquid_port, substancesPort.O2) annotation (Line(points={{-40,-34},{-40,-50},{-21.9,-50},{-21.9,-73.9}}, color={158,66,200}));
+      connect(CO2_GasSolubility.liquid_port, substancesPort.CO2) annotation (Line(points={{-22,-34},{-22,-54},{-22,-73.9},{-21.9,-73.9}}, color={158,66,200}));
+      connect(CO_GasSolubility.liquid_port, substancesPort.CO) annotation (Line(points={{-4,-34},{-4,-48},{-21.9,-48},{-21.9,-73.9}},   color={158,66,200}));
+      connect(pH.port, blood.q_in[3]) annotation (Line(points={{50,-26},{50,-56.8667},{11.9,-56.8667}},     color={0,127,255}));
+      connect(pH.port_a, substancesPort.H) annotation (Line(points={{40,-16},{28,-16},{28,-73.9},{-21.9,-73.9}},         color={158,66,200}));
+      connect(OH.port_a, substancePump.port_a) annotation (Line(points={{-62,46},{-54,46}},color={158,66,200}));
+      connect(Na.port_a, substancePump1.port_a) annotation (Line(points={{-62,78},{-50,78}}, color={158,66,200}));
+      connect(feedback.y, gain.u) annotation (Line(points={{31,72},{20,72}},  color={0,0,127}));
+      connect(gain.y, substancePump.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,50},{-40,50}},         color={0,0,127}));
+      connect(gain.y, substancePump1.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,82},{-36,82}},  color={0,0,127}));
+      connect(substancePump1.port_b, substancesPort.Na) annotation (Line(points={{-30,78},{-21.9,78},{-21.9,-73.9}}, color={158,66,200}));
+      connect(substancePump.port_b, substancesPort.OH) annotation (Line(points={{-34,46},{-21.9,46},{-21.9,-73.9}}, color={158,66,200}));
+      connect(pH.pH, feedback.u2) annotation (Line(points={{60,-16},{68,-16},{68,64},{40,64}}, color={0,0,127}));
+      connect(pH8.y, feedback.u1) annotation (Line(points={{55,92},{62,92},{62,72},{48,72}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        experiment(
+          StopTime=100,
+          __Dymola_fixedstepsize=0.1,
+          __Dymola_Algorithm="Dassl"),
+        Documentation(info="<html>
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
+</html>"));
+    end BloodTitrationByNaOH;
   end Examples;
   annotation (
     Documentation(info = "<html>
