@@ -313,8 +313,8 @@ package Media "Models of physiological fluids"
 
       aH2O_P = aH2O_E "osmolarity";
 
-      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule((state.X[i("H2O_P")]/pct)*1,x_P*1,Substances.Water,T,p,v) / (pct*x_P);
-      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule((state.X[i("H2O_E")]/hct)*1,x_E*1,Substances.Water,T,p,v) / (hct*x_E);
+      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,(state.X[i("H2O_P")]/pct)*1,x_P*1) / (pct*x_P);
+      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,(state.X[i("H2O_E")]/hct)*1,x_E*1) / (hct*x_E);
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
@@ -499,10 +499,10 @@ package Media "Models of physiological fluids"
       nSolution_E = x_E;
 
 
-      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_P,nSolution_P,Substances.Water,T,p,v);
-      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_E,nSolution_E,Substances.Water,T,p,v);
+      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_P,nSolution_P);
+      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_E,nSolution_E);
       H2O_Ery2Plasma = KC_H2O*(Modelica.Constants.R*T*log(aH2O_E/aH2O_P)) "Osmolarity equilibration rate";
-      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_E,nSolution_E,Substances.Water,T,p,v) "Debug of osmolarity equilibration";
+      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_E,nSolution_E) "Debug of osmolarity equilibration";
 
 
       x_P =plasmaSpecificAmountOfParticles(state);
@@ -581,7 +581,7 @@ package Media "Models of physiological fluids"
       pK_WaterSelfIonization = -log10(exp((Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
               Substances.Water, T, p, v)
               + Modelica.Constants.R*T*log(
-                (Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(massH2O_P,nSolution_P,Substances.Water, T, p, v)
+                (Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water, T, p, v, 0, massH2O_P, nSolution_P)
                 * massH2O_P)/nSolution_P)
               - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.OH, T, p, v)
               - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.H, T, p, v))/(Modelica.Constants.R*T)))
@@ -843,6 +843,8 @@ package Media "Models of physiological fluids"
         "inorganic phosphates concentration in blood plasma";
       input Types.Concentration _cDPG=cDPG(state) "DPG concentration in blood plasma";
       input Types.Concentration _SID=SID(state) "strong ion difference of blood";
+      input Types.Concentration _SID_P=plasmaSID(state) "strong ion difference of blood plasma";
+      input Types.Concentration _SID_E=formedElementsSID(state) "strong ion difference of blood formed elements";
 
       constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
       constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
@@ -853,7 +855,7 @@ package Media "Models of physiological fluids"
       Physiolibrary.Types.Concentration NSIDP;
       Physiolibrary.Types.Concentration NSIDE;
       Physiolibrary.Types.Concentration NSID;
-      Physiolibrary.Types.Concentration BEox;
+      Physiolibrary.Types.Concentration BEox, BEox_P, BEox_E;
       Physiolibrary.Types.Concentration cdCO2;
 
       Physiolibrary.Types.pH pH_ery;
@@ -1007,12 +1009,11 @@ package Media "Models of physiological fluids"
         "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
       dTH = sO2*dH + sCO2D*(1+1/(1+10^(pH-pKzD)))
         "Total titration shift with Bohr protons and carbamination";
-      /*
-  sHO =
-    "H+ saturation of oxy-hemoglobin";
-  sHD =
-  "H+ saturation of deoxy-hemoglobin";
-  */
+
+      BEox_P = _SID_P - NSIDP;
+      BEox_E = _SID_E + dTH*ceHb - NSIDE;
+
+
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
@@ -1628,6 +1629,24 @@ package Media "Models of physiological fluids"
     end plasmaMassFractionWithoutOther;
 
 
+    replaceable function plasmaSID "Strong ion difference of blood plasma"
+      extends GetConcentration;
+    algorithm
+      C := plasmaDensity(state) * (
+          state.X[i("Na_P")]/Na.MolarWeight +
+          state.X[i("K_P")]/K.MolarWeight -
+          state.X[i("Cl_P")]/Cl.MolarWeight -
+          SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight) / plasmacrit(state);
+    end plasmaSID;
+
+    replaceable function formedElementsSID "Strong ion difference of blood formed elements"
+      extends GetConcentration;
+    algorithm
+      C := density(state) * (
+          state.X[i("Na_E")]/Na.MolarWeight +
+          state.X[i("K_E")]/K.MolarWeight -
+          state.X[i("Cl_E")]/Cl.MolarWeight) / hematocrit(state);
+    end formedElementsSID;
     annotation (Documentation(info="<html>
 <p>Adding new substance to blood model:</p>
 <p><br>- add to Blood.substanceNames</p>
@@ -1886,7 +1905,7 @@ Modelica source.
 
         NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
-        x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(0,0,substanceData,T=T,p=p)./(X*NpM);
+        x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p)./(X*NpM);
 
         T = stateOfMatter.solution_temperature(
             substanceData,
@@ -2156,8 +2175,8 @@ Modelica source.
     equation
           NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
-          nSolution = X*NpM;
-          x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(X,nSolution,substanceData,T=T,p=p)./(X*NpM);
+          nSolution = X*NpM*1;
+          x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p,v=0,I=0,massH2O=X,nSolution=nSolution)./(X*NpM);
 
           T = stateOfMatter.solution_temperature(
               substanceData,
