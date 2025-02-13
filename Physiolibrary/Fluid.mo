@@ -3102,10 +3102,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
         replaceable package Dialysate = Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
           choicesAllMatching = true);
         parameter Integer N=5   "Number of parts";
-        parameter Modelica.Units.SI.MassFraction PlasmaSubstances[BloodPlasma.nS - 1](displayUnit="%")={0.0031,0.00146,0.0002,0.0009,0.0018,0.00376,6e-05,1e-05,
+        parameter Modelica.Units.SI.MassFraction PlasmaSubstances[BloodPlasma.nS - 1](each displayUnit="%")={0.0031,0.00146,0.0002,0.0009,0.0018,0.00376,6e-05,1e-05,
           0.04655,0.0532,1e-11}                                                                                                                                                                           "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing blood plasma";
         //{135,24,5,5,30,106,1.5,0.5,0.7,0.8,1e-6};
-        parameter Modelica.Units.SI.MassFraction DialysateSubstances[Dialysate.nS - 1](displayUnit="%")={0.00317,0.00195,0.000117,0.0009,6e-11,0.004,6e-05,
+        parameter Modelica.Units.SI.MassFraction DialysateSubstances[Dialysate.nS - 1](each displayUnit="%")={0.00317,0.00195,0.000117,0.0009,6e-11,0.004,6e-05,
           1e-05,6e-08,6e-08,0.000281}                                                                                                                                                                     "Mass fractions of {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others} in inflowing dialysate";
         /*{138,32,3,5,1e-6,113,1.5,0.5,1e-6,1e-6,15.6};*/
         parameter Modelica.Units.SI.Pressure InitialBloodPressure=2399.80297347   "Initial blood pressure";
@@ -3487,7 +3487,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
             *(1/20)                                                                                      "Total systemic blood circulation conductance";
         parameter Integer NA=1  "Number of pulmonary alveolar units";
         parameter Integer NT=1  "Number of systemic tissue units";
-      public
         parameter Types.MassFraction ArterialBloodComposition[Blood.nS] = Blood.ArterialDefault "Initial composition of arterial blood";
         parameter Types.MassFraction VenousBloodComposition[Blood.nS] = Blood.VenousDefault "Initial composition of venous blood";
         parameter Types.Fraction AirO2=0.21   "O2 content in inspired air";
