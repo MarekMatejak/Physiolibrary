@@ -1,4 +1,4 @@
-﻿within Physiolibrary;
+within Physiolibrary;
 package Media "Models of physiological fluids"
   extends Modelica.Icons.Package;
 

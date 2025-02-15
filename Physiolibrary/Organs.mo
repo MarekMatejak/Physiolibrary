@@ -1,4 +1,4 @@
-﻿within Physiolibrary;
+within Physiolibrary;
 package Organs "Prototypes of human physiological organ models"
   package Heart "Heart Components"
 
