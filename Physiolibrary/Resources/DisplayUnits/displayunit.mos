@@ -350,7 +350,6 @@ defineUnitConversion("m2/s", "mm2/s",1e6);
 // Temperature coefficient (e.g. of resistance)
 defineUnitConversion("1/K", "ppm/K",1e6);
 
-defineUnitConversion("1", "%",100);
 // Fuel consumption
 defineUnitConversion("cl/km", "l/100km", 1, 0)
 defineUnitConversion("cl/km", "mpg", 0, 454.609/1.609344)
@@ -368,6 +367,7 @@ defineUnitConversion("m2/m3", "1/m", 1);
 
 // various
 defineUnitConversion("1", "%", 100);
+defineUnitConversion("1", "‰",1000);
 
 // -------------------------------------------------------------------
 // The default display unit used by Dymola (until another display unit
