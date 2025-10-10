@@ -498,24 +498,25 @@ package Fluid "Physiological fluids with static and dynamic properties"
       parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
           1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
 
-      Chemical.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Na")])
+      Chemical.Obsolete.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Na")])
         annotation (Placement(transformation(extent={{-10,76},{10,96}})));
-      Chemical.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("HCO3")])
+      Chemical.Obsolete.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("HCO3")])
         annotation (Placement(transformation(extent={{-10,58},{10,78}})));
-      Chemical.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("K")])
+      Chemical.Obsolete.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("K")])
         annotation (Placement(transformation(extent={{-8,40},{12,60}})));
-      Chemical.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Glucose")])
+      Chemical.Obsolete.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Glucose")])
         annotation (Placement(transformation(extent={{-8,22},{12,42}})));
-      Chemical.Components.Membrane Urea(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Urea")],
-        kE=0)
-        annotation (Placement(transformation(extent={{-8,2},{12,22}})));
-      Chemical.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Cl")])
+      Chemical.Obsolete.Components.Membrane Urea(
+        each EnthalpyNotUsed=false,
+        KC=Permeabilities[BloodPlasma.i("Urea")],
+        kE=0) annotation (Placement(transformation(extent={{-8,2},{12,22}})));
+      Chemical.Obsolete.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Cl")])
         annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
-      Chemical.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Mg")])
+      Chemical.Obsolete.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Mg")])
         annotation (Placement(transformation(extent={{-6,-58},{14,-38}})));
-      Chemical.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("H2O")])
+      Chemical.Obsolete.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("H2O")])
         annotation (Placement(transformation(extent={{-6,-82},{14,-62}})));
-      Chemical.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Ca")])
+      Chemical.Obsolete.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Ca")])
         annotation (Placement(transformation(extent={{-6,-36},{14,-16}})));
       Dialysate.SubstancesPort bodyFluid_b annotation (Placement(transformation(extent={{80,-20},{120,20}})));
       BloodPlasma.SubstancesPort bodyFluid_a annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
@@ -916,24 +917,15 @@ as signal.
     end PartialAbsoluteSensor;
 
     partial model PartialGasSubstance
+      import Chemical.Interfaces.Properties;
 
      outer Modelica.Fluid.System system "System wide properties";
 
-      Chemical.Interfaces.SubstancePort_a port_a "The substance"
-        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      Chemical.Obsolete.Interfaces.SubstancePort_a port_a "The substance" annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-     replaceable package stateOfMatter = Chemical.Interfaces.IdealGas
-        constrainedby Chemical.Interfaces.StateOfMatter
-      "Substance model to translate data into substance properties"
-        annotation (choices(
-          choice(redeclare package stateOfMatter =
-            Chemical.Interfaces.IdealGas        "Ideal Gas"),
-          choice(redeclare package stateOfMatter =
-            Chemical.Interfaces.IdealGasMSL     "Ideal Gas from MSL"),
-          choice(redeclare package stateOfMatter =
-            Chemical.Interfaces.IdealGasShomate "Ideal Gas using Shomate model")));
 
-     parameter stateOfMatter.SubstanceData substanceData
+
+     parameter Chemical.Interfaces.Definition substanceData
      "Definition of the substance"
         annotation (choicesAllMatching = true);
 
@@ -976,7 +968,7 @@ as signal.
     Modelica.Units.SI.MolarVolume molarVolume
       "Molar volume of the substance";
 
-    Modelica.Units.SI.MolarVolume molarVolumePure
+    Modelica.Units.SI.MolarVolume molarVolumeBase
       "Molar volume of the pure substance";
 
     Modelica.Units.SI.MolarVolume molarVolumeExcess
@@ -985,41 +977,33 @@ as signal.
       //  Modelica.SIunits.MolarHeatCapacity molarHeatCapacityCp
       //    "Molar heat capacity of the substance at constant pressure";
 
+     Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState( Chemical.Interfaces.Phase.Gas, temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
     equation
      //aliases
-     gamma = stateOfMatter.activityCoefficient(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     z = stateOfMatter.chargeNumberOfIon(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-    // molarMass = stateOfMatter.molarMass(substanceData);
+     gamma = Properties.activityCoefficient(substanceData,solutionState);
+     z = Properties.chargeNumberOfIon(substanceData,solutionState);
+    // molarMass = Properties.molarMass(substanceData);
 
-     molarEnthalpy = stateOfMatter.molarEnthalpy(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     molarEntropyPure = stateOfMatter.molarEntropyPure(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     u0 = stateOfMatter.chemicalPotentialPure(
+     molarEnthalpy = Properties.molarEnthalpy(substanceData,solutionState);
+     molarEntropyPure = Properties.molarEntropyPure(substanceData,solutionState);
+     u0 = Properties.chemicalPotentialPure(
        substanceData,
-       temperature,
-       pressure,
-       electricPotential,
-       moleFractionBasedIonicStrength);
-     uPure = stateOfMatter.electroChemicalPotentialPure(
+       solutionState);
+     uPure = Properties.electroChemicalPotentialPure(
        substanceData,
-       temperature,
-       pressure,
-       electricPotential,
-       moleFractionBasedIonicStrength);
-     molarVolume = stateOfMatter.molarVolume(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     molarVolumePure = stateOfMatter.molarVolumePure(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     molarVolumeExcess = stateOfMatter.molarVolumeExcess(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
-     //  molarHeatCapacityCp = stateOfMatter.molarHeatCapacityCp(substanceData,temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
+       solutionState);
+     molarVolume = Properties.molarVolume(substanceData,solutionState);
+     molarVolumeBase = Properties.molarVolumeBase(substanceData,solutionState);
+     molarVolumeExcess = Properties.molarVolumeExcess(substanceData,solutionState);
+     //  molarHeatCapacityCp = Properties.molarHeatCapacityCp(substanceData,solutionState);
 
      //activity of the substance
      a = gamma*x;
 
      //electro-chemical potential of the substance in the solution
-     port_a.u = stateOfMatter.chemicalPotentialPure(
+     port_a.u = Properties.chemicalPotentialPure(
        substanceData,
-       temperature,
-       pressure,
-       electricPotential,
-       moleFractionBasedIonicStrength)
+       solutionState)
        + Modelica.Constants.R*temperature*log(a)
        + z*Modelica.Constants.F*electricPotential;
 
@@ -1263,9 +1247,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
     model pH "Measure of pH (acidity) of the solution"
       extends Modelica.Icons.RoundSensor;
       extends Fluid.Interfaces.PartialAbsoluteSensor;
-      extends Chemical.Interfaces.PartialSubstance(final substanceData = if useHydronium then Chemical.Substances.Hydronium_aqueous() else Chemical.Substances.Proton_aqueous(), redeclare
-          final package stateOfMatter =
-          Chemical.Interfaces.Incompressible);
+      extends Chemical.Boundaries.Internal.PartialSubstance(final substanceDefinition = if useHydronium then Chemical.Substances.Aqueous.H3Oplus else Chemical.Substances.Aqueous.Hplus);
 
       Physiolibrary.Types.RealIO.pHOutput pH "Acidity of the solution" annotation (
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, origin = {-100, 0}, rotation = 180)));
@@ -1274,19 +1256,27 @@ The sensor is ideal, i.e., it does not influence the fluid.
     protected
       Medium.ThermodynamicState state;
     equation
-      pH = -log10(a);
+      pH = -log10(x);
       h =inStream(port.h_outflow);
       state =Medium.setState_phX(
         port.p,
         h,
         inStream(port.Xi_outflow));
     //aliases
-      temperature = Medium.temperature(state);
-      pressure = state.p;
+    /*  solutionState.T = Medium.temperature(state);
+  solutionState.p = state.p;
 
-      electricPotential = 0;
-      moleFractionBasedIonicStrength = 0;
-      port_a.q = 0;
+  solutionState.v=0;
+  solutionState.I=0;
+  solutionState.m=1;
+  solutionState.n=1;
+  solutionState.Q=0;
+*/
+      //electricPotential = 0;
+      //moleFractionBasedIonicStrength = 0;
+      n_flow = 0;
+
+
 
 
       annotation (
@@ -1310,15 +1300,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{-70, -112}, {-50, -92}}), iconTransformation(extent = {{-70, -112}, {-50, -92}})));
       Physiolibrary.Fluid.Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                       substanceData = Chemical.Substances.Oxygen_gas(), redeclare
-          package Medium =                                                                                                                                                                                 Medium) annotation (
+      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure( substanceData = Chemical.Substances.Gas.O2,
+          redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{50, 50}, {30, 70}})));
       Physiolibrary.Fluid.Sensors.pH pH_measure(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-24, -70}, {-44, -50}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure(redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                        substanceData = Chemical.Substances.CarbonDioxide_gas(), redeclare
-          package Medium =                                                                                                                                                                                         Medium) annotation (
+      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure( substanceData = Chemical.Substances.Gas.CO2,
+          redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{12, -10}, {-8, 10}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureSystemicCapillaries(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {78, -76})));
@@ -3114,7 +3102,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
             package BloodPlasma =
             BloodPlasma,                                                                                                                                                                                                        redeclare
             package Dialysate =                                                                                                                                                                                                       Dialysate)
-                                                                                                                                                                                                                annotation (
+                                                                                                                                                                                                        annotation (
           Placement(transformation(extent = {{16, -18}, {36, 2}})));
         inner Modelica.Fluid.System system(T_ambient = 310.15) annotation (
           Placement(transformation(extent = {{-92, -6}, {-72, 14}})));
@@ -3195,8 +3183,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
       parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
       parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
-      Chemical.Components.GasSolubility evaporation(KC=1e-7)
-      annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
+      Chemical.Obsolete.Components.GasSolubility evaporation(KC=1e-7) annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
       parameter Temperature CoreTemperature = 310.15 "body temperature";
       parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
 
@@ -3212,12 +3199,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
-      Chemical.Sources.PureSubstance water(redeclare package stateOfMatter =
-          Chemical.Interfaces.Incompressible,                                                                    substanceData = Chemical.Substances.Water_liquid()) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-314, -68})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory(redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                                 substanceData = Chemical.Substances.Water_gas(), redeclare
-          package Medium =                                                                                                                                                                                          Air) annotation (
+      Chemical.Obsolete.Sources.PureSubstance water( substanceData=   Chemical.Substances.Liquid.H2O)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-314,-68})));
+      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory( substanceData = Chemical.Substances.Gas.H2O, redeclare
+          package Medium =  Air) annotation (
         Placement(transformation(extent = {{-364, 34}, {-344, 14}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
@@ -3286,18 +3274,20 @@ The sensor is ideal, i.e., it does not influence the fluid.
       // massFractions_start=zeros(Blood.nS - 1),
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
-      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-8)   annotation (
-        Placement(transformation(extent = {{-58, -20}, {-38, 0}})));
-      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-4)   annotation (
-        Placement(transformation(extent = {{-40, -20}, {-20, 0}})));
-      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-9)   annotation (
-        Placement(transformation(extent = {{-22, -20}, {-2, 0}})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false, PartialPressure(displayUnit = "mmHg") = 133.322387415) annotation (
-        Placement(transformation(extent={{-96,16},{-76,36}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
-        Placement(transformation(extent = {{-70, 52}, {-50, 72}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {28, 34})));
+      Chemical.Obsolete.Components.GasSolubility O2_GasSolubility(KC=1e-8) annotation (Placement(transformation(extent={{-58,-20},{-38,0}})));
+      Chemical.Obsolete.Components.GasSolubility CO2_GasSolubility(KC=1e-4) annotation (Placement(transformation(extent={{-40,-20},{-20,0}})));
+      Chemical.Obsolete.Components.GasSolubility CO_GasSolubility(KC=1e-9) annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance O2(
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        usePartialPressureInput=false,
+        PartialPressure(displayUnit="mmHg") = 133.322387415) annotation (Placement(transformation(extent={{-96,16},{-76,36}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO2(substanceData=Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit="mmHg") =
+          5332.8954966) annotation (Placement(transformation(extent={{-70,52},{-50,72}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO(substanceData=Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit="mmHg") =
+          0.000133322387415) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={28,34})));
       Sensors.PartialPressure pO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.Oxygen_gas(),
@@ -3728,11 +3718,19 @@ The sensor is ideal, i.e., it does not influence the fluid.
              ZeroPressureVolume(displayUnit = "l") = bloodV0,
              nPorts = 2) annotation (
           Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-2, -14})));
-        Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = O2_consumption) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={-68,-38})));
-        Chemical.Sources.SubstanceInflowT CO2_left(SubstanceFlow(displayUnit = "mmol/min") = CO2_production, redeclare package stateOfMatter =
-            Chemical.Interfaces.IdealGas,                                                                                                                                    substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {70, -38})));
+        Chemical.Obsolete.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit="mmol/min") = O2_consumption)
+          annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={-68,-38})));
+        Chemical.Obsolete.Sources.SubstanceInflowT CO2_left(
+          SubstanceFlow(displayUnit="mmol/min") = CO2_production,
+          redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+          substanceData=Chemical.Substances.CarbonDioxide_gas())
+          annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=180,
+              origin={70,-38})));
         Sensors.BloodGasesMeasurement tissue annotation (
           Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {38, -8})));
         replaceable package Blood = Media.Blood                   annotation (
@@ -3991,14 +3989,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
             extent={{10,-10},{-10,10}},
             rotation=0,
             origin={-72,34})));
-      Chemical.Sources.SubstanceOutflow O2_consume(SubstanceFlow(displayUnit=
-              "mmol/min") = O2_consumption)
+      Chemical.Obsolete.Sources.SubstanceOutflow O2_consume(SubstanceFlow(displayUnit="mmol/min") = O2_consumption)
         annotation (Placement(transformation(extent={{-104,4},{-84,24}})));
-      Chemical.Sources.SubstanceInflowT CO2_produce(
+      Chemical.Obsolete.Sources.SubstanceInflowT CO2_produce(
         SubstanceFlow(displayUnit="mmol/min") = CO2_production,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
-        substanceData=Chemical.Substances.CarbonDioxide_gas())
-        annotation (Placement(transformation(extent={{-86,-24},{-106,-4}})));
+        substanceData=Chemical.Substances.CarbonDioxide_gas()) annotation (Placement(transformation(extent={{-86,-24},{-106,-4}})));
 
       Sensors.PartialPressure                     pCO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
@@ -4144,11 +4140,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent={{-252,22},{-232,42}})));
       Physiolibrary.Types.Constants.FrequencyConst frequency(k = RespirationRate) annotation (
         Placement(transformation(extent={{-54,76},{-46,84}})));
-      Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
-        Placement(transformation(extent={{-164,-14},{-144,6}})));
-      Chemical.Sources.SubstanceInflowT CO2_left(SubstanceFlow(displayUnit = "mmol/min") = 0.00010283333333333, redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                                                                         substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
-        Placement(transformation(extent={{-200,-14},{-180,6}})));
+      Chemical.Obsolete.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit="mmol/min") = 0.0001285)
+        annotation (Placement(transformation(extent={{-164,-14},{-144,6}})));
+      Chemical.Obsolete.Sources.SubstanceInflowT CO2_left(
+        SubstanceFlow(displayUnit="mmol/min") = 0.00010283333333333,
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.CarbonDioxide_gas()) annotation (Placement(transformation(extent={{-200,-14},{-180,6}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure leftAlveolarPressure(redeclare package Medium = Air) "Left Alveolar pressure" annotation (
         Placement(transformation(extent = {{-124, 22}, {-104, 42}})));
       Physiolibrary.Fluid.Components.Resistor rightBronchi(redeclare package Medium = Air,  Resistance = RightBronchiResistance,
@@ -4170,11 +4167,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         q_in(p(start={101344.01141127005,101344.0078125,101344.0078125,101344.0078125,
                 101344.0078125,101344.0078125}, each displayUnit="bar")))                                                                                                                                                                                                         "Right alveolar space" annotation (
         Placement(transformation(extent = {{-156, -58}, {-136, -38}})));
-      Chemical.Sources.SubstanceInflowT CO2_right(SubstanceFlow(displayUnit = "mmol/min") = 0.00010283333333333, redeclare package stateOfMatter =
-          Chemical.Interfaces.IdealGas,                                                                                                                                          substanceData = Chemical.Substances.CarbonDioxide_gas()) annotation (
-        Placement(transformation(extent = {{-220, -96}, {-200, -76}})));
-      Chemical.Sources.SubstanceOutflow O2_right(SubstanceFlow(displayUnit = "mmol/min") = 0.0001285) annotation (
-        Placement(transformation(extent = {{-158, -96}, {-138, -76}})));
+      Chemical.Obsolete.Sources.SubstanceInflowT CO2_right(
+        SubstanceFlow(displayUnit="mmol/min") = 0.00010283333333333,
+        redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
+        substanceData=Chemical.Substances.CarbonDioxide_gas()) annotation (Placement(transformation(extent={{-220,-96},{-200,-76}})));
+      Chemical.Obsolete.Sources.SubstanceOutflow O2_right(SubstanceFlow(displayUnit="mmol/min") = 0.0001285)
+        annotation (Placement(transformation(extent={{-158,-96},{-138,-76}})));
       Physiolibrary.Fluid.Components.ElasticVessel leftPleuralSpace(redeclare package Medium =
           PleuralFluid,
         volume_start=pleuralVolume_initial*LeftPleuralSizeFraction,                                                                                useThermalPort = false,
@@ -4221,11 +4219,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium =
                            Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,30})));
-      Chemical.Sources.PureSubstance water(redeclare package stateOfMatter =
-          Chemical.Interfaces.Incompressible, substanceData = Chemical.Substances.Water_liquid()) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-314, -68})));
-      Chemical.Components.GasSolubility gasSolubility1(KC = 1e-5) annotation (
-        Placement(transformation(extent = {{-362, -48}, {-342, -28}})));
+      Chemical.Obsolete.Sources.PureSubstance water(redeclare package stateOfMatter = Chemical.Interfaces.Incompressible, substanceData=
+            Chemical.Substances.Water_liquid())
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-314,-68})));
+      Chemical.Obsolete.Components.GasSolubility gasSolubility1(KC=1e-5) annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
       Physiolibrary.Fluid.Sensors.PartialPressure pCO2(redeclare package stateOfMatter =
                           Chemical.Interfaces.IdealGas, substanceData = Chemical.Substances.CarbonDioxide_gas(),
           redeclare package Medium = Air) annotation (
@@ -4398,14 +4398,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
 
       inner Modelica.Fluid.System system(T_ambient=310.15)
         annotation (Placement(transformation(extent={{78,74},{98,94}})));
-      Chemical.Components.Membrane O2(KC=1e-5)
-        annotation (Placement(transformation(extent={{-10,72},{10,92}})));
-      Chemical.Components.Membrane CO2(KC=1e-5)
-        annotation (Placement(transformation(extent={{-10,54},{10,74}})));
-      Chemical.Components.Membrane H2O(KC=1)
-        annotation (Placement(transformation(extent={{-12,12},{8,32}})));
-      Chemical.Components.Membrane CO(KC=1e-5)
-        annotation (Placement(transformation(extent={{-10,32},{10,52}})));
+      Chemical.Obsolete.Components.Membrane O2(KC=1e-5) annotation (Placement(transformation(extent={{-10,72},{10,92}})));
+      Chemical.Obsolete.Components.Membrane CO2(KC=1e-5) annotation (Placement(transformation(extent={{-10,54},{10,74}})));
+      Chemical.Obsolete.Components.Membrane H2O(KC=1) annotation (Placement(transformation(extent={{-12,12},{8,32}})));
+      Chemical.Obsolete.Components.Membrane CO(KC=1e-5) annotation (Placement(transformation(extent={{-10,32},{10,52}})));
       Sensors.PartialPressure pO2_artys(
         redeclare package Medium = Blood,
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
@@ -4426,14 +4422,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Physiolibrary.Media.Substances.CO2_g)
         annotation (Placement(transformation(extent={{56,52},{36,72}})));
-      Chemical.Components.Membrane Glucose(KC=1e-5)
-        annotation (Placement(transformation(extent={{-14,-14},{6,6}})));
-      Chemical.Components.Membrane Lactate(KC=1e-5)
-        annotation (Placement(transformation(extent={{-14,-34},{6,-14}})));
-      Chemical.Components.Membrane Urea(KC=1e-5)
-        annotation (Placement(transformation(extent={{-16,-54},{4,-34}})));
-      Chemical.Components.Membrane AminoAcids(KC=1e-5)
-        annotation (Placement(transformation(extent={{-14,-76},{6,-56}})));
+      Chemical.Obsolete.Components.Membrane Glucose(KC=1e-5) annotation (Placement(transformation(extent={{-14,-14},{6,6}})));
+      Chemical.Obsolete.Components.Membrane Lactate(KC=1e-5) annotation (Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Obsolete.Components.Membrane Urea(KC=1e-5) annotation (Placement(transformation(extent={{-16,-54},{4,-34}})));
+      Chemical.Obsolete.Components.Membrane AminoAcids(KC=1e-5) annotation (Placement(transformation(extent={{-14,-76},{6,-56}})));
       Sensors.Concentration ArtysGlu(redeclare package Medium =
             Physiolibrary.Media.Blood, redeclare function GetConcentration =
             Physiolibrary.Media.Blood.glucose)
@@ -4492,8 +4484,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
             Physiolibrary.Media.Blood, redeclare function GetDensity =
             Physiolibrary.Media.Blood.formedElementsDensity)
         annotation (Placement(transformation(extent={{-194,-6},{-174,14}})));
-      Chemical.Components.Membrane Hormones[12](each KC=1e-12)
-        annotation (Placement(transformation(extent={{-10,-104},{10,-84}})));
+      Chemical.Obsolete.Components.Membrane Hormones[12](each KC=1e-12) annotation (Placement(transformation(extent={{-10,-104},{10,-84}})));
       Sensors.MassConcentration ArtysEpi(redeclare package Medium =
             Physiolibrary.Media.Blood, redeclare function GetMassConcentration =
             Physiolibrary.Media.Blood.epinephrine)
@@ -4701,19 +4692,20 @@ The sensor is ideal, i.e., it does not influence the fluid.
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
 
-      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-8)   annotation (
-        Placement(transformation(extent={{-50,-34},{-30,-14}})));
-      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-4)   annotation (
-        Placement(transformation(extent={{-32,-34},{-12,-14}})));
-      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-9)   annotation (
-        Placement(transformation(extent={{-14,-34},{6,-14}})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false,
-        PartialPressure(displayUnit="mmHg") = 15998.6864898)                                                                                                                                  annotation (
-        Placement(transformation(extent={{-88,2},{-68,22}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
-        Placement(transformation(extent={{-54,6},{-34,26}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={12,10})));
+      Chemical.Obsolete.Components.GasSolubility O2_GasSolubility(KC=1e-8) annotation (Placement(transformation(extent={{-50,-34},{-30,-14}})));
+      Chemical.Obsolete.Components.GasSolubility CO2_GasSolubility(KC=1e-4) annotation (Placement(transformation(extent={{-32,-34},{-12,-14}})));
+      Chemical.Obsolete.Components.GasSolubility CO_GasSolubility(KC=1e-9) annotation (Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance O2(
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        usePartialPressureInput=false,
+        PartialPressure(displayUnit="mmHg") = 15998.6864898) annotation (Placement(transformation(extent={{-88,2},{-68,22}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO2(substanceData=Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit="mmHg") =
+          5332.8954966) annotation (Placement(transformation(extent={{-54,6},{-34,26}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO(substanceData=Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit="mmHg") =
+          0.000133322387415) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={12,10})));
       Sensors.PartialPressure pO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.Oxygen_gas(),
@@ -4725,10 +4717,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         annotation (Placement(transformation(extent={{56,-68},{76,-48}})));
       Media.Blood.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-42,-94},{-2,-54}})));
       Sensors.pH pH(redeclare package Medium = Physiolibrary.Media.Blood) annotation (Placement(transformation(extent={{60,-26},{40,-6}})));
-      Chemical.Sources.PureSubstance Cl(substanceData=Physiolibrary.Media.Substances.Cl) annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
-      Chemical.Sources.PureSubstance H(substanceData=Chemical.Substances.Proton_aqueous()) annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
-      Chemical.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
-      Chemical.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
+      Chemical.Obsolete.Sources.PureSubstance Cl(substanceData=Physiolibrary.Media.Substances.Cl)
+        annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
+      Chemical.Obsolete.Sources.PureSubstance H(substanceData=Chemical.Substances.Proton_aqueous())
+        annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
+      Chemical.Obsolete.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
+      Chemical.Obsolete.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
       Types.Constants.pHConst pH69(k=6.9) annotation (Placement(transformation(extent={{26,46},{34,54}})));
       Modelica.Blocks.Math.Feedback feedback annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=180,
@@ -4812,19 +4806,20 @@ The sensor is ideal, i.e., it does not influence the fluid.
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
 
-      Chemical.Components.GasSolubility O2_GasSolubility(KC=1e-8)   annotation (
-        Placement(transformation(extent={{-50,-34},{-30,-14}})));
-      Chemical.Components.GasSolubility CO2_GasSolubility(KC=1e-4)   annotation (
-        Placement(transformation(extent={{-32,-34},{-12,-14}})));
-      Chemical.Components.GasSolubility CO_GasSolubility(KC=1e-9)   annotation (
-        Placement(transformation(extent={{-14,-34},{6,-14}})));
-      Chemical.Sources.ExternalIdealGasSubstance O2(substanceData = Chemical.Substances.Oxygen_gas(), usePartialPressureInput = false,
-        PartialPressure(displayUnit="mmHg") = 15998.6864898)                                                                                                                                  annotation (
-        Placement(transformation(extent={{-88,2},{-68,22}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO2(substanceData = Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit = "mmHg") = 5332.8954966) annotation (
-        Placement(transformation(extent={{-54,6},{-34,26}})));
-      Chemical.Sources.ExternalIdealGasSubstance CO(substanceData = Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit = "mmHg") = 0.000133322387415) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={12,10})));
+      Chemical.Obsolete.Components.GasSolubility O2_GasSolubility(KC=1e-8) annotation (Placement(transformation(extent={{-50,-34},{-30,-14}})));
+      Chemical.Obsolete.Components.GasSolubility CO2_GasSolubility(KC=1e-4) annotation (Placement(transformation(extent={{-32,-34},{-12,-14}})));
+      Chemical.Obsolete.Components.GasSolubility CO_GasSolubility(KC=1e-9) annotation (Placement(transformation(extent={{-14,-34},{6,-14}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance O2(
+        substanceData=Chemical.Substances.Oxygen_gas(),
+        usePartialPressureInput=false,
+        PartialPressure(displayUnit="mmHg") = 15998.6864898) annotation (Placement(transformation(extent={{-88,2},{-68,22}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO2(substanceData=Chemical.Substances.CarbonDioxide_gas(), PartialPressure(displayUnit="mmHg") =
+          5332.8954966) annotation (Placement(transformation(extent={{-54,6},{-34,26}})));
+      Chemical.Obsolete.Sources.ExternalIdealGasSubstance CO(substanceData=Chemical.Substances.CarbonMonoxide_gas(), PartialPressure(displayUnit="mmHg") =
+          0.000133322387415) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={12,10})));
       Sensors.PartialPressure pO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
         substanceData=Chemical.Substances.Oxygen_gas(),
@@ -4836,11 +4831,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
         annotation (Placement(transformation(extent={{56,-68},{76,-48}})));
       Media.Blood.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-42,-94},{-2,-54}})));
       Sensors.pH pH(redeclare package Medium = Physiolibrary.Media.Blood) annotation (Placement(transformation(extent={{60,-26},{40,-6}})));
-      Chemical.Sources.PureSubstance OH(substanceData=Chemical.Substances.Hydroxide_aqueous())
-                                                                                         annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
-      Chemical.Sources.PureSubstance Na(substanceData=Chemical.Substances.Sodium_aqueous()) annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
-      Chemical.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
-      Chemical.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
+      Chemical.Obsolete.Sources.PureSubstance OH(substanceData=Chemical.Substances.Hydroxide_aqueous())
+        annotation (Placement(transformation(extent={{-82,36},{-62,56}})));
+      Chemical.Obsolete.Sources.PureSubstance Na(substanceData=Chemical.Substances.Sodium_aqueous())
+        annotation (Placement(transformation(extent={{-82,68},{-62,88}})));
+      Chemical.Obsolete.Components.SubstancePump substancePump(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-54,36},{-34,56}})));
+      Chemical.Obsolete.Components.SubstancePump substancePump1(useSubstanceFlowInput=true) annotation (Placement(transformation(extent={{-50,68},{-30,88}})));
       Types.Constants.pHConst pH8(k=8) annotation (Placement(transformation(extent={{46,88},{54,96}})));
       Modelica.Blocks.Math.Feedback feedback annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=180,

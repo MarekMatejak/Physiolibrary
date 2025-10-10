@@ -12,11 +12,11 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
 
   annotation (
     preferredView = "info",
-    version = "3.1.0-alpha",
+    version="4.0.0-alpha",
     versionDate = "2023-10-10",
     dateModified = "2023-10-10 1:00:00Z",
     uses(Modelica(version = "4.0.0"), Complex(version = "4.0.0"),
-      Chemical(version="1.4.1")),
+      Chemical(version="2.0.0")),
     conversion(
       from(version = "BioChem-1.0.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertBioChem_1.0.1_to_Physiolibrary_2.3.mos", to = "3.0.0"),
       from(version = "0.4980", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_0.4980_to_2.3.mos", to = "3.0.0"),
@@ -32,7 +32,8 @@ package Physiolibrary "System biology, integrative physiology and pathophysiolog
       from(version = "2.3.0", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
       from(version = "2.3.1", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
       from(version = "2.3.2", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_2.3_to_3.0.mos", to = "3.0.0"),
-      from(version = "3.0.0-alpha11", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_3.0.0-alpha11_to_3.0.0.mos", to = "3.0.0")),
+      from(version = "3.0.0-alpha11", script = "modelica://Physiolibrary/Resources/Scripts/Dymola/ConvertPhysiolibrary_from_3.0.0-alpha11_to_3.0.0.mos", to = "3.0.0"),
+      noneFromVersion="3.1.0-alpha"),
     Documentation(revisions = "<html>
 <p>Copyright (c) 2023, Marek Matej&aacute;k, Ph.D. </p>
 <p>All rights reserved. </p>

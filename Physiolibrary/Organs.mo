@@ -2564,10 +2564,8 @@ vector of pressure-flow connectors.
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={0,24})));
-        Chemical.Components.GasSolubility O2_diffusion(KC=Diffusion)
-          annotation (Placement(transformation(extent={{-54,-16},{-34,4}})));
-        Chemical.Components.GasSolubility CO2_diffusion(KC=Diffusion)
-          annotation (Placement(transformation(extent={{-22,-16},{-2,4}})));
+        Chemical.Obsolete.Components.GasSolubility O2_diffusion(KC=Diffusion) annotation (Placement(transformation(extent={{-54,-16},{-34,4}})));
+        Chemical.Obsolete.Components.GasSolubility CO2_diffusion(KC=Diffusion) annotation (Placement(transformation(extent={{-22,-16},{-2,4}})));
         Fluid.Sensors.BloodGasesMeasurement alveolar(redeclare package Medium =
               Blood)
           annotation (Placement(transformation(extent={{32,-26},{52,-6}})));
@@ -5532,14 +5530,12 @@ QHP 2008 / Skin-Flow
         annotation (Placement(transformation(extent={{-2,-42},{36,-4}})));
     Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasure1(redeclare package Medium = Blood)
       annotation (Placement(transformation(extent={{76,-38},{96,-18}})));
-      Chemical.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit=
-              "mmol/min") = 1.666666666666667e-05*(2*7.71))                                          annotation (
-        Placement(transformation(extent={{76,-90},{96,-70}})));
-      Chemical.Sources.SubstanceInflowT CO2_left(
+      Chemical.Obsolete.Sources.SubstanceOutflow O2_left(SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*7.71))
+        annotation (Placement(transformation(extent={{76,-90},{96,-70}})));
+      Chemical.Obsolete.Sources.SubstanceInflowT CO2_left(
         SubstanceFlow(displayUnit="mmol/min") = 1.666666666666667e-05*(2*6.17),
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,
-        substanceData=Chemical.Substances.CarbonDioxide_gas())
-        annotation (Placement(transformation(extent={{28,-90},{48,-70}})));
+        substanceData=Chemical.Substances.CarbonDioxide_gas()) annotation (Placement(transformation(extent={{28,-90},{48,-70}})));
 
       Fluid.Sensors.PartialPressure pCO2(
         redeclare package stateOfMatter = Chemical.Interfaces.IdealGas,

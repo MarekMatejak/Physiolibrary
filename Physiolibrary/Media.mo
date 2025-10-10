@@ -3,6 +3,7 @@ package Media "Models of physiological fluids"
   extends Modelica.Icons.Package;
 
   package Blood "Blood"
+    import Chemical.Interfaces.Properties;
     import Physiolibrary.Media.Substances.*;
     import Physiolibrary.Media.InitialValues.*;
 
@@ -102,17 +103,19 @@ package Media "Models of physiological fluids"
       input Types.Temperature T = temperature(state);
       input Types.MassFraction pct = plasmaMassFraction(state);
     algorithm
+
      B := (
-     state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,state.p,state.v) +
-     state.X[i("Cl_P")]/Cl.MolarWeight +
-     state.X[i("Na_P")]/Na.MolarWeight +
-     state.X[i("K_P")]/K.MolarWeight +
-     state.X[i("CO2_P")]/CO2.MolarWeight +
+     state.X[i("H2O_P")]*Chemical.Interfaces.Properties.specificAmountOfParticles(Substances.Water,
+        Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v)) +
+     state.X[i("Cl_P")]/Cl.data.MM +
+     state.X[i("Na_P")]/Na.data.MM +
+     state.X[i("K_P")]/K.data.MM +
+     state.X[i("CO2_P")]/CO2.data.MM +
      state.X[i("Alb")]/Constants.MM_Alb +
      state.X[i("Glb")]/Constants.MM_Glb +
      state.X[i("Glucose")]/Constants.MM_Glucose +
-     state.X[i("PO4")]/PO4.MolarWeight +
-     state.X[i("SO4_P")]/SO4.MolarWeight +
+     state.X[i("PO4")]/PO4.data.MM +
+     state.X[i("SO4_P")]/SO4.data.MM +
      state.X[i("Lactate")]/Constants.MM_Lactate +
      state.X[i("Urea")]/Constants.MM_Urea +
      state.X[i("AminoAcids")]/Constants.MM_AminoAcids +
@@ -150,13 +153,14 @@ package Media "Models of physiological fluids"
       extends GetMolality;
       input Types.Temperature T= temperature(state);
       input Types.MassFraction hct= formedElementsMassFraction(state);
+
     algorithm
      B := (
-     state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfParticles(Substances.Water,T,state.p,state.v) +
-     state.X[i("CO2_E")]/CO2.MolarWeight +
-     state.X[i("K_E")]/K.MolarWeight +
-     state.X[i("Na_E")]/Na.MolarWeight +
-     state.X[i("Cl_E")]/Cl.MolarWeight +
+     state.X[i("H2O_E")]*Properties.specificAmountOfParticles(Substances.Water,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p,state.v)) +
+     state.X[i("CO2_E")]/CO2.data.MM +
+     state.X[i("K_E")]/K.data.MM +
+     state.X[i("Na_E")]/Na.data.MM +
+     state.X[i("Cl_E")]/Cl.data.MM +
      (state.X[i("eHb")] + state.X[i("MetHb")] + state.X[i("HbF")])/Constants.MM_Hb +
      state.X[i("DPG")]/Constants.MM_DPG)
       /hct;
@@ -257,6 +261,8 @@ package Media "Models of physiological fluids"
         Modelica.Units.SI.Concentration cHCO3_E  = (aHCO3_E*x_E)*formedElementsDensity(state) "Bicarbonate in blood red cells";
 
         Real aCO2_P;
+    protected
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
     equation
       density = D_BloodDensity;
       plasmaDensity = D_BloodPlasmaDensity;
@@ -265,16 +271,16 @@ package Media "Models of physiological fluids"
 
       X[i("H2O_P")] = (plasmacrit*H2O_plasma)/density;
       X[i("H2O_E")] = (hematocrit*H2O_ery)/density;
-      X[i("O2")] = (tO2*O2.MolarWeight)/density;
+      X[i("O2")] = (tO2*O2.data.MM)/density;
 
-      X[i("CO")] = (tCO*CO.MolarWeight)/density;
+      X[i("CO")] = (tCO*CO.data.MM)/density;
       X[i("eHb")] + X[i("MetHb")] + X[i("HbF")] = (tHb*Constants.MM_Hb)/density;
       X[i("MetHb")] = FMetHb*(tHb*Constants.MM_Hb)/density;
       X[i("HbF")] = FHbF*(tHb*Constants.MM_Hb)/density;
       X[i("Alb")] = plasmacrit*(tAlb*Constants.MM_Alb)/density;
       X[i("Glb")] = plasmacrit*tGlb/density;
-      X[i("PO4")] = plasmacrit*(tPO4*PO4.MolarWeight)/density;
-      X[i("SO4_P")] = plasmacrit*(tSO4*SO4.MolarWeight)/density;
+      X[i("PO4")] = plasmacrit*(tPO4*PO4.data.MM)/density;
+      X[i("SO4_P")] = plasmacrit*(tSO4*SO4.data.MM)/density;
       X[i("DPG")] = hematocrit*(cDPG*Constants.MM_DPG)/density;
       X[i("Glucose")] = plasmacrit*(glucose*Constants.MM_Glucose)/density;
       X[i("Lactate")] = plasmacrit*(lactate*Constants.MM_Lactate)/density;
@@ -282,10 +288,10 @@ package Media "Models of physiological fluids"
       X[i("AminoAcids")] = plasmacrit*(aminoAcids*Constants.MM_AminoAcids)/density;
       X[i("Lipids")] = plasmacrit*(lipids*Constants.MM_Lipids)/density;
       X[i("KetoAcids")] = plasmacrit*(ketoacids*Constants.MM_KetoAcids)/density;
-      X[i("Na_P")] = plasmacrit*(cNa_P*Na.MolarWeight)/density;
-      X[i("K_P")] = plasmacrit*(cK_P*K.MolarWeight)/density;
-      X[i("Na_E")] = hematocrit*(cNa_E*Na.MolarWeight)/density;
-      X[i("K_E")] = hematocrit*(cK_E*K.MolarWeight)/density;
+      X[i("Na_P")] = plasmacrit*(cNa_P*Na.data.MM)/density;
+      X[i("K_P")] = plasmacrit*(cK_P*K.data.MM)/density;
+      X[i("Na_E")] = hematocrit*(cNa_E*Na.data.MM)/density;
+      X[i("K_E")] = hematocrit*(cK_E*K.data.MM)/density;
       X[i("Epinephrine")] = plasmacrit*(epinephrine)/density;
       X[i("Norepinephrine")] = plasmacrit*(norepinephrine)/density;
       X[i("Vasopressin")] = plasmacrit*(vasopressin*Constants.MM_Vasopressin)/density;
@@ -313,8 +319,8 @@ package Media "Models of physiological fluids"
 
       aH2O_P = aH2O_E "osmolarity";
 
-      aH2O_P = state.X[i("H2O_P")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,(state.X[i("H2O_P")]/pct)*1,x_P*1) / (pct*x_P);
-      aH2O_E = state.X[i("H2O_E")]*Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,(state.X[i("H2O_E")]/hct)*1,x_E*1) / (hct*x_E);
+      aH2O_P = state.X[i("H2O_P")]*Properties.specificAmountOfFreeBaseMolecule(Substances.Water,solutionState,(state.X[i("H2O_P")]/pct)*1,x_P*1) / (pct*x_P);
+      aH2O_E = state.X[i("H2O_E")]*Properties.specificAmountOfFreeBaseMolecule(Substances.Water,solutionState,(state.X[i("H2O_E")]/hct)*1,x_E*1) / (hct*x_E);
 
       pct = plasmaMassFraction(state);
       hct = formedElementsMassFraction(state);
@@ -331,14 +337,14 @@ package Media "Models of physiological fluids"
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity);
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
-      X[i("CO2_P")] + X[i("CO2_E")] = (tCO2*CO2.MolarWeight)/density;
-      state.X[i("CO2_P")] = homotopy((aCO2_P*x_P)*CO2.MolarWeight*pct,(26/plasmaDensity)*CO2.MolarWeight*pct);
+      X[i("CO2_P")] + X[i("CO2_E")] = (tCO2*CO2.data.MM)/density;
+      state.X[i("CO2_P")] = homotopy((aCO2_P*x_P)*CO2.data.MM*pct,(26/plasmaDensity)*CO2.data.MM*pct);
       bloodGases.tCO2_P=(aCO2_P*x_P)*plasmaDensity;
 
       aHCO3*aCl_E = aCl_P*aHCO3_E "Chloride shift";
-      X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of plasma Cl- in blood";
-      X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of erythrocyte's Cl- in blood";
-      X[i("Cl_P")] + X[i("Cl_E")] = -((NSID - BEox) - plasmacrit*(cNa_P + cK_P) - hematocrit*(cNa_E + cK_E))*Cl.MolarWeight
+      X[i("Cl_P")] = (aCl_P*x_P)*Cl.data.MM*pct "Mass fraction of plasma Cl- in blood";
+      X[i("Cl_E")] = (aCl_E*x_E)*Cl.data.MM*hct "Mass fraction of erythrocyte's Cl- in blood";
+      X[i("Cl_P")] + X[i("Cl_E")] = -((NSID - BEox) - plasmacrit*(cNa_P + cK_P) - hematocrit*(cNa_E + cK_E))*Cl.data.MM
         /density "where blood SID = NSID - BEox";
 
       C[j("AlphaBlockers")] = 1e-6*alphaBlockers;
@@ -358,22 +364,40 @@ package Media "Models of physiological fluids"
 
   public
     redeclare replaceable connector extends SubstancesPort "Blood chemical substances interface"
-         Chemical.Interfaces.SubstancePort_a CO2 "Free carbon dioxide molecule";
-         Chemical.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
-         Chemical.Interfaces.SubstancePort_a CO "Free carbon monoxide moelcule";
-         Chemical.Interfaces.SubstancePort_a HCO3 "Free bicarbonate molecule";
-         Chemical.Interfaces.SubstancePort_a H "Free protons";
-         Chemical.Interfaces.SubstancePort_a OH "Free hydroxide";
-         Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
+      Chemical.Obsolete.Interfaces.SubstancePort_a CO2 "Free carbon dioxide molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a CO "Free carbon monoxide moelcule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a HCO3 "Free bicarbonate molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H "Free protons";
+      Chemical.Obsolete.Interfaces.SubstancePort_a OH "Free hydroxide";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H2O
+        "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
 
-         Chemical.Interfaces.SubstancePort_a Na,K,Cl,SO4,PO4;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Na;
+      Chemical.Obsolete.Interfaces.SubstancePort_a K;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Cl;
+      Chemical.Obsolete.Interfaces.SubstancePort_a SO4;
+      Chemical.Obsolete.Interfaces.SubstancePort_a PO4;
 
-         Chemical.Interfaces.SubstancePort_a Glucose,Lactate,Urea,AminoAcids,Lipids,KetoAcids;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Glucose;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Lactate;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Urea;
+      Chemical.Obsolete.Interfaces.SubstancePort_a AminoAcids;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Lipids;
+      Chemical.Obsolete.Interfaces.SubstancePort_a KetoAcids;
 
-         Chemical.Interfaces.SubstancePort_a Epinephrine,Norepinephrine,Vasopressin;
-         Chemical.Interfaces.SubstancePort_a Insulin,Glucagon,Thyrotropin,Thyroxine,Leptin;
-         Chemical.Interfaces.SubstancePort_a Desglymidodrine;
-         Chemical.Interfaces.SubstancePort_a Angiotensin2,Renin,Aldosterone;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Epinephrine;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Norepinephrine;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Vasopressin;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Insulin;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Glucagon;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Thyrotropin;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Thyroxine;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Leptin;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Desglymidodrine;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Angiotensin2;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Renin;
+      Chemical.Obsolete.Interfaces.SubstancePort_a Aldosterone;
       annotation (Documentation(info="<html>
 <p><span style=\"font-family: Times New Roman;\">Electrochemical connections lead via free base substance forms. For example, the total mass fraction of carbon dioxide is represented as part of the composition of blood in fluid connector, but free dissolved carbon dioxide in blood plasma or bicarbonate in blood plasma are its electrochemical connectors proposed to model the electrochemical CO2 fluxes. Since the selected forms are precisely determined by the composition of the blood, it is not necessary to store them and pass them through the fluid connector. They are only expressed and calculated when needed.</span> </p>
 </html>"));
@@ -391,8 +415,6 @@ package Media "Models of physiological fluids"
 </html>"));
     end ThermodynamicState;
 
-    replaceable package stateOfMatter = Chemical.Interfaces.Incompressible
-      "Substances model to translate data into substance properties";
 
     redeclare replaceable model extends ChemicalSolution( substances(H2O(u(nominal=-225057)),Glucose(u(nominal=-910549))))
       "Free chemical substances"
@@ -469,18 +491,18 @@ package Media "Models of physiological fluids"
       aHCO3 = bloodGases.cHCO3 / (x_P*plasmaDensity(state));
       aHCO3_E = bloodGases.cHCO3_E / (x_E*formedElementsDensity(state));
 
-      state.X[i("Na_P")] = (aNa_P*x_P)*Na.MolarWeight*pct "Mass fraction of Na+ in blood plasma";
-      state.X[i("K_P")] = (aK_P*x_P)*K.MolarWeight*pct "Mass fraction of K+ in blood plasma";
-      state.X[i("SO4_P")] = (aSO4_P*x_P)*SO4.MolarWeight*pct "Mass fraction of SO4-- in blood plasma";
-      state.X[i("PO4")] = (aPO4_P*x_P)*PO4.MolarWeight*pct "Mass fraction of PO4--- in blood plasma";
+      state.X[i("Na_P")] = (aNa_P*x_P)*Na.data.MM*pct "Mass fraction of Na+ in blood plasma";
+      state.X[i("K_P")] = (aK_P*x_P)*K.data.MM*pct "Mass fraction of K+ in blood plasma";
+      state.X[i("SO4_P")] = (aSO4_P*x_P)*SO4.data.MM*pct "Mass fraction of SO4-- in blood plasma";
+      state.X[i("PO4")] = (aPO4_P*x_P)*PO4.data.MM*pct "Mass fraction of PO4--- in blood plasma";
 
-      state.X[i("Cl_P")] = (aCl_P*x_P)*Cl.MolarWeight*pct "Mass fraction of Cl- in blood plasma";
-      state.X[i("Cl_E")] = (aCl_E*x_E)*Cl.MolarWeight*hct "Mass fraction of Cl- in blood red cells";
+      state.X[i("Cl_P")] = (aCl_P*x_P)*Cl.data.MM*pct "Mass fraction of Cl- in blood plasma";
+      state.X[i("Cl_E")] = (aCl_E*x_E)*Cl.data.MM*hct "Mass fraction of Cl- in blood red cells";
       Cl_Ery2Plasma = KC_Cl*(Modelica.Constants.R*T*log((aCl_E/aCl_P)*(aHCO3/aHCO3_E))) "Chloride shift";
-      expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.MolarWeight*hct "Debug of chloride shift rate";
+      expected_XCl_E = (aCl_P*(aHCO3_E/aHCO3)*x_E)*Cl.data.MM*hct "Debug of chloride shift rate";
 
-      state.X[i("CO2_P")] = (atCO2_P*x_P)*CO2.MolarWeight*pct;
-      state.X[i("CO2_E")] = (atCO2_E*x_E)*CO2.MolarWeight*hct;
+      state.X[i("CO2_P")] = (atCO2_P*x_P)*CO2.data.MM*pct;
+      state.X[i("CO2_E")] = (atCO2_E*x_E)*CO2.data.MM*hct;
       //expected:
       expected_tCO2_P = bloodGases.tCO2_P;
       expected_tCO2_E = bloodGases.tCO2_ery;
@@ -499,10 +521,10 @@ package Media "Models of physiological fluids"
       nSolution_E = x_E;
 
 
-      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_P,nSolution_P);
-      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_E,nSolution_E);
+      state.X[i("H2O_P")] = aH2O_P*pct*x_P/Properties.specificAmountOfFreeBaseMolecule(Substances.Water,solutionState,massH2O_P,nSolution_P);
+      state.X[i("H2O_E")] = aH2O_E*hct*x_E/Properties.specificAmountOfFreeBaseMolecule(Substances.Water,solutionState,massH2O_E,nSolution_E);
       H2O_Ery2Plasma = KC_H2O*(Modelica.Constants.R*T*log(aH2O_E/aH2O_P)) "Osmolarity equilibration rate";
-      expected_XH2O_E = aH2O_P*hct*x_E/Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water,T,p,v,0,massH2O_E,nSolution_E) "Debug of osmolarity equilibration";
+      expected_XH2O_E = aH2O_P*hct*x_E/Properties.specificAmountOfFreeBaseMolecule(Substances.Water,solutionState,massH2O_E,nSolution_E) "Debug of osmolarity equilibration";
 
 
       x_P =plasmaSpecificAmountOfParticles(state);
@@ -511,191 +533,134 @@ package Media "Models of physiological fluids"
 
 
       substances.H2O.u = Modelica.Constants.R*T*log(aH2O_P)  +
-            Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
-              Substances.Water, T, p, v);
-      substances.H2O.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
-          Substances.Water,
-          T,
-          p,
-          v);
+            Properties.electroChemicalPotentialPure(
+              Substances.Water, solutionState);
+      substances.H2O.h_outflow = Properties.molarEnthalpy(
+          Substances.Water, solutionState);
 
       substances.O2.u = Modelica.Constants.R*T*log(aO2) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.O2_g,
-          T,
-          p,
-          v);
-      substances.O2.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.O2_g,
-          T,
-          p,
-          v);
+        Properties.electroChemicalPotentialPure(
+          Substances.O2,
+          solutionState);
+      substances.O2.h_outflow = Properties.molarEnthalpy(
+          Substances.O2,
+          solutionState);
 
 
       substances.CO2.u = Modelica.Constants.R*T*log(aCO2) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.CO2_g,
-          T,
-          p,
-          v);
-      substances.CO2.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.CO2_g,
-          T,
-          p,
-          v);
+        Properties.electroChemicalPotentialPure(
+          Substances.CO2,
+          solutionState);
+      substances.CO2.h_outflow = Properties.molarEnthalpy(
+          Substances.CO2,
+          solutionState);
       substances.HCO3.u = Modelica.Constants.R*T*log(aHCO3) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.HCO3,
-          T,
-          p,
-          v);
-      substances.HCO3.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.HCO3.h_outflow = Properties.molarEnthalpy(
           Substances.HCO3,
-          T,
-          p,
-          v);
+          solutionState);
 
 
       substances.CO.u = Modelica.Constants.R*T*log(aCO) +
-        Chemical.Interfaces.IdealGas.electroChemicalPotentialPure(
-          Substances.CO_g,
-          T,
-          p,
-          v);
-      substances.CO.h_outflow = Chemical.Interfaces.IdealGas.molarEnthalpy(
-          Substances.CO_g,
-          T,
-          p,
-          v);
+        Properties.electroChemicalPotentialPure(
+          Substances.CO,
+          solutionState);
+      substances.CO.h_outflow = Properties.molarEnthalpy(
+          Substances.CO,
+          solutionState);
 
 
       substances.H.u = Modelica.Constants.R*T*log(aH_plus) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.H,
-          T,
-          p,
-          v);
+          solutionState);
       substances.H.h_outflow = 0;
 
       //just for debug (should be the same as pHpOH):
-      pK_WaterSelfIonization = -log10(exp((Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
-              Substances.Water, T, p, v)
+      pK_WaterSelfIonization = -log10(exp((Properties.electroChemicalPotentialPure(
+              Substances.Water, solutionState)
               + Modelica.Constants.R*T*log(
-                (Chemical.Interfaces.Incompressible.specificAmountOfFreeBaseMolecule(Substances.Water, T, p, v, 0, massH2O_P, nSolution_P)
+                (Properties.specificAmountOfFreeBaseMolecule(Substances.Water, solutionState, massH2O_P, nSolution_P)
                 * massH2O_P)/nSolution_P)
-              - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.OH, T, p, v)
-              - Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(Substances.H, T, p, v))/(Modelica.Constants.R*T)))
+              - Properties.electroChemicalPotentialPure(Substances.OH, solutionState)
+              - Properties.electroChemicalPotentialPure(Substances.H, solutionState))/(Modelica.Constants.R*T)))
               "water self disociation pK shifted to water activity=1";
 
       substances.OH.u + substances.H.u = substances.H2O.u;
       substances.OH.u = Modelica.Constants.R*T*log(aOH_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.OH,
-          T,
-          p,
-          v);
-      substances.OH.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.OH.h_outflow = Properties.molarEnthalpy(
           Substances.OH,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.Na.u = Modelica.Constants.R*T*log(aNa_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.Na,
-          T,
-          p,
-          v);
-      substances.Na.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.Na.h_outflow = Properties.molarEnthalpy(
           Substances.Na,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.K.u = Modelica.Constants.R*T*log(aK_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.K,
-          T,
-          p,
-          v);
-      substances.K.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.K.h_outflow = Properties.molarEnthalpy(
           Substances.K,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.Cl.u = Modelica.Constants.R*T*log(aCl_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.Cl,
-          T,
-          p,
-          v);
-      substances.Cl.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.Cl.h_outflow = Properties.molarEnthalpy(
           Substances.Cl,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.SO4.u = Modelica.Constants.R*T*log(aSO4_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.SO4,
-          T,
-          p,
-          v);
-      substances.SO4.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.SO4.h_outflow = Properties.molarEnthalpy(
           Substances.SO4,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.PO4.u = Modelica.Constants.R*T*log(aPO4_P) +
-        Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+        Properties.electroChemicalPotentialPure(
           Substances.PO4,
-          T,
-          p,
-          v);
-      substances.PO4.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.PO4.h_outflow = Properties.molarEnthalpy(
           Substances.PO4,
-          T,
-          p,
-          v);
+          solutionState);
 
 
       substances.Glucose.u = Modelica.Constants.R*T*log(((state.X[i("Glucose")]/pct)/Constants.MM_Glucose)/x_P) +
-         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+         Properties.electroChemicalPotentialPure(
           Substances.Glucose,
-          T,
-          p,
-          v);
-      substances.Glucose.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.Glucose.h_outflow = Properties.molarEnthalpy(
           Substances.Glucose,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.Lactate.u = Modelica.Constants.R*T*log((state.X[i("Lactate")]/pct)/Constants.MM_Lactate/x_P) +
-         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+         Properties.electroChemicalPotentialPure(
           Substances.Lactate,
-          T,
-          p,
-          v);
-      substances.Lactate.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.Lactate.h_outflow = Properties.molarEnthalpy(
           Substances.Lactate,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.Urea.u = Modelica.Constants.R*T*log(state.X[i("Urea")]/Constants.MM_Urea/x_P/pct) +
-         Chemical.Interfaces.Incompressible.electroChemicalPotentialPure(
+         Properties.electroChemicalPotentialPure(
           Substances.Urea,
-          T,
-          p,
-          v);
-      substances.Urea.h_outflow = Chemical.Interfaces.Incompressible.molarEnthalpy(
+          solutionState);
+      substances.Urea.h_outflow = Properties.molarEnthalpy(
           Substances.Urea,
-          T,
-          p,
-          v);
+          solutionState);
 
       substances.AminoAcids.u = Modelica.Constants.R*T*log(state.X[i("AminoAcids")]/Constants.MM_AminoAcids/x_P/pct);
       substances.AminoAcids.h_outflow = 0;
@@ -753,31 +718,31 @@ package Media "Models of physiological fluids"
        substances.KetoAcids.q * actualStream(substances.KetoAcids.h_outflow)
        "enthalpy from substances";
 
-      massFlows[i("H2O_E")] = -H2O_Ery2Plasma*Substances.Water.MolarWeight;
-      massFlows[i("O2")] = substances.O2.q*Substances.O2.MolarWeight;
-      massFlows[i("CO2_P")] = substances.CO2.q*Substances.CO2.MolarWeight + substances.HCO3.q .* Substances.CO2.MolarWeight + CO2_Ery2Plasma*CO2.MolarWeight;
-      massFlows[i("CO2_E")] = -CO2_Ery2Plasma*CO2.MolarWeight;
-      massFlows[i("CO")] = substances.CO.q*Substances.CO.MolarWeight;
+      massFlows[i("H2O_E")] = -H2O_Ery2Plasma*Substances.Water.data.MM;
+      massFlows[i("O2")] = substances.O2.q*Substances.O2.data.MM;
+      massFlows[i("CO2_P")] = substances.CO2.q*Substances.CO2.data.MM + substances.HCO3.q .* Substances.CO2.data.MM + CO2_Ery2Plasma*CO2.data.MM;
+      massFlows[i("CO2_E")] = -CO2_Ery2Plasma*CO2.data.MM;
+      massFlows[i("CO")] = substances.CO.q*Substances.CO.data.MM;
       massFlows[i("eHb")] = 0;
       massFlows[i("MetHb")] = 0;
       massFlows[i("HbF")] = 0;
       massFlows[i("Alb")] = 0;
       massFlows[i("Glb")] = 0;
-      massFlows[i("PO4")] = substances.PO4.q*Substances.PO4.MolarWeight;
-      massFlows[i("SO4_P")] = substances.SO4.q*Substances.SO4.MolarWeight;
+      massFlows[i("PO4")] = substances.PO4.q*Substances.PO4.data.MM;
+      massFlows[i("SO4_P")] = substances.SO4.q*Substances.SO4.data.MM;
       massFlows[i("DPG")] = 0;
-      massFlows[i("Glucose")] = substances.Glucose.q*Substances.Glucose.MolarWeight;
+      massFlows[i("Glucose")] = substances.Glucose.q*Substances.Glucose.data.MM;
       massFlows[i("Lactate")] = substances.Lactate.q*Constants.MM_Lactate;
-      massFlows[i("Urea")] = substances.Urea.q*Substances.Urea.MolarWeight;
+      massFlows[i("Urea")] = substances.Urea.q*Substances.Urea.data.MM;
       massFlows[i("AminoAcids")] = substances.AminoAcids.q*Constants.MM_AminoAcids;
       massFlows[i("Lipids")] = substances.Lipids.q*Constants.MM_Lipids;
       massFlows[i("KetoAcids")] = substances.KetoAcids.q*Constants.MM_KetoAcids;
-      massFlows[i("Na_P")] = substances.Na.q*Substances.Na.MolarWeight;
-      massFlows[i("K_P")] = substances.K.q*Substances.K.MolarWeight;
-      massFlows[i("Cl_P")] = substances.Cl.q*Substances.Cl.MolarWeight + Cl_Ery2Plasma*Cl.MolarWeight;
+      massFlows[i("Na_P")] = substances.Na.q*Substances.Na.data.MM;
+      massFlows[i("K_P")] = substances.K.q*Substances.K.data.MM;
+      massFlows[i("Cl_P")] = substances.Cl.q*Substances.Cl.data.MM + Cl_Ery2Plasma*Cl.data.MM;
       massFlows[i("Na_E")] = 0;
       massFlows[i("K_E")] = 0;
-      massFlows[i("Cl_E")] = -Cl_Ery2Plasma*Cl.MolarWeight;
+      massFlows[i("Cl_E")] = -Cl_Ery2Plasma*Cl.data.MM;
       massFlows[i("Epinephrine")] = substances.Epinephrine.q*Constants.MM_Epinephrine;
       massFlows[i("Norepinephrine")] = substances.Norepinephrine.q*Constants.MM_Norepinephrine;
       massFlows[i("Vasopressin")] = substances.Vasopressin.q*Constants.MM_Vasopressin;
@@ -790,7 +755,7 @@ package Media "Models of physiological fluids"
       massFlows[i("Angiotensin2")] = substances.Angiotensin2.q*Constants.MM_Angiotensin2;
       massFlows[i("Renin")] = substances.Renin.q*Constants.MM_Renin;
       massFlows[i("Aldosterone")] = substances.Aldosterone.q*Constants.MM_Aldosterone;
-      massFlows[i("H2O_P")] = substances.OH.q*Substances.OH.MolarWeight + substances.H2O.q*Substances.Water.MolarWeight + H2O_Ery2Plasma*Substances.Water.MolarWeight;
+      massFlows[i("H2O_P")] = substances.OH.q*Substances.OH.data.MM + substances.H2O.q*Substances.Water.data.MM + H2O_Ery2Plasma*Substances.Water.data.MM;
       massFlows[i("Other_P")] = 0;
       massFlows[i("Other_E")] = 0;
 
@@ -1047,32 +1012,24 @@ package Media "Models of physiological fluids"
     end BaseProperties;
 
     redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of blood substances"
+    protected
+     Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
     algorithm
-      specificEnthalpy[i("H2O_E")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+      specificEnthalpy[i("H2O_E")] := Properties.specificEnthalpy(
           Substances.Water,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("O2")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
-          Substances.O2_g,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("CO2_P")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
-          Substances.CO2_g,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("CO2_E")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
-          Substances.CO2_g,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("CO")] := Chemical.Interfaces.IdealGas.specificEnthalpy(
-          Substances.CO_g,
-          T,
-          p,
-          v);
+          solutionState);
+      specificEnthalpy[i("O2")] := Properties.specificEnthalpy(
+          Substances.O2,
+          solutionState);
+      specificEnthalpy[i("CO2_P")] := Properties.specificEnthalpy(
+          Substances.CO2,
+          solutionState);
+      specificEnthalpy[i("CO2_E")] := Properties.specificEnthalpy(
+          Substances.CO2,
+          solutionState);
+      specificEnthalpy[i("CO")] := Properties.specificEnthalpy(
+          Substances.CO,
+          solutionState);
       specificEnthalpy[i("eHb")] := 0;
       specificEnthalpy[i("MetHb")] := 0;
       specificEnthalpy[i("HbF")] := 0;
@@ -1080,54 +1037,36 @@ package Media "Models of physiological fluids"
       specificEnthalpy[i("Glb")] := 0;
       specificEnthalpy[i("PO4")] := 0;
       specificEnthalpy[i("DPG")] := 0;
-      specificEnthalpy[i("Glucose")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+      specificEnthalpy[i("Glucose")] := Properties.specificEnthalpy(
           Substances.Glucose,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("Lactate")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("Lactate")] := Properties.specificEnthalpy(
           Substances.Lactate,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("Urea")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("Urea")] := Properties.specificEnthalpy(
           Substances.Urea,
-          T,
-          p,
-          v);
+          solutionState);
       specificEnthalpy[i("AminoAcids")] := 0;
       specificEnthalpy[i("Lipids")] := 0;
       specificEnthalpy[i("KetoAcids")] := 0;
-      specificEnthalpy[i("Na_P")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+      specificEnthalpy[i("Na_P")] := Properties.specificEnthalpy(
           Substances.Na,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("Na_E")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("Na_E")] := Properties.specificEnthalpy(
           Substances.Na,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("K_P")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("K_P")] := Properties.specificEnthalpy(
           Substances.K,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("K_E")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("K_E")] := Properties.specificEnthalpy(
           Substances.K,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("Cl_P")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("Cl_P")] := Properties.specificEnthalpy(
           Substances.Cl,
-          T,
-          p,
-          v);
-      specificEnthalpy[i("Cl_E")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+          solutionState);
+      specificEnthalpy[i("Cl_E")] := Properties.specificEnthalpy(
           Substances.Cl,
-          T,
-          p,
-          v);
+          solutionState);
       specificEnthalpy[i("Epinephrine")] := 0;
       specificEnthalpy[i("Norepinephrine")] := 0;
       specificEnthalpy[i("Vasopressin")] := 0;
@@ -1140,11 +1079,9 @@ package Media "Models of physiological fluids"
       specificEnthalpy[i("Angiotensin2")] := 0;
       specificEnthalpy[i("Renin")] := 0;
       specificEnthalpy[i("Aldosterone")] := 0;
-      specificEnthalpy[i("H2O_P")] := Chemical.Interfaces.Incompressible.specificEnthalpy(
+      specificEnthalpy[i("H2O_P")] := Properties.specificEnthalpy(
           Substances.Water,
-          T,
-          p,
-          v);
+          solutionState);
       specificEnthalpy[i("Other_P")] := 0;
       specificEnthalpy[i("Other_E")] := 0;
 
@@ -1368,25 +1305,25 @@ package Media "Models of physiological fluids"
     replaceable function tO2 "Total oxygen in blood"
       extends GetConcentration;
     algorithm
-      C := density(state) * state.X[i("O2")] / O2.MolarWeight;
+      C := density(state) * state.X[i("O2")] / O2.data.MM;
     end tO2;
 
     replaceable function sO2 "Oxygen saturation on effective hemoglobin"
       extends GetFraction;
     algorithm
-      F := (state.X[i("O2")] / O2.MolarWeight) / (state.X[i("eHb")] / Constants.MM_Hb);
+      F := (state.X[i("O2")] / O2.data.MM) / (state.X[i("eHb")] / Constants.MM_Hb);
     end sO2;
 
     replaceable function tCO2 "Total carbon dioxide in blood"
       extends GetConcentration;
     algorithm
-      C := density(state) * (state.X[i("CO2_P")]+state.X[i("CO2_E")]) / CO2.MolarWeight;
+      C := density(state) * (state.X[i("CO2_P")]+state.X[i("CO2_E")]) / CO2.data.MM;
     end tCO2;
 
     replaceable function tCO "Total carbon monoxide in blood"
       extends GetConcentration;
     algorithm
-      C := density(state) * state.X[i("CO")] / CO.MolarWeight;
+      C := density(state) * state.X[i("CO")] / CO.data.MM;
     end tCO;
 
     replaceable function tHb "Total hemoglobine in blood"
@@ -1431,7 +1368,7 @@ package Media "Models of physiological fluids"
     replaceable function tPO4 "Total anorganic phosphates in blood plasma"
       extends GetConcentration;
     algorithm
-      C :=plasmaDensity(state)*(state.X[i("PO4")]/PO4.MolarWeight)/
+      C :=plasmaDensity(state)*(state.X[i("PO4")]/PO4.data.MM)/
         plasmaMassFraction(state);
     end tPO4;
 
@@ -1446,13 +1383,13 @@ package Media "Models of physiological fluids"
       extends GetConcentration;
     algorithm
       C := density(state) * (
-          state.X[i("Na_P")]/Na.MolarWeight +
-          state.X[i("Na_E")]/Na.MolarWeight +
-          state.X[i("K_P")]/K.MolarWeight +
-          state.X[i("K_E")]/K.MolarWeight -
-          state.X[i("Cl_P")]/Cl.MolarWeight -
-          state.X[i("Cl_E")]/Cl.MolarWeight -
-          SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight);
+          state.X[i("Na_P")]/Na.data.MM +
+          state.X[i("Na_E")]/Na.data.MM +
+          state.X[i("K_P")]/K.data.MM +
+          state.X[i("K_E")]/K.data.MM -
+          state.X[i("Cl_P")]/Cl.data.MM -
+          state.X[i("Cl_E")]/Cl.data.MM -
+          SO4.data.z*state.X[i("SO4_P")]/SO4.data.MM);
     end SID;
 
     replaceable function glucose "Total glucose in blood plasma"
@@ -1633,19 +1570,19 @@ package Media "Models of physiological fluids"
       extends GetConcentration;
     algorithm
       C := plasmaDensity(state) * (
-          state.X[i("Na_P")]/Na.MolarWeight +
-          state.X[i("K_P")]/K.MolarWeight -
-          state.X[i("Cl_P")]/Cl.MolarWeight -
-          SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight) / plasmacrit(state);
+          state.X[i("Na_P")]/Na.data.MM +
+          state.X[i("K_P")]/K.data.MM -
+          state.X[i("Cl_P")]/Cl.data.MM -
+          SO4.data.z*state.X[i("SO4_P")]/SO4.data.MM) / plasmacrit(state);
     end plasmaSID;
 
     replaceable function formedElementsSID "Strong ion difference of blood formed elements"
       extends GetConcentration;
     algorithm
       C := density(state) * (
-          state.X[i("Na_E")]/Na.MolarWeight +
-          state.X[i("K_E")]/K.MolarWeight -
-          state.X[i("Cl_E")]/Cl.MolarWeight) / hematocrit(state);
+          state.X[i("Na_E")]/Na.data.MM +
+          state.X[i("K_E")]/K.data.MM -
+          state.X[i("Cl_E")]/Cl.data.MM) / hematocrit(state);
     end formedElementsSID;
     annotation (Documentation(info="<html>
 <p>Adding new substance to blood model:</p>
@@ -1658,6 +1595,7 @@ package Media "Models of physiological fluids"
   end Blood;
 
   package Water "Incompressible water with constant heat capacity"
+    import Chemical.Interfaces.Properties;
     extends Interfaces.PartialMedium(
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       final mediumName="Water",
@@ -1678,16 +1616,15 @@ package Media "Models of physiological fluids"
 
 
   protected
-    package stateOfMatter = Chemical.Interfaces.Incompressible
-      "Substances model to translate data into substance properties";
 
   public
     redeclare connector extends SubstancesPort "Water chemical substances interface"
-       Chemical.Interfaces.SubstancePort_a H2O "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
-       Chemical.Interfaces.SubstancePort_a H "Free hydrogen ion H+";
-       Chemical.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
-       Chemical.Interfaces.SubstancePort_a H2 "Free hydrogen molecule";
-       Chemical.Interfaces.SubstancePort_a OH "Free hydroxide molecule OH-";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H2O
+        "Free water molecule (in pure water is only cca 1 mol/kg free water molecules, other cca 54.5 mols are bounded together by hydrogen bonds)";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H "Free hydrogen ion H+";
+      Chemical.Obsolete.Interfaces.SubstancePort_a O2 "Free oxygen molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H2 "Free hydrogen molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a OH "Free hydroxide molecule OH-";
        Modelica.Electrical.Analog.Interfaces.Pin cathode "Electric cathode";
        Modelica.Electrical.Analog.Interfaces.Pin anode "Electric anode";
     end SubstancesPort;
@@ -1702,8 +1639,9 @@ package Media "Models of physiological fluids"
       _i = substances.cathode.i;
       _i + (-1)*Modelica.Constants.F*eq = 0 "electric current is flow of electrons";
 
-      T = stateOfMatter.solution_temperature(
+      T = Properties.specific_solution_temperature(
           {Substances.Water},
+          Chemical.Interfaces.Phase.Aqueous,
           h,
           {1},
           p);
@@ -1715,21 +1653,21 @@ package Media "Models of physiological fluids"
       logH=logOH;
 
 
-      substances.H2O.u = stateOfMatter.electroChemicalPotentialPure( Substances.Water, T, p, v);
-      substances.H.u = stateOfMatter.electroChemicalPotentialPure( Substances.H, T, p, v) +
+      substances.H2O.u = Properties.electroChemicalPotentialPure( Substances.Water, solutionState);
+      substances.H.u = Properties.electroChemicalPotentialPure( Substances.H, solutionState) +
                        Modelica.Constants.R*T*logH;
-      substances.O2.u = stateOfMatter.electroChemicalPotentialPure( Substances.O2, T, p, v) +
+      substances.O2.u = Properties.electroChemicalPotentialPure( Substances.O2, solutionState) +
                        Modelica.Constants.R*T*logO2;
-      substances.H2.u = stateOfMatter.electroChemicalPotentialPure( Substances.H2, T, p, v) +
+      substances.H2.u = Properties.electroChemicalPotentialPure( Substances.H2, solutionState) +
                        Modelica.Constants.R*T*logH2;
-      substances.OH.u = stateOfMatter.electroChemicalPotentialPure( Substances.OH, T, p, v) +
+      substances.OH.u = Properties.electroChemicalPotentialPure( Substances.OH, solutionState) +
                        Modelica.Constants.R*T*logOH;
 
-      substances.H2O.h_outflow = stateOfMatter.molarEnthalpy( Substances.Water, T, p, v);
-      substances.H.h_outflow = stateOfMatter.molarEnthalpy( Substances.H, T, p, v);
-      substances.O2.h_outflow = stateOfMatter.molarEnthalpy( Substances.O2, T, p, v);
-      substances.H2.h_outflow = stateOfMatter.molarEnthalpy( Substances.H2, T, p, v);
-      substances.OH.h_outflow = stateOfMatter.molarEnthalpy( Substances.OH, T, p, v);
+      substances.H2O.h_outflow = Properties.molarEnthalpy( Substances.Water, solutionState);
+      substances.H.h_outflow = Properties.molarEnthalpy( Substances.H, solutionState);
+      substances.O2.h_outflow = Properties.molarEnthalpy( Substances.O2, solutionState);
+      substances.H2.h_outflow = Properties.molarEnthalpy( Substances.H2, solutionState);
+      substances.OH.h_outflow = Properties.molarEnthalpy( Substances.OH, solutionState);
 
       enthalpyFromSubstances =
        substances.H2O.q * actualStream(substances.H2O.h_outflow) +
@@ -1740,33 +1678,33 @@ package Media "Models of physiological fluids"
         "enthalpy from substances";
 
 
-      massFlows = {substances.H2O.q * Substances.Water.MolarWeight +
-       substances.H.q * Substances.H.MolarWeight +
-       substances.O2.q * Substances.O2.MolarWeight +
-       substances.H2.q * Substances.H2.MolarWeight +
-       substances.OH.q * Substances.OH.MolarWeight}
+      massFlows = {substances.H2O.q * Substances.Water.data.MM +
+       substances.H.q * Substances.H.data.MM +
+       substances.O2.q * Substances.O2.data.MM +
+       substances.H2.q * Substances.H2.data.MM +
+       substances.OH.q * Substances.OH.data.MM}
         "mass change of water";
     end ChemicalSolution;
 
     redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
     algorithm
-       specificEnthalpy:=stateOfMatter.specificEnthalpy(
+       specificEnthalpy:=Properties.specificEnthalpy(
           {Substances.Water},
-          T,p,v);
+          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
     end specificEnthalpies_Tpv;
 
   public
     redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
     equation
       d = 1000;
-      h = X*stateOfMatter.specificEnthalpy(
+      h = X*Properties.specificEnthalpy(
           {Substances.Water},
-          T=T,
-          p=p);
+          solutionState);
       u = h - p/d;
-      MM = 1/(X*stateOfMatter.specificAmountOfParticles({Substances.Water}));
+      MM = 1/(X*Properties.specificAmountOfParticles({Substances.Water},solutionState));
       R_s = 8.3144/MM;
       state.p = p;
       state.T = T;
@@ -1794,8 +1732,9 @@ package Media "Models of physiological fluids"
       "Return thermodynamic state as function of p, h and composition X or Xi"
     algorithm
       state.p := p;
-      state.T := Chemical.Interfaces.Incompressible.solution_temperature(
+      state.T := Properties.specific_solution_temperature(
           {Substances.Water},
+          Chemical.Interfaces.Phase.Aqueous,
           h,
           {1},
           p);
@@ -1803,19 +1742,17 @@ package Media "Models of physiological fluids"
 
     redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
     algorithm
-      h := stateOfMatter.specificEnthalpy(
+      h := Properties.specificEnthalpy(
           Substances.Water,
-          T=state.T,
-          p=state.p);
+          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
     end specificEnthalpy;
 
     redeclare replaceable function extends specificHeatCapacityCp
       "Return specific heat capacity at constant pressure"
     algorithm
-      cp := stateOfMatter.specificHeatCapacityCp(
+      cp := Properties.specificHeatCapacityCp(
           Substances.Water,
-          T=state.T,
-          p=state.p);
+          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
       annotation (Documentation(info="<html>
 
 </html>"));
@@ -1854,6 +1791,7 @@ Modelica source.
 
     package Air
       import Physiolibrary.Media.Substances.*;
+      import Chemical.Interfaces.Properties;
       extends Interfaces.PartialMedium(
          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
          reducedX = false,
@@ -1866,34 +1804,34 @@ Modelica source.
          Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
          MassFlowRate(nominal=1e-3));
 
-  protected
-      package stateOfMatter = Chemical.Interfaces.IdealGas
-        "Substances model to translate data into substance properties";
+    protected
 
-      constant stateOfMatter.SubstanceData substanceData[nS]={
-          Chemical.Substances.Oxygen_gas(),
-          Chemical.Substances.CarbonDioxide_gas(),
-          Chemical.Substances.Water_gas(),
-          Chemical.Substances.Nitrogen_gas()} "Definition of the substances";
+
+      constant Chemical.Interfaces.Definition substanceData[nS]={
+          Chemical.Substances.Gas.O2,
+          Chemical.Substances.Gas.CO2,
+          Chemical.Substances.Gas.H2O,
+          Chemical.Substances.Gas.N2} "Definition of the substances";
 
       constant Modelica.Units.SI.MoleFraction Conc[nS-1]={0.21,0.0004,0.02}
         "sum(*) = 1";
 
       constant Real C2X[nS-1] = aMM[1:nS-1] ./ (Conc * aMM[1:nS-1] + (1 - sum(Conc)) * aMM[nS]) "Conc to mass fraction coefficient";
 
-      constant Real aMM[nS] = ones(nS) ./ stateOfMatter.specificAmountOfParticles(substanceData, T=298.15, p=101325) "Average molar mass of substance particle";
+      constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
 
-  public
+    public
       redeclare replaceable connector extends SubstancesPort
-       Chemical.Interfaces.SubstancePort_a O2 "Gaseous oxygen molecule";
-       Chemical.Interfaces.SubstancePort_a CO2 "Gaseous hydrogen molecule";
-       Chemical.Interfaces.SubstancePort_a H2O "Gaseous H2O molecule";
-       Chemical.Interfaces.SubstancePort_a N2 "Gaseaous nitrogen molecule";
+        Chemical.Obsolete.Interfaces.SubstancePort_a O2 "Gaseous oxygen molecule";
+        Chemical.Obsolete.Interfaces.SubstancePort_a CO2 "Gaseous hydrogen molecule";
+        Chemical.Obsolete.Interfaces.SubstancePort_a H2O "Gaseous H2O molecule";
+        Chemical.Obsolete.Interfaces.SubstancePort_a N2 "Gaseaous nitrogen molecule";
       end SubstancesPort;
 
 
       redeclare replaceable model extends ChemicalSolution
-    protected
+        import Chemical.Interfaces.Properties;
+      protected
          Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
          Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
 
@@ -1903,42 +1841,37 @@ Modelica source.
       equation
         v=0 "electric potential is not used without external flows of charge";
 
-        NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
 
-        x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p)./(X*NpM);
+        NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
 
-        T = stateOfMatter.solution_temperature(
+        x_baseMolecule = X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState)./(X*NpM);
+
+
+        T = Properties.specific_solution_temperature(
             substanceData,
+            Chemical.Interfaces.Phase.Aqueous,
             h,
             X,
             p);
 
 
-        substances.O2.u =stateOfMatter.electroChemicalPotentialPure(
+        substances.O2.u =Properties.electroChemicalPotentialPure(
             Substances.O2_g,
-            T,
-            p,
-            v) + Modelica.Constants.R*T*log(x_baseMolecule[i("O2")]);
-        substances.CO2.u =stateOfMatter.electroChemicalPotentialPure(
+            solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("O2")]);
+        substances.CO2.u =Properties.electroChemicalPotentialPure(
             Substances.CO2_g,
-            T,
-            p,
-            v) + Modelica.Constants.R*T*log(x_baseMolecule[i("CO2")]);
-        substances.H2O.u =stateOfMatter.electroChemicalPotentialPure(
+            solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("CO2")]);
+        substances.H2O.u =Properties.electroChemicalPotentialPure(
             Substances.H2O_g,
-            T,
-            p,
-            v) + Modelica.Constants.R*T*log(x_baseMolecule[i("H2O")]);
-        substances.N2.u =stateOfMatter.electroChemicalPotentialPure(
+            solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("H2O")]);
+        substances.N2.u =Properties.electroChemicalPotentialPure(
             Substances.N2_g,
-            T,
-            p,
-            v) + Modelica.Constants.R*T*log(x_baseMolecule[i("N2")]);
-        substances.O2.h_outflow = stateOfMatter.molarEnthalpy( Substances.O2_g, T, p, v);
+            solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("N2")]);
+        substances.O2.h_outflow = Properties.molarEnthalpy( Substances.O2_g, solutionState);
 
-        substances.CO2.h_outflow = stateOfMatter.molarEnthalpy( Substances.CO2_g, T, p, v);
-        substances.H2O.h_outflow = stateOfMatter.molarEnthalpy( Substances.H2O_g, T, p, v);
-        substances.N2.h_outflow = stateOfMatter.molarEnthalpy( Substances.N2_g, T, p, v);
+        substances.CO2.h_outflow = Properties.molarEnthalpy( Substances.CO2_g, solutionState);
+        substances.H2O.h_outflow = Properties.molarEnthalpy( Substances.H2O_g, solutionState);
+        substances.N2.h_outflow = Properties.molarEnthalpy( Substances.N2_g, solutionState);
 
         enthalpyFromSubstances =
          substances.O2.q * actualStream(substances.O2.h_outflow) +
@@ -1948,26 +1881,27 @@ Modelica source.
           "enthalpy from substances";
 
 
-        massFlows[i("O2")] = substances.O2.q*Substances.O2_g.MolarWeight;
-        massFlows[i("CO2")] = substances.CO2.q*Substances.CO2_g.MolarWeight;
-        massFlows[i("H2O")] = substances.H2O.q*Substances.H2O_g.MolarWeight;
-        massFlows[i("N2")] = substances.N2.q*Substances.N2_g.MolarWeight;
+        massFlows[i("O2")] = substances.O2.q*Substances.O2_g.data.MM;
+        massFlows[i("CO2")] = substances.CO2.q*Substances.CO2_g.data.MM;
+        massFlows[i("H2O")] = substances.H2O.q*Substances.H2O_g.data.MM;
+        massFlows[i("N2")] = substances.N2.q*Substances.N2_g.data.MM;
 
       end ChemicalSolution;
 
       redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
       algorithm
-           specificEnthalpy:=stateOfMatter.specificEnthalpy(
+           specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
               substanceData,
-              T,p,v);
+              Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Gas,T,p,v));
       end specificEnthalpies_Tpv;
 
   public
       redeclare replaceable record extends ThermodynamicState
         "A selection of variables that uniquely defines the thermodynamic state"
         extends Modelica.Icons.Record;
-        AbsolutePressure p "Absolute pressure of medium";
-        Temperature T "Temperature of medium";
+        extends Chemical.Interfaces.SolutionState;
+        //AbsolutePressure p "Absolute pressure of medium";
+        //Temperature T "Temperature of medium";
         MassFraction X[nS] "Mass fractions of substances";
         annotation (Documentation(info="<html>
 
@@ -1975,34 +1909,32 @@ Modelica source.
       end ThermodynamicState;
 
       replaceable function electrochemicalPotentials_pTXvI
+        import Chemical.Interfaces.Properties;
         input Modelica.Units.SI.Pressure p;
         input Modelica.Units.SI.Temperature T;
         input Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Free mole fraction of substance base molecule";
         input Modelica.Units.SI.ElectricPotential electricPotential=0;
         input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
         output Modelica.Units.SI.ChemicalPotential u[nS];
-    protected
+      protected
         Real a[nS];
         Modelica.Units.SI.ChargeNumberOfIon z[nS];
-      algorithm
-        a := stateOfMatter.activityCoefficient(
-            substanceData,
-            T,
-            p,
-            electricPotential,
-            moleFractionBasedIonicStrength) .* x_baseMolecule;
-        z := stateOfMatter.chargeNumberOfIon(
-            substanceData,
+        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(
+            Chemical.Interfaces.Phase.Gas,
             T,
             p,
             electricPotential,
             moleFractionBasedIonicStrength);
-        u := stateOfMatter.chemicalPotentialPure(
+      algorithm
+        a := Properties.activityCoefficient(
             substanceData,
-            T,
-            p,
-            electricPotential,
-            moleFractionBasedIonicStrength) .+ Modelica.Constants.R*T*log(a) .+ z*Modelica.Constants.F*
+            solutionState) .* x_baseMolecule;
+        z := Properties.chargeNumberOfIon(
+            substanceData,
+            solutionState);
+        u := Properties.chemicalPotentialPure(
+            substanceData,
+            solutionState) .+ Modelica.Constants.R*T*log(a) .+ z*Modelica.Constants.F*
           electricPotential;
       end electrochemicalPotentials_pTXvI;
 
@@ -2018,8 +1950,9 @@ Modelica source.
       algorithm
         state.p := p;
         state.X := X;
-        state.T := stateOfMatter.solution_temperature(
+        state.T := Properties.specific_solution_temperature(
             substanceData,
+            Chemical.Interfaces.Phase.Aqueous,
             h,
             X,
             p);
@@ -2027,18 +1960,16 @@ Modelica source.
 
        redeclare replaceable function extends density
        algorithm
-        d := 1/(state.X*stateOfMatter.specificVolume(
+        d := 1/(state.X*Properties.specificVolume(
             substanceData,
-            state.T,
-            state.p));
+            state));
        end density;
 
       redeclare replaceable function extends specificEnthalpy
       algorithm
-        h := state.X * stateOfMatter.specificEnthalpy(
+        h := state.X * Properties.specificEnthalpy(
             substanceData,
-            state.T,
-            state.p);
+            state);
         /*, electricPotential, moleFractionBasedIonicStrength*/
       end specificEnthalpy;
 
@@ -2059,15 +1990,15 @@ Modelica source.
             tH2O = 0.06,
             tN2 = 1-tO2-tCO2-tH2O;
         output Types.MassFraction X[nS];
-    protected
+      protected
         Types.Mass tm;
       algorithm
-        tm :=tO2*O2_g.MolarWeight + tCO2*CO2_g.MolarWeight + tH2O*H2O_g.MolarWeight +
-          tN2*N2_g.MolarWeight;
-        X[i("O2")] := (tO2*O2_g.MolarWeight)/tm;
-        X[i("CO2")] := (tCO2*CO2_g.MolarWeight)/tm;
-        X[i("H2O")] := (tH2O*H2O_g.MolarWeight)/tm;
-        X[i("N2")] := (tN2*N2_g.MolarWeight)/tm;
+        tm :=tO2*O2_g.data.MM + tCO2*CO2_g.data.MM + tH2O*H2O_g.data.MM +
+          tN2*N2_g.data.MM;
+        X[i("O2")] := (tO2*O2_g.data.MM)/tm;
+        X[i("CO2")] := (tCO2*CO2_g.data.MM)/tm;
+        X[i("H2O")] := (tH2O*H2O_g.data.MM)/tm;
+        X[i("N2")] := (tN2*N2_g.data.MM)/tm;
       end X;
 
 
@@ -2082,6 +2013,7 @@ Modelica source.
   package BodyFluid "Simplified Human body fluid"
     import Physiolibrary.Media.Substances.*;
     import Physiolibrary.Media.InitialValues.*;
+    import Chemical.Interfaces.Properties;
     extends Interfaces.PartialMedium(
       mediumName="SimpleBodyFluid (Physiolibrary)",
       substanceNames={"Na","HCO3","K","Glucose","Urea","Cl","Ca","Mg","Alb",
@@ -2099,22 +2031,21 @@ Modelica source.
         start=310.15));
 
   protected
-    package stateOfMatter = Chemical.Interfaces.Incompressible
-    "Substances model to translate data into substance properties";
 
-    constant stateOfMatter.SubstanceData substanceData[nS] = {
-      Chemical.Substances.Sodium_aqueous(),
-      Chemical.Substances.Bicarbonate_aqueous(),
-      Chemical.Substances.Potassium_aqueous(),
-      Chemical.Substances.Glucose_solid(),
-      Chemical.Substances.Urea_aqueous(),
-      Chemical.Substances.Chloride_aqueous(),
-      Chemical.Substances.Calcium_aqueous(),
-      Chemical.Substances.Magnesium_aqueous(),
-      Chemical.Substances.Albumin_aqueous(),
-      Chemical.Substances.Globulins_aqueous(),
-      Chemical.Substances.Water_liquid_without_selfClustering(),
-      Chemical.Substances.Water_liquid()}
+
+    constant Chemical.Interfaces.Definition substanceData[nS] = {
+      Chemical.Substances.Aqueous.Naplus,
+      Chemical.Substances.Aqueous.HCO3minus,
+      Chemical.Substances.Aqueous.Kplus,
+      Chemical.Substances.Solid.Glu,
+      Chemical.Substances.Aqueous.Urea,
+      Chemical.Substances.Aqueous.Clminus,
+      Chemical.Substances.Aqueous.Caplus2,
+      Chemical.Substances.Aqueous.Mgplus2,
+      Chemical.Substances.Aqueous.Alb,
+      Chemical.Substances.Aqueous.Glb,
+      Chemical.Substances.Liquid.H2OUnclustered,
+      Chemical.Substances.Liquid.H2O}
        "Definition of the substances";
 
     replaceable function electrochemicalPotentials_pTXvI
@@ -2128,11 +2059,12 @@ Modelica source.
     protected
       Real a[nS];
       Modelica.Units.SI.ChargeNumberOfIon z[nS];
+      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
     algorithm
-      a := stateOfMatter.activityCoefficient(substanceData, T, p, electricPotential, moleFractionBasedIonicStrength)
+      a := Properties.activityCoefficient(substanceData, solutionState)
            .* x_baseMolecule;
-      z := stateOfMatter.chargeNumberOfIon(substanceData, T, p, electricPotential, moleFractionBasedIonicStrength);
-      u := stateOfMatter.chemicalPotentialPure(substanceData, T, p, electricPotential, moleFractionBasedIonicStrength)
+      z := Properties.chargeNumberOfIon(substanceData, solutionState);
+      u := Properties.chemicalPotentialPure(substanceData, solutionState)
          .+ Modelica.Constants.R*T*log(a)
          .+ z*Modelica.Constants.F*electricPotential;
     end electrochemicalPotentials_pTXvI;
@@ -2144,22 +2076,24 @@ Modelica source.
       input Modelica.Units.SI.ElectricPotential electricPotential=0;
       input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
       output Modelica.Units.SI.MolarEnthalpy h[nS];
+    protected
+      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
     algorithm
-      h:= stateOfMatter.molarEnthalpy(
-          substanceData, T, p, electricPotential, moleFractionBasedIonicStrength);
+      h:= Properties.molarEnthalpy(
+          substanceData, solutionState);
     end molarEnthalpies_pTvI;
 
   public
     redeclare replaceable connector extends SubstancesPort
-     Chemical.Interfaces.SubstancePort_a Na "Free natrium ions Na+";
-     Chemical.Interfaces.SubstancePort_a HCO3 "Free bicarbonates HCO3-";
-     Chemical.Interfaces.SubstancePort_a K "Free potasium ions K+";
-     Chemical.Interfaces.SubstancePort_a Glucose "Free glucose molecule";
-     Chemical.Interfaces.SubstancePort_a Urea "Free urea molecule";
-     Chemical.Interfaces.SubstancePort_a Cl "Free chloride ion Cl-";
-     Chemical.Interfaces.SubstancePort_a Ca "Free calcium ion Ca++";
-     Chemical.Interfaces.SubstancePort_a Mg "Free magnesium ion Mg++";
-     Chemical.Interfaces.SubstancePort_a H2O "Free H2O molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Na "Free natrium ions Na+";
+      Chemical.Obsolete.Interfaces.SubstancePort_a HCO3 "Free bicarbonates HCO3-";
+      Chemical.Obsolete.Interfaces.SubstancePort_a K "Free potasium ions K+";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Glucose "Free glucose molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Urea "Free urea molecule";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Cl "Free chloride ion Cl-";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Ca "Free calcium ion Ca++";
+      Chemical.Obsolete.Interfaces.SubstancePort_a Mg "Free magnesium ion Mg++";
+      Chemical.Obsolete.Interfaces.SubstancePort_a H2O "Free H2O molecule";
     end SubstancesPort;
 
 
@@ -2173,20 +2107,21 @@ Modelica source.
 
           Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
     equation
-          NpM = stateOfMatter.specificAmountOfParticles(substanceData,T=T,p=p);
+          NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
 
           nSolution = X*NpM*1;
-          x_baseMolecule = X.*stateOfMatter.specificAmountOfFreeBaseMolecule(substanceData,T=T,p=p,v=0,I=0,massH2O=X,nSolution=nSolution)./(X*NpM);
+          x_baseMolecule = X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState,mass=X,nSolution=nSolution)./(X*NpM);
 
-          T = stateOfMatter.solution_temperature(
+          T = Properties.specific_solution_temperature(
               substanceData,
+              Chemical.Interfaces.Phase.Aqueous,
               h,
               X,
               p,
               v);
 
 
-          z = stateOfMatter.chargeNumberOfIon(substanceData,T,p,v);
+          z = Properties.chargeNumberOfIon(substanceData,solutionState);
 
           _i = Modelica.Constants.F*(
            substances.Na.q +
@@ -2198,62 +2133,44 @@ Modelica source.
           "electric current";
 
 
-          substances.Na.u =stateOfMatter.electroChemicalPotentialPure(
+          substances.Na.u =Properties.electroChemicalPotentialPure(
           Substances.Na,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Na")]);
-          substances.HCO3.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Na")]);
+          substances.HCO3.u =Properties.electroChemicalPotentialPure(
           Substances.HCO3,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("HCO3")]);
-          substances.K.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("HCO3")]);
+          substances.K.u =Properties.electroChemicalPotentialPure(
           Substances.K,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("K")]);
-          substances.Glucose.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("K")]);
+          substances.Glucose.u =Properties.electroChemicalPotentialPure(
           Substances.Glucose,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Glucose")]);
-          substances.Urea.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Glucose")]);
+          substances.Urea.u =Properties.electroChemicalPotentialPure(
           Substances.Urea,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Urea")]);
-          substances.Cl.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Urea")]);
+          substances.Cl.u =Properties.electroChemicalPotentialPure(
           Substances.Cl,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Cl")]);
-          substances.Ca.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Cl")]);
+          substances.Ca.u =Properties.electroChemicalPotentialPure(
           Substances.Ca,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Ca")]);
-          substances.Mg.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Ca")]);
+          substances.Mg.u =Properties.electroChemicalPotentialPure(
           Substances.Mg,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("Mg")]);
-          substances.H2O.u =stateOfMatter.electroChemicalPotentialPure(
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("Mg")]);
+          substances.H2O.u =Properties.electroChemicalPotentialPure(
           Substances.Water,
-          T,
-          p,
-          v) + Modelica.Constants.R*T*log(x_baseMolecule[i("H2O")]);
+          solutionState) + Modelica.Constants.R*T*log(x_baseMolecule[i("H2O")]);
 
 
-          substances.Na.h_outflow = stateOfMatter.molarEnthalpy( Substances.Na, T, p, v);
-          substances.HCO3.h_outflow = stateOfMatter.molarEnthalpy( Substances.HCO3, T, p, v);
-          substances.K.h_outflow = stateOfMatter.molarEnthalpy( Substances.K, T, p, v);
-          substances.Glucose.h_outflow = stateOfMatter.molarEnthalpy( Substances.Glucose, T, p, v);
-          substances.Urea.h_outflow = stateOfMatter.molarEnthalpy( Substances.Urea, T, p, v);
-          substances.Cl.h_outflow = stateOfMatter.molarEnthalpy( Substances.Cl, T, p, v);
-          substances.Ca.h_outflow = stateOfMatter.molarEnthalpy( Substances.Ca, T, p, v);
-          substances.Mg.h_outflow = stateOfMatter.molarEnthalpy( Substances.Mg, T, p, v);
-          substances.H2O.h_outflow = stateOfMatter.molarEnthalpy( Substances.Water, T, p, v);
+          substances.Na.h_outflow = Properties.molarEnthalpy( Substances.Na, solutionState);
+          substances.HCO3.h_outflow = Properties.molarEnthalpy( Substances.HCO3, solutionState);
+          substances.K.h_outflow = Properties.molarEnthalpy( Substances.K, solutionState);
+          substances.Glucose.h_outflow = Properties.molarEnthalpy( Substances.Glucose, solutionState);
+          substances.Urea.h_outflow = Properties.molarEnthalpy( Substances.Urea, solutionState);
+          substances.Cl.h_outflow = Properties.molarEnthalpy( Substances.Cl, solutionState);
+          substances.Ca.h_outflow = Properties.molarEnthalpy( Substances.Ca, solutionState);
+          substances.Mg.h_outflow = Properties.molarEnthalpy( Substances.Mg, solutionState);
+          substances.H2O.h_outflow = Properties.molarEnthalpy( Substances.Water, solutionState);
 
           enthalpyFromSubstances =
            substances.Na.q * actualStream(substances.Na.h_outflow) +
@@ -2268,15 +2185,15 @@ Modelica source.
             "enthalpy from substances";
 
 
-      massFlows[i("Na")] = substances.Na.q*Substances.Na.MolarWeight;
-      massFlows[i("HCO3")] = substances.HCO3.q*Substances.HCO3.MolarWeight;
-      massFlows[i("K")] = substances.K.q*Substances.K.MolarWeight;
-      massFlows[i("Glucose")] = substances.Glucose.q*Substances.Glucose.MolarWeight;
-      massFlows[i("Urea")] = substances.Urea.q*Substances.Urea.MolarWeight;
-      massFlows[i("Cl")] = substances.Cl.q*Substances.Cl.MolarWeight;
-      massFlows[i("Ca")] = substances.Ca.q*Substances.Ca.MolarWeight;
-      massFlows[i("Mg")] = substances.Mg.q*Substances.Mg.MolarWeight;
-      massFlows[i("H2O")] = substances.H2O.q*Substances.Water.MolarWeight;
+      massFlows[i("Na")] = substances.Na.q*Substances.Na.data.MM;
+      massFlows[i("HCO3")] = substances.HCO3.q*Substances.HCO3.data.MM;
+      massFlows[i("K")] = substances.K.q*Substances.K.data.MM;
+      massFlows[i("Glucose")] = substances.Glucose.q*Substances.Glucose.data.MM;
+      massFlows[i("Urea")] = substances.Urea.q*Substances.Urea.data.MM;
+      massFlows[i("Cl")] = substances.Cl.q*Substances.Cl.data.MM;
+      massFlows[i("Ca")] = substances.Ca.q*Substances.Ca.data.MM;
+      massFlows[i("Mg")] = substances.Mg.q*Substances.Mg.data.MM;
+      massFlows[i("H2O")] = substances.H2O.q*Substances.Water.data.MM;
       massFlows[i("Alb")] = 0;
       massFlows[i("Glb")] = 0;
       massFlows[i("Others")] = 0;
@@ -2285,9 +2202,9 @@ Modelica source.
 
     redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
     algorithm
-         specificEnthalpy:=stateOfMatter.specificEnthalpy(
+         specificEnthalpy:=Properties.specificEnthalpy(
             substanceData,
-            T,p,v);
+            Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
     end specificEnthalpies_Tpv;
 
   public
@@ -2295,12 +2212,13 @@ Modelica source.
       "Base properties of medium"
 
     protected
-      Modelica.Units.SI.Molality NpM[nS]=stateOfMatter.specificAmountOfParticles(
-        substanceData,T=T,p=p);
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
+      Modelica.Units.SI.Molality NpM[nS]=Properties.specificAmountOfParticles(
+        substanceData,solutionState);
     equation
 
-      1/d = X * stateOfMatter.specificVolume(substanceData,T=T,p=p);
-      h = X * stateOfMatter.specificEnthalpy(substanceData,T=T,p=p);
+      1/d = X * Properties.specificVolume(substanceData,solutionState);
+      h = X * Properties.specificEnthalpy(substanceData,solutionState);
       u = h - p/d;
       MM = 1/sum(X .* NpM);
       R_s = 8.3144/MM;
@@ -2337,7 +2255,7 @@ Modelica source.
       input Modelica.Units.SI.ElectricPotential v=0;
     algorithm
       state.p :=p;
-      state.T := stateOfMatter.solution_temperature(substanceData,h=h,X=X,p=p);
+      state.T := Properties.specific_solution_temperature(substanceData,Chemical.Interfaces.Phase.Aqueous, h=h,X=X,p=p);
       state.X :=X;
       state.v :=v;
     end setState_phX;
@@ -2361,13 +2279,13 @@ Modelica source.
 
     redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
     algorithm
-      h := state.X * stateOfMatter.specificEnthalpy(substanceData,T=state.T,p=state.p);
+      h := state.X * Properties.specificEnthalpy(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
     end specificEnthalpy;
 
     redeclare replaceable function extends specificHeatCapacityCp
       "Return specific heat capacity at constant pressure"
     algorithm
-      cp := state.X * stateOfMatter.specificHeatCapacityCp(substanceData,T=state.T,p=state.p);
+      cp := state.X * Properties.specificHeatCapacityCp(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
       annotation (Documentation(info="<html>
 
 </html>"));
@@ -2393,7 +2311,7 @@ Modelica source.
 
     redeclare replaceable function extends density
     algorithm
-      d := 1/( state.X * stateOfMatter.specificVolume(substanceData));
+      d := 1/( state.X * Properties.specificVolume(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p)));
     end density;
 
     redeclare replaceable function extends temperature
@@ -2427,14 +2345,14 @@ Modelica source.
     algorithm
     density := 1054;
 
-      X[i("Na")] := (tNa*Na.MolarWeight)/density;
-      X[i("HCO3")] := (tHCO3*HCO3.MolarWeight)/density;
-      X[i("K")] := (tK*K.MolarWeight)/density;
+      X[i("Na")] := (tNa*Na.data.MM)/density;
+      X[i("HCO3")] := (tHCO3*HCO3.data.MM)/density;
+      X[i("K")] := (tK*K.data.MM)/density;
       X[i("Glucose")] := (tGlucose*Constants.MM_Glucose)/density;
       X[i("Urea")] := (tUrea*Constants.MM_Urea)/density;
-      X[i("Cl")] := (tCl*Cl.MolarWeight)/density;
-      X[i("Ca")] := (tCa*Ca.MolarWeight)/density;
-      X[i("Mg")] := (tMg*Mg.MolarWeight)/density;
+      X[i("Cl")] := (tCl*Cl.data.MM)/density;
+      X[i("Ca")] := (tCa*Ca.data.MM)/density;
+      X[i("Mg")] := (tMg*Mg.data.MM)/density;
       X[i("Alb")] := (tAlb*Constants.MM_Alb)/density;
       X[i("Glb")] := tGlb/density;
       X[i("Others")] := tOthers/density;
@@ -2491,6 +2409,10 @@ Modelica source.
 
         Physiolibrary.Types.RealIO.ElectricPotentialOutput v "electric potential";
 
+        parameter Chemical.Interfaces.Phase phase=Chemical.Interfaces.Phase.Aqueous;
+        protected
+
+          Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(phase,T,p,v);
       initial equation
         substanceMasses = startSubstanceMasses;
       equation
@@ -2648,77 +2570,45 @@ Modelica source.
 
     end Constants;
 
-    constant Chemical.Interfaces.IdealGas.SubstanceData O2_g=
-          Chemical.Substances.Oxygen_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData CO2_g=
-          Chemical.Substances.CarbonDioxide_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData CO_g=
-          Chemical.Substances.CarbonMonoxide_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData H2O_g=
-          Chemical.Substances.Water_gas();
-      constant Chemical.Interfaces.IdealGas.SubstanceData N2_g=
-          Chemical.Substances.Nitrogen_gas();
+    constant Chemical.Interfaces.Definition O2_g=Chemical.Substances.Gas.O2;
+      constant Chemical.Interfaces.Definition CO2_g=Chemical.Substances.Gas.CO2;
+      constant Chemical.Interfaces.Definition CO_g=Chemical.Substances.Gas.CO;
+      constant Chemical.Interfaces.Definition H2O_g=Chemical.Substances.Gas.H2O;
+      constant Chemical.Interfaces.Definition N2_g=Chemical.Substances.Gas.N2;
 
 
-     constant Chemical.Interfaces.Incompressible.SubstanceData O2=
-          Chemical.Substances.Oxygen_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData CO2=
-          Chemical.Substances.CarbonDioxide_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData CO=
-          Chemical.Substances.CarbonMonoxide_aqueous();
+     constant Chemical.Interfaces.Definition O2=Chemical.Substances.Aqueous.O2;
+      constant Chemical.Interfaces.Definition CO2=Chemical.Substances.Aqueous.CO2;
+      constant Chemical.Interfaces.Definition CO=Chemical.Substances.Aqueous.CO;
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData H2=
-          Chemical.Substances.Hydrogen_aqueous();
+      constant Chemical.Interfaces.Definition H2=Chemical.Substances.Aqueous.H2;
 
-       constant Chemical.Interfaces.Incompressible.SubstanceData Cl=
-          Chemical.Substances.Chloride_aqueous();
-       constant Chemical.Interfaces.Incompressible.SubstanceData Ca=
-          Chemical.Substances.Calcium_aqueous();
-       constant Chemical.Interfaces.Incompressible.SubstanceData K=
-          Chemical.Substances.Potassium_aqueous();
-       constant Chemical.Interfaces.Incompressible.SubstanceData Mg=
-          Chemical.Substances.Magnesium_aqueous();
-       constant Chemical.Interfaces.Incompressible.SubstanceData Na=
-          Chemical.Substances.Sodium_aqueous();
+       constant Chemical.Interfaces.Definition Cl=Chemical.Substances.Aqueous.Clminus;
+       constant Chemical.Interfaces.Definition Ca=Chemical.Substances.Aqueous.Caplus2;
+       constant Chemical.Interfaces.Definition K=Chemical.Substances.Aqueous.Kplus;
+       constant Chemical.Interfaces.Definition Mg=Chemical.Substances.Aqueous.Mgplus2;
+       constant Chemical.Interfaces.Definition Na=Chemical.Substances.Aqueous.Naplus;
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData H=
-          Chemical.Substances.Proton_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData H3O=
-          Chemical.Substances.Hydronium_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData OH=
-          Chemical.Substances.Hydroxide_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData e=
-       Chemical.Interfaces.Incompressible.SubstanceData(
-          MolarWeight=5.4857990946e-7,
-          z=-1,
-          DfH=0,
-          DfG=0,
-          Cp=0,
-          density=1e20) "electrone";
+      constant Chemical.Interfaces.Definition H=Chemical.Substances.Aqueous.Hplus;
+      constant Chemical.Interfaces.Definition H3O=Chemical.Substances.Aqueous.H3Oplus;
+      constant Chemical.Interfaces.Definition OH=Chemical.Substances.Aqueous.OHminus;
+      constant Chemical.Interfaces.Definition e=Chemical.Substances.Solid.e "electrone";
 
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData PO4=
-            Chemical.Substances.Phosphate_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData SO4=
-            Chemical.Substances.Sulphates_aqueous();
+      constant Chemical.Interfaces.Definition PO4=Chemical.Substances.Aqueous.PO4minus3;
+      constant Chemical.Interfaces.Definition SO4=Chemical.Substances.Aqueous.SO4minus2;
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData HCO3=
-            Chemical.Substances.Bicarbonate_aqueous();
+      constant Chemical.Interfaces.Definition HCO3=Chemical.Substances.Aqueous.HCO3minus;
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData Glucose=
-           Chemical.Substances.Glucose_solid();
-      constant Chemical.Interfaces.Incompressible.SubstanceData Urea=
-           Chemical.Substances.Urea_aqueous();
-      constant Chemical.Interfaces.Incompressible.SubstanceData Water=
-           Chemical.Substances.Water_liquid();
+      constant Chemical.Interfaces.Definition Glucose=Chemical.Substances.Solid.Glu;
+      constant Chemical.Interfaces.Definition Urea=Chemical.Substances.Aqueous.Urea;
+      constant Chemical.Interfaces.Definition Water=Chemical.Substances.Liquid.H2O;
 
-      constant Chemical.Interfaces.Incompressible.SubstanceData Lactate=
-      Chemical.Interfaces.Incompressible.SubstanceData(
-        MolarWeight=0.0903,
+      constant Chemical.Interfaces.Definition Lactate=
+      Chemical.Interfaces.Definition(
+        MM=0.0903,
         DfH=-694080,
-        DfG=-430620,
-        References={
-            "https://www.chemeo.com/cid/11-815-4/L-Lactic-acid"});
+        DfG=-430620) "from  https://www.chemeo.com/cid/11-815-4/L-Lactic-acid";
 
   end Substances;
 
