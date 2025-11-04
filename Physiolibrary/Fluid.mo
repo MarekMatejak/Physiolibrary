@@ -732,6 +732,7 @@ Connector with one flow signal of type Real.
 
     partial model Accumulation
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
+      extends Medium.SubstancesUseSetup;
 
       parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
         Evaluate = true,
@@ -752,6 +753,8 @@ Connector with one flow signal of type Real.
                 -20},{-80,20}})));
 
       Medium.ChemicalSolution chemicalSolution(
+        useFore = useFore,
+        useRear = useRear,
         startSubstanceMasses = m_start,
         p = pressure,
         h = enthalpy / mass,
@@ -1419,8 +1422,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(substances.CO2, pCO2_measure.port_a) annotation (Line(points={{-99.9,0.1},
               {-14,0.1},{-14,0},{-8,0}},                                                                       color={158,66,200}));
       connect(substances.H, pH_measure.port_a)
-        annotation (Line(points={{-99.9,0.1},{-40,0.1},{-40,-46},{-48,-46},{-48,-60},
-              {-44,-60}},                                                                    color={158,66,200}));
+        annotation (Line(points={{-99.9,0.1},{-58,0.1},{-58,-44},{-66,-44},{-66,-58},{-62,-58}},
+                                                                                             color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Text(extent = {{-150, 80}, {150, 120}}, textString = "%name", lineColor = {162, 29, 33})}),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -3195,7 +3198,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
       Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air, useSubstances = true,
-        volume_start=0.0001,                                                                                                                          massFractions_start = Air.reference_X[1:Air.nS - 1], useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3) annotation (
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3) annotation (
         Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
@@ -3216,6 +3220,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
       annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
       Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
         Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
+      Chemical.Processes.Diffusion diffusion annotation (Placement(transformation(extent={{-178,18},{-158,38}})));
+      Media.Air.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-236,-26},{-196,14}})));
     equation
       connect(environment.y, flowMeasure.q_in) annotation (
         Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
@@ -3249,6 +3255,16 @@ The sensor is ideal, i.e., it does not influence the fluid.
     connect(evaporation.gas_port, upperRespiratoryTract.substances.H2O)
       annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
             200}));
+      connect(diffusion.rear, substancesPort.O2fore)
+        annotation (Line(
+          points={{-178,28},{-215.9,28},{-215.9,-5.9}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(upperRespiratoryTract.substances, substancesPort)
+        annotation (Line(
+          points={{-328,0},{-336,0},{-336,-52},{-216,-52},{-216,-6}},
+          color={158,66,200},
+          thickness=0.5));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
@@ -4900,6 +4916,92 @@ The sensor is ideal, i.e., it does not influence the fluid.
 <p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
 </html>"));
     end BloodTitrationByNaOH;
+
+    model AirWaterSaturation_0 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package Medium = Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
+        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
+      Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        useSubstances=true,
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts=2,
+        substances(useH2Orear=true))                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
+      Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
+      Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare package Medium = Air) annotation (
+        Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
+      Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare package Medium = Air) annotation (
+        Placement(transformation(extent = {{-296, 72}, {-276, 92}})));
+      Physiolibrary.Thermal.Components.Conductor cooling(Conductance(
+          displayUnit="W/K") = 10)
+      annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
+      Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
+        Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Liquid.H2O,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.x_molpmol,
+        FixedValue=1) annotation (Placement(transformation(extent={{-396,-46},{-376,-26}})));
+      Chemical.Processes.GasSolubility gasSolubility annotation (Placement(transformation(extent={{-358,-46},{-338,-26}})));
+      Media.Air.SubstancesPort substancesPort(useH2Orear=true) annotation (Placement(transformation(extent={{-370,-10},{-330,30}})));
+    equation
+      connect(environment.y, flowMeasure.q_in) annotation (
+        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(flowMeasure.q_out, upperRespiratoryTractResistance.q_out) annotation (
+        Line(points={{-318,56},{-318,44}},      color = {127, 0, 0}, thickness = 0.5));
+      connect(upperRespiratoryTractResistance.q_in, upperRespiratoryTract.q_in[1]) annotation (
+        Line(points={{-318,24},{-318,-0.65},{-318.1,-0.65}},            color = {127, 0, 0}, thickness = 0.5));
+    connect(cooling.q_out, upperRespiratoryTract.heatPort) annotation (Line(
+        points={{-322,-34},{-324,-34},{-324,-10}},
+        color={191,0,0},
+        thickness=0.5));
+    connect(coreHeat.port, cooling.q_in) annotation (Line(
+        points={{-294,-34},{-302,-34}},
+        color={191,0,0},
+        thickness=0.5));
+      connect(flowMeasure.q_in, Temperature_mouth.port) annotation (
+        Line(points = {{-318, 76}, {-318, 82}, {-298, 82}, {-298, 72}, {-286, 72}}, color = {127, 0, 0}, thickness = 0.5));
+      connect(upperRespiratoryTract.q_in[2], Temperature_upperRespiratory.port) annotation (
+        Line(points={{-318.1,0.65},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,30}},                  color = {127, 0, 0}, thickness = 0.5));
+      connect(externalSubstance.fore, gasSolubility.rear) annotation (Line(
+          points={{-376,-36},{-358,-36}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(upperRespiratoryTract.substances, substancesPort)
+        annotation (Line(
+          points={{-328,0},{-328,-16},{-350,-16},{-350,10}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(gasSolubility.fore, substancesPort.H2Orear)
+        annotation (Line(
+          points={{-338,-36},{-330,-36},{-330,-18},{-376,-18},{-376,10.1},{-349.9,10.1}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime = 200, __Dymola_Algorithm = "Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_0;
   end Examples;
   annotation (
     Documentation(info = "<html>
