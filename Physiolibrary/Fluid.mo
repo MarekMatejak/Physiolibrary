@@ -732,34 +732,46 @@ Connector with one flow signal of type Real.
 
     partial model Accumulation
       extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
-      extends Medium.SubstancesUseSetup;
+
+
+     parameter String ForeSubstances[nFS] = fill("",nFS);
+     parameter String RearSubstances[nRS] = fill("",nRS);
+
+
+     parameter Integer nFS = 0 "Number of substance forward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+     parameter Integer nRS = 0 "Number of substance rearward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+
+     public
+      Chemical.Interfaces.Fore foreSubstance[nFS]
+         "Forward ports of selected substances"
+         annotation (Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
+      Chemical.Interfaces.Rear rearSubstance[nRS]
+         "Rearward ports of selectted substances"
+         annotation (Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
 
       parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
         Evaluate = true,
         Dialog(connectorSizing = true, group = "Ports"));
       Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium, each h_outflow(nominal=Medium.SpecificEnthalpyNominal)) annotation (
         Placement(transformation(extent = {{-10, -28}, {10, 28}}), iconTransformation(extent = {{-7, -26}, {7, 26}}, rotation = 180, origin = {-1, 0})));
-      parameter Boolean useSubstances = false "=true, if substance ports are used" annotation (
-        Evaluate = true,
-        HideResult = true,
-        choices(checkBox = true),
-        Dialog(group = "Conditional inputs"));
+
       parameter Boolean onElectricGround = false "=true, if electric potencial is zero" annotation (
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Medium.SubstancesPort substances if useSubstances annotation (
-        Placement(transformation(extent={{-120,-20},{-80,20}}),      iconTransformation(extent={{-120,
-                -20},{-80,20}})));
 
       Medium.ChemicalSolution chemicalSolution(
-        useFore = useFore,
-        useRear = useRear,
+       nFS=nFS, nRS=nRS, RearSubstances=RearSubstances, ForeSubstances=ForeSubstances,
+       foreSubstance=(if nFS>0 then foreSubstance else dummyFore), rearSubstance=(if nRS>0 then rearSubstance else dummyRear),
         startSubstanceMasses = m_start,
         p = pressure,
         h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
-        _i = i)  if useSubstances;                              //enthalpy / mass,
+        _i = i)  if (nFS+nRS)>0;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -813,6 +825,7 @@ Connector with one flow signal of type Real.
       Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
       Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
 
+
     initial equation
     //  assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
     /* assert(
@@ -824,7 +837,7 @@ Connector with one flow signal of type Real.
   "Initial concentration composition must have at least 
   -2 values!");
   */
-      if not useSubstances then
+      if nFS+nRS==0 then
         substanceMasses = m_start;
       end if;
       if Medium.reducedX then
@@ -846,8 +859,7 @@ Connector with one flow signal of type Real.
       if not useThermalPort then
         heatFromEnvironment = 0;
       end if;
-      if useSubstances then
-        connect(substances, chemicalSolution.substances);
+      if nFS+nRS>0 then
         connect(chemicalSolution.massFlows, massFlows);
         connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
         connect(chemicalSolution.substanceMasses, substanceMasses);
@@ -3220,8 +3232,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
       annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
       Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
         Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
-      Chemical.Processes.Diffusion diffusion annotation (Placement(transformation(extent={{-178,18},{-158,38}})));
-      Media.Air.SubstancesPort substancesPort annotation (Placement(transformation(extent={{-236,-26},{-196,14}})));
     equation
       connect(environment.y, flowMeasure.q_in) annotation (
         Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
@@ -3255,16 +3265,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
     connect(evaporation.gas_port, upperRespiratoryTract.substances.H2O)
       annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
             200}));
-      connect(diffusion.rear, substancesPort.O2fore)
-        annotation (Line(
-          points={{-178,28},{-215.9,28},{-215.9,-5.9}},
-          color={158,66,200},
-          thickness=0.5));
-      connect(upperRespiratoryTract.substances, substancesPort)
-        annotation (Line(
-          points={{-328,0},{-336,0},{-336,-52},{-216,-52},{-216,-6}},
-          color={158,66,200},
-          thickness=0.5));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
@@ -4938,10 +4938,11 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
       Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
-        useSubstances=true,
+        ForeSubstances={"H2O"},
+        RearSubstances={"H2O"},
         volume_start=0.0001,
         massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts=2,
-        substances(useH2Orear=true))                                                                                                                                                                                                         annotation (
+        nRS=1,nFS=0)                                                                                                                                                                                                         annotation (
         Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
@@ -4959,7 +4960,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
         quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.x_molpmol,
         FixedValue=1) annotation (Placement(transformation(extent={{-396,-46},{-376,-26}})));
       Chemical.Processes.GasSolubility gasSolubility annotation (Placement(transformation(extent={{-358,-46},{-338,-26}})));
-      Media.Air.SubstancesPort substancesPort(useH2Orear=true) annotation (Placement(transformation(extent={{-370,-10},{-330,30}})));
     equation
       connect(environment.y, flowMeasure.q_in) annotation (
         Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
@@ -4983,14 +4983,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
           points={{-376,-36},{-358,-36}},
           color={158,66,200},
           thickness=0.5));
-      connect(upperRespiratoryTract.substances, substancesPort)
+      connect(gasSolubility.fore, upperRespiratoryTract.rearSubstance[1])
         annotation (Line(
-          points={{-328,0},{-328,-16},{-350,-16},{-350,10}},
-          color={158,66,200},
-          thickness=0.5));
-      connect(gasSolubility.fore, substancesPort.H2Orear)
-        annotation (Line(
-          points={{-338,-36},{-330,-36},{-330,-18},{-376,-18},{-376,10.1},{-349.9,10.1}},
+          points={{-338,-36},{-330,-36},{-330,-16},{-334,-16},{-334,0},{-328,0}},
           color={158,66,200},
           thickness=0.5));
       annotation (

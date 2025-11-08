@@ -1874,7 +1874,7 @@ Modelica source.
 
       constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
 
-    public
+  public
       redeclare replaceable connector extends SubstancesPort
 
         Chemical.Interfaces.Fore O2fore(
@@ -1882,50 +1882,63 @@ Modelica source.
           r=r_fore[i("O2")],
           state_forwards=state_out[i("O2")],
           solution_forwards=solutionState,
-          definition=Chemical.Substances.Gas.O2) if useFore[i("O2")] "Gaseous oxygen molecule forward";
+          definition=Chemical.Substances.Gas.O2) if useO2Fore "Gaseous oxygen molecule forward";
         Chemical.Interfaces.Rear O2rear(
           n_flow=n_flow_rear[i("O2")],
           r=r_rear[i("O2")],
           state_rearwards=state_out[i("O2")],
-          solution_rearwards=solutionState) if useRear[i("O2")] "Gaseous oxygen molecule rearward";
+          solution_rearwards=solutionState) if useO2Rear "Gaseous oxygen molecule rearward";
 
         Chemical.Interfaces.Fore CO2fore(
           n_flow=n_flow_fore[i("CO2")],
           r=r_fore[i("CO2")],
           state_forwards=state_out[i("CO2")],
           solution_forwards=solutionState,
-          definition=Chemical.Substances.Gas.CO2) if useFore[i("CO2")] "Gaseous hydrogen molecule foreward";
+          definition=Chemical.Substances.Gas.CO2) if useCO2Fore "Gaseous hydrogen molecule foreward";
         Chemical.Interfaces.Rear CO2rear(
           n_flow=n_flow_rear[i("CO2")],
           r=r_rear[i("CO2")],
           state_rearwards=state_out[i("CO2")],
-          solution_rearwards=solutionState) if useRear[i("CO2")] "Gaseous hydrogen molecule rearward";
+          solution_rearwards=solutionState) if useCO2Rear "Gaseous hydrogen molecule rearward";
 
         Chemical.Interfaces.Fore H2Ofore(
           n_flow=n_flow_fore[i("H2O")],
           r=r_fore[i("H2O")],
           state_forwards=state_out[i("H2O")],
           solution_forwards=solutionState,
-          definition=Chemical.Substances.Gas.H2O) if useFore[i("H2O")] "Gaseous H2O molecule forward";
+          definition=Chemical.Substances.Gas.H2O) if useH2OFore "Gaseous H2O molecule forward";
         Chemical.Interfaces.Rear H2Orear(
           n_flow=n_flow_rear[i("H2O")],
           r=r_rear[i("H2O")],
           state_rearwards=state_out[i("H2O")],
-          solution_rearwards=solutionState) if useRear[i("H2O")] "Gaseous H2O molecule rearward";
+          solution_rearwards=solutionState) if useH2ORear "Gaseous H2O molecule rearward";
 
         Chemical.Interfaces.Fore N2fore(
           n_flow=n_flow_fore[i("N2")],
           r=r_fore[i("N2")],
           state_forwards=state_out[i("N2")],
           solution_forwards=solutionState,
-          definition=Chemical.Substances.Gas.N2) if useFore[i("N2")] "Gaseaous nitrogen molecule forward";
+          definition=Chemical.Substances.Gas.N2) if useN2Fore "Gaseaous nitrogen molecule forward";
         Chemical.Interfaces.Rear N2rear(
           n_flow=n_flow_rear[i("N2")],
           r=r_rear[i("N2")],
           state_rearwards=state_out[i("N2")],
-          solution_rearwards=solutionState) if useRear[i("N2")] "Gaseaous nitrogen molecule rearward";
+          solution_rearwards=solutionState) if useN2Rear "Gaseaous nitrogen molecule rearward";
 
+        parameter Boolean useO2Rear = false;
+        parameter Boolean useO2Fore = false;
 
+        parameter Boolean useCO2Rear = false;
+        parameter Boolean useCO2Fore = false;
+
+        parameter Boolean useH2ORear = false;
+        parameter Boolean useH2OFore = false;
+
+        parameter Boolean useN2Rear = false;
+        parameter Boolean useN2Fore = false;
+
+        parameter Boolean useRear[nS] = {useO2Rear, useCO2Rear, useH2ORear, useN2Rear};
+        parameter Boolean useFore[nS] = {useO2Fore, useCO2Fore, useH2OFore, useN2Fore};
 
       end SubstancesPort;
 
@@ -1948,17 +1961,16 @@ Modelica source.
 
 
       equation
-        substances.state_out.u = Properties.electroChemicalPotentialPure(
+        state_out.u = Properties.electroChemicalPotentialPure(
             substanceData,
             solutionState) + Modelica.Constants.R*T*log(x_baseMolecule);
 
-        substances.state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
+        state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
 
         massFlows = n_flow.*substanceData.data.MM;
 
         enthalpyFromSubstances = sum(h_flow);
 
-        substances.solutionState = solutionState;
 
         state = setState_phX(p, h, X);
 
@@ -1970,14 +1982,7 @@ Modelica source.
 
         v=0 "electric potential is not used without external flows of charge";
 
-        connect(state_in_rear[i("O2")],substances.O2rear.state_forwards);
-        connect(state_in_fore[i("O2")],substances.O2fore.state_rearwards);
-        connect(state_in_rear[i("CO2")],substances.CO2rear.state_forwards);
-        connect(state_in_fore[i("CO2")],substances.CO2fore.state_rearwards);
-        connect(state_in_rear[i("H2O")],substances.H2Orear.state_forwards);
-        connect(state_in_fore[i("H2O")],substances.H2Ofore.state_rearwards);
-        connect(state_in_rear[i("N2")],substances.N2rear.state_forwards);
-        connect(state_in_fore[i("N2")],substances.N2fore.state_rearwards);
+
 
       end ChemicalSolution;
 
@@ -2483,8 +2488,6 @@ Modelica source.
 
       replaceable connector SubstancesPort
 
-        parameter Boolean useRear[nS] = fill(false,nS);
-        parameter Boolean useFore[nS] = fill(false,nS);
 
         Modelica.Units.SI.MolarFlowRate n_flow_fore[nS], n_flow_rear[nS];
         Modelica.Units.SI.ChemicalPotential r_fore[nS], r_rear[nS];
@@ -2510,10 +2513,33 @@ Modelica source.
         "Adaptor between selected free base chemical substances and medium substances"
         outer Modelica.Fluid.System system "System wide properties";
 
-        parameter Boolean useRear[nS];
-        parameter Boolean useFore[nS];
 
-        SubstancesPort substances(useFore=useFore, useRear=useRear) "free base chemical substances";
+       parameter Integer nFS;
+       parameter Integer nRS;
+       parameter String ForeSubstances[nFS];
+       parameter String RearSubstances[nRS];
+
+      protected
+       function findIndex "Find index of name in array"
+        input String searchName "Name of substance to find in Names";
+        input String Names[:] "Names";
+        output Integer index "Index of searchName in Names";
+       algorithm
+          index := -1;
+          for i in 1:size(Names,1) loop
+            if ( Modelica.Utilities.Strings.isEqual(Names[i], searchName)) then
+             index := i;
+            end if;
+          end for;
+       end findIndex;
+       parameter Integer sR[nS] = { findIndex(substanceNames[s],RearSubstances) for s in 1:nS};
+       parameter Integer sF[nS] = { findIndex(substanceNames[s],ForeSubstances) for s in 1:nS};
+      public
+       Chemical.Interfaces.Fore foreSubstance[max(nFS,1)] "Forward ports of selected substances";
+       Chemical.Interfaces.Rear rearSubstance[max(nRS,1)] "Rearward ports of selectted substances";
+
+
+        //SubstancesPort substances "free base chemical substances";
         Physiolibrary.Types.RealIO.PressureInput p "pressure";
         Physiolibrary.Types.RealIO.SpecificEnthalpyInput h "specific enthalpy";
         Physiolibrary.Types.RealIO.MassFractionInput X[nS] "mass fractions of medium substances";
@@ -2543,6 +2569,7 @@ Modelica source.
           annotation(HideResult=true, Dialog(tab="Advanced"));
 
 
+        Chemical.Interfaces.SubstanceState state_out[nS] "Internal state os substances";
         Modelica.Units.SI.MolarFlowRate n_flow[nS] "Molar change of the amount of base substance";
         Modelica.Units.SI.EnthalpyFlowRate h_flow[nS] "Change of enthalpy";
 
@@ -2550,23 +2577,11 @@ Modelica source.
 
 
          //if port.n_flow > 0 -> it is sink (r=medium.u-u_in) else it is source (r=0)
-        Modelica.Units.SI.ChemicalPotential r_rear_intern[nS]={Chemical.Utilities.Internal.regStep(
-                  substances.n_flow_rear[i],
-                  substances.state_out[i].u - state_in_rear[i].u,
-                  0,
-                  n_flow_reg) for i in 1:nS};
-        Modelica.Units.SI.ChemicalPotential r_fore_intern[nS]={Chemical.Utilities.Internal.regStep(
-                  substances.n_flow_fore[i],
-                  substances.state_out[i].u - state_in_fore[i].u,
-                  0,
-                  n_flow_reg) for i in 1:nS};
+        Modelica.Units.SI.ChemicalPotential r_rear_intern[nRS];
+        Modelica.Units.SI.ChemicalPotential r_fore_intern[nFS];
         // dont regstep variables that are only in der(state), to increase accuracy
-        Modelica.Units.SI.EnthalpyFlowRate h_flow_rear[nS]={(if substances.n_flow_rear[i] >= 0 then state_in_rear[i].h else substances.state_out[i].h)*substances.n_flow_rear[i] for i in 1:nS};
-        Modelica.Units.SI.EnthalpyFlowRate h_flow_fore[nS]={(if substances.n_flow_fore[i] >= 0 then state_in_fore[i].h else substances.state_out[i].h)*substances.n_flow_fore[i] for i in 1:nS};
-
-
-        Chemical.Interfaces.SubstanceStateInput state_in_rear[nS];
-        Chemical.Interfaces.SubstanceStateInput state_in_fore[nS];
+        Modelica.Units.SI.EnthalpyFlowRate h_flow_rear[nRS];
+        Modelica.Units.SI.EnthalpyFlowRate h_flow_fore[nFS];
 
       initial equation
         substanceMasses = startSubstanceMasses;
@@ -2575,28 +2590,55 @@ Modelica source.
 
 
 
-
-        der(substances.n_flow_rear)*L = substances.r_rear - r_rear_intern;
-        der(substances.n_flow_fore)*L = substances.r_fore - r_fore_intern;
-
-
-        n_flow = substances.n_flow_rear + substances.n_flow_fore;
-        h_flow = h_flow_rear + h_flow_fore;
-
-
-        for j in 1:nS loop
-          if not substances.useRear[j] then
-            substances.r_rear[j] = 0;
-            substances.n_flow_rear[j] = 0;
-            state_in_rear[j].h = 0;
-          end if;
-
-          if not substances.useFore[j] then
-            substances.r_fore[j] = 0;
-            substances.n_flow_fore[j] = 0;
-            state_in_fore[j].h = 0;
-          end if;
+        for iR in 1:nRS loop
+          r_rear_intern[iR]=Chemical.Utilities.Internal.regStep(
+                  rearSubstance[iR].n_flow,
+                  rearSubstance[iR].state_rearwards.u - rearSubstance[iR].state_forwards.u,
+                  0,
+                  n_flow_reg);
+          h_flow_rear[iR]= (if rearSubstance[iR].n_flow >= 0 then
+                  rearSubstance[iR].state_forwards.h else
+                  rearSubstance[iR].state_rearwards.h)*rearSubstance[iR].n_flow;
         end for;
+        for iF in 1:nFS loop
+          r_fore_intern[iF]=Chemical.Utilities.Internal.regStep(
+                  foreSubstance[iF].n_flow,
+                  foreSubstance[iF].state_forwards.u - foreSubstance[iF].state_rearwards.u,
+                  0,
+                  n_flow_reg);
+          h_flow_fore[iF]= (if foreSubstance[iF].n_flow >= 0 then
+                  foreSubstance[iF].state_rearwards.h else
+                  foreSubstance[iF].state_forwards.h)*foreSubstance[iF].n_flow;
+        end for;
+
+        if nRS>0 then
+          der(rearSubstance.n_flow)*L = rearSubstance.r - r_rear_intern;
+        end if;
+        if nFS>0 then
+          der(foreSubstance.n_flow)*L = foreSubstance.r - r_fore_intern;
+        else
+          foreSubstance[1].n_flow = 0;
+          foreSubstance[1].r=0;
+          foreSubstance[1].state_forwards.u=0;
+          foreSubstance[1].state_forwards.h=0;
+          foreSubstance[1].solution_forwards=solutionState;
+        end if;
+
+
+        for s in 1:nS loop
+            n_flow[s] = (if (sR[s]<0) then 0 else rearSubstance[sR[s]].n_flow) + (if (sF[s]<0) then 0 else foreSubstance[sF[s]].n_flow);
+            h_flow[s] = (if (sR[s]<0) then 0 else h_flow_rear[sR[s]])          + (if (sF[s]<0) then 0 else h_flow_fore[sF[s]]);
+
+            if (sF[s]>0) then
+              foreSubstance[sF[s]].state_forwards = state_out[s];
+            end if;
+
+            if (sR[s]>0) then
+              rearSubstance[sR[s]].state_rearwards = state_out[s];
+            end if;
+        end for;
+
+
 
       end ChemicalSolution;
 
