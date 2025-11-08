@@ -1644,8 +1644,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{100, -10}, {120, 10}})));
 
       replaceable function GetFraction =
-          Physiolibrary.Media.Blood.hematocrit
-        constrainedby Medium.GetFraction
+          Physiolibrary.Media.Blood.GetFraction
+        constrainedby Physiolibrary.Media.Interfaces.PartialMedium.GetFraction
         "Get fraction from medium state"
           annotation (choicesAllMatching=true);
 
@@ -3114,7 +3114,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
             package BloodPlasma =
             BloodPlasma,                                                                                                                                                                                                        redeclare
             package Dialysate =                                                                                                                                                                                                       Dialysate)
-                                                                                                                                                                                                                annotation (
+                                                                                                                                                                                                        annotation (
           Placement(transformation(extent = {{16, -18}, {36, 2}})));
         inner Modelica.Fluid.System system(T_ambient = 310.15) annotation (
           Placement(transformation(extent = {{-92, -6}, {-72, 14}})));
@@ -3556,7 +3556,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Physiolibrary.Types.Constants.HydraulicConductanceConst hydraulicConductance1(k = 1.250102626409427e-07 * (5 / 4)) annotation (
           Placement(transformation(extent = {{-4, -4}, {4, 4}}, rotation = 270, origin = {-80, -132})));
         Physiolibrary.Fluid.Components.Conductor pulmonaryShunt(redeclare package Medium = Blood, Conductance(displayUnit = "l/(cmH2O.s)") = cShunt) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-4, -104})));
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin={-4,-102})));
       Organs.Lungs.Components.RespiratoryUnit            respiratoryUnit
                                                                      [NA](
         redeclare package Blood = Blood,
@@ -3640,9 +3640,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
         connect(pressureMeasureVeins.pressure, multiProduct1.u[2]) annotation (
           Line(points={{-86,-208},{-94,-208},{-94,-148.95},{-76,-148.95}},        color = {0, 0, 127}));
         connect(pulmonaryShunt.q_in, pulmonaryArteries.q_in[3]) annotation (
-          Line(points={{-14,-104},{-50.1,-104},{-50.1,-101.675}},       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-14,-102},{-50.1,-102},{-50.1,-101.675}},       color = {127, 0, 0}, thickness = 0.5));
         connect(pulmonaryShunt.q_out, pulmonaryVeins.q_in[3]) annotation (
-          Line(points={{6,-104},{41.9,-104},{41.9,-101.675}},       color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{6,-102},{41.9,-102},{41.9,-101.675}},       color = {127, 0, 0}, thickness = 0.5));
         for i in 1:NA loop
           connect(respiratoryUnit[i].blood_in, pulmonaryArteries.q_in[4]) annotation (
               Line(
@@ -3969,7 +3969,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         redeclare package Medium = Air,
         EnthalpyNotUsed=false,
         Resistance=TotalResistance)
-        annotation (Placement(transformation(extent={{-308,0},{-288,20}})));
+        annotation (Placement(transformation(extent={{-308,-2},{-288,18}})));
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
       Components.ElasticVessel chest(
@@ -4028,11 +4028,11 @@ The sensor is ideal, i.e., it does not influence the fluid.
       annotation (Line(points={{-14,82},{-8,82},{-8,62},{-63,62},{-63,53}},
           color={0,0,127}));
       connect(flowMeasure.q_out, lungsPathways.q_in) annotation (Line(
-          points={{-318,56},{-318,10},{-308,10}},
+          points={{-318,56},{-318,8},{-308,8}},
           color={127,0,0},
           thickness=0.5));
     connect(lungsPathways.q_out, lungs.q_in[1]) annotation (Line(
-        points={{-288,10},{-156,10},{-156,-1.025},{-135.9,-1.025}},
+        points={{-288,8},{-156,8},{-156,-1.025},{-135.9,-1.025}},
         color={127,0,0},
         thickness=0.5));
     connect(alveolarPressure.port, lungs.q_in[2]) annotation (Line(

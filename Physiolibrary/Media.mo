@@ -97,7 +97,7 @@ package Media "Models of physiological fluids"
 </html>"));
     end plasmaMassFraction;
 
-    replaceable function plasmaSpecificAmountOfParticles "Amount of free particles in 1 kg of blood plasma"
+    function plasmaSpecificAmountOfParticles "Amount of free particles in 1 kg of blood plasma"
       extends GetMolality;
       input Types.Temperature T = temperature(state);
       input Types.MassFraction pct = plasmaMassFraction(state);
@@ -146,7 +146,7 @@ package Media "Models of physiological fluids"
 </html>"));
     end formedElementsMassFraction;
 
-    replaceable function formedElementsSpecificAmountOfParticles "Amount of free particles in 1 kg of blood formed elements"
+    function formedElementsSpecificAmountOfParticles "Amount of free particles in 1 kg of blood formed elements"
       extends GetMolality;
       input Types.Temperature T= temperature(state);
       input Types.MassFraction hct= formedElementsMassFraction(state);
@@ -1365,62 +1365,62 @@ package Media "Models of physiological fluids"
 
 
 
-    replaceable function tO2 "Total oxygen in blood"
+    function tO2 "Total oxygen in blood"
       extends GetConcentration;
     algorithm
       C := density(state) * state.X[i("O2")] / O2.MolarWeight;
     end tO2;
 
-    replaceable function sO2 "Oxygen saturation on effective hemoglobin"
+    function sO2 "Oxygen saturation on effective hemoglobin"
       extends GetFraction;
     algorithm
       F := (state.X[i("O2")] / O2.MolarWeight) / (state.X[i("eHb")] / Constants.MM_Hb);
     end sO2;
 
-    replaceable function tCO2 "Total carbon dioxide in blood"
+    function tCO2 "Total carbon dioxide in blood"
       extends GetConcentration;
     algorithm
       C := density(state) * (state.X[i("CO2_P")]+state.X[i("CO2_E")]) / CO2.MolarWeight;
     end tCO2;
 
-    replaceable function tCO "Total carbon monoxide in blood"
+    function tCO "Total carbon monoxide in blood"
       extends GetConcentration;
     algorithm
       C := density(state) * state.X[i("CO")] / CO.MolarWeight;
     end tCO;
 
-    replaceable function tHb "Total hemoglobine in blood"
+    function tHb "Total hemoglobine in blood"
       extends GetConcentration;
     algorithm
       C := density(state) * (state.X[i("eHb")] + state.X[i("MetHb")] + state.X[i("HbF")]) / Constants.MM_Hb;
     end tHb;
 
-    replaceable function FMetHb "Methemoglobine fraction"
+    function FMetHb "Methemoglobine fraction"
       extends GetFraction;
     algorithm
       F := (state.X[i("MetHb")] / tHb(state));
     end FMetHb;
 
-    replaceable function FHbF "Foetalhemoglobine fraction"
+    function FHbF "Foetalhemoglobine fraction"
       extends GetFraction;
     algorithm
       F := (state.X[i("HbF")] / tHb(state));
     end FHbF;
 
-    replaceable function ctHb_ery "Total hemoglobine in erythrocytes"
+    function ctHb_ery "Total hemoglobine in erythrocytes"
       extends GetConcentration;
     algorithm
       C :=tHb(state)/hematocrit(state);
     end ctHb_ery;
 
-    replaceable function tAlb "Total albumine in blood plasma"
+    function tAlb "Total albumine in blood plasma"
       extends GetConcentration;
     algorithm
       C :=plasmaDensity(state)*(state.X[i("Alb")]/Constants.MM_Alb)/
         plasmaMassFraction(state);
     end tAlb;
 
-    replaceable function tGlb "Total globulin in blood plasma [g/L]"
+    function tGlb "Total globulin in blood plasma [g/L]"
       extends GetMassConcentration;
     algorithm
       R :=plasmaDensity(state)*state.X[i("Glb")]/plasmaMassFraction(state);
@@ -1428,21 +1428,21 @@ package Media "Models of physiological fluids"
 
 
 
-    replaceable function tPO4 "Total anorganic phosphates in blood plasma"
+    function tPO4 "Total anorganic phosphates in blood plasma"
       extends GetConcentration;
     algorithm
       C :=plasmaDensity(state)*(state.X[i("PO4")]/PO4.MolarWeight)/
         plasmaMassFraction(state);
     end tPO4;
 
-    replaceable function cDPG "Total diphosphoglycerate in erythrocytes"
+    function cDPG "Total diphosphoglycerate in erythrocytes"
       extends GetConcentration;
     algorithm
       C :=formedElementsDensity(state)*(state.X[i("DPG")]/Constants.MM_DPG)/
         formedElementsMassFraction(state);
     end cDPG;
 
-    replaceable function SID "Strong ion difference of blood"
+    function SID "Strong ion difference of blood"
       extends GetConcentration;
     algorithm
       C := density(state) * (
@@ -1455,101 +1455,101 @@ package Media "Models of physiological fluids"
           SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight);
     end SID;
 
-    replaceable function glucose "Total glucose in blood plasma"
+    function glucose "Total glucose in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Glucose")]/Constants.MM_Glucose)/
         plasmaMassFraction(state);
     end glucose;
 
-    replaceable function lactate "Total lactate in blood plasma"
+    function lactate "Total lactate in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Lactate")]/Constants.MM_Lactate)/
         plasmaMassFraction(state);
     end lactate;
 
-    replaceable function urea "Total urea in blood plasma"
+    function urea "Total urea in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Urea")]/Constants.MM_Urea)/
         plasmaMassFraction(state);
     end urea;
 
-    replaceable function aminoAcids "Total amino acids in blood plasma"
+    function aminoAcids "Total amino acids in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("AminoAcids")]/Constants.MM_AminoAcids)/
         plasmaMassFraction(state);
     end aminoAcids;
 
-    replaceable function lipids "Total faty acids in blood plasma"
+    function lipids "Total faty acids in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Lipids")]/Constants.MM_Lipids)/
         plasmaMassFraction(state);
     end lipids;
 
-    replaceable function ketoAcids "Total ketoacids in blood plasma"
+    function ketoAcids "Total ketoacids in blood plasma"
       extends GetConcentration;
     algorithm
       C :=(plasmaDensity(state)*state.X[i("KetoAcids")]/Constants.MM_KetoAcids)/
         plasmaMassFraction(state);
     end ketoAcids;
 
-    replaceable function epinephrine "Epinephrine in blood plasma"
+    function epinephrine "Epinephrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[i("Epinephrine")]));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Epinephrine")]/plasmaMassFraction(state);
     end epinephrine;
 
-    replaceable function norepinephrine "Norepinephrine in blood plasma"
+    function norepinephrine "Norepinephrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[i("Norepinephrine")]));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Norepinephrine")]/plasmaMassFraction(
         state);
     end norepinephrine;
 
-    replaceable function vasopressin "Vasopressin in blood plasma"
+    function vasopressin "Vasopressin in blood plasma"
       extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[i("Vasopressin")]));
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Vasopressin")]/Constants.MM_Vasopressin)
         /plasmaMassFraction(state);
     end vasopressin;
 
-    replaceable function insulin "Insulin in blood plasma"
+    function insulin "Insulin in blood plasma"
       extends GetActivity(A(unit="U/m3",displayUnit="mU/l"));
     algorithm
       A :=(plasmaDensity(state)*(state.X[i("Insulin")]/6e-9)/Constants.MM_Insulin)
         /plasmaMassFraction(state)                                                                            "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
     end insulin;
 
-    replaceable function glucagon "Glucagon in blood plasma"
+    function glucagon "Glucagon in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[i("Glucagon")]));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Glucagon")]/plasmaMassFraction(state);
     end glucagon;
 
-    replaceable function thyrotropin "Thyrotropin in blood plasma"
+    function thyrotropin "Thyrotropin in blood plasma"
       extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[i("Thyrotropin")]));
     algorithm
       C :=(plasmaDensity(state)*state.X[i("Thyrotropin")]/Constants.MM_Thyrotropin)
         /plasmaMassFraction(state);
     end thyrotropin;
 
-    replaceable function thyroxine "Thyroxine in blood plasma"
+    function thyroxine "Thyroxine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[i("Thyroxine")]));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Thyroxine")]/plasmaMassFraction(state);
     end thyroxine;
 
-    replaceable function leptin "Leptin in blood plasma"
+    function leptin "Leptin in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[i("Leptin")]));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Leptin")]/plasmaMassFraction(state);
     end leptin;
 
-    replaceable function desglymidodrine "Desglymidodrine in blood plasma"
+    function desglymidodrine "Desglymidodrine in blood plasma"
       extends GetMassConcentration(R(displayUnit="ug/l"));
     algorithm
       R :=plasmaDensity(state)*state.X[i("Desglymidodrine")]/plasmaMassFraction(
@@ -1557,32 +1557,32 @@ package Media "Models of physiological fluids"
     end desglymidodrine;
 
 
-    replaceable function angiotensin2 "Angiotensin2 in blood plasma"
+    function angiotensin2 "Angiotensin2 in blood plasma"
       extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[i("Angiotensin2")]));
     algorithm
        R :=plasmaDensity(state)*state.X[i("Angiotensin2")]/plasmaMassFraction(
         state);
     end angiotensin2;
 
-    replaceable function alphaBlockers "Alpha blockers effect"
+    function alphaBlockers "Alpha blockers effect"
       extends GetExtraProperty;
     algorithm
       e := C[j("AlphaBlockers")]/1e-6;
     end alphaBlockers;
 
-    replaceable function betaBlockers "Beta blockers effect"
+    function betaBlockers "Beta blockers effect"
       extends GetExtraProperty;
     algorithm
       e := C[j("BetaBlockers")]/1e-6;
     end betaBlockers;
 
-    replaceable function anesthesiaVascularConductance "Anesthesia vascular conductance effect"
+    function anesthesiaVascularConductance "Anesthesia vascular conductance effect"
       extends GetExtraProperty;
     algorithm
       e := C[j("AnesthesiaVascularConductance")]/1e-6;
     end anesthesiaVascularConductance;
 
-    replaceable function aldosterone "Aldosterone in blood plasma"
+    function aldosterone "Aldosterone in blood plasma"
       extends GetConcentration(C(displayUnit="nmol/l", nominal=SubstanceFlowNominal[i("Aldosterone")]));
     algorithm
       C :=plasmaDensity(state)*(state.X[i("Aldosterone")]/Constants.MM_Aldosterone)
@@ -1590,26 +1590,26 @@ package Media "Models of physiological fluids"
     end aldosterone;
 
 
-    replaceable function renin "Renin PRA in blood plasma"
+    function renin "Renin PRA in blood plasma"
       extends GetActivity(A(unit="ng/(ml.h)",displayUnit="ng/(ml.h)"));
     algorithm
       A :=plasmaDensity(state)*((state.X[i("Renin")]/(1e-12*0.6*11.2)))/
         plasmaMassFraction(state)                                                                     "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
     end renin;
 
-    replaceable function plasmacrit "Blood plasmacrit [mL/mL]"
+    function plasmacrit "Blood plasmacrit [mL/mL]"
       extends GetFraction;
     algorithm
       F := plasmaMassFraction(state)*(density(state)/plasmaDensity(state));
     end plasmacrit;
 
-    replaceable function hematocrit "Blood hematocrit [mL/mL]"
+    function hematocrit "Blood hematocrit [mL/mL]"
       extends GetFraction;
     algorithm
       F := 1-plasmacrit(state);
     end hematocrit;
 
-    replaceable function formedElementsDensity
+    function formedElementsDensity
       "Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)"
       extends GetDensity;
     algorithm
@@ -1620,16 +1620,16 @@ package Media "Models of physiological fluids"
     end formedElementsDensity;
 
 
-    replaceable function formedElementsMassFractionWithoutOther "Blood hematocrit without unknown substances in formed elements [kg/kg]"
+    function formedElementsMassFractionWithoutOther "Blood hematocrit without unknown substances in formed elements [kg/kg]"
       extends formedElementsMassFraction(includeOther=false);
     end formedElementsMassFractionWithoutOther;
 
-    replaceable function plasmaMassFractionWithoutOther "Blood plasmacrit without unknown substances in blood plasma [kg/kg]"
+    function plasmaMassFractionWithoutOther "Blood plasmacrit without unknown substances in blood plasma [kg/kg]"
     extends plasmaMassFraction(includeOther=false);
     end plasmaMassFractionWithoutOther;
 
 
-    replaceable function plasmaSID "Strong ion difference of blood plasma"
+    function plasmaSID "Strong ion difference of blood plasma"
       extends GetConcentration;
     algorithm
       C := plasmaDensity(state) * (
@@ -1639,7 +1639,7 @@ package Media "Models of physiological fluids"
           SO4.z*state.X[i("SO4_P")]/SO4.MolarWeight) / plasmacrit(state);
     end plasmaSID;
 
-    replaceable function formedElementsSID "Strong ion difference of blood formed elements"
+    function formedElementsSID "Strong ion difference of blood formed elements"
       extends GetConcentration;
     algorithm
       C := density(state) * (
