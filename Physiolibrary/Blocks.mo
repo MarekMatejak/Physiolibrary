@@ -668,7 +668,7 @@ input <i>u</i>:
       parameter Integer nfi = div(nu, 2) + 1;
       constant Complex I(re = 0, im = 1);
       Complex complexValue;
-      parameter Complex c[nfi] = FFT(curve) "Fourier series coefficients";
+      parameter Complex c[nfi] = FFT(curve,nfi) "Fourier series coefficients";
     equation
       complexValue = sum(c[j + 1] * Modelica.ComplexMath.exp(2 * pi * I * j * time * frequence) for j in 0:nfi - 1);
     //Inverse Fourier transformation
@@ -684,7 +684,7 @@ input <i>u</i>:
       import Modelica.Constants.pi;
       input Real f[:] "equidistant-sampled function";
       input Integer nfi = div(size(f, 1), 2) + 1 "";
-      output Complex c[:] "Fourier series coeficient";
+      output Complex c[nfi] "Fourier series coeficient";
     protected
       Real Ai[nfi] "FFT amplitudes of interested frequency points";
       Real Phii[nfi] "FFT phases of interested frequency points";
