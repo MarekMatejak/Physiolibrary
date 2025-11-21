@@ -498,25 +498,25 @@ package Fluid "Physiological fluids with static and dynamic properties"
       parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
           1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
 
-      Chemical.Obsolete.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Na")])
+      Chemical.Obsolete.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Na")])
         annotation (Placement(transformation(extent={{-10,76},{10,96}})));
-      Chemical.Obsolete.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("HCO3")])
+      Chemical.Obsolete.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("HCO3")])
         annotation (Placement(transformation(extent={{-10,58},{10,78}})));
-      Chemical.Obsolete.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("K")])
+      Chemical.Obsolete.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("K")])
         annotation (Placement(transformation(extent={{-8,40},{12,60}})));
-      Chemical.Obsolete.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Glucose")])
+      Chemical.Obsolete.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Glucose")])
         annotation (Placement(transformation(extent={{-8,22},{12,42}})));
       Chemical.Obsolete.Components.Membrane Urea(
         each EnthalpyNotUsed=false,
-        KC=Permeabilities[BloodPlasma.i("Urea")],
+        KC=Permeabilities[Physiolibrary.Utilities.findIndex("Urea")],
         kE=0) annotation (Placement(transformation(extent={{-8,2},{12,22}})));
-      Chemical.Obsolete.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Cl")])
+      Chemical.Obsolete.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Cl")])
         annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
-      Chemical.Obsolete.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Mg")])
+      Chemical.Obsolete.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Mg")])
         annotation (Placement(transformation(extent={{-6,-58},{14,-38}})));
-      Chemical.Obsolete.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("H2O")])
+      Chemical.Obsolete.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("H2O")])
         annotation (Placement(transformation(extent={{-6,-82},{14,-62}})));
-      Chemical.Obsolete.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[BloodPlasma.i("Ca")])
+      Chemical.Obsolete.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Ca")])
         annotation (Placement(transformation(extent={{-6,-36},{14,-16}})));
       Dialysate.SubstancesPort bodyFluid_b annotation (Placement(transformation(extent={{80,-20},{120,20}})));
       BloodPlasma.SubstancesPort bodyFluid_a annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
@@ -547,6 +547,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
 <p>Semipermeable membrane for substances of BodyFluid medium.</p>
 </html>"));
     end BodyFluidMembrane;
+
     annotation (
       Documentation(info = "<html>
 <p>Main components for physiological fluid modeling.</p>
@@ -730,186 +731,6 @@ Connector with one flow signal of type Real.
         Diagram(coordinateSystem(preserveAspectRatio = false)));
     end CompositionSetup;
 
-    partial model Accumulation
-      extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
-
-
-     parameter String ForeSubstances[nFS] = fill("",nFS);
-     parameter String RearSubstances[nRS] = fill("",nRS);
-
-
-     parameter Integer nFS = 0 "Number of substance forward ports" annotation (
-        Evaluate = true,
-        Dialog(connectorSizing = true, group = "Ports"));
-     parameter Integer nRS = 0 "Number of substance rearward ports" annotation (
-        Evaluate = true,
-        Dialog(connectorSizing = true, group = "Ports"));
-
-     public
-      Chemical.Interfaces.Fore foreSubstance[nFS]
-         "Forward ports of selected substances"
-         annotation (Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
-      Chemical.Interfaces.Rear rearSubstance[nRS]
-         "Rearward ports of selectted substances"
-         annotation (Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
-
-      parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
-        Evaluate = true,
-        Dialog(connectorSizing = true, group = "Ports"));
-      Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium, each h_outflow(nominal=Medium.SpecificEnthalpyNominal)) annotation (
-        Placement(transformation(extent = {{-10, -28}, {10, 28}}), iconTransformation(extent = {{-7, -26}, {7, 26}}, rotation = 180, origin = {-1, 0})));
-
-      parameter Boolean onElectricGround = false "=true, if electric potencial is zero" annotation (
-        Evaluate = true,
-        choices(checkBox = true));
-      //,Dialog(group="Conditional inputs"));
-
-      Medium.ChemicalSolution chemicalSolution(
-       nFS=nFS, nRS=nRS, RearSubstances=RearSubstances, ForeSubstances=ForeSubstances,
-       foreSubstance=(if nFS>0 then foreSubstance else dummyFore), rearSubstance=(if nRS>0 then rearSubstance else dummyRear),
-        startSubstanceMasses = m_start,
-        p = pressure,
-        h = enthalpy / mass,
-        X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
-        _i = i)  if (nFS+nRS)>0;                              //enthalpy / mass,
-
-      parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
-        Evaluate = true,
-        choices(checkBox = true),
-        Dialog(group = "Initialization"));
-      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
-        HideResult = use_mass_start,
-        Dialog(enable = not use_mass_start, group = "Initialization"));
-      parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=1     "Total mass of solution start value" annotation (
-        HideResult = not use_mass_start,
-        Dialog(enable = use_mass_start, group = "Initialization"));
-
-
-      parameter Boolean useThermalPort = false "Is thermal port pressent?" annotation (
-        Evaluate = true,
-        HideResult = true,
-        choices(checkBox = true),
-        Dialog(group = "Conditional inputs"));
-
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort(T = Medium.temperature_phX(pressure, enthalpy / mass, massFractions), Q_flow = heatFromEnvironment) if useThermalPort annotation (
-        Placement(transformation(extent = {{-70, -90}, {-50, -70}}), iconTransformation(extent={{-70,
-              -110},{-50,-90}})));
-
-    protected
-      parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
-
-      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
-      parameter Modelica.Units.SI.Mass massOffset = tm_start - sum(m_start);
-      Modelica.Units.SI.ElectricCurrent i;
-    public
-      Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
-
-      Physiolibrary.Types.Enthalpy enthalpy(start=m_start*Medium.specificEnthalpies_Tpv(temperature_start, pressure_start));
-
-      Physiolibrary.Types.Mass mass(start = tm_start);
-      Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
-      Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
-
-      Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
-      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
-      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
-
-      Physiolibrary.Types.Volume volume;
-      Physiolibrary.Types.Density density;
-    protected
-      Physiolibrary.Types.Pressure pressure;
-      Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "Enthalpy inflow in substances connectors [J/s]";
-      Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
-      Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
-
-      Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
-      Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
-
-
-    initial equation
-    //  assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
-    /* assert(
-  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)==Medium.nS-2) and (Medium.nS<2) or 
-  (Medium.zb[Medium.nS - 1]==0)), "Initial electroneutral concentration composition is not supported with this medium (try to use mass fractions)!");
-*/
-    /*  assert(
-  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)>=Medium.nS-2)),
-  "Initial concentration composition must have at least 
-  -2 values!");
-  */
-      if nFS+nRS==0 then
-        substanceMasses = m_start;
-      end if;
-      if Medium.reducedX then
-        mass = tm_start;
-      end if;
-
-      enthalpy =m_start*Medium.specificEnthalpies_Tpv(
-        temperature_start,
-        pressure_start,
-        v);
-
-    equation
-
-      if onElectricGround then
-        v = 0;
-      else
-        i = 0;
-      end if;
-      if not useThermalPort then
-        heatFromEnvironment = 0;
-      end if;
-      if nFS+nRS>0 then
-        connect(chemicalSolution.massFlows, massFlows);
-        connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
-        connect(chemicalSolution.substanceMasses, substanceMasses);
-        connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
-        connect(v, chemicalSolution.v);
-      else
-        der(substanceMasses) = substanceMassFlowsFromStream;
-
-        massFlows = zeros(Medium.nS);
-
-        enthalpyFromSubstances = 0;
-
-        if not onElectricGround then
-        //both electric variables set to zero
-          v = 0;
-        else
-          i = 0;
-        end if;
-      end if;
-
-      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
-
-
-      der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
-
-
-      mass = sum(substanceMasses) + massOffset;
-
-      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
-
-      der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
-
-      volume = mass / density;
-      density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
-
-      extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
-      for i in 1:nPorts loop
-        xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
-        xC_mass[i, :] = actualStream(q_in[i].C_outflow);
-        q_in[i].p = pressure;
-        q_in[i].h_outflow = enthalpy / mass;
-        q_in[i].Xi_outflow = massFractions;
-        q_in[i].C_outflow  = extraSubstanceConcentrations;
-      end for;
-
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false)));
-    end Accumulation;
-
     partial model PartialAbsoluteSensor "Partial component to model a sensor that measures a potential variable"
       replaceable package Medium = Physiolibrary.Media.Water constrainedby Physiolibrary.Media.Interfaces.PartialMedium "Medium in the sensor" annotation (
          choicesAllMatching = true);
@@ -1030,6 +851,243 @@ as signal.
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>"));
     end PartialGasSubstance;
+
+    partial model Accumulation
+      extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
+
+     parameter String ForeSubstances[nF] = fill("",nF);
+     parameter String RearSubstances[nR] = fill("",nR);
+
+     parameter Integer nF = 0 "Number of substance forward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+     parameter Integer nR = 0    "Number of substance rearward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+
+     public
+      Chemical.Interfaces.Fore foreSubstance[nF]
+         "Forward ports of selected substances"
+         annotation (                             //( each solution_forwards = solutionState)
+                     Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
+
+      Chemical.Interfaces.Rear rearSubstance[nR]
+         "Rearward ports of selectted substances"
+         annotation (                             //(  each solution_rearwards = solutionState)
+                     Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
+
+      parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+      Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium, each h_outflow(nominal=Medium.SpecificEnthalpyNominal)) annotation (
+        Placement(transformation(extent = {{-10, -28}, {10, 28}}), iconTransformation(extent = {{-7, -26}, {7, 26}}, rotation = 180, origin = {-1, 0})));
+
+      parameter Boolean onElectricGround = false "=true, if electric potencial is zero" annotation (
+        Evaluate = true,
+        choices(checkBox = true));
+      //,Dialog(group="Conditional inputs"));
+
+      Medium.ThermodynamicState state;
+      Chemical.Interfaces.SolutionState solutionState;
+      Medium.ChemicalSolution chemicalSolution(
+
+       nF=nF,nR=nR,
+       ForeSubstances=ForeSubstances,RearSubstances=RearSubstances,
+
+       //nC=nFS+nRS, ConnectedSubstances=RearSubstances, //cat(1,RearSubstances, ForeSubstances),
+       /*
+   connected_state_in = cat(1,rearSubstance.state_forwards,foreSubstance.state_rearwards),
+   connected_state_out = cat(1,rearSubstance.state_rearwards,foreSubstance.state_forwards),
+   connected_r = cat(1, rearSubstance.r, foreSubstance.r),
+   connected_n_flow = cat(1, rearSubstance.n_flow, foreSubstance.n_flow),
+   */  state = state,
+       solutionState = solutionState,
+
+       startSubstanceMasses = m_start)  if (nF+nR)>0;                              //enthalpy / mass,
+
+      parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
+        Evaluate = true,
+        choices(checkBox = true),
+        Dialog(group = "Initialization"));
+      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
+        HideResult = use_mass_start,
+        Dialog(enable = not use_mass_start, group = "Initialization"));
+      parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=1     "Total mass of solution start value" annotation (
+        HideResult = not use_mass_start,
+        Dialog(enable = use_mass_start, group = "Initialization"));
+
+      parameter Boolean useThermalPort = false "Is thermal port pressent?" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort(T = Medium.temperature_phX(pressure, enthalpy / mass, massFractions), Q_flow = heatFromEnvironment) if useThermalPort annotation (
+        Placement(transformation(extent = {{-70, -90}, {-50, -70}}), iconTransformation(extent={{-70,
+              -110},{-50,-90}})));
+
+    protected
+      parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
+
+      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
+      parameter Modelica.Units.SI.Mass massOffset = tm_start - sum(m_start);
+      Modelica.Units.SI.ElectricCurrent i;
+    public
+      Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
+
+      Physiolibrary.Types.Enthalpy enthalpy(start=m_start*Medium.specificEnthalpies_Tpv(temperature_start, pressure_start));
+
+      Physiolibrary.Types.Mass mass(start = tm_start);
+      Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
+      Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
+
+      Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
+      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+
+      Physiolibrary.Types.Volume volume;
+      Physiolibrary.Types.Density density;
+    protected
+      Physiolibrary.Types.Pressure pressure( start = pressure_start);
+      Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "Enthalpy inflow in substances connectors [J/s]";
+     // Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+
+    initial equation
+    //  assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
+    /* assert(
+  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)==Medium.nS-2) and (Medium.nS<2) or 
+  (Medium.zb[Medium.nS - 1]==0)), "Initial electroneutral concentration composition is not supported with this medium (try to use mass fractions)!");
+*/
+    /*  assert(
+  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)>=Medium.nS-2)),
+  "Initial concentration composition must have at least 
+  -2 values!");
+  */
+      if nF+nR==0 then
+        substanceMasses = m_start;
+      end if;
+      if Medium.reducedX then
+        mass = tm_start;
+      end if;
+
+      enthalpy =m_start*Medium.specificEnthalpies_Tpv(
+        temperature_start,
+        pressure_start,
+        v);
+
+    equation
+      /*   
+      input Phase phase "Phase of the chemical solution";
+      input Real T=298.15 "Temperature of the solution";
+      input Real p=100000 "Pressure of the solution";
+      input Real v=0 "Electric potential in the solution";
+      input Real n=1 "Amount of the solution";
+      input Real m=1 "Mass of the solution";
+      input Real V=if (phase==Phase.Gas) then n*(1.380649e-23*6.02214076e23)*T/p else 0.001 "Volume of the solution";
+      input Real G=0 "Free Gibbs energy of the solution";
+      input Real Q=0 "Electric charge of the solution";
+      input Real I=0 "Mole fraction based ionic strength of the solution";
+      */
+
+       /*
+  input Chemical.Interfaces.Definition definition[:] "Definition of substances";
+ input Modelica.Units.SI.MolarEnthalpy h
+   "Molar enthalpy of solution";
+ input Modelica.Units.SI.MoleFraction x[:]
+   "Mole fractions of substances";
+
+ input Modelica.Units.SI.Pressure p=100000 "Pressure";
+ input Modelica.Units.SI.ElectricPotential v=0
+   "Electric potential of the substance";
+ input Modelica.Units.SI.MoleFraction I=0
+   "Ionic strength (mole fraction based)";
+
+ output Modelica.Units.SI.Temperature T "Temperature";
+  T = Medium.solution_temperature(enthalpy / mass,  )*/
+      state = Medium.setState_phXvI(p=pressure,h = enthalpy / mass,
+        X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
+        v = v,
+        I = 0);
+
+      if onElectricGround then
+        v = 0;
+      else
+        i = 0;
+      end if;
+      if not useThermalPort then
+        heatFromEnvironment = 0;
+      end if;
+      connect(chemicalSolution.foreSubstances,foreSubstance);
+      connect(chemicalSolution.rearSubstances,rearSubstance);
+      /*
+  if nRS>0 then
+    //foreSubstance.definition = Medium.selectSubstancesDefinition(ForeSubstances);
+    //chemicalSolution.substances[1:nFS]=foreSubstances;
+    connect(chemicalSolution.rearSubstances,rearSubstance);
+  end if;
+*/
+      solutionState = Medium.setSolutionState_m(state,mass);
+      if nF+nR>0 then
+        //connect(chemicalSolution.massFlows, massFlows);
+        connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
+        connect(chemicalSolution.substanceMasses, substanceMasses);
+        connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
+        //connect(v, chemicalSolution.v);
+
+        //enthalpyFromSubstances = 0;
+        if not onElectricGround then
+        //both electric variables set to zero
+          v = 0;
+        else
+          i = 0;
+        end if;
+
+      else
+        der(substanceMasses) = substanceMassFlowsFromStream;
+
+       // massFlows = zeros(Medium.nS);
+
+        enthalpyFromSubstances = 0;
+
+        if not onElectricGround then
+        //both electric variables set to zero
+          v = 0;
+        else
+          i = 0;
+        end if;
+      end if;
+
+      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
+
+      der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
+
+      mass = sum(substanceMasses) + massOffset;
+
+      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
+
+      der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
+
+      volume = mass / density;
+      density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
+
+      extraSubstanceConcentrations = extraSubstanceAmounts ./ mass;
+      for i in 1:nPorts loop
+        xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
+        xC_mass[i, :] = actualStream(q_in[i].C_outflow);
+        q_in[i].p = pressure;
+        q_in[i].h_outflow = enthalpy / mass;
+        q_in[i].Xi_outflow = massFractions;
+        q_in[i].C_outflow  = extraSubstanceConcentrations;
+      end for;
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false)));
+    end Accumulation;
   end Interfaces;
 
   package Sensors
@@ -4938,7 +4996,6 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
       Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
-        ForeSubstances={"H2O"},
         RearSubstances={"H2O"},
         volume_start=0.0001,
         massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts=2,
