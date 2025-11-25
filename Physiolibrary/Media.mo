@@ -17,16 +17,30 @@ package Media "Models of physiological fluids"
         "Desglymidodrine",
         "Angiotensin2","Renin","Aldosterone",
         "Other_P","Other_E"},
-      substanceData = {
-      Substances.Water, Substances.Water, Substances.O2, Substances.CO2, Substances.CO2, Substances.CO,
-      Substances.Hb, Substances.Hb, Substances.Hb, Substances.Alb, Substances.Glb, Substances.PO4, Substances.SO4, Substances.DPG,
-      Substances.Glucose, Substances.Lactate, Substances.Urea, Substances.AminoAcid, Substances.Lipid, Substances.KetoAcid,
-      Substances.Na, Substances.K,Substances.Na, Substances.K, Substances.Cl, Substances.Cl,
-      Substances.Epinephrine, Substances.Norepinephrine, Substances.Vasopressin,
-      Substances.Insulin, Substances.Glucagon, Substances.Thyrotropin, Substances.Thyroxine, Substances.Leptin,
-      Substances.Desglymidodrine,
-      Substances.Angiotensin2, Substances.Renin, Substances.Aldosterone,
-      Substances.Water, Substances.Water},
+      substanceData = {Water, Water, O2, CO2, CO2, CO, Hb, Hb, Hb, Alb, Glb, PO4, SO4, DPG,
+         Glucose, Lactate, Urea, AminoAcid, Lipid, KetoAcid,
+         Na, K, Na, K, Cl, Cl,
+         Epinephrine, Norepinephrine, Vasopressin,
+         Insulin, Glucagon, Thyrotropin, Thyroxine, Leptin,
+         Desglymidodrine,
+         Angiotensin2, Renin, Aldosterone,
+         Water, Water},
+
+      accesibleSubstances={"H2O","H+","OH-","O2","CO2","CO","HCO3+",
+         "Na+","K+","Cl-","SO4--","PO4---",
+         "Glucose","Lactate-","Urea","AminoAcids-", "Lipids", "KetoAcids-",
+         "Epinephrine", "Norepinephrine", "Vasopressin",
+         "Insulin", "Glucagon", "Thyrotropin", "Thyroxine", "Leptin",
+         "Desglymidodrine",
+         "Angiotensin2","Renin", "Aldosterone"},
+      accesibleSubstanceData = {Water, H, OH, O2, CO2, CO, HCO3,
+         Na, K, Cl, SO4, PO4,
+         Glucose, Lactate, Urea, AminoAcid, Lipid, KetoAcid,
+         Epinephrine, Norepinephrine, Vasopressin,
+         Insulin, Glucagon, Thyrotropin, Thyroxine, Leptin,
+         Desglymidodrine,
+         Angiotensin2, Renin, Aldosterone},
+
       extraPropertiesNames={
         "AlphaBlockers",
         "BetaBlockers",
@@ -397,39 +411,8 @@ package Media "Models of physiological fluids"
     end ThermodynamicState;
 
 
-    redeclare replaceable model extends ChemicalSolution (
-      SubstancesToConnect={
-    "CO2",
-    "O2",
-    "CO",
-    "HCO3",
-    "H",
-    "OH",
-    "H2O",
-    "Na",
-    "K",
-    "Cl",
-    "SO4",
-    "PO4",
-    "Glucose",
-    "Lactate",
-    "Urea",
-    "AminoAcids",
-    "Lipids",
-    "KetoAcids",
-    "Epinephrine",
-    "Norepinephrine",
-    "Vasopressin",
-    "Insulin",
-    "Glucagon",
-    "Thyrotropin",
-    "Thyroxine",
-    "Leptin",
-    "Desglymidodrine",
-    "Angiotensin2",
-    "Renin",
-    "Aldosterone"})
-      "Free chemical substances"
+    redeclare replaceable model extends ChemicalSolution
+        //  "Free chemical substances"
       //( substances(H2O(u(nominal=-225057)),Glucose(u(nominal=-910549))))
 
       import Physiolibrary.Utilities.*;
@@ -541,51 +524,51 @@ package Media "Models of physiological fluids"
       x_E =formedElementsSpecificAmountOfParticles(state);
 
 
-      state_out[findIndex("H2O",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aH2O_P)  +
+      state_out[findIndex("H2O",accesibleSubstances)].u = Modelica.Constants.R*T*log(aH2O_P)  +
             Properties.electroChemicalPotentialPure(
               Substances.Water, solutionState);
-      state_out[findIndex("H2O",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("H2O",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Water, solutionState);
 
-      state_out[findIndex("O2",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aO2) +
+      state_out[findIndex("O2",accesibleSubstances)].u = Modelica.Constants.R*T*log(aO2) +
         Properties.electroChemicalPotentialPure(
           Substances.O2,
           solutionState);
-      state_out[findIndex("O2",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("O2",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.O2,
           solutionState);
 
 
-      state_out[findIndex("CO2",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aCO2) +
+      state_out[findIndex("CO2",accesibleSubstances)].u = Modelica.Constants.R*T*log(aCO2) +
         Properties.electroChemicalPotentialPure(
           Substances.CO2,
           solutionState);
-      state_out[findIndex("CO2",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("CO2",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.CO2,
           solutionState);
-      state_out[findIndex("HCO3",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aHCO3) +
+      state_out[findIndex("HCO3",accesibleSubstances)].u = Modelica.Constants.R*T*log(aHCO3) +
         Properties.electroChemicalPotentialPure(
           Substances.HCO3,
           solutionState);
-      state_out[findIndex("HCO3",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("HCO3-",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.HCO3,
           solutionState);
 
 
-      state_out[findIndex("CO",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aCO) +
+      state_out[findIndex("CO",accesibleSubstances)].u = Modelica.Constants.R*T*log(aCO) +
         Properties.electroChemicalPotentialPure(
           Substances.CO,
           solutionState);
-      state_out[findIndex("CO",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("CO",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.CO,
           solutionState);
 
 
-      state_out[findIndex("H",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aH_plus) +
+      state_out[findIndex("H+",accesibleSubstances)].u = Modelica.Constants.R*T*log(aH_plus) +
         Properties.electroChemicalPotentialPure(
           Substances.H,
           solutionState);
-      state_out[findIndex("H",SubstancesToConnect)].h = 0;
+      state_out[findIndex("H+",accesibleSubstances)].h = 0;
 
       //just for debug (should be the same as pHpOH):
       pK_WaterSelfIonization = -log10(exp((Properties.electroChemicalPotentialPure(
@@ -597,154 +580,154 @@ package Media "Models of physiological fluids"
               - Properties.electroChemicalPotentialPure(Substances.H, solutionState))/(Modelica.Constants.R*T)))
               "water self disociation pK shifted to water activity=1";
 
-      state_out[findIndex("OH",SubstancesToConnect)].u + state_out[findIndex("H",SubstancesToConnect)].u = state_out[findIndex("H2O",SubstancesToConnect)].u;
-      state_out[findIndex("OH",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aOH_P) +
+      state_out[findIndex("OH-",accesibleSubstances)].u + state_out[findIndex("H",accesibleSubstances)].u = state_out[findIndex("H2O",accesibleSubstances)].u;
+      state_out[findIndex("OH-",accesibleSubstances)].u = Modelica.Constants.R*T*log(aOH_P) +
         Properties.electroChemicalPotentialPure(
           Substances.OH,
           solutionState);
-      state_out[findIndex("OH",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("OH-",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.OH,
           solutionState);
 
-      state_out[findIndex("Na",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aNa_P) +
+      state_out[findIndex("Na+",accesibleSubstances)].u = Modelica.Constants.R*T*log(aNa_P) +
         Properties.electroChemicalPotentialPure(
           Substances.Na,
           solutionState);
-      state_out[findIndex("Na",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("Na+",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Na,
           solutionState);
 
-      state_out[findIndex("K",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aK_P) +
+      state_out[findIndex("K+",accesibleSubstances)].u = Modelica.Constants.R*T*log(aK_P) +
         Properties.electroChemicalPotentialPure(
           Substances.K,
           solutionState);
-      state_out[findIndex("K",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("K+",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.K,
           solutionState);
 
-      state_out[findIndex("Cl",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aCl_P) +
+      state_out[findIndex("Cl-",accesibleSubstances)].u = Modelica.Constants.R*T*log(aCl_P) +
         Properties.electroChemicalPotentialPure(
           Substances.Cl,
           solutionState);
-      state_out[findIndex("Cl",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("Cl-",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Cl,
           solutionState);
 
-      state_out[findIndex("SO4",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aSO4_P) +
+      state_out[findIndex("SO4--",accesibleSubstances)].u = Modelica.Constants.R*T*log(aSO4_P) +
         Properties.electroChemicalPotentialPure(
           Substances.SO4,
           solutionState);
-      state_out[findIndex("SO4",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("SO4--",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.SO4,
           solutionState);
 
-      state_out[findIndex("PO4",SubstancesToConnect)].u = Modelica.Constants.R*T*log(aPO4_P) +
+      state_out[findIndex("PO4---",accesibleSubstances)].u = Modelica.Constants.R*T*log(aPO4_P) +
         Properties.electroChemicalPotentialPure(
           Substances.PO4,
           solutionState);
-      state_out[findIndex("PO4",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("PO4---",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.PO4,
           solutionState);
 
 
-      state_out[findIndex("Glucose",SubstancesToConnect)].u = Modelica.Constants.R*T*log(((state.X[findIndex("Glucose",substanceNames)]/pct)/Constants.MM_Glucose)/x_P) +
+      state_out[findIndex("Glucose",accesibleSubstances)].u = Modelica.Constants.R*T*log(((state.X[findIndex("Glucose",substanceNames)]/pct)/Constants.MM_Glucose)/x_P) +
          Properties.electroChemicalPotentialPure(
           Substances.Glucose,
           solutionState);
-      state_out[findIndex("Glucose",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("Glucose",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Glucose,
           solutionState);
 
-      state_out[findIndex("Lactate",SubstancesToConnect)].u = Modelica.Constants.R*T*log((state.X[findIndex("Lactate",substanceNames)]/pct)/Constants.MM_Lactate/x_P) +
+      state_out[findIndex("Lactate-",accesibleSubstances)].u = Modelica.Constants.R*T*log((state.X[findIndex("Lactate",substanceNames)]/pct)/Constants.MM_Lactate/x_P) +
          Properties.electroChemicalPotentialPure(
           Substances.Lactate,
           solutionState);
-      state_out[findIndex("Lactate",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("Lactate-",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Lactate,
           solutionState);
 
-      state_out[findIndex("Urea",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Urea",substanceNames)]/Constants.MM_Urea/x_P/pct) +
+      state_out[findIndex("Urea",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Urea",substanceNames)]/Constants.MM_Urea/x_P/pct) +
          Properties.electroChemicalPotentialPure(
           Substances.Urea,
           solutionState);
-      state_out[findIndex("Urea",SubstancesToConnect)].h = Properties.molarEnthalpy(
+      state_out[findIndex("Urea",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.Urea,
           solutionState);
 
-      state_out[findIndex("AminoAcids",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("AminoAcids",substanceNames)]/Constants.MM_AminoAcids/x_P/pct);
-      state_out[findIndex("AminoAcids",SubstancesToConnect)].h = 0;
+      state_out[findIndex("AminoAcids-",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("AminoAcids",substanceNames)]/Constants.MM_AminoAcids/x_P/pct);
+      state_out[findIndex("AminoAcids-",accesibleSubstances)].h = 0;
 
-      state_out[findIndex("Lipids",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Lipids",substanceNames)]/Constants.MM_Lipids/x_P/pct);
-      state_out[findIndex("Lipids",SubstancesToConnect)].h = 0;
+      state_out[findIndex("Lipids",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Lipids",substanceNames)]/Constants.MM_Lipids/x_P/pct);
+      state_out[findIndex("Lipids",accesibleSubstances)].h = 0;
 
-      state_out[findIndex("KetoAcids",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("KetoAcids",substanceNames)]/Constants.MM_KetoAcids/x_P/pct);
-      state_out[findIndex("KetoAcids",SubstancesToConnect)].h = 0;
+      state_out[findIndex("KetoAcids-",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("KetoAcids",substanceNames)]/Constants.MM_KetoAcids/x_P/pct);
+      state_out[findIndex("KetoAcids-",accesibleSubstances)].h = 0;
 
-      state_out[findIndex("Epinephrine",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Epinephrine",substanceNames)]/ Constants.MM_Epinephrine/x_P/pct);
-      state_out[findIndex("Norepinephrine",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Norepinephrine",substanceNames)]/ Constants.MM_Norepinephrine/x_P/pct);
-      state_out[findIndex("Vasopressin",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Vasopressin",substanceNames)]/ Constants.MM_Vasopressin/x_P/pct);
-      state_out[findIndex("Insulin",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Insulin",substanceNames)]/ Constants.MM_Insulin/x_P/pct);
-      state_out[findIndex("Glucagon",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Glucagon",substanceNames)]/ Constants.MM_Glucagon/x_P/pct);
-      state_out[findIndex("Thyrotropin",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Thyrotropin",substanceNames)]/ Constants.MM_Thyrotropin/x_P/pct);
-      state_out[findIndex("Thyroxine",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Thyroxine",substanceNames)]/ Constants.MM_Thyroxine/x_P/pct);
-      state_out[findIndex("Leptin",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Leptin",substanceNames)]/ Constants.MM_Leptin/x_P/pct);
-      state_out[findIndex("Desglymidodrine",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Desglymidodrine",substanceNames)]/ Constants.MM_Desglymidodrine/x_P/pct);
-      state_out[findIndex("Angiotensin2",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Angiotensin2",substanceNames)]/ Constants.MM_Angiotensin2/x_P/pct);
-      state_out[findIndex("Renin",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Renin",substanceNames)]/ Constants.MM_Renin/x_P/pct);
-      state_out[findIndex("Aldosterone",SubstancesToConnect)].u = Modelica.Constants.R*T*log(state.X[findIndex("Aldosterone",substanceNames)]/ Constants.MM_Aldosterone/x_P/pct);
+      state_out[findIndex("Epinephrine",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Epinephrine",substanceNames)]/ Constants.MM_Epinephrine/x_P/pct);
+      state_out[findIndex("Norepinephrine",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Norepinephrine",substanceNames)]/ Constants.MM_Norepinephrine/x_P/pct);
+      state_out[findIndex("Vasopressin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Vasopressin",substanceNames)]/ Constants.MM_Vasopressin/x_P/pct);
+      state_out[findIndex("Insulin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Insulin",substanceNames)]/ Constants.MM_Insulin/x_P/pct);
+      state_out[findIndex("Glucagon",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Glucagon",substanceNames)]/ Constants.MM_Glucagon/x_P/pct);
+      state_out[findIndex("Thyrotropin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Thyrotropin",substanceNames)]/ Constants.MM_Thyrotropin/x_P/pct);
+      state_out[findIndex("Thyroxine",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Thyroxine",substanceNames)]/ Constants.MM_Thyroxine/x_P/pct);
+      state_out[findIndex("Leptin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Leptin",substanceNames)]/ Constants.MM_Leptin/x_P/pct);
+      state_out[findIndex("Desglymidodrine",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Desglymidodrine",substanceNames)]/ Constants.MM_Desglymidodrine/x_P/pct);
+      state_out[findIndex("Angiotensin2",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Angiotensin2",substanceNames)]/ Constants.MM_Angiotensin2/x_P/pct);
+      state_out[findIndex("Renin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Renin",substanceNames)]/ Constants.MM_Renin/x_P/pct);
+      state_out[findIndex("Aldosterone",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Aldosterone",substanceNames)]/ Constants.MM_Aldosterone/x_P/pct);
 
-      state_out[findIndex("Epinephrine",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Norepinephrine",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Vasopressin",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Insulin",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Glucagon",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Thyrotropin",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Thyroxine",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Leptin",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Desglymidodrine",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Angiotensin2",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Renin",SubstancesToConnect)].h = 0;
-      state_out[findIndex("Aldosterone",SubstancesToConnect)].h = 0;
+      state_out[findIndex("Epinephrine",accesibleSubstances)].h = 0;
+      state_out[findIndex("Norepinephrine",accesibleSubstances)].h = 0;
+      state_out[findIndex("Vasopressin",accesibleSubstances)].h = 0;
+      state_out[findIndex("Insulin",accesibleSubstances)].h = 0;
+      state_out[findIndex("Glucagon",accesibleSubstances)].h = 0;
+      state_out[findIndex("Thyrotropin",accesibleSubstances)].h = 0;
+      state_out[findIndex("Thyroxine",accesibleSubstances)].h = 0;
+      state_out[findIndex("Leptin",accesibleSubstances)].h = 0;
+      state_out[findIndex("Desglymidodrine",accesibleSubstances)].h = 0;
+      state_out[findIndex("Angiotensin2",accesibleSubstances)].h = 0;
+      state_out[findIndex("Renin",accesibleSubstances)].h = 0;
+      state_out[findIndex("Aldosterone",accesibleSubstances)].h = 0;
 
 
       massFlows[Utilities.findIndex("H2O_E",substanceNames)] = -H2O_Ery2Plasma*Substances.Water.data.MM;
-      massFlows[Utilities.findIndex("O2",substanceNames)] = n_flow[findIndex("O2",SubstancesToConnect)]*Substances.O2.data.MM;
-      massFlows[Utilities.findIndex("CO2_P",substanceNames)] = n_flow[findIndex("CO2",SubstancesToConnect)]*Substances.CO2.data.MM + n_flow[findIndex("HCO3",SubstancesToConnect)] .* Substances.CO2.data.MM + CO2_Ery2Plasma*CO2.data.MM;
+      massFlows[Utilities.findIndex("O2",substanceNames)] = n_flow[findIndex("O2",accesibleSubstances)]*Substances.O2.data.MM;
+      massFlows[Utilities.findIndex("CO2_P",substanceNames)] = n_flow[findIndex("CO2",accesibleSubstances)]*Substances.CO2.data.MM + n_flow[findIndex("HCO3-",accesibleSubstances)] .* Substances.CO2.data.MM + CO2_Ery2Plasma*CO2.data.MM;
       massFlows[Utilities.findIndex("CO2_E",substanceNames)] = -CO2_Ery2Plasma*CO2.data.MM;
-      massFlows[Utilities.findIndex("CO",substanceNames)] = n_flow[findIndex("CO",SubstancesToConnect)]*Substances.CO.data.MM;
+      massFlows[Utilities.findIndex("CO",substanceNames)] = n_flow[findIndex("CO",accesibleSubstances)]*Substances.CO.data.MM;
       massFlows[Utilities.findIndex("eHb",substanceNames)] = 0;
       massFlows[Utilities.findIndex("MetHb",substanceNames)] = 0;
       massFlows[Utilities.findIndex("HbF",substanceNames)] = 0;
       massFlows[Utilities.findIndex("Alb",substanceNames)] = 0;
       massFlows[Utilities.findIndex("Glb",substanceNames)] = 0;
-      massFlows[Utilities.findIndex("PO4",substanceNames)] = n_flow[findIndex("PO4",SubstancesToConnect)]*Substances.PO4.data.MM;
-      massFlows[Utilities.findIndex("SO4_P",substanceNames)] = n_flow[findIndex("SO4",SubstancesToConnect)]*Substances.SO4.data.MM;
+      massFlows[Utilities.findIndex("PO4",substanceNames)] = n_flow[findIndex("PO4---",accesibleSubstances)]*Substances.PO4.data.MM;
+      massFlows[Utilities.findIndex("SO4_P",substanceNames)] = n_flow[findIndex("SO4--",accesibleSubstances)]*Substances.SO4.data.MM;
       massFlows[Utilities.findIndex("DPG",substanceNames)] = 0;
-      massFlows[Utilities.findIndex("Glucose",substanceNames)] = n_flow[findIndex("Glucose",SubstancesToConnect)]*Substances.Glucose.data.MM;
-      massFlows[Utilities.findIndex("Lactate",substanceNames)] = n_flow[findIndex("Lactate",SubstancesToConnect)]*Constants.MM_Lactate;
-      massFlows[Utilities.findIndex("Urea",substanceNames)] = n_flow[findIndex("Urea",SubstancesToConnect)]*Substances.Urea.data.MM;
-      massFlows[Utilities.findIndex("AminoAcids",substanceNames)] = n_flow[findIndex("AminoAcids",SubstancesToConnect)]*Constants.MM_AminoAcids;
-      massFlows[Utilities.findIndex("Lipids",substanceNames)] = n_flow[findIndex("Lipids",SubstancesToConnect)]*Constants.MM_Lipids;
-      massFlows[Utilities.findIndex("KetoAcids",substanceNames)] = n_flow[findIndex("KetoAcids",SubstancesToConnect)]*Constants.MM_KetoAcids;
-      massFlows[Utilities.findIndex("Na_P",substanceNames)] = n_flow[findIndex("Na",SubstancesToConnect)]*Substances.Na.data.MM;
-      massFlows[Utilities.findIndex("K_P",substanceNames)] = n_flow[findIndex("K",SubstancesToConnect)]*Substances.K.data.MM;
-      massFlows[Utilities.findIndex("Cl_P",substanceNames)] = n_flow[findIndex("Cl",SubstancesToConnect)]*Substances.Cl.data.MM + Cl_Ery2Plasma*Cl.data.MM;
+      massFlows[Utilities.findIndex("Glucose",substanceNames)] = n_flow[findIndex("Glucose",accesibleSubstances)]*Substances.Glucose.data.MM;
+      massFlows[Utilities.findIndex("Lactate",substanceNames)] = n_flow[findIndex("Lactate-",accesibleSubstances)]*Constants.MM_Lactate;
+      massFlows[Utilities.findIndex("Urea",substanceNames)] = n_flow[findIndex("Urea",accesibleSubstances)]*Substances.Urea.data.MM;
+      massFlows[Utilities.findIndex("AminoAcids",substanceNames)] = n_flow[findIndex("AminoAcids-",accesibleSubstances)]*Constants.MM_AminoAcids;
+      massFlows[Utilities.findIndex("Lipids",substanceNames)] = n_flow[findIndex("Lipids",accesibleSubstances)]*Constants.MM_Lipids;
+      massFlows[Utilities.findIndex("KetoAcids",substanceNames)] = n_flow[findIndex("KetoAcids-",accesibleSubstances)]*Constants.MM_KetoAcids;
+      massFlows[Utilities.findIndex("Na_P",substanceNames)] = n_flow[findIndex("Na+",accesibleSubstances)]*Substances.Na.data.MM;
+      massFlows[Utilities.findIndex("K_P",substanceNames)] = n_flow[findIndex("K+",accesibleSubstances)]*Substances.K.data.MM;
+      massFlows[Utilities.findIndex("Cl_P",substanceNames)] = n_flow[findIndex("Cl-",accesibleSubstances)]*Substances.Cl.data.MM + Cl_Ery2Plasma*Cl.data.MM;
       massFlows[Utilities.findIndex("Na_E",substanceNames)] = 0;
       massFlows[Utilities.findIndex("K_E",substanceNames)] = 0;
       massFlows[Utilities.findIndex("Cl_E",substanceNames)] = -Cl_Ery2Plasma*Cl.data.MM;
-      massFlows[Utilities.findIndex("Epinephrine",substanceNames)] = n_flow[findIndex("Epinephrine",SubstancesToConnect)]*Constants.MM_Epinephrine;
-      massFlows[Utilities.findIndex("Norepinephrine",substanceNames)] = n_flow[findIndex("Norepinephrine",SubstancesToConnect)]*Constants.MM_Norepinephrine;
-      massFlows[Utilities.findIndex("Vasopressin",substanceNames)] = n_flow[findIndex("Vasopressin",SubstancesToConnect)]*Constants.MM_Vasopressin;
-      massFlows[Utilities.findIndex("Insulin",substanceNames)] = n_flow[findIndex("Insulin",SubstancesToConnect)]*Constants.MM_Insulin;
-      massFlows[Utilities.findIndex("Glucagon",substanceNames)] = n_flow[findIndex("Glucagon",SubstancesToConnect)]*Constants.MM_Glucagon;
-      massFlows[Utilities.findIndex("Thyrotropin",substanceNames)] = n_flow[findIndex("Thyrotropin",SubstancesToConnect)]*Constants.MM_Thyrotropin;
-      massFlows[Utilities.findIndex("Thyroxine",substanceNames)] = n_flow[findIndex("Thyroxine",SubstancesToConnect)]*Constants.MM_Thyroxine;
-      massFlows[Utilities.findIndex("Leptin",substanceNames)] = n_flow[findIndex("Leptin",SubstancesToConnect)]*Constants.MM_Leptin;
-      massFlows[Utilities.findIndex("Desglymidodrine",substanceNames)] = n_flow[findIndex("Desglymidodrine",SubstancesToConnect)]*Constants.MM_Desglymidodrine;
-      massFlows[Utilities.findIndex("Angiotensin2",substanceNames)] = n_flow[findIndex("Angiotensin2",SubstancesToConnect)]*Constants.MM_Angiotensin2;
-      massFlows[Utilities.findIndex("Renin",substanceNames)] = n_flow[findIndex("Renin",SubstancesToConnect)]*Constants.MM_Renin;
-      massFlows[Utilities.findIndex("Aldosterone",substanceNames)] = n_flow[findIndex("Aldosterone",SubstancesToConnect)]*Constants.MM_Aldosterone;
-      massFlows[Utilities.findIndex("H2O_P",substanceNames)] = n_flow[findIndex("OH",SubstancesToConnect)]*Substances.OH.data.MM + n_flow[findIndex("H2O",SubstancesToConnect)]*Substances.Water.data.MM + H2O_Ery2Plasma*Substances.Water.data.MM;
+      massFlows[Utilities.findIndex("Epinephrine",substanceNames)] = n_flow[findIndex("Epinephrine",accesibleSubstances)]*Constants.MM_Epinephrine;
+      massFlows[Utilities.findIndex("Norepinephrine",substanceNames)] = n_flow[findIndex("Norepinephrine",accesibleSubstances)]*Constants.MM_Norepinephrine;
+      massFlows[Utilities.findIndex("Vasopressin",substanceNames)] = n_flow[findIndex("Vasopressin",accesibleSubstances)]*Constants.MM_Vasopressin;
+      massFlows[Utilities.findIndex("Insulin",substanceNames)] = n_flow[findIndex("Insulin",accesibleSubstances)]*Constants.MM_Insulin;
+      massFlows[Utilities.findIndex("Glucagon",substanceNames)] = n_flow[findIndex("Glucagon",accesibleSubstances)]*Constants.MM_Glucagon;
+      massFlows[Utilities.findIndex("Thyrotropin",substanceNames)] = n_flow[findIndex("Thyrotropin",accesibleSubstances)]*Constants.MM_Thyrotropin;
+      massFlows[Utilities.findIndex("Thyroxine",substanceNames)] = n_flow[findIndex("Thyroxine",accesibleSubstances)]*Constants.MM_Thyroxine;
+      massFlows[Utilities.findIndex("Leptin",substanceNames)] = n_flow[findIndex("Leptin",accesibleSubstances)]*Constants.MM_Leptin;
+      massFlows[Utilities.findIndex("Desglymidodrine",substanceNames)] = n_flow[findIndex("Desglymidodrine",accesibleSubstances)]*Constants.MM_Desglymidodrine;
+      massFlows[Utilities.findIndex("Angiotensin2",substanceNames)] = n_flow[findIndex("Angiotensin2",accesibleSubstances)]*Constants.MM_Angiotensin2;
+      massFlows[Utilities.findIndex("Renin",substanceNames)] = n_flow[findIndex("Renin",accesibleSubstances)]*Constants.MM_Renin;
+      massFlows[Utilities.findIndex("Aldosterone",substanceNames)] = n_flow[findIndex("Aldosterone",accesibleSubstances)]*Constants.MM_Aldosterone;
+      massFlows[Utilities.findIndex("H2O_P",substanceNames)] = n_flow[findIndex("OH-",accesibleSubstances)]*Substances.OH.data.MM + n_flow[findIndex("H2O",accesibleSubstances)]*Substances.Water.data.MM + H2O_Ery2Plasma*Substances.Water.data.MM;
       massFlows[Utilities.findIndex("Other_P",substanceNames)] = 0;
       massFlows[Utilities.findIndex("Other_E",substanceNames)] = 0;
 
@@ -1192,7 +1175,6 @@ package Media "Models of physiological fluids"
     end hemoglobinDissociationCurve_der;
 
     redeclare replaceable function extends setState_pTX "Thermodynamic state"
-      input Types.ElectricPotential v=0 "electric potential";
     algorithm
       state.h :=specificEnthalpies_Tpv(
         T,
@@ -1207,7 +1189,7 @@ package Media "Models of physiological fluids"
     end setState_pTX;
 
     redeclare replaceable function extends setState_phX "Thermodynamic state"
-      input Types.ElectricPotential v=0 "electric potential";
+
     algorithm
       state.p := p;
       state.h := h;
@@ -1558,10 +1540,16 @@ package Media "Models of physiological fluids"
 
   package Water "Incompressible water with constant heat capacity"
     import Chemical.Interfaces.Properties;
+    import Physiolibrary.Media.Substances.*;
+
     extends Interfaces.PartialMedium(
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
       final mediumName="Water",
       substanceNames={"H2O"},
+      substanceData= { Water},
+      accesibleSubstances=   {"H2O","H+","O2","H2","OH-","e-"},
+      accesibleSubstanceData={Water, H,   O2,  H2,  OH,   e},
+
       final singleState=true,
       final reducedX=true,
       final fixedX=false,
@@ -1576,12 +1564,21 @@ package Media "Models of physiological fluids"
         max=350,
         start=310.15));
 
+  redeclare replaceable record extends ThermodynamicState
+  "A selection of variables that uniquely defines the thermodynamic state"
+  extends Modelica.Icons.Record;
 
+  Modelica.Units.SI.Temperature T "Temperature of the solution";
+  Modelica.Units.SI.Pressure p "Pressure of the solution";
+  Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
+  Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
+
+  end ThermodynamicState;
   protected
 
 
   public
-    redeclare replaceable model extends ChemicalSolution (SubstancesToConnect={"H2O","H+","O2","H2","OH-","e-"}) "Adapter between SubstancesPort and water medium"
+    redeclare replaceable model extends ChemicalSolution "Adapter between SubstancesPort and water medium"
       import Physiolibrary.Utilities.*;
 
 
@@ -1594,47 +1591,47 @@ package Media "Models of physiological fluids"
      // _i = substances.cathode.i;
      // _i + (-1)*Modelica.Constants.F*eq = 0 "electric current is flow of electrons";
 
-      //eq = n_flows[findIndex("e-",SubstancesToConnect)];
+      //eq = n_flows[findIndex("e-",accesibleSubstances)];
       T = temperature(state);
 
-      state_out[findIndex("H+",SubstancesToConnect)].u + state_out[findIndex("OH-",SubstancesToConnect)].u = state_out[findIndex("H2O",SubstancesToConnect)].u "H+ + OH- <-> H2O";
-      2*state_out[findIndex("H+",SubstancesToConnect)].u + 2*state_out[findIndex("e-",SubstancesToConnect)].u + 0.5*state_out[findIndex("O2",SubstancesToConnect)].u = state_out[findIndex("H2O",SubstancesToConnect)].u "2H+ + 2e- + (1/2)O2 <-> H2O";
-      state_out[findIndex("H2",SubstancesToConnect)].u = 2*state_out[findIndex("H+",SubstancesToConnect)].u + 2*state_out[findIndex("e-",SubstancesToConnect)].u "H2 <-> 2H+ + 2e-";
+      state_out[findIndex("H+",accesibleSubstances)].u + state_out[findIndex("OH-",accesibleSubstances)].u = state_out[findIndex("H2O",accesibleSubstances)].u "H+ + OH- <-> H2O";
+      2*state_out[findIndex("H+",accesibleSubstances)].u + 2*state_out[findIndex("e-",accesibleSubstances)].u + 0.5*state_out[findIndex("O2",accesibleSubstances)].u = state_out[findIndex("H2O",accesibleSubstances)].u "2H+ + 2e- + (1/2)O2 <-> H2O";
+      state_out[findIndex("H2",accesibleSubstances)].u = 2*state_out[findIndex("H+",accesibleSubstances)].u + 2*state_out[findIndex("e-",accesibleSubstances)].u "H2 <-> 2H+ + 2e-";
 
       logH=logOH;
 
 
-      state_out[findIndex("H2O",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.Water, solutionState);
-      state_out[findIndex("H2O",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.Water, solutionState);
+      state_out[findIndex("H2O",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.Water, solutionState);
+      state_out[findIndex("H2O",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.Water, solutionState);
 
-      state_out[findIndex("H+",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.H, solutionState) +
+      state_out[findIndex("H+",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.H, solutionState) +
                        Modelica.Constants.R*T*logH;
-      state_out[findIndex("H+",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.H, solutionState);
+      state_out[findIndex("H+",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.H, solutionState);
 
 
-      state_out[findIndex("O2",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.O2, solutionState) +
+      state_out[findIndex("O2",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.O2, solutionState) +
                        Modelica.Constants.R*T*logO2;
-      state_out[findIndex("O2",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.O2, solutionState);
+      state_out[findIndex("O2",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.O2, solutionState);
 
 
-      state_out[findIndex("H2",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.H2, solutionState) +
+      state_out[findIndex("H2",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.H2, solutionState) +
                        Modelica.Constants.R*T*logH2;
-      state_out[findIndex("H2",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.H2, solutionState);
+      state_out[findIndex("H2",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.H2, solutionState);
 
 
-      state_out[findIndex("OH-",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.OH, solutionState) +
+      state_out[findIndex("OH-",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.OH, solutionState) +
                        Modelica.Constants.R*T*logOH;
-      state_out[findIndex("OH-",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.OH, solutionState);
+      state_out[findIndex("OH-",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.OH, solutionState);
 
-      state_out[findIndex("e-",SubstancesToConnect)].u = Properties.electroChemicalPotentialPure( Substances.e, solutionState);
-      state_out[findIndex("e-",SubstancesToConnect)].h = Properties.molarEnthalpy( Substances.e, solutionState);
+      state_out[findIndex("e-",accesibleSubstances)].u = Properties.electroChemicalPotentialPure( Substances.e, solutionState);
+      state_out[findIndex("e-",accesibleSubstances)].h = Properties.molarEnthalpy( Substances.e, solutionState);
 
 
-      massFlows = {n_flow[findIndex("H2O",SubstancesToConnect)] * Substances.Water.data.MM +
-       n_flow[findIndex("H+",SubstancesToConnect)] * Substances.H.data.MM +
-       n_flow[findIndex("O2",SubstancesToConnect)] * Substances.O2.data.MM +
-       n_flow[findIndex("H2",SubstancesToConnect)] * Substances.H2.data.MM +
-       n_flow[findIndex("OH-",SubstancesToConnect)] * Substances.OH.data.MM}
+      massFlows = {n_flow[findIndex("H2O",accesibleSubstances)] * Substances.Water.data.MM +
+       n_flow[findIndex("H+",accesibleSubstances)] * Substances.H.data.MM +
+       n_flow[findIndex("O2",accesibleSubstances)] * Substances.O2.data.MM +
+       n_flow[findIndex("H2",accesibleSubstances)] * Substances.H2.data.MM +
+       n_flow[findIndex("OH-",accesibleSubstances)] * Substances.OH.data.MM}
         "mass change of water";
     end ChemicalSolution;
 
@@ -1660,18 +1657,10 @@ package Media "Models of physiological fluids"
       R_s = 8.3144/MM;
       state.p = p;
       state.T = T;
+      state.X = {1};
+      state.v = 0;
 
     end BaseProperties;
-
-    redeclare replaceable record extends ThermodynamicState
-      "A selection of variables that uniquely defines the thermodynamic state"
-      extends Modelica.Icons.Record;
-      AbsolutePressure p "Absolute pressure of medium";
-      Temperature T "Temperature of medium";
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end ThermodynamicState;
 
     redeclare replaceable function extends setState_pTX
       "Return thermodynamic state as function of p, T and composition X or Xi"
@@ -1750,17 +1739,15 @@ Modelica source.
          reducedX = false,
          singleState = false,
          substanceNames={"O2","CO2","H2O","N2"},
-         substanceData={
-          Chemical.Substances.Gas.O2,
-          Chemical.Substances.Gas.CO2,
-          Chemical.Substances.Gas.H2O,
-          Chemical.Substances.Gas.N2},
+         substanceData= { O2_g,CO2_g,H2O_g,N2_g},
+
          reference_X=cat(1, Conc .* C2X, {1 - (Conc * C2X)}),
          SpecificEnthalpy(start=0, nominal=1e3),
          Density(start=1.0, nominal=1.0),
          AbsolutePressure(start=1.0e5, nominal=1.0e5),
          Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
          MassFlowRate(nominal=1e-3));
+
 
     protected
 
@@ -1778,7 +1765,7 @@ Modelica source.
 
       constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
 
-  public
+    public
       redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
       algorithm
            specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
@@ -1837,7 +1824,6 @@ Modelica source.
         state.p := p;
         state.X := X;
         state.v := 0;
-        state.I := 0;
       end setState_pTX;
 
       redeclare replaceable function extends setState_phX
@@ -1847,42 +1833,7 @@ Modelica source.
         state.X := X;
         state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-2);
         state.v := 0;
-        state.I := 0;
       end setState_phX;
-
-      redeclare replaceable function extends setState_pTXvI
-      algorithm
-        state.T := T;
-        state.p := p;
-        state.X := X;
-        state.v := v;
-        state.I := I;
-      end setState_pTXvI;
-
-      redeclare replaceable function extends setState_phXvI
-        "Return thermodynamic state as function of p, h and composition X or Xi"
-      algorithm
-        state.p := p;
-        state.X := X;
-        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-2);
-        state.v := v;
-        state.I := I;
-      end setState_phXvI;
-
-      redeclare replaceable function setSolutionState_m
-         import Modelica.Units.SI.Mass;
-         import Chemical.Interfaces.SolutionState;
-
-         input ThermodynamicState state "Thermodynamic state of the solution";
-         input Mass m "Mass of the solution";
-
-         output SolutionState solutionState(
-              T=state.T,p=state.p,v=state.v,n=sum(m*state.X./substanceData.data.MM),m=m,V=m/density(state),G=0,Q=0,I=state.I);
-              /*gibbsEnergy(state,m),charge_m(state,m),*/
-      algorithm
-        annotation(Inline = true);
-
-      end setSolutionState_m;
 
        redeclare replaceable function extends density
        algorithm
@@ -1963,23 +1914,12 @@ Modelica source.
     import Physiolibrary.Media.Substances.*;
     import Physiolibrary.Media.InitialValues.*;
     import Chemical.Interfaces.Properties;
+
     extends Interfaces.PartialMedium(
       mediumName="SimpleBodyFluid (Physiolibrary)",
-      substanceNames={"Na","HCO3","K","Glucose","Urea","Cl","Ca","Mg","Alb",
-    "Glb","Others","H2O"},
-      substanceData={
-      Chemical.Substances.Aqueous.Naplus,
-      Chemical.Substances.Aqueous.HCO3minus,
-      Chemical.Substances.Aqueous.Kplus,
-      Chemical.Substances.Solid.Glu,
-      Chemical.Substances.Aqueous.Urea,
-      Chemical.Substances.Aqueous.Clminus,
-      Chemical.Substances.Aqueous.Caplus2,
-      Chemical.Substances.Aqueous.Mgplus2,
-      Chemical.Substances.Aqueous.Alb,
-      Chemical.Substances.Aqueous.Glb,
-      Chemical.Substances.Liquid.H2OUnclustered,
-      Chemical.Substances.Liquid.H2O},
+      substanceNames={"Na+","HCO3-","K+","Glucose","Urea","Cl-","Ca++","Mg++","Alb","Glb","Others","H2O"},
+      substanceData ={ Na,   HCO3,   K,   Glucose,  Urea,  Cl,   Ca,    Mg,    Alb,  Glb,  Water,   Water},
+
       singleState=true,
       reducedX=false,
       fixedX=false,
@@ -1991,6 +1931,18 @@ Modelica source.
         min=273,
         max=350,
         start=310.15));
+
+  redeclare replaceable record extends ThermodynamicState
+  "A selection of variables that uniquely defines the thermodynamic state"
+  extends Modelica.Icons.Record;
+
+  Modelica.Units.SI.Temperature T "Temperature of the solution";
+  Modelica.Units.SI.Pressure p "Pressure of the solution";
+  Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
+  Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
+
+  end ThermodynamicState;
+
 
   protected
 
@@ -2114,19 +2066,8 @@ Modelica source.
       state.T = T;
       state.X = X;
       state.v = 0;
+
     end BaseProperties;
-
-    redeclare replaceable record ThermodynamicState
-      "A selection of variables that uniquely defines the thermodynamic state"
-      extends Modelica.Icons.Record;
-      AbsolutePressure p "Absolute pressure of medium";
-      Temperature T "Temperature of medium";
-      Modelica.Units.SI.ElectricPotential v "Electric potential of medium";
-      MassFraction X[nS] "Mass fractions of substances";
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end ThermodynamicState;
 
     redeclare replaceable function extends setState_pTX
       "Return thermodynamic state as function of p, T and composition X or Xi"
@@ -2234,14 +2175,14 @@ Modelica source.
     algorithm
     density := 1054;
 
-      X[Utilities.findIndex("Na",substanceNames)] := (tNa*Na.data.MM)/density;
-      X[Utilities.findIndex("HCO3",substanceNames)] := (tHCO3*HCO3.data.MM)/density;
-      X[Utilities.findIndex("K",substanceNames)] := (tK*K.data.MM)/density;
+      X[Utilities.findIndex("Na+",substanceNames)] := (tNa*Na.data.MM)/density;
+      X[Utilities.findIndex("HCO3-",substanceNames)] := (tHCO3*HCO3.data.MM)/density;
+      X[Utilities.findIndex("K+",substanceNames)] := (tK*K.data.MM)/density;
       X[Utilities.findIndex("Glucose",substanceNames)] := (tGlucose*Constants.MM_Glucose)/density;
       X[Utilities.findIndex("Urea",substanceNames)] := (tUrea*Constants.MM_Urea)/density;
-      X[Utilities.findIndex("Cl",substanceNames)] := (tCl*Cl.data.MM)/density;
-      X[Utilities.findIndex("Ca",substanceNames)] := (tCa*Ca.data.MM)/density;
-      X[Utilities.findIndex("Mg",substanceNames)] := (tMg*Mg.data.MM)/density;
+      X[Utilities.findIndex("Cl-",substanceNames)] := (tCl*Cl.data.MM)/density;
+      X[Utilities.findIndex("Ca++",substanceNames)] := (tCa*Ca.data.MM)/density;
+      X[Utilities.findIndex("Mg++",substanceNames)] := (tMg*Mg.data.MM)/density;
       X[Utilities.findIndex("Alb",substanceNames)] := (tAlb*Constants.MM_Alb)/density;
       X[Utilities.findIndex("Glb",substanceNames)] := tGlb/density;
       X[Utilities.findIndex("Others",substanceNames)] := tOthers/density;
@@ -2260,48 +2201,77 @@ Modelica source.
 
     extends Modelica.Media.Interfaces.PartialMedium;
 
-      constant Chemical.Interfaces.Definition substanceData[nS];
+      constant Chemical.Interfaces.Definition substanceData[nS] "Substances definitions in order of substanceNames";
+
+      constant String accesibleSubstances[:]=substanceNames "Names of substances connectable with chemical ports";
+      final constant Integer nA=size(accesibleSubstances, 1) "Number of substances to connect with chemical ports";
+      constant Chemical.Interfaces.Definition accesibleSubstanceData[nA]=substanceData "Accesible substances definitions in order of accessibleSubstances";
 
       constant Modelica.Units.SI.MassFlowRate SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
       constant Modelica.Units.SI.SpecificEnthalpy SpecificEnthalpyNominal=-1E6 "Nominal of specific enthalpy";
 
+      redeclare replaceable partial function extends setState_pTX
+        "Return thermodynamic state as function of p, T, composition X or Xi and electric potential v"
+        input Modelica.Units.SI.ElectricPotential v=0;
+      end setState_pTX;
 
-      replaceable partial function setState_pTXvI
-      "Return thermodynamic state as function of pressure p, temperature T, composition X or Xi, electric potential v, and ionic strength v"
-      extends Modelica.Icons.Function;
-
-      input AbsolutePressure p "Pressure";
-      input Temperature T "Temperature";
-      input MassFraction X[:]=reference_X "Mass fractions";
-      input Modelica.Units.SI.ElectricPotential v=0 "Electric potential";
-      input Modelica.Units.SI.MoleFraction I=0 "Ionic strength";
-      output ThermodynamicState state "Thermodynamic state record";
-      end setState_pTXvI;
-
-      replaceable partial function setState_phXvI
-      "Return thermodynamic state as function of p, h and composition X or Xi"
-      extends Modelica.Icons.Function;
-      input AbsolutePressure p "Pressure";
-      input SpecificEnthalpy h "Specific enthalpy";
-      input MassFraction X[:]=reference_X "Mass fractions";
-      input Modelica.Units.SI.ElectricPotential v=0 "Electric potential";
-      input Modelica.Units.SI.MoleFraction I=0 "Ionic strength";
-      output ThermodynamicState state "Thermodynamic state record";
-      end setState_phXvI;
+      redeclare replaceable partial function extends setState_phX
+        "Return thermodynamic state as function of p, h, composition X or Xi and electric potential v"
+        input Modelica.Units.SI.ElectricPotential v=0;
+      end setState_phX;
 
 
-
-      replaceable partial function setSolutionState_m
-       import Modelica.Units.SI.Mass;
+      replaceable partial function setSolutionState_pTXvm
+       import Modelica.Units.SI.*;
        import Chemical.Interfaces.SolutionState;
 
-       input ThermodynamicState state "Thermodynamic state of the solution";
+       input Pressure p "Pressure";
+       input Temperature T "Temperature";
+       input MassFraction X[nS] "Mass fractions";
+       input ElectricPotential v "Electric potential";
        input Mass m "Mass of the solution";
+       input AmountOfSubstance n = sum(m*X ./ substanceData.data.MM) "Amount of particles in solution";
+       input Volume V = m/density(setState_pTX(p,T,X,v)) "Volume of the solution";
 
-       output SolutionState solutionState;
+       output SolutionState solutionState(
+          T=T,
+          p=p,
+          v=v,
+          n=n,
+          m=m,
+          V=V,
+          G=0,
+          Q=0,
+          I=0);
+      algorithm
+        annotation(Inline = true);
+      end setSolutionState_pTXvm;
 
+      replaceable partial function setSolutionState_phXvm
+       import Modelica.Units.SI.*;
+       import Chemical.Interfaces.SolutionState;
 
-      end setSolutionState_m;
+       input Pressure p "Pressure";
+       input SpecificEnthalpy h "Enthalpy";
+       input MassFraction X[nS] "Mass fractions";
+       input ElectricPotential v "Electric potential";
+       input Mass m "Mass of the solution";
+       input AmountOfSubstance n = sum(m*X ./ substanceData.data.MM) "Amount of particles in solution";
+       input Volume V = m/density(setState_phX(p,h,X,v)) "Volume of the solution";
+
+       output SolutionState solutionState(
+          T=temperature(setState_phX(p,h,X,v)),
+          p=p,
+          v=v,
+          n=n,
+          m=m,
+          V=V,
+          G=0,
+          Q=0,
+          I=0);
+      algorithm
+        annotation(Inline = true);
+      end setSolutionState_phXvm;
 
        replaceable partial function specificEnthalpies_Tpv "Specific enthalpies of medium substances"
              input Modelica.Units.SI.Temperature T=298.15 "Temperature";
@@ -2385,12 +2355,11 @@ Modelica source.
       replaceable partial model ChemicalSolution "Adaptor between selected free base chemical substances and medium substances"
         outer Modelica.Fluid.System system "System wide properties";
 
-         parameter Integer nF=0;
+         parameter Integer nF=1;
          parameter Integer nR=0;
-         parameter String SubstancesToConnect[:]=substanceNames "Set of substances available to connect as rear or fore port";
-         parameter Integer nC=size(SubstancesToConnect,1);
-         parameter String ForeSubstances[nF];
+         parameter String ForeSubstances[nF]={"H2O"};
          parameter String RearSubstances[nR];
+
 
          Chemical.Interfaces.Fore foreSubstances[nF];
          Chemical.Interfaces.Rear rearSubstances[nR];
@@ -2402,23 +2371,23 @@ Modelica source.
          parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of medium substance masses";
 
        //  protected
-       parameter Real AF[nC,nF] = Utilities.findIndicesMatrix(
-                                                    ForeSubstances,SubstancesToConnect);
-       parameter Real AR[nC,nR] = Utilities.findIndicesMatrix(
-                                                    RearSubstances,SubstancesToConnect);
+       parameter Real AF[nA,nF] = Utilities.findIndicesMatrix(
+                                                    ForeSubstances,accesibleSubstances);
+       parameter Real AR[nA,nR] = Utilities.findIndicesMatrix(
+                                                    RearSubstances,accesibleSubstances);
 
-        Modelica.Units.SI.MolarFlowRate n_flow[nC] "Molar change of the amount of base substance";
+        Modelica.Units.SI.MolarFlowRate n_flow[nA] "Molar change of the amount of base substance";
         Modelica.Units.SI.MassFlowRate massFlows[nS](nominal=SubstanceFlowNominal) "mass flows trough substancesPort";
         Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS] "flow of medium substances";
         Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS](nominal=SubstanceFlowNominal) "mass od medium substances";
 
 
-        Modelica.Units.SI.EnthalpyFlowRate h_flow[nC] "Change of enthalpy";
+        Modelica.Units.SI.EnthalpyFlowRate h_flow[nA] "Change of enthalpy";
         Modelica.Units.SI.EnthalpyFlowRate _connected_h_flow[nF+nR];
 
         Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "enthalpy from substances";
 
-        Chemical.Interfaces.SubstanceState state_out[nC] "Internal state os substances";
+        Chemical.Interfaces.SubstanceState state_out[nA] "Internal state os substances";
 
 
         parameter Chemical.Utilities.Units.Inertance L=dropOfCommons.L
@@ -2449,6 +2418,8 @@ Modelica source.
           _connected_h_flow[iF]= (if foreSubstances[iF].n_flow >= 0 then
                   foreSubstances[iF].state_rearwards.h else
                   foreSubstances[iF].state_forwards.h)*foreSubstances[iF].n_flow;
+
+          foreSubstances[iF].definition = accesibleSubstanceData[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],accesibleSubstances)];
         end for;
         for iR in 1:nR loop
           r_intern[nF+iR]=Chemical.Utilities.Internal.regStep(

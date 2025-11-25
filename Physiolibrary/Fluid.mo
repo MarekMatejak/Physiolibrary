@@ -490,56 +490,88 @@ package Fluid "Physiological fluids with static and dynamic properties"
       import Physiolibrary;
       extends Physiolibrary.Icons.Membrane;
 
-      replaceable package BloodPlasma = Physiolibrary.Media.BodyFluid constrainedby Physiolibrary.Media.BodyFluid "Medium model of blood plasma" annotation (
-         choicesAllMatching = true);
-      replaceable package Dialysate = Physiolibrary.Media.BodyFluid constrainedby Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
-         choicesAllMatching = true);
+     parameter String PermeableSubstances[:]={"Na+","K+","HCO3-","Glucose","Urea","Cl-","Mg++","H2O","Ca++"}
+         "Names of permeable substances, which are sccessible on both Media";
+     parameter Physiolibrary.Types.Permeability Permeabilities[nP]={1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06}
+         "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
 
-      parameter Physiolibrary.Types.Permeability Permeabilities[BloodPlasma.nS]={1e-06,
-          1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,1e-06,0,0,0,1e-06}                                                                                           "Membrane permeability coeficients for {Na,HCO3-,K,Glu,Urea,Cl,Ca,Mg,Alb,Glb,Others,H2O}";
+     parameter Integer nP = size(PermeableSubstances,1) "Number of permeable substances" annotation (
+        Evaluate = true);
 
-      Chemical.Obsolete.Components.Membrane Na(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Na")])
+     public
+      Chemical.Interfaces.Fore foreSubstance[nP]
+         "Forward ports of selected substances"
+         annotation (                             //( each solution_forwards = solutionState)
+                     Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},{110,10}})));
+
+      Chemical.Interfaces.Rear rearSubstance[nP]
+         "Rearward ports of selectted substances"
+         annotation (                             //(  each solution_rearwards = solutionState)
+                     Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
+
+
+      replaceable package RearMedium = Physiolibrary.Media.BodyFluid constrainedby Physiolibrary.Media.BodyFluid "Medium model of blood plasma" annotation (
+         choicesAllMatching = true);
+      replaceable package ForeMedium = Physiolibrary.Media.BodyFluid constrainedby Physiolibrary.Media.BodyFluid "Medium model of dialysate" annotation (
+         choicesAllMatching = true);
+      Chemical.Processes.Membrane Na( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Na+",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-10,76},{10,96}})));
-      Chemical.Obsolete.Components.Membrane HCO3(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("HCO3")])
+      Chemical.Processes.Membrane HCO3( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("HCO3-",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-10,58},{10,78}})));
-      Chemical.Obsolete.Components.Membrane K(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("K")])
+      Chemical.Processes.Membrane K( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("K+",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-8,40},{12,60}})));
-      Chemical.Obsolete.Components.Membrane Glucose(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Glucose")])
+      Chemical.Processes.Membrane Glucose( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Glucose",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-8,22},{12,42}})));
-      Chemical.Obsolete.Components.Membrane Urea(
-        each EnthalpyNotUsed=false,
-        KC=Permeabilities[Physiolibrary.Utilities.findIndex("Urea")],
-        kE=0) annotation (Placement(transformation(extent={{-8,2},{12,22}})));
-      Chemical.Obsolete.Components.Membrane Cl(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Cl")])
+      Chemical.Processes.Membrane Urea(k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Urea",PermeableSubstances)])
+        annotation (Placement(transformation(extent={{-8,2},{12,22}})));
+      Chemical.Processes.Membrane Cl( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Cl-",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-8,-16},{12,4}})));
-      Chemical.Obsolete.Components.Membrane Mg(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Mg")])
+      Chemical.Processes.Membrane Mg( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Mg++",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-6,-58},{14,-38}})));
-      Chemical.Obsolete.Components.Membrane H2O(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("H2O")])
+      Chemical.Processes.Membrane H2O( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("H2O",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-6,-82},{14,-62}})));
-      Chemical.Obsolete.Components.Membrane Ca(each EnthalpyNotUsed=false, KC=Permeabilities[Physiolibrary.Utilities.findIndex("Ca")])
+      Chemical.Processes.Membrane Ca( k_forward=Permeabilities[Physiolibrary.Utilities.findIndex("Ca++",PermeableSubstances)])
         annotation (Placement(transformation(extent={{-6,-36},{14,-16}})));
-      Dialysate.SubstancesPort bodyFluid_b annotation (Placement(transformation(extent={{80,-20},{120,20}})));
-      BloodPlasma.SubstancesPort bodyFluid_a annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+
+
     equation
 
-      connect(Na.port_a,bodyFluid_a. Na) annotation (Line(points={{-10,86},{-74,86},{-74,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(Na.port_b, bodyFluid_b.Na) annotation (Line(points={{10,86},{74,86},{74,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(HCO3.port_a,bodyFluid_a. HCO3) annotation (Line(points={{-10,68},{-72,68},{-72,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(HCO3.port_b, bodyFluid_b.HCO3) annotation (Line(points={{10,68},{72,68},{72,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(K.port_a,bodyFluid_a. K) annotation (Line(points={{-8,50},{-70,50},{-70,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(K.port_b, bodyFluid_b.K) annotation (Line(points={{12,50},{70,50},{70,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(Glucose.port_a,bodyFluid_a. Glucose) annotation (Line(points={{-8,32},{-68,32},{-68,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(Glucose.port_b, bodyFluid_b.Glucose) annotation (Line(points={{12,32},{68,32},{68,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(Urea.port_a,bodyFluid_a. Urea) annotation (Line(points={{-8,12},{-66,12},{-66,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(Urea.port_b, bodyFluid_b.Urea) annotation (Line(points={{12,12},{66,12},{66,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(Cl.port_a,bodyFluid_a. Cl) annotation (Line(points={{-8,-6},{-66,-6},{-66,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(Cl.port_b, bodyFluid_b.Cl) annotation (Line(points={{12,-6},{68,-6},{68,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(Mg.port_a,bodyFluid_a. Mg) annotation (Line(points={{-6,-48},{-74,-48},{-74,0},{-99.9,0},{-99.9,0.1}}, color={158,66,200}));
-      connect(Mg.port_b, bodyFluid_b.Mg) annotation (Line(points={{14,-48},{74,-48},{74,0},{100.1,0},{100.1,0.1}}, color={158,66,200}));
-      connect(Ca.port_a,bodyFluid_a. Ca) annotation (Line(points={{-6,-26},{-72,-26},{-72,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(Ca.port_b, bodyFluid_b.Ca) annotation (Line(points={{14,-26},{72,-26},{72,0.1},{100.1,0.1}}, color={158,66,200}));
-      connect(H2O.port_a,bodyFluid_a. H2O) annotation (Line(points={{-6,-72},{-76,-72},{-76,0.1},{-99.9,0.1}}, color={158,66,200}));
-      connect(H2O.port_b, bodyFluid_b.H2O) annotation (Line(points={{14,-72},{76,-72},{76,0.1},{100.1,0.1}}, color={158,66,200}));
+
+      connect(Na.rear,rearSubstance[Utilities.findIndex("Na+",PermeableSubstances)]) annotation (Line(points={{-10,86},{-74,86},{-74,0},
+              {-100,0}},                                                                                                                                                            color={158,66,200}));
+      connect(Na.fore, foreSubstance[Utilities.findIndex("Na+",PermeableSubstances)]) annotation (Line(points={{10,86},{74,86},{74,0},{100,
+              0}},                                                                                                                                                              color={158,66,200}));
+      connect(HCO3.rear,rearSubstance[Utilities.findIndex("HCO3-",PermeableSubstances)]) annotation (Line(points={{-10,68},{-72,68},{-72,
+              0},{-100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(HCO3.fore, foreSubstance[Utilities.findIndex("HCO3-",PermeableSubstances)]) annotation (Line(points={{10,68},{72,68},{72,0},
+              {100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(K.rear,rearSubstance[Utilities.findIndex("K+",PermeableSubstances)]) annotation (Line(points={{-8,50},{-70,50},{-70,0},{-100,
+              0}},                                                                                                                                                               color={158,66,200}));
+      connect(K.fore, foreSubstance[Utilities.findIndex("K+",PermeableSubstances)]) annotation (Line(points={{12,50},{70,50},{70,0},{100,0}},       color={158,66,200}));
+      connect(Glucose.rear,rearSubstance[Utilities.findIndex("Glucose",PermeableSubstances)]) annotation (Line(points={{-8,32},{-68,32},
+              {-68,0},{-100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(Glucose.fore, foreSubstance[Utilities.findIndex("Glucose",PermeableSubstances)]) annotation (Line(points={{12,32},{68,32},{
+              68,0},{100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(Urea.rear,rearSubstance[Utilities.findIndex("Urea",PermeableSubstances)]) annotation (Line(points={{-8,12},{-66,12},{-66,
+              0},{-100,0}},                                                                                                                                                            color={158,66,200}));
+      connect(Urea.fore, foreSubstance[Utilities.findIndex("Urea",PermeableSubstances)]) annotation (Line(points={{12,12},{66,12},{66,0},
+              {100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(Cl.rear,rearSubstance[Utilities.findIndex("Cl-",PermeableSubstances)]) annotation (Line(points={{-8,-6},{-66,-6},{-66,0},{
+              -100,0}},                                                                                                                                                            color={158,66,200}));
+      connect(Cl.fore, foreSubstance[Utilities.findIndex("Cl-",PermeableSubstances)]) annotation (Line(points={{12,-6},{68,-6},{68,0},{100,
+              0}},                                                                                                                                                              color={158,66,200}));
+      connect(Mg.rear,rearSubstance[Utilities.findIndex("Mg++",PermeableSubstances)]) annotation (Line(points={{-6,-48},{-74,-48},{-74,0},
+              {-100,0},{-100,0}},                                                                                                                                                            color={158,66,200}));
+      connect(Mg.fore, foreSubstance[Utilities.findIndex("Mg++",PermeableSubstances)]) annotation (Line(points={{14,-48},{74,-48},{74,0},{100,
+              0},{100,0}},                                                                                                                                                                color={158,66,200}));
+      connect(Ca.rear,rearSubstance[Utilities.findIndex("Ca++",PermeableSubstances)]) annotation (Line(points={{-6,-26},{-72,-26},{-72,0},
+              {-100,0}},                                                                                                                                                             color={158,66,200}));
+      connect(Ca.fore, foreSubstance[Utilities.findIndex("Ca++",PermeableSubstances)]) annotation (Line(points={{14,-26},{72,-26},{72,0},{100,
+              0}},                                                                                                                                                                color={158,66,200}));
+      connect(H2O.rear,rearSubstance[Utilities.findIndex("H2O",PermeableSubstances)]) annotation (Line(points={{-6,-72},{-76,-72},{-76,
+              0},{-100,0}},                                                                                                                                                            color={158,66,200}));
+      connect(H2O.fore, foreSubstance[Utilities.findIndex("H2O",PermeableSubstances)]) annotation (Line(points={{14,-72},{76,-72},{76,0},
+              {100,0}},                                                                                                                                                             color={158,66,200}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -757,14 +789,14 @@ as signal.
 
      outer Modelica.Fluid.System system "System wide properties";
 
-      Chemical.Obsolete.Interfaces.SubstancePort_a port_a "The substance" annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      //Chemical.Obsolete.Interfaces.SubstancePort_a
+      Chemical.Interfaces.Rear port_a "The substance" annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-
-
-     parameter Chemical.Interfaces.Definition substanceData
-     "Definition of the substance"
-        annotation (choicesAllMatching = true);
-
+    /*
+ parameter Chemical.Interfaces.Definition substanceData
+ "Definition of the substance"
+    annotation (choicesAllMatching = true);
+*/
     Modelica.Units.SI.MoleFraction x "Mole fraction of the substance";
 
     Modelica.Units.SI.ActivityOfSolute a
@@ -813,37 +845,43 @@ as signal.
       //  Modelica.SIunits.MolarHeatCapacity molarHeatCapacityCp
       //    "Molar heat capacity of the substance at constant pressure";
 
-     Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState( Chemical.Interfaces.Phase.Gas, temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
+     Chemical.Interfaces.SolutionState solutionState = port_a.solution_forwards;
+     //Chemical.Interfaces.SolutionState( Chemical.Interfaces.Phase.Gas, temperature,pressure,electricPotential,moleFractionBasedIonicStrength);
     equation
-     //aliases
-     gamma = Properties.activityCoefficient(substanceData,solutionState);
-     z = Properties.chargeNumberOfIon(substanceData,solutionState);
-    // molarMass = Properties.molarMass(substanceData);
 
-     molarEnthalpy = Properties.molarEnthalpy(substanceData,solutionState);
-     molarEntropyPure = Properties.molarEntropyPure(substanceData,solutionState);
+    // port_a.n_flow=0;
+     port_a.solution_rearwards = port_a.solution_forwards;
+     port_a.state_rearwards = port_a.state_forwards;
+
+     //aliases
+     gamma = Properties.activityCoefficient(port_a.definition,solutionState);
+     z = Properties.chargeNumberOfIon(port_a.definition,solutionState);
+    // molarMass = Properties.molarMass(port_a.definition);
+
+     molarEnthalpy = Properties.molarEnthalpy(port_a.definition,solutionState);
+     molarEntropyPure = Properties.molarEntropyPure(port_a.definition,solutionState);
      u0 = Properties.chemicalPotentialPure(
-       substanceData,
+       port_a.definition,
        solutionState);
      uPure = Properties.electroChemicalPotentialPure(
-       substanceData,
+       port_a.definition,
        solutionState);
-     molarVolume = Properties.molarVolume(substanceData,solutionState);
-     molarVolumeBase = Properties.molarVolumeBase(substanceData,solutionState);
-     molarVolumeExcess = Properties.molarVolumeExcess(substanceData,solutionState);
-     //  molarHeatCapacityCp = Properties.molarHeatCapacityCp(substanceData,solutionState);
+     molarVolume = Properties.molarVolume(port_a.definition,solutionState);
+     molarVolumeBase = Properties.molarVolumeBase(port_a.definition,solutionState);
+     molarVolumeExcess = Properties.molarVolumeExcess(port_a.definition,solutionState);
+     //  molarHeatCapacityCp = Properties.molarHeatCapacityCp(port_a.definition,solutionState);
 
      //activity of the substance
      a = gamma*x;
 
      //electro-chemical potential of the substance in the solution
-     port_a.u = Properties.chemicalPotentialPure(
-       substanceData,
+     port_a.state_forwards.u = Properties.chemicalPotentialPure(
+       port_a.definition,
        solutionState)
        + Modelica.Constants.R*temperature*log(a)
        + z*Modelica.Constants.F*electricPotential;
 
-     port_a.h_outflow = molarEnthalpy;
+    // port_a.state_forwards.h = molarEnthalpy;
 
      annotation (
        Documentation(revisions="<html>
@@ -1008,10 +1046,9 @@ as signal.
 
  output Modelica.Units.SI.Temperature T "Temperature";
   T = Medium.solution_temperature(enthalpy / mass,  )*/
-      state = Medium.setState_phXvI(p=pressure,h = enthalpy / mass,
+      state = Medium.setState_phX(p=pressure,h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
-        v = v,
-        I = 0);
+        v = v);
 
       if onElectricGround then
         v = 0;
@@ -1030,7 +1067,9 @@ as signal.
     connect(chemicalSolution.rearSubstances,rearSubstance);
   end if;
 */
-      solutionState = Medium.setSolutionState_m(state,mass);
+      solutionState = Medium.setSolutionState_phXvm(pressure, enthalpy / mass,
+         if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
+         v, mass, sum(mass*(if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}))./ Medium.substanceData.data.MM));
       if nF+nR>0 then
         //connect(chemicalSolution.massFlows, massFlows);
         connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
@@ -1227,7 +1266,7 @@ as signal.
 
       electricPotential = 0;
       moleFractionBasedIonicStrength = 0;
-      port_a.q = 0;
+      port_a.n_flow = 0;
 
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-31, -3}, {28, -62}}, lineColor = {0, 0, 0}, textString = "p"), Line(points = {{70, 0}, {80, 0}}, color = {127, 0, 127}), Text(extent = {{-150, 72}, {150, 112}}, textString = "%name", lineColor = {162, 29, 33})}),
@@ -1320,10 +1359,12 @@ The sensor is ideal, i.e., it does not influence the fluid.
     model pH "Measure of pH (acidity) of the solution"
       extends Modelica.Icons.RoundSensor;
       extends Fluid.Interfaces.PartialAbsoluteSensor;
-      extends Chemical.Boundaries.Internal.PartialSubstance(final substanceDefinition = if useHydronium then Chemical.Substances.Aqueous.H3Oplus else Chemical.Substances.Aqueous.Hplus);
+      extends Chemical.Boundaries.Internal.PartialSubstance(
+        useFore=false,
+        useRear=true,                                       final substanceDefinition = if useHydronium then Chemical.Substances.Aqueous.H3Oplus else Chemical.Substances.Aqueous.Hplus);
 
       Physiolibrary.Types.RealIO.pHOutput pH "Acidity of the solution" annotation (
-        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, origin = {-100, 0}, rotation = 180)));
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, -60}), iconTransformation(extent = {{-20, -20}, {20, 20}}, origin={100,0},     rotation=0)));
       parameter Boolean useHydronium = false "Measured substance is H3O+ instead of H+";
       Types.SpecificEnthalpy h;
     protected
@@ -1373,12 +1414,13 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{-70, -112}, {-50, -92}}), iconTransformation(extent = {{-70, -112}, {-50, -92}})));
       Physiolibrary.Fluid.Interfaces.FluidPort_a b_port(redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{52, -112}, {72, -92}}), iconTransformation(extent = {{52, -112}, {72, -92}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure( substanceData = Chemical.Substances.Gas.O2,
+      Physiolibrary.Fluid.Sensors.PartialPressure pO2_measure(
           redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{50, 50}, {30, 70}})));
-      Physiolibrary.Fluid.Sensors.pH pH_measure(redeclare package Medium = Medium) annotation (
-        Placement(transformation(extent = {{-24, -70}, {-44, -50}})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure( substanceData = Chemical.Substances.Gas.CO2,
+      Physiolibrary.Fluid.Sensors.pH pH_measure(redeclare package Medium = Medium, m_start=1e-7)
+                                                                                   annotation (
+        Placement(transformation(extent={{-44,-70},{-24,-50}})));
+      Physiolibrary.Fluid.Sensors.PartialPressure pCO2_measure(
           redeclare package Medium = Medium) annotation (
         Placement(transformation(extent = {{12, -10}, {-8, 10}})));
       Physiolibrary.Fluid.Sensors.PressureMeasure pressureMeasureSystemicCapillaries(redeclare package Medium = Medium) annotation (
@@ -1398,7 +1440,9 @@ The sensor is ideal, i.e., it does not influence the fluid.
       Modelica.Units.SI.MassFraction X[Medium.nXi];
       Modelica.Units.SI.Density d;
       Medium.ThermodynamicState state;
-      Medium.SubstancesPort substances annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+      Chemical.Interfaces.Rear O2 annotation (Placement(transformation(extent={{-110,70},{-90,90}})));
+      Chemical.Interfaces.Rear CO2 annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
+      Chemical.Interfaces.Rear H "H+" annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
     equation
       state = Medium.setState_phX(a_port.p,h,X,0);
       h = actualStream(a_port.h_outflow);
@@ -1407,60 +1451,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       sO2 = Medium.sO2(state);
 
 
-      substances.CO.q=0;
-      substances.CO.h_outflow=0;
-      substances.HCO3.q=0;
-      substances.HCO3.h_outflow=0;
-      substances.Na.q=0;
-      substances.Na.h_outflow=0;
-      substances.K.q=0;
-      substances.K.h_outflow=0;
-      substances.Cl.q=0;
-      substances.Cl.h_outflow=0;
-      substances.SO4.q=0;
-      substances.SO4.h_outflow=0;
-      substances.PO4.q=0;
-      substances.PO4.h_outflow=0;
-      substances.H2O.q=0;
-      substances.H2O.h_outflow=0;
-      substances.OH.q=0;
-      substances.OH.h_outflow=0;
-      substances.Glucose.q=0;
-      substances.Glucose.h_outflow=0;
-      substances.Lactate.q=0;
-      substances.Lactate.h_outflow=0;
-      substances.Urea.q=0;
-      substances.Urea.h_outflow=0;
-      substances.AminoAcids.q=0;
-      substances.AminoAcids.h_outflow=0;
-      substances.Lipids.q=0;
-      substances.Lipids.h_outflow=0;
-      substances.KetoAcids.q=0;
-      substances.KetoAcids.h_outflow=0;
-      substances.Epinephrine.q = 0;
-      substances.Norepinephrine.q = 0;
-      substances.Vasopressin.q = 0;
-      substances.Insulin.q = 0;
-      substances.Glucagon.q = 0;
-      substances.Thyrotropin.q = 0;
-      substances.Thyroxine.q = 0;
-      substances.Leptin.q = 0;
-      substances.Desglymidodrine.q = 0;
-      substances.Angiotensin2.q = 0;
-      substances.Renin.q = 0;
-      substances.Aldosterone.q = 0;
-      substances.Epinephrine.h_outflow = 0;
-      substances.Norepinephrine.h_outflow = 0;
-      substances.Vasopressin.h_outflow = 0;
-      substances.Insulin.h_outflow = 0;
-      substances.Glucagon.h_outflow = 0;
-      substances.Thyrotropin.h_outflow = 0;
-      substances.Thyroxine.h_outflow = 0;
-      substances.Leptin.h_outflow = 0;
-      substances.Desglymidodrine.h_outflow = 0;
-      substances.Angiotensin2.h_outflow = 0;
-      substances.Renin.h_outflow = 0;
-      substances.Aldosterone.h_outflow = 0;
+
 
 
       connect(pressureMeasureSystemicCapillaries.port, a_port) annotation (
@@ -1484,16 +1475,21 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(pCO2_measure.partialPressure, pCO2) annotation (
         Line(points = {{12, 0}, {60, 0}, {60, 0}, {110, 0}}, color = {0, 0, 127}));
       connect(pH_measure.pH, pH) annotation (
-        Line(points = {{-24, -60}, {42, -60}, {42, -40}, {110, -40}}, color = {0, 0, 127}));
+        Line(points={{-24,-60},{42,-60},{42,-40},{110,-40}},          color = {0, 0, 127}));
       connect(a_port, b_port) annotation (
         Line(points = {{-60, -102}, {-60, -100}, {62, -100}, {62, -102}}, color = {127, 0, 0}, thickness = 0.5));
-      connect(substances.O2, pO2_measure.port_a) annotation (Line(points={{-99.9,0.1},
-              {-28,0.1},{-28,60},{30,60}},                                                                   color={158,66,200}));
-      connect(substances.CO2, pCO2_measure.port_a) annotation (Line(points={{-99.9,0.1},
-              {-14,0.1},{-14,0},{-8,0}},                                                                       color={158,66,200}));
-      connect(substances.H, pH_measure.port_a)
-        annotation (Line(points={{-99.9,0.1},{-58,0.1},{-58,-44},{-66,-44},{-66,-58},{-62,-58}},
-                                                                                             color={158,66,200}));
+      connect(O2, pO2_measure.port_a) annotation (Line(
+          points={{-100,80},{-100,60},{30,60}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(CO2, pCO2_measure.port_a) annotation (Line(
+          points={{-100,40},{-100,24},{-14,24},{-14,0},{-8,0}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(H, pH_measure.rear) annotation (Line(
+          points={{-100,-40},{-54,-40},{-54,-60},{-44,-60}},
+          color={158,66,200},
+          thickness=0.5));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Text(extent = {{-150, 80}, {150, 120}}, textString = "%name", lineColor = {162, 29, 33})}),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -3119,37 +3115,45 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Physiolibrary.Fluid.Interfaces.FluidPort_b dialysate_out(redeclare package Medium = Dialysate) annotation (
           Placement(transformation(extent = {{50, -110}, {70, -90}})));
         Physiolibrary.Fluid.Components.ElasticVessel bloodVessel(redeclare package Medium =
-            BloodPlasma,                                                                                 useSubstances = true, volume_start = InitialBloodPressure * Compliance, massFractions_start = InitialPlasma,  Compliance(displayUnit = "ml/mmHg") = Compliance, ZeroPressureVolume(displayUnit = "m3"), nPorts = 2) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-68, -4})));
-        Physiolibrary.Fluid.Components.ElasticVessel dialysateVessel(redeclare package Medium = Dialysate, useSubstances = true, onElectricGround = true, volume_start = InitialDialysatePressure * Compliance, massFractions_start = InitialDialysate,  Compliance(displayUnit = "ml/mmHg") = Compliance, nPorts = 2) annotation (
+            BloodPlasma,
+          ForeSubstances=bodyFluidMembrane.PermeableSubstances,                                                                volume_start = InitialBloodPressure * Compliance,
+          massFractions_start=InitialPlasma,                                                                                                                                                                           Compliance(displayUnit = "ml/mmHg") = Compliance, ZeroPressureVolume(displayUnit = "m3"), nPorts = 2,
+          nF=9)                                                                                                                                                                                                         annotation (
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin={-66,-4})));
+        Physiolibrary.Fluid.Components.ElasticVessel dialysateVessel(redeclare package Medium = Dialysate,
+          RearSubstances=bodyFluidMembrane.PermeableSubstances,                                                                  onElectricGround = true, volume_start = InitialDialysatePressure * Compliance,
+          massFractions_start=InitialDialysate,                                                                                                                                                                                                        Compliance(displayUnit = "ml/mmHg") = Compliance, nPorts = 2,
+          nR=9)                                                                                                                                                                                                         annotation (
           Placement(transformation(extent = {{66, -14}, {86, 6}})));
 
         Physiolibrary.Fluid.Components.BodyFluidMembrane bodyFluidMembrane(
-          redeclare package BloodPlasma = BloodPlasma,
-          redeclare package Dialysate = Dialysate,
+          redeclare package RearMedium = BloodPlasma,
+          redeclare package ForeMedium = Dialysate,
           Permeabilities=Permeabilities) annotation (Placement(transformation(extent={{-6,-14},{14,6}})));
       equation
         connect(blood_pipe.q_in, blood_in) annotation (
           Line(points = {{-94, -68}, {-94, -100}, {-60, -100}}, color = {127, 0, 0}, thickness = 0.5));
         connect(blood_pipe.q_out, bloodVessel.q_in[1]) annotation (
-          Line(points={{-94,-48},{-94,-3.35},{-67.9,-3.35}},      color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-94,-48},{-94,-3.35},{-65.9,-3.35}},      color = {127, 0, 0}, thickness = 0.5));
         connect(dialysatePipe.q_in, dialysate_in) annotation (
           Line(points = {{94, 58}, {94, 100}, {60, 100}}, color = {127, 0, 0}, thickness = 0.5));
         connect(dialysatePipe.q_out, dialysateVessel.q_in[1]) annotation (
           Line(points={{94,38},{94,-2},{75.9,-2},{75.9,-4.65}},         color = {127, 0, 0}, thickness = 0.5));
         connect(blood_out, bloodVessel.q_in[2]) annotation (
-          Line(points={{-60,100},{-94,100},{-94,-4.65},{-67.9,-4.65}},        color = {127, 0, 0}, thickness = 0.5));
+          Line(points={{-60,100},{-94,100},{-94,-4.65},{-65.9,-4.65}},        color = {127, 0, 0}, thickness = 0.5));
         connect(dialysate_out, dialysateVessel.q_in[2]) annotation (
           Line(points={{60,-100},{94,-100},{94,-3.35},{75.9,-3.35}},        color = {127, 0, 0}, thickness = 0.5));
 
 
-        connect(bloodVessel.substances, bodyFluidMembrane.bodyFluid_a) annotation (Line(
-            points={{-58,-4},{-6,-4}},
-            color={0,0,255},
+        connect(bloodVessel.foreSubstance[1:9], bodyFluidMembrane.rearSubstance)
+          annotation (Line(
+            points={{-76,-4.44444},{-82,-4.44444},{-82,-18},{-12,-18},{-12,-4},{-6,-4}},
+            color={158,66,200},
             thickness=0.5));
-        connect(bodyFluidMembrane.bodyFluid_b, dialysateVessel.substances) annotation (Line(
-            points={{14,-4},{66,-4}},
-            color={0,0,255},
+        connect(bodyFluidMembrane.foreSubstance, dialysateVessel.rearSubstance[1:9])
+          annotation (Line(
+            points={{14,-4},{16,-3.55556},{66,-3.55556}},
+            color={158,66,200},
             thickness=0.5));
         annotation (
           Icon(coordinateSystem(preserveAspectRatio = false), graphics={  Rectangle(extent = {{-100, 100}, {0, -100}}, lineColor = {255, 255, 0}, fillColor = {238, 46, 47}, fillPattern = FillPattern.VerticalCylinder), Rectangle(extent = {{0, 100}, {100, -100}}, lineColor = {255, 255, 0}, fillPattern = FillPattern.VerticalCylinder, fillColor = {28, 108, 200})}),
@@ -3256,7 +3260,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
       parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
       parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
-      Chemical.Obsolete.Components.GasSolubility evaporation(KC=1e-7) annotation (Placement(transformation(extent={{-362,-48},{-342,-28}})));
+      Chemical.Processes.GasSolubility           evaporation          annotation (Placement(transformation(extent={{-50,-62},{-30,-42}})));
       parameter Temperature CoreTemperature = 310.15 "body temperature";
       parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
 
@@ -3264,68 +3268,81 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{60, 66}, {80, 86}})));
 
       Physiolibrary.Fluid.Sources.PressureSource environment(redeclare package Medium = Air, temperature_start = EnvironmentTemperature) "External environment" annotation (
-        Placement(transformation(extent = {{-360, 78}, {-340, 98}})));
+        Placement(transformation(extent={{-48,64},{-28,84}})));
       Physiolibrary.Fluid.Sensors.FlowMeasure flowMeasure(redeclare package Medium = Air) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-318, 66})));
-      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air, useSubstances = true,
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-6,52})));
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        ForeSubstances={"H2O"},
+        RearSubstances={"H2O"},
         volume_start=0.0001,
-        massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3) annotation (
-        Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
+        massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts = 3,
+        nR=1,
+        nF=1)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-16,-24},{4,-4}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
-        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
-      Chemical.Obsolete.Sources.PureSubstance water( substanceData=   Chemical.Substances.Liquid.H2O)
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-6,20})));
+      Chemical.Boundaries.ExternalSubstance   water(
+        substanceDefinition=Physiolibrary.Media.Substances.H2O_g,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.p_mmHg,
+        FixedValue=47)
         annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
-            origin={-314,-68})));
-      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory( substanceData = Chemical.Substances.Gas.H2O, redeclare
+            origin={-2,-82})));
+      Physiolibrary.Fluid.Sensors.PartialPressure pH2O_upperRespiratory(                                              redeclare
           package Medium =  Air) annotation (
-        Placement(transformation(extent = {{-364, 34}, {-344, 14}})));
+        Placement(transformation(extent={{-52,20},{-32,0}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_upperRespiratory(redeclare package Medium = Air) annotation (
-        Placement(transformation(extent = {{-298, 30}, {-278, 50}})));
+        Placement(transformation(extent={{14,16},{34,36}})));
       Physiolibrary.Fluid.Sensors.Temperature Temperature_mouth(redeclare package Medium = Air) annotation (
-        Placement(transformation(extent = {{-296, 72}, {-276, 92}})));
+        Placement(transformation(extent={{16,58},{36,78}})));
       Physiolibrary.Thermal.Components.Conductor cooling(Conductance(
           displayUnit="W/K") = 10)
-      annotation (Placement(transformation(extent={{-302,-44},{-322,-24}})));
+      annotation (Placement(transformation(extent={{10,-58},{-10,-38}})));
       Physiolibrary.Thermal.Sources.UnlimitedHeat coreHeat(T = system.T_ambient) annotation (
-        Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
+        Placement(transformation(extent={{38,-58},{18,-38}})));
     equation
       connect(environment.y, flowMeasure.q_in) annotation (
-        Line(points = {{-340, 88}, {-318, 88}, {-318, 76}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-28,74},{-6,74},{-6,62}},             color = {127, 0, 0}, thickness = 0.5));
       connect(flowMeasure.q_out, upperRespiratoryTractResistance.q_out) annotation (
-        Line(points={{-318,56},{-318,44}},      color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-6,42},{-6,30}},          color = {127, 0, 0}, thickness = 0.5));
       connect(upperRespiratoryTractResistance.q_in, upperRespiratoryTract.q_in[1]) annotation (
-        Line(points={{-318,24},{-318,-0.866667},{-318.1,-0.866667}},    color = {127, 0, 0}, thickness = 0.5));
-    connect(water.port_a, evaporation.liquid_port) annotation (Line(points={{
-            -324,-68},{-352,-68},{-352,-48}}, color={158,66,200}));
+        Line(points={{-6,10},{-6,-14.8667},{-6.1,-14.8667}},            color = {127, 0, 0}, thickness = 0.5));
       connect(pH2O_upperRespiratory.port, upperRespiratoryTract.q_in[2])
         annotation (Line(
-          points={{-354,34},{-354,48},{-330,48},{-330,14},{-318.1,14},{-318.1,
-              1.11022e-16}},
+          points={{-42,20},{-42,34},{-18,34},{-18,0},{-6.1,0},{-6.1,-14}},
           color={127,0,0},
           thickness=0.5));
     connect(cooling.q_out, upperRespiratoryTract.heatPort) annotation (Line(
-        points={{-322,-34},{-324,-34},{-324,-10}},
+        points={{-10,-48},{-12,-48},{-12,-24}},
         color={191,0,0},
         thickness=0.5));
     connect(coreHeat.port, cooling.q_in) annotation (Line(
-        points={{-294,-34},{-302,-34}},
+        points={{18,-48},{10,-48}},
         color={191,0,0},
         thickness=0.5));
       connect(flowMeasure.q_in, Temperature_mouth.port) annotation (
-        Line(points = {{-318, 76}, {-318, 82}, {-298, 82}, {-298, 72}, {-286, 72}}, color = {127, 0, 0}, thickness = 0.5));
+        Line(points={{-6,62},{-6,66},{10,66},{10,68},{14,68},{14,58},{26,58}},      color = {127, 0, 0}, thickness = 0.5));
       connect(upperRespiratoryTract.q_in[3], Temperature_upperRespiratory.port) annotation (
-        Line(points={{-318.1,0.866667},{-318.1,10},{-318,10},{-318,8},{-288,8},{-288,
-              30}},                                                                                     color = {127, 0, 0}, thickness = 0.5));
-      connect(pH2O_upperRespiratory.port_a, upperRespiratoryTract.substances.H2O) annotation (
-        Line(points = {{-344, 24}, {-334, 24}, {-334, 0}, {-328, 0}}, color = {158, 66, 200}));
-    connect(evaporation.gas_port, upperRespiratoryTract.substances.H2O)
-      annotation (Line(points={{-352,-28},{-352,0},{-328,0}}, color={158,66,
-            200}));
+        Line(points={{-6.1,-13.1333},{-6.1,-4},{-6,-4},{-6,-6},{24,-6},{24,16}},                        color = {127, 0, 0}, thickness = 0.5));
+      connect(evaporation.fore, upperRespiratoryTract.rearSubstance[1])
+        annotation (Line(
+          points={{-30,-52},{-22,-52},{-22,-14},{-16,-14}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(evaporation.rear, water.fore)
+        annotation (Line(
+          points={{-50,-52},{-56,-52},{-56,-82},{-12,-82}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(upperRespiratoryTract.foreSubstance[1], pH2O_upperRespiratory.port_a)
+        annotation (Line(
+          points={{4,-14},{10,-14},{10,4},{-26,4},{-26,10},{-32,10}},
+          color={158,66,200},
+          thickness=0.5));
       annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        Icon(coordinateSystem(preserveAspectRatio = false, extent={{-120,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent={{-100,-100},{100,100}})),
         experiment(StopTime = 200, __Dymola_Algorithm = "Dassl"),
         Documentation(info = "<html>
 <p>References:</p>
@@ -3350,7 +3367,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       // amountPartition_start=zeros(Blood.nS),
       Chemical.Obsolete.Components.GasSolubility O2_GasSolubility(KC=1e-8) annotation (Placement(transformation(extent={{-58,-20},{-38,0}})));
       Chemical.Obsolete.Components.GasSolubility CO2_GasSolubility(KC=1e-4) annotation (Placement(transformation(extent={{-40,-20},{-20,0}})));
-      Chemical.Obsolete.Components.GasSolubility CO_GasSolubility(KC=1e-9) annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
+      Chemical.Obsolete.Components.GasSolubility CO_GasSolubility(KC=1e-9) annotation (Placement(transformation(extent={{-20,-20},{0,0}})));
       Chemical.Obsolete.Sources.ExternalIdealGasSubstance O2(
         substanceData=Chemical.Substances.Oxygen_gas(),
         usePartialPressureInput=false,
@@ -3377,7 +3394,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(CO2.port_a, CO2_GasSolubility.gas_port) annotation (
         Line(points = {{-50, 62}, {-30, 62}, {-30, 0}}, color = {158, 66, 200}));
       connect(CO.port_a, CO_GasSolubility.gas_port) annotation (
-        Line(points = {{18, 34}, {-12, 34}, {-12, 0}}, color = {158, 66, 200}));
+        Line(points={{18,34},{-10,34},{-10,0}},        color = {158, 66, 200}));
 
       connect(pO2.port, blood.q_in[1]) annotation (Line(
           points={{-82,-60},{-82,-68},{3.9,-68},{3.9,-41.35}},
@@ -3390,7 +3407,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(O2_GasSolubility.liquid_port, blood.substances.O2) annotation (
         Line(points={{-48,-20},{-46,-20},{-46,-42},{-6,-42}},          color = {158, 66, 200}));
       connect(CO_GasSolubility.liquid_port, blood.substances.CO) annotation (
-        Line(points={{-12,-20},{-12,-42},{-6,-42}},        color = {158, 66, 200}));
+        Line(points={{-10,-20},{-10,-42},{-6,-42}},        color = {158, 66, 200}));
       connect(blood.q_in[2], sO2.port) annotation (Line(
           points={{3.9,-42.65},{3.9,-60},{58,-60},{58,-54}},
           color={127,0,0},
@@ -4843,7 +4860,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
                                                                                           color={158,66,200}));
       connect(substancePump1.port_b, substancesPort.H) annotation (Line(points={{-30,78},{-26,78},{-26,-10},{-54,-10},{-54,-73.9},{-21.9,-73.9}},
                                                                                                                                         color={158,66,200}));
-      connect(pH.pH, feedback.u1) annotation (Line(points={{60,-16},{68,-16},{68,48},{58,48},{58,72},{48,72}},               color={0,0,127}));
+      connect(pH.pH, feedback.u1) annotation (Line(points={{40,-16},{68,-16},{68,48},{58,48},{58,72},{48,72}},               color={0,0,127}));
       connect(pH69.y, feedback.u2) annotation (Line(points={{35,50},{35,58},{40,58},{40,64}},         color={0,0,127}));
       connect(feedback.y, gain.u) annotation (Line(points={{31,72},{20,72}},  color={0,0,127}));
       connect(gain.y, substancePump.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,50},{-40,50}},         color={0,0,127}));
@@ -4957,7 +4974,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
       connect(gain.y, substancePump1.substanceFlow) annotation (Line(points={{-3,72},{-24,72},{-24,82},{-36,82}},  color={0,0,127}));
       connect(substancePump1.port_b, substancesPort.Na) annotation (Line(points={{-30,78},{-21.9,78},{-21.9,-73.9}}, color={158,66,200}));
       connect(substancePump.port_b, substancesPort.OH) annotation (Line(points={{-34,46},{-21.9,46},{-21.9,-73.9}}, color={158,66,200}));
-      connect(pH.pH, feedback.u2) annotation (Line(points={{60,-16},{68,-16},{68,64},{40,64}}, color={0,0,127}));
+      connect(pH.pH, feedback.u2) annotation (Line(points={{40,-16},{68,-16},{68,64},{40,64}}, color={0,0,127}));
       connect(pH8.y, feedback.u1) annotation (Line(points={{55,92},{62,92},{62,72},{48,72}}, color={0,0,127}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
@@ -4999,7 +5016,7 @@ The sensor is ideal, i.e., it does not influence the fluid.
         RearSubstances={"H2O"},
         volume_start=0.0001,
         massFractions_start=Air.reference_X[1:Air.nS - 1],                                                                                                                                                 useThermalPort = true, Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001, nPorts=2,
-        nRS=1,nFS=0)                                                                                                                                                                                                         annotation (
+        nR=1)                                                                                                                                                                                                         annotation (
         Placement(transformation(extent = {{-328, -10}, {-308, 10}})));
       Physiolibrary.Fluid.Components.Resistor upperRespiratoryTractResistance(redeclare package Medium = Air,  Resistance = 0.5 * TracheaResistance) annotation (
         Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin={-318,34})));
@@ -5014,7 +5031,8 @@ The sensor is ideal, i.e., it does not influence the fluid.
         Placement(transformation(extent = {{-274, -44}, {-294, -24}})));
       Chemical.Boundaries.ExternalSubstance externalSubstance(
         substanceDefinition=Chemical.Substances.Liquid.H2O,
-        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.x_molpmol,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.c_molpm3,
         FixedValue=1) annotation (Placement(transformation(extent={{-396,-46},{-376,-26}})));
       Chemical.Processes.GasSolubility gasSolubility annotation (Placement(transformation(extent={{-358,-46},{-338,-26}})));
     equation
@@ -5054,6 +5072,551 @@ The sensor is ideal, i.e., it does not influence the fluid.
 <p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
 </html>"));
     end AirWaterSaturation_0;
+
+    model BloodGasesEquilibrium0
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Chemical.Media.SimpleAir_C;
+      //Chemical.Media.Air_MixtureGasNasa;
+      replaceable package Blood = Physiolibrary.Media.Blood;
+      inner Modelica.Fluid.System system(T_ambient = 310.15) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+      Physiolibrary.Fluid.Components.ElasticVessel blood(redeclare package Medium = Blood,
+        RearSubstances={"O2","CO2","CO"},
+        Compliance(displayUnit="ml/mmHg") = 7.5006157584566e-09,
+        massFractions_start=Blood.ArterialDefault,                                                                                                       mass_start = 1,                                   use_mass_start = true,
+        nR=3)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{42,-30},{62,-50}})));
+
+      // massFractions_start=zeros(Blood.nS - 1),
+      // massPartition_start=zeros(Blood.nS),
+      // amountPartition_start=zeros(Blood.nS),
+      Chemical.Processes.GasSolubility           O2_GasSolubility          annotation (Placement(transformation(extent={{-66,16},{-46,36}})));
+      Chemical.Processes.GasSolubility           CO2_GasSolubility          annotation (Placement(transformation(extent={{-40,52},{-20,72}})));
+      Chemical.Processes.GasSolubility           CO_GasSolubility          annotation (Placement(transformation(extent={{-50,-30},{-30,-10}})));
+      Chemical.Boundaries.ExternalGas                     O2(
+        usePartialPressureInput=false,
+        PartialPressure(displayUnit="mmHg") = 133.322387415) annotation (Placement(transformation(extent={{-96,16},{-76,36}})));
+      Chemical.Boundaries.ExternalGas                     CO2(                                                       PartialPressure(displayUnit="mmHg") =
+          5332.8954966) annotation (Placement(transformation(extent={{-70,52},{-50,72}})));
+      Chemical.Boundaries.ExternalGas                     CO(                                                        PartialPressure(displayUnit="mmHg") =
+          0.000133322387415) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=180,
+            origin={-78,-20})));
+    equation
+
+      connect(CO2.fore, CO2_GasSolubility.rear) annotation (Line(
+          points={{-50,62},{-40,62}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(CO.fore, CO_GasSolubility.rear) annotation (Line(
+          points={{-68,-20},{-50,-20}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(O2.fore, O2_GasSolubility.rear) annotation (Line(
+          points={{-76,26},{-66,26}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(O2_GasSolubility.fore, blood.rearSubstance[1])
+        annotation (Line(
+          points={{-46,26},{-6,26},{-6,-39.6667},{42,-39.6667}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(CO2_GasSolubility.fore, blood.rearSubstance[2])
+        annotation (Line(
+          points={{-20,62},{-4,62},{-4,-40},{42,-40}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(CO_GasSolubility.fore, blood.rearSubstance[3])
+        annotation (Line(
+          points={{-30,-20},{-8,-20},{-8,-40.3333},{42,-40.3333}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        experiment(
+          StopTime=100,
+          __Dymola_fixedstepsize=0.1,
+          __Dymola_Algorithm="Dassl"),
+        Documentation(info="<html>
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
+</html>"));
+    end BloodGasesEquilibrium0;
+
+    model AirWaterSaturation_00 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Liquid.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.c_molpm3,
+        FixedValue=1) annotation (Placement(transformation(extent={{-190,-34},{-170,-14}})));
+      Chemical.Processes.GasSolubility gasSolubility(solutionFrom=Chemical.Utilities.Types.SolutionChoice.FirstSubstrate, productFrom=Chemical.Utilities.Types.FirstProductChoice.Process)
+                                                     annotation (Placement(transformation(extent={{-152,-34},{-132,-14}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance1(
+        substanceDefinition=Chemical.Substances.Liquid.H2O,
+        useRear=true,
+        useFore=false,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.c_molpm3,
+        FixedValue=1) annotation (Placement(transformation(extent={{-66,-36},{-46,-16}})));
+    equation
+      connect(externalSubstance.fore, gasSolubility.rear) annotation (Line(
+          points={{-170,-24},{-152,-24}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(gasSolubility.fore, externalSubstance1.rear)
+        annotation (Line(
+          points={{-132,-24},{-74,-24},{-74,-26},{-66,-26}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime = 200, __Dymola_Algorithm = "Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_00;
+
+    model AirWaterSaturation_01 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        RearSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,                                                                                                                                                                                                     Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001,
+        nR=1)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-126,14},{-106,34}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-192,-22},{-172,-2}})));
+      Chemical.Processes.GasSolubility gasSolubility(k_forward(displayUnit="mol/min"))
+                                                     annotation (Placement(transformation(extent={{-158,-22},{-138,-2}})));
+    equation
+      connect(externalSubstance.fore, gasSolubility.rear) annotation (Line(
+          points={{-172,-12},{-158,-12}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(gasSolubility.fore, upperRespiratoryTract.rearSubstance[1])
+        annotation (Line(
+          points={{-138,-12},{-128,-12},{-128,8},{-132,8},{-132,24},{-126,24}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_01;
+
+    model AirWaterSaturation_02 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{58,66},{78,86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        RearSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,                                                                                                                                                                                                     Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001,
+        nR=1)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-126,14},{-106,34}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-194,-22},{-174,-2}})));
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{-2,18},{18,38}})));
+    equation
+      connect(externalSubstance.fore, upperRespiratoryTract.rearSubstance[1])
+        annotation (Line(
+          points={{-174,-12},{-132,-12},{-132,24},{-126,24}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_02;
+
+    model AirWaterSaturation_03 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{58,66},{78,86}})));
+
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-194,-22},{-174,-2}})));
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{-2,18},{18,38}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance1(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useRear=true,
+        useFore=false,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.c_molpm3,
+        FixedValue=0.023)
+                      annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-64,-10})));
+    equation
+      connect(externalSubstance.fore, externalSubstance1.rear)
+        annotation (Line(
+          points={{-174,-12},{-80,-12},{-80,-10},{-74,-10}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_03;
+
+    model AirWaterSaturation_04 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{58,66},{78,86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel r(
+        redeclare package Medium = Air,
+        RearSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start={0.012,0.0006,0.02},
+        useThermalPort=false,
+        Compliance=TotalCompliance/100,
+        ZeroPressureVolume(displayUnit="ml") = 0.0001,
+        ResidualVolume(displayUnit="ml") = 0.0001,
+        nR=1) annotation (Placement(transformation(extent={{-124,14},{-104,34}})));
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{-2,18},{18,38}})));
+      Components.ElasticVessel f(
+        redeclare package Medium = Air,
+        ForeSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,
+        Compliance=TotalCompliance/100,
+        ZeroPressureVolume(displayUnit="ml") = 0.0001,
+        ResidualVolume(displayUnit="ml") = 0.0001,
+        nF=1) annotation (Placement(transformation(extent={{-214,16},{-194,36}})));
+      Chemical.Boundaries.Substance substance(
+        substanceDefinition=Physiolibrary.Media.Substances.H2O_g,
+        useFore=true,
+        mass_start=0.26) annotation (Placement(transformation(extent={{-214,-66},{-194,-46}})));
+      Chemical.Boundaries.Substance substance1(useRear=true, mass_start=0.2) annotation (Placement(transformation(extent={{-120,-68},{-100,-48}})));
+    equation
+      connect(f.foreSubstance[1], r.rearSubstance[1])
+        annotation (Line(
+          points={{-194,26},{-132,26},{-132,24},{-124,24}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(substance.fore, substance1.rear)
+        annotation (Line(
+          points={{-194,-56},{-128,-56},{-128,-58},{-120,-58}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_04;
+
+    model AirWaterSaturation_05 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{58,66},{78,86}})));
+
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{-2,18},{18,38}})));
+      Chemical.Boundaries.Substance substance(
+        substanceDefinition=Physiolibrary.Media.Substances.H2O_g,
+        useFore=true,
+        mass_start=0.26) annotation (Placement(transformation(extent={{-214,-66},{-194,-46}})));
+      Chemical.Boundaries.Substance substance1(useRear=true, mass_start=0.2) annotation (Placement(transformation(extent={{-120,-68},{-100,-48}})));
+    equation
+      connect(substance.fore, substance1.rear)
+        annotation (Line(
+          points={{-194,-56},{-128,-56},{-128,-58},{-120,-58}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_05;
+
+    model AirWaterSaturation_021 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent={{58,66},{78,86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        RearSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,                                                                                                                                                                                                     Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001,
+        nR=1)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-126,14},{-106,34}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-194,-22},{-174,-2}})));
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{-2,18},{18,38}})));
+      Chemical.Processes.Diffusion diffusion annotation (Placement(transformation(extent={{-152,-42},{-132,-22}})));
+    equation
+      connect(externalSubstance.fore, diffusion.rear)
+        annotation (Line(
+          points={{-174,-12},{-162,-12},{-162,-32},{-152,-32}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(diffusion.fore, upperRespiratoryTract.rearSubstance[1])
+        annotation (Line(
+          points={{-132,-32},{-124,-32},{-124,8},{-132,8},{-132,24},{-126,24}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_021;
+
+    model AirWaterSaturation_011 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        ForeSubstances={"H2O"},
+        RearSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,                                                                                                                                                                                                     Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001,
+        nR=1,
+        nF=1,
+        nPorts=1)                                                                                                                                                                                                     annotation (
+        Placement(transformation(extent={{-126,14},{-106,34}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-192,-22},{-172,-2}})));
+      Chemical.Processes.GasSolubility gasSolubility(k_forward(displayUnit="mol/min"))
+                                                     annotation (Placement(transformation(extent={{-158,-22},{-138,-2}})));
+      Sensors.PartialPressure                     pH2O_upperRespiratory(redeclare package Medium = Air)
+                                 annotation (
+        Placement(transformation(extent={{-138,78},{-118,58}})));
+    equation
+      connect(externalSubstance.fore, gasSolubility.rear) annotation (Line(
+          points={{-172,-12},{-158,-12}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(gasSolubility.fore, upperRespiratoryTract.rearSubstance[1])
+        annotation (Line(
+          points={{-138,-12},{-128,-12},{-128,8},{-132,8},{-132,24},{-126,24}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(upperRespiratoryTract.foreSubstance[1], pH2O_upperRespiratory.port_a)
+        annotation (Line(
+          points={{-106,24},{-88,24},{-88,68},{-118,68}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(upperRespiratoryTract.q_in[1], pH2O_upperRespiratory.port)
+        annotation (Line(
+          points={{-116.1,24},{-116,24},{-116,52},{-148,52},{-148,84},{-128,84},{-128,78}},
+          color={127,0,0},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_011;
+
+    model AirWaterSaturation_012 "Human respiration model"
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Media.Air;
+      parameter Physiolibrary.Types.HydraulicResistance TotalResistance = 147099.75 "Total lungs pathways resistance";
+      parameter Real BronchiResistanceFraction = 0.3;
+      parameter Real AlveoliDuctResistanceFraction = 0.2;
+      parameter Real TracheaResistanceFraction = 1 - (BronchiResistanceFraction + AlveoliDuctResistanceFraction) / 2;
+      parameter Physiolibrary.Types.HydraulicResistance TracheaResistance = TotalResistance * TracheaResistanceFraction "Left Bronchi Resistance";
+      parameter Physiolibrary.Types.HydraulicCompliance TotalCompliance(displayUnit = "l/cmH2O") = 1.0197162129779e-06 "Total lungs compliance";
+      parameter Temperature CoreTemperature = 310.15 "body temperature";
+      parameter Temperature EnvironmentTemperature = 298.15 "external air temperature";
+
+      inner Modelica.Fluid.System system(T_ambient = CoreTemperature) "Human body system setting" annotation (
+        Placement(transformation(extent = {{60, 66}, {80, 86}})));
+
+      Physiolibrary.Fluid.Components.ElasticVessel upperRespiratoryTract(redeclare package Medium = Air,
+        ForeSubstances={"H2O"},
+        volume_start=0.0001,
+        massFractions_start=Air.reference_X[1:Air.nS - 1],
+        useThermalPort=false,                                                                                                                                                                                                     Compliance = TotalCompliance / 100, ZeroPressureVolume(displayUnit = "ml") = 0.0001,                                      ResidualVolume(displayUnit = "ml") = 0.0001,
+        nF=1)                                                                                                                                                                                                         annotation (
+        Placement(transformation(extent={{-126,14},{-106,34}})));
+      Chemical.Processes.GasSolubility gasSolubility(k_forward(displayUnit="mol/min"))
+                                                     annotation (Placement(transformation(extent={{-84,-8},{-64,12}})));
+      Chemical.Boundaries.ExternalSubstance externalSubstance1(
+        substanceDefinition=Chemical.Substances.Gas.H2O,
+        useRear=true,
+        useFore=false,
+        useSolution=false,
+        quantity=Chemical.Boundaries.Internal.Types.ConcentrationQuantities.X_kgpkg,
+        FixedValue=0.02)
+                      annotation (Placement(transformation(extent={{-52,-8},{-32,12}})));
+    equation
+      connect(upperRespiratoryTract.foreSubstance[1], gasSolubility.rear)
+        annotation (Line(
+          points={{-106,24},{-100,24},{-100,2},{-84,2}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(gasSolubility.fore, externalSubstance1.rear) annotation (Line(
+          points={{-64,2},{-52,2}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-360, -100}, {100, 100}})),
+        experiment(StopTime=1e-05, __Dymola_Algorithm="Dassl"),
+        Documentation(info = "<html>
+<p>References:</p>
+<p><br>Mecklenburgh, J. S., and W. W. Mapleson. &quot;Ventilatory assistance and respiratory muscle activity. 1: Interaction in healthy volunteers.&quot; <i>British journal of anaesthesia</i> 80.4 (1998): 422-433.</p>
+</html>"));
+    end AirWaterSaturation_012;
   end Examples;
   annotation (
     Documentation(info = "<html>
