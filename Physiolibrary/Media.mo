@@ -2363,9 +2363,9 @@ Modelica source.
       replaceable partial model ChemicalSolution "Adaptor between selected free base chemical substances and medium substances"
         outer Modelica.Fluid.System system "System wide properties";
 
-         parameter Integer nF=1;
+         parameter Integer nF=0;
          parameter Integer nR=0;
-         parameter String ForeSubstances[nF]={"H2O"};
+         parameter String ForeSubstances[nF];
          parameter String RearSubstances[nR];
 
 
