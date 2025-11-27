@@ -1544,14 +1544,14 @@ package Media "Models of physiological fluids"
 
     extends Interfaces.PartialMedium(
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
-      final mediumName="Water",
-      substanceNames={"H2O"},
+      mediumName="Water",
+      substanceNames={ "H2O"},
       substanceData= { Water},
       accesibleSubstances=   {"H2O","H+","O2","H2","OH-","e-"},
       accesibleSubstanceData={Water, H,   O2,  H2,  OH,   e},
 
       final singleState=true,
-      final reducedX=true,
+      final reducedX=false,
       final fixedX=false,
       reference_T=310.15,
       reference_p=101325,
@@ -1563,6 +1563,9 @@ package Media "Models of physiological fluids"
         min=273,
         max=350,
         start=310.15));
+
+
+
 
   redeclare replaceable record extends ThermodynamicState
   "A selection of variables that uniquely defines the thermodynamic state"
@@ -1637,9 +1640,13 @@ package Media "Models of physiological fluids"
 
     redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
     algorithm
-       specificEnthalpy:=Properties.specificEnthalpy(
-          {Substances.Water},
-          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+       /*specificEnthalpy:=Properties.specificEnthalpy(
+      {Substances.Water},
+      Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+     */
+       specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
+            substanceData,
+            Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
     end specificEnthalpies_Tpv;
 
   public
@@ -1667,17 +1674,17 @@ package Media "Models of physiological fluids"
     algorithm
       state.p := p;
       state.T := T;
+      state.v := v;
+      state.X := X;
     end setState_pTX;
 
     redeclare replaceable function extends setState_phX
       "Return thermodynamic state as function of p, h and composition X or Xi"
     algorithm
       state.p := p;
-      state.T := Properties.solution_temperature(
-          {Substances.Water},
-          h*Substances.Water.data.MM,
-          {1},
-          p);
+      state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
+      state.v := v;
+      state.X := X;
     end setState_phX;
 
     redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
@@ -2201,6 +2208,7 @@ Modelica source.
 
     extends Modelica.Media.Interfaces.PartialMedium;
 
+
       constant Chemical.Interfaces.Definition substanceData[nS] "Substances definitions in order of substanceNames";
 
       constant String accesibleSubstances[:]=substanceNames "Names of substances connectable with chemical ports";
@@ -2288,11 +2296,11 @@ Modelica source.
          input Modelica.Units.SI.Pressure p;
          input Modelica.Units.SI.MassFraction X[nS];
          input Modelica.Units.SI.SpecificEnthalpy h;
-
+         input Modelica.Units.SI.ElectricPotential v=0;
        protected
           Modelica.Units.SI.SpecificEnthalpy hs[nS];
        algorithm
-         hs:=specificEnthalpies_Tpv(u, p);
+         hs:=specificEnthalpies_Tpv(u, p, v);
          y:=h-sum(hs[i]*X[i] for i in 1:nS);
        end temperatureError;
 
