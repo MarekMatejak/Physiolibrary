@@ -143,7 +143,7 @@ package Media "Models of physiological fluids"
 
      B := (
      state.X[Utilities.findIndex("H2O_P",substanceNames)]*Chemical.Interfaces.Properties.specificAmountOfParticles(Substances.Water,
-        Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v)) +
+        Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v)) +
      state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM +
      state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
      state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM +
@@ -193,7 +193,7 @@ package Media "Models of physiological fluids"
 
     algorithm
      B := (
-     state.X[Utilities.findIndex("H2O_E",substanceNames)]*Properties.specificAmountOfParticles(Substances.Water,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p,state.v)) +
+     state.X[Utilities.findIndex("H2O_E",substanceNames)]*Properties.specificAmountOfParticles(Substances.Water,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p,state.v)) +
      state.X[Utilities.findIndex("CO2_E",substanceNames)]/CO2.data.MM +
      state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM +
      state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
@@ -299,7 +299,7 @@ package Media "Models of physiological fluids"
 
         Real aCO2_P;
     protected
-      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
     equation
       density = D_BloodDensity;
       plasmaDensity = D_BloodPlasmaDensity;
@@ -984,7 +984,7 @@ package Media "Models of physiological fluids"
 
     redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of blood substances"
     protected
-     Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
+     Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
     algorithm
         specificEnthalpy[Utilities.findIndex("H2O_E",substanceNames)] := Properties.specificEnthalpy(Substances.Water, solutionState);
       specificEnthalpy[Utilities.findIndex("O2",substanceNames)] := Properties.specificEnthalpy(Substances.O2, solutionState);
@@ -1646,14 +1646,14 @@ package Media "Models of physiological fluids"
      */
        specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
             substanceData,
-            Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
     end specificEnthalpies_Tpv;
 
   public
     redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
       "Base properties of medium"
 
-      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
     equation
       d = 1000;
       h = X*Properties.specificEnthalpy(
@@ -1691,7 +1691,7 @@ package Media "Models of physiological fluids"
     algorithm
       h := Properties.specificEnthalpy(
           Substances.Water,
-          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+          Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
     end specificEnthalpy;
 
     redeclare replaceable function extends specificHeatCapacityCp
@@ -1699,7 +1699,7 @@ package Media "Models of physiological fluids"
     algorithm
       cp := Properties.specificHeatCapacityCp(
           Substances.Water,
-          Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+          Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
       annotation (Documentation(info="<html>
 
 </html>"));
@@ -1770,14 +1770,14 @@ Modelica source.
 
       constant Real C2X[nS-1] = aMM[1:nS-1] ./ (Conc * aMM[1:nS-1] + (1 - sum(Conc)) * aMM[nS]) "Conc to mass fraction coefficient";
 
-      constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
+      constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
 
     public
       redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
       algorithm
            specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
               substanceData,
-              Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Gas,T,p,v));
+              Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas,T,p,v));
       end specificEnthalpies_Tpv;
 
     public
@@ -1804,7 +1804,7 @@ Modelica source.
       protected
         Real a[nS];
         Modelica.Units.SI.ChargeNumberOfIon z[nS];
-        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(
+        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(
             Chemical.Interfaces.Phase.Gas,
             T,
             p,
@@ -1838,7 +1838,7 @@ Modelica source.
       algorithm
         state.p := p;
         state.X := X;
-        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
+        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X={1},  h=h), 273.15, 330,     1e-6);
         state.v := 0;
       end setState_phX;
 
@@ -1846,14 +1846,14 @@ Modelica source.
        algorithm
         d := 1/(state.X*Properties.specificVolume(
             substanceData,
-            Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Gas, state.T, state.p)));
+            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas, state.T, state.p)));
        end density;
 
       redeclare replaceable function extends specificEnthalpy
       algorithm
         h := state.X * Properties.specificEnthalpy(
             substanceData,
-            Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Gas,T=state.T,p=state.p,v=state.v));
+            Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Gas,T=state.T,p=state.p,v=state.v));
         /*, electricPotential, moleFractionBasedIonicStrength*/
       end specificEnthalpy;
 
@@ -1980,7 +1980,7 @@ Modelica source.
     protected
       Real a[nS];
       Modelica.Units.SI.ChargeNumberOfIon z[nS];
-      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
+      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
     algorithm
       a := Properties.activityCoefficient(substanceData, solutionState)
            .* x_baseMolecule;
@@ -1998,7 +1998,7 @@ Modelica source.
       input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
       output Modelica.Units.SI.MolarEnthalpy h[nS];
     protected
-      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
+      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
     algorithm
       h:= Properties.molarEnthalpy(
           substanceData, solutionState);
@@ -2051,7 +2051,7 @@ Modelica source.
     algorithm
          specificEnthalpy:=Properties.specificEnthalpy(
             substanceData,
-            Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
     end specificEnthalpies_Tpv;
 
   public
@@ -2059,7 +2059,7 @@ Modelica source.
       "Base properties of medium"
 
     protected
-      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.SolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
+      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
       Modelica.Units.SI.Molality NpM[nS]=Properties.specificAmountOfParticles(
         substanceData,solutionState);
     equation
@@ -2116,13 +2116,13 @@ Modelica source.
 
     redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
     algorithm
-      h := state.X * Properties.specificEnthalpy(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+      h := state.X * Properties.specificEnthalpy(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
     end specificEnthalpy;
 
     redeclare replaceable function extends specificHeatCapacityCp
       "Return specific heat capacity at constant pressure"
     algorithm
-      cp := state.X * Properties.specificHeatCapacityCp(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+      cp := state.X * Properties.specificHeatCapacityCp(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
       annotation (Documentation(info="<html>
 
 </html>"));
@@ -2148,7 +2148,7 @@ Modelica source.
 
     redeclare replaceable function extends density
     algorithm
-      d := 1/( state.X * Properties.specificVolume(substanceData,Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p)));
+      d := 1/( state.X * Properties.specificVolume(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p)));
     end density;
 
     redeclare replaceable function extends temperature
