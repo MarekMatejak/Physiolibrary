@@ -26,7 +26,7 @@ package Media "Models of physiological fluids"
          Angiotensin2, Renin, Aldosterone,
          Water, Water},
 
-      accesibleSubstances={"H2O","H+","OH-","O2","CO2","CO","HCO3+",
+      accesibleSubstances={"H2O","H+","OH-","O2","CO2","CO","HCO3-",
          "Na+","K+","Cl-","SO4--","PO4---",
          "Glucose","Lactate-","Urea","AminoAcids-", "Lipids", "KetoAcids-",
          "Epinephrine", "Norepinephrine", "Vasopressin",
@@ -546,7 +546,7 @@ package Media "Models of physiological fluids"
       state_out[findIndex("CO2",accesibleSubstances)].h = Properties.molarEnthalpy(
           Substances.CO2,
           solutionState);
-      state_out[findIndex("HCO3",accesibleSubstances)].u = Modelica.Constants.R*T*log(aHCO3) +
+      state_out[findIndex("HCO3-",accesibleSubstances)].u = Modelica.Constants.R*T*log(aHCO3) +
         Properties.electroChemicalPotentialPure(
           Substances.HCO3,
           solutionState);
@@ -580,7 +580,7 @@ package Media "Models of physiological fluids"
               - Properties.electroChemicalPotentialPure(Substances.H, solutionState))/(Modelica.Constants.R*T)))
               "water self disociation pK shifted to water activity=1";
 
-      state_out[findIndex("OH-",accesibleSubstances)].u + state_out[findIndex("H",accesibleSubstances)].u = state_out[findIndex("H2O",accesibleSubstances)].u;
+      state_out[findIndex("OH-",accesibleSubstances)].u + state_out[findIndex("H+",accesibleSubstances)].u = state_out[findIndex("H2O",accesibleSubstances)].u;
       state_out[findIndex("OH-",accesibleSubstances)].u = Modelica.Constants.R*T*log(aOH_P) +
         Properties.electroChemicalPotentialPure(
           Substances.OH,
@@ -996,7 +996,7 @@ package Media "Models of physiological fluids"
       specificEnthalpy[Utilities.findIndex("HbF",substanceNames)] := 0;
       specificEnthalpy[Utilities.findIndex("Alb",substanceNames)] := 0;
       specificEnthalpy[Utilities.findIndex("Glb",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("SO4",substanceNames)] := 0;
+      specificEnthalpy[Utilities.findIndex("SO4_P",substanceNames)] := 0;
       specificEnthalpy[Utilities.findIndex("PO4",substanceNames)] := 0;
       specificEnthalpy[Utilities.findIndex("DPG",substanceNames)] := 0;
       specificEnthalpy[Utilities.findIndex("Glucose",substanceNames)] := Properties.specificEnthalpy(Substances.Glucose, solutionState);
@@ -1831,7 +1831,7 @@ Modelica source.
       algorithm
         state.p := p;
         state.X := X;
-        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-2);
+        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
         state.v := 0;
       end setState_phX;
 
