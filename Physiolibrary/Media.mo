@@ -7,7 +7,7 @@ package Media "Models of physiological fluids"
     import Physiolibrary.Media.Substances.*;
     import Physiolibrary.Media.InitialValues.*;
 
-    extends Media.Interfaces.PartialMedium(
+    extends Interfaces.Blood(
       mediumName = "Blood",
       substanceNames={"H2O_P","H2O_E","O2","CO2_P","CO2_E","CO","eHb","MetHb","HbF","Alb","Glb","PO4","SO4_P","DPG",
         "Glucose","Lactate","Urea","AminoAcids","Lipids","KetoAcids",
@@ -17,7 +17,7 @@ package Media "Models of physiological fluids"
         "Desglymidodrine",
         "Angiotensin2","Renin","Aldosterone",
         "Other_P","Other_E"},
-      substanceData = {Water, Water, O2, CO2, CO2, CO, Hb, Hb, Hb, Alb, Glb, PO4, SO4, DPG,
+      substanceData = {Water, Water, O2_g, CO2_g, CO2_g, CO_g, Hb, Hb, Hb, Alb, Glb, PO4, SO4, DPG,
          Glucose, Lactate, Urea, AminoAcid, Lipid, KetoAcid,
          Na, K, Na, K, Cl, Cl,
          Epinephrine, Norepinephrine, Vasopressin,
@@ -26,6 +26,18 @@ package Media "Models of physiological fluids"
          Angiotensin2, Renin, Aldosterone,
          Water, Water},
 
+      plasmaSubstances = {"H2O_P","CO2_P","Alb","Glb",
+           "Glucose","PO4","SO4_P","Lactate","Urea","AminoAcids","Lipids","KetoAcids","Na_P","K_P","Cl_P",
+            "Epinephrine","Norepinephrine","Vasopressin",
+            "Insulin","Glucagon","Thyrotropin","Thyroxine","Leptin",
+            "Desglymidodrine",
+            "Angiotensin2","Renin","Aldosterone",
+           "Other_P"},
+      formedElements = {"H2O_E","O2","CO2_E","CO","eHb","MetHb","HbF","DPG","Na_E","K_E","Cl_E","Other_E"},
+
+      plasmaStrongIons = {"Na_P","K_P","Cl_P","SO4_P"},
+      formedElementsStrongIons = { "Na_E","K_E","Cl_E"},
+
       accesibleSubstances={"H2O","H+","OH-","O2","CO2","CO","HCO3-",
          "Na+","K+","Cl-","SO4--","PO4---",
          "Glucose","Lactate-","Urea","AminoAcids-", "Lipids", "KetoAcids-",
@@ -33,7 +45,7 @@ package Media "Models of physiological fluids"
          "Insulin", "Glucagon", "Thyrotropin", "Thyroxine", "Leptin",
          "Desglymidodrine",
          "Angiotensin2","Renin", "Aldosterone"},
-      accesibleSubstanceData = {Water, H, OH, O2, CO2, CO, HCO3,
+      accesibleSubstanceData = {Water, H, OH, O2_g, CO2_g, CO_g, HCO3,
          Na, K, Cl, SO4, PO4,
          Glucose, Lactate, Urea, AminoAcid, Lipid, KetoAcid,
          Epinephrine, Norepinephrine, Vasopressin,
@@ -47,33 +59,8 @@ package Media "Models of physiological fluids"
         "AnesthesiaVascularConductance"},
       reference_X=ArterialDefault,
       C_default=CDefault,
-      SubstanceFlowNominal=ArterialDefault ./ Constants.TimeScale,
-      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
-      reducedX=false,
-      singleState=true,
-      reference_T=310.15,
-      reference_p=101325,
-      SpecificEnthalpy(start=0, nominal=1e3),
-      Density(start=1e3, nominal=1e3),
-      AbsolutePressure(start=1.0e5, nominal=1.0e5),
-      Temperature(
-        min=273.15,
-        max=320.15,
-        start=310.15,
-        nominal=310.15));
+      SubstanceFlowNominal=ArterialDefault ./ Constants.TimeScale);
 
-  /*protected 
-   constant Chemical.Interfaces.Definition substanceData[nS] = {
-    Substances.Water, Substances.Water, Substances.O2, Substances.CO2, Substances.CO2, Substances.CO,
-    Substances.Hb, Substances.Hb, Substances.Hb, Substances.Alb, Substances.Glb, Substances.PO4, Substances.SO4, Substances.DPG,
-    Substances.Glucose, Substances.Lactate, Substances.Urea, Substances.AminoAcid, Substances.Lipid, Substances.KetoAcid,
-    Substances.Na, Substances.K,Substances.Na, Substances.K, Substances.Cl, Substances.Cl,
-    Substances.Epinephrine, Substances.Norepinephrine, Substances.Vasopressin,
-    Substances.Insulin, Substances.Glucagon, Substances.Thyrotropin, Substances.Thyroxine, Substances.Leptin,
-    Substances.Desglymidodrine,
-    Substances.Angiotensin2, Substances.Renin, Substances.Aldosterone,
-    Substances.Water, Substances.Water};
-*/
   public
     constant Types.MassFraction ArterialDefault[nS]={
     0.47412413,0.2601168,0.00024730066,0.00060046016,0.00028486399,4.0067286e-11,0.12881933,
@@ -97,114 +84,7 @@ package Media "Models of physiological fluids"
     constant Types.MassFraction CDefault[nC]={
     1e-20,1e-20,1e-06};
 
-    function plasmaMassFraction "Blood plasmacrit [kg/kg]"
-      extends GetFraction;
-    protected
-      constant Boolean includeOther=true;
-    algorithm
-      F := state.X[Utilities.findIndex("H2O_P",substanceNames)] +
-           state.X[Utilities.findIndex("CO2_P",substanceNames)] +
-           state.X[Utilities.findIndex("Alb",substanceNames)] +
-           state.X[Utilities.findIndex("Glb",substanceNames)] +
-           state.X[Utilities.findIndex("Glucose",substanceNames)] +
-           state.X[Utilities.findIndex("PO4",substanceNames)] +
-           state.X[Utilities.findIndex("SO4_P",substanceNames)] +
-           state.X[Utilities.findIndex("Lactate",substanceNames)] +
-           state.X[Utilities.findIndex("Urea",substanceNames)] +
-           state.X[Utilities.findIndex("AminoAcids",substanceNames)] +
-           state.X[Utilities.findIndex("Lipids",substanceNames)] +
-           state.X[Utilities.findIndex("KetoAcids",substanceNames)] +
-           state.X[Utilities.findIndex("Na_P",substanceNames)] +
-           state.X[Utilities.findIndex("K_P",substanceNames)] +
-           state.X[Utilities.findIndex("Cl_P",substanceNames)] +
-           state.X[Utilities.findIndex("Epinephrine",substanceNames)] +
-           state.X[Utilities.findIndex("Norepinephrine",substanceNames)] +
-           state.X[Utilities.findIndex("Vasopressin",substanceNames)] +
-           state.X[Utilities.findIndex("Insulin",substanceNames)] +
-           state.X[Utilities.findIndex("Glucagon",substanceNames)] +
-           state.X[Utilities.findIndex("Thyrotropin",substanceNames)] +
-           state.X[Utilities.findIndex("Thyroxine",substanceNames)] +
-           state.X[Utilities.findIndex("Leptin",substanceNames)] +
-           state.X[Utilities.findIndex("Desglymidodrine",substanceNames)] +
-           state.X[Utilities.findIndex("Angiotensin2",substanceNames)] +
-           state.X[Utilities.findIndex("Renin",substanceNames)] +
-           state.X[Utilities.findIndex("Aldosterone",substanceNames)] +
-           (if (includeOther) then state.X[Utilities.findIndex("Other_P",substanceNames)] else 0);
-      annotation (Documentation(info="<html>
-<p>Mass of blood plasma per mass of blood. </p>
-</html>"));
-    end plasmaMassFraction;
 
-    function plasmaSpecificAmountOfParticles "Amount of free particles in 1 kg of blood plasma"
-      extends GetMolality;
-      input Types.Temperature T = temperature(state);
-      input Types.MassFraction pct = plasmaMassFraction(state);
-    algorithm
-
-     B := (
-     state.X[Utilities.findIndex("H2O_P",substanceNames)]*Chemical.Interfaces.Properties.specificAmountOfParticles(Substances.Water,
-        Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v)) +
-     state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM +
-     state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
-     state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM +
-     state.X[Utilities.findIndex("CO2_P",substanceNames)]/CO2.data.MM +
-     state.X[Utilities.findIndex("Alb",substanceNames)]/Constants.MM_Alb +
-     state.X[Utilities.findIndex("Glb",substanceNames)]/Constants.MM_Glb +
-     state.X[Utilities.findIndex("Glucose",substanceNames)]/Constants.MM_Glucose +
-     state.X[Utilities.findIndex("PO4",substanceNames)]/PO4.data.MM +
-     state.X[Utilities.findIndex("SO4_P",substanceNames)]/SO4.data.MM +
-     state.X[Utilities.findIndex("Lactate",substanceNames)]/Constants.MM_Lactate +
-     state.X[Utilities.findIndex("Urea",substanceNames)]/Constants.MM_Urea +
-     state.X[Utilities.findIndex("AminoAcids",substanceNames)]/Constants.MM_AminoAcids +
-     state.X[Utilities.findIndex("Lipids",substanceNames)]/Constants.MM_Lipids +
-     state.X[Utilities.findIndex("KetoAcids",substanceNames)]/Constants.MM_KetoAcids)/pct;
-      annotation (Documentation(info="<html>
-<p>Amount of particles in blood plasma per mass of blood plasma. </p>
-</html>"));
-    end plasmaSpecificAmountOfParticles;
-
-    function formedElementsMassFraction "Blood hematocrit [kg/kg]"
-      extends GetFraction;
-    protected
-      constant Boolean includeOther=true;
-    algorithm
-      F :=state.X[Utilities.findIndex("H2O_E",substanceNames)] +
-          state.X[Utilities.findIndex("O2",substanceNames)] +
-          state.X[Utilities.findIndex("CO2_E",substanceNames)] +
-          state.X[Utilities.findIndex("CO",substanceNames)] +
-          state.X[Utilities.findIndex("eHb",substanceNames)] +
-          state.X[Utilities.findIndex("MetHb",substanceNames)] +
-          state.X[Utilities.findIndex("HbF",substanceNames)] +
-          state.X[Utilities.findIndex("DPG",substanceNames)] +
-          state.X[Utilities.findIndex("Na_E",substanceNames)] +
-          state.X[Utilities.findIndex("K_E",substanceNames)] +
-          state.X[Utilities.findIndex("Cl_E",substanceNames)] +
-          (if (includeOther) then state.X[Utilities.findIndex("Other_E",substanceNames)] else 0);
-
-      annotation (Documentation(info="<html>
-<p>Mass of formed elements per mass of blood.</p>
-</html>"));
-    end formedElementsMassFraction;
-
-    function formedElementsSpecificAmountOfParticles "Amount of free particles in 1 kg of blood formed elements"
-      extends GetMolality;
-      input Types.Temperature T= temperature(state);
-      input Types.MassFraction hct= formedElementsMassFraction(state);
-
-    algorithm
-     B := (
-     state.X[Utilities.findIndex("H2O_E",substanceNames)]*Properties.specificAmountOfParticles(Substances.Water,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p,state.v)) +
-     state.X[Utilities.findIndex("CO2_E",substanceNames)]/CO2.data.MM +
-     state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM +
-     state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
-     state.X[Utilities.findIndex("Cl_E",substanceNames)]/Cl.data.MM +
-     (state.X[Utilities.findIndex("eHb",substanceNames)] + state.X[Utilities.findIndex("MetHb",substanceNames)] + state.X[Utilities.findIndex("HbF",substanceNames)])/Constants.MM_Hb +
-     state.X[Utilities.findIndex("DPG",substanceNames)]/Constants.MM_DPG)
-      /hct;
-      annotation (Documentation(info="<html>
-<p>Amount of particles in red cells per mass of red cells.</p>
-</html>"));
-    end formedElementsSpecificAmountOfParticles;
 
     model ArterialComposition "To set mass fractions in blood"
 
@@ -398,17 +278,6 @@ package Media "Models of physiological fluids"
 </html>"));
     end VenousComposition;
 
-    redeclare replaceable record extends ThermodynamicState
-      "A selection of variables that uniquely defines the thermodynamic state"
-      extends Modelica.Icons.Record;
-      AbsolutePressure p "Absolute pressure of medium";
-      SpecificEnthalpy h "Specific enthalpy";
-      MassFraction X[nS] "Mass fractions of substances";
-      Types.ElectricPotential v "Electric potential";
-      annotation (Documentation(info="<html>
-  <p>Thermodynamic state of blood is represented by pressure, temperature, base substances composition, electrical potential and ionic strengh.</p>
-</html>"));
-    end ThermodynamicState;
 
 
     redeclare replaceable model extends ChemicalSolution
@@ -532,19 +401,19 @@ package Media "Models of physiological fluids"
 
       state_out[findIndex("O2",accesibleSubstances)].u = Modelica.Constants.R*T*log(aO2) +
         Properties.electroChemicalPotentialPure(
-          Substances.O2,
+          Substances.O2_g,
           solutionState);
       state_out[findIndex("O2",accesibleSubstances)].h = Properties.molarEnthalpy(
-          Substances.O2,
+          Substances.O2_g,
           solutionState);
 
 
       state_out[findIndex("CO2",accesibleSubstances)].u = Modelica.Constants.R*T*log(aCO2) +
         Properties.electroChemicalPotentialPure(
-          Substances.CO2,
+          Substances.CO2_g,
           solutionState);
       state_out[findIndex("CO2",accesibleSubstances)].h = Properties.molarEnthalpy(
-          Substances.CO2,
+          Substances.CO2_g,
           solutionState);
       state_out[findIndex("HCO3-",accesibleSubstances)].u = Modelica.Constants.R*T*log(aHCO3) +
         Properties.electroChemicalPotentialPure(
@@ -557,10 +426,10 @@ package Media "Models of physiological fluids"
 
       state_out[findIndex("CO",accesibleSubstances)].u = Modelica.Constants.R*T*log(aCO) +
         Properties.electroChemicalPotentialPure(
-          Substances.CO,
+          Substances.CO_g,
           solutionState);
       state_out[findIndex("CO",accesibleSubstances)].h = Properties.molarEnthalpy(
-          Substances.CO,
+          Substances.CO_g,
           solutionState);
 
 
@@ -737,797 +606,46 @@ package Media "Models of physiological fluids"
 </html>"));
     end ChemicalSolution;
 
-    replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
-      input Physiolibrary.Media.Blood.ThermodynamicState state(
-        p=101325,
-        h=ArterialDefault*specificEnthalpies_Tpv(T, 101325),
-        X=ArterialDefault) "blood";
-      input Modelica.Units.SI.Temperature T=310.15 "Temperature";
-      output Modelica.Units.SI.Pressure pO2(start=101325*87/760,min=1e-11)
-        "Oxygen partial pressure";
-      output Modelica.Units.SI.Pressure pCO2(start=101325*40/760)
-        "Carbon dioxide partial pressure";
-      output Modelica.Units.SI.Pressure pCO(start=1e-5, min=1e-11)
-        "Carbon monoxide partial pressure";
-      output Physiolibrary.Types.pH pH(start=7.4)
-        "Blood plasma acidity";
 
-      output Physiolibrary.Types.Fraction fzcO
-        "expected fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
-      output Physiolibrary.Types.Fraction fzcD
-        "expected fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
-      output Physiolibrary.Types.Fraction sCO2
-        "expected CO2 saturation of hemoglobin amino-termini";
-      // protected
-      input Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
-      input Types.Concentration _tO2=tO2(state) "oxygen content per volume of blood";
-      input Types.Concentration _tCO2=tCO2(state)
-        "carbon dioxide content per volume of blood";
-      input Types.Concentration _tCO=tCO(state)
-        "carbon monoxide content per volume of blood";
-      input Types.Concentration _tHb=tHb(state)
-        "hemoglobin content per volume of blood";
-      input Types.MoleFraction _FMetHb(start=0.005)=FMetHb(state) "fraction of methemoglobin";
-      input Types.MoleFraction _FHbF(start=0.005)=FHbF(state) "fraction of foetalhemoglobin";
-      input Types.Concentration _ctHb_ery=ctHb_ery(state)
-        "hemoglobin concentration in red cells";
-      input Types.Concentration _tAlb=tAlb(state)
-        "albumin concentration in blood plasma";
-      input Types.MassConcentration _tGlb=tGlb(state)
-        "globulin concentration in blood plasma";
-      input Types.Concentration _tPO4=tPO4(state)
-        "inorganic phosphates concentration in blood plasma";
-      input Types.Concentration _cDPG=cDPG(state) "DPG concentration in blood plasma";
-      input Types.Concentration _SID=SID(state) "strong ion difference of blood";
-      input Types.Concentration _SID_P=plasmaSID(state) "strong ion difference of blood plasma";
-      input Types.Concentration _SID_E=formedElementsSID(state) "strong ion difference of blood formed elements";
 
-      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
-      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
-      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
-      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
-        "normal CO2 partial pressure";
-
-      Physiolibrary.Types.Concentration NSIDP;
-      Physiolibrary.Types.Concentration NSIDE;
-      Physiolibrary.Types.Concentration NSID;
-      Physiolibrary.Types.Concentration BEox, BEox_P, BEox_E;
-      Physiolibrary.Types.Concentration cdCO2;
-
-      Physiolibrary.Types.pH pH_ery;
-
-      input Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
-        "solubility of CO2 in blood plasma at 37 degC";
-      input Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*(10^(-0.0092*(T - 310.15)))
-        "solubility of CO2 in blood plasma";
-      input Physiolibrary.Types.GasSolubilityPa aCO2_ery(displayUnit="mmol/l/mmHg") = 0.000195
-        "solubility 0.23 (mmol/l)/kPa at 25degC";
-      input Physiolibrary.Types.GasSolubilityPa aO2=exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*
-          0.00042*((T - T0)^2))/1000 "oxygen solubility in blood";
-      input Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2
-        "carbon monoxide solubility in blood";
-
-      input Real pK=6.1 + (-0.0026)*(T - 310.15) "Henderson-Hasselbalch";
-      input Real pK_ery=6.125 - log10(1 + 10^(pH_ery - 7.84 - 0.06*sO2));
-
-      parameter Real pKa1=2.1 "HPO4^2- dissociation";
-      parameter Real pKa2=6.8 "H2PO4^- dissociation";
-      parameter Real pKa3=12.7 "H3PO4 dissociation";
-
-      parameter Real betaOxyHb=3.1 "Buffer value for oxygenated Hb without CO2";
-      parameter Real pIo=7.13 "Isoelectric pH for oxygenated Hb without CO2";
-
-      parameter Real pKzD=7.73 "Coefficient pKa for NH3+ end of deoxygenated hemoglobin chain";
-      parameter Real pKzO=7.25 "Coefficient pKa for NH3+ end of oxygenated hemoglobin chain";
-      parameter Real pKcD=7.54
-        "10^(pH-pKcR) is the dissociation constatnt for HbNH2 + CO2 <-> HbNHCOO- + H+ ";
-      parameter Real pKcO=8.35
-        "10^(pH-pKcO) is the dissociation constatnt for O2HbNH2 + CO2 <-> O2HbNHCOO- + H+ ";
-      parameter Real pKhD=7.52
-        "10^(pH-pKhD) is the dissociation constatnt for HbAH <-> HbA- + H+ ";
-      parameter Real pKhO=6.89
-        "10^(pH-pKhO) is the dissociation constatnt for O2HbAH <-> O2HbA- + H+ ";
-
-      Physiolibrary.Types.Concentration cdCO2N;
-      Physiolibrary.Types.Fraction sCO2N;
-      Physiolibrary.Types.Fraction fzcON;
-
-      Physiolibrary.Types.Concentration beta;
-      Physiolibrary.Types.Concentration cHCO3(start=24.524), cHCO3_E(start=15.5);
-
-      Physiolibrary.Types.Fraction sO2CO(start=0.962774);
-      Physiolibrary.Types.Fraction sCO(start=1.8089495e-07);
-      Physiolibrary.Types.Fraction sO2;
-      Physiolibrary.Types.Fraction FCOHb;
-      Physiolibrary.Types.Concentration ceHb "effective hemoglobin";
-
-      Physiolibrary.Types.Concentration tCO2_P(displayUnit="mmol/l");
-      Physiolibrary.Types.Concentration tCO2_ery(displayUnit="mmol/l");
-
-      Physiolibrary.Types.Fraction sCO2O
-        "CO2 saturation of oxy-hemoglobin amino-termini";
-      Physiolibrary.Types.Fraction sCO2D
-        "CO2 saturation of deoxy-hemoglobin amino-termini";
-
-      Real dHh "Bohr's protons of reaction h";
-      Real dHz "Bohr's protons of reaction z";
-      Real dHc "Bohr's protons of reaction c";
-
-      Real dH  "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
-      Real dTH "Total titration shift with Bohr protons and carbamination";
-
-    equation
-      cdCO2N = aCO2N*pCO20 "free disolved CO2 concentration at pCO2=40mmHg and T=37degC";
-
-      NSIDP =-(-(_tAlb*66.463)*(0.123*pH0 - 0.631) - _tGlb*(2.5/28) - _tPO4*(10^(
-        pKa2 - pH0) + 2 + 3*10^(pH0 - pKa3))/(10^(pKa1 + pKa2 - 2*pH0) + 10^(pKa2 -
-        pH0) + 1 + 10^(pH0 - pKa3)) - cdCO2N*10^(pH0 - pK))
-        "strong ion difference of blood plasma at pH=7.4, pCO2=40mmHg, T=37degC and sO2=1";
-
-      fzcON = 1/(1 + 10^(pKzO - pH_ery0) + cdCO2N*10^(pH_ery0 - pKcO))
-        "fraction of hemoglobin units with HN2 form of amino-terminus at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
-      sCO2N = 10^(pH_ery0 - pKcO)*fzcON*cdCO2N
-        "CO2 saturation of hemoglobin amino-termini at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
-      NSIDE =-(-cdCO2N*10^(pH_ery0 - pK) - _ctHb_ery*(betaOxyHb*(pH_ery0 - pIo) +
-        sCO2N*(1 + 2*10^(pKzO - pH_ery0))/(1 + 10^(pKzO - pH_ery0)) + 0.82))
-        + zDPG*_cDPG + zOtherE
-        "strong ion difference of red cells at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
-
-      NSID = Hct*NSIDE + (1 - Hct)*NSIDP
-        "strong ion difference of blood at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
-
-      BEox = _SID - NSID "base excess of oxygenated blood";
-
-      beta =2.3*_tHb + 8*_tAlb + 0.075*_tGlb + 0.309*_tPO4
-                                                        "buffer value of blood";
-
-      pH =pH0 + (1/beta)*(((BEox + 0.3*(1 - sO2CO))/(1 - _tHb/43)) - (cHCO3 - 24.5))
-        "Van Slyke (simplified electroneutrality equation)";
-      pH_ery = 7.19 + 0.77*(pH - 7.4) + 0.035*(1 - sO2);
-
-      sO2CO =homotopy(hemoglobinDissociationCurve(
-          pH,
-          pO2,
-          pCO2,
-          pCO,
-          T,
-          _tHb,
-          _cDPG,
-          _FMetHb,
-          _FHbF),hemoglobinDissociationCurve(
-          pH0,
-          pO2,
-          pCO20,
-          1e-5,
-          310,
-          8.4,
-          5,
-          0.005,
-          0.005));
-
-      sCO*(pO2 + 218*pCO) = 218*sO2CO*(pCO);
-      FCOHb =sCO*(1 - _FMetHb);
-      _tCO = aCO*pCO + FCOHb*_tHb;
-
-      ceHb =_tHb*(1 - FCOHb - _FMetHb);
-      sO2 =(sO2CO*(_tHb*(1 - _FMetHb)) - _tHb*FCOHb)/ceHb;
-      _tO2 = aO2*pO2 + ceHb*sO2;
-
-      cdCO2 = aCO2*pCO2;
-      cdCO2*10^(pH - pK) = cHCO3;
-
-      tCO2_P = cHCO3 + cdCO2;
-      tCO2_ery = aCO2_ery*pCO2*(1 + 10^(pH_ery - pK_ery)) + sCO2*ceHb;
-      cHCO3_E = aCO2_ery*pCO2*(10^(pH_ery - pK_ery));
-      _tCO2 = tCO2_ery*Hct + tCO2_P*(1 - Hct);
-
-      fzcO = 1/(1 + 10^(pKzO - pH_ery) + cdCO2*10^(pH_ery - pKcO))
-        "fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
-      fzcD = 1/(1 + 10^(pKzD - pH_ery) + cdCO2*10^(pH_ery - pKcD))
-        "fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
-
-      sCO2 = 10^(pH_ery - pKcO)*fzcO*cdCO2*sO2 + 10^(pH_ery - pKcD)*fzcD*cdCO2*(1-sO2)
-        "CO2 saturation of hemoglobin amino-termini";
-
-      sCO2O = 10^(pH_ery - pKcO)*fzcO*cdCO2
-        "CO2 saturation of oxy-hemoglobin amino-termini";
-      sCO2D = 10^(pH_ery - pKcD)*fzcD*cdCO2
-        "CO2 saturation of deoxy-hemoglobin amino-termini";
-
-      dHh = - ((1/(1 + 10^(pKhD - pH_ery)))-(1/(1 + 10^(pKhO - pH_ery))))
-        "Bohr's protons of reaction h";
-      dHz = (10^(pKzD - pH_ery))*fzcD - (10^(pKzO - pH_ery))*fzcO
-        "Bohr's protons of reaction z";
-      dHc = - (aCO2_ery*pCO2*(10^(pH_ery - pKcD))*fzcD - aCO2_ery*pCO2*(10^(pH_ery - pKcO))*fzcO)
-        "Bohr's protons of reaction c";
-
-      dH = dHh + dHz + dHc
-        "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
-      dTH = sO2*dH + sCO2D*(1+1/(1+10^(pH-pKzD)))
-        "Total titration shift with Bohr protons and carbamination";
-
-      BEox_P = _SID_P - NSIDP;
-      BEox_E = _SID_E + dTH*ceHb - NSIDE;
-
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
-<p><a href=\"https://www.creativeconnections.cz/medsoft/2013/Medsoft_2013_Matejak.pdf\">Medsoft_2013_Matejak.pdf (creativeconnections.cz)</a></p>
-</html>"));
-    end BloodGases;
-
-    redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
-      "Base properties of medium"
-
-      input Types.ElectricPotential v "electric potential";
-
-    equation
-      d = 1057;
-      h =specificEnthalpies_Tpv(
-          T,
-          p,
-          v)*X;
-      u = h - p/d;
-      MM = 1;
-      R_s = 8.3144;
-      state.p = p;
-      state.h = h;
-      state.X = X;
-      state.v = v;
-      annotation (Documentation(info="<html>
-<p>Simplification of blood:</p>
-<p>Constant density and constant heat capacity</p>
-</html>"));
-    end BaseProperties;
-
-    redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of blood substances"
-    protected
-     Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
-    algorithm
-        specificEnthalpy[Utilities.findIndex("H2O_E",substanceNames)] := Properties.specificEnthalpy(Substances.Water, solutionState);
-      specificEnthalpy[Utilities.findIndex("O2",substanceNames)] := Properties.specificEnthalpy(Substances.O2, solutionState);
-      specificEnthalpy[Utilities.findIndex("CO2_P",substanceNames)] := Properties.specificEnthalpy(Substances.CO2, solutionState);
-      specificEnthalpy[Utilities.findIndex("CO2_E",substanceNames)] := Properties.specificEnthalpy(Substances.CO2, solutionState);
-      specificEnthalpy[Utilities.findIndex("CO",substanceNames)] := Properties.specificEnthalpy(Substances.CO, solutionState);
-      specificEnthalpy[Utilities.findIndex("eHb",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("MetHb",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("HbF",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Alb",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Glb",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("SO4_P",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("PO4",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("DPG",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Glucose",substanceNames)] := Properties.specificEnthalpy(Substances.Glucose, solutionState);
-      specificEnthalpy[Utilities.findIndex("Lactate",substanceNames)] := Properties.specificEnthalpy(Substances.Lactate, solutionState);
-      specificEnthalpy[Utilities.findIndex("Urea",substanceNames)] := Properties.specificEnthalpy(Substances.Urea, solutionState);
-      specificEnthalpy[Utilities.findIndex("AminoAcids",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Lipids",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("KetoAcids",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Na_P",substanceNames)] := Properties.specificEnthalpy(Substances.Na, solutionState);
-      specificEnthalpy[Utilities.findIndex("Na_E",substanceNames)] := Properties.specificEnthalpy(Substances.Na, solutionState);
-      specificEnthalpy[Utilities.findIndex("K_P",substanceNames)] := Properties.specificEnthalpy(Substances.K, solutionState);
-      specificEnthalpy[Utilities.findIndex("K_E",substanceNames)] := Properties.specificEnthalpy(Substances.K, solutionState);
-      specificEnthalpy[Utilities.findIndex("Cl_P",substanceNames)] := Properties.specificEnthalpy(Substances.Cl, solutionState);
-      specificEnthalpy[Utilities.findIndex("Cl_E",substanceNames)] := Properties.specificEnthalpy(Substances.Cl, solutionState);
-      specificEnthalpy[Utilities.findIndex("Epinephrine",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Norepinephrine",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Vasopressin",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Insulin",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Glucagon",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Thyrotropin",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Thyroxine",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Leptin",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Desglymidodrine",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Angiotensin2",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Renin",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Aldosterone",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("H2O_P",substanceNames)] := Properties.specificEnthalpy(Substances.Water, solutionState);
-      specificEnthalpy[Utilities.findIndex("Other_P",substanceNames)] := 0;
-      specificEnthalpy[Utilities.findIndex("Other_E",substanceNames)] := 0;
-
-
-    end specificEnthalpies_Tpv;
-
-    redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
-    algorithm
-        h := state.h;
-    end specificEnthalpy;
-
-
-
-
-
-    replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
-      input Real pH "acidity";
-      input Real pO2 "oxygen partial pressure";
-      input Real pCO2(min=Modelica.Constants.small) "carbon dioxide partial pressure";
-      input Real pCO "carbon monoxide partial pressure";
-      input Real T "temperature";
-      input Real tHb "total hemoglobin";
-      input Real cDPG "diphosphoglicerate";
-      input Real FMetHb "methemoglobin fraction";
-      input Real FHbF "foethel hemoglobin fraction";
-      output Real sO2CO "oxygen and carbon monoxide saturation";
-    protected
-      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
-      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
-      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
-      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
-        "normal CO2 partial pressure";
-
-      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
-      parameter Real dadcDPG0=0.3 "used by a";
-      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
-      parameter Real dadpH=-0.88 "used by a";
-      parameter Real dadlnpCO2=0.048 "used by a";
-      parameter Real dadxMetHb=-0.7 "used by a";
-      parameter Real dadxHbF=-0.25 "used by a";
-
-      Real aO2;
-      Real cdO2;
-      Physiolibrary.Types.Fraction sO2;
-      Physiolibrary.Types.Pressure pO2CO(min=Modelica.Constants.small);
-      Physiolibrary.Types.Concentration cO2Hb;
-      Physiolibrary.Types.Fraction sCO;
-      Physiolibrary.Types.Concentration ceHb;
-      Real a;
-      Real k;
-      Real x;
-      Real y;
-      Real h;
-      Physiolibrary.Types.Fraction FCOHb;
-    algorithm
-
-      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
-      k := 0.5342857;
-      h := 3.5 + a;
-
-      pO2CO := pO2 + 218*pCO;
-      x := log(pO2CO/7000) - a - 0.055*(T - T0);
-      y := 1.8747 + x + h*tanh(k*x);
-
-      sO2CO := exp(y)/(1 + exp(y));
-
-      annotation (
-      derivative = hemoglobinDissociationCurve_der,
-      Documentation(info="<html>
-<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
-<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
-</html>"));
-    end hemoglobinDissociationCurve;
-
-    replaceable function hemoglobinDissociationCurve_der "Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
-      input Real pH "acidity";
-      input Real pO2 "oxygen partial pressure";
-      input Real pCO2 "carbon dioxide partial pressure";
-      input Real pCO "carbon monoxide partial pressure";
-      input Real T "temperature";
-      input Real tHb "total hemoglobin";
-      input Real cDPG "diphosphoglicerate";
-      input Real FMetHb "methemoglobin fraction";
-      input Real FHbF "foethel hemoglobin fraction";
-      input Real der_pH "derivative of acidity";
-      input Real der_pO2 "derivative of oxygen partial pressure";
-      input Real der_pCO2 "derivative of carbon dioxide partial pressure";
-      input Real der_pCO "derivative of carbon monoxide partial pressure";
-      input Real der_T "derivative of temperature";
-      input Real der_tHb "derivative of total hemoglobin";
-      input Real der_cDPG "derivative of diphosphoglicerate";
-      input Real der_FMetHb "derivative of methemoglobin fraction";
-      input Real der_FHbF "derivative of foethel hemoglobin fraction";
-      output Real der_sO2CO "derivative of oxygen and carbon monoxide saturation";
-    protected
-      constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
-      constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
-      constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
-      constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
-        "normal CO2 partial pressure";
-
-      parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
-      parameter Real dadcDPG0=0.3 "used by a";
-      parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
-      parameter Real dadpH=-0.88 "used by a";
-      parameter Real dadlnpCO2=0.048 "used by a";
-      parameter Real dadxMetHb=-0.7 "used by a";
-      parameter Real dadxHbF=-0.25 "used by a";
-
-      Real aO2;
-      Real cdO2;
-      Physiolibrary.Types.Fraction sO2;
-      Physiolibrary.Types.Pressure pO2CO;
-      Physiolibrary.Types.Concentration cO2Hb;
-      Physiolibrary.Types.Fraction sCO;
-      Physiolibrary.Types.Concentration ceHb;
-      Real a, a_der;
-      Real k;
-      Real x,x_der;
-      Real y,y_der;
-      Real h;
-      Physiolibrary.Types.Fraction FCOHb;
-    algorithm
-
-      a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
-
-      a_der := dadpH*der_pH + dadlnpCO2*(der_pCO2/pCO20)/(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
-        dadxMetHb*der_FMetHb +
-        (dadcDPGxHbF*der_FHbF)*(cDPG/cDPG0 - 1)+(dadcDPG0 + dadcDPGxHbF*FHbF)*(der_cDPG/cDPG0);
-
-      k := 0.5342857;
-      h := 3.5 + a;
-
-      pO2CO := pO2 + 218*pCO;
-      x := log(pO2CO/7000) - a - 0.055*(T - T0);
-
-      x_der := (der_pO2 + 218*der_pCO)/(pO2CO) - a_der - 0.055*der_T;
-      y := 1.8747 + x + h*tanh(k*x);
-      y_der := x_der + a_der*tanh(k*x) + h*(k*4*x_der/((exp(k*x)+exp(-k*x))^2));
-
-      der_sO2CO := y_der*exp(y)/((1 + exp(y))^2);
-
-      annotation (Documentation(info="<html>
-<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
-<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
-</html>"));
-    end hemoglobinDissociationCurve_der;
-
-    redeclare replaceable function extends setState_pTX "Thermodynamic state"
-    algorithm
-      state.h :=specificEnthalpies_Tpv(
-        T,
-        p,
-        v)*X;
-      state.p := p;
-      state.X := X;
-      state.v := v;
-      annotation (Documentation(info="<html>
-<p>Set thermodynamic state</p>
-</html>"));
-    end setState_pTX;
-
-    redeclare replaceable function extends setState_phX "Thermodynamic state"
-
-    algorithm
-      state.p := p;
-      state.h := h;
-      state.X := X;
-      state.v := v;
-
-      annotation (Documentation(info="<html>
-<p>Set thermodynamic state based on constant heat capacity</p>
-</html>"));
-    end setState_phX;
-
-    redeclare replaceable function extends density "Density"
-    algorithm
-      d := D_BloodDensity;
-      annotation (Documentation(info="<html>
-<p>constant density</p>
-</html>"));
-    end density;
-
-    replaceable function plasmaDensity "Density of blood plasma"
-      extends GetDensity;
-    algorithm
-      d := D_BloodPlasmaDensity;
-      annotation (Documentation(info="<html>
-<p>constant density</p>
-</html>"));
-    end plasmaDensity;
-
-    redeclare replaceable function extends specificHeatCapacityCp "Specific heat capacityReturn specific heat capacity at constant pressure"
-    algorithm
-      cp := 3490;
-      annotation (Documentation(info="<html>
-<p>Constant specific heat capacity</p>
-</html>"));
-    end specificHeatCapacityCp;
-
-    redeclare replaceable function extends temperature "Temperature"
-    algorithm
-      T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=state.p, X=state.X,  h=state.h), 273.15, 330,     1e-2);
-      annotation (Documentation(info="<html>
-<p>Temperature</p>
-</html>"));
-    end temperature;
-
-    redeclare replaceable function extends pressure "Pressure"
-    algorithm
-      p := state.p;
-      annotation (Documentation(info="<html>
-<p>Pressure</p>
-</html>"));
-    end pressure;
-
-
-
-    function tO2 "Total oxygen in blood"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * state.X[Utilities.findIndex("O2",substanceNames)] / O2.data.MM;
-    end tO2;
-
-    function sO2 "Oxygen saturation on effective hemoglobin"
-      extends GetFraction;
-    algorithm
-      F := (state.X[Utilities.findIndex("O2",substanceNames)] / O2.data.MM) / (state.X[Utilities.findIndex("eHb",substanceNames)] / Constants.MM_Hb);
-    end sO2;
-
-    function tCO2 "Total carbon dioxide in blood"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * (state.X[Utilities.findIndex("CO2_P",substanceNames)]+state.X[Utilities.findIndex("CO2_E",substanceNames)]) / CO2.data.MM;
-    end tCO2;
-
-    function tCO "Total carbon monoxide in blood"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * state.X[Utilities.findIndex("CO",substanceNames)] / CO.data.MM;
-    end tCO;
-
-    function tHb "Total hemoglobine in blood"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * (state.X[Utilities.findIndex("eHb",substanceNames)] + state.X[Utilities.findIndex("MetHb",substanceNames)] + state.X[Utilities.findIndex("HbF",substanceNames)]) / Constants.MM_Hb;
-    end tHb;
-
-    function FMetHb "Methemoglobine fraction"
-      extends GetFraction;
-    algorithm
-      F := (state.X[Utilities.findIndex("MetHb",substanceNames)] / tHb(state));
-    end FMetHb;
-
-    function FHbF "Foetalhemoglobine fraction"
-      extends GetFraction;
-    algorithm
-      F := (state.X[Utilities.findIndex("HbF",substanceNames)] / tHb(state));
-    end FHbF;
-
-    function ctHb_ery "Total hemoglobine in erythrocytes"
-      extends GetConcentration;
-    algorithm
-      C :=tHb(state)/hematocrit(state);
-    end ctHb_ery;
-
-    function tAlb "Total albumine in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=plasmaDensity(state)*(state.X[Utilities.findIndex("Alb",substanceNames)]/Constants.MM_Alb)/
-        plasmaMassFraction(state);
-    end tAlb;
-
-    function tGlb "Total globulin in blood plasma [g/L]"
-      extends GetMassConcentration;
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Glb",substanceNames)]/plasmaMassFraction(state);
-    end tGlb;
-
-
-
-    function tPO4 "Total anorganic phosphates in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=plasmaDensity(state)*(state.X[Utilities.findIndex("PO4",substanceNames)]/PO4.data.MM)/
-        plasmaMassFraction(state);
-    end tPO4;
-
-    function cDPG "Total diphosphoglycerate in erythrocytes"
-      extends GetConcentration;
-    algorithm
-      C :=formedElementsDensity(state)*(state.X[Utilities.findIndex("DPG",substanceNames)]/Constants.MM_DPG)/
-        formedElementsMassFraction(state);
-    end cDPG;
-
-    function SID "Strong ion difference of blood"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * (
-          state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
-          state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
-          state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM +
-          state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM -
-          state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM -
-          state.X[Utilities.findIndex("Cl_E",substanceNames)]/Cl.data.MM -
-          SO4.data.z*state.X[Utilities.findIndex("SO4_P",substanceNames)]/SO4.data.MM);
-    end SID;
-
-    function glucose "Total glucose in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Glucose",substanceNames)]/Constants.MM_Glucose)/
-        plasmaMassFraction(state);
-    end glucose;
-
-    function lactate "Total lactate in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Lactate",substanceNames)]/Constants.MM_Lactate)/
-        plasmaMassFraction(state);
-    end lactate;
-
-    function urea "Total urea in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Urea",substanceNames)]/Constants.MM_Urea)/
-        plasmaMassFraction(state);
-    end urea;
-
-    function aminoAcids "Total amino acids in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("AminoAcids",substanceNames)]/Constants.MM_AminoAcids)/
-        plasmaMassFraction(state);
-    end aminoAcids;
-
-    function lipids "Total faty acids in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Lipids",substanceNames)]/Constants.MM_Lipids)/
-        plasmaMassFraction(state);
-    end lipids;
-
-    function ketoAcids "Total ketoacids in blood plasma"
-      extends GetConcentration;
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("KetoAcids",substanceNames)]/Constants.MM_KetoAcids)/
-        plasmaMassFraction(state);
-    end ketoAcids;
-
-    function epinephrine "Epinephrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Epinephrine",substanceNames)]));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Epinephrine",substanceNames)]/plasmaMassFraction(state);
-    end epinephrine;
-
-    function norepinephrine "Norepinephrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Norepinephrine",substanceNames)]));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Norepinephrine",substanceNames)]/plasmaMassFraction(
-        state);
-    end norepinephrine;
-
-    function vasopressin "Vasopressin in blood plasma"
-      extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Vasopressin",substanceNames)]));
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Vasopressin",substanceNames)]/Constants.MM_Vasopressin)
-        /plasmaMassFraction(state);
-    end vasopressin;
-
-    function insulin "Insulin in blood plasma"
-      extends GetActivity(A(unit="U/m3",displayUnit="mU/l"));
-    algorithm
-      A :=(plasmaDensity(state)*(state.X[Utilities.findIndex("Insulin",substanceNames)]/6e-9)/Constants.MM_Insulin)
-        /plasmaMassFraction(state)                                                                            "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
-    end insulin;
-
-    function glucagon "Glucagon in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Glucagon",substanceNames)]));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Glucagon",substanceNames)]/plasmaMassFraction(state);
-    end glucagon;
-
-    function thyrotropin "Thyrotropin in blood plasma"
-      extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Thyrotropin",substanceNames)]));
-    algorithm
-      C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Thyrotropin",substanceNames)]/Constants.MM_Thyrotropin)
-        /plasmaMassFraction(state);
-    end thyrotropin;
-
-    function thyroxine "Thyroxine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Thyroxine",substanceNames)]));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Thyroxine",substanceNames)]/plasmaMassFraction(state);
-    end thyroxine;
-
-    function leptin "Leptin in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Leptin",substanceNames)]));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Leptin",substanceNames)]/plasmaMassFraction(state);
-    end leptin;
-
-    function desglymidodrine "Desglymidodrine in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ug/l"));
-    algorithm
-      R :=plasmaDensity(state)*state.X[Utilities.findIndex("Desglymidodrine",substanceNames)]/plasmaMassFraction(
-        state);
-    end desglymidodrine;
-
-
-    function angiotensin2 "Angiotensin2 in blood plasma"
-      extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Angiotensin2",substanceNames)]));
-    algorithm
-       R :=plasmaDensity(state)*state.X[Utilities.findIndex("Angiotensin2",substanceNames)]/plasmaMassFraction(
-        state);
-    end angiotensin2;
-
-    function alphaBlockers "Alpha blockers effect"
-      extends GetExtraProperty;
-    algorithm
-      e := C[Utilities.findIndex("AlphaBlockers",extraPropertiesNames)]/1e-6;
-    end alphaBlockers;
-
-    function betaBlockers "Beta blockers effect"
-      extends GetExtraProperty;
-    algorithm
-      e := C[Utilities.findIndex("BetaBlockers",extraPropertiesNames)]/1e-6;
-    end betaBlockers;
-
-    function anesthesiaVascularConductance "Anesthesia vascular conductance effect"
-      extends GetExtraProperty;
-    algorithm
-      e := C[Utilities.findIndex("AnesthesiaVascularConductance",extraPropertiesNames)]/1e-6;
-    end anesthesiaVascularConductance;
-
-    function aldosterone "Aldosterone in blood plasma"
-      extends GetConcentration(C(displayUnit="nmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Aldosterone",substanceNames)]));
-    algorithm
-      C :=plasmaDensity(state)*(state.X[Utilities.findIndex("Aldosterone",substanceNames)]/Constants.MM_Aldosterone)
-        /plasmaMassFraction(state);
-    end aldosterone;
-
-
-    function renin "Renin PRA in blood plasma"
-      extends GetActivity(A(unit="ng/(ml.h)",displayUnit="ng/(ml.h)"));
-    algorithm
-      A :=plasmaDensity(state)*((state.X[Utilities.findIndex("Renin",substanceNames)]/(1e-12*0.6*11.2)))/
-        plasmaMassFraction(state)                                                                     "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
-    end renin;
-
-    function plasmacrit "Blood plasmacrit [mL/mL]"
-      extends GetFraction;
-    algorithm
-      F := plasmaMassFraction(state)*(density(state)/plasmaDensity(state));
-    end plasmacrit;
-
-    function hematocrit "Blood hematocrit [mL/mL]"
-      extends GetFraction;
-    algorithm
-      F := 1-plasmacrit(state);
-    end hematocrit;
-
-    function formedElementsDensity
-      "Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)"
-      extends GetDensity;
-    algorithm
-      d :=formedElementsMassFraction(state)*(density(state)/hematocrit(state));
-      annotation (Documentation(info="<html>
-<p>constant density</p>
-</html>"));
-    end formedElementsDensity;
-
-
-    function formedElementsMassFractionWithoutOther "Blood hematocrit without unknown substances in formed elements [kg/kg]"
-      extends formedElementsMassFraction(includeOther=false);
-    end formedElementsMassFractionWithoutOther;
-
-    function plasmaMassFractionWithoutOther "Blood plasmacrit without unknown substances in blood plasma [kg/kg]"
-    extends plasmaMassFraction(includeOther=false);
-    end plasmaMassFractionWithoutOther;
-
-
-    function plasmaSID "Strong ion difference of blood plasma"
-      extends GetConcentration;
-    algorithm
-      C := plasmaDensity(state) * (
-          state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
-          state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM -
-          state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM -
-          SO4.data.z*state.X[Utilities.findIndex("SO4_P",substanceNames)]/SO4.data.MM) / plasmacrit(state);
-    end plasmaSID;
-
-    function formedElementsSID "Strong ion difference of blood formed elements"
-      extends GetConcentration;
-    algorithm
-      C := density(state) * (
-          state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
-          state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM -
-          state.X[Utilities.findIndex("Cl_E",substanceNames)]/Cl.data.MM) / hematocrit(state);
-    end formedElementsSID;
-  public
-
+  /*
+
+  function SID "Strong ion difference of blood"
+    extends GetConcentration;
+  algorithm 
+    C := density(state) * (
+        state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
+        state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
+        state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM +
+        state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM -
+        state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM -
+        state.X[Utilities.findIndex("Cl_E",substanceNames)]/Cl.data.MM -
+        SO4.data.z*state.X[Utilities.findIndex("SO4_P",substanceNames)]/SO4.data.MM);
+  end SID;
+
+
+  function plasmaSID "Strong ion difference of blood plasma"
+    extends GetConcentration;
+  algorithm 
+    C := plasmaDensity(state) * (
+        state.X[Utilities.findIndex("Na_P",substanceNames)]/Na.data.MM +
+        state.X[Utilities.findIndex("K_P",substanceNames)]/K.data.MM -
+        state.X[Utilities.findIndex("Cl_P",substanceNames)]/Cl.data.MM -
+        SO4.data.z*state.X[Utilities.findIndex("SO4_P",substanceNames)]/SO4.data.MM) / plasmacrit(state);
+  end plasmaSID;
+
+  function formedElementsSID "Strong ion difference of blood formed elements"
+    extends GetConcentration;
+  algorithm 
+    C := density(state) * (
+        state.X[Utilities.findIndex("Na_E",substanceNames)]/Na.data.MM +
+        state.X[Utilities.findIndex("K_E",substanceNames)]/K.data.MM -
+        state.X[Utilities.findIndex("Cl_E",substanceNames)]/Cl.data.MM) / hematocrit(state);
+  end formedElementsSID;
+  
+  
+ public 
+*/
     annotation (Documentation(info="<html>
 <p>Adding new substance to blood model:</p>
 <p><br>- add to Blood.substanceNames</p>
@@ -1542,45 +660,16 @@ package Media "Models of physiological fluids"
     import Chemical.Interfaces.Properties;
     import Physiolibrary.Media.Substances.*;
 
-    extends Interfaces.PartialMedium(
-      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+    extends Interfaces.SimpleAqueous (
       mediumName="Water",
       substanceNames={ "H2O"},
       substanceData= { Water},
       accesibleSubstances=   {"H2O","H+","O2","H2","OH-","e-"},
       accesibleSubstanceData={Water, H,   O2,  H2,  OH,   e},
-
-      final singleState=true,
-      final reducedX=false,
-      final fixedX=false,
-      reference_T=310.15,
-      reference_p=101325,
-      reference_X={1},
-      SpecificEnthalpy(nominal=1.0e5),
-      Density(start=1e3, nominal=1e3),
-      AbsolutePressure(start=1.0e5, nominal=1.0e5),
-      Temperature(
-        min=273,
-        max=350,
-        start=310.15));
+      reference_X={1});
 
 
 
-
-  redeclare replaceable record extends ThermodynamicState
-  "A selection of variables that uniquely defines the thermodynamic state"
-  extends Modelica.Icons.Record;
-
-  Modelica.Units.SI.Temperature T "Temperature of the solution";
-  Modelica.Units.SI.Pressure p "Pressure of the solution";
-  Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
-  Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
-
-  end ThermodynamicState;
-  protected
-
-
-  public
     redeclare replaceable model extends ChemicalSolution "Adapter between SubstancesPort and water medium"
       import Physiolibrary.Utilities.*;
 
@@ -1638,90 +727,7 @@ package Media "Models of physiological fluids"
         "mass change of water";
     end ChemicalSolution;
 
-    redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
-    algorithm
-       /*specificEnthalpy:=Properties.specificEnthalpy(
-      {Substances.Water},
-      Chemical.Interfaces.SolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
-     */
-       specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
-            substanceData,
-            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
-    end specificEnthalpies_Tpv;
 
-  public
-    redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
-      "Base properties of medium"
-
-      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
-    equation
-      d = 1000;
-      h = X*Properties.specificEnthalpy(
-          {Substances.Water},
-          solutionState);
-      u = h - p/d;
-      MM = 1/(X*Properties.specificAmountOfParticles({Substances.Water},solutionState));
-      R_s = 8.3144/MM;
-      state.p = p;
-      state.T = T;
-      state.X = {1};
-      state.v = 0;
-
-    end BaseProperties;
-
-    redeclare replaceable function extends setState_pTX
-      "Return thermodynamic state as function of p, T and composition X or Xi"
-    algorithm
-      state.p := p;
-      state.T := T;
-      state.v := v;
-      state.X := X;
-    end setState_pTX;
-
-    redeclare replaceable function extends setState_phX
-      "Return thermodynamic state as function of p, h and composition X or Xi"
-    algorithm
-      state.p := p;
-      state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
-      state.v := v;
-      state.X := X;
-    end setState_phX;
-
-    redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
-    algorithm
-      h := Properties.specificEnthalpy(
-          Substances.Water,
-          Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
-    end specificEnthalpy;
-
-    redeclare replaceable function extends specificHeatCapacityCp
-      "Return specific heat capacity at constant pressure"
-    algorithm
-      cp := Properties.specificHeatCapacityCp(
-          Substances.Water,
-          Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end specificHeatCapacityCp;
-
-    redeclare replaceable function extends density
-    algorithm
-      d := 1000;
-    end density;
-
-    redeclare replaceable function extends temperature
-    algorithm
-      T := state.T;
-    end temperature;
-
-    redeclare replaceable function extends pressure
-    algorithm
-      p := state.p;
-    end pressure;
-
-
-  public
 
     annotation (Documentation(info="<html>
 <p>
@@ -1741,30 +747,15 @@ Modelica source.
     package Air
       import Physiolibrary.Media.Substances.*;
       import Chemical.Interfaces.Properties;
-      extends Interfaces.PartialMedium(
-         ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
-         reducedX = false,
-         singleState = false,
+      extends Interfaces.Gas(
+         mediumName="Air (Physiolibrary)",
          substanceNames={"O2","CO2","H2O","N2"},
          substanceData= { O2_g,CO2_g,H2O_g,N2_g},
-
-         reference_X=cat(1, Conc .* C2X, {1 - (Conc * C2X)}),
-         SpecificEnthalpy(start=0, nominal=1e3),
-         Density(start=1.0, nominal=1.0),
-         AbsolutePressure(start=1.0e5, nominal=1.0e5),
-         Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
-         MassFlowRate(nominal=1e-3));
+         reference_X=cat(1, Conc .* C2X, {1 - (Conc * C2X)}));
 
 
     protected
 
-    /*
-  constant Chemical.Interfaces.Definition substanceData[nS]={
-      Chemical.Substances.Gas.O2,
-      Chemical.Substances.Gas.CO2,
-      Chemical.Substances.Gas.H2O,
-      Chemical.Substances.Gas.N2} "Definition of the substances";
-*/
       constant Modelica.Units.SI.MoleFraction Conc[nS-1]={0.21,0.0004,0.02}
         "sum(*) = 1";
 
@@ -1773,101 +764,8 @@ Modelica source.
       constant Real aMM[nS] = ones(nS) ./ Properties.specificAmountOfParticles(substanceData, Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Gas, T=298.15, p=101325)) "Average molar mass of substance particle";
 
     public
-      redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
-      algorithm
-           specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
-              substanceData,
-              Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas,T,p,v));
-      end specificEnthalpies_Tpv;
 
-    public
-      redeclare replaceable record extends ThermodynamicState
-        "A selection of variables that uniquely defines the thermodynamic state"
-        extends Modelica.Icons.Record;
-
-        Modelica.Units.SI.Temperature T "Temperature of the solution";
-        Modelica.Units.SI.Pressure p "Pressure of the solution";
-        Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
-        Modelica.Units.SI.MoleFraction I "Mole fraction based ionic strength of the solution";
-        Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
-
-      end ThermodynamicState;
-
-      replaceable function electrochemicalPotentials_pTXvI
-        import Chemical.Interfaces.Properties;
-        input Modelica.Units.SI.Pressure p;
-        input Modelica.Units.SI.Temperature T;
-        input Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Free mole fraction of substance base molecule";
-        input Modelica.Units.SI.ElectricPotential electricPotential=0;
-        input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
-        output Modelica.Units.SI.ChemicalPotential u[nS];
-      protected
-        Real a[nS];
-        Modelica.Units.SI.ChargeNumberOfIon z[nS];
-        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(
-            Chemical.Interfaces.Phase.Gas,
-            T,
-            p,
-            electricPotential,
-            moleFractionBasedIonicStrength);
-      algorithm
-        a := Properties.activityCoefficient(
-            substanceData,
-            solutionState) .* x_baseMolecule;
-        z := Properties.chargeNumberOfIon(
-            substanceData,
-            solutionState);
-        u := Properties.chemicalPotentialPure(
-            substanceData,
-            solutionState) .+ Modelica.Constants.R*T*log(a) .+ z*Modelica.Constants.F*
-          electricPotential;
-      end electrochemicalPotentials_pTXvI;
-
-
-
-      redeclare replaceable function extends setState_pTX
-      algorithm
-        state.T := T;
-        state.p := p;
-        state.X := X;
-        state.v := 0;
-      end setState_pTX;
-
-      redeclare replaceable function extends setState_phX
-        "Return thermodynamic state as function of p, h and composition X or Xi"
-      algorithm
-        state.p := p;
-        state.X := X;
-        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X={1},  h=h), 273.15, 330,     1e-6);
-        state.v := 0;
-      end setState_phX;
-
-       redeclare replaceable function extends density
-       algorithm
-        d := 1/(state.X*Properties.specificVolume(
-            substanceData,
-            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas, state.T, state.p)));
-       end density;
-
-      redeclare replaceable function extends specificEnthalpy
-      algorithm
-        h := state.X * Properties.specificEnthalpy(
-            substanceData,
-            Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Gas,T=state.T,p=state.p,v=state.v));
-        /*, electricPotential, moleFractionBasedIonicStrength*/
-      end specificEnthalpy;
-
-      redeclare replaceable function extends temperature
-      algorithm
-        T := state.T;
-      end temperature;
-
-      redeclare replaceable function extends pressure
-      algorithm
-        p := state.p;
-      end pressure;
-
-      replaceable function X "To set mass fractions"
+      function X "To set mass fractions"
         input Types.AmountOfSubstance
             tO2 = 0.21,
             tCO2 = 0.0003,
@@ -1885,31 +783,7 @@ Modelica source.
         X[Utilities.findIndex("N2",substanceNames)] := (tN2*N2_g.data.MM)/tm;
       end X;
 
-      redeclare replaceable model extends ChemicalSolution
 
-        import Chemical.Interfaces.Properties;
-
-      protected
-         Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
-         Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
-
-      equation
-        massFlows = n_flow.*substanceData.data.MM;
-
-        state_out.u = Properties.electroChemicalPotentialPure(
-            substanceData,
-            solutionState) + Modelica.Constants.R*state.T*log(x_baseMolecule);
-
-        state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
-
-
-
-        x_baseMolecule = state.X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState)./(state.X*NpM);
-
-        NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
-
-
-      end ChemicalSolution;
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
 <p>Marek Matejak, http://www.physiolib.com </p>
@@ -1922,246 +796,14 @@ Modelica source.
     import Physiolibrary.Media.InitialValues.*;
     import Chemical.Interfaces.Properties;
 
-    extends Interfaces.PartialMedium(
-      mediumName="SimpleBodyFluid (Physiolibrary)",
+    extends Interfaces.SimpleLiquid(
+      mediumName="BodyFluid (Physiolibrary)",
       substanceNames={"Na+","HCO3-","K+","Glucose","Urea","Cl-","Ca++","Mg++","Alb","Glb","Others","H2O"},
       substanceData ={ Na,   HCO3,   K,   Glucose,  Urea,  Cl,   Ca,    Mg,    Alb,  Glb,  Water,   Water},
+      reference_X = X());
 
-      singleState=true,
-      reducedX=false,
-      fixedX=false,
-      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
-      reference_X = X(),
-      reference_T = 310.15,
-      reference_p = 101325,
-      Temperature(
-        min=273,
-        max=350,
-        start=310.15));
-
-  redeclare replaceable record extends ThermodynamicState
-  "A selection of variables that uniquely defines the thermodynamic state"
-  extends Modelica.Icons.Record;
-
-  Modelica.Units.SI.Temperature T "Temperature of the solution";
-  Modelica.Units.SI.Pressure p "Pressure of the solution";
-  Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
-  Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
-
-  end ThermodynamicState;
-
-
-  protected
-
-
-   /* constant Chemical.Interfaces.Definition substanceData[nS] = {
-    Chemical.Substances.Aqueous.Naplus,
-    Chemical.Substances.Aqueous.HCO3minus,
-    Chemical.Substances.Aqueous.Kplus,
-    Chemical.Substances.Solid.Glu,
-    Chemical.Substances.Aqueous.Urea,
-    Chemical.Substances.Aqueous.Clminus,
-    Chemical.Substances.Aqueous.Caplus2,
-    Chemical.Substances.Aqueous.Mgplus2,
-    Chemical.Substances.Aqueous.Alb,
-    Chemical.Substances.Aqueous.Glb,
-    Chemical.Substances.Liquid.H2OUnclustered,
-    Chemical.Substances.Liquid.H2O}
-     "Definition of the substances";
-*/
-    replaceable function electrochemicalPotentials_pTXvI
-       "electrochemical potentials for base molecules (for Chemical Substance interface)"
-      input Modelica.Units.SI.Pressure p;
-      input Modelica.Units.SI.Temperature T;
-      input Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule";
-      input Modelica.Units.SI.ElectricPotential electricPotential=0;
-      input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
-      output Modelica.Units.SI.ChemicalPotential u[nS];
-    protected
-      Real a[nS];
-      Modelica.Units.SI.ChargeNumberOfIon z[nS];
-      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
-    algorithm
-      a := Properties.activityCoefficient(substanceData, solutionState)
-           .* x_baseMolecule;
-      z := Properties.chargeNumberOfIon(substanceData, solutionState);
-      u := Properties.chemicalPotentialPure(substanceData, solutionState)
-         .+ Modelica.Constants.R*T*log(a)
-         .+ z*Modelica.Constants.F*electricPotential;
-    end electrochemicalPotentials_pTXvI;
-
-    replaceable function molarEnthalpies_pTvI
-      "enthalpies for base molecules (for Chemical Substance interface)"
-      input Modelica.Units.SI.Pressure p;
-      input Modelica.Units.SI.Temperature T;
-      input Modelica.Units.SI.ElectricPotential electricPotential=0;
-      input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
-      output Modelica.Units.SI.MolarEnthalpy h[nS];
-    protected
-      Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
-    algorithm
-      h:= Properties.molarEnthalpy(
-          substanceData, solutionState);
-    end molarEnthalpies_pTvI;
-
-
-
-  public
-    redeclare replaceable model extends ChemicalSolution
-    protected
-          Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
-          Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
-          Modelica.Units.SI.ChargeNumberOfIon z[nS] "Charge of base molecule of substance";
-
-          Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
-
-          Modelica.Units.SI.Temperature T = temperature(state);
-    equation
-          NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
-
-          nSolution = state.X*NpM*1;
-          x_baseMolecule = state.X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState,mass=state.X,nSolution=nSolution)./(state.X*NpM);
-
-
-          massFlows = n_flow.*substanceData.data.MM;
-
-          state_out.u = Properties.electroChemicalPotentialPure(substanceData,solutionState)
-                          + Modelica.Constants.R*state.T*log(x_baseMolecule);
-
-          state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
-
-
-          z = Properties.chargeNumberOfIon(substanceData,solutionState);
-
-        //  _i = 0;
-          //TODO
-          /*Modelica.Constants.F*(
-       substances.Na.q +
-       (-substances.HCO3.q)  +
-       substances.K.q +
-       (-substances.Cl.q) +
-       2*substances.Ca.q  +
-       2*substances.Mg.q)
-      "electric current";
-      */
-
-    end ChemicalSolution;
-
-    redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
-    algorithm
-         specificEnthalpy:=Properties.specificEnthalpy(
-            substanceData,
-            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
-    end specificEnthalpies_Tpv;
-
-  public
-    redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
-      "Base properties of medium"
-
-    protected
-      Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
-      Modelica.Units.SI.Molality NpM[nS]=Properties.specificAmountOfParticles(
-        substanceData,solutionState);
-    equation
-
-      1/d = X * Properties.specificVolume(substanceData,solutionState);
-      h = X * Properties.specificEnthalpy(substanceData,solutionState);
-      u = h - p/d;
-      MM = 1/sum(X .* NpM);
-      R_s = 8.3144/MM;
-      state.p = p;
-      state.T = T;
-      state.X = X;
-      state.v = 0;
-
-    end BaseProperties;
-
-    redeclare replaceable function extends setState_pTX
-      "Return thermodynamic state as function of p, T and composition X or Xi"
-      input Modelica.Units.SI.ElectricPotential v=0;
-    algorithm
-      state.p :=p;
-      state.T :=T;
-      state.X :=X;
-      state.v :=v;
-    end setState_pTX;
-
-    redeclare replaceable function extends setState_phX
-      "Return thermodynamic state as function of p, h and composition X or Xi"
-      input Modelica.Units.SI.ElectricPotential v=0;
-    algorithm
-      state.p :=p;
-      state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-2);
-       //Properties.specific_solution_temperature(substanceData,Chemical.Interfaces.Phase.Aqueous, h=h,X=X,p=p);
-      state.X :=X;
-      state.v :=v;
-    end setState_phX;
-
-    redeclare replaceable function extends dynamicViscosity "Return dynamic viscosity"
-    algorithm
-      eta := (2.414e-5)*10^(247.8/(state.T-140));  //https://www.engineersedge.com/physics/water__density_viscosity_specific_weight_13146.htm
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end dynamicViscosity;
-
-    redeclare replaceable function extends thermalConductivity
-      "Return thermal conductivity"
-    algorithm
-      lambda := 0.6; //google
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end thermalConductivity;
-
-    redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
-    algorithm
-      h := state.X * Properties.specificEnthalpy(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
-    end specificEnthalpy;
-
-    redeclare replaceable function extends specificHeatCapacityCp
-      "Return specific heat capacity at constant pressure"
-    algorithm
-      cp := state.X * Properties.specificHeatCapacityCp(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end specificHeatCapacityCp;
-
-    redeclare replaceable function extends isentropicExponent "Return isentropic exponent"
-      extends Modelica.Icons.Function;
-    algorithm
-      gamma := 23128; //http://twt.mpei.ac.ru/MCS/Worksheets/WSP/WKDiag15.xmcd
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end isentropicExponent;
-
-    redeclare replaceable function extends velocityOfSound "Return velocity of sound"
-      extends Modelica.Icons.Function;
-    algorithm
-      a := 1481; //wikipedia
-      annotation (Documentation(info="<html>
-
-</html>"));
-    end velocityOfSound;
-
-    redeclare replaceable function extends density
-    algorithm
-      d := 1/( state.X * Properties.specificVolume(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p)));
-    end density;
-
-    redeclare replaceable function extends temperature
-    algorithm
-      T := state.T;
-    end temperature;
-
-    redeclare replaceable function extends pressure
-    algorithm
-      p := state.p;
-    end pressure;
-
-    replaceable function X "To set mass fractions"
+    function X "To set mass fractions"
+    input Types.Density density = 1054;
     input Types.Concentration
             tNa = 135,
             tHCO3 = 24,
@@ -2177,11 +819,7 @@ Modelica source.
             tOthers = 1e-6;
 
     output Types.MassFraction X[nS];
-    protected
-    Types.Density density;
     algorithm
-    density := 1054;
-
       X[Utilities.findIndex("Na+",substanceNames)] := (tNa*Na.data.MM)/density;
       X[Utilities.findIndex("HCO3-",substanceNames)] := (tHCO3*HCO3.data.MM)/density;
       X[Utilities.findIndex("K+",substanceNames)] := (tK*K.data.MM)/density;
@@ -2204,6 +842,358 @@ Modelica source.
   end BodyFluid;
 
   package Interfaces
+      package Gas
+        import Physiolibrary.Media.Substances.*;
+        import Chemical.Interfaces.Properties;
+        extends Interfaces.PartialMedium(
+           ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+           reducedX = false,
+           singleState = false,
+           SpecificEnthalpy(start=0, nominal=1e3),
+           Density(start=1.0, nominal=1.0),
+           AbsolutePressure(start=1.0e5, nominal=1.0e5),
+           Temperature(min=273.15, max=320.15, start=298.15, nominal=298.15),
+           MassFlowRate(nominal=1e-3));
+
+
+      public
+        redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
+        algorithm
+             specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
+                substanceData,
+                Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas,T,p,v));
+        end specificEnthalpies_Tpv;
+
+      public
+        redeclare replaceable record extends ThermodynamicState
+          "A selection of variables that uniquely defines the thermodynamic state"
+          extends Modelica.Icons.Record;
+
+          Modelica.Units.SI.Temperature T "Temperature of the solution";
+          Modelica.Units.SI.Pressure p "Pressure of the solution";
+          Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
+          Modelica.Units.SI.MoleFraction I "Mole fraction based ionic strength of the solution";
+          Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
+
+        end ThermodynamicState;
+
+        replaceable function electrochemicalPotentials_pTXvI
+          import Chemical.Interfaces.Properties;
+          input Modelica.Units.SI.Pressure p;
+          input Modelica.Units.SI.Temperature T;
+          input Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Free mole fraction of substance base molecule";
+          input Modelica.Units.SI.ElectricPotential electricPotential=0;
+          input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
+          output Modelica.Units.SI.ChemicalPotential u[nS];
+        protected
+          Real a[nS];
+          Modelica.Units.SI.ChargeNumberOfIon z[nS];
+          Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(
+              Chemical.Interfaces.Phase.Gas,
+              T,
+              p,
+              electricPotential,
+              moleFractionBasedIonicStrength);
+        algorithm
+          a := Properties.activityCoefficient(
+              substanceData,
+              solutionState) .* x_baseMolecule;
+          z := Properties.chargeNumberOfIon(
+              substanceData,
+              solutionState);
+          u := Properties.chemicalPotentialPure(
+              substanceData,
+              solutionState) .+ Modelica.Constants.R*T*log(a) .+ z*Modelica.Constants.F*
+            electricPotential;
+        end electrochemicalPotentials_pTXvI;
+
+        redeclare replaceable function extends setState_pTX
+        algorithm
+          state.T := T;
+          state.p := p;
+          state.X := X;
+          state.v := 0;
+        end setState_pTX;
+
+        redeclare replaceable function extends setState_phX
+          "Return thermodynamic state as function of p, h and composition X or Xi"
+        algorithm
+          state.p := p;
+          state.X := X;
+          state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
+          state.v := 0;
+        end setState_phX;
+
+         redeclare replaceable function extends density
+         algorithm
+          d := 1/(state.X*Properties.specificVolume(
+              substanceData,
+              Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Gas, state.T, state.p)));
+         end density;
+
+        redeclare replaceable function extends specificEnthalpy
+        algorithm
+          h := state.X * Properties.specificEnthalpy(
+              substanceData,
+              Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Gas,T=state.T,p=state.p,v=state.v));
+        end specificEnthalpy;
+
+        redeclare replaceable function extends temperature
+        algorithm
+          T := state.T;
+        end temperature;
+
+        redeclare replaceable function extends pressure
+        algorithm
+          p := state.p;
+        end pressure;
+
+        redeclare replaceable model extends ChemicalSolution
+
+          import Chemical.Interfaces.Properties;
+
+        protected
+           Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
+           Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
+
+        equation
+          massFlows = n_flow.*substanceData.data.MM;
+
+          state_out.u = Properties.electroChemicalPotentialPure(
+              substanceData,
+              solutionState) + Modelica.Constants.R*state.T*log(x_baseMolecule);
+
+          state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
+
+          x_baseMolecule = state.X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState)./(state.X*NpM);
+
+          NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
+
+        end ChemicalSolution;
+        annotation (Documentation(revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
+      end Gas;
+
+    package SimpleLiquid "Simplified homogenous liquid without any reactions or binding"
+      import Physiolibrary.Media.Substances.*;
+      import Physiolibrary.Media.InitialValues.*;
+      import Chemical.Interfaces.Properties;
+
+      //need to define:  reference_X
+      extends Interfaces.PartialMedium(
+        singleState=true,
+        reducedX=false,
+        fixedX=false,
+        ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+       // reference_X = X(),
+        reference_T = 310.15,
+        reference_p = 101325,
+        Temperature(
+          min=273,
+          max=350,
+          start=310.15));
+
+    redeclare replaceable record extends ThermodynamicState
+    "A selection of variables that uniquely defines the thermodynamic state"
+    extends Modelica.Icons.Record;
+
+    Modelica.Units.SI.Temperature T "Temperature of the solution";
+    Modelica.Units.SI.Pressure p "Pressure of the solution";
+    Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
+    Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
+
+    end ThermodynamicState;
+
+    protected
+
+
+      replaceable function electrochemicalPotentials_pTXvI
+         "electrochemical potentials for base molecules (for Chemical Substance interface)"
+        input Modelica.Units.SI.Pressure p;
+        input Modelica.Units.SI.Temperature T;
+        input Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule";
+        input Modelica.Units.SI.ElectricPotential electricPotential=0;
+        input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
+        output Modelica.Units.SI.ChemicalPotential u[nS];
+      protected
+        Real a[nS];
+        Modelica.Units.SI.ChargeNumberOfIon z[nS];
+        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
+      algorithm
+        a := Properties.activityCoefficient(substanceData, solutionState)
+             .* x_baseMolecule;
+        z := Properties.chargeNumberOfIon(substanceData, solutionState);
+        u := Properties.chemicalPotentialPure(substanceData, solutionState)
+           .+ Modelica.Constants.R*T*log(a)
+           .+ z*Modelica.Constants.F*electricPotential;
+      end electrochemicalPotentials_pTXvI;
+
+      replaceable function molarEnthalpies_pTvI
+        "enthalpies for base molecules (for Chemical Substance interface)"
+        input Modelica.Units.SI.Pressure p;
+        input Modelica.Units.SI.Temperature T;
+        input Modelica.Units.SI.ElectricPotential electricPotential=0;
+        input Modelica.Units.SI.MoleFraction moleFractionBasedIonicStrength=0;
+        output Modelica.Units.SI.MolarEnthalpy h[nS];
+      protected
+        Chemical.Interfaces.SolutionState solutionState = Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous, T, p, electricPotential, moleFractionBasedIonicStrength);
+      algorithm
+        h:= Properties.molarEnthalpy(
+            substanceData, solutionState);
+      end molarEnthalpies_pTvI;
+
+    public
+      redeclare replaceable model extends ChemicalSolution
+      protected
+            Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
+            Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
+            Modelica.Units.SI.ChargeNumberOfIon z[nS] "Charge of base molecule of substance";
+
+            Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
+
+            Modelica.Units.SI.Temperature T = temperature(state);
+      equation
+            NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
+
+            nSolution = state.X*NpM*1;
+            x_baseMolecule = state.X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState,mass=state.X,nSolution=nSolution)./(state.X*NpM);
+
+            massFlows = n_flow.*substanceData.data.MM;
+
+            state_out.u = Properties.electroChemicalPotentialPure(substanceData,solutionState)
+                            + Modelica.Constants.R*state.T*log(x_baseMolecule);
+
+            state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
+
+            z = Properties.chargeNumberOfIon(substanceData,solutionState);
+
+
+      end ChemicalSolution;
+
+      redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
+      algorithm
+           specificEnthalpy:=Properties.specificEnthalpy(
+              substanceData,
+              Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+      end specificEnthalpies_Tpv;
+
+    public
+      redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
+        "Base properties of medium"
+
+      protected
+        Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
+        Modelica.Units.SI.Molality NpM[nS]=Properties.specificAmountOfParticles(
+          substanceData,solutionState);
+      equation
+
+        1/d = X * Properties.specificVolume(substanceData,solutionState);
+        h = X * Properties.specificEnthalpy(substanceData,solutionState);
+        u = h - p/d;
+        MM = 1/sum(X .* NpM);
+        R_s = 8.3144/MM;
+        state.p = p;
+        state.T = T;
+        state.X = X;
+        state.v = 0;
+
+      end BaseProperties;
+
+      redeclare replaceable function extends setState_pTX
+        "Return thermodynamic state as function of p, T and composition X or Xi"
+        input Modelica.Units.SI.ElectricPotential v=0;
+      algorithm
+        state.p :=p;
+        state.T :=T;
+        state.X :=X;
+        state.v :=v;
+      end setState_pTX;
+
+      redeclare replaceable function extends setState_phX
+        "Return thermodynamic state as function of p, h and composition X or Xi"
+        input Modelica.Units.SI.ElectricPotential v=0;
+      algorithm
+        state.p :=p;
+        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-2);
+         //Properties.specific_solution_temperature(substanceData,Chemical.Interfaces.Phase.Aqueous, h=h,X=X,p=p);
+        state.X :=X;
+        state.v :=v;
+      end setState_phX;
+
+      redeclare replaceable function extends dynamicViscosity "Return dynamic viscosity"
+      algorithm
+        eta := (2.414e-5)*10^(247.8/(state.T-140));  //https://www.engineersedge.com/physics/water__density_viscosity_specific_weight_13146.htm
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end dynamicViscosity;
+
+      redeclare replaceable function extends thermalConductivity
+        "Return thermal conductivity"
+      algorithm
+        lambda := 0.6; //google
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end thermalConductivity;
+
+      redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
+      algorithm
+        h := state.X * Properties.specificEnthalpy(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+      end specificEnthalpy;
+
+      redeclare replaceable function extends specificHeatCapacityCp
+        "Return specific heat capacity at constant pressure"
+      algorithm
+        cp := state.X * Properties.specificHeatCapacityCp(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end specificHeatCapacityCp;
+
+      redeclare replaceable function extends isentropicExponent "Return isentropic exponent"
+        extends Modelica.Icons.Function;
+      algorithm
+        gamma := 23128; //http://twt.mpei.ac.ru/MCS/Worksheets/WSP/WKDiag15.xmcd
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end isentropicExponent;
+
+      redeclare replaceable function extends velocityOfSound "Return velocity of sound"
+        extends Modelica.Icons.Function;
+      algorithm
+        a := 1481; //wikipedia
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end velocityOfSound;
+
+      redeclare replaceable function extends density
+      algorithm
+        d := 1/( state.X * Properties.specificVolume(substanceData,Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p)));
+      end density;
+
+      redeclare replaceable function extends temperature
+      algorithm
+        T := state.T;
+      end temperature;
+
+      redeclare replaceable function extends pressure
+      algorithm
+        p := state.p;
+      end pressure;
+
+      annotation (Documentation(revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
+    end SimpleLiquid;
+
     partial package PartialMedium
 
     extends Modelica.Media.Interfaces.PartialMedium;
@@ -2467,6 +1457,1021 @@ Modelica source.
 <p>All rights reserved. </p>
 </html>"));
     end PartialMedium;
+
+    package SimpleAqueous "Incompressible aquageous fluid with constant heat capacity"
+      import Chemical.Interfaces.Properties;
+      import Physiolibrary.Media.Substances.*;
+
+      extends Interfaces.PartialMedium(
+        ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+
+        final singleState=true,
+        final reducedX=false,
+        final fixedX=false,
+        reference_T=310.15,
+        reference_p=101325,
+        SpecificEnthalpy(nominal=1.0e5),
+        Density(start=1e3, nominal=1e3),
+        AbsolutePressure(start=1.0e5, nominal=1.0e5),
+        Temperature(
+          min=273,
+          max=350,
+          start=310.15));
+
+    redeclare replaceable record extends ThermodynamicState
+    "A selection of variables that uniquely defines the thermodynamic state"
+    extends Modelica.Icons.Record;
+
+    Modelica.Units.SI.Temperature T "Temperature of the solution";
+    Modelica.Units.SI.Pressure p "Pressure of the solution";
+    Modelica.Units.SI.ElectricPotential v "Electric potential in the solution";
+    Modelica.Units.SI.MassFraction X[nS] "Mass fractions of substances";
+
+    end ThermodynamicState;
+    protected
+
+
+    public
+      redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of substances at defined temperature, pressure, electric potential"
+      algorithm
+         specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
+              substanceData,
+              Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v));
+      end specificEnthalpies_Tpv;
+
+    public
+      redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
+        "Base properties of medium"
+
+        Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(phase=Chemical.Interfaces.Phase.Aqueous,T=T,p=p);
+      equation
+        d = 1000;
+        h = X*Properties.specificEnthalpy(
+            {Substances.Water},
+            solutionState);
+        u = h - p/d;
+        MM = 1/(X*Properties.specificAmountOfParticles({Substances.Water},solutionState));
+        R_s = 8.3144/MM;
+        state.p = p;
+        state.T = T;
+        state.X = {1};
+        state.v = 0;
+
+      end BaseProperties;
+
+      redeclare replaceable function extends setState_pTX
+        "Return thermodynamic state as function of p, T and composition X or Xi"
+      algorithm
+        state.p := p;
+        state.T := T;
+        state.v := v;
+        state.X := X;
+      end setState_pTX;
+
+      redeclare replaceable function extends setState_phX
+        "Return thermodynamic state as function of p, h and composition X or Xi"
+      algorithm
+        state.p := p;
+        state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=p, X=X,  h=h), 273.15, 330,     1e-6);
+        state.v := v;
+        state.X := X;
+      end setState_phX;
+
+      redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
+      algorithm
+        h := Properties.specificEnthalpy(
+            Substances.Water,
+            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+      end specificEnthalpy;
+
+      redeclare replaceable function extends specificHeatCapacityCp
+        "Return specific heat capacity at constant pressure"
+      algorithm
+        cp := Properties.specificHeatCapacityCp(
+            Substances.Water,
+            Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,state.T,state.p));
+        annotation (Documentation(info="<html>
+
+</html>"));
+      end specificHeatCapacityCp;
+
+      redeclare replaceable function extends density
+      algorithm
+        d := 1000;
+      end density;
+
+      redeclare replaceable function extends temperature
+      algorithm
+        T := state.T;
+      end temperature;
+
+      redeclare replaceable function extends pressure
+      algorithm
+        p := state.p;
+      end pressure;
+
+    public
+
+      annotation (Documentation(info="<html>
+<p>
+This package is a <strong>template</strong> for <strong>new medium</strong> models. For a new
+medium model just make a copy of this package, remove the
+\"partial\" keyword from the package and provide
+the information that is requested in the comments of the
+Modelica source.
+</p>
+</html>",   revisions="<html>
+<p><i>2021</i></p>
+<p>Marek Matejak, http://www.physiolib.com </p>
+<p>All rights reserved. </p>
+</html>"));
+    end SimpleAqueous;
+
+    package Blood "Blood"
+      import Chemical.Interfaces.Properties;
+      import Physiolibrary.Media.Substances.*;
+      import Physiolibrary.Media.InitialValues.*;
+
+      extends Media.Interfaces.PartialMedium(
+
+        ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.phX,
+        reducedX=false,
+        singleState=true,
+        reference_T=310.15,
+        reference_p=101325,
+        SpecificEnthalpy(start=0, nominal=1e3),
+        Density(start=1e3, nominal=1e3),
+        AbsolutePressure(start=1.0e5, nominal=1.0e5),
+        Temperature(
+          min=273.15,
+          max=320.15,
+          start=310.15,
+          nominal=310.15));
+
+
+      constant String plasmaSubstances[:] "Substances in blood plasma";
+      constant String plasmaStrongIons[:] "Strong ions in blood plasma";
+      constant String otherPlasmaSubstance = "Other_P";
+
+      constant String formedElements[:] "Substances in blood formed elements";
+      constant String formedElementsStrongIons[:] "Strong ions in formed elements";
+      constant String otherFormedElement = "Other_E";
+
+      redeclare replaceable record extends ThermodynamicState "A selection of variables that uniquely defines the thermodynamic state"
+        extends Modelica.Icons.Record;
+        AbsolutePressure p "Absolute pressure of medium";
+        SpecificEnthalpy h "Specific enthalpy";
+        MassFraction X[nS] "Mass fractions of substances";
+        Types.ElectricPotential v "Electric potential";
+        annotation (Documentation(info="<html>
+  <p>Thermodynamic state of blood is represented by pressure, temperature, base substances composition, electrical potential and ionic strengh.</p>
+</html>"));
+      end ThermodynamicState;
+
+    replaceable function  plasmaMassFraction "Blood plasmacrit [kg/kg]"
+      extends GetFraction;
+    protected
+      constant Boolean includeOther=true;
+    algorithm
+      F := sum( {if (includeOther or not Modelica.Utilities.Strings.isEqual(plasmaSubstances[i],otherPlasmaSubstance)) then
+                    state.X[Utilities.findIndex(plasmaSubstances[i],substanceNames)] else 0
+                 for i in 1:size(plasmaSubstances,1)});
+    end plasmaMassFraction;
+
+    replaceable function plasmaSpecificAmountOfParticles "Amount of free particles in 1 kg of blood plasma"
+      extends GetMolality;
+      input Types.Temperature T = temperature(state);
+      input Types.MassFraction pct = plasmaMassFraction(state);
+      input Chemical.Interfaces.SolutionState solutionState =
+         Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v);
+    algorithm
+     B := sum( {
+          state.X[Utilities.findIndex(plasmaSubstances[i],substanceNames)]*
+          Chemical.Interfaces.Properties.specificAmountOfParticles(substanceData[Utilities.findIndex(plasmaSubstances[i],substanceNames)],solutionState)
+                     for i in 1:size(plasmaSubstances,1)})/pct;
+      annotation (Documentation(info="<html>
+<p>Amount of particles in blood plasma per mass of blood plasma. </p>
+</html>"));
+    end plasmaSpecificAmountOfParticles;
+
+    replaceable function  formedElementsMassFraction "Blood hematocrit [kg/kg]"
+      extends GetFraction;
+    protected
+      constant Boolean includeOther=true;
+    algorithm
+      F := sum( {if (includeOther or not Modelica.Utilities.Strings.isEqual(formedElements[i],otherFormedElement)) then
+                    state.X[Utilities.findIndex(formedElements[i],substanceNames)] else 0
+                 for i in 1:size(formedElements,1)});
+    end formedElementsMassFraction;
+
+    replaceable function formedElementsSpecificAmountOfParticles "Amount of free particles in 1 kg of blood formed elements"
+      extends GetMolality;
+      input Types.Temperature T= temperature(state);
+      input Types.MassFraction hct= formedElementsMassFraction(state);
+     input Chemical.Interfaces.SolutionState solutionState =
+         Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,state.p, state.v);
+    algorithm
+     B := sum( {
+          state.X[Utilities.findIndex(formedElements[i],substanceNames)]*
+          Chemical.Interfaces.Properties.specificAmountOfParticles(substanceData[Utilities.findIndex(formedElements[i],substanceNames)],solutionState)
+                     for i in 1:size(formedElements,1)})/hct;
+      annotation (Documentation(info="<html>
+<p>Amount of particles in red cells per mass of red cells.</p>
+</html>"));
+    end formedElementsSpecificAmountOfParticles;
+
+      replaceable model BloodGases "Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood"
+        input ThermodynamicState state
+                                "blood";
+        /*(
+    p=101325,
+    h=ArterialDefault*specificEnthalpies_Tpv(T, 101325),
+    X=ArterialDefault) */
+        input Modelica.Units.SI.Temperature T=310.15 "Temperature";
+        output Modelica.Units.SI.Pressure pO2(start=101325*87/760,min=1e-11)
+          "Oxygen partial pressure";
+        output Modelica.Units.SI.Pressure pCO2(start=101325*40/760)
+          "Carbon dioxide partial pressure";
+        output Modelica.Units.SI.Pressure pCO(start=1e-5, min=1e-11)
+          "Carbon monoxide partial pressure";
+        output Physiolibrary.Types.pH pH(start=7.4)
+          "Blood plasma acidity";
+
+        output Physiolibrary.Types.Fraction fzcO
+          "expected fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
+        output Physiolibrary.Types.Fraction fzcD
+          "expected fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
+        output Physiolibrary.Types.Fraction sCO2
+          "expected CO2 saturation of hemoglobin amino-termini";
+        // protected
+        input Physiolibrary.Types.VolumeFraction Hct=hematocrit(state) "haematocrit";
+        input Types.Concentration _tO2=tO2(state) "oxygen content per volume of blood";
+        input Types.Concentration _tCO2=tCO2(state)
+          "carbon dioxide content per volume of blood";
+        input Types.Concentration _tCO=tCO(state)
+          "carbon monoxide content per volume of blood";
+        input Types.Concentration _tHb=tHb(state)
+          "hemoglobin content per volume of blood";
+        input Types.MoleFraction _FMetHb(start=0.005)=FMetHb(state) "fraction of methemoglobin";
+        input Types.MoleFraction _FHbF(start=0.005)=FHbF(state) "fraction of foetalhemoglobin";
+        input Types.Concentration _ctHb_ery=ctHb_ery(state)
+          "hemoglobin concentration in red cells";
+        input Types.Concentration _tAlb=tAlb(state)
+          "albumin concentration in blood plasma";
+        input Types.MassConcentration _tGlb=tGlb(state)
+          "globulin concentration in blood plasma";
+        input Types.Concentration _tPO4=tPO4(state)
+          "inorganic phosphates concentration in blood plasma";
+        input Types.Concentration _cDPG=cDPG(state) "DPG concentration in blood plasma";
+        input Types.Concentration _SID=SID(state) "strong ion difference of blood";
+        input Types.Concentration _SID_P=plasmaSID(state) "strong ion difference of blood plasma";
+        input Types.Concentration _SID_E=formedElementsSID(state) "strong ion difference of blood formed elements";
+
+        constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
+        constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
+        constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
+        constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
+          "normal CO2 partial pressure";
+
+        Physiolibrary.Types.Concentration NSIDP;
+        Physiolibrary.Types.Concentration NSIDE;
+        Physiolibrary.Types.Concentration NSID;
+        Physiolibrary.Types.Concentration BEox, BEox_P, BEox_E;
+        Physiolibrary.Types.Concentration cdCO2;
+
+        Physiolibrary.Types.pH pH_ery;
+
+        input Physiolibrary.Types.GasSolubilityPa aCO2N=0.00023
+          "solubility of CO2 in blood plasma at 37 degC";
+        input Physiolibrary.Types.GasSolubilityPa aCO2=0.00023*(10^(-0.0092*(T - 310.15)))
+          "solubility of CO2 in blood plasma";
+        input Physiolibrary.Types.GasSolubilityPa aCO2_ery(displayUnit="mmol/l/mmHg") = 0.000195
+          "solubility 0.23 (mmol/l)/kPa at 25degC";
+        input Physiolibrary.Types.GasSolubilityPa aO2=exp(log(0.0105) + (-0.0115*(T - T0)) + 0.5*
+            0.00042*((T - T0)^2))/1000 "oxygen solubility in blood";
+        input Physiolibrary.Types.GasSolubilityPa aCO=(0.00099/0.0013)*aO2
+          "carbon monoxide solubility in blood";
+
+        input Real pK=6.1 + (-0.0026)*(T - 310.15) "Henderson-Hasselbalch";
+        input Real pK_ery=6.125 - log10(1 + 10^(pH_ery - 7.84 - 0.06*sO2));
+
+        parameter Real pKa1=2.1 "HPO4^2- dissociation";
+        parameter Real pKa2=6.8 "H2PO4^- dissociation";
+        parameter Real pKa3=12.7 "H3PO4 dissociation";
+
+        parameter Real betaOxyHb=3.1 "Buffer value for oxygenated Hb without CO2";
+        parameter Real pIo=7.13 "Isoelectric pH for oxygenated Hb without CO2";
+
+        parameter Real pKzD=7.73 "Coefficient pKa for NH3+ end of deoxygenated hemoglobin chain";
+        parameter Real pKzO=7.25 "Coefficient pKa for NH3+ end of oxygenated hemoglobin chain";
+        parameter Real pKcD=7.54
+          "10^(pH-pKcR) is the dissociation constatnt for HbNH2 + CO2 <-> HbNHCOO- + H+ ";
+        parameter Real pKcO=8.35
+          "10^(pH-pKcO) is the dissociation constatnt for O2HbNH2 + CO2 <-> O2HbNHCOO- + H+ ";
+        parameter Real pKhD=7.52
+          "10^(pH-pKhD) is the dissociation constatnt for HbAH <-> HbA- + H+ ";
+        parameter Real pKhO=6.89
+          "10^(pH-pKhO) is the dissociation constatnt for O2HbAH <-> O2HbA- + H+ ";
+
+        Physiolibrary.Types.Concentration cdCO2N;
+        Physiolibrary.Types.Fraction sCO2N;
+        Physiolibrary.Types.Fraction fzcON;
+
+        Physiolibrary.Types.Concentration beta;
+        Physiolibrary.Types.Concentration cHCO3(start=24.524), cHCO3_E(start=15.5);
+
+        Physiolibrary.Types.Fraction sO2CO(start=0.962774);
+        Physiolibrary.Types.Fraction sCO(start=1.8089495e-07);
+        Physiolibrary.Types.Fraction sO2;
+        Physiolibrary.Types.Fraction FCOHb;
+        Physiolibrary.Types.Concentration ceHb "effective hemoglobin";
+
+        Physiolibrary.Types.Concentration tCO2_P(displayUnit="mmol/l");
+        Physiolibrary.Types.Concentration tCO2_ery(displayUnit="mmol/l");
+
+        Physiolibrary.Types.Fraction sCO2O
+          "CO2 saturation of oxy-hemoglobin amino-termini";
+        Physiolibrary.Types.Fraction sCO2D
+          "CO2 saturation of deoxy-hemoglobin amino-termini";
+
+        Real dHh "Bohr's protons of reaction h";
+        Real dHz "Bohr's protons of reaction z";
+        Real dHc "Bohr's protons of reaction c";
+
+        Real dH  "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
+        Real dTH "Total titration shift with Bohr protons and carbamination";
+
+      equation
+        cdCO2N = aCO2N*pCO20 "free disolved CO2 concentration at pCO2=40mmHg and T=37degC";
+
+        NSIDP =-(-(_tAlb*66.463)*(0.123*pH0 - 0.631) - _tGlb*(2.5/28) - _tPO4*(10^(
+          pKa2 - pH0) + 2 + 3*10^(pH0 - pKa3))/(10^(pKa1 + pKa2 - 2*pH0) + 10^(pKa2 -
+          pH0) + 1 + 10^(pH0 - pKa3)) - cdCO2N*10^(pH0 - pK))
+          "strong ion difference of blood plasma at pH=7.4, pCO2=40mmHg, T=37degC and sO2=1";
+
+        fzcON = 1/(1 + 10^(pKzO - pH_ery0) + cdCO2N*10^(pH_ery0 - pKcO))
+          "fraction of hemoglobin units with HN2 form of amino-terminus at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+        sCO2N = 10^(pH_ery0 - pKcO)*fzcON*cdCO2N
+          "CO2 saturation of hemoglobin amino-termini at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+        NSIDE =-(-cdCO2N*10^(pH_ery0 - pK) - _ctHb_ery*(betaOxyHb*(pH_ery0 - pIo) +
+          sCO2N*(1 + 2*10^(pKzO - pH_ery0))/(1 + 10^(pKzO - pH_ery0)) + 0.82))
+          + zDPG*_cDPG + zOtherE
+          "strong ion difference of red cells at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+
+        NSID = Hct*NSIDE + (1 - Hct)*NSIDP
+          "strong ion difference of blood at pH=7.4 (pH_ery=7.19), pCO2=40mmHg, T=37degC and sO2=1";
+
+        BEox = _SID - NSID "base excess of oxygenated blood";
+
+        beta =2.3*_tHb + 8*_tAlb + 0.075*_tGlb + 0.309*_tPO4
+                                                          "buffer value of blood";
+
+        pH =pH0 + (1/beta)*(((BEox + 0.3*(1 - sO2CO))/(1 - _tHb/43)) - (cHCO3 - 24.5))
+          "Van Slyke (simplified electroneutrality equation)";
+        pH_ery = 7.19 + 0.77*(pH - 7.4) + 0.035*(1 - sO2);
+
+        sO2CO =homotopy(hemoglobinDissociationCurve(
+            pH,
+            pO2,
+            pCO2,
+            pCO,
+            T,
+            _tHb,
+            _cDPG,
+            _FMetHb,
+            _FHbF),hemoglobinDissociationCurve(
+            pH0,
+            pO2,
+            pCO20,
+            1e-5,
+            310,
+            8.4,
+            5,
+            0.005,
+            0.005));
+
+        sCO*(pO2 + 218*pCO) = 218*sO2CO*(pCO);
+        FCOHb =sCO*(1 - _FMetHb);
+        _tCO = aCO*pCO + FCOHb*_tHb;
+
+        ceHb =_tHb*(1 - FCOHb - _FMetHb);
+        sO2 =(sO2CO*(_tHb*(1 - _FMetHb)) - _tHb*FCOHb)/ceHb;
+        _tO2 = aO2*pO2 + ceHb*sO2;
+
+        cdCO2 = aCO2*pCO2;
+        cdCO2*10^(pH - pK) = cHCO3;
+
+        tCO2_P = cHCO3 + cdCO2;
+        tCO2_ery = aCO2_ery*pCO2*(1 + 10^(pH_ery - pK_ery)) + sCO2*ceHb;
+        cHCO3_E = aCO2_ery*pCO2*(10^(pH_ery - pK_ery));
+        _tCO2 = tCO2_ery*Hct + tCO2_P*(1 - Hct);
+
+        fzcO = 1/(1 + 10^(pKzO - pH_ery) + cdCO2*10^(pH_ery - pKcO))
+          "fraction of oxy-hemoglobin units with HN2 form of amino-terminus";
+        fzcD = 1/(1 + 10^(pKzD - pH_ery) + cdCO2*10^(pH_ery - pKcD))
+          "fraction of deoxy-hemoglobin units with HN2 form of amino-terminus";
+
+        sCO2 = 10^(pH_ery - pKcO)*fzcO*cdCO2*sO2 + 10^(pH_ery - pKcD)*fzcD*cdCO2*(1-sO2)
+          "CO2 saturation of hemoglobin amino-termini";
+
+        sCO2O = 10^(pH_ery - pKcO)*fzcO*cdCO2
+          "CO2 saturation of oxy-hemoglobin amino-termini";
+        sCO2D = 10^(pH_ery - pKcD)*fzcD*cdCO2
+          "CO2 saturation of deoxy-hemoglobin amino-termini";
+
+        dHh = - ((1/(1 + 10^(pKhD - pH_ery)))-(1/(1 + 10^(pKhO - pH_ery))))
+          "Bohr's protons of reaction h";
+        dHz = (10^(pKzD - pH_ery))*fzcD - (10^(pKzO - pH_ery))*fzcO
+          "Bohr's protons of reaction z";
+        dHc = - (aCO2_ery*pCO2*(10^(pH_ery - pKcD))*fzcD - aCO2_ery*pCO2*(10^(pH_ery - pKcO))*fzcO)
+          "Bohr's protons of reaction c";
+
+        dH = dHh + dHz + dHc
+          "Bohr's protons = number of protons released during deoxygenation of one hemoglobin subunit";
+        dTH = sO2*dH + sCO2D*(1+1/(1+10^(pH-pKzD)))
+          "Total titration shift with Bohr protons and carbamination";
+
+        BEox_P = _SID_P - NSIDP;
+        BEox_E = _SID_E + dTH*ceHb - NSIDE;
+
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)),
+          Documentation(info="<html>
+<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+<p><a href=\"https://www.creativeconnections.cz/medsoft/2013/Medsoft_2013_Matejak.pdf\">Medsoft_2013_Matejak.pdf (creativeconnections.cz)</a></p>
+</html>"));
+      end BloodGases;
+
+      redeclare replaceable model extends BaseProperties(final standardOrderComponents=true)
+        "Base properties of medium"
+
+        input Types.ElectricPotential v "electric potential";
+
+      equation
+        d = 1057;
+        h =specificEnthalpies_Tpv(
+            T,
+            p,
+            v)*X;
+        u = h - p/d;
+        MM = 1;
+        R_s = 8.3144;
+        state.p = p;
+        state.h = h;
+        state.X = X;
+        state.v = v;
+        annotation (Documentation(info="<html>
+<p>Simplification of blood:</p>
+<p>Constant density and constant heat capacity</p>
+</html>"));
+      end BaseProperties;
+
+      redeclare replaceable function extends specificEnthalpies_Tpv "Specific enthalpies of blood substances"
+      protected
+       Chemical.Interfaces.SolutionState solutionState=Chemical.Interfaces.Properties.setSolutionState(Chemical.Interfaces.Phase.Aqueous,T,p,v);
+      algorithm
+        specificEnthalpy:=Chemical.Interfaces.Properties.specificEnthalpy(
+              substanceData,solutionState);
+              /*
+    specificEnthalpy[Utilities.findIndex("H2O_E",substanceNames)] := Properties.specificEnthalpy(Substances.Water, solutionState);
+    specificEnthalpy[Utilities.findIndex("O2",substanceNames)] := Properties.specificEnthalpy(Substances.O2, solutionState);
+    specificEnthalpy[Utilities.findIndex("CO2_P",substanceNames)] := Properties.specificEnthalpy(Substances.CO2, solutionState);
+    specificEnthalpy[Utilities.findIndex("CO2_E",substanceNames)] := Properties.specificEnthalpy(Substances.CO2, solutionState);
+    specificEnthalpy[Utilities.findIndex("CO",substanceNames)] := Properties.specificEnthalpy(Substances.CO, solutionState);
+    specificEnthalpy[Utilities.findIndex("eHb",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("MetHb",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("HbF",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Alb",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Glb",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("SO4_P",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("PO4",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("DPG",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Glucose",substanceNames)] := Properties.specificEnthalpy(Substances.Glucose, solutionState);
+    specificEnthalpy[Utilities.findIndex("Lactate",substanceNames)] := Properties.specificEnthalpy(Substances.Lactate, solutionState);
+    specificEnthalpy[Utilities.findIndex("Urea",substanceNames)] := Properties.specificEnthalpy(Substances.Urea, solutionState);
+    specificEnthalpy[Utilities.findIndex("AminoAcids",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Lipids",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("KetoAcids",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Na_P",substanceNames)] := Properties.specificEnthalpy(Substances.Na, solutionState);
+    specificEnthalpy[Utilities.findIndex("Na_E",substanceNames)] := Properties.specificEnthalpy(Substances.Na, solutionState);
+    specificEnthalpy[Utilities.findIndex("K_P",substanceNames)] := Properties.specificEnthalpy(Substances.K, solutionState);
+    specificEnthalpy[Utilities.findIndex("K_E",substanceNames)] := Properties.specificEnthalpy(Substances.K, solutionState);
+    specificEnthalpy[Utilities.findIndex("Cl_P",substanceNames)] := Properties.specificEnthalpy(Substances.Cl, solutionState);
+    specificEnthalpy[Utilities.findIndex("Cl_E",substanceNames)] := Properties.specificEnthalpy(Substances.Cl, solutionState);
+    specificEnthalpy[Utilities.findIndex("Epinephrine",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Norepinephrine",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Vasopressin",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Insulin",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Glucagon",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Thyrotropin",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Thyroxine",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Leptin",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Desglymidodrine",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Angiotensin2",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Renin",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Aldosterone",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("H2O_P",substanceNames)] := Properties.specificEnthalpy(Substances.Water, solutionState);
+    specificEnthalpy[Utilities.findIndex("Other_P",substanceNames)] := 0;
+    specificEnthalpy[Utilities.findIndex("Other_E",substanceNames)] := 0;
+    */
+
+      end specificEnthalpies_Tpv;
+
+      redeclare replaceable function extends specificEnthalpy "Return specific enthalpy"
+      algorithm
+          h := state.h;
+      end specificEnthalpy;
+
+      replaceable function hemoglobinDissociationCurve "Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
+        input Real pH "acidity";
+        input Real pO2 "oxygen partial pressure";
+        input Real pCO2(min=Modelica.Constants.small) "carbon dioxide partial pressure";
+        input Real pCO "carbon monoxide partial pressure";
+        input Real T "temperature";
+        input Real tHb "total hemoglobin";
+        input Real cDPG "diphosphoglicerate";
+        input Real FMetHb "methemoglobin fraction";
+        input Real FHbF "foethel hemoglobin fraction";
+        output Real sO2CO "oxygen and carbon monoxide saturation";
+      protected
+        constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
+        constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
+        constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
+        constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
+          "normal CO2 partial pressure";
+
+        parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
+        parameter Real dadcDPG0=0.3 "used by a";
+        parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
+        parameter Real dadpH=-0.88 "used by a";
+        parameter Real dadlnpCO2=0.048 "used by a";
+        parameter Real dadxMetHb=-0.7 "used by a";
+        parameter Real dadxHbF=-0.25 "used by a";
+
+        Real aO2;
+        Real cdO2;
+        Physiolibrary.Types.Fraction sO2;
+        Physiolibrary.Types.Pressure pO2CO(min=Modelica.Constants.small);
+        Physiolibrary.Types.Concentration cO2Hb;
+        Physiolibrary.Types.Fraction sCO;
+        Physiolibrary.Types.Concentration ceHb;
+        Real a;
+        Real k;
+        Real x;
+        Real y;
+        Real h;
+        Physiolibrary.Types.Fraction FCOHb;
+      algorithm
+
+        a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+          dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
+        k := 0.5342857;
+        h := 3.5 + a;
+
+        pO2CO := pO2 + 218*pCO;
+        x := log(pO2CO/7000) - a - 0.055*(T - T0);
+        y := 1.8747 + x + h*tanh(k*x);
+
+        sO2CO := exp(y)/(1 + exp(y));
+
+        annotation (
+        derivative = hemoglobinDissociationCurve_der,
+        Documentation(info="<html>
+<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+</html>"));
+      end hemoglobinDissociationCurve;
+
+      replaceable function hemoglobinDissociationCurve_der "Derivative of Hemoglobin dissociation curve as saturation of O2 and CO2 on hemoglobin (excluded methemoglobin)"
+        input Real pH "acidity";
+        input Real pO2 "oxygen partial pressure";
+        input Real pCO2 "carbon dioxide partial pressure";
+        input Real pCO "carbon monoxide partial pressure";
+        input Real T "temperature";
+        input Real tHb "total hemoglobin";
+        input Real cDPG "diphosphoglicerate";
+        input Real FMetHb "methemoglobin fraction";
+        input Real FHbF "foethel hemoglobin fraction";
+        input Real der_pH "derivative of acidity";
+        input Real der_pO2 "derivative of oxygen partial pressure";
+        input Real der_pCO2 "derivative of carbon dioxide partial pressure";
+        input Real der_pCO "derivative of carbon monoxide partial pressure";
+        input Real der_T "derivative of temperature";
+        input Real der_tHb "derivative of total hemoglobin";
+        input Real der_cDPG "derivative of diphosphoglicerate";
+        input Real der_FMetHb "derivative of methemoglobin fraction";
+        input Real der_FHbF "derivative of foethel hemoglobin fraction";
+        output Real der_sO2CO "derivative of oxygen and carbon monoxide saturation";
+      protected
+        constant Physiolibrary.Types.Temperature T0=273.15 + 37 "normal temperature";
+        constant Physiolibrary.Types.pH pH0=7.4 "normal pH";
+        constant Physiolibrary.Types.pH pH_ery0=7.19 "normal pH in erythrocyte";
+        constant Physiolibrary.Types.Pressure pCO20=(40/760)*101325
+          "normal CO2 partial pressure";
+
+        parameter Physiolibrary.Types.Concentration cDPG0=5 "normal DPG,used by a";
+        parameter Real dadcDPG0=0.3 "used by a";
+        parameter Real dadcDPGxHbF=-0.1 "or perhabs -0.125";
+        parameter Real dadpH=-0.88 "used by a";
+        parameter Real dadlnpCO2=0.048 "used by a";
+        parameter Real dadxMetHb=-0.7 "used by a";
+        parameter Real dadxHbF=-0.25 "used by a";
+
+        Real aO2;
+        Real cdO2;
+        Physiolibrary.Types.Fraction sO2;
+        Physiolibrary.Types.Pressure pO2CO;
+        Physiolibrary.Types.Concentration cO2Hb;
+        Physiolibrary.Types.Fraction sCO;
+        Physiolibrary.Types.Concentration ceHb;
+        Real a, a_der;
+        Real k;
+        Real x,x_der;
+        Real y,y_der;
+        Real h;
+        Physiolibrary.Types.Fraction FCOHb;
+      algorithm
+
+        a := dadpH*(pH - pH0) + dadlnpCO2*log(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+          dadxMetHb*FMetHb + (dadcDPG0 + dadcDPGxHbF*FHbF)*(cDPG/cDPG0 - 1);
+
+        a_der := dadpH*der_pH + dadlnpCO2*(der_pCO2/pCO20)/(max(1e-15 + 1e-22*pCO2, pCO2/pCO20)) +
+          dadxMetHb*der_FMetHb +
+          (dadcDPGxHbF*der_FHbF)*(cDPG/cDPG0 - 1)+(dadcDPG0 + dadcDPGxHbF*FHbF)*(der_cDPG/cDPG0);
+
+        k := 0.5342857;
+        h := 3.5 + a;
+
+        pO2CO := pO2 + 218*pCO;
+        x := log(pO2CO/7000) - a - 0.055*(T - T0);
+
+        x_der := (der_pO2 + 218*der_pCO)/(pO2CO) - a_der - 0.055*der_T;
+        y := 1.8747 + x + h*tanh(k*x);
+        y_der := x_der + a_der*tanh(k*x) + h*(k*4*x_der/((exp(k*x)+exp(-k*x))^2));
+
+        der_sO2CO := y_der*exp(y)/((1 + exp(y))^2);
+
+        annotation (Documentation(info="<html>
+<p><span style=\"font-size: 8pt;\">Hemoglobin-Oxygen dissociation relation based on OSA (Oxygen Status Algorithm) by Siggaard Andersen.</span></p>
+<p><a href=\"https://www.siggaard-andersen.dk/\">Hydrogen Ion, Carbon Dioxide, and Oxygen in the Blood (siggaard-andersen.dk)</a></p>
+</html>"));
+      end hemoglobinDissociationCurve_der;
+
+      redeclare replaceable function extends setState_pTX "Thermodynamic state"
+      algorithm
+        state.h :=specificEnthalpies_Tpv(
+          T,
+          p,
+          v)*X;
+        state.p := p;
+        state.X := X;
+        state.v := v;
+        annotation (Documentation(info="<html>
+<p>Set thermodynamic state</p>
+</html>"));
+      end setState_pTX;
+
+      redeclare replaceable function extends setState_phX "Thermodynamic state"
+
+      algorithm
+        state.p := p;
+        state.h := h;
+        state.X := X;
+        state.v := v;
+
+        annotation (Documentation(info="<html>
+<p>Set thermodynamic state based on constant heat capacity</p>
+</html>"));
+      end setState_phX;
+
+      redeclare replaceable function extends density "Density"
+      algorithm
+        d := D_BloodDensity;
+        annotation (Documentation(info="<html>
+<p>constant density</p>
+</html>"));
+      end density;
+
+      replaceable function plasmaDensity "Density of blood plasma"
+        extends GetDensity;
+      algorithm
+        d := D_BloodPlasmaDensity;
+        annotation (Documentation(info="<html>
+<p>constant density</p>
+</html>"));
+      end plasmaDensity;
+
+      redeclare replaceable function extends specificHeatCapacityCp "Specific heat capacityReturn specific heat capacity at constant pressure"
+      algorithm
+        cp := 3490;
+        annotation (Documentation(info="<html>
+<p>Constant specific heat capacity</p>
+</html>"));
+      end specificHeatCapacityCp;
+
+      redeclare replaceable function extends temperature "Temperature"
+      algorithm
+        T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function temperatureError(p=state.p, X=state.X,  h=state.h), 273.15, 330,     1e-2);
+        annotation (Documentation(info="<html>
+<p>Temperature</p>
+</html>"));
+      end temperature;
+
+      redeclare replaceable function extends pressure "Pressure"
+      algorithm
+        p := state.p;
+        annotation (Documentation(info="<html>
+<p>Pressure</p>
+</html>"));
+      end pressure;
+
+      function tO2 "Total oxygen in blood"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * state.X[Utilities.findIndex("O2",substanceNames)] / O2.data.MM;
+      end tO2;
+
+      function sO2 "Oxygen saturation on effective hemoglobin"
+        extends GetFraction;
+      algorithm
+        F := (state.X[Utilities.findIndex("O2",substanceNames)] / O2.data.MM) / (state.X[Utilities.findIndex("eHb",substanceNames)] / Constants.MM_Hb);
+      end sO2;
+
+      function tCO2 "Total carbon dioxide in blood"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * (state.X[Utilities.findIndex("CO2_P",substanceNames)]+state.X[Utilities.findIndex("CO2_E",substanceNames)]) / CO2.data.MM;
+      end tCO2;
+
+      function tCO "Total carbon monoxide in blood"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * state.X[Utilities.findIndex("CO",substanceNames)] / CO.data.MM;
+      end tCO;
+
+      function tHb "Total hemoglobine in blood"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * (state.X[Utilities.findIndex("eHb",substanceNames)] + state.X[Utilities.findIndex("MetHb",substanceNames)] + state.X[Utilities.findIndex("HbF",substanceNames)]) / Constants.MM_Hb;
+      end tHb;
+
+      function FMetHb "Methemoglobine fraction"
+        extends GetFraction;
+      algorithm
+        F := (state.X[Utilities.findIndex("MetHb",substanceNames)] / tHb(state));
+      end FMetHb;
+
+      function FHbF "Foetalhemoglobine fraction"
+        extends GetFraction;
+      algorithm
+        F := (state.X[Utilities.findIndex("HbF",substanceNames)] / tHb(state));
+      end FHbF;
+
+      function ctHb_ery "Total hemoglobine in erythrocytes"
+        extends GetConcentration;
+      algorithm
+        C :=tHb(state)/hematocrit(state);
+      end ctHb_ery;
+
+      function tAlb "Total albumine in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=plasmaDensity(state)*(state.X[Utilities.findIndex("Alb",substanceNames)]/Constants.MM_Alb)/
+          plasmaMassFraction(state);
+      end tAlb;
+
+      function tGlb "Total globulin in blood plasma [g/L]"
+        extends GetMassConcentration;
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Glb",substanceNames)]/plasmaMassFraction(state);
+      end tGlb;
+
+      function tPO4 "Total anorganic phosphates in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=plasmaDensity(state)*(state.X[Utilities.findIndex("PO4",substanceNames)]/PO4.data.MM)/
+          plasmaMassFraction(state);
+      end tPO4;
+
+      function cDPG "Total diphosphoglycerate in erythrocytes"
+        extends GetConcentration;
+      algorithm
+        C :=formedElementsDensity(state)*(state.X[Utilities.findIndex("DPG",substanceNames)]/Constants.MM_DPG)/
+          formedElementsMassFraction(state);
+      end cDPG;
+
+      function glucose "Total glucose in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Glucose",substanceNames)]/Constants.MM_Glucose)/
+          plasmaMassFraction(state);
+      end glucose;
+
+      function lactate "Total lactate in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Lactate",substanceNames)]/Constants.MM_Lactate)/
+          plasmaMassFraction(state);
+      end lactate;
+
+      function urea "Total urea in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Urea",substanceNames)]/Constants.MM_Urea)/
+          plasmaMassFraction(state);
+      end urea;
+
+      function aminoAcids "Total amino acids in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("AminoAcids",substanceNames)]/Constants.MM_AminoAcids)/
+          plasmaMassFraction(state);
+      end aminoAcids;
+
+      function lipids "Total faty acids in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Lipids",substanceNames)]/Constants.MM_Lipids)/
+          plasmaMassFraction(state);
+      end lipids;
+
+      function ketoAcids "Total ketoacids in blood plasma"
+        extends GetConcentration;
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("KetoAcids",substanceNames)]/Constants.MM_KetoAcids)/
+          plasmaMassFraction(state);
+      end ketoAcids;
+
+      function epinephrine "Epinephrine in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Epinephrine",substanceNames)]));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Epinephrine",substanceNames)]/plasmaMassFraction(state);
+      end epinephrine;
+
+      function norepinephrine "Norepinephrine in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Norepinephrine",substanceNames)]));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Norepinephrine",substanceNames)]/plasmaMassFraction(
+          state);
+      end norepinephrine;
+
+      function vasopressin "Vasopressin in blood plasma"
+        extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Vasopressin",substanceNames)]));
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Vasopressin",substanceNames)]/Constants.MM_Vasopressin)
+          /plasmaMassFraction(state);
+      end vasopressin;
+
+      function insulin "Insulin in blood plasma"
+        extends GetActivity(A(unit="U/m3",displayUnit="mU/l"));
+      algorithm
+        A :=(plasmaDensity(state)*(state.X[Utilities.findIndex("Insulin",substanceNames)]/6e-9)/Constants.MM_Insulin)
+          /plasmaMassFraction(state)                                                                            "conversion factor for human insulin is 1 mU/L = 6.00 pmol/L";
+      end insulin;
+
+      function glucagon "Glucagon in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Glucagon",substanceNames)]));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Glucagon",substanceNames)]/plasmaMassFraction(state);
+      end glucagon;
+
+      function thyrotropin "Thyrotropin in blood plasma"
+        extends GetConcentration(C(displayUnit="pmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Thyrotropin",substanceNames)]));
+      algorithm
+        C :=(plasmaDensity(state)*state.X[Utilities.findIndex("Thyrotropin",substanceNames)]/Constants.MM_Thyrotropin)
+          /plasmaMassFraction(state);
+      end thyrotropin;
+
+      function thyroxine "Thyroxine in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Thyroxine",substanceNames)]));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Thyroxine",substanceNames)]/plasmaMassFraction(state);
+      end thyroxine;
+
+      function leptin "Leptin in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ug/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Leptin",substanceNames)]));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Leptin",substanceNames)]/plasmaMassFraction(state);
+      end leptin;
+
+      function desglymidodrine "Desglymidodrine in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ug/l"));
+      algorithm
+        R :=plasmaDensity(state)*state.X[Utilities.findIndex("Desglymidodrine",substanceNames)]/plasmaMassFraction(
+          state);
+      end desglymidodrine;
+
+      function angiotensin2 "Angiotensin2 in blood plasma"
+        extends GetMassConcentration(R(displayUnit="ng/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Angiotensin2",substanceNames)]));
+      algorithm
+         R :=plasmaDensity(state)*state.X[Utilities.findIndex("Angiotensin2",substanceNames)]/plasmaMassFraction(
+          state);
+      end angiotensin2;
+
+      function alphaBlockers "Alpha blockers effect"
+        extends GetExtraProperty;
+      algorithm
+        e := C[Utilities.findIndex("AlphaBlockers",extraPropertiesNames)]/1e-6;
+      end alphaBlockers;
+
+      function betaBlockers "Beta blockers effect"
+        extends GetExtraProperty;
+      algorithm
+        e := C[Utilities.findIndex("BetaBlockers",extraPropertiesNames)]/1e-6;
+      end betaBlockers;
+
+      function anesthesiaVascularConductance "Anesthesia vascular conductance effect"
+        extends GetExtraProperty;
+      algorithm
+        e := C[Utilities.findIndex("AnesthesiaVascularConductance",extraPropertiesNames)]/1e-6;
+      end anesthesiaVascularConductance;
+
+      function aldosterone "Aldosterone in blood plasma"
+        extends GetConcentration(C(displayUnit="nmol/l", nominal=SubstanceFlowNominal[Utilities.findIndex("Aldosterone",substanceNames)]));
+      algorithm
+        C :=plasmaDensity(state)*(state.X[Utilities.findIndex("Aldosterone",substanceNames)]/Constants.MM_Aldosterone)
+          /plasmaMassFraction(state);
+      end aldosterone;
+
+      function renin "Renin PRA in blood plasma"
+        extends GetActivity(A(unit="ng/(ml.h)",displayUnit="ng/(ml.h)"));
+      algorithm
+        A :=plasmaDensity(state)*((state.X[Utilities.findIndex("Renin",substanceNames)]/(1e-12*0.6*11.2)))/
+          plasmaMassFraction(state)                                                                     "conversion factor from PRA (ng/mL/h) to DRC (mU/L) is 11.2, μIU/mL (mIU/L) * 0.6 = pg/mL";
+      end renin;
+
+      function plasmacrit "Blood plasmacrit [mL/mL]"
+        extends GetFraction;
+      algorithm
+        F := plasmaMassFraction(state)*(density(state)/plasmaDensity(state));
+      end plasmacrit;
+
+      function hematocrit "Blood hematocrit [mL/mL]"
+        extends GetFraction;
+      algorithm
+        F := 1-plasmacrit(state);
+      end hematocrit;
+
+      function formedElementsDensity
+        "Density of blood formed elements (erythrocytes, leukocytes and thrombocytes)"
+        extends GetDensity;
+      algorithm
+        d :=formedElementsMassFraction(state)*(density(state)/hematocrit(state));
+        annotation (Documentation(info="<html>
+<p>constant density</p>
+</html>"));
+      end formedElementsDensity;
+
+      function formedElementsMassFractionWithoutOther "Blood hematocrit without unknown substances in formed elements [kg/kg]"
+        extends formedElementsMassFraction(includeOther=false);
+      end formedElementsMassFractionWithoutOther;
+
+      function plasmaMassFractionWithoutOther "Blood plasmacrit without unknown substances in blood plasma [kg/kg]"
+      extends plasmaMassFraction(includeOther=false);
+      end plasmaMassFractionWithoutOther;
+
+      function SID "Strong ion difference of blood"
+        extends GetConcentration;
+      algorithm
+        C := plasmacrit(state)*plasmaSID(state) + hematocrit(state)*formedElementsSID(state);
+      end SID;
+
+
+    //  plasmaStrongIons = {"Na_P","K_P","Cl_P","SO4_P"}
+    //  formedElementsStrongIons = { "Na_E","K_E","Cl_E"}
+
+      function plasmaSID "Strong ion difference of blood plasma"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * (sum({
+             substanceData[Utilities.findIndex(plasmaStrongIons[i],substanceNames)].data.z*
+             state.X[Utilities.findIndex(plasmaStrongIons[i],substanceNames)]/
+             substanceData[Utilities.findIndex(plasmaStrongIons[i],substanceNames)].data.MM
+             for i in 1:size(plasmaStrongIons,1)}))
+              / plasmacrit(state);
+      end plasmaSID;
+
+      function formedElementsSID "Strong ion difference of blood formed elements"
+        extends GetConcentration;
+      algorithm
+        C := density(state) * (sum({
+             substanceData[Utilities.findIndex(formedElementsStrongIons[i],substanceNames)].data.z*
+             state.X[Utilities.findIndex(formedElementsStrongIons[i],substanceNames)]/
+             substanceData[Utilities.findIndex(formedElementsStrongIons[i],substanceNames)].data.MM
+             for i in 1:size(formedElementsStrongIons,1)}))
+              / hematocrit(state);
+      end formedElementsSID;
+    public
+
+      annotation (Documentation(info="<html>
+<p>Adding new substance to blood model:</p>
+<p><br>- add to Blood.substanceNames</p>
+<p>- modify {plasma/formedElements}{MassFraction+SpecificAmountOfParticles}</p>
+<p>- modify functions: Blood.specificEnthalpies_Tpv</p>
+<p>- modify model: Blood.ArterialComposition, run it and resuled X set as ArterialDefault (and from VenousComposition -&gt; VenousDefault)</p>
+<p>- modify model: Blood.ChemicalSolution,</p>
+</html>"));
+    end Blood;
   end Interfaces;
 
   package Substances
