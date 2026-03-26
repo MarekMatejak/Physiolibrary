@@ -1102,7 +1102,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
           discrete Physiolibrary.Types.Time Tas, T0, Tvs;
           parameter Physiolibrary.Types.Time Tav(displayUnit = "s") = 0.01
             "atrioventricular delay";
-          discrete Modelica.SIunits.Time HP(start = 0) "heart period";
+          discrete Modelica.Units.SI.Time HP(start=0) "heart period";
           Boolean b(start = false);
           Physiolibrary.Types.RealIO.FrequencyInput HR "heart rate" annotation(Placement(transformation(extent = {{-12, 68}, {28, 108}}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80})));
         equation
@@ -1637,7 +1637,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
                                                    annotation (Placement(transformation(extent={{-20,-20},
                 {20,20}},
             origin={-60,0})));
-      parameter Modelica.SIunits.Density ro=1060; //liquid density
+      parameter Modelica.Units.SI.Density ro=1060;//liquid density
       parameter Boolean useExternalG = false
         "=true, if external gravity acceleration is used"
         annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
@@ -1929,7 +1929,7 @@ package Hydraulic "Domain with Pressure and Volumetric Flow"
     model FlowMeasure "Volumetric flow between ports"
       extends Interfaces.OnePort;
       //extends Icons.FlowMeasure;
-      extends Modelica.Icons.RotationalSensor;
+      extends Modelica.Icons.RoundSensor;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlow "Actual volume flow rate"
                              annotation (Placement(transformation(extent={{-20,-20},

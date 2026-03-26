@@ -1,4 +1,4 @@
-﻿within Physiolibrary;
+within Physiolibrary;
 package Population
   "Domain for populatiom models for cells, viruses, bacterias, tissues, organism etc."
   extends Modelica.Icons.Package;

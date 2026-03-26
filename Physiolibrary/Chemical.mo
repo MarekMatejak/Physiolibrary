@@ -327,8 +327,7 @@ package Chemical "Please use 'Chemical' library instead!"
         Components.Substance          oxygen_unbound(solute_start=0.000001*
               7.875647668393782383419689119171e-5, Simulation=Types.SimulationType.SteadyState)
           annotation (Placement(transformation(extent={{-56,-44},{-36,-24}})));
-        Modelica.Blocks.Sources.Clock clock(offset=10)
-          annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
+        Modelica.Blocks.Sources.ContinuousClock clock(offset=10) annotation (Placement(transformation(extent={{-94,44},{-74,64}})));
         Sources.UnlimitedGasStorage          O2_in_air(Simulation=Types.SimulationType.SteadyState,
           usePartialPressureInput=true,
           T=310.15)   annotation (Placement(transformation(
@@ -701,8 +700,7 @@ package Chemical "Please use 'Chemical' library instead!"
         Components.Substance oxygen_unbound(Simulation=Types.SimulationType.SteadyState,
             solute_start=0.000001*7.875647668393782383419689119171e-5)
           annotation (Placement(transformation(extent={{-2,6},{18,26}})));
-        Modelica.Blocks.Sources.Clock clock(offset=10)
-          annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
+        Modelica.Blocks.Sources.ContinuousClock clock(offset=10) annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
         Modelica.Blocks.Math.Add add[4] annotation (Placement(transformation(
               extent={{-4,-4},{4,4}},
               rotation=270,
@@ -1237,7 +1235,7 @@ package Chemical "Please use 'Chemical' library instead!"
 <p>Marek Matejak, Charles University, Prague, Czech Republic </p>
 </html>", info="<html>
 
-<p>[1] Mateják M, Kulhánek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
+<p>[1] MatejÃ¡k M, KulhÃ¡nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
 
 <p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 
@@ -1418,8 +1416,9 @@ package Chemical "Please use 'Chemical' library instead!"
         Components.Substance oxygen_unbound(Simulation=Types.SimulationType.SteadyState,
             solute_start=1e-08)
           annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
-        Modelica.Blocks.Sources.Clock clock(offset=10)
-          annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        Modelica.Blocks.Sources.ContinuousClock clock(offset=10)
+          annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-84,70})));
         Sources.UnlimitedGasStorage oxygen_in_air(
@@ -1632,7 +1631,7 @@ package Chemical "Please use 'Chemical' library instead!"
             __Dymola_Algorithm="Euler"), Documentation(info="<html>
 <p>Before silumation in &QUOT;Dymola 2014 FD01&QUOT; please set environment variable &QUOT;<code><b>Advanced.Define.NonLinearIterations&nbsp;=&nbsp;3&QUOT;</b></code> and chose &QUOT;Euler&QUOT; method!</p>
 
-<p>[1] Mateják M, Kulhánek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
+<p>[1] MatejÃ¡k M, KulhÃ¡nek T, Matouaek S. Adair-Based Hemoglobin Equilibrium with Oxygen, Carbon Dioxide and Hydrogen Ion Activity. Scandinavian Journal of Clinical &AMP; Laboratory Investigation; 2015</p>
 
 <p>[2] Bauer C, Schr&ouml;der E. Carbamino compounds of haemoglobin in human adult and foetal blood. The Journal of physiology 1972;227:457-71.</p>
 
@@ -2167,8 +2166,7 @@ package Chemical "Please use 'Chemical' library instead!"
           Components.Substance oxygen_unbound(Simulation=SimulationType.SteadyState,
               solute_start=0.000001*7.875647668393782383419689119171e-5)
             annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-          Modelica.Blocks.Sources.Clock clock(offset=1e-06)
-            annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
+          Modelica.Blocks.Sources.ContinuousClock clock(offset=1e-06) annotation (Placement(transformation(extent={{-40,74},{-20,94}})));
           Sources.UnlimitedGasStorage oxygen_in_air(
             Simulation=Types.SimulationType.SteadyState,
             usePartialPressureInput=true,
@@ -2283,8 +2281,7 @@ package Chemical "Please use 'Chemical' library instead!"
           Components.Substance oxygen_unbound(Simulation=SimulationType.SteadyState,
               solute_start=0.000001*7.875647668393782383419689119171e-5)
             annotation (Placement(transformation(extent={{-4,-2},{16,18}})));
-          Modelica.Blocks.Sources.Clock clock(offset=6.7)
-            annotation (Placement(transformation(extent={{30,34},{50,54}})));
+          Modelica.Blocks.Sources.ContinuousClock clock(offset=6.7) annotation (Placement(transformation(extent={{30,34},{50,54}})));
           Sources.UnlimitedGasStorage oxygen_in_air(
             Simulation=Types.SimulationType.SteadyState,
             usePartialPressureInput=false,
@@ -2526,8 +2523,7 @@ package Chemical "Please use 'Chemical' library instead!"
           n=3,
           Total(displayUnit="mol") = 1/0.018) "total water concentration"
           annotation (Placement(transformation(extent={{-48,-74},{-28,-54}})));
-        Modelica.Blocks.Sources.Clock SID(offset=-1e-6)
-          "strong ions difference with respect to albumin charge shift"
+        Modelica.Blocks.Sources.ContinuousClock SID(offset=-1e-6) "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{52,74},{72,94}})));
         Modelica.Blocks.Math.Gain toColoumn(k(unit="C/s")=-Modelica.Constants.F,  y(unit="C"))
           "from elementary charge to electric charge, which is needed in system"
@@ -2634,8 +2630,7 @@ package Chemical "Please use 'Chemical' library instead!"
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={80,-74})));
-        Modelica.Blocks.Sources.Clock SID(offset=-0.01)
-          "strong ions difference with respect to albumin charge shift"
+        Modelica.Blocks.Sources.ContinuousClock SID(offset=-0.01) "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{54,74},{74,94}})));
       equation
         connect(HendersonHasselbalch.products[1], HCO3.q_out) annotation (Line(
@@ -2737,8 +2732,7 @@ package Chemical "Please use 'Chemical' library instead!"
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={80,-74})));
-        Modelica.Blocks.Sources.Clock SID(offset=-0.0832)
-          "strong ions difference with respect to albumin charge shift"
+        Modelica.Blocks.Sources.ContinuousClock SID(offset=-0.0832) "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{54,76},{74,96}})));
 
         parameter Integer n=218 "Number of weak acid group in albumin molecule";
@@ -2812,8 +2806,7 @@ package Chemical "Please use 'Chemical' library instead!"
         Modelica.Blocks.Math.Log10 minusPh "value of minus pH"
           annotation (Placement(transformation(extent={{64,-20},{84,0}})));
 
-        Modelica.Blocks.Sources.Clock SID(offset=0)
-          "strong ions difference with respect to albumin charge shift"
+        Modelica.Blocks.Sources.ContinuousClock SID(offset=0) "strong ions difference with respect to albumin charge shift"
           annotation (Placement(transformation(extent={{44,74},{64,94}})));
 
         Components.Substance H(
@@ -2975,8 +2968,7 @@ package Chemical "Please use 'Chemical' library instead!"
                 extent={{-8,-8},{8,8}},
                 rotation=180,
                 origin={78,-70})));
-          Modelica.Blocks.Sources.Clock SID_less_Cl(offset=-0.0832)
-            "strong ions difference without chloride with respect to albumin charge shift"
+          Modelica.Blocks.Sources.ContinuousClock SID_less_Cl(offset=-0.0832) "strong ions difference without chloride with respect to albumin charge shift"
             annotation (Placement(transformation(extent={{68,-42},{88,-22}})));
 
           constant Integer m=4
@@ -3318,16 +3310,14 @@ package Chemical "Please use 'Chemical' library instead!"
       parameter Types.StoichiometricNumber s[nS]=ones(nS)
         "Stoichiometric reaction coefficient for substrates"
         annotation (  HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
-      parameter Modelica.SIunits.ActivityCoefficient as[nS]=ones(nS)
-        "Activity coefficients of substrates"
-        annotation ( HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
+      parameter Modelica.Units.SI.ActivityCoefficient as[nS]=ones(nS) "Activity coefficients of substrates"
+        annotation (HideResult=true, Dialog(group="Substrates", tab="Reaction type"));
 
       parameter Types.StoichiometricNumber p[nP]=ones(nP)
         "Stoichiometric reaction coefficients for products"
         annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
-       parameter Modelica.SIunits.ActivityCoefficient ap[nP]=ones(nP)
-        "Activity coefficients of products"
-        annotation ( HideResult=true, Dialog(group="Products", tab="Reaction type"));
+      parameter Modelica.Units.SI.ActivityCoefficient ap[nP]=ones(nP) "Activity coefficients of products"
+        annotation (HideResult=true, Dialog(group="Products", tab="Reaction type"));
 
      extends Physiolibrary.Chemical.Interfaces.ConditionalHeatPort;
 
@@ -4295,7 +4285,7 @@ package Chemical "Please use 'Chemical' library instead!"
     model MolarFlowMeasure "Measure of molar flow"
       extends Interfaces.OnePort;
       //extends Icons.MolarFlowMeasure;
-      extends Modelica.Icons.RotationalSensor;
+      extends Modelica.Icons.RoundSensor;
 
      Types.RealIO.MolarFlowRateOutput molarFlowRate
                              annotation (Placement(transformation(extent={{-20,-20},
@@ -4323,7 +4313,7 @@ package Chemical "Please use 'Chemical' library instead!"
     end MolarFlowMeasure;
 
     model ConcentrationMeasure "Measure of molar concentration"
-      extends Modelica.Icons.RotationalSensor;
+      extends Modelica.Icons.RoundSensor;
 
       Interfaces.ChemicalPort_a q_in "For measure only" annotation (Placement(
             transformation(extent={{-10,-10},{10,10}}), iconTransformation(
@@ -4356,7 +4346,7 @@ package Chemical "Please use 'Chemical' library instead!"
 
     model IncrementalFlowConcentrationMeasure
       "Incremental flow concentration meassure in circulation after absorption/secretion source (i.e. portal vein concentration)"
-      extends Modelica.Icons.RotationalSensor;
+      extends Modelica.Icons.RoundSensor;
 
       extends Hydraulic.Interfaces.ConditionalSolutionFlow;
 

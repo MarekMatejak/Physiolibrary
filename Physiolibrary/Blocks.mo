@@ -320,8 +320,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
               textString="Parts")}));
         end Parts;
 
-        block HomotopyStrongComponentBreaker
-      "Break the strong component in normalized signal with independent default constant value"
+        block HomotopyStrongComponentBreaker "Break the strong component in normalized signal with independent default constant value"
           extends Modelica.Blocks.Interfaces.SISO;
           parameter Real defaultValue=1;
           parameter Real defaultSlope=0;
@@ -356,8 +355,7 @@ the Real inputs <b>u[1]</b>,<b>u[2]</b> .. <b>u[nin]</b>:
                   textString="Homotopy")}));
         end HomotopyStrongComponentBreaker;
 
-        block DegradationGain
-      "Output the degradation flow from HalfTime and the amount as the input signal"
+        block DegradationGain "Output the degradation flow from HalfTime and the amount as the input signal"
 
           parameter Types.Time HalfTime
         "Half time to compute degradation from amount or mass";
@@ -554,8 +552,7 @@ input <i>u</i>:
 </html>"));
    end SplineCoefficients;
 
-        model Curve
-      "2D natural cubic interpolation spline defined with (x,y,slope) points"
+        model Curve "2D natural cubic interpolation spline defined with (x,y,slope) points"
 
              parameter Real x[:] = fill(Modelica.Constants.N_A,1)
         "x coordinations of interpolating points";

@@ -217,13 +217,11 @@ package SteadyStates "Dynamic Simulation / Steady State"
         solute_start=0.000001*7.875647668393782383419689119171e-5,
         isDependent=true)
         annotation (Placement(transformation(extent={{-12,-56},{8,-36}})));
-      Modelica.Blocks.Sources.Clock oxygenPartialPressure(offset=1e-06)
-        annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
+      Modelica.Blocks.Sources.ContinuousClock oxygenPartialPressure(offset=1e-06) annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
       Modelica.Blocks.Sources.Sine temperature(
         amplitude=10,
-        freqHz=1/60,
-        offset=310.15)
-        annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
+        f=1/60,
+        offset=310.15) annotation (Placement(transformation(extent={{-94,-28},{-74,-8}})));
       Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
         prescribedTemperature
         annotation (Placement(transformation(extent={{-56,-28},{-36,-8}})));
@@ -416,8 +414,7 @@ package SteadyStates "Dynamic Simulation / Steady State"
       Chemical.Components.Substance oxygen_unbound(solute_start=0.000001*
             7.875647668393782383419689119171e-5, Simulation=SimulationType.SteadyState)
         annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
-      Modelica.Blocks.Sources.Clock clock(offset=60)
-        annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
+      Modelica.Blocks.Sources.ContinuousClock clock(offset=60) annotation (Placement(transformation(extent={{-94,52},{-74,72}})));
       SteadyStates.Components.MolarConservationLaw hemoglobinConservationLaw(
         n=10, Total(displayUnit="mol") = 1,
         Simulation=Types.SimulationType.SteadyState)

@@ -655,7 +655,7 @@ package Osmotic "Please use 'Chemical' library instead!"
     extends Modelica.Icons.SensorsPackage;
     model FlowMeasure "Measurement of flux through semipermeable membrane"
       extends Interfaces.OnePort;
-      extends Modelica.Icons.RotationalSensor;
+      extends Modelica.Icons.RoundSensor;
       //extends Icons.FlowMeasure;
 
       Types.RealIO.VolumeFlowRateOutput volumeFlowRate "Flux through membrane"
@@ -773,7 +773,7 @@ package Osmotic "Please use 'Chemical' library instead!"
     protected
       Types.Osmolarity o "Current osmolarity";
     public
-      Types.RealIO.TemperatureInput osmolarity(start=Osmolarity)=o if
+      Types.RealIO.OsmolarityInput osmolarity(start=Osmolarity)=o if
                                                                useOsmolarityInput
         annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
 
@@ -868,7 +868,7 @@ i.e., it defines a fixed temperature as a boundary condition.
               lineColor={127,127,0},
               fillColor={127,127,0},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.
@@ -901,7 +901,7 @@ Connector with one flow signal of type Real.
               lineColor={127,127,0},
              fillColor={255,255,255},
               fillPattern=FillPattern.Solid),
-        Text(extent=  {{-160,110},{40,50}}, lineColor=  {127,127,0}, textString=  "%name")}),
+        Text(extent = {{-160,110},{40,50}}, lineColor = {127,127,0}, textString = "%name")}),
         Documentation(info="<html>
 <p>
 Connector with one flow signal of type Real.

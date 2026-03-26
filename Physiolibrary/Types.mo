@@ -3997,8 +3997,7 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.RealExtension.OutputComparison),
       redeclare block BooleanVariable =
             Physiolibrary.Types.BooleanExtension.OutputComparison)
-      "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"
-                                                                                                          annotation (
+      "Compare values in non-SI units with file io/input.txt and store results to io/comparison.txt"      annotation (
         Documentation(revisions="<html>
 </html>"));
 
@@ -4025,8 +4024,7 @@ constructed by the signals connected to this bus.
             Physiolibrary.Types.RealExtension.OutputComparison_SI),
       redeclare block BooleanVariable =
             Physiolibrary.Types.BooleanExtension.OutputComparison)
-      "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"
-                                                                                                          annotation (
+      "Compare values in SI units with file io/input_SI.txt and store results to io/comparison_SI.txt"    annotation (
         Documentation(revisions="<html>
 </html>"));
 
@@ -4229,49 +4227,77 @@ This icon is designed for a <b>signal bus</b> connector.
 
   end TissueBusConnector;
 
-  type Energy = Modelica.SIunits.Energy(displayUnit="kcal", nominal=4186.8);
-  type Time = Modelica.SIunits.Time(displayUnit="min", nominal=60);
-  type Frequency = Modelica.SIunits.Frequency(displayUnit="1/min");
+  type Energy = Modelica.Units.SI.Energy
+                                       (displayUnit="kcal", nominal=4186.8);
+  type Time = Modelica.Units.SI.Time
+                                   (displayUnit="min", nominal=60);
+  type Frequency = Modelica.Units.SI.Frequency
+                                             (displayUnit="1/min");
 
-  type Mass = Modelica.SIunits.Mass(displayUnit="g", nominal=1e-3, min=0);
-  type MassFlowRate = Modelica.SIunits.MassFlowRate(displayUnit="mg/min", nominal=(1e-6)/60);
-  type Density = Modelica.SIunits.Density(displayUnit="kg/l", nominal=1e3);
-  type MolarMass = Modelica.SIunits.MolarMass(displayUnit="kDa", nominal=1);
+  type Mass = Modelica.Units.SI.Mass
+                                   (displayUnit="g", nominal=1e-3, min=0);
+  type MassFlowRate = Modelica.Units.SI.MassFlowRate
+                                                   (displayUnit="mg/min", nominal=(1e-6)/60);
+  type Density = Modelica.Units.SI.Density
+                                         (displayUnit="kg/l", nominal=1e3);
+  type MolarMass = Modelica.Units.SI.MolarMass
+                                             (displayUnit="kDa", nominal=1);
 
-  type Height = Modelica.SIunits.Height(displayUnit="cm", nominal=1e-2);
-  type Position = Modelica.SIunits.Position(displayUnit="cm", nominal=1e-2);
-  type Velocity = Modelica.SIunits.Velocity(displayUnit="km/h", nominal=1);
-  type Acceleration = Modelica.SIunits.Acceleration(displayUnit="m/s2", nominal=1);
+  type Height = Modelica.Units.SI.Height
+                                       (displayUnit="cm", nominal=1e-2);
+  type Position = Modelica.Units.SI.Position
+                                           (displayUnit="cm", nominal=1e-2);
+  type Velocity = Modelica.Units.SI.Velocity
+                                           (displayUnit="km/h", nominal=1);
+  type Acceleration = Modelica.Units.SI.Acceleration
+                                                   (displayUnit="m/s2", nominal=1);
 
-  type Pressure =  Modelica.SIunits.Pressure(displayUnit="mmHg", nominal=133.322387415);
-  type Volume =  Modelica.SIunits.Volume(displayUnit="ml", nominal=1e-6, min=0);
-  type VolumeFlowRate = Modelica.SIunits.VolumeFlowRate(displayUnit="ml/min", nominal=(1e-6)/60);
+  type Pressure =  Modelica.Units.SI.Pressure
+                                            (displayUnit="mmHg", nominal=133.322387415);
+  type Volume =  Modelica.Units.SI.Volume
+                                        (displayUnit="ml", nominal=1e-6, min=0);
+  type VolumeFlowRate = Modelica.Units.SI.VolumeFlowRate
+                                                       (displayUnit="ml/min", nominal=(1e-6)/60);
 
-  replaceable type Concentration = Modelica.SIunits.Concentration (displayUnit="mmol/l", min=0) constrainedby Real;
-  replaceable type AmountOfSubstance = Modelica.SIunits.AmountOfSubstance (displayUnit="mmol", min=0) constrainedby Real;
-  replaceable type MolarFlowRate = Modelica.SIunits.MolarFlowRate(displayUnit="mmol/min") constrainedby Real;
-  replaceable type MolarEnergy = Modelica.SIunits.MolarEnergy(displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
+  replaceable type Concentration = Modelica.Units.SI.Concentration(displayUnit="mmol/l", min=0) constrainedby Real;
+  replaceable type AmountOfSubstance = Modelica.Units.SI.AmountOfSubstance(displayUnit="mmol", min=0) constrainedby Real;
+  replaceable type MolarFlowRate = Modelica.Units.SI.MolarFlowRate
+                                                                 (displayUnit="mmol/min") constrainedby Real;
+  replaceable type MolarEnergy = Modelica.Units.SI.MolarEnergy
+                                                             (displayUnit="kcal/mol", nominal=4186.8) constrainedby Real
     "chemical internal energy, chemical enthalpy, Gibb's energy ..";
   type MassConcentration =
-                 Modelica.SIunits.MassConcentration(displayUnit="mg/l", nominal=1e-3, min=0);
+                 Modelica.Units.SI.MassConcentration
+                                                   (displayUnit="mg/l", nominal=1e-3, min=0);
 
-  type Osmolarity = Modelica.SIunits.Concentration (displayUnit="mosm/l", nominal=1);
+  type Osmolarity = Modelica.Units.SI.Concentration(displayUnit="mosm/l", nominal=1);
 
-  type Heat = Modelica.SIunits.Heat(displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
-  type Temperature = Modelica.SIunits.Temperature(displayUnit="degC", nominal=1, min=0);
-  type HeatFlowRate = Modelica.SIunits.HeatFlowRate(displayUnit="kcal/min", nominal=4186.8/60);
-  type Power = Modelica.SIunits.Power(displayUnit="kcal/min", nominal=4186.8/60);
+  type Heat = Modelica.Units.SI.Heat
+                                   (displayUnit="kcal", nominal=4186800); //needed to heat 1 liter of water by 1 degC
+  type Temperature = Modelica.Units.SI.Temperature
+                                                 (displayUnit="degC", nominal=1, min=0);
+  type HeatFlowRate = Modelica.Units.SI.HeatFlowRate
+                                                   (displayUnit="kcal/min", nominal=4186.8/60);
+  type Power = Modelica.Units.SI.Power
+                                     (displayUnit="kcal/min", nominal=4186.8/60);
   type PowerPerMass = Real(final quantity="Power per Mass",final unit="W/kg",displayUnit="cal/(g.min)", nominal=4.1868/(0.001*60));
-  type ThermalConductance = Modelica.SIunits.ThermalConductance(displayUnit="kcal/(min.K)", nominal=4186.8/60);
-  type SpecificHeatCapacity = Modelica.SIunits.SpecificHeatCapacity(displayUnit="kcal/(kg.K)", nominal=4186.8);
-  type SpecificEnergy = Modelica.SIunits.SpecificEnergy(displayUnit="kcal/kg", nominal=4186.8)
+  type ThermalConductance = Modelica.Units.SI.ThermalConductance
+                                                               (displayUnit="kcal/(min.K)", nominal=4186.8/60);
+  type SpecificHeatCapacity = Modelica.Units.SI.SpecificHeatCapacity
+                                                                   (displayUnit="kcal/(kg.K)", nominal=4186.8);
+  type SpecificEnergy = Modelica.Units.SI.SpecificEnergy
+                                                       (displayUnit="kcal/kg", nominal=4186.8)
     "vaporization, ..";
 
-  type ElectricPotential = Modelica.SIunits.ElectricPotential(displayUnit="mV", nominal=1e-3);
-  type ElectricCharge = Modelica.SIunits.ElectricCharge(displayUnit="meq", nominal=(9.64853399*10^4)/1000);
+  type ElectricPotential = Modelica.Units.SI.ElectricPotential
+                                                             (displayUnit="mV", nominal=1e-3);
+  type ElectricCharge = Modelica.Units.SI.ElectricCharge
+                                                       (displayUnit="meq", nominal=(9.64853399*10^4)/1000);
   type VolumeDensityOfCharge =
-                        Modelica.SIunits.VolumeDensityOfCharge(displayUnit="meq/l", nominal=(9.64853399*10^4));
-  type ElectricCurrent = Modelica.SIunits.ElectricCurrent(displayUnit="meq/min", nominal=(9.64853399*10^4/1000)/60);
+                        Modelica.Units.SI.VolumeDensityOfCharge
+                                                              (displayUnit="meq/l", nominal=(9.64853399*10^4));
+  type ElectricCurrent = Modelica.Units.SI.ElectricCurrent
+                                                         (displayUnit="meq/min", nominal=(9.64853399*10^4/1000)/60);
 
 //unknown units in Standard Modelica Library 3.2
   type Fraction = Real(final quantity="Fraction",final unit="1", displayUnit="%", nominal=1e-2);
@@ -4291,7 +4317,7 @@ This icon is designed for a <b>signal bus</b> connector.
   type GasSolubility = Real(final quantity="GasSolubility", final unit="(mol/m3)/(mol/m3)", displayUnit="(mmol/l)/kPa at 25degC", nominal=1e-2, min=0)
     "Gas solubility in liquid";
 
-  type StoichiometricNumber = Modelica.SIunits.StoichiometricNumber; // Integer(final quantity="StoichiometricNumber", min=1);
+  type StoichiometricNumber = Modelica.Units.SI.StoichiometricNumber;// Integer(final quantity="StoichiometricNumber", min=1);
 
   type Population = Real (final quantity="Population", final unit="1", displayUnit="1", min=0)
     "Average number of population individuals";
@@ -4982,8 +5008,7 @@ The Real output y is a constant signal:
 </html>"));
         end InputParameter;
 
-        block InputParameter_SI
-      "Generate constant signal in SI units from file"
+        block InputParameter_SI "Generate constant signal in SI units from file"
           extends AbstractReal(                   k = Utilities.readReal_SI( varName));
 
           replaceable package IO = Types.RealExtension.IO (
@@ -5025,8 +5050,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputFinal.txt")
-                                                         constrainedby
-        Types.Utilities;
+                                                         constrainedby Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5067,8 +5091,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputFinal_SI.txt")
-                                                         constrainedby
-        Types.Utilities;
+                                                         constrainedby Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5106,8 +5129,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputFileName="outputInitial.txt")
-                                                         constrainedby
-        Types.Utilities;
+                                                         constrainedby Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5148,8 +5170,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(outputSIFileName="outputInitial_SI.txt")
-                                                         constrainedby
-        Types.Utilities;
+                                                         constrainedby Types.Utilities;
           IO.Input              y "Connector of Real input signal"
             annotation (Placement(transformation(extent={{-100,-10},{-80,10}}), iconTransformation(extent={{-120,-10},{-100,10}})));
 
@@ -5187,8 +5208,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparison.txt")
-                                                         constrainedby
-        Types.Utilities
+                                                         constrainedby Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5232,15 +5252,13 @@ The Real output y is a constant signal:
 </html>"));
         end OutputComparison;
 
-        block OutputComparison_SI
-      "Save variable comparison to file using SI units during input and output"
+        block OutputComparison_SI "Save variable comparison to file using SI units during input and output"
         //  import Physiolibrary;
           extends Types.AbstractReal(             k=Utilities.readReal_SI(varName));
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparison_SI.txt")
-                                                         constrainedby
-        Types.Utilities
+                                                         constrainedby Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5288,8 +5306,7 @@ The Real output y is a constant signal:
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonFileName="comparisonInitial.txt")
-                                                         constrainedby
-        Types.Utilities
+                                                         constrainedby Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
@@ -5333,15 +5350,13 @@ The Real output y is a constant signal:
 </html>"));
         end OutputInitialComparison;
 
-        block OutputInitialComparison_SI
-      "Save variable comparison to file using SI units"
+        block OutputInitialComparison_SI "Save variable comparison to file using SI units"
          // import Physiolibrary;
           extends Types.AbstractReal(             k=Utilities.readReal_SI(varName));
           replaceable package IO = Types.RealExtension.IO (
                                             redeclare type Type=T);
           replaceable package Utilities = Types.FilesUtilities(comparisonSIFileName="comparisonInitial_SI.txt")
-                                                         constrainedby
-        Types.Utilities
+                                                         constrainedby Types.Utilities
            annotation (Dialog(group="Functions to read or store",tab="Types"));
 
           Modelica.Blocks.Interfaces.RealInput
