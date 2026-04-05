@@ -44,14 +44,18 @@ package Media "Models of physiological fluids"
          "Epinephrine", "Norepinephrine", "Vasopressin",
          "Insulin", "Glucagon", "Thyrotropin", "Thyroxine", "Leptin",
          "Desglymidodrine",
-         "Angiotensin2","Renin", "Aldosterone"},
+         "Angiotensin2","Renin", "Aldosterone",
+         "AlphaBlockers",
+         "BetaBlockers"},
       accesibleSubstanceData = {Water, H, OH, O2_g, CO2_g, CO_g, HCO3,
          Na, K, Cl, SO4, PO4,
          Glucose, Lactate, Urea, AminoAcid, Lipid, KetoAcid,
          Epinephrine, Norepinephrine, Vasopressin,
          Insulin, Glucagon, Thyrotropin, Thyroxine, Leptin,
          Desglymidodrine,
-         Angiotensin2, Renin, Aldosterone},
+         Angiotensin2, Renin, Aldosterone,
+         AlphaBlockers,
+         BetaBlockers},
 
       extraPropertiesNames={
         "AlphaBlockers",
@@ -544,6 +548,9 @@ package Media "Models of physiological fluids"
       state_out[findIndex("Angiotensin2",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Angiotensin2",substanceNames)]/ Constants.MM_Angiotensin2/x_P/pct);
       state_out[findIndex("Renin",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Renin",substanceNames)]/ Constants.MM_Renin/x_P/pct);
       state_out[findIndex("Aldosterone",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("Aldosterone",substanceNames)]/ Constants.MM_Aldosterone/x_P/pct);
+      state_out[findIndex("AlphaBlockers",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("AlphaBlockers",substanceNames)]/ Physiolibrary.Media.Substances.AlphaBlockers.data.MM/x_P/pct);
+      state_out[findIndex("BetaBlockers",accesibleSubstances)].u = Modelica.Constants.R*T*log(state.X[findIndex("BetaBlockers",substanceNames)]/ Physiolibrary.Media.Substances.BetaBlockers.data.MM/x_P/pct);
+
 
       state_out[findIndex("Epinephrine",accesibleSubstances)].h = 0;
       state_out[findIndex("Norepinephrine",accesibleSubstances)].h = 0;
@@ -557,6 +564,8 @@ package Media "Models of physiological fluids"
       state_out[findIndex("Angiotensin2",accesibleSubstances)].h = 0;
       state_out[findIndex("Renin",accesibleSubstances)].h = 0;
       state_out[findIndex("Aldosterone",accesibleSubstances)].h = 0;
+      state_out[findIndex("AlphaBlockers",accesibleSubstances)].h = 0;
+      state_out[findIndex("BetaBlockers",accesibleSubstances)].h = 0;
 
 
       massFlows[Utilities.findIndex("H2O_E",substanceNames)] = -H2O_Ery2Plasma*Substances.Water.data.MM;
@@ -600,6 +609,31 @@ package Media "Models of physiological fluids"
       massFlows[Utilities.findIndex("Other_P",substanceNames)] = 0;
       massFlows[Utilities.findIndex("Other_E",substanceNames)] = 0;
 
+      n=ones(nA);
+      /*
+  n = substanceMasses[1]./Substances.Water.data.MM * {
+       1,
+       Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("H+",accesibleSubstances)].u,Substances.H,solutionState),
+       Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("O2",accesibleSubstances)].u,Substances.O2,solutionState),
+       Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("H2",accesibleSubstances)].u,Substances.H2,solutionState),
+       Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("OH-",accesibleSubstances)].u,Substances.OH,solutionState),
+       1};
+   n[findIndex("H2O",accesibleSubstances)]
+
+*/
+    /*
+extraPropertiesNames={
+      "AlphaBlockers",
+      "BetaBlockers",
+      "AnesthesiaVascularConductance"},
+      
+    Modelica.Units.SI.MassFlowRate extraChanges[nC](nominal=C_nominal) "flows trough substancesPort of extra properties";
+    Physiolibrary.Types.RealIO.MassFlowRateInput extraChangesFromStream[nC] "flow of medium extra properties";
+    Physiolibrary.Types.RealIO.MassOutput extraTotal[nC](nominal=C_nominal) "total amounts of medium extra properties";
+    */
+        extraChanges[Utilities.findIndex("AlphaBlockers",extraPropertiesNames)] = n_flow[findIndex("AlphaBlockers",accesibleSubstances)]*Physiolibrary.Media.Substances.AlphaBlockers.data.MM;
+        extraChanges[Utilities.findIndex("BetaBlockers",extraPropertiesNames)] = n_flow[findIndex("BetaBlockers",accesibleSubstances)]*Physiolibrary.Media.Substances.AlphaBlockers.data.MM;
+        extraChanges[Utilities.findIndex("AnesthesiaVascularConductance",extraPropertiesNames)] = 0;
 
       annotation (Documentation(info="<html>
 <p>Chemical equilibrium is represented by expression of electrochemical potentials of base blood substances.</p>
@@ -725,6 +759,16 @@ package Media "Models of physiological fluids"
        n_flow[findIndex("H2",accesibleSubstances)] * Substances.H2.data.MM +
        n_flow[findIndex("OH-",accesibleSubstances)] * Substances.OH.data.MM}
         "mass change of water";
+
+      //  {"H2O","H+","O2","H2","OH-","e-"}
+      n = substanceMasses[1]./Substances.Water.data.MM * {
+           1,
+           Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("H+",accesibleSubstances)].u,Substances.H,solutionState),
+           Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("O2",accesibleSubstances)].u,Substances.O2,solutionState),
+           Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("H2",accesibleSubstances)].u,Substances.H2,solutionState),
+           Chemical.Interfaces.Properties.moleFraction(state_out[findIndex("OH-",accesibleSubstances)].u,Substances.OH,solutionState),
+           1};
+
     end ChemicalSolution;
 
 
@@ -958,6 +1002,7 @@ Modelica source.
 
         equation
           massFlows = n_flow.*substanceData.data.MM;
+          substanceMasses = n.*substanceData.data.MM;
 
           state_out.u = Properties.electroChemicalPotentialPure(
               substanceData,
@@ -1048,27 +1093,63 @@ Modelica source.
     public
       redeclare replaceable model extends ChemicalSolution
       protected
-            Modelica.Units.SI.Molality NpM[nS] "Amount of substance particles per mass of substance";
-            Modelica.Units.SI.MoleFraction x_baseMolecule[nS] "Mole fraction of free base molecule of substance";
-            Modelica.Units.SI.ChargeNumberOfIon z[nS] "Charge of base molecule of substance";
+            Modelica.Units.SI.Molality NpM[nA] "Amount of substance particles per mass of substance";
+            Modelica.Units.SI.MoleFraction x_baseMolecule[nA] "Mole fraction of free base molecule of substance";
+            Modelica.Units.SI.ChargeNumberOfIon z[nA] "Charge of base molecule of substance";
 
             Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
 
             Modelica.Units.SI.Temperature T = temperature(state);
+
+         /*   Modelica.Units.SI.ChemicalPotential u_debug[nA],u2_debug;
+      Modelica.Units.SI.MolarEnthalpy h_debug;
+      Modelica.Units.SI.MolarEntropy s_debug;
+      */
+            Real m;
+            Real X_debug[nA];
       equation
-            NpM = Properties.specificAmountOfParticles(substanceData,solutionState);
+            m = sum(substanceMasses);
+            X[1:nS] = state.X;
+            X_debug[1:nS] = substanceMasses./m;
+            if nC>0 then
+              X[nS+1:nS+nC] = extraTotals./m;
+              X_debug[nS+1:nS+nC] = extraTotals./m;
+            end if;
 
-            nSolution = state.X*NpM*1;
-            x_baseMolecule = state.X.*Properties.specificAmountOfFreeBaseMolecule(substanceData,solutionState,mass=state.X,nSolution=nSolution)./(state.X*NpM);
+            NpM = Properties.specificAmountOfParticles(accesibleSubstanceData,solutionState);
 
-            massFlows = n_flow.*substanceData.data.MM;
+            nSolution = state.X*NpM[1:nS];
+            x_baseMolecule = X.*Properties.specificAmountOfFreeBaseMolecule(accesibleSubstanceData,solutionState,mass=ones(nA),nSolution=nSolution)./(nSolution);
 
-            state_out.u = Properties.electroChemicalPotentialPure(substanceData,solutionState)
-                            + Modelica.Constants.R*state.T*log(x_baseMolecule);
 
-            state_out.h = Properties.molarEnthalpy( substanceData, solutionState);
 
-            z = Properties.chargeNumberOfIon(substanceData,solutionState);
+            massFlows = n_flow[1:nS].*substanceData.data.MM;
+            substanceMasses = n[1:nS].*substanceData.data.MM;
+
+            if nC>0 then
+              extraChanges = n_flow[nS+1:nS+nC].*extraSubstanceData.data.MM;
+              extraTotals = n[nS+1:nS+nC].*extraSubstanceData.data.MM;
+            end if;
+
+            state_out.u = Properties.electroChemicalPotentialPure(accesibleSubstanceData,solutionState)
+                            + Modelica.Constants.R*solutionState.T*log(x_baseMolecule);
+      /*
+      u_debug = Properties.chemicalPotentialPure(accesibleSubstanceData,solutionState)
+           + (Modelica.Constants.R*solutionState.T)*log(x_baseMolecule);
+
+      u2_debug = h_debug - solutionState.T*s_debug
+           + (Modelica.Constants.R*solutionState.T)*log(x_baseMolecule[1]);
+
+      h_debug = Properties.molarEnthalpyElectroneutral(accesibleSubstanceData[1],solutionState);
+      s_debug = Properties.molarEntropyPure(accesibleSubstanceData[1],solutionState);
+*/
+
+
+            state_out[1:nS].h = Properties.molarEnthalpy( accesibleSubstanceData[1:nS], solutionState);
+            state_out[nS+1:nS+nC].h = zeros(nC); //extra substances does not affect temperature
+
+            z = Properties.chargeNumberOfIon(accesibleSubstanceData,solutionState);
+
 
 
       end ChemicalSolution;
@@ -1200,10 +1281,11 @@ Modelica source.
 
 
       constant Chemical.Interfaces.Definition substanceData[nS] "Substances definitions in order of substanceNames";
+      constant Chemical.Interfaces.Definition extraSubstanceData[nC] "Extra substances definitions in order of extraPropertiesNames";
 
-      constant String accesibleSubstances[:]=substanceNames "Names of substances connectable with chemical ports";
+      constant String accesibleSubstances[:]=cat(1,substanceNames,extraPropertiesNames) "Names of substances connectable with chemical ports";
       final constant Integer nA=size(accesibleSubstances, 1) "Number of substances to connect with chemical ports";
-      constant Chemical.Interfaces.Definition accesibleSubstanceData[nA]=substanceData "Accesible substances definitions in order of accessibleSubstances";
+      constant Chemical.Interfaces.Definition accesibleSubstanceData[nA]=cat(1,substanceData,extraSubstanceData) "Accesible substances definitions in order of accessibleSubstances";
 
       constant Modelica.Units.SI.MassFlowRate SubstanceFlowNominal[nS]=ones(nS) "Nominal of substance flow";
       constant Modelica.Units.SI.SpecificEnthalpy SpecificEnthalpyNominal=-1E6 "Nominal of specific enthalpy";
@@ -1367,6 +1449,7 @@ Modelica source.
          input Chemical.Interfaces.SolutionState solutionState "Solution state of air";
 
          parameter Types.Mass startSubstanceMasses[nS]=fill(Modelica.Constants.small,nS) "Initial value of medium substance masses";
+         parameter Types.Mass startExtraTotals[nC]=fill(Modelica.Constants.small,nC) "Initial value of medium extra properties multiplied by mass";
 
        //  protected
        parameter Real AF[nA,nF] = Utilities.findIndicesMatrix(
@@ -1374,11 +1457,20 @@ Modelica source.
        parameter Real AR[nA,nR] = Utilities.findIndicesMatrix(
                                                     RearSubstances,accesibleSubstances);
 
+        Modelica.Units.SI.MassFraction X[nA] "Mass fractions of substances";
+        Modelica.Units.SI.AmountOfSubstance n[nA] "Amount of base substance";
         Modelica.Units.SI.MolarFlowRate n_flow[nA] "Molar change of the amount of base substance";
         Modelica.Units.SI.MassFlowRate massFlows[nS](nominal=SubstanceFlowNominal) "mass flows trough substancesPort";
         Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[nS] "flow of medium substances";
         Physiolibrary.Types.RealIO.MassOutput substanceMasses[nS](nominal=SubstanceFlowNominal) "mass od medium substances";
 
+       Modelica.Units.SI.MassFlowRate extraChanges[nC]
+         "flows trough substancesPort of extra properties";
+         //(nominal=C_nominal)
+        Physiolibrary.Types.RealIO.MassFlowRateInput extraChangesFromStream[nC] "flow of medium extra properties";
+       Physiolibrary.Types.RealIO.MassOutput extraTotals[nC]
+         "total amounts of medium extra properties";
+         //(nominal=C_nominal)
 
         Modelica.Units.SI.EnthalpyFlowRate h_flow[nA] "Change of enthalpy";
         Modelica.Units.SI.EnthalpyFlowRate _connected_h_flow[nF+nR];
@@ -1391,7 +1483,7 @@ Modelica source.
         parameter Chemical.Utilities.Units.Inertance L=dropOfCommons.L
          annotation(HideResult=true, Dialog(tab = "Advanced"));
 
-        parameter Modelica.Units.SI.MolarFlowRate n_flow_reg=dropOfCommons.n_flow_reg "Regularization threshold of mass flow rate"
+        parameter Real n_flow_per_n_coef_reg=dropOfCommons.n_flow_per_n_coef_reg "Regularization threshold coefcicient of mass flow rate"
           annotation(HideResult=true, Dialog(tab="Advanced"));
 
         outer Chemical.DropOfCommons dropOfCommons "Chemical wide properties";
@@ -1400,18 +1492,49 @@ Modelica source.
         Modelica.Units.SI.ChemicalPotential r_intern[nF+nR];
         // dont regstep variables that are only in der(state), to increase accuracy
 
+        Real lnm[nS](start=log(startSubstanceMasses)) "Natural logarithm of substance masses";
+        Real lne[nC](start=log(startExtraTotals)) "Natural logarithm of extra properties multiplied by mass";
+
+        Modelica.Units.SI.MolarFlowRate n_flow_fore[:] = foreSubstances.n_flow;
+        Modelica.Units.SI.MolarFlowRate n_flow_rear[:] = rearSubstances.n_flow;
+
 
       initial equation
-        substanceMasses = startSubstanceMasses;
+        //   substanceMasses = startSubstanceMasses;
+        lnm=log(startSubstanceMasses);
+        lne=log(startExtraTotals);
       equation
-        der(substanceMasses) = substanceMassFlowsFromStream + massFlows;
+
+        //der(substanceMasses) = substanceMassFlowsFromStream + massFlows;
+        der(lnm) = (substanceMassFlowsFromStream + massFlows)./substanceMasses;
+        substanceMasses=exp(lnm);
+
+        der(lne) = (extraChangesFromStream + extraChanges)./extraTotals;
+        extraTotals=exp(lne);
+
+        /*
+  //if port.n_flow > 0 -> it is sink (r=medium.u-u_in) else it is source (r=0)
+   connect(state_in_rear,rear.state_forwards);
+   connect(state_in_fore,fore.state_rearwards);
+   
+  Modelica.Units.SI.ChemicalPotential r_rear_intern=Chemical.Utilities.Internal.regStep(
+            n_flow_rear,
+            state_out.u - state_in_rear.u,
+            0,
+            n*n_flow_per_n_coef_reg);
+  Modelica.Units.SI.ChemicalPotential r_fore_intern=Chemical.Utilities.Internal.regStep(
+            n_flow_fore,
+            state_out.u - state_in_fore.u,
+            0,
+            n*n_flow_per_n_coef_reg);
+            */
 
         for iF in 1:nF loop
           r_intern[iF]=Chemical.Utilities.Internal.regStep(
                   foreSubstances[iF].n_flow,
-                  foreSubstances[iF].state_forwards.u - foreSubstances[iF].state_rearwards.u,
+                  (state_out.u*AF)[iF] - foreSubstances[iF].state_rearwards.u,
                   0,
-                  n_flow_reg);
+                  n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],accesibleSubstances)]);
 
           _connected_h_flow[iF]= (if foreSubstances[iF].n_flow >= 0 then
                   foreSubstances[iF].state_rearwards.h else
@@ -1422,9 +1545,9 @@ Modelica source.
         for iR in 1:nR loop
           r_intern[nF+iR]=Chemical.Utilities.Internal.regStep(
                   rearSubstances[iR].n_flow,
-                  rearSubstances[iR].state_rearwards.u - rearSubstances[iR].state_forwards.u,
+                  (state_out.u*AR)[iR] - rearSubstances[iR].state_forwards.u,
                   0,
-                  n_flow_reg);
+                  n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(RearSubstances[iR],accesibleSubstances)]);
 
           _connected_h_flow[nF+iR]= (if rearSubstances[iR].n_flow >= 0 then
                   rearSubstances[iR].state_forwards.h else
@@ -1432,8 +1555,8 @@ Modelica source.
         end for;
 
 
-        der(foreSubstances.n_flow)*L = foreSubstances.r - r_intern[1:nF];
-        der(rearSubstances.n_flow)*L = rearSubstances.r - r_intern[nF+1:nF+nR];
+        der(n_flow_fore)*L = foreSubstances.r - r_intern[1:nF];
+        der(n_flow_rear)*L = rearSubstances.r - r_intern[nF+1:nF+nR];
 
         n_flow = AF*foreSubstances.n_flow + AR*rearSubstances.n_flow;
         h_flow = AF*_connected_h_flow[1:nF] + AR*_connected_h_flow[nF+1:nF+nR];
@@ -1450,6 +1573,10 @@ Modelica source.
         rearSubstances.solution_rearwards = fill(solutionState,nR);
 
 
+        annotation (experiment(
+            StopTime=0.0006,
+            Tolerance=1e-09,
+            __Dymola_Algorithm="Dassl"));
       end ChemicalSolution;
       annotation (Documentation(revisions="<html>
 <p><i>2021</i></p>
@@ -2567,7 +2694,8 @@ Modelica source.
       constant Chemical.Interfaces.Definition Aldosterone=Chemical.Interfaces.Definition(MM=Constants.MM_Aldosterone)   "Aldosterone";
       constant Chemical.Interfaces.Definition Desglymidodrine=Chemical.Interfaces.Definition(MM=Constants.MM_Desglymidodrine)   "Desglymidodrine";
 
-
+      constant Chemical.Interfaces.Definition AlphaBlockers=Chemical.Substances.Liquid.Unknown "Alpha blockers";
+      constant Chemical.Interfaces.Definition BetaBlockers=Chemical.Substances.Liquid.Unknown "Beta blockers";
 
 
 

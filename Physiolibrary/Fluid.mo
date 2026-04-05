@@ -580,6 +580,283 @@ package Fluid "Physiological fluids with static and dynamic properties"
 </html>"));
     end BodyFluidMembrane;
 
+    model ElasticVessel0 "Elastic compartment as chemical solution envelop"
+      extends Physiolibrary.Icons.ElasticBalloon;
+      extends Physiolibrary.Fluid.Interfaces.Accumulation0(final pressure_start = p_initial);
+      parameter String stateName=getInstanceName() "State name in input/output files" annotation (Dialog(tab = "Advanced"));
+      parameter Types.HydraulicCompliance Compliance = 1e+3
+      "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false"                                                       annotation (
+        Dialog(enable = not useComplianceInput));
+      parameter Types.Volume ZeroPressureVolume = 1e-11
+      "Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false"                                                   annotation (
+        Dialog(enable = not useV0Input));
+      //default = 1e-5 ml
+      parameter Types.Pressure ExternalPressure = if isExternalPressureAbsolute then system.p_ambient else 0
+      "External pressure if useExternalPressureInput=false."                                                                                                        annotation (
+        Dialog(enable = not useExternalPressureInput));
+      parameter Types.Volume ResidualVolume = 1e-9
+      "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model"                                              annotation (
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.Volume excessVolume
+      "Additional cavity volume (=fluid volume + internal space volume), that generate pressure";
+      parameter Boolean useV0Input = false "=true, if zero-pressure-fluid_volume input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      Types.RealIO.VolumeInput zeroPressureVolume(start = ZeroPressureVolume) = zpv
+      if useV0Input                                                                                                                           annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {-80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-70,90})));
+      parameter Boolean useComplianceInput = false "=true, if compliance input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c
+      if useComplianceInput                                                                           annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={0,90})));
+      parameter Boolean useExternalPressureInput = false "=true, if external pressure input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      parameter Boolean isExternalPressureAbsolute = false "External pressure as absolute pressure? Relative to ambient otherwise." annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+
+      Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep
+      if useExternalPressureInput                                                                            annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={70,90})));
+      Types.RealIO.VolumeOutput fluidVolume= volume annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {116, -60}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {100, -80})));
+      parameter Boolean useSigmoidCompliance = false "Sigmoid compliance e.g. lungs" annotation (
+        Evaluate = true,
+        choices(checkBox = true),
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      parameter Types.Volume VitalCapacity = 0.00493
+      "Relative volume capacity if useSigmoidCompliance"                                                annotation (
+        Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
+      parameter Types.Volume BaseTidalVolume = 0.000543
+      "Base value of tidal volume"                                                   annotation (
+        Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.RealIO.VolumeInput internalSpace(
+        start=InternalSpace)=is if useInternalSpaceInput
+      "additional internal volume (e.g. another inserted compartment inside)"
+        annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={100,8}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={90,60})));
+      parameter Boolean useInternalSpaceInput = false "=true, if internal space input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      parameter Types.Volume InternalSpace = 0
+      "Internal space if there is no pressure gradient"                                          annotation (
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.Pressure relative_pressure;
+
+    protected
+      constant Boolean GenerateComplianceConnection = true;
+      parameter Types.Pressure p_initial = system.p_ambient;
+      parameter Types.Volume BaseMeanVolume = ZeroPressureVolume + BaseTidalVolume / 2
+      "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
+
+      Types.Pressure d_sigmoid = (BaseMeanVolume - ResidualVolume) * (VitalCapacity - (BaseMeanVolume - ResidualVolume)) / (c * VitalCapacity);
+      Types.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1);
+
+      Types.Volume zpv;
+      Types.Pressure ep;
+      Types.HydraulicCompliance c;
+      Types.Volume is;
+
+    equation
+    //elastic compartment
+      if not useV0Input then
+        zpv = ZeroPressureVolume;
+      end if;
+      if not useComplianceInput and GenerateComplianceConnection then
+        c = Compliance;
+      end if;
+      if not useExternalPressureInput then
+        ep = ExternalPressure;
+      end if;
+      if not useInternalSpaceInput then
+        is = InternalSpace;
+      end if;
+      excessVolume = max(0, volume + is - zpv + InternalSpace) - InternalSpace;
+      relative_pressure = pressure - (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+      pressure = (if not useSigmoidCompliance
+      then
+        smooth(0,
+        if noEvent(volume > ResidualVolume)
+           then
+              excessVolume / c
+           else   (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)))
+      else
+        (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
+      + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+      assert(volume > Modelica.Constants.eps, "Attempt to reach negative volume!");
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-280, -104}, {280, -142}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}),
+        Documentation(revisions = "<html>
+<p>2020 by Marek Matejak, http://www.physiolib.com </p>
+</html>",
+        info="<html>
+<h4>mass = &sum; massOfSubstances</h4>
+<p>constant compliance</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p>sigmoid compliance</p>
+<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
+</html>"));
+    end ElasticVessel0;
+
+    model ElasticVessel00 "Elastic compartment as chemical solution envelop"
+      extends Physiolibrary.Icons.ElasticBalloon;
+      extends Physiolibrary.Fluid.Interfaces.Accumulation00(final pressure_start = p_initial);
+      parameter String stateName=getInstanceName() "State name in input/output files" annotation (Dialog(tab = "Advanced"));
+      parameter Types.HydraulicCompliance Compliance = 1e+3
+      "Compliance e.g. TidalVolume/TidalPressureGradient if useComplianceInput=false"                                                       annotation (
+        Dialog(enable = not useComplianceInput));
+      parameter Types.Volume ZeroPressureVolume = 1e-11
+      "Functional Residual Capacity. Maximal fluid volume, that does not generate pressure if useV0Input=false"                                                   annotation (
+        Dialog(enable = not useV0Input));
+      //default = 1e-5 ml
+      parameter Types.Pressure ExternalPressure = if isExternalPressureAbsolute then system.p_ambient else 0
+      "External pressure if useExternalPressureInput=false."                                                                                                        annotation (
+        Dialog(enable = not useExternalPressureInput));
+      parameter Types.Volume ResidualVolume = 1e-9
+      "Residual volume. Or maximal fluid volume, which generate negative collapsing pressure in linear model"                                              annotation (
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.Volume excessVolume
+      "Additional cavity volume (=fluid volume + internal space volume), that generate pressure";
+      parameter Boolean useV0Input = false "=true, if zero-pressure-fluid_volume input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      Types.RealIO.VolumeInput zeroPressureVolume(start = ZeroPressureVolume) = zpv
+      if useV0Input                                                                                                                           annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {-80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-70,90})));
+      parameter Boolean useComplianceInput = false "=true, if compliance input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      Types.RealIO.HydraulicComplianceInput compliance( start = Compliance) = c
+      if useComplianceInput                                                                           annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {0, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={0,90})));
+      parameter Boolean useExternalPressureInput = false "=true, if external pressure input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      parameter Boolean isExternalPressureAbsolute = false "External pressure as absolute pressure? Relative to ambient otherwise." annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+
+      Types.RealIO.PressureInput externalPressure(start = ExternalPressure) = ep
+      if useExternalPressureInput                                                                            annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {80, 80}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={70,90})));
+      Types.RealIO.VolumeOutput fluidVolume= volume annotation (
+        Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 270, origin = {116, -60}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {100, -80})));
+      parameter Boolean useSigmoidCompliance = false "Sigmoid compliance e.g. lungs" annotation (
+        Evaluate = true,
+        choices(checkBox = true),
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      parameter Types.Volume VitalCapacity = 0.00493
+      "Relative volume capacity if useSigmoidCompliance"                                                annotation (
+        Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
+      parameter Types.Volume BaseTidalVolume = 0.000543
+      "Base value of tidal volume"                                                   annotation (
+        Dialog(enable = useSigmoidCompliance, tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.RealIO.VolumeInput internalSpace(
+        start=InternalSpace)=is if useInternalSpaceInput
+      "additional internal volume (e.g. another inserted compartment inside)"
+        annotation (Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={100,8}), iconTransformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={90,60})));
+      parameter Boolean useInternalSpaceInput = false "=true, if internal space input is used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+      parameter Types.Volume InternalSpace = 0
+      "Internal space if there is no pressure gradient"                                          annotation (
+        Dialog(tab = "Advanced", group = "Pressure-Volume relationship"));
+      Types.Pressure relative_pressure;
+
+    protected
+      constant Boolean GenerateComplianceConnection = true;
+      parameter Types.Pressure p_initial = system.p_ambient;
+      parameter Types.Volume BaseMeanVolume = ZeroPressureVolume + BaseTidalVolume / 2
+      "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
+
+      Types.Pressure d_sigmoid = (BaseMeanVolume - ResidualVolume) * (VitalCapacity - (BaseMeanVolume - ResidualVolume)) / (c * VitalCapacity);
+      Types.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1);
+
+      Types.Volume zpv;
+      Types.Pressure ep;
+      Types.HydraulicCompliance c;
+      Types.Volume is;
+
+    equation
+    //elastic compartment
+      if not useV0Input then
+        zpv = ZeroPressureVolume;
+      end if;
+      if not useComplianceInput and GenerateComplianceConnection then
+        c = Compliance;
+      end if;
+      if not useExternalPressureInput then
+        ep = ExternalPressure;
+      end if;
+      if not useInternalSpaceInput then
+        is = InternalSpace;
+      end if;
+      excessVolume = max(0, volume + is - zpv + InternalSpace) - InternalSpace;
+      relative_pressure = pressure - (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+      pressure = (if not useSigmoidCompliance
+      then
+        smooth(0,
+        if noEvent(volume > ResidualVolume)
+           then
+              excessVolume / c
+           else   (-(if isExternalPressureAbsolute then ep-system.p_ambient else ep) / log(Modelica.Constants.eps)) * log(max(Modelica.Constants.eps, volume / ResidualVolume)))
+      else
+        (-d_sigmoid * log(VitalCapacity / (volume - ResidualVolume) - 1)) + c_sigmoid)
+      + (if isExternalPressureAbsolute then ep else ep + system.p_ambient);
+
+      assert(volume > Modelica.Constants.eps, "Attempt to reach negative volume!");
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Text(extent = {{-280, -104}, {280, -142}}, lineColor = {127, 0, 0}, fillColor = {58, 117, 175}, fillPattern = FillPattern.Solid, textString = "%name")}),
+        Documentation(revisions = "<html>
+<p>2020 by Marek Matejak, http://www.physiolib.com </p>
+</html>",
+        info="<html>
+<h4>mass = &sum; massOfSubstances</h4>
+<p>constant compliance</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/ElasticVessel_PV.png\"/></p>
+<p>sigmoid compliance</p>
+<p><img src=\"modelica://Physiolibrary/Resources/Images/UserGuide/sigmoidCompliance.png\"/></p>
+</html>"));
+    end ElasticVessel00;
     annotation (
       Documentation(info = "<html>
 <p>Main components for physiological fluid modeling.</p>
@@ -942,7 +1219,8 @@ as signal.
    */  state = state,
        solutionState = solutionState,
 
-       startSubstanceMasses = m_start)  if (nF+nR)>0;                              //enthalpy / mass,
+       startSubstanceMasses = m_start,
+       startExtraTotals = tm_start * C_start)  if (nF+nR)>0;                              //enthalpy / mass,
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -970,6 +1248,259 @@ as signal.
 
       parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
       parameter Modelica.Units.SI.Mass massOffset = tm_start - sum(m_start);
+      Modelica.Units.SI.ElectricCurrent i;
+    public
+      Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
+
+      Physiolibrary.Types.Enthalpy enthalpy(start=m_start*Medium.specificEnthalpies_Tpv(temperature_start, pressure_start));
+
+      Physiolibrary.Types.Mass mass(start = tm_start);
+      Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
+      Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
+
+      Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
+      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+
+      Physiolibrary.Types.Volume volume;
+      Physiolibrary.Types.Density density;
+    protected
+      Physiolibrary.Types.Pressure pressure( start = pressure_start);
+      Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "Enthalpy inflow in substances connectors [J/s]";
+     // Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+      Physiolibrary.Types.RealIO.MassInput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal);
+
+      Physiolibrary.Types.RealIO.MassFlowRateOutput extraChangesFromStream[Medium.nC];//(nominal=Medium.C_nominal);
+      Physiolibrary.Types.RealIO.MassInput extraTotals[Medium.nC];//(nominal=Medium.C_nominal);
+
+    initial equation
+    //  assert(abs(1 - sum(x_mass_start)) < 1e-5, "Sum of x_mass_start must be 1. (Composition initialization failed)");
+    /* assert(
+  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)==Medium.nS-2) and (Medium.nS<2) or 
+  (Medium.zb[Medium.nS - 1]==0)), "Initial electroneutral concentration composition is not supported with this medium (try to use mass fractions)!");
+*/
+    /*  assert(
+  not ((compositionType == Physiolibrary.Fluid.Interfaces.CompositionType.Concentration) and (size(concentration_start,1)>=Medium.nS-2)),
+  "Initial concentration composition must have at least 
+  -2 values!");
+  */
+      if nF+nR==0 then
+        substanceMasses = m_start;
+      end if;
+      if Medium.reducedX then
+        mass = tm_start;
+      end if;
+
+      enthalpy =m_start*Medium.specificEnthalpies_Tpv(
+        temperature_start,
+        pressure_start,
+        v);
+
+    equation
+      /*   
+      input Phase phase "Phase of the chemical solution";
+      input Real T=298.15 "Temperature of the solution";
+      input Real p=100000 "Pressure of the solution";
+      input Real v=0 "Electric potential in the solution";
+      input Real n=1 "Amount of the solution";
+      input Real m=1 "Mass of the solution";
+      input Real V=if (phase==Phase.Gas) then n*(1.380649e-23*6.02214076e23)*T/p else 0.001 "Volume of the solution";
+      input Real G=0 "Free Gibbs energy of the solution";
+      input Real Q=0 "Electric charge of the solution";
+      input Real I=0 "Mole fraction based ionic strength of the solution";
+      */
+
+       /*
+  input Chemical.Interfaces.Definition definition[:] "Definition of substances";
+ input Modelica.Units.SI.MolarEnthalpy h
+   "Molar enthalpy of solution";
+ input Modelica.Units.SI.MoleFraction x[:]
+   "Mole fractions of substances";
+
+ input Modelica.Units.SI.Pressure p=100000 "Pressure";
+ input Modelica.Units.SI.ElectricPotential v=0
+   "Electric potential of the substance";
+ input Modelica.Units.SI.MoleFraction I=0
+   "Ionic strength (mole fraction based)";
+
+ output Modelica.Units.SI.Temperature T "Temperature";
+ T = Medium.solution_temperature(enthalpy / mass,  )*/
+      state = Medium.setState_phX(p=pressure,h = enthalpy / mass,
+        X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
+        v = v);
+
+      if onElectricGround then
+        v = 0;
+      else
+        i = 0;
+      end if;
+      if not useThermalPort then
+        heatFromEnvironment = 0;
+      end if;
+      connect(chemicalSolution.foreSubstances,foreSubstance);
+      connect(chemicalSolution.rearSubstances,rearSubstance);
+      /*
+  if nRS>0 then
+    //foreSubstance.definition = Medium.selectSubstancesDefinition(ForeSubstances);
+    //chemicalSolution.substances[1:nFS]=foreSubstances;
+    connect(chemicalSolution.rearSubstances,rearSubstance);
+  end if;
+*/
+      solutionState = Medium.setSolutionState_phXvm(pressure, enthalpy / mass,
+         if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
+        v, mass, sum(mass*(if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}))./ Medium.substanceData.data.MM));
+    //  solutionState =
+    //    Chemical.Interfaces.Properties.setSolutionState( phase=Chemical.Interfaces.Phase.Incompressible,
+    //      T=T, p=pressure, v=0, n=nSolution, m=mass,V=volume);
+
+      if nF+nR>0 then
+        //connect(chemicalSolution.massFlows, massFlows);
+        connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
+        connect(chemicalSolution.substanceMasses, substanceMasses);
+        connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
+        //connect(v, chemicalSolution.v);
+        connect(chemicalSolution.extraChangesFromStream, extraChangesFromStream);
+        connect(chemicalSolution.extraTotals, extraTotals);
+
+        //enthalpyFromSubstances = 0;
+        if not onElectricGround then
+        //both electric variables set to zero
+          v = 0;
+        else
+          i = 0;
+        end if;
+
+      else
+        der(substanceMasses) = substanceMassFlowsFromStream;
+        der(extraTotals) = extraChangesFromStream;
+
+       // massFlows = zeros(Medium.nS);
+
+        enthalpyFromSubstances = 0;
+
+        if not onElectricGround then
+        //both electric variables set to zero
+          v = 0;
+        else
+          i = 0;
+        end if;
+      end if;
+
+      substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
+
+      extraChangesFromStream = q_in.m_flow * xC_mass;
+
+      extraSubstanceAmounts = extraTotals;
+      //der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
+
+
+      mass = sum(substanceMasses) + massOffset;
+
+      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
+
+      der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
+
+      volume = mass / density;
+      density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
+
+      extraSubstanceConcentrations = extraSubstanceAmounts ./ volume;
+      for i in 1:nPorts loop
+        xx_mass[i, :] = actualStream(q_in[i].Xi_outflow);
+        xC_mass[i, :] = actualStream(q_in[i].C_outflow);
+        q_in[i].p = pressure;
+        q_in[i].h_outflow = enthalpy / mass;
+        q_in[i].Xi_outflow = massFractions;
+        q_in[i].C_outflow  = extraSubstanceConcentrations;
+      end for;
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false)));
+    end Accumulation;
+
+    partial model Accumulation2
+      extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
+
+     parameter String ForeSubstances[nF] = fill("",nF);
+     parameter String RearSubstances[nR] = fill("",nR);
+
+     parameter Integer nF = 0 "Number of substance forward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+     parameter Integer nR = 0    "Number of substance rearward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+
+     public
+      Chemical.Interfaces.Fore foreSubstance[nF]
+         "Forward ports of selected substances"
+         annotation (                             //( each solution_forwards = solutionState)
+                     Placement(transformation(extent={{-10,-110},{10,-90}}),
+                                                                           iconTransformation(extent={{-10,-110},{10,-90}})));
+
+      Chemical.Interfaces.Rear rearSubstance[nR]
+         "Rearward ports of selectted substances"
+         annotation (                             //(  each solution_rearwards = solutionState)
+                     Placement(transformation(extent={{-10,88},{10,108}}),   iconTransformation(extent={{-10,88},{10,108}})));
+
+      parameter Integer nPorts = 0 "Number of hydraulic ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+      Interfaces.FluidPorts_a q_in[nPorts](redeclare package Medium = Medium, each h_outflow(nominal=Medium.SpecificEnthalpyNominal)) annotation (
+        Placement(transformation(extent = {{-10, -28}, {10, 28}}), iconTransformation(extent = {{-7, -26}, {7, 26}}, rotation = 180, origin = {-1, 0})));
+
+      parameter Boolean onElectricGround = false "=true, if electric potencial is zero" annotation (
+        Evaluate = true,
+        choices(checkBox = true));
+      //,Dialog(group="Conditional inputs"));
+
+      Medium.ThermodynamicState state;
+      Chemical.Interfaces.SolutionState solutionState;
+      Medium.ChemicalSolution chemicalSolution(
+
+       nF=nF,nR=nR,
+       ForeSubstances=ForeSubstances,RearSubstances=RearSubstances,
+
+       //nC=nFS+nRS, ConnectedSubstances=RearSubstances, //cat(1,RearSubstances, ForeSubstances),
+       /*
+   connected_state_in = cat(1,rearSubstance.state_forwards,foreSubstance.state_rearwards),
+   connected_state_out = cat(1,rearSubstance.state_rearwards,foreSubstance.state_forwards),
+   connected_r = cat(1, rearSubstance.r, foreSubstance.r),
+   connected_n_flow = cat(1, rearSubstance.n_flow, foreSubstance.n_flow),
+   */  state = state,
+       solutionState = solutionState,
+
+       startSubstanceMasses = m_start)  if (nF+nR)>0;                              //enthalpy / mass,
+
+      parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
+        Evaluate = true,
+        choices(checkBox = true),
+        Dialog(group = "Initialization"));
+      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
+        HideResult = use_mass_start,
+        Dialog(enable = not use_mass_start, group = "Initialization"));
+      parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=1     "Total mass of solution start value" annotation (
+        HideResult = not use_mass_start,
+        Dialog(enable = use_mass_start, group = "Initialization"));
+
+      parameter Boolean useThermalPort = false "Is thermal port pressent?" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
+
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort(T = Medium.temperature_phX(pressure, enthalpy / mass, massFractions), Q_flow = heatFromEnvironment) if useThermalPort annotation (
+        Placement(transformation(extent = {{-70, -90}, {-50, -70}}), iconTransformation(extent={{-70,
+              -110},{-50,-90}})));
+
+    protected
+      parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
+
+      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
+      parameter Modelica.Units.SI.Mass massOffset = tm_start*(1 - x_mass_start[2]); //tm_start - sum(m_start);
       Modelica.Units.SI.ElectricCurrent i;
     public
       Physiolibrary.Types.HeatFlowRate heatFromEnvironment;
@@ -1105,11 +1636,13 @@ as signal.
 
       der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
 
-      mass = sum(substanceMasses) + massOffset;
+      //debug
+      mass = substanceMasses[2]+massOffset; //sum(substanceMasses) + massOffset;
 
       massFractions = substanceMasses[1:Medium.nXi] ./ mass;
 
-      der(enthalpy) = q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
+      //debug
+      der(enthalpy) = 0; //q_in.m_flow * actualStream(q_in.h_outflow) + enthalpyFromSubstances + heatFromEnvironment;
 
       volume = mass / density;
       density = Medium.density_phX(pressure, enthalpy / mass, massFractions);
@@ -1127,7 +1660,434 @@ as signal.
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)));
-    end Accumulation;
+    end Accumulation2;
+
+    partial model Accumulation0
+      extends Physiolibrary.Fluid.Interfaces.CompositionSetup;
+
+      import Chemical.Interfaces.Properties;
+
+     parameter Integer nF = 1 "Number of substance forward ports" annotation (
+        Evaluate = true,
+        Dialog(connectorSizing = true, group = "Ports"));
+     parameter String ForeSubstances[nF] = fill("",nF);
+
+
+     public
+      Chemical.Interfaces.Fore foreSubstance[nF]
+         "Forward ports of selected substances"
+         annotation (                             //( each solution_forwards = solutionState)
+                     Placement(transformation(extent={{-10,-110},{10,-90}}),
+                                                                           iconTransformation(extent={{-10,-110},{10,-90}})));
+
+
+
+      Medium.ThermodynamicState state;
+      Chemical.Interfaces.SolutionState solutionState;
+
+
+
+
+      parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
+        Evaluate = true,
+        choices(checkBox = true),
+        Dialog(group = "Initialization"));
+      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
+        HideResult = use_mass_start,
+        Dialog(enable = not use_mass_start, group = "Initialization"));
+      parameter Physiolibrary.Types.Mass mass_start(displayUnit="kg")=1     "Total mass of solution start value" annotation (
+        HideResult = not use_mass_start,
+        Dialog(enable = use_mass_start, group = "Initialization"));
+
+
+
+    protected
+      parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = if use_mass_start then mass_start else volume_start * Medium.density_pTX(pressure_start, temperature_start, x_mass_start) "If both mass_start and volume_start are filled";
+
+      parameter Modelica.Units.SI.Mass m_start[Medium.nS] = tm_start * x_mass_start[1:Medium.nS];
+      parameter Modelica.Units.SI.Mass massOffset = tm_start - sum(m_start);
+
+    public
+
+
+      Physiolibrary.Types.Mass mass(start = tm_start);
+      Physiolibrary.Types.MassFraction massFractions[Medium.nXi];
+      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+      Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+
+      Physiolibrary.Types.Volume volume;
+      Physiolibrary.Types.Density density;
+    //protected
+      Physiolibrary.Types.Pressure pressure( start = pressure_start);
+
+
+      //SimpleLiquid:ChemicalSolution
+
+          Modelica.Units.SI.Molality NpM[Medium.nA] "Amount of substance particles per mass of substance";
+          Modelica.Units.SI.MoleFraction x_baseMolecule[Medium.nA] "Mole fraction of free base molecule of substance";
+          Modelica.Units.SI.ChargeNumberOfIon z[Medium.nA] "Charge of base molecule of substance";
+
+          Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
+
+          Modelica.Units.SI.Temperature T = Medium.temperature(state);
+
+          Real m;
+          Real X_debug[Medium.nA];
+
+
+       parameter Types.Mass startSubstanceMasses[Medium.nS]=fill(Modelica.Constants.small,Medium.nS) "Initial value of medium substance masses";
+       parameter Types.Mass startExtraTotals[Medium.nC]=fill(Modelica.Constants.small,Medium.nC) "Initial value of medium extra properties multiplied by mass";
+
+     //  protected
+     parameter Real AF[Medium.nA,nF] = Utilities.findIndicesMatrix(
+                                                  ForeSubstances,Medium.accesibleSubstances);
+
+
+      Modelica.Units.SI.MassFraction X[Medium.nA] "Mass fractions of substances";
+      Modelica.Units.SI.AmountOfSubstance n[Medium.nA] "Amount of base substance";
+      Modelica.Units.SI.MolarFlowRate n_flow[Medium.nA] "Molar change of the amount of base substance";
+      Modelica.Units.SI.MassFlowRate massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal) "mass flows trough substancesPort";
+      Physiolibrary.Types.RealIO.MassFlowRateInput substanceMassFlowsFromStream[Medium.nS](nominal=Medium.SubstanceFlowNominal)
+                                                                                    "flow of medium substances";
+      Physiolibrary.Types.RealIO.MassOutput substanceMasses[Medium.nS](nominal=Medium.SubstanceFlowNominal) "mass od medium substances";
+
+      Modelica.Units.SI.MassFlowRate extraChanges[Medium.nC](nominal=Medium.C_nominal) "flows trough substancesPort of extra properties";
+      Physiolibrary.Types.RealIO.MassFlowRateInput extraChangesFromStream[Medium.nC](nominal=Medium.C_nominal)
+                                                                              "flow of medium extra properties";
+      Physiolibrary.Types.RealIO.MassOutput extraTotals[Medium.nC](nominal=Medium.C_nominal) "total amounts of medium extra properties";
+
+      Modelica.Units.SI.EnthalpyFlowRate h_flow[Medium.nA] "Change of enthalpy";
+      Modelica.Units.SI.EnthalpyFlowRate _connected_h_flow[nF];
+
+      Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "enthalpy from substances";
+
+      Chemical.Interfaces.SubstanceState state_out[Medium.nA] "Internal state os substances";
+
+
+      parameter Chemical.Utilities.Units.Inertance L=dropOfCommons.L
+       annotation(HideResult=true, Dialog(tab = "Advanced"));
+
+      parameter Real n_flow_per_n_coef_reg=dropOfCommons.n_flow_per_n_coef_reg "Regularization threshold coefcicient of mass flow rate"
+        annotation(HideResult=true, Dialog(tab="Advanced"));
+
+      outer Chemical.DropOfCommons dropOfCommons "Chemical wide properties";
+
+       //if port.n_flow > 0 -> it is sink (r=medium.u-u_in) else it is source (r=0)
+      Modelica.Units.SI.ChemicalPotential r_intern[nF];
+      // dont regstep variables that are only in der(state), to increase accuracy
+
+      Real lnm[Medium.nS](start=log(startSubstanceMasses)) "Natural logarithm of substance masses";
+      Real lne[Medium.nC](start=log(startExtraTotals)) "Natural logarithm of extra properties multiplied by mass";
+
+      Modelica.Units.SI.MolarFlowRate n_flow_fore[:] = foreSubstance.n_flow;
+
+
+
+    initial equation
+      if nF==0 then
+        substanceMasses = m_start;
+      end if;
+      if Medium.reducedX then
+        mass = tm_start;
+      end if;
+
+    //SimpleLiquid:ChemicalSolution
+      lnm=log(m_start);
+      lne=log(tm_start * C_start);
+    equation
+      state =
+        Medium.setState_pTX(p=pressure,T=system.T_ambient,
+        X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}));
+
+
+      solutionState =
+        Chemical.Interfaces.Properties.setSolutionState( phase=Chemical.Interfaces.Phase.Incompressible,
+            T=system.T_ambient,
+          p=system.p_ambient);
+
+      substanceMassFlowsFromStream = zeros(Medium.nS);// (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
+
+      extraChangesFromStream = zeros(Medium.nC); //q_in.m_flow * xC_mass;
+
+      extraSubstanceAmounts = extraTotals;
+
+      mass = sum(substanceMasses) + massOffset;
+
+      massFractions = substanceMasses[1:Medium.nXi] ./ mass;
+
+
+      volume = mass / density;
+      density = 1000; //Medium.density_pTX(pressure, system.T_ambient, massFractions);
+
+      extraSubstanceConcentrations = extraSubstanceAmounts ./ volume;
+
+      //SimpleLiquid:ChemicalSolution
+
+          m = sum(substanceMasses);
+          X[1:Medium.nS] = state.X;
+          X_debug[1:Medium.nS] = substanceMasses./m;
+          if Medium.nC>0 then
+            X[Medium.nS+1:Medium.nS+Medium.nC] = extraTotals./m;
+            X_debug[Medium.nS+1:Medium.nS+Medium.nC] = extraTotals./m;
+          end if;
+
+          NpM = Properties.specificAmountOfParticles(Medium.accesibleSubstanceData,solutionState);
+
+          nSolution = state.X*NpM[1:Medium.nS];
+          x_baseMolecule = X.*Properties.specificAmountOfFreeBaseMolecule(Medium.accesibleSubstanceData,solutionState,mass=ones(Medium.nA),nSolution=nSolution)./(nSolution);
+
+
+
+          massFlows = n_flow[1:Medium.nS].*Medium.substanceData.data.MM;
+          substanceMasses = n[1:Medium.nS].*Medium.substanceData.data.MM;
+
+          if Medium.nC>0 then
+            extraChanges = n_flow[Medium.nS+1:Medium.nS+Medium.nC].*Medium.extraSubstanceData.data.MM;
+            extraTotals = n[Medium.nS+1:Medium.nS+Medium.nC].*Medium.extraSubstanceData.data.MM;
+          end if;
+
+          state_out.u = Properties.electroChemicalPotentialPure(Medium.accesibleSubstanceData,solutionState)
+                          + Modelica.Constants.R*solutionState.T*log(x_baseMolecule);
+
+
+          state_out[1:Medium.nS].h =zeros(Medium.nS); // Properties.molarEnthalpy( Medium.accesibleSubstanceData[1:Medium.nS], solutionState);
+          state_out[Medium.nS+1:Medium.nS+Medium.nC].h = zeros(Medium.nC); //extra substances does not affect temperature
+
+          z = Properties.chargeNumberOfIon(Medium.accesibleSubstanceData,solutionState);
+
+
+      lnm=log(m_start);
+      //der(lnm) = (substanceMassFlowsFromStream + massFlows)./substanceMasses;
+          substanceMasses= m_start; //exp(lnm);
+
+      der(lne) = (extraChanges)./extraTotals;
+      extraTotals=exp(lne);
+
+      for iF in 1:nF loop
+        r_intern[iF]=Chemical.Utilities.Internal.regStep(
+                foreSubstance[iF].n_flow,
+                (state_out.u*AF)[iF] - foreSubstance[iF].state_rearwards.u,
+                0,
+                n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],Medium.accesibleSubstances)]);
+
+        _connected_h_flow[iF]= (if foreSubstance[iF].n_flow >= 0 then
+                foreSubstance[iF].state_rearwards.h else
+                foreSubstance[iF].state_forwards.h)*foreSubstance[iF].n_flow;
+
+        foreSubstance[iF].definition = Medium.accesibleSubstanceData[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],Medium.accesibleSubstances)];
+      end for;
+
+
+
+      der(n_flow_fore)*L = foreSubstance.r - r_intern[1:nF];
+
+
+      n_flow = AF*foreSubstance.n_flow;
+      h_flow = AF*_connected_h_flow[1:nF];
+
+      foreSubstance.state_forwards.u = state_out.u*AF;
+      foreSubstance.state_forwards.h = state_out.h*AF;
+
+
+
+      enthalpyFromSubstances = sum(h_flow);
+
+      foreSubstance.solution_forwards = fill(solutionState,nF);
+
+
+
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false)));
+    end Accumulation0;
+
+    partial model Accumulation00
+
+      replaceable package Medium = Nicotine.Physiolib.Media.SimpleNicotineSolution
+          constrainedby Media.Interfaces.PartialMedium "Medium model" annotation (
+         choicesAllMatching = true);
+      outer Modelica.Fluid.System system "System wide properties";
+
+      parameter Modelica.Units.SI.MassFraction massFractions_start = 1 "* Masses of all base molecules. If size is nS-1 then last value is 1-sum(others). If size is nS then all values are scaled to sum==1." annotation (
+        Dialog(group = "Initialization of medium composition"));
+      parameter Real extraConcentration_start = Medium.C_default[1] "Extra substance amounts per kilogram of solution"
+        annotation(Dialog(group = "Initialization of medium composition"));
+      parameter Modelica.Units.SI.Temperature temperature_start = system.T_ambient "Initial temperature" annotation (
+        Dialog(group = "Initialization"));
+      parameter Modelica.Units.SI.Pressure pressure_start = system.p_ambient "Initial pressure" annotation (
+        Dialog(group = "Initialization"));
+
+    protected
+      parameter Modelica.Units.SI.MassFraction x_mass_start = 1;
+      parameter Real C_start = extraConcentration_start "Extra substance amounts per kilogram of solution";
+
+      import Chemical.Interfaces.Properties;
+
+
+     public
+      Chemical.Interfaces.Fore foreSubstance
+         "Forward ports of selected substances"
+         annotation (                             //( each solution_forwards = solutionState)
+                     Placement(transformation(extent={{-10,-110},{10,-90}}),
+                                                                           iconTransformation(extent={{-10,-110},{10,-90}})));
+
+
+      Chemical.Interfaces.SolutionState solutionState;
+
+
+      parameter Physiolibrary.Types.Volume volume_start=0.001   "Total volume of solution start value" annotation (
+        HideResult = use_mass_start,
+        Dialog(enable = not use_mass_start, group = "Initialization"));
+
+    protected
+      parameter Physiolibrary.Types.Mass tm_start(displayUnit = "kg") = volume_start * Medium.density_pTX(pressure_start, temperature_start, {x_mass_start}) "If both mass_start and volume_start are filled";
+
+      parameter Modelica.Units.SI.Mass m_start = tm_start * x_mass_start;
+      parameter Modelica.Units.SI.Mass massOffset = tm_start - m_start;
+
+      Properties.SubstanceProperties substance(
+        definition=Medium.accesibleSubstanceData[1],
+        solutionState=solutionState,
+        FixedDefinition=true,
+        definitionParam=Medium.accesibleSubstanceData[1],
+        amountOfBaseMolecules=n,
+        m_start=m_start,
+        n_flow=foreSubstance.n_flow,
+        h_flow=h_flow,
+        dT=0);
+
+    public
+
+
+      Physiolibrary.Types.Mass mass(start = tm_start);
+
+
+
+      Physiolibrary.Types.Volume volume;
+      Physiolibrary.Types.Density density;
+      Physiolibrary.Types.Pressure pressure( start = pressure_start);
+
+      //SimpleLiquid:ChemicalSolution
+
+
+          Modelica.Units.SI.AmountOfSubstance nSolution "Amount of all particles per one kilogram";
+
+      Modelica.Units.SI.Temperature T=temperature_start; // (start=temperature_start) = Medium.temperature(state);
+
+
+
+
+       parameter Types.Mass startSubstanceMasses=Modelica.Constants.small   "Initial value of medium substance masses";
+       parameter Types.Mass startExtraTotals=Modelica.Constants.small   "Initial value of medium extra properties multiplied by mass";
+
+
+     Modelica.Units.SI.AmountOfSubstance n "Amount of base substance";
+
+      Modelica.Units.SI.MassFlowRate extraChanges "flows trough substancesPort of extra properties";
+      //(nominal=Medium.C_nominal)
+      Physiolibrary.Types.RealIO.MassOutput extraTotals "total amounts of medium extra properties";
+    //(nominal=Medium.C_nominal)
+      Modelica.Units.SI.EnthalpyFlowRate h_flow "Change of enthalpy";
+
+
+
+      Chemical.Interfaces.SubstanceState substanceState "Internal state os substances";
+
+      parameter Chemical.Utilities.Units.Inertance L=dropOfCommons.L
+       annotation(HideResult=true, Dialog(tab = "Advanced"));
+
+      parameter Real n_flow_per_n_coef_reg=dropOfCommons.n_flow_per_n_coef_reg "Regularization threshold coefcicient of mass flow rate"
+        annotation(HideResult=true, Dialog(tab="Advanced"));
+
+      outer Chemical.DropOfCommons dropOfCommons "Chemical wide properties";
+
+       //if port.n_flow > 0 -> it is sink (r=medium.u-u_in) else it is source (r=0)
+      Modelica.Units.SI.ChemicalPotential r_intern;
+      // dont regstep variables that are only in der(state), to increase accuracy
+
+      Real lne(start=log(startExtraTotals)) "Natural logarithm of extra properties multiplied by mass";
+
+
+
+    initial equation
+
+      if Medium.reducedX then
+        mass = tm_start;
+      end if;
+
+    //SimpleLiquid:ChemicalSolution
+
+      lne=log(tm_start * C_start);
+    equation
+
+
+      solutionState =
+        Chemical.Interfaces.Properties.setSolutionState( phase=Chemical.Interfaces.Phase.Incompressible,
+          T=T, p=pressure, v=0, n=nSolution, m=mass,V=volume);
+
+
+
+
+
+      mass = m_start;
+
+      volume = mass / density;
+      density = 1000; //Medium.density_pTX(pressure, system.T_ambient, massFractions);
+
+
+
+      //SimpleLiquid:ChemicalSolution
+
+
+
+
+
+
+          nSolution = mass/Properties.molarMassOfBaseMolecule(Medium.accesibleSubstanceData[1]);
+
+
+            extraChanges = foreSubstance.n_flow*Medium.extraSubstanceData[1].data.MM;
+            extraTotals = n*Medium.extraSubstanceData[1].data.MM;
+
+
+      substanceState.u = substance.u;
+      substanceState.h = substance.h;
+
+
+      der(lne) = (extraChanges)/extraTotals;
+      extraTotals=exp(lne);
+
+
+        r_intern=Chemical.Utilities.Internal.regStep(
+                foreSubstance.n_flow,
+                substanceState.u - foreSubstance.state_rearwards.u,
+                0,
+                n_flow_per_n_coef_reg*n);
+
+        h_flow= (if foreSubstance.n_flow >= 0 then
+                foreSubstance.state_rearwards.h else
+                foreSubstance.state_forwards.h)*foreSubstance.n_flow;
+
+        foreSubstance.definition = Medium.accesibleSubstanceData[1];
+
+
+      der(foreSubstance.n_flow)*L = foreSubstance.r - r_intern;
+
+
+
+
+      foreSubstance.state_forwards.u = substanceState.u;
+      foreSubstance.state_forwards.h = substanceState.h;
+
+
+
+      foreSubstance.solution_forwards = solutionState;
+
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false)));
+    end Accumulation00;
   end Interfaces;
 
   package Sensors
@@ -5497,11 +6457,10 @@ The sensor is ideal, i.e., it does not influence the fluid.
       // massPartition_start=zeros(Blood.nS),
       // amountPartition_start=zeros(Blood.nS),
       Chemical.Processes.GasSolubility           CO2_GasSolubility(
-        k_forward(displayUnit="mol/s") = 10,
-        product=Chemical.Substances.Gas.CO,
-        redeclare function uDiff = Chemical.Processes.Internal.Kinetics.linearPotentialDiff)
-                                                                            annotation (Placement(transformation(extent={{18,22},{38,42}})));
+        n_flow_reg=1e-6,                                           k_forward(displayUnit="mol/s"),
+        product=Chemical.Substances.Gas.CO)                                 annotation (Placement(transformation(extent={{18,22},{38,42}})));
       Chemical.Boundaries.ExternalGas CO(
+        n_flow_reg=1e-6,
         useRear=true,
         useFore=false,
         PartialPressure(displayUnit="mmHg") = 13.3322387415) annotation (Placement(transformation(extent={{66,22},{86,42}})));
@@ -5531,6 +6490,59 @@ The sensor is ideal, i.e., it does not influence the fluid.
 <p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
 </html>"));
     end BloodGasesEquilibrium05;
+
+    model BloodGasesEquilibrium051
+      extends Modelica.Icons.Example;
+      import Modelica.Units.SI.*;
+      replaceable package Air = Chemical.Media.SimpleAir_C;
+      //Chemical.Media.Air_MixtureGasNasa;
+      replaceable package Blood = Physiolibrary.Media.Blood;
+      inner Modelica.Fluid.System system(T_ambient=310.15)   "Human body system setting" annotation (
+        Placement(transformation(extent={{62,66},{82,86}})));
+
+      // massFractions_start=zeros(Blood.nS - 1),
+      // massPartition_start=zeros(Blood.nS),
+      // amountPartition_start=zeros(Blood.nS),
+      Chemical.Processes.GasSolubility           CO2_GasSolubility(
+        k_forward(displayUnit="mol/s") = 0.01,
+        product=Chemical.Substances.Gas.CO,
+        redeclare function uDiff = Chemical.Processes.Internal.Kinetics.linearPotentialDiff)
+                                                                            annotation (Placement(transformation(extent={{18,22},{38,42}})));
+      Chemical.Boundaries.ExternalGas CO(
+        useRear=true,
+        useFore=false,
+        PartialPressure(displayUnit="mmHg") = 13.3322387415) annotation (Placement(transformation(extent={{66,22},{86,42}})));
+      Chemical.Boundaries.Substance substance(
+        substanceDefinition=Chemical.Substances.Gas.CO,
+        useFore=true,
+        preferMass=false,
+        amountOfSubstance_start=1e-6) annotation (Placement(transformation(extent={{-60,22},{-40,42}})));
+      inner Chemical.DropOfCommons dropOfCommons annotation (Placement(transformation(extent={{56,-22},{76,-2}})));
+    equation
+
+      connect(CO2_GasSolubility.fore, CO.rear) annotation (Line(
+          points={{38,32},{66,32}},
+          color={158,66,200},
+          thickness=0.5));
+      connect(substance.fore, CO2_GasSolubility.rear) annotation (Line(
+          points={{-40,32},{18,32}},
+          color={158,66,200},
+          thickness=0.5));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+        experiment(
+          StopTime=100,
+          __Dymola_fixedstepsize=0.1,
+          __Dymola_Algorithm="Dassl"),
+        Documentation(info="<html>
+<p>This experiment start with default arterial blood surrounding by gas without oxygen.</p>
+<p>Almost full hemoglobin deoxygenation is reached during simulation.</p>
+<p>Note that the model of blood contains hemoglobin model (including temperature, Bohr and Haldane effect), acid-base model, chloride shift model and water osmolarity equilibration model between blood plasma and red cells.</p>
+<p><br>As a result the relation between current oxygen partial pressure in blood can be observed:</p>
+<p><br><img src=\"modelica://Physiolibrary/Resources/Images/Examples/BloodGasesEquilibrium.bmp\"/></p>
+</html>"));
+    end BloodGasesEquilibrium051;
   end Examples;
   annotation (
     Documentation(info = "<html>
