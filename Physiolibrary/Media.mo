@@ -1499,6 +1499,10 @@ Modelica source.
         Modelica.Units.SI.MolarFlowRate n_flow_rear[:] = rearSubstances.n_flow;
 
 
+        Modelica.Units.SI.ChemicalPotential uF[nF] "Chemical potential of fore substances";
+
+        Modelica.Units.SI.ChemicalPotential uR[nR] "Chemical potential of rear substances";
+
       initial equation
         //   substanceMasses = startSubstanceMasses;
         lnm=log(startSubstanceMasses);
@@ -1529,10 +1533,16 @@ Modelica source.
             n*n_flow_per_n_coef_reg);
             */
 
+        uF=state_out.u*AF;
+        uR=state_out.u*AR;
+
         for iF in 1:nF loop
+          /*for iA in 1:nA loop
+      uF[iF]=state_out[iA].u*AF[iA,iF];
+    end for;*/
           r_intern[iF]=Chemical.Utilities.Internal.regStep(
                   foreSubstances[iF].n_flow,
-                  (state_out.u*AF)[iF] - foreSubstances[iF].state_rearwards.u,
+                  uF[iF] - foreSubstances[iF].state_rearwards.u,
                   0,
                   n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],accesibleSubstances)]);
 
@@ -1545,7 +1555,7 @@ Modelica source.
         for iR in 1:nR loop
           r_intern[nF+iR]=Chemical.Utilities.Internal.regStep(
                   rearSubstances[iR].n_flow,
-                  (state_out.u*AR)[iR] - rearSubstances[iR].state_forwards.u,
+                  uR[iR] - rearSubstances[iR].state_forwards.u,
                   0,
                   n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(RearSubstances[iR],accesibleSubstances)]);
 
