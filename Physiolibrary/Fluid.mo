@@ -1782,7 +1782,7 @@ as signal.
       Modelica.Units.SI.MolarFlowRate n_flow_fore[:] = foreSubstance.n_flow;
 
 
-
+      Modelica.Units.SI.ChemicalPotential uF[nF];
     initial equation
       if nF==0 then
         substanceMasses = m_start;
@@ -1863,10 +1863,12 @@ as signal.
       der(lne) = (extraChanges)./extraTotals;
       extraTotals=exp(lne);
 
+      uF=state_out.u*AF;
+
       for iF in 1:nF loop
         r_intern[iF]=Chemical.Utilities.Internal.regStep(
                 foreSubstance[iF].n_flow,
-                (state_out.u*AF)[iF] - foreSubstance[iF].state_rearwards.u,
+                uF[iF] - foreSubstance[iF].state_rearwards.u,
                 0,
                 n_flow_per_n_coef_reg*n[Physiolibrary.Utilities.findIndex(ForeSubstances[iF],Medium.accesibleSubstances)]);
 
