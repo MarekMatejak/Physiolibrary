@@ -124,7 +124,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
         annotation (Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=180,
-            origin={100,8}), iconTransformation(
+            origin={100,40}),iconTransformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={90,60})));
@@ -742,13 +742,23 @@ Connector with one flow signal of type Real.
         HideResult = true,
         choices(checkBox = true),
         Dialog(group = "Conditional inputs"));
+      parameter Boolean useExtraSubstances = false "=true, if extra substance ports are used" annotation (
+        Evaluate = true,
+        HideResult = true,
+        choices(checkBox = true),
+        Dialog(group = "Conditional inputs"));
       parameter Boolean onElectricGround = false "=true, if electric potencial is zero" annotation (
         Evaluate = true,
         choices(checkBox = true));
       //,Dialog(group="Conditional inputs"));
-      Medium.SubstancesPort substances if useSubstances annotation (
-        Placement(transformation(extent={{-120,-20},{-80,20}}),      iconTransformation(extent={{-120,
-                -20},{-80,20}})));
+
+      Chemical.Interfaces.SubstancePort_a extraSubstancesPorts[Medium.nC] if useExtraSubstances annotation (
+        Placement(transformation(extent={{80,-20},{120,20}}),        iconTransformation(extent={{80,-20},{120,20}})));
+      Chemical.Interfaces.SubstancePort_a substancesPorts[Medium.nS] if useSubstances annotation (
+        Placement(transformation(extent={{-120,-20},{-80,20}}),      iconTransformation(extent={{-120,-20},{-80,20}})));
+      //Medium.SubstancesPort substances if useSubstances annotation (
+      //  Placement(transformation(extent={{-120,-20},{-80,20}}),      iconTransformation(extent={{-120,
+      //          -20},{-80,20}})));
 
       Medium.ChemicalSolution chemicalSolution(
         startSubstanceMasses = m_start,
@@ -756,6 +766,17 @@ Connector with one flow signal of type Real.
         h = enthalpy / mass,
         X = if not Medium.reducedX then massFractions else cat(1, massFractions, {1 - sum(massFractions)}),
         _i = i)  if useSubstances;                              //enthalpy / mass,
+
+      Medium.ExtraChemicalSolution extraChemicalSolution(
+        startExtraSubstanceAmounts = C_start.*tm_start,
+        p = pressure,
+        T = temperature,
+        h = enthalpy / mass,
+        C = extraSubstanceConcentrations,
+        v = v)  if useExtraSubstances;                              //enthalpy / mass,
+
+
+
 
       parameter Boolean use_mass_start = false "Use mass_start, otherwise volume_start" annotation (
         Evaluate = true,
@@ -795,13 +816,17 @@ Connector with one flow signal of type Real.
       Physiolibrary.Types.MassFraction xx_mass[nPorts, Medium.nXi] "Substance mass fraction per fluid port";
 
       Real xC_mass[nPorts, Medium.nC] "Extra substance in 1 kg of solution per fluid port";
-      Real extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
+      Physiolibrary.Types.RealIO.AmountOfSubstanceInput extraSubstanceAmounts[Medium.nC](start = tm_start * C_start) "Current amount of extra substances";
       Real extraSubstanceConcentrations[Medium.nC](start = C_start) "Current anount per kg of extra substances";
+
+      Physiolibrary.Types.RealIO.MolarFlowRateOutput extraSubstanceFlows[Medium.nC];
+      Physiolibrary.Types.RealIO.MolarFlowRateOutput extraSubstanceFlowsFromStream[Medium.nC];
 
       Physiolibrary.Types.Volume volume;
       Physiolibrary.Types.Density density;
     protected
       Physiolibrary.Types.Pressure pressure;
+      Physiolibrary.Types.RealIO.TemperatureOutput temperature;
       Physiolibrary.Types.RealIO.HeatFlowRateOutput enthalpyFromSubstances "Enthalpy inflow in substances connectors [J/s]";
       Physiolibrary.Types.RealIO.MassFlowRateOutput massFlows[Medium.nS](nominal=Medium.SubstanceFlowNominal);
       Physiolibrary.Types.RealIO.ElectricPotentialOutput v;
@@ -842,13 +867,29 @@ Connector with one flow signal of type Real.
       if not useThermalPort then
         heatFromEnvironment = 0;
       end if;
+
+      if useExtraSubstances then
+        connect(extraSubstancesPorts, extraChemicalSolution.extraSubstancesPorts);
+        connect(extraChemicalSolution.molarFlows, extraSubstanceFlows);
+       // connect(extraChemicalSolution.enthalpyFromExtraSubstances, enthalpyFromExtraSubstances);
+        connect(extraChemicalSolution.extraSubstanceAmounts, extraSubstanceAmounts);
+        connect(extraChemicalSolution.extraSubstanceFlowsFromStream, extraSubstanceFlowsFromStream);
+        //connect(v, extraChemicalSolution.v);
+      else
+
+        der(extraSubstanceAmounts) = extraSubstanceFlowsFromStream;
+        extraSubstanceFlows = zeros(Medium.nC);
+      end if;
+
       if useSubstances then
-        connect(substances, chemicalSolution.substances);
+        connect(substancesPorts, chemicalSolution.substancesPorts);
         connect(chemicalSolution.massFlows, massFlows);
         connect(chemicalSolution.enthalpyFromSubstances, enthalpyFromSubstances);
         connect(chemicalSolution.substanceMasses, substanceMasses);
         connect(chemicalSolution.substanceMassFlowsFromStream, substanceMassFlowsFromStream);
         connect(v, chemicalSolution.v);
+        connect(temperature, chemicalSolution.T);
+
       else
         der(substanceMasses) = substanceMassFlowsFromStream;
 
@@ -862,12 +903,13 @@ Connector with one flow signal of type Real.
         else
           i = 0;
         end if;
+
+        temperature = system.T_ambient;
       end if;
 
       substanceMassFlowsFromStream =  (if not Medium.reducedX then q_in.m_flow*xx_mass else cat(1, q_in.m_flow*xx_mass, {q_in.m_flow*(ones(nPorts) - xx_mass*ones(Medium.nXi))}));
 
-
-      der(extraSubstanceAmounts) = q_in.m_flow * xC_mass;
+      extraSubstanceFlowsFromStream = q_in.m_flow * xC_mass;
 
 
       mass = sum(substanceMasses) + massOffset;
