@@ -146,7 +146,7 @@ package Fluid "Physiological fluids with static and dynamic properties"
       "Point of equality with linear presentation such as (FunctionalResidualCapacity + TidalVolume/2)";
 
       Types.Pressure d_sigmoid = (BaseMeanVolume - ResidualVolume) * (VitalCapacity - (BaseMeanVolume - ResidualVolume)) / (c * VitalCapacity);
-      Types.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1);
+      Types.Pressure c_sigmoid = (BaseMeanVolume - ZeroPressureVolume) / c + d_sigmoid * log(max(Modelica.Constants.eps,VitalCapacity / (BaseMeanVolume - ResidualVolume) - 1));
 
       Types.Volume zpv;
       Types.Pressure ep;
@@ -848,6 +848,10 @@ Connector with one flow signal of type Real.
       if not useSubstances then
         substanceMasses = m_start;
       end if;
+      if not useExtraSubstances then
+        extraSubstanceAmounts = C_start.*tm_start;
+      end if;
+
       if Medium.reducedX then
         mass = tm_start;
       end if;
